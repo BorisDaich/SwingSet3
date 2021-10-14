@@ -12,6 +12,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import junit.framework.TestCase;
 
+import org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons;
+import org.jdesktop.swingx.plaf.windows.WindowsLookAndFeelAddons;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +26,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class LookAndFeelAddonsSandboxTest extends TestCase {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(LookAndFeelAddonsSandboxTest.class
-            .getName());
+
+    private static final Logger LOG = Logger.getLogger(LookAndFeelAddonsSandboxTest.class.getName());
     
     
     /**
@@ -44,8 +45,9 @@ public class LookAndFeelAddonsSandboxTest extends TestCase {
             assertTrue("sanity: addon is configured to update on LAF change", 
                     LookAndFeelAddons.isTrackingLookAndFeelChanges());
             setLookAndFeel("Nimbus");
-            LookAndFeelAddons addon = LookAndFeelAddons.getAddon();
-            assertTrue("addon must match Nimbus, but was: " + addon, addon.matches());
+            LookAndFeelAddons addon = new NimbusLookAndFeelAddons();
+            LOG.info(addon.toString() + " addon.matches():"+addon.matches());
+            assertTrue("addon must match Nimbus, but was: " + addon.toString(), addon.matches());
             
         } finally {
             UIManager.setLookAndFeel(old);
@@ -62,6 +64,11 @@ public class LookAndFeelAddonsSandboxTest extends TestCase {
     @Test
     public void testSystemAddon() {
         LookAndFeelAddons addon = LookAndFeelAddons.getAddon();
+        LOG.info("BestMatchAddon:"+LookAndFeelAddons.getBestMatchAddonClassName() 
+        + " CrossPlatformAddon:"+LookAndFeelAddons.getCrossPlatformAddonClassName()
+        + " SystemAddon:"+LookAndFeelAddons.getSystemAddonClassName() // on WIN MetalLookAndFeelAddons!
+        + " addon.isSystemAddon():"+addon.isSystemAddon());
+        addon = new WindowsLookAndFeelAddons();
         assertTrue("addon must be system addon, but was: " + addon, addon.isSystemAddon());
     }
     

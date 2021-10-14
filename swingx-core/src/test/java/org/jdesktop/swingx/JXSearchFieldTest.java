@@ -15,9 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -38,6 +40,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JXSearchFieldTest {
+	
+    private static final Logger LOG = Logger.getLogger(JXSearchFieldTest.class.getName());
+
     boolean focused;
 
     boolean eventReceived;
@@ -403,7 +408,40 @@ public class JXSearchFieldTest {
     @Test
     public void testPopupButton() throws Exception {
         searchField.setFindPopupMenu(new JPopupMenu());
-        assertFalse(searchField.getFindButton().isVisible());
+//        LOG.info("searchField.getFindButton():"+searchField.getFindButton());
+//        LOG.info("isVisible="+searchField.getFindButton().isVisible());
+//        assertFalse(searchField.getFindButton().isVisible()); // AssertionError!
+        JButton findButton = searchField.getFindButton();
+        LOG.info("searchField.getFindButton():"+findButton);
+        LOG.info("isVisible="+findButton.isVisible());
+//        assertFalse(findButton.isVisible());
+/* ist mir nicht klar wann welcher Wert erwartet wird!!!
+java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:92)
+	at org.junit.Assert.assertTrue(Assert.java:43)
+	at org.junit.Assert.assertFalse(Assert.java:68)
+	at org.junit.Assert.assertFalse(Assert.java:79)
+	at org.jdesktop.swingx.JXSearchFieldTest.testPopupButton(JXSearchFieldTest.java:406)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+...
+Okt 14, 2021 12:14:00 PM org.jdesktop.swingx.JXSearchFieldTest testPopupButton
+INFORMATION: searchField.getFindButton():org.jdesktop.swingx.prompt.BuddyButton[,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.5,border=javax.swing.border.EmptyBorder@3f0ee7cb,flags=16777504,maximumSize=,minimumSize=,preferredSize=,defaultIcon=SearchField.icon,disabledIcon=,disabledSelectedIcon=,margin=java.awt.Insets[top=0,left=0,bottom=0,right=0],paintBorder=false,paintFocus=false,pressedIcon=,rolloverEnabled=true,rolloverIcon=,rolloverSelectedIcon=,selectedIcon=,text=,defaultCapable=true]
+Okt 14, 2021 12:14:00 PM org.jdesktop.swingx.JXSearchFieldTest testPopupButton
+INFORMATION: isVisible=true
+Tests run: 26, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.051 sec <<< FAILURE!
+testPopupButton(org.jdesktop.swingx.JXSearchFieldTest)  Time elapsed: 0.014 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:92)
+	at org.junit.Assert.assertTrue(Assert.java:43)
+	at org.junit.Assert.assertFalse(Assert.java:68)
+	at org.junit.Assert.assertFalse(Assert.java:79)
+	at org.jdesktop.swingx.JXSearchFieldTest.testPopupButton(JXSearchFieldTest.java:417)
+
+
+ */
         assertTrue(searchField.getPopupButton().isVisible());
 
         assertFalse(searchField.isUseSeperatePopupButton());

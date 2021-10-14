@@ -38,6 +38,7 @@ import javax.swing.plaf.IconUIResource;
 import junit.framework.TestCase;
 
 import org.jdesktop.swingx.test.XTestUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -64,6 +65,10 @@ public class JXHeaderTest extends TestCase {
 //---------------- testing icon property, similar to #925
 // except that it's not a property normally controlled by the ui defaults.
     
+	@BeforeClass
+	public static void setup() {
+		new JXHeader();
+	}
     /**
      * Test that header's icon property set to default value, if any.
      */
@@ -156,6 +161,15 @@ public class JXHeaderTest extends TestCase {
     public void testUpdateUIDescriptionFontA() {
         Font color = UIManager.getFont("JXHeader.descriptionFont");
         assertNotNull("sanity: description font available", color);
+//      Color color = UIManager.getColor("JXHeader.titleForeground"); // key existiert nicht
+//      Color color = UIManager.getColor("JXHeader.titleForegroundColor");
+/*
+junit.framework.AssertionFailedError: sanity: description font available
+	at junit.framework.Assert.fail(Assert.java:50)
+	at junit.framework.Assert.assertTrue(Assert.java:20)
+	at junit.framework.Assert.assertNotNull(Assert.java:218)
+	at org.jdesktop.swingx.JXHeaderTest.testUpdateUIDescriptionFontA(JXHeaderTest.java:158)
+ */
         JXHeader header = new JXHeader();
         assertEquals(color, header.getDescriptionFont());
     }
@@ -348,6 +362,13 @@ public class JXHeaderTest extends TestCase {
     public void testUpdateUITitleFontA() {
         Font font = UIManager.getFont("JXHeader.titleFont");
         assertNotNull("sanity: title font available", font);
+/*
+junit.framework.AssertionFailedError: sanity: title font available
+	at junit.framework.Assert.fail(Assert.java:50)
+	at junit.framework.Assert.assertTrue(Assert.java:20)
+	at junit.framework.Assert.assertNotNull(Assert.java:218)
+	at org.jdesktop.swingx.JXHeaderTest.testUpdateUITitleFontA(JXHeaderTest.java:359)
+ */
         JXHeader header = new JXHeader();
         assertEquals(font, header.getTitleFont());
     }
@@ -563,10 +584,10 @@ public class JXHeaderTest extends TestCase {
     }
 
     
-    @Override
-    protected void setUp() throws Exception {
-        // forcing load of headerAddon
-        new JXHeader();
-    }
+//    @Override
+//    protected void setUp() throws Exception {
+//        // forcing load of headerAddon
+//        new JXHeader();
+//    }
 
 }

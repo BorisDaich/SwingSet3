@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.text.JTextComponent;
@@ -22,6 +23,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public abstract class PromptTextUITest_Base {
+	
+	private static final Logger LOG = Logger.getLogger(PromptTextUITest_Base.class.getName());
+
     protected JTextComponent textComponent;
     protected PromptTextUI ui;
 
@@ -37,10 +41,21 @@ public abstract class PromptTextUITest_Base {
     @Test
     public void testGetBaseLine() {
     	int baseline = ui.getBaseline(textComponent, textComponent.getWidth(), textComponent.getHeight());
+    	LOG.info("JVM.current():"+JVM.current());
 		if(JVM.current().isOrLater(JVM.JDK1_6)){
     		assertNotSame(-2, baseline);
     	}else{
     		assertSame(-2, baseline);
+/* JDK 8:
+testGetBaseLine(org.jdesktop.swingx.plaf.PromptTextAreaUITest)  Time elapsed: 0.012 sec  <<< FAILURE!
+java.lang.AssertionError: expected same:<-2> was not:<13>
+	at org.junit.Assert.fail(Assert.java:93)
+	at org.junit.Assert.failNotSame(Assert.java:641)
+	at org.junit.Assert.assertSame(Assert.java:580)
+	at org.junit.Assert.assertSame(Assert.java:593)
+	at org.jdesktop.swingx.plaf.PromptTextUITest_Base.testGetBaseLine(PromptTextUITest_Base.java:43)
+...
+ */
     	}
     }
 
