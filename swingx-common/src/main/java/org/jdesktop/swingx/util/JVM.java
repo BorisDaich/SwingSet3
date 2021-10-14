@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: JVM.java 4236 2012-08-13 17:32:35Z kschaefe $
  *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
@@ -20,6 +20,8 @@
  */
 package org.jdesktop.swingx.util;
 
+import java.util.logging.Logger;
+
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -28,6 +30,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
  */
 @SuppressWarnings("nls")
 public class JVM {
+
+	private static final Logger LOG = Logger.getLogger(JVM.class.getName());
 
   public final static int JDK1_0 = 1000;
   public final static int JDK1_1 = 1100;
@@ -38,6 +42,8 @@ public class JVM {
   public final static int JDK1_6 = 1600;
   public final static int JDK1_6N = 1610;
   public final static int JDK1_7 = 1700;
+  public final static int JDK1_8 = 1800;
+  public final static int JDK16 = 16000;
 
   private static JVM current;
   static {
@@ -53,6 +59,9 @@ public class JVM {
 
   private int jdkVersion;
 
+  public String toString() {
+	  return "jdkVersion="+jdkVersion + " java.version "+System.getProperty("java.version");
+  }
   /**
    * Creates a new JVM data from the <code>java.version</code>
    * System property
@@ -60,13 +69,18 @@ public class JVM {
    */
   public JVM() {
     this(System.getProperty("java.version"));
+	LOG.info("java.version "+System.getProperty("java.version"));
   }
 
   /**
    * Constructor for the OS object
    */
   public JVM(String p_JavaVersion) {
-    if (p_JavaVersion.startsWith("1.7.")) {
+    if (p_JavaVersion.startsWith("16.")) {
+      jdkVersion = JDK16;
+    } else if (p_JavaVersion.startsWith("1.8.")) {
+        jdkVersion = JDK1_8;
+    } else if (p_JavaVersion.startsWith("1.7.")) {
       jdkVersion = JDK1_7;
     } else if (p_JavaVersion.startsWith("1.6.")) {
       for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
