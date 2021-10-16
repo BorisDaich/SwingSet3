@@ -40,6 +40,30 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <!-- see https://rombertw.wordpress.com/2010/05/14/maven-recipe-building-an-aggregate-jar/ -->
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-assembly-plugin</artifactId>
+		<version>2.2-beta-5</version>
+		<executions>
+			<execution>
+				<id>package-all</id>
+				<phase>package</phase>
+				<goals>
+					<goal>single</goal>
+				</goals>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</execution>
+		</executions>
+	  </plugin>
+    </plugins>
+  </build>
   <profiles>
     <profile>
       <id>jvnet-release</id>
