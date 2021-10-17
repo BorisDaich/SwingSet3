@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jdesktop.test;
 
 import java.util.Arrays;
@@ -15,15 +14,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 /**
  * Extends assert to get all the ease-of-use assert methods
  * @author rbair
+ * @author homebeaver : get rid of deprecated methods
  */
 public final class TestUtils extends Assert {
-    private static final Logger LOG = Logger.getLogger(TestUtils.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(TestUtils.class.getName());
     private TestUtils() {}
     
     public static void assertContainsType(Object[] objects, Class<?> clazz, int count) {
