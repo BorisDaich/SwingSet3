@@ -4,11 +4,25 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.beans.PropertyChangeEvent;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.mockito.ArgumentMatcher;
 
+/**
+ * extends org.hamcrest.BaseMatcher implements org.mockito.ArgumentMatcher
+ * org.hamcrest.BaseMatcher implements org.hamcrest.Matcher
+ *                                     org.hamcrest.Matcher<T> extends SelfDescribing
+ * <p>
+ * abstract {@link BaseMatcher} class ensures that the Matcher API can grow to support
+ * new features and remain compatible with all Matcher implementations.
+ *
+ * @see Matcher
+ * @see ArgumentMatcher
+ */
 @SuppressWarnings("nls")
-class PropertyChangeEventMatcher extends ArgumentMatcher<PropertyChangeEvent> {
+class PropertyChangeEventMatcher extends BaseMatcher<PropertyChangeEvent> implements ArgumentMatcher<Object> {
+	
     private final String propertyName;
     private final Object oldValue;
     private final Object newValue;
@@ -19,6 +33,9 @@ class PropertyChangeEventMatcher extends ArgumentMatcher<PropertyChangeEvent> {
         this.newValue = newValue;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean matches(Object argument) {
         if (argument instanceof PropertyChangeEvent) {
@@ -39,7 +56,7 @@ class PropertyChangeEventMatcher extends ArgumentMatcher<PropertyChangeEvent> {
      */
     @Override
     public void describeTo(Description description) {
-        super.describeTo(description);
         description.appendText(" " + propertyName);
     }
+    
 }

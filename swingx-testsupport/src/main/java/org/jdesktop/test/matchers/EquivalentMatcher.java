@@ -7,15 +7,30 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
-import org.mockito.ArgumentMatcher;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 
-class EquivalentMatcher<T> extends ArgumentMatcher<T> {
+/**
+ * org.hamcrest.BaseMatcher implements org.hamcrest.Matcher
+ *                                     org.hamcrest.Matcher<T> extends SelfDescribing
+ * 
+ * {@link BaseMatcher} abstract class ensures that the Matcher API can grow to support
+ * new features and remain compatible with all Matcher implementations.
+ *
+ * @see Matcher
+ */
+// The type ArgumentMatcher<T> cannot be the superclass of EquivalentMatcher; a superclass must be a class
+// since mockito 2.1.0 ArgumentMatcher is an interface
+class EquivalentMatcher<T> extends BaseMatcher<T> {
     private final T object;
     
     public EquivalentMatcher(T object) {
         this.object = object;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean matches(Object argument) {
         if (equalTo(object).matches(argument)) {
@@ -69,4 +84,12 @@ class EquivalentMatcher<T> extends ArgumentMatcher<T> {
         
         return false;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public void describeTo(Description description) {
+		// TODO Auto-generated method stub	
+	}
 }
