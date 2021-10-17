@@ -21,23 +21,25 @@
  */
 package org.jdesktop.swingx.decorator;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.test.matchers.Matchers.property;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import junit.framework.TestCase;
-
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentMatcher;
+
+import junit.framework.TestCase;
 
 /**
  * Contains tests around Highlighter client api for collection components.
@@ -61,8 +63,7 @@ import org.junit.runners.JUnit4;
 public abstract class AbstractTestHighlighterClient extends TestCase {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(AbstractTestHighlighterClient.class.getName());
+    private static final Logger LOG = Logger.getLogger(AbstractTestHighlighterClient.class.getName());
     
     // ---- HighlighterClient
     
@@ -124,7 +125,12 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
         Highlighter[] old = client.getHighlighters();
         client.setHighlighters(new ColorHighlighter());
         
-        verify(pcl).propertyChange(argThat(is(property("highlighters", old, client.getHighlighters()))));
+        Matcher<PropertyChangeEvent> m = property("highlighters", old, client.getHighlighters());
+        LOG.config("Matcher<PropertyChangeEvent> m:"+m.getClass()+" "+m);
+        // can cast PropertyChangeEventMatcher to org.mockito.ArgumentMatchers:
+        @SuppressWarnings("unchecked")
+		ArgumentMatcher<PropertyChangeEvent> am = (ArgumentMatcher<PropertyChangeEvent>)m;
+        verify(pcl).propertyChange(argThat(am));
     }
 
     /**
@@ -238,7 +244,12 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
         Highlighter[] old = table.getHighlighters();
         table.removeHighlighter(highlighter);
         
-        verify(pcl).propertyChange(argThat(is(property("highlighters", old, table.getHighlighters()))));
+        Matcher<PropertyChangeEvent> m = property("highlighters", old, table.getHighlighters());
+        LOG.config("Matcher<PropertyChangeEvent> m:"+m.getClass()+" "+m);
+        // can cast PropertyChangeEventMatcher to org.mockito.ArgumentMatchers:
+        @SuppressWarnings("unchecked")
+		ArgumentMatcher<PropertyChangeEvent> am = (ArgumentMatcher<PropertyChangeEvent>)m;
+        verify(pcl).propertyChange(argThat(am));
     }
 
     /**
@@ -276,7 +287,12 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
         Highlighter[] old = table.getHighlighters();
         table.addHighlighter(new ColorHighlighter());
         
-        verify(pcl).propertyChange(argThat(is(property("highlighters", old, table.getHighlighters()))));
+        Matcher<PropertyChangeEvent> m = property("highlighters", old, table.getHighlighters());
+        LOG.config("Matcher<PropertyChangeEvent> m:"+m.getClass()+" "+m);
+        // can cast PropertyChangeEventMatcher to org.mockito.ArgumentMatchers:
+        @SuppressWarnings("unchecked")
+		ArgumentMatcher<PropertyChangeEvent> am = (ArgumentMatcher<PropertyChangeEvent>)m;
+        verify(pcl).propertyChange(argThat(am));
     }
 
     /**

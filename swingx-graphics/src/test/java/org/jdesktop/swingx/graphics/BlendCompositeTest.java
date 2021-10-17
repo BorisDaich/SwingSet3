@@ -1,12 +1,11 @@
 package org.jdesktop.swingx.graphics;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.jdesktop.swingx.util.GraphicsUtilities.createCompatibleImage;
 import static org.jdesktop.swingx.util.GraphicsUtilities.getPixels;
 import static org.jdesktop.swingx.util.GraphicsUtilities.loadCompatibleImage;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 import java.awt.AlphaComposite;
@@ -16,6 +15,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DirectColorModel;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -38,11 +38,11 @@ public class BlendCompositeTest {
         VERTICAL_IMAGE = loadCompatibleImage(BlendCompositeTest.class.getResourceAsStream("vertical.gif"));
         HORIZONTAL_IMAGE = loadCompatibleImage(BlendCompositeTest.class.getResourceAsStream("horizontal.gif"));
         
-        assertThat(VERTICAL_IMAGE.getWidth(), is(HORIZONTAL_IMAGE.getWidth()));
-        assertThat(VERTICAL_IMAGE.getHeight(), is(HORIZONTAL_IMAGE.getHeight()));
+        assertThat(VERTICAL_IMAGE.getWidth(), CoreMatchers.is(HORIZONTAL_IMAGE.getWidth()));
+        assertThat(VERTICAL_IMAGE.getHeight(), CoreMatchers.is(HORIZONTAL_IMAGE.getHeight()));
         
-        assumeThat(VERTICAL_IMAGE.getColorModel(), is(instanceOf(DirectColorModel.class)));
-        assumeThat(HORIZONTAL_IMAGE.getColorModel(), is(instanceOf(DirectColorModel.class)));
+        assumeThat(VERTICAL_IMAGE.getColorModel(), CoreMatchers.is(instanceOf(DirectColorModel.class)));
+        assumeThat(HORIZONTAL_IMAGE.getColorModel(), CoreMatchers.is(instanceOf(DirectColorModel.class)));
     }
     
     private BufferedImage actual;

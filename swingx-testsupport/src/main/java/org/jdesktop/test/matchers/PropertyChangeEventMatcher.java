@@ -1,15 +1,13 @@
 package org.jdesktop.test.matchers;
 
-import static org.hamcrest.CoreMatchers.is;
-
 import java.beans.PropertyChangeEvent;
 
 import org.hamcrest.BaseMatcher;
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.mockito.ArgumentMatcher;
 
-/**
+/*
  * extends org.hamcrest.BaseMatcher implements org.mockito.ArgumentMatcher
  * org.hamcrest.BaseMatcher implements org.hamcrest.Matcher
  *                                     org.hamcrest.Matcher<T> extends SelfDescribing
@@ -42,8 +40,8 @@ class PropertyChangeEventMatcher extends BaseMatcher<PropertyChangeEvent> implem
             PropertyChangeEvent pce = (PropertyChangeEvent) argument;
             
             boolean result = propertyName.equals(pce.getPropertyName());
-            result &= oldValue == null || pce.getOldValue() == null || is(oldValue).matches(pce.getOldValue()); 
-            result &= newValue == null || pce.getNewValue() == null || is(newValue).matches(pce.getNewValue());
+            result &= oldValue == null || pce.getOldValue() == null || CoreMatchers.is(oldValue).matches(pce.getOldValue()); 
+            result &= newValue == null || pce.getNewValue() == null || CoreMatchers.is(newValue).matches(pce.getNewValue());
             
             return result;
         }

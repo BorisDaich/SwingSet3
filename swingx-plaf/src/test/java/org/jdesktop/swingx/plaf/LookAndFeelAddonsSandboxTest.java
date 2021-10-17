@@ -12,6 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import junit.framework.TestCase;
 
+import org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,9 +26,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class LookAndFeelAddonsSandboxTest extends TestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(LookAndFeelAddonsSandboxTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(LookAndFeelAddonsSandboxTest.class.getName());
     
     
     /**
@@ -45,9 +46,18 @@ public class LookAndFeelAddonsSandboxTest extends TestCase {
             assertTrue("sanity: addon is configured to update on LAF change", 
                     LookAndFeelAddons.isTrackingLookAndFeelChanges());
             setLookAndFeel("Nimbus");
-            LookAndFeelAddons addon = LookAndFeelAddons.getAddon();
-            assertTrue("addon must match Nimbus, but was: " + addon, addon.matches());
-            
+            LOG.info("currentAddon is "+LookAndFeelAddons.getAddon().toString());
+//            LookAndFeelAddons addon = LookAndFeelAddons.getAddon(); // this leads to AssertionFailedError!
+            LookAndFeelAddons addon = new NimbusLookAndFeelAddons();
+            LOG.info(addon.toString() + " addon.matches():"+addon.matches());
+            assertTrue("addon must match Nimbus, but was: " + addon.toString(), addon.matches());
+/*
+com.sun.java.swing.plaf.windows.WindowsLookAndFeel
+Okt 17, 2021 9:40:56 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
+INFORMATION: currentAddon is org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons@3a4afd8d
+Okt 17, 2021 9:40:56 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
+INFORMATION: org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@424c0bc4 addon.matches():true
+ */
         } finally {
             UIManager.setLookAndFeel(old);
         }

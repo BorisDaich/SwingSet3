@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,8 +19,7 @@
  */
 package org.jdesktop.beans;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -30,6 +27,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -40,6 +38,7 @@ import org.mockito.ArgumentCaptor;
  */
 @SuppressWarnings("nls")
 public class AbstractBeanTest {
+	
     protected static class CloneableBean extends AbstractBean implements Cloneable {
         public void setProperty(String property) {
             firePropertyChange("property", null, property);
@@ -70,13 +69,13 @@ public class AbstractBeanTest {
         
         ArgumentCaptor<PropertyChangeEvent> captor = ArgumentCaptor.forClass(PropertyChangeEvent.class);
         verify(pcl).propertyChange(captor.capture());
-        assertThat(bean, is(captor.getValue().getSource()));
-        assertThat("property", is(captor.getValue().getPropertyName()));
+        assertThat(bean, CoreMatchers.is(captor.getValue().getSource()));
+        assertThat("property", CoreMatchers.is(captor.getValue().getPropertyName()));
         
         CloneableBean clone = bean.clone();
         clone.setProperty("other");
         
-        assertThat(0, is(clone.getPropertyChangeListeners().length));
+        assertThat(0, CoreMatchers.is(clone.getPropertyChangeListeners().length));
         verifyNoMoreInteractions(pcl);
     }
 }

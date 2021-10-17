@@ -10,7 +10,7 @@ import java.beans.PropertyDescriptor;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-/**
+/*
  * org.hamcrest.BaseMatcher implements org.hamcrest.Matcher
  *                                     org.hamcrest.Matcher<T> extends SelfDescribing
  * 
@@ -19,8 +19,6 @@ import org.hamcrest.Description;
  *
  * @see Matcher
  */
-// The type ArgumentMatcher<T> cannot be the superclass of EquivalentMatcher; a superclass must be a class
-// since mockito 2.1.0 ArgumentMatcher is an interface
 class EquivalentMatcher<T> extends BaseMatcher<T> {
     private final T object;
     

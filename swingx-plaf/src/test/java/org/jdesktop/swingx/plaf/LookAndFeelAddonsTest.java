@@ -1,15 +1,12 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
 package org.jdesktop.swingx.plaf;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -27,6 +24,7 @@ import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
@@ -93,14 +91,14 @@ public class LookAndFeelAddonsTest {
         //overwrite null painter
         LookAndFeelAddons.installBackgroundPainter(panel, "test.painter");
         
-        assertThat(panel.getBackgroundPainter(), is(sameInstance(plafPainter)));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(sameInstance(plafPainter)));
         
         panel.setBackgroundPainter(new PainterUIResource(null));
         
         //overwrite uiresource painter
         LookAndFeelAddons.installBackgroundPainter(panel, "test.painter");
         
-        assertThat(panel.getBackgroundPainter(), is(sameInstance(plafPainter)));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(sameInstance(plafPainter)));
         
         Painter userPainter = new MattePainter();
         panel.setBackgroundPainter(userPainter);
@@ -108,7 +106,7 @@ public class LookAndFeelAddonsTest {
         //do not overwrite user painter
         LookAndFeelAddons.installBackgroundPainter(panel, "test.painter");
         
-        assertThat(panel.getBackgroundPainter(), is(sameInstance(userPainter)));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(sameInstance(userPainter)));
     }
 
    /**
@@ -128,38 +126,47 @@ public class LookAndFeelAddonsTest {
         new BackgroundPainterTestingComponent();
 
     }
+    
   /**
    * A look and feel can't override SwingX defaults
    */
     @Test
   public void testIssue293() throws Exception {
-	  class CustomLF extends BasicLookAndFeel {
-	    @Override
-	    public String getDescription() {
-	      return "custom";
-	    }
-		  @Override
-		  public String getID() {
-		    return "custom";
-		  }
-		  @Override
-		  public String getName() {
-		    return "custom";
-		  }
-		  @Override
-		  public boolean isNativeLookAndFeel() {
-		    return false;
-		  }
-		  @Override
-		  public boolean isSupportedLookAndFeel() {
-		    return true;
-		  }
-      @Override
-      protected void initComponentDefaults(UIDefaults table) {
-        super.initComponentDefaults(table);
-        table.put("CustomProperty", "CustomValue");
-      }
-	  };
+    	
+		@SuppressWarnings("serial")
+		class CustomLF extends BasicLookAndFeel {
+			@Override
+			public String getDescription() {
+				return "custom";
+			}
+
+			@Override
+			public String getID() {
+				return "custom";
+			}
+
+			@Override
+			public String getName() {
+				return "custom";
+			}
+
+			@Override
+			public boolean isNativeLookAndFeel() {
+				return false;
+			}
+
+			@Override
+			public boolean isSupportedLookAndFeel() {
+				return true;
+			}
+
+			@Override
+			protected void initComponentDefaults(UIDefaults table) {
+				super.initComponentDefaults(table);
+				table.put("CustomProperty", "CustomValue");
+			}
+		}
+		;
     
     LookAndFeelAddons.setTrackingLookAndFeelChanges(true);
     
@@ -241,11 +248,11 @@ public class LookAndFeelAddonsTest {
         LookAndFeelAddons.contribute(new Addon());
     	
         Color panelBackground = UIManager.getColor("Panel.background");
-    	assertThat(UIManager.getColor("Addon.panelBackground"), is(panelBackground));
+    	assertThat(UIManager.getColor("Addon.panelBackground"), CoreMatchers.is(panelBackground));
     	
     	UIManager.put("Panel.background", new ColorUIResource(panelBackground.darker()));
     	
-    	assertThat(UIManager.getColor("Addon.panelBackground"), is(panelBackground));
+    	assertThat(UIManager.getColor("Addon.panelBackground"), CoreMatchers.is(panelBackground));
     }
 }
 
@@ -282,6 +289,7 @@ class Addon extends AbstractComponentAddon {
     }
 }
 
+@SuppressWarnings("serial")
 class BackgroundPainterTestingComponent extends JComponent {
     static {
         LookAndFeelAddons.contribute(new Addon());

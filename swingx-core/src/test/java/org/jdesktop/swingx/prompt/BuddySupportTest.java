@@ -9,7 +9,7 @@ import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.jdesktop.swingx.plaf.BuddyLayoutAndBorder;
 import org.jdesktop.swingx.plaf.BuddyTextFieldUI;

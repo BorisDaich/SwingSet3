@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,19 +20,21 @@
 package org.jdesktop.swingx;
 
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.jdesktop.test.matchers.Matchers.property;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
+import org.hamcrest.Matcher;
 import org.jdesktop.test.EDTRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 
 /**
  * Unit test for <code>JXCollapsiblePane</code>.
@@ -61,6 +61,9 @@ public class JXCollapsiblePaneTest {
         
         // this fails if we animate because the property change
         // will enqueue on the EDT after this check
-        verify(pcl).propertyChange(argThat(is(property("collapsed", false, true))));
+        Matcher<PropertyChangeEvent> m = property("collapsed", false, true);
+        @SuppressWarnings("unchecked")
+		ArgumentMatcher<PropertyChangeEvent> am = (ArgumentMatcher<PropertyChangeEvent>)m;
+        verify(pcl).propertyChange(argThat(am));
     }
  }

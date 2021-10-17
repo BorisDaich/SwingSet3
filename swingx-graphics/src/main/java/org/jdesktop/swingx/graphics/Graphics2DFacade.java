@@ -449,6 +449,7 @@ public abstract class Graphics2DFacade extends Graphics2D {
     }
 
     @Override
+    @Deprecated
     public Rectangle getClipRect() {
         return delegate.getClipRect();
     }
