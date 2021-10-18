@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,12 +18,12 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Insets;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.effects.AreaEffect;
 import org.junit.Test;
 
@@ -46,36 +44,36 @@ public class ImagePainterTest extends AbstractAreaPainterTest {
     @Test
     @Override
     public void testDefaults() {
-        assertThat(p.getFilters().length, is(0));
-        assertThat(p.getInterpolation(), is(AbstractPainter.Interpolation.NearestNeighbor));
-        assertThat(p.isAntialiasing(), is(true));
-        assertThat(p.isCacheable(), is(true));
-        assertThat(p.isCacheCleared(), is(true));
-        assertThat(p.isDirty(), is(false));
-        assertThat(p.isInPaintContext(), is(false));
-        assertThat(p.isVisible(), is(true));
-        assertThat(p.shouldUseCache(), is(p.isCacheable()));
+        assertThat(p.getFilters().length, CoreMatchers.is(0));
+        assertThat(p.getInterpolation(), CoreMatchers.is(AbstractPainter.Interpolation.NearestNeighbor));
+        assertThat(p.isAntialiasing(), CoreMatchers.is(true));
+        assertThat(p.isCacheable(), CoreMatchers.is(true));
+        assertThat(p.isCacheCleared(), CoreMatchers.is(true));
+        assertThat(p.isDirty(), CoreMatchers.is(false));
+        assertThat(p.isInPaintContext(), CoreMatchers.is(false));
+        assertThat(p.isVisible(), CoreMatchers.is(true));
+        assertThat(p.shouldUseCache(), CoreMatchers.is(p.isCacheable()));
         
         AbstractLayoutPainter alp = (AbstractLayoutPainter) p;
-        assertThat(alp.getHorizontalAlignment(), is(AbstractLayoutPainter.HorizontalAlignment.CENTER));
-        assertThat(alp.getInsets(), is(new Insets(0, 0, 0, 0)));
-        assertThat(alp.getVerticalAlignment(), is(AbstractLayoutPainter.VerticalAlignment.CENTER));
-        assertThat(alp.isFillHorizontal(), is(false));
-        assertThat(alp.isFillVertical(), is(false));
+        assertThat(alp.getHorizontalAlignment(), CoreMatchers.is(AbstractLayoutPainter.HorizontalAlignment.CENTER));
+        assertThat(alp.getInsets(), CoreMatchers.is(new Insets(0, 0, 0, 0)));
+        assertThat(alp.getVerticalAlignment(), CoreMatchers.is(AbstractLayoutPainter.VerticalAlignment.CENTER));
+        assertThat(alp.isFillHorizontal(), CoreMatchers.is(false));
+        assertThat(alp.isFillVertical(), CoreMatchers.is(false));
         
         AbstractAreaPainter aap = (AbstractAreaPainter) p;
-        assertThat(aap.getAreaEffects(), is(new AreaEffect[0]));
-        assertThat(aap.getBorderPaint(), is(nullValue()));
-        assertThat(aap.getBorderWidth(), is(0f));
-        assertThat(aap.getFillPaint(), is(nullValue()));
-        assertThat(aap.getStyle(), is(AbstractAreaPainter.Style.BOTH));
+        assertThat(aap.getAreaEffects(), CoreMatchers.is(new AreaEffect[0]));
+        assertThat(aap.getBorderPaint(), CoreMatchers.is(nullValue()));
+        assertThat(aap.getBorderWidth(), CoreMatchers.is(0f));
+        assertThat(aap.getFillPaint(), CoreMatchers.is(nullValue()));
+        assertThat(aap.getStyle(), CoreMatchers.is(AbstractAreaPainter.Style.BOTH));
         
         ImagePainter ip = (ImagePainter) p;
-        assertThat(ip.getImage(), is(nullValue()));
-        assertThat(ip.getImageScale(), is(1d));
-        assertThat(ip.getScaleType(), is(ImagePainter.ScaleType.InsideFit));
-        assertThat(ip.isHorizontalRepeat(), is(false));
-        assertThat(ip.isScaleToFit(), is(false));
-        assertThat(ip.isVerticalRepeat(), is(false));
+        assertThat(ip.getImage(), CoreMatchers.is(nullValue()));
+        assertThat(ip.getImageScale(), CoreMatchers.is(1d));
+        assertThat(ip.getScaleType(), CoreMatchers.is(ImagePainter.ScaleType.InsideFit));
+        assertThat(ip.isHorizontalRepeat(), CoreMatchers.is(false));
+        assertThat(ip.isScaleToFit(), CoreMatchers.is(false));
+        assertThat(ip.isVerticalRepeat(), CoreMatchers.is(false));
     }
 }

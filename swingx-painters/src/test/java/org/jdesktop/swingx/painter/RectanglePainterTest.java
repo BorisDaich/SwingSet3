@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,8 +18,7 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Insets;
@@ -47,33 +44,33 @@ public class RectanglePainterTest extends AbstractAreaPainterTest {
     @Test
     @Override
     public void testDefaults() {
-        assertThat(p.getFilters().length, is(0));
-        assertThat(p.getInterpolation(), is(AbstractPainter.Interpolation.NearestNeighbor));
-        assertThat(p.isAntialiasing(), is(true));
-        assertThat(p.isCacheable(), is(false));
-        assertThat(p.isCacheCleared(), is(true));
-        assertThat(p.isDirty(), is(false));
-        assertThat(p.isInPaintContext(), is(false));
-        assertThat(p.isVisible(), is(true));
-        assertThat(p.shouldUseCache(), is(p.isCacheable()));
+        assertThat(p.getFilters().length, CoreMatchers.is(0));
+        assertThat(p.getInterpolation(), CoreMatchers.is(AbstractPainter.Interpolation.NearestNeighbor));
+        assertThat(p.isAntialiasing(), CoreMatchers.is(true));
+        assertThat(p.isCacheable(), CoreMatchers.is(false));
+        assertThat(p.isCacheCleared(), CoreMatchers.is(true));
+        assertThat(p.isDirty(), CoreMatchers.is(false));
+        assertThat(p.isInPaintContext(), CoreMatchers.is(false));
+        assertThat(p.isVisible(), CoreMatchers.is(true));
+        assertThat(p.shouldUseCache(), CoreMatchers.is(p.isCacheable()));
         
         AbstractLayoutPainter alp = (AbstractLayoutPainter) p;
-        assertThat(alp.getHorizontalAlignment(), is(AbstractLayoutPainter.HorizontalAlignment.CENTER));
-        assertThat(alp.getInsets(), is(new Insets(0, 0, 0, 0)));
-        assertThat(alp.getVerticalAlignment(), is(AbstractLayoutPainter.VerticalAlignment.CENTER));
-        assertThat(alp.isFillHorizontal(), is(true));
-        assertThat(alp.isFillVertical(), is(true));
+        assertThat(alp.getHorizontalAlignment(), CoreMatchers.is(AbstractLayoutPainter.HorizontalAlignment.CENTER));
+        assertThat(alp.getInsets(), CoreMatchers.is(new Insets(0, 0, 0, 0)));
+        assertThat(alp.getVerticalAlignment(), CoreMatchers.is(AbstractLayoutPainter.VerticalAlignment.CENTER));
+        assertThat(alp.isFillHorizontal(), CoreMatchers.is(true));
+        assertThat(alp.isFillVertical(), CoreMatchers.is(true));
         
         AbstractAreaPainter aap = (AbstractAreaPainter) p;
-        assertThat(aap.getAreaEffects(), is(new AreaEffect[0]));
+        assertThat(aap.getAreaEffects(), CoreMatchers.is(new AreaEffect[0]));
         assertThat(aap.getBorderPaint(), CoreMatchers.<Paint>is(Color.BLACK));
-        assertThat(aap.getBorderWidth(), is(1f));
+        assertThat(aap.getBorderWidth(), CoreMatchers.is(1f));
         assertThat(aap.getFillPaint(), CoreMatchers.<Paint>is(Color.RED));
-        assertThat(aap.getStyle(), is(AbstractAreaPainter.Style.BOTH));
+        assertThat(aap.getStyle(), CoreMatchers.is(AbstractAreaPainter.Style.BOTH));
         
         RectanglePainter rp = (RectanglePainter) p;
-        assertThat(rp.getRoundHeight(), is(0));
-        assertThat(rp.getRoundWidth(), is(0));
-        assertThat(rp.isRounded(), is(false));
+        assertThat(rp.getRoundHeight(), CoreMatchers.is(0));
+        assertThat(rp.getRoundWidth(), CoreMatchers.is(0));
+        assertThat(rp.isRounded(), CoreMatchers.is(false));
     }
 }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,10 +18,9 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -43,6 +40,7 @@ import org.mockito.ArgumentCaptor;
  */
 @SuppressWarnings({"nls", "unchecked", "rawtypes"})
 public class CompoundPainterTest extends AbstractPainterTest {
+	
     /**
      * {@inheritDoc}
      */
@@ -55,16 +53,16 @@ public class CompoundPainterTest extends AbstractPainterTest {
      * TODO remove when the compound painter does not start dirty 
      */
     private void copyOfSuper_testDefaultsWithCorrectedValues() {
-        assertThat(p.getFilters().length, is(0));
-        assertThat(p.getInterpolation(), is(AbstractPainter.Interpolation.NearestNeighbor));
-        assertThat(p.isAntialiasing(), is(true));
-        assertThat(p.isCacheable(), is(false));
-        assertThat(p.isCacheCleared(), is(true));
+        assertThat(p.getFilters().length, CoreMatchers.is(0));
+        assertThat(p.getInterpolation(), CoreMatchers.is(AbstractPainter.Interpolation.NearestNeighbor));
+        assertThat(p.isAntialiasing(), CoreMatchers.is(true));
+        assertThat(p.isCacheable(), CoreMatchers.is(false));
+        assertThat(p.isCacheCleared(), CoreMatchers.is(true));
         //TODO why does CompoundPainter start dirty?
-        assertThat(p.isDirty(), is(true));
-        assertThat(p.isInPaintContext(), is(false));
-        assertThat(p.isVisible(), is(true));
-        assertThat(p.shouldUseCache(), is(false));
+        assertThat(p.isDirty(), CoreMatchers.is(true));
+        assertThat(p.isInPaintContext(), CoreMatchers.is(false));
+        assertThat(p.isVisible(), CoreMatchers.is(true));
+        assertThat(p.shouldUseCache(), CoreMatchers.is(false));
     }
     
     /**
@@ -80,10 +78,10 @@ public class CompoundPainterTest extends AbstractPainterTest {
 //        super.testDefaults();
         
         CompoundPainter cp = (CompoundPainter) p;
-        assertThat(cp.getPainters(), is(new Painter[0]));
-        assertThat(cp.getTransform(), is(nullValue()));
-        assertThat(cp.isCheckingDirtyChildPainters(), is(true));
-        assertThat(cp.isClipPreserved(), is(false));
+        assertThat(cp.getPainters(), CoreMatchers.is(new Painter[0]));
+        assertThat(cp.getTransform(), CoreMatchers.is(nullValue()));
+        assertThat(cp.isCheckingDirtyChildPainters(), CoreMatchers.is(true));
+        assertThat(cp.isClipPreserved(), CoreMatchers.is(false));
     }
 
     /**
@@ -115,7 +113,7 @@ public class CompoundPainterTest extends AbstractPainterTest {
     public void testSetttingOnePainterDoesNotEnableCache() {
         ((CompoundPainter) p).setPainters(mock(Painter.class));
         
-        assertThat(p.shouldUseCache(), is(false));
+        assertThat(p.shouldUseCache(), CoreMatchers.is(false));
     }
     
     @Test
@@ -123,7 +121,7 @@ public class CompoundPainterTest extends AbstractPainterTest {
     public void testSettingMoreThanOnePainterEnablesCache() {
         ((CompoundPainter) p).setPainters(mock(Painter.class), mock(Painter.class));
         
-        assertThat(p.shouldUseCache(), is(true));
+        assertThat(p.shouldUseCache(), CoreMatchers.is(true));
     }
     
     /**
@@ -134,25 +132,25 @@ public class CompoundPainterTest extends AbstractPainterTest {
         AbstractPainter<Object> child = spy(new DummyPainter());
         ((CompoundPainter<?>) p).setPainters(child);
         
-        assertThat(p.isDirty(), is(true));
+        assertThat(p.isDirty(), CoreMatchers.is(true));
         verify(child, never()).setDirty(true);
         
         p.paint(g, null, 10, 10);
         
-        assertThat(p.isDirty(), is(false));
+        assertThat(p.isDirty(), CoreMatchers.is(false));
         
         PropertyChangeListener pcl = mock(PropertyChangeListener.class);
         p.addPropertyChangeListener(pcl);
         
         child.setDirty(true);
         
-        assertThat(p.isDirty(), is(true));
+        assertThat(p.isDirty(), CoreMatchers.is(true));
         
         ArgumentCaptor<PropertyChangeEvent> captor = ArgumentCaptor.forClass(PropertyChangeEvent.class);
         verify(pcl).propertyChange(captor.capture());
         
         assertThat(captor.getValue().getSource(), CoreMatchers.<Object>is(sameInstance(p)));
-        assertThat(captor.getValue().getPropertyName(), is("dirty"));
-        assertThat(captor.getAllValues().size(), is(1));
+        assertThat(captor.getValue().getPropertyName(), CoreMatchers.is("dirty"));
+        assertThat(captor.getAllValues().size(), CoreMatchers.is(1));
     }
 }

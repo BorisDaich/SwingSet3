@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,8 +18,7 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Paint;
@@ -46,16 +43,16 @@ public class GlossPainterTest extends AbstractPainterTest {
      * TODO remove when the compound painter does not start dirty 
      */
     private void copyOfSuper_testDefaultsWithCorrectedValues() {
-        assertThat(p.getFilters().length, is(0));
-        assertThat(p.getInterpolation(), is(AbstractPainter.Interpolation.NearestNeighbor));
-        assertThat(p.isAntialiasing(), is(true));
-        assertThat(p.isCacheable(), is(false));
-        assertThat(p.isCacheCleared(), is(true));
+        assertThat(p.getFilters().length, CoreMatchers.is(0));
+        assertThat(p.getInterpolation(), CoreMatchers.is(AbstractPainter.Interpolation.NearestNeighbor));
+        assertThat(p.isAntialiasing(), CoreMatchers.is(true));
+        assertThat(p.isCacheable(), CoreMatchers.is(false));
+        assertThat(p.isCacheCleared(), CoreMatchers.is(true));
         //TODO this is because the constructor calls the setters
-        assertThat(p.isDirty(), is(true));
-        assertThat(p.isInPaintContext(), is(false));
-        assertThat(p.isVisible(), is(true));
-        assertThat(p.shouldUseCache(), is(false));
+        assertThat(p.isDirty(), CoreMatchers.is(true));
+        assertThat(p.isInPaintContext(), CoreMatchers.is(false));
+        assertThat(p.isVisible(), CoreMatchers.is(true));
+        assertThat(p.shouldUseCache(), CoreMatchers.is(false));
     }
     
     /**
@@ -72,6 +69,6 @@ public class GlossPainterTest extends AbstractPainterTest {
         
         GlossPainter gp = (GlossPainter) p;
         assertThat(gp.getPaint(), CoreMatchers.<Paint>is(new Color(1f, 1f, 1f, .2f)));
-        assertThat(gp.getPosition(), is(GlossPainter.GlossPosition.TOP));
+        assertThat(gp.getPosition(), CoreMatchers.is(GlossPainter.GlossPosition.TOP));
     }
 }

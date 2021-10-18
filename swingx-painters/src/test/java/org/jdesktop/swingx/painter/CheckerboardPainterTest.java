@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,8 +18,7 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Paint;
@@ -50,6 +47,6 @@ public class CheckerboardPainterTest extends AbstractPainterTest {
         CheckerboardPainter cp = (CheckerboardPainter) p;
         assertThat(cp.getDarkPaint(), CoreMatchers.<Paint>is(new Color(204, 204, 204)));
         assertThat(cp.getLightPaint(), CoreMatchers.<Paint>is(Color.WHITE));
-        assertThat(cp.getSquareSize(), is(8d));
+        assertThat(cp.getSquareSize(), CoreMatchers.is(8d));
     }
 }
