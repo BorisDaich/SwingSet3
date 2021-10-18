@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,11 +18,11 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 
@@ -46,14 +44,14 @@ public class BusyPainterTest extends AbstractPainterTest {
         super.testDefaults();
         
         BusyPainter bp = (BusyPainter) p;
-        assertThat(bp.getBaseColor(), is(Color.LIGHT_GRAY));
-        assertThat(bp.getDirection(), is(BusyPainter.Direction.RIGHT));
-        assertThat(bp.getFrame(), is(-1));
-        assertThat(bp.getHighlightColor(), is(Color.BLACK));
-        assertThat(bp.getPoints(), is(8));
-        assertThat(bp.getPointShape(), is(BusyPainter.getScaledDefaultPoint(26)));
-        assertThat(bp.getTrailLength(), is(4));
-        assertThat(bp.getTrajectory(), is(BusyPainter.getScaledDefaultTrajectory(26)));
-        assertThat(bp.isPaintCentered(), is(false));
+        assertThat(bp.getBaseColor(), CoreMatchers.is(Color.LIGHT_GRAY));
+        assertThat(bp.getDirection(), CoreMatchers.is(BusyPainter.Direction.RIGHT));
+        assertThat(bp.getFrame(), CoreMatchers.is(-1));
+        assertThat(bp.getHighlightColor(), CoreMatchers.is(Color.BLACK));
+        assertThat(bp.getPoints(), CoreMatchers.is(8));
+        assertThat(bp.getPointShape(), CoreMatchers.is(BusyPainter.getScaledDefaultPoint(26)));
+        assertThat(bp.getTrailLength(), CoreMatchers.is(4));
+        assertThat(bp.getTrajectory(), CoreMatchers.is(BusyPainter.getScaledDefaultTrajectory(26)));
+        assertThat(bp.isPaintCentered(), CoreMatchers.is(false));
     }
 }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,7 +38,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.Painter;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -49,8 +47,6 @@ import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.util.PaintUtils;
-
-import com.sun.java.swing.Painter;
 
 /**
  * Contains methods to visually test JXPanel.
@@ -139,7 +135,9 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
         JXFrame frame = wrapInFrame(container,
                 "opaque with alpha " + System.getProperty("java.version") + " "
                         + UIManager.get("JXPanel.patch"));
-        Action action = new AbstractAction("toggle opaque (is on)") {
+        
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggle opaque (is on)") {
             boolean realOpaque = true;
 
             @Override
@@ -230,7 +228,8 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
         panel.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
         JXFrame frame = wrapInFrame(panel, "background");
 
-        Action opaque = new AbstractAction("toggle opaque (is: true)") {
+        @SuppressWarnings("serial")
+		Action opaque = new AbstractAction("toggle opaque (is: true)") {
             boolean isOpaque = true;
 
             @Override
@@ -243,7 +242,8 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
         };
         addAction(frame, opaque);
 
-        Action containerAlpha = new AbstractAction("toggle container alpha") {
+        @SuppressWarnings("serial")
+		Action containerAlpha = new AbstractAction("toggle container alpha") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -252,7 +252,9 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
             }
         };
         addAction(frame, containerAlpha);
-        Action backgroundAlpha = new AbstractAction("toggle background alpha") {
+        
+        @SuppressWarnings("serial")
+		Action backgroundAlpha = new AbstractAction("toggle background alpha") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -288,7 +290,9 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
         final MattePainter painter = new MattePainter(Color.RED);
         panel.setBackgroundPainter(painter);
         JXFrame frame = wrapInFrame(panel, "background");
-        Action toggleColor = new AbstractAction("toggle background") {
+        
+        @SuppressWarnings("serial")
+		Action toggleColor = new AbstractAction("toggle background") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -311,10 +315,10 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
     public void interactiveScrolling() {
         final JXPanel panel = new JXPanel(new BorderLayout());
         panel.add(createScrollableContent(20));
-        JXFrame frame = wrapWithScrollingInFrame(panel,
-                "scrollbar must be showing");
-        Action toggleHeightTrack = new AbstractActionExt("track height: "
-                + panel.getScrollableHeightHint()) {
+        JXFrame frame = wrapWithScrollingInFrame(panel, "scrollbar must be showing");
+        
+        @SuppressWarnings("serial")
+		Action toggleHeightTrack = new AbstractActionExt("track height: " + panel.getScrollableHeightHint()) {
 
             ScrollableSizeHint[] tracks = new ScrollableSizeHint[] {
                     ScrollableSizeHint.FIT, ScrollableSizeHint.NONE,
