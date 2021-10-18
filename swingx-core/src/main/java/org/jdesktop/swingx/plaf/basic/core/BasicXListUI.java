@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.CellRendererPane;
@@ -72,10 +71,6 @@ import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.LookAndFeelUtils;
 import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
-
-//import sun.swing.DefaultLookup;
-//import sun.swing.SwingUtilities2;
-//import sun.swing.UIAction;
 
 /**
  * An extensible implementation of {@code ListUI} for JXList.
@@ -134,7 +129,6 @@ import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
  * call access the model directly or - if they insist - convert the row index to 
  * account for sorting/filtering! That's the whole point of this class.
  * 
- * @version 1.127 12/02/08
  * @author Hans Muller
  * @author Philip Milne
  * @author Shannon Hickey (drag and drop)
@@ -3116,10 +3110,9 @@ public class BasicXListUI  extends BasicListUI
         protected Transferable createTransferable(JComponent c) {
             if (c instanceof JList) {
                 JList list = (JList) c;
-                Object[] values = list.getSelectedValues();
-
-                if (values == null || values.length == 0) {
-                    return null;
+                List<Object> selValues = list.getSelectedValuesList();
+                if(selValues.isEmpty()) {
+                	return null;
                 }
                 
                 StringBuffer plainBuf = new StringBuffer();
@@ -3127,8 +3120,8 @@ public class BasicXListUI  extends BasicListUI
                 
                 htmlBuf.append("<html>\n<body>\n<ul>\n");
 
-                for (int i = 0; i < values.length; i++) {
-                    Object obj = values[i];
+                for (int i = 0; i < selValues.size(); i++) {
+                    Object obj = selValues.get(i);
                     String val = ((obj == null) ? "" : obj.toString());
                     plainBuf.append(val + "\n");
                     htmlBuf.append("  <li>" + val + "\n");
