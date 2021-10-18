@@ -12,17 +12,20 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
+#    continue-on-error: ${{ matrix.experimental }}
+#    strategy:
+#      matrix:
+#        java: [ 8, 11, 16 ]
+#        experimental: [false]
+#        include:
+#          - java: 17-ea
+#            experimental: true        
     strategy:
       matrix:
-        java: [ 8, 11, 16 ]
-        experimental: [false]
-        include:
-          - java: 17-ea
-            experimental: true        
+        java: [ 8 ]
         
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
     - uses: actions/cache@v2
       with:
         path: ~/.m2/repository
@@ -35,4 +38,4 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java }}
     - name: Build with Maven
-      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress
+      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress compile
