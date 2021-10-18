@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,9 +18,9 @@
  */
 package org.jdesktop.swingx.plaf;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 /**
@@ -32,6 +30,7 @@ import org.junit.Test;
  */
 @SuppressWarnings("nls")
 public class DefaultsListTest {
+	
     /**
      * Ensure that "adding" a key with a {@code null} value removes the value
      * from the list.
@@ -42,11 +41,11 @@ public class DefaultsListTest {
         kvList.add("a", "b");
         
         Object[] arr = kvList.toArray();
-        assertThat(arr.length, is(2));
-        assertThat((String) arr[0], is("a"));
-        assertThat((String) arr[1], is("b"));
+        assertThat(arr.length, CoreMatchers.is(2));
+        assertThat((String) arr[0], CoreMatchers.is("a"));
+        assertThat((String) arr[1], CoreMatchers.is("b"));
         
         kvList.add("a", null);
-        assertThat(kvList.toArray().length, is(0));
+        assertThat(kvList.toArray().length, CoreMatchers.is(0));
     }
 }

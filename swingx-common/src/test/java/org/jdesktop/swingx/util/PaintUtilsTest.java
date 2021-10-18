@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,11 +18,11 @@
  */
 package org.jdesktop.swingx.util;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 /**
@@ -35,39 +33,38 @@ import org.junit.Test;
 public class PaintUtilsTest {
     @Test
     public void testToHexString() {
-        assertThat(PaintUtils.toHexString(Color.BLACK), is("#000000"));
-        assertThat(PaintUtils.toHexString(Color.WHITE), is("#ffffff"));
+        assertThat(PaintUtils.toHexString(Color.BLACK), CoreMatchers.is("#000000"));
+        assertThat(PaintUtils.toHexString(Color.WHITE), CoreMatchers.is("#ffffff"));
     }
     
     @Test
     public void testToHexStringWithTransparentColors() {
-        assertThat(PaintUtils.toHexString(PaintUtils.setAlpha(Color.BLACK, 0)), is("#000000"));
-        assertThat(PaintUtils.toHexString(PaintUtils.setAlpha(Color.WHITE, 0)), is("#ffffff"));
+        assertThat(PaintUtils.toHexString(PaintUtils.setAlpha(Color.BLACK, 0)), CoreMatchers.is("#000000"));
+        assertThat(PaintUtils.toHexString(PaintUtils.setAlpha(Color.WHITE, 0)), CoreMatchers.is("#ffffff"));
     }
     
     @Test
     public void testBlendWith255() {
-        assertThat(PaintUtils.blend(Color.BLACK, Color.WHITE), is(Color.WHITE));
+        assertThat(PaintUtils.blend(Color.BLACK, Color.WHITE), CoreMatchers.is(Color.WHITE));
     }
     
     @Test
     public void testBlendWithFiftyPercent() {
-        assertThat(PaintUtils.blend(Color.BLACK, PaintUtils.setAlpha(Color.WHITE, 255 >> 1)),
-                is(new Color(255 >> 1, 255 >> 1, 255 >> 1)));
+        assertThat(PaintUtils.blend(Color.BLACK, PaintUtils.setAlpha(Color.WHITE, 255 >> 1)), CoreMatchers.is(new Color(255 >> 1, 255 >> 1, 255 >> 1)));
     }
     
     @Test
     public void testBlendWithZero() {
-        assertThat(PaintUtils.blend(Color.BLACK, PaintUtils.setAlpha(Color.WHITE, 0)), is(Color.BLACK));
+        assertThat(PaintUtils.blend(Color.BLACK, PaintUtils.setAlpha(Color.WHITE, 0)), CoreMatchers.is(Color.BLACK));
     }
     
     @Test
     public void testBlendWithNullSrc() {
-        assertThat(PaintUtils.blend(null, Color.WHITE), is(Color.WHITE));
+        assertThat(PaintUtils.blend(null, Color.WHITE), CoreMatchers.is(Color.WHITE));
     }
     
     @Test
     public void testBlendWithNullOver() {
-        assertThat(PaintUtils.blend(Color.BLACK, null), is(Color.BLACK));
+        assertThat(PaintUtils.blend(Color.BLACK, null), CoreMatchers.is(Color.BLACK));
     }
 }
