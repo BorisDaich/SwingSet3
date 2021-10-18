@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,11 +18,11 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Insets;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 
@@ -33,6 +31,7 @@ import org.junit.Test;
  */
 @SuppressWarnings({"rawtypes"})
 public class AbstractLayoutPainterTest extends AbstractPainterTest {
+	
     /**
      * {@inheritDoc}
      */
@@ -47,10 +46,10 @@ public class AbstractLayoutPainterTest extends AbstractPainterTest {
         super.testDefaults();
         
         AbstractLayoutPainter alp = (AbstractLayoutPainter) p;
-        assertThat(alp.getHorizontalAlignment(), is(AbstractLayoutPainter.HorizontalAlignment.CENTER));
-        assertThat(alp.getInsets(), is(new Insets(0, 0, 0, 0)));
-        assertThat(alp.getVerticalAlignment(), is(AbstractLayoutPainter.VerticalAlignment.CENTER));
-        assertThat(alp.isFillHorizontal(), is(false));
-        assertThat(alp.isFillVertical(), is(false));
+        assertThat(alp.getHorizontalAlignment(), CoreMatchers.is(AbstractLayoutPainter.HorizontalAlignment.CENTER));
+        assertThat(alp.getInsets(), CoreMatchers.is(new Insets(0, 0, 0, 0)));
+        assertThat(alp.getVerticalAlignment(), CoreMatchers.is(AbstractLayoutPainter.VerticalAlignment.CENTER));
+        assertThat(alp.isFillHorizontal(), CoreMatchers.is(false));
+        assertThat(alp.isFillVertical(), CoreMatchers.is(false));
     }
 }

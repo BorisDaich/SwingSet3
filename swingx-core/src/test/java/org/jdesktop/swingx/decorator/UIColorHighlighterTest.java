@@ -42,6 +42,8 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(UIColorHighlighterTest.class.getName());
     
+    private static String OS = System.getProperty("os.name");
+    
     private static final String ALTERNATE_COLOR = "Table.alternateRowColor";
 
     
@@ -101,9 +103,14 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
         LOG.info("UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
         assertNotNull("Nimbus without addon has alternate color ", UIManager.getColor(ALTERNATE_COLOR));
         new JXTable();
-        LOG.info("new JXTable(); UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
-/* is not Null!:
+        LOG.info(OS + ": new JXTable(); UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
+/* is not Null on Windows!:
 INFORMATION: new JXTable(); UIManager.getColor(Table.alternateRowColor):DerivedColor(color=242,242,242 parent=nimbusLightBackground offsets=0.0,0.0,-0.05098039,0 pColor=255,255,255
+
+Linux:
+Oct 18, 2021 11:21:59 AM org.jdesktop.swingx.decorator.UIColorHighlighterTest testAlternateXTable
+INFO: new JXTable(); UIManager.getColor(Table.alternateRowColor):null
+
  */
 //        assertNull("Nimbus with addon has alternate removed but was: \n " 
 //                + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
