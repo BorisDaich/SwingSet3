@@ -38,4 +38,5 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java }}
     - name: Build with Maven
-      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress compile
+#      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress compile
+      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress install
