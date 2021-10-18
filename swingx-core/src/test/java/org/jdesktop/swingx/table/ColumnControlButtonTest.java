@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -44,16 +42,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static org.junit.Assert.*;
-
 
 /**
  * @author Jeanette Winzenburg
  */
 @RunWith(JUnit4.class)
 public class ColumnControlButtonTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger
-            .getLogger(ColumnControlButtonTest.class.getName());
+	
+    private static final Logger LOG = Logger.getLogger(ColumnControlButtonTest.class.getName());
     
     protected TableModel sortableTableModel;
     
@@ -74,7 +70,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     @Test
     public void testAdditonalActionGrouping() {
         JXTable table = new JXTable(10, 4);
-        AbstractActionExt custom = new AbstractActionExt("Custom") {
+        @SuppressWarnings("serial")
+		AbstractActionExt custom = new AbstractActionExt("Custom") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -306,7 +303,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     @Test
     public void testNullVisibilityAction() {
         JXTable table = new JXTable();
-        ColumnControlButton columnControl = new ColumnControlButton(table) {
+        @SuppressWarnings("serial")
+		ColumnControlButton columnControl = new ColumnControlButton(table) {
 
                     @Override
                     protected ColumnVisibilityAction createColumnVisibilityAction(TableColumn column) {
@@ -429,7 +427,8 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
     @Test
     public void testNonStringActionKeys() {
         JXTable table = new JXTable();
-        Action l = new AbstractAction("dummy") {
+        @SuppressWarnings("serial")
+		Action l = new AbstractAction("dummy") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -573,19 +572,19 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
          sortableTableModel = new AncientSwingTeam();
      }
 
-    public static void main(String args[]) {
-       setSystemLF(false);
-      ColumnControlButtonTest test = new ColumnControlButtonTest();
-      try {
-        test.runInteractiveTests();
-      //    test.runInteractiveTests("interactive.*Column.*");
-//          test.runInteractiveTests("interactive.*TableHeader.*");
-      //    test.runInteractiveTests("interactive.*SorterP.*");
-      //    test.runInteractiveTests("interactive.*Column.*");
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-  }
+//    public static void main(String args[]) {
+//       setSystemLF(false);
+//      ColumnControlButtonTest test = new ColumnControlButtonTest();
+//      try {
+//        test.runInteractiveTests();
+//      //    test.runInteractiveTests("interactive.*Column.*");
+////          test.runInteractiveTests("interactive.*TableHeader.*");
+//      //    test.runInteractiveTests("interactive.*SorterP.*");
+//      //    test.runInteractiveTests("interactive.*Column.*");
+//      } catch (Exception e) {
+//          System.err.println("exception when executing interactive tests:");
+//          e.printStackTrace();
+//      }
+//  }
     
 }

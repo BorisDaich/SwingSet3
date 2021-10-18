@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,12 +18,12 @@
  */
 package org.jdesktop.swingx.search;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import javax.swing.UIManager;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.JXFindBar;
 import org.jdesktop.swingx.JXFindPanel;
 import org.jdesktop.test.EDTRunner;
@@ -38,6 +36,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(EDTRunner.class)
 public class SearchFactoryTest {
+	
     @Test
     public void testUpdateUI() throws Exception {
         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -48,7 +47,8 @@ public class SearchFactoryTest {
             /**
              * {@inheritDoc}
              */
-            @Override
+            @SuppressWarnings("serial")
+			@Override
             public JXFindBar createFindBar() {
                 return new JXFindBar() {
                     /**
@@ -65,7 +65,8 @@ public class SearchFactoryTest {
             /**
              * {@inheritDoc}
              */
-            @Override
+            @SuppressWarnings("serial")
+			@Override
             public JXFindPanel createFindPanel() {
                 return new JXFindPanel() {
                     /**
@@ -85,9 +86,9 @@ public class SearchFactoryTest {
         
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         
-        assertThat(bar, is(sameInstance(SearchFactory.getInstance().getSharedFindBar())));
-        assertThat(updated[0], is(true));
-        assertThat(panel, is(sameInstance(SearchFactory.getInstance().getSharedFindPanel())));
-        assertThat(updated[1], is(true));
+        assertThat(bar, CoreMatchers.is(sameInstance(SearchFactory.getInstance().getSharedFindBar())));
+        assertThat(updated[0], CoreMatchers.is(true));
+        assertThat(panel, CoreMatchers.is(sameInstance(SearchFactory.getInstance().getSharedFindPanel())));
+        assertThat(updated[1], CoreMatchers.is(true));
     }
 }

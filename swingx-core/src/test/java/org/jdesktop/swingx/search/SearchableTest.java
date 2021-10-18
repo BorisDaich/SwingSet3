@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,11 +19,7 @@
  */
 package org.jdesktop.swingx.search;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
-
-import junit.framework.TestCase;
 
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JXTable;
@@ -38,6 +32,8 @@ import org.jdesktop.swingx.search.FindTest.TestTableModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import junit.framework.TestCase;
 
 /**
  * Contains unit tests for Searchable implementations.

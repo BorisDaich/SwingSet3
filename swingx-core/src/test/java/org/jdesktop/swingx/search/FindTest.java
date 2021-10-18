@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx.search;
 
 import java.awt.Color;
@@ -16,7 +13,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.swing.AbstractListModel;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -46,8 +42,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class FindTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger
-            .getLogger(FindTest.class.getName());
+	
+    private static final Logger LOG = Logger.getLogger(FindTest.class.getName());
+    
     public static void main(String args[]) {
       setSystemLF(true);
 //      Locale.setDefault(new Locale("es"));
@@ -761,10 +758,10 @@ public class FindTest extends InteractiveTestCase {
     }
 
     
-    public static class TestTableModel extends AbstractTableModel {
+    @SuppressWarnings("serial")
+	public static class TestTableModel extends AbstractTableModel {
 
-        public static String[] data = { "One", "Two", "Three",
-                                         "Four", "Five" };
+        public static String[] data = { "One", "Two", "Three", "Four", "Five" };
 
         public int getRowCount() { return 100; }
         public int getColumnCount() { return data.length; }
@@ -785,7 +782,8 @@ public class FindTest extends InteractiveTestCase {
         }
     }
 
-    public static class TestListModel extends AbstractListModel {
+    @SuppressWarnings({ "serial", "rawtypes" })
+	public static class TestListModel extends AbstractListModel {
 
         public int getSize() {
             return 100;
@@ -797,10 +795,12 @@ public class FindTest extends InteractiveTestCase {
         }
         
     }
+    
     /**
      * A small class that implements the Searchable interface.
      */
-    public static class TestSearchable extends JLabel implements Searchable {
+    @SuppressWarnings("serial")
+	public static class TestSearchable extends JLabel implements Searchable {
 
         private boolean succeed;
 

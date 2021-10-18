@@ -281,7 +281,8 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @param frame
      */
     public void addComponentOrientationToggle(final JXFrame frame) {
-        Action toggleComponentOrientation = new AbstractAction("toggle orientation") {
+        @SuppressWarnings("serial")
+		Action toggleComponentOrientation = new AbstractAction("toggle orientation") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -318,7 +319,8 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @param frame
      */
     public void addSearchModeToggle(final JXFrame frame) {
-        Action action = new AbstractAction("toggle batch/incremental"){
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggle batch/incremental"){
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean useFindBar = !SearchFactory.getInstance().isUseFindBar(null, null);
@@ -336,7 +338,8 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @param target
      */
     public void addEnabledToggle(JXFrame frame, final JComponent target) {
-        Action action = new AbstractAction("toggle enabled") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggle enabled") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -354,7 +357,8 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @param target
      */
     public void addEnabledToggleWithChildren(JXFrame frame, final JComponent target) {
-        Action action = new AbstractAction("toggle enabled (with children)") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggle enabled (with children)") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -548,7 +552,8 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * Action to toggle plaf and update all toplevel windows of the
      * current application. Used to setup the plaf-menu.
      */
-    private static class SetPlafAction extends AbstractAction {
+    @SuppressWarnings("serial")
+	private static class SetPlafAction extends AbstractAction {
         private String plaf;
         private Window toplevel;
         

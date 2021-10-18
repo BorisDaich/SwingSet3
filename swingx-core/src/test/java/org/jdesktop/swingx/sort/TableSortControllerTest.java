@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,8 +18,6 @@
  *
  */
 package org.jdesktop.swingx.sort;
-
-import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -134,7 +130,8 @@ public class TableSortControllerTest extends
      */
     @Test
     public void testComparableComparatorTable() {
-        TableModel model = new DefaultTableModel(2, 1) {
+        @SuppressWarnings("serial")
+		TableModel model = new DefaultTableModel(2, 1) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {

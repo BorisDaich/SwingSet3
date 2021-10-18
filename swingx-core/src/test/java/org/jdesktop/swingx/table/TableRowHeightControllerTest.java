@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -80,7 +78,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
         table.setAutoCreateRowSorter(true);
         new TableRowHeightController().install(table);
         JXFrame frame = wrapWithScrollingInFrame(table, "core: row heights");
-        Action toggleBig = new AbstractAction("toggleSize") {
+        @SuppressWarnings("serial")
+		Action toggleBig = new AbstractAction("toggleSize") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,7 +90,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
             }
         };
         addAction(frame, toggleBig);
-        Action toggleModel = new AbstractAction("toggleModel") {
+        @SuppressWarnings("serial")
+		Action toggleModel = new AbstractAction("toggleModel") {
             boolean evenBig;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,7 +109,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
         new TableRowHeightController().install(table);
         table.packAll();
         JXFrame frame = wrapWithScrollingInFrame(table, "x: row heights");
-        Action toggleBig = new AbstractAction("toggleSize") {
+        @SuppressWarnings("serial")
+		Action toggleBig = new AbstractAction("toggleSize") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -120,7 +121,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
             }
         };
         addAction(frame, toggleBig);
-        Action toggleModel = new AbstractAction("toggleModel") {
+        @SuppressWarnings("serial")
+		Action toggleModel = new AbstractAction("toggleModel") {
             boolean evenBig;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,7 +141,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
         DefaultTableModel model = createTableModel(false);
         JTable table = new JTable(model);
         final Font derivedFont = table.getFont().deriveFont(50f);
-        TableCellRenderer renderer = new DefaultTableCellRenderer() {
+        @SuppressWarnings("serial")
+		TableCellRenderer renderer = new DefaultTableCellRenderer() {
 
             @Override
             public Component getTableCellRendererComponent(JTable table,
@@ -192,7 +195,8 @@ public class TableRowHeightControllerTest extends InteractiveTestCase {
      */
     private DefaultTableModel createTableModel(boolean evenBig) {
         int compare = evenBig ? 0 : 1;
-        DefaultTableModel model = new DefaultTableModel(10, 2) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(10, 2) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {

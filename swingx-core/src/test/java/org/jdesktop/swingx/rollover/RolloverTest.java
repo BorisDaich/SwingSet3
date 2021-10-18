@@ -24,10 +24,10 @@ import org.junit.runners.JUnit4;
 public class RolloverTest extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(RolloverTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(RolloverTest.class.getName());
     
-    private TableModel sortableTableModel;
+    @SuppressWarnings("unused")
+	private TableModel sortableTableModel;
 //    private Highlighter backgroundHighlighter;
 //    private Highlighter foregroundHighlighter;
 //    private ListModel listModel;

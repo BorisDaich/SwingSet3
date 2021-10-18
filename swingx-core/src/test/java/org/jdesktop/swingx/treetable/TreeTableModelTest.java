@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,8 +38,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class TreeTableModelTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(TreeTableModelTest.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(TreeTableModelTest.class.getName());
+    
     /**
      * Issue #??-swingx: FileSystemModel throws NPE in getChildCount.
      *
@@ -135,7 +134,8 @@ public class TreeTableModelTest extends InteractiveTestCase {
         tree.setSelectionInterval(1, 1);
         tree.setLargeModel(true);
         JXFrame frame = wrapWithScrollingInFrame(tree, "remove and large");
-        Action remove = new AbstractAction("remove selected") {
+        @SuppressWarnings("serial")
+		Action remove = new AbstractAction("remove selected") {
 
             public void actionPerformed(ActionEvent e) {
                 model.clear();

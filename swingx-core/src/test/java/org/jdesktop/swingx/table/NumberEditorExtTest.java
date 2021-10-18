@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -48,17 +46,15 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.text.NumberFormatter;
 
 import org.jdesktop.swingx.InteractiveTestCase;
-import org.jdesktop.swingx.text.StrictNumberFormatter;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTable.NumberEditor;
+import org.jdesktop.swingx.text.StrictNumberFormatter;
 import org.jdesktop.test.CellEditorReport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.junit.Assert.*;
 
 /**
  * TODO add type doc
@@ -402,7 +398,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         addStatusMessage(frame, "edit number column, press escape, verify editingCanceled");
         final CellEditorReport report = new CellEditorReport();
         table.getDefaultEditor(Number.class).addCellEditorListener(report);
-        Action verify = new AbstractAction("verify cancelled") {
+        @SuppressWarnings("serial")
+		Action verify = new AbstractAction("verify cancelled") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -427,7 +424,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         addStatusMessage(frame, "edit number column, press escape, verify editingCanceled");
         final CellEditorReport report = new CellEditorReport();
         table.getDefaultEditor(Number.class).addCellEditorListener(report);
-        Action verify = new AbstractAction("verify cancelled") {
+        @SuppressWarnings("serial")
+		Action verify = new AbstractAction("verify cancelled") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -455,8 +453,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         StrictNumberFormatter formatter = new StrictNumberFormatter(NumberFormat.getIntegerInstance());
         formatter.setMaximum(Integer.MAX_VALUE);
         formatter.setMinimum(Integer.MIN_VALUE);
-        final JFormattedTextField field = new JFormattedTextField(
-                formatter) {
+        @SuppressWarnings("serial")
+		final JFormattedTextField field = new JFormattedTextField(formatter) {
 
                     @Override
                     protected void invalidEdit() {
@@ -507,7 +505,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     }
 
     public void interactiveNumberInputVerifier() {
-        final JFormattedTextField field = new JFormattedTextField(NumberFormat.getIntegerInstance()) {
+        @SuppressWarnings("serial")
+		final JFormattedTextField field = new JFormattedTextField(NumberFormat.getIntegerInstance()) {
 
             @Override
             protected void invalidEdit() {
@@ -551,7 +550,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         @SuppressWarnings("unused")
         final Class<?>[] classes = new Class[] {Byte.class, Short.class, Integer.class,
                 Float.class, Double.class, BigInteger.class, BigDecimal.class, Number.class};
-        DefaultTableModel model = new DefaultTableModel(new String[] {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(new String[] {
                 "Byte", "Short", "Integer", "Float", "Double", "BigInteger", 
                 "BigDecimal", "Number"}, 10) {
             
@@ -593,7 +593,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     public void interactiveNonStrictNumberEditorAllTypes() {
         final Class<?>[] classes = new Class[] {Byte.class, Short.class, Integer.class,
                 Float.class, Double.class, BigInteger.class, BigDecimal.class, Number.class};
-        DefaultTableModel model = new DefaultTableModel(new String[] {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(new String[] {
                 "Byte", "Short", "Integer", "Float", "Double", "BigInteger", 
                 "BigDecimal", "Number"}, 10) {
             
@@ -636,7 +637,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     public void interactiveStrictNumberEditorAllTypes() {
         final Class<?>[] classes = new Class[] {Byte.class, Short.class, Integer.class,
                 Float.class, Double.class, BigInteger.class, BigDecimal.class, Number.class};
-        DefaultTableModel model = new DefaultTableModel(new String[] {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(new String[] {
                 "Byte", "Short", "Integer", "Float", "Double", "BigInteger", 
                 "BigDecimal", "Number"}, 10) {
             
@@ -677,7 +679,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     public void interactiveNumberEditor() {
         final int doubleColumns = 3;
         final int integerColumns = 6;
-        DefaultTableModel model = new DefaultTableModel(new String[] {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(new String[] {
                 "Double-core", "Double-extstrict", "Double-extnonstrict", 
                 "Integer-core", "Integer-extstrict", "Integer-extnonstrict",
         "Object" }, 10) {
@@ -718,7 +721,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     public void interactiveFloatingPointEditor() {
         final int doubleColumns = 3;
         final int integerColumns = 6;
-        DefaultTableModel model = new DefaultTableModel(new String[] {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(new String[] {
                 "Double-core", "Double-extstrict", "Double-extnonstrict", 
                 "Integer-core", "Integer-extstrict", "Integer-extnonstrict",
                 "Object" }, 10) {
@@ -764,7 +768,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     public void interactiveFloatingPointEditorDigits(){
         final int doubleColumns = 3;
-        DefaultTableModel model = new DefaultTableModel(
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(
                 new String[] {"Double-defaultstrict", "Double-customMaxDigits-nonstrict", 
                          "Double-customMaxDigitsstrict"}, 10) {
 
@@ -821,7 +826,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
     @Before
     @Override
     public void setUp() throws Exception {
-        DefaultTableModel model = new DefaultTableModel(5, COLUMN_COUNT) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(5, COLUMN_COUNT) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -79,7 +77,7 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
      */
     @Test
     public void testListRemoveSelected() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel(new Object[]{1, 2, 3, 4});
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<Object>(new Object[]{1, 2, 3, 4});
         JXList list = new JXList(model, true);
         int l = list.getElementCount() - 1;
         // select that last row
@@ -443,7 +441,8 @@ public class DefaultSortControllerTest extends InteractiveTestCase {
      * @return
      */
     private DefaultTableModel createAscendingTableModel(int rows) {
-        DefaultTableModel model = new DefaultTableModel(rows, 1) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(rows, 1) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
