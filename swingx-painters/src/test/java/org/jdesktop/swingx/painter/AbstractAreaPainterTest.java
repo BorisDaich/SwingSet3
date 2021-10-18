@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,9 +18,8 @@
  */
 package org.jdesktop.swingx.painter;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Paint;
@@ -51,10 +48,10 @@ public class AbstractAreaPainterTest extends AbstractLayoutPainterTest {
         super.testDefaults();
         
         AbstractAreaPainter aap = (AbstractAreaPainter) p;
-        assertThat(aap.getAreaEffects(), is(new AreaEffect[0]));
-        assertThat(aap.getBorderPaint(), is(nullValue()));
-        assertThat(aap.getBorderWidth(), is(0f));
+        assertThat(aap.getAreaEffects(), CoreMatchers.is(new AreaEffect[0]));
+        assertThat(aap.getBorderPaint(), CoreMatchers.is(nullValue()));
+        assertThat(aap.getBorderWidth(), CoreMatchers.is(0f));
         assertThat(aap.getFillPaint(), CoreMatchers.<Paint>is(Color.RED));
-        assertThat(aap.getStyle(), is(AbstractAreaPainter.Style.BOTH));
+        assertThat(aap.getStyle(), CoreMatchers.is(AbstractAreaPainter.Style.BOTH));
     }
 }

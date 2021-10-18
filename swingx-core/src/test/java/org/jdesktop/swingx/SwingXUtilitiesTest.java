@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,10 +19,9 @@
  */
 package org.jdesktop.swingx;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -63,7 +60,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.Matchers;
 
 
 /**
@@ -209,12 +205,12 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
     
     @Test
     public void testInvokeLater() {
-        assertThat(SwingUtilities.isEventDispatchThread(), is(false));
+        assertThat(SwingUtilities.isEventDispatchThread(), CoreMatchers.is(false));
         
         Callable<Void> callable = new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                assertThat(SwingUtilities.isEventDispatchThread(), is(true));
+                assertThat(SwingUtilities.isEventDispatchThread(), CoreMatchers.is(true));
                 
                 //wait a long time
                 Thread.sleep(1000);
@@ -225,17 +221,17 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
         
         long start = System.currentTimeMillis();
         FutureTask<Void> task = SwingXUtilities.invokeLater(callable);
-        assertThat((System.currentTimeMillis() - start) < 100, is(true));
+        assertThat((System.currentTimeMillis() - start) < 100, CoreMatchers.is(true));
     }
     
     @Test
     public void testInvokeAndWait() throws Exception {
-        assertThat(SwingUtilities.isEventDispatchThread(), is(false));
+        assertThat(SwingUtilities.isEventDispatchThread(), CoreMatchers.is(false));
         
         Callable<Boolean> callable = new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                assertThat(SwingUtilities.isEventDispatchThread(), is(true));
+                assertThat(SwingUtilities.isEventDispatchThread(), CoreMatchers.is(true));
                 
                 //wait a long time
                 Thread.sleep(1000);
@@ -245,8 +241,8 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
         };
         
         long start = System.currentTimeMillis();
-        assertThat(SwingXUtilities.invokeAndWait(callable), is(true));
-        assertThat((System.currentTimeMillis() - start) > 1000, is(true));
+        assertThat(SwingXUtilities.invokeAndWait(callable), CoreMatchers.is(true));
+        assertThat((System.currentTimeMillis() - start) > 1000, CoreMatchers.is(true));
     }
     
     @RunWith(EDTRunner.class)
@@ -267,36 +263,36 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
         
         @Test
         public void testNullClass() {
-            assertThat(SwingXUtilities.getAncestor(null, source), is(nullValue()));
+            assertThat(SwingXUtilities.getAncestor(null, source), CoreMatchers.is(nullValue()));
         }
         
         @Test
         public void testNullSource() {
-            assertThat(SwingXUtilities.getAncestor(JPanel.class, null), is(nullValue()));
+            assertThat(SwingXUtilities.getAncestor(JPanel.class, null), CoreMatchers.is(nullValue()));
         }
         
         @Test
         public void testFindAncestorClass() {
-            assertThat(SwingXUtilities.getAncestor(JXTaskPane.class, source), is(not(nullValue())));
+            assertThat(SwingXUtilities.getAncestor(JXTaskPane.class, source), CoreMatchers.is(not(nullValue())));
         }
         
         @Test
         public void testFindAncestorInterface() {
             assertThat(SwingXUtilities.getAncestor(
                     CollapsiblePaneContainer.class, source),
-                    is(not(nullValue())));
+            		CoreMatchers.is(not(nullValue())));
         }
         
         @Test
         public void testFindMissingAncestorClass() {
             assertThat(SwingXUtilities.getAncestor(JComboBox.class, source),
-                    is(nullValue()));
+            		CoreMatchers.is(nullValue()));
         }
         
         @Test
         public void testFindMissingAncestorInterface() {
             assertThat(SwingXUtilities.getAncestor(PropertyChangeListener.class, source),
-                    is(nullValue()));
+            		CoreMatchers.is(nullValue()));
         }
     }
     
