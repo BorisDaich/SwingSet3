@@ -1,16 +1,13 @@
-/**
- * 
- */
 package org.jdesktop.swingx;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.test.EDTRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +43,7 @@ public class VerticalLayoutTest {
         p.setPreferredSize(new Dimension(30, 30));
         panel.add(p);
         
-        assertThat(new Dimension(125, 70), is(panel.getPreferredSize()));
+        assertThat(new Dimension(125, 70), CoreMatchers.is(panel.getPreferredSize()));
     }
     /**
      * SwingX Issue #1443: incorrect calculation of preferred size with gaps.
@@ -73,6 +70,6 @@ public class VerticalLayoutTest {
         p.setPreferredSize(new Dimension(30, 30));
         panel.add(p);
         
-        assertThat(new Dimension(125, 80), is(panel.getPreferredSize()));
+        assertThat(new Dimension(125, 80), CoreMatchers.is(panel.getPreferredSize()));
     }
 }

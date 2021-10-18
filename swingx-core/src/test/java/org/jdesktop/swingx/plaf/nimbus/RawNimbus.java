@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -57,8 +55,7 @@ import org.jdesktop.swingx.SwingXUtilities;
 public class RawNimbus {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(RawNimbus.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(RawNimbus.class.getName());
     
     private JComponent createContent() {
         JTabbedPane pane = new JTabbedPane();
@@ -167,7 +164,8 @@ public class RawNimbus {
         throw new UnsupportedLookAndFeelException("no LAF installed with name snippet " + nameSnippet);
     }
 
-    public static class SomeData extends AbstractTableModel {
+    @SuppressWarnings("serial")
+	public static class SomeData extends AbstractTableModel {
         protected final String[] names = { "First Name", "Last Name", "Favorite Color",
                 "No.", "Vegetarian" };
         protected final Object[][] data = {

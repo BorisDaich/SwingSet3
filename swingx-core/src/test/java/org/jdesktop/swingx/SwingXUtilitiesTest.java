@@ -69,9 +69,10 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class SwingXUtilitiesTest extends InteractiveTestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(SwingXUtilitiesTest.class.getName());
+    private static final Logger LOG = Logger.getLogger(SwingXUtilitiesTest.class.getName());
+    
     public static void main(String args[]) {
         setSystemLF(true);
 //        Locale.setDefault(new Locale("es"));
@@ -220,7 +221,8 @@ public class SwingXUtilitiesTest extends InteractiveTestCase {
         };
         
         long start = System.currentTimeMillis();
-        FutureTask<Void> task = SwingXUtilities.invokeLater(callable);
+        @SuppressWarnings("unused")
+		FutureTask<Void> task = SwingXUtilities.invokeLater(callable);
         assertThat((System.currentTimeMillis() - start) < 100, CoreMatchers.is(true));
     }
     

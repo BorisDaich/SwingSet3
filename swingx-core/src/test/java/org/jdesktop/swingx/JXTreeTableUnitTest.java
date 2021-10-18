@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
  * California 95054, U.S.A. All rights reserved.
  * 
@@ -165,7 +163,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Test subclass access to super sortable models, Issue #479-swingx.
      */
-    public static class FakeSortableTreeTable extends JXTreeTable {
+    @SuppressWarnings("serial")
+	public static class FakeSortableTreeTable extends JXTreeTable {
 
         /** 
          * @inherited <p>
@@ -206,7 +205,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Subclass to test model adapter properties.
      */
-    public static class JXTreeTableA extends JXTreeTable {
+    @SuppressWarnings("serial")
+	public static class JXTreeTableA extends JXTreeTable {
         
         public JXTreeTableA() {
             super();
@@ -401,7 +401,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     @Test
     public void testGetStringAtHierarchicalColumn() {
         JXTreeTable table = new JXTreeTableT(AncientSwingTeam.createNamedColorTreeTableModel());
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             @Override
             public String getString(Object value) {
@@ -1009,7 +1010,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testSelectionKeepsEditingWithExpandsFalse() {
-        JXTreeTable treeTable = new JXTreeTable(new FileSystemModel()) {
+        @SuppressWarnings("serial")
+		JXTreeTable treeTable = new JXTreeTable(new FileSystemModel()) {
 
             @Override
             public boolean isCellEditable(int row, int column) {

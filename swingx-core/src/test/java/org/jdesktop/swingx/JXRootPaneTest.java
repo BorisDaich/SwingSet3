@@ -41,8 +41,7 @@ import org.junit.runners.JUnit4;
 public class JXRootPaneTest extends InteractiveTestCase {
  
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXRootPaneTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXRootPaneTest.class.getName());
     
     
     /**
@@ -251,7 +250,8 @@ public class JXRootPaneTest extends InteractiveTestCase {
      * bug: popup still open, cancel action triggered
      */
     public void interactiveDefaultCancelButton() {
-        Action cancel = new AbstractActionExt("cancel") {
+        @SuppressWarnings("serial")
+		Action cancel = new AbstractActionExt("cancel") {
 
             public void actionPerformed(ActionEvent e) {
                 LOG.info("performed: cancel action");
@@ -285,7 +285,8 @@ public class JXRootPaneTest extends InteractiveTestCase {
     public void interactiveTestStatusBar() {
         JXTable table = new JXTable(new DefaultTableModel(10, 3));
         final JXFrame frame = wrapWithScrollingInFrame(table, "Statusbar");
-        Action action = new AbstractAction("toggle StatusBar") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggle StatusBar") {
 
             public void actionPerformed(ActionEvent e) {
                 JXStatusBar bar = frame.getRootPaneExt().getStatusBar();

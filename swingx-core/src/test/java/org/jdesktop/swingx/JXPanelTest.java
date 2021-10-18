@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,11 +19,10 @@
  */
 package org.jdesktop.swingx;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 import java.awt.Color;
@@ -33,8 +30,7 @@ import java.util.logging.Logger;
 
 import javax.swing.plaf.ColorUIResource;
 
-import junit.framework.TestCase;
-
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.PainterUIResource;
@@ -43,6 +39,8 @@ import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import junit.framework.TestCase;
 
 /**
  * Tests JXPanel.
@@ -141,7 +139,7 @@ public class JXPanelTest extends TestCase {
     public void testBackgroundPainterIsNull() {
         Painter<?> painter = new JXPanel().getBackgroundPainter();
         
-        assertThat(painter, is(nullValue()));
+        assertThat(painter, CoreMatchers.is(nullValue()));
     }
     
     /**
@@ -156,7 +154,7 @@ public class JXPanelTest extends TestCase {
         
         panel.setBackground(Color.BLACK);
         
-        assertThat(panel.getBackgroundPainter(), is(nullValue()));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(nullValue()));
     }
     
     /**
@@ -171,7 +169,7 @@ public class JXPanelTest extends TestCase {
         
         panel.setBackground(Color.BLACK);
         
-        assertThat(panel.getBackgroundPainter(), is(notNullValue()));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(notNullValue()));
     }
     
     /**
@@ -188,7 +186,7 @@ public class JXPanelTest extends TestCase {
         
         panel.setBackground(new ColorUIResource(Color.BLACK));
         
-        assertThat(panel.getBackgroundPainter(), is(myResource));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(myResource));
     }
     
     /**
@@ -205,7 +203,7 @@ public class JXPanelTest extends TestCase {
         
         panel.setBackground(new ColorUIResource(Color.BLACK));
         
-        assertThat(panel.getBackgroundPainter(), is(sameInstance(painter)));
+        assertThat(panel.getBackgroundPainter(), CoreMatchers.is(sameInstance(painter)));
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -220,33 +218,33 @@ public class JXPanelTest extends TestCase {
     
     public void testSetAlphaLessThanOneMakesPanelNonOpaque() {
         JXPanel panel = new JXPanel();
-        assumeThat(panel.isOpaque(), is(true));
+        assumeThat(panel.isOpaque(), CoreMatchers.is(true));
         
         panel.setAlpha(.99f);
-        assertThat(panel.isOpaque(), is(false));
+        assertThat(panel.isOpaque(), CoreMatchers.is(false));
     }
     
     public void testRestoreOpacityWhenAlphaSetToOne() {
         JXPanel panel = new JXPanel();
-        assumeThat(panel.isOpaque(), is(true));
+        assumeThat(panel.isOpaque(), CoreMatchers.is(true));
         
         panel.setAlpha(.99f);
         panel.setAlpha(1f);
-        assertThat(panel.isOpaque(), is(true));
+        assertThat(panel.isOpaque(), CoreMatchers.is(true));
         
         panel.setOpaque(false);
         panel.setAlpha(.99f);
         panel.setAlpha(1f);
-        assertThat(panel.isOpaque(), is(false));
+        assertThat(panel.isOpaque(), CoreMatchers.is(false));
     }
     
     @Test
     public void testGetEffectiveAlphaWithoutInherit() {
         JXPanel panel = new JXPanel();
-        assertThat(panel.getEffectiveAlpha(), is(panel.getAlpha()));
+        assertThat(panel.getEffectiveAlpha(), CoreMatchers.is(panel.getAlpha()));
         
         panel.setAlpha(.5f);
-        assertThat(panel.getEffectiveAlpha(), is(panel.getAlpha()));
+        assertThat(panel.getEffectiveAlpha(), CoreMatchers.is(panel.getAlpha()));
     }
     
     @Test
@@ -259,10 +257,10 @@ public class JXPanelTest extends TestCase {
         p2.setInheritAlpha(true);
         
         p1.add(p2);
-        assertThat(p2.getEffectiveAlpha(), is(p1.getAlpha()));
+        assertThat(p2.getEffectiveAlpha(), CoreMatchers.is(p1.getAlpha()));
         
         p1.removeAll();
         p2.add(p1);
-        assertThat(p1.getEffectiveAlpha(), is(p1.getAlpha()));
+        assertThat(p1.getEffectiveAlpha(), CoreMatchers.is(p1.getAlpha()));
     }
 }

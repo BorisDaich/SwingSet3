@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -9,7 +7,6 @@ package org.jdesktop.swingx;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,16 +14,15 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 
-import junit.framework.TestCase;
-
 import org.jdesktop.swingx.icon.EmptyIcon;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 import org.jdesktop.test.PropertyChangeReport;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import junit.framework.TestCase;
 
 
 @RunWith(JUnit4.class)
@@ -134,7 +130,8 @@ public class JXTaskPaneTest extends TestCase {
     @Test
   public void testActions() throws Exception {
     JXTaskPane taskPane = new JXTaskPane();
-    Action action = new AbstractAction() {
+    @SuppressWarnings("serial")
+	Action action = new AbstractAction() {
       public void actionPerformed(java.awt.event.ActionEvent e) {}
     };
     assertEquals(0, taskPane.getContentPane().getComponentCount());

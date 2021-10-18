@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx.decorator;
 
 import java.awt.Color;
@@ -304,7 +301,8 @@ public class HighlighterTest extends InteractiveTestCase {
     /**
      * Test class implementing IconAware.
      */
-    public static class IconAwareTextField extends JTextField implements IconAware {
+    @SuppressWarnings("serial")
+	public static class IconAwareTextField extends JTextField implements IconAware {
         private Icon icon;
         
         @Override

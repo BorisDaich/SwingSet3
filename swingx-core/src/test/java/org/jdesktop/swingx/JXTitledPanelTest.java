@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -165,7 +163,8 @@ public class JXTitledPanelTest extends InteractiveTestCase {
         panel.add(titledPane, BorderLayout.NORTH);
         panel.add(label);
         JXFrame frame = wrapInFrame(panel, "toggle Title");
-        Action toggleCO = new AbstractAction("toggle orientation") {
+        @SuppressWarnings("serial")
+		Action toggleCO = new AbstractAction("toggle orientation") {
 
 
                 public void actionPerformed(ActionEvent e) {
@@ -210,7 +209,8 @@ public class JXTitledPanelTest extends InteractiveTestCase {
         String title = "starting title";
         final JXTitledPanel panel = new JXTitledPanel(title);
         panel.getContentContainer().setLayout(new BoxLayout(panel.getContentContainer(), BoxLayout.Y_AXIS));
-        Action toggleLight = new AbstractAction("toggle lightBackground") {
+        @SuppressWarnings("serial")
+		Action toggleLight = new AbstractAction("toggle lightBackground") {
             public void actionPerformed(ActionEvent e) {
                 LOG.info("JXTitledPanelText must be updated to new api");
 
@@ -222,7 +222,8 @@ public class JXTitledPanelTest extends InteractiveTestCase {
 
         panel.getContentContainer().add(new JButton(toggleLight));
         panel.getContentContainer().setLayout(new BoxLayout(panel.getContentContainer(), BoxLayout.Y_AXIS));
-        Action toggleDark = new AbstractAction("toggle darkbackground") {
+        @SuppressWarnings("serial")
+		Action toggleDark = new AbstractAction("toggle darkbackground") {
             public void actionPerformed(ActionEvent e) {
                 LOG.info("JXTitledPanelText must be updated to new api");
 //                Color oldFont = panel.getTitleDarkBackground();
@@ -233,7 +234,8 @@ public class JXTitledPanelTest extends InteractiveTestCase {
         };
 
         panel.getContentContainer().add(new JButton(toggleDark));
-        Action toggleForeground = new AbstractAction("toggle Foreground") {
+        @SuppressWarnings("serial")
+		Action toggleForeground = new AbstractAction("toggle Foreground") {
             public void actionPerformed(ActionEvent e) {
                 Color oldColor = panel.getTitleForeground();
                 panel.setTitleForeground(oldColor.darker());
@@ -243,7 +245,8 @@ public class JXTitledPanelTest extends InteractiveTestCase {
         };
 
         panel.getContentContainer().add(new JButton(toggleForeground));
-        Action toggleFont = new AbstractAction("toggle Font") {
+        @SuppressWarnings("serial")
+		Action toggleFont = new AbstractAction("toggle Font") {
             public void actionPerformed(ActionEvent e) {
                 Font oldFont = panel.getTitleFont();
                 System.out.println("oldfont size: " + oldFont.getSize());
@@ -254,7 +257,8 @@ public class JXTitledPanelTest extends InteractiveTestCase {
         };
 
         panel.getContentContainer().add(new JButton(toggleFont));
-        Action toggleTitle = new AbstractAction("toggle title") {
+        @SuppressWarnings("serial")
+		Action toggleTitle = new AbstractAction("toggle title") {
             int count = 0;
             public void actionPerformed(ActionEvent e) {
                 panel.setTitle(" * " + count++ + " title");

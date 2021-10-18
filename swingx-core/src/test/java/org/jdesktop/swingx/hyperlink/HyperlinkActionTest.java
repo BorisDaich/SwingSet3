@@ -4,6 +4,11 @@
  */
 package org.jdesktop.swingx.hyperlink;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -13,8 +18,6 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import junit.framework.TestCase;
-
 import org.jdesktop.swingx.hyperlink.HyperlinkAction.URIVisitor;
 import org.jdesktop.test.PropertyChangeReport;
 import org.junit.After;
@@ -23,11 +26,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import static org.mockito.Matchers.any;
+import junit.framework.TestCase;
 
 /**
  *
@@ -37,8 +37,7 @@ import static org.mockito.Matchers.any;
 public class HyperlinkActionTest extends TestCase {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(HyperlinkActionTest.class.getName());
+    private static final Logger LOG = Logger.getLogger(HyperlinkActionTest.class.getName());
 
     private PropertyChangeReport report;
 
@@ -171,8 +170,8 @@ public class HyperlinkActionTest extends TestCase {
     public void testConstructorsAndCustomTargetInstall() {
         final Object target = new Object();
         final boolean visitedIsTrue = true;
-        final AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(
-                target) {
+        @SuppressWarnings("serial")
+		final AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(target) {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -198,8 +197,8 @@ public class HyperlinkActionTest extends TestCase {
     @Test
     public void testConstructors() {
         final Object target = new Object();
-        final AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(
-                target) {
+        @SuppressWarnings("serial")
+		final AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(target) {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -218,8 +217,8 @@ public class HyperlinkActionTest extends TestCase {
      */
     @Test
     public void testLinkAction() {
-        final AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(
-                null) {
+        @SuppressWarnings("serial")
+		final AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
 
             @Override
             public void actionPerformed(final ActionEvent e) {

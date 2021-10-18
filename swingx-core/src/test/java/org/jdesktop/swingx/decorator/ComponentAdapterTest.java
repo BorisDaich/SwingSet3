@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,8 +19,6 @@
  */
 package org.jdesktop.swingx.decorator;
 
-import static org.junit.Assert.*;
-
 import java.awt.Color;
 
 import javax.swing.ListModel;
@@ -30,8 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
-
-import junit.framework.TestCase;
 
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JXTable;
@@ -49,6 +43,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import junit.framework.TestCase;
 
 
 /**
@@ -429,7 +425,8 @@ public class ComponentAdapterTest extends TestCase {
     /**
      * Subclass to access ComponentAdapter.
      */
-    public static class JXTreeT extends JXTree {
+    @SuppressWarnings("serial")
+	public static class JXTreeT extends JXTree {
 
         public JXTreeT(TreeModel model) {
             super(model);
@@ -519,7 +516,8 @@ public class ComponentAdapterTest extends TestCase {
     /**
      * Subclass to access ComponentAdapter.
      */
-    public static class JXListT extends JXList {
+    @SuppressWarnings("serial")
+	public static class JXListT extends JXList {
 
         public JXListT(ListModel model) {
             super(model);
@@ -646,7 +644,8 @@ public class ComponentAdapterTest extends TestCase {
      * Overridden to get access to componentAdapter.
      * 
      */
-    public static class JXTableT extends JXTable {
+    @SuppressWarnings("serial")
+	public static class JXTableT extends JXTable {
 
         public JXTableT(TableModel model) {
             super(model);
@@ -664,7 +663,8 @@ public class ComponentAdapterTest extends TestCase {
      * Overridden to get access to componentAdapter.
      * 
      */
-    public static class JXTreeTableT extends JXTreeTable {
+    @SuppressWarnings("serial")
+	public static class JXTreeTableT extends JXTreeTable {
 
         public JXTreeTableT(TreeTableModel model) {
             super(model);

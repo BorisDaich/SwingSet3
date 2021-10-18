@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -91,7 +89,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
      */
     @Test
     public void testComboInheritsComponentPopup() {
-        JComboBox box = new JComboBox(new Object[] {"some", "other"});
+        JComboBox<Object> box = new JComboBox<Object>(new Object[] {"some", "other"});
         box.setInheritsPopupMenu(true);
         box.setEditable(true);
         JPanel parent = new JPanel();

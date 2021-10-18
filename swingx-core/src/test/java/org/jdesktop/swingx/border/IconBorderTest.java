@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -77,7 +75,8 @@ public class IconBorderTest extends InteractiveTestCase {
         assertNotNull(border.getBorderInsets(comp, null));
     }
     
-    public static class MisbehavingBorder extends  AbstractBorder {
+    @SuppressWarnings("serial")
+	public static class MisbehavingBorder extends  AbstractBorder {
 
         /**
          * 
@@ -170,7 +169,8 @@ public class IconBorderTest extends InteractiveTestCase {
         final JLabel label = new JLabel("...dummy............ with icon border");
         Border lineBorder = BorderFactory.createLineBorder(Color.RED, 2);
         label.setBorder(BorderFactory.createCompoundBorder(lineBorder, border));
-        Action setIcon = new AbstractActionExt("null icon") {
+        @SuppressWarnings("serial")
+		Action setIcon = new AbstractActionExt("null icon") {
             public void actionPerformed(ActionEvent e) {
                 border.setIcon(null);
                 label.repaint();
@@ -178,7 +178,8 @@ public class IconBorderTest extends InteractiveTestCase {
             }
             
         };
-        Action setPadding = new AbstractActionExt("set padding") {
+        @SuppressWarnings("serial")
+		Action setPadding = new AbstractActionExt("set padding") {
 
             public void actionPerformed(ActionEvent e) {
                 border.setPadding(border.getPadding() + 10);
@@ -188,7 +189,8 @@ public class IconBorderTest extends InteractiveTestCase {
             
         };
         final JXFrame frame = wrapInFrame(label, "IconBorder");
-        Action toggleComponentOrientation = new AbstractActionExt("toggle orientation") {
+        @SuppressWarnings("serial")
+		Action toggleComponentOrientation = new AbstractActionExt("toggle orientation") {
             
             public void actionPerformed(ActionEvent e) {
                 ComponentOrientation current = frame.getComponentOrientation();

@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Color;
@@ -100,8 +97,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -290,7 +285,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
                   1, report.getStoppedEventCount());
       }
 
-      protected static DefaultTableModel create1535TableModel() {
+      @SuppressWarnings("serial")
+	protected static DefaultTableModel create1535TableModel() {
           DefaultTableModel model = new DefaultTableModel(10, 2) {
               
               @Override
@@ -715,7 +711,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
      * @return
      */
     private TableModel createModelDefaultColumnClasses(int rows) {
-        DefaultTableModel model = new DefaultTableModel(DEFAULT_COLUMN_NAMES, rows) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(DEFAULT_COLUMN_NAMES, rows) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -1324,7 +1321,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
                 table.getModel(), table.getRowSorter().getModel() );
     }
     
-    public static class JXRTable extends JXTable {
+    @SuppressWarnings("serial")
+	public static class JXRTable extends JXTable {
         @Override
         protected RowSorter<? extends TableModel> createDefaultRowSorter() {
             XTableRowSorter<TableModel> sorter = new XTableRowSorter<TableModel>();
@@ -1704,7 +1702,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testGetString() {
         JXTable table = new JXTable(new AncientSwingTeam());
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             @Override
             public String getString(Object value) {
@@ -1750,7 +1749,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         Timestamp stamp = new Timestamp(date.getTime());
         Time time = new Time(date.getTime());
-        DefaultTableModel model = new DefaultTableModel(1, 5) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(1, 5) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -1827,7 +1827,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testFocusTransferBackwardStopEditingFalse() {
         JXTable table = new JXTable(10, 2);
-        DefaultCellEditor editor = new DefaultCellEditor(new JTextField()){
+        @SuppressWarnings("serial")
+		DefaultCellEditor editor = new DefaultCellEditor(new JTextField()){
 
             @Override
             public boolean stopCellEditing() {
@@ -1857,7 +1858,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testFocusTransferForwardStopEditingFalse() {
         JXTable table = new JXTable(10, 2);
-        DefaultCellEditor editor = new DefaultCellEditor(new JTextField()){
+        @SuppressWarnings("serial")
+		DefaultCellEditor editor = new DefaultCellEditor(new JTextField()){
 
             @Override
             public boolean stopCellEditing() {
@@ -2655,7 +2657,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testNPERendererForInterface() {
-        DefaultTableModel model = new DefaultTableModel(10, 2) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(10, 2) {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -3612,7 +3615,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
      * @return
      */
     protected DefaultTableModel createAscendingModel(int startRow, int count) {
-        DefaultTableModel model = new DefaultTableModel(count, 4) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(count, 4) {
             @Override
             public Class<?> getColumnClass(int column) {
                 return column == 0 ? Integer.class : super.getColumnClass(column);
@@ -3637,9 +3641,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
      *   or last column
      * @return a configured DefaultTableModel.
      */
-    protected DefaultTableModel createAscendingModel(int startRow, final int rowCount, 
-            final int columnCount, boolean fillLast) {
-        DefaultTableModel model = new DefaultTableModel(rowCount, columnCount) {
+    protected DefaultTableModel createAscendingModel(int startRow, final int rowCount, final int columnCount, boolean fillLast) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(rowCount, columnCount) {
             @Override
             public Class<?> getColumnClass(int column) {
                 Object value = rowCount > 0 ? getValueAt(0, column) : null;
@@ -3683,7 +3687,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
     /** 
      *  test TableModel wrapping RowObject.
      */
-    static class RowObjectTableModel extends AbstractTableModel {
+    @SuppressWarnings("serial")
+	static class RowObjectTableModel extends AbstractTableModel {
 
         List<?> data;
 
@@ -3732,7 +3737,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             @Override
             public String getString(Object value) {
@@ -3748,7 +3754,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
     }
     
 
-    public static class DynamicTableModel extends AbstractTableModel {
+    @SuppressWarnings("serial")
+	public static class DynamicTableModel extends AbstractTableModel {
         private Object columnSamples[];
         private Object columnSamples2[];
         public URL linkURL;

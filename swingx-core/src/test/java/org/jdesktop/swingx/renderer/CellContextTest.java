@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -48,8 +46,7 @@ import org.junit.runners.JUnit4;
 public class CellContextTest extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(CellContextTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(CellContextTest.class.getName());
     
     @Test
     public void testNameInContext() {
@@ -71,7 +68,8 @@ public class CellContextTest extends InteractiveTestCase {
     public void testDefaultVisualsUseContextFont() {
         JXTable table = new JXTable();
         final Font font = table.getFont().deriveFont(50f);
-        TableCellContext context = new TableCellContext() {
+        @SuppressWarnings("serial")
+		TableCellContext context = new TableCellContext() {
 
             @Override
             protected Font getFont() {
@@ -94,7 +92,8 @@ public class CellContextTest extends InteractiveTestCase {
     @Test
     public void testFontWithComponent() {
         final JLabel label = new JLabel();
-        CellContext context = new CellContext() {
+        @SuppressWarnings("serial")
+		CellContext context = new CellContext() {
 
             @Override
             public JComponent getComponent() {

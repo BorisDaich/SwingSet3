@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -178,7 +176,8 @@ public class TargetableActionTest extends TestCase {
     public static int tableNum = 0;
 
     public static JComponent createTable() {
-        TableModel dataModel = new AbstractTableModel() {
+        @SuppressWarnings("serial")
+		TableModel dataModel = new AbstractTableModel() {
                 public int getColumnCount() { return 4; }
                 public int getRowCount() { return 4;}
                 public Object getValueAt(int row, int col) { return new Integer(row*col); }
@@ -209,7 +208,8 @@ public class TargetableActionTest extends TestCase {
     /**
      * Simple action which displays a string when invoked.
      */
-    public static class MyAction extends AbstractAction {
+    @SuppressWarnings("serial")
+	public static class MyAction extends AbstractAction {
 
         private String description;
 

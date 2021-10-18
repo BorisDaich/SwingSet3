@@ -7,7 +7,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JTextField;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

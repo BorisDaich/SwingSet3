@@ -74,7 +74,8 @@ public class JXTitledSeparatorTest extends InteractiveTestCase {
     public void interactiveDisabled() {
         final JXTitledSeparator separator = new JXTitledSeparator("visual clue for disabled?... ");
         JXFrame frame = showInFrame(separator, "en/disabled");
-        Action action = new AbstractAction("toggleEnabled") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggleEnabled") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,7 +140,8 @@ public class JXTitledSeparatorTest extends InteractiveTestCase {
         box.add(right);
         
         final JXFrame frame = wrapInFrame(box, "Bidi-compliance");
-        Action action = new AbstractAction("toggleEnabled") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggleEnabled") {
             
             @Override
             public void actionPerformed(ActionEvent e) {

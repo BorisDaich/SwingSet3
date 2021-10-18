@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -54,15 +52,13 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ListRendererTest extends InteractiveTestCase {
 
-    private static final Logger LOG = Logger.getLogger(ListRendererTest.class
-            .getName());
-    
+    private static final Logger LOG = Logger.getLogger(ListRendererTest.class.getName());   
 
     private DefaultListCellRenderer coreListRenderer;
 
     private DefaultListRenderer xListRenderer;
 
-    private JList list;
+    private JList<Object> list;
     
     @Before
     public void setUpJ4() throws Exception {
@@ -76,7 +72,7 @@ public class ListRendererTest extends InteractiveTestCase {
     
     @Override
     protected void setUp() throws Exception {
-        list = new JList(new Object[] {1, 2, 3});
+        list = new JList<Object>(new Object[] {1, 2, 3});
         coreListRenderer = new DefaultListCellRenderer();
         xListRenderer = new DefaultListRenderer();
     }
@@ -103,7 +99,7 @@ public class ListRendererTest extends InteractiveTestCase {
     public void testIcon() {
         Icon icon = XTestUtils.loadDefaultIcon();
         String text = "dummy";
-        JList list = new JList(new Object[] {icon, text});
+        JList<Object> list = new JList<Object>(new Object[] {icon, text});
         coreListRenderer.getListCellRendererComponent(list, icon, 0, false, false);
         JLabel label = (JLabel) xListRenderer.getListCellRendererComponent(null, icon, 0, false, false);
         assertEquals("sanity: core shows icon", icon, coreListRenderer.getIcon());

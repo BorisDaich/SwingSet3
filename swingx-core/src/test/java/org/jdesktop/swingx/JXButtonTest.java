@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,16 +20,16 @@
 package org.jdesktop.swingx;
 
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.test.EDTRunner;
 import org.junit.Before;
@@ -54,7 +52,7 @@ public class JXButtonTest {
     
     @Before
     public void setUp() {
-        assumeThat(GraphicsEnvironment.isHeadless(), is(false));
+        assumeThat(GraphicsEnvironment.isHeadless(), CoreMatchers.is(false));
         button = new JXButton();
     }
     
@@ -63,8 +61,8 @@ public class JXButtonTest {
      */
     @Test
     public void testDefaultIsNoPainters() {
-    	assertThat(button.getForegroundPainter(), is(nullValue()));
-    	assertThat(button.getBackgroundPainter(), is(nullValue()));
+    	assertThat(button.getForegroundPainter(), CoreMatchers.is(nullValue()));
+    	assertThat(button.getBackgroundPainter(), CoreMatchers.is(nullValue()));
     }
     
     /**
@@ -73,12 +71,12 @@ public class JXButtonTest {
     @Test
     public void ensureFontIsMaintainedAfterBackgroundSet() {
         Font font = Font.decode("Arial-BOLDITALIC-14");
-        assumeThat(button.getFont(), is(not(font)));
+        assumeThat(button.getFont(), CoreMatchers.is(not(font)));
         
         button.setFont(font);
         button.setBackground(Color.RED);
         
-        assertThat(button.getFont(), is(font));
+        assertThat(button.getFont(), CoreMatchers.is(font));
     }
     
     /**
@@ -87,11 +85,11 @@ public class JXButtonTest {
     @Test
     public void ensureFontIsMaintainedAfterBackgroundPainterSet() {
         Font font = Font.decode("Arial-BOLDITALIC-14");
-        assumeThat(button.getFont(), is(not(font)));
+        assumeThat(button.getFont(), CoreMatchers.is(not(font)));
         
         button.setFont(font);
         button.setBackgroundPainter(new MattePainter(Color.RED));
         
-        assertThat(button.getFont(), is(font));
+        assertThat(button.getFont(), CoreMatchers.is(font));
     }
 }

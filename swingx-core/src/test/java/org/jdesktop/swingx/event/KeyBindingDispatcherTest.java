@@ -34,6 +34,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class KeyBindingDispatcherTest extends InteractiveTestCase {
     
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(KeyBindingDispatcherTest.class.getName());
     
     public static void main(String[] args) {
         KeyBindingDispatcherTest test = new KeyBindingDispatcherTest();
@@ -46,7 +48,8 @@ public class KeyBindingDispatcherTest extends InteractiveTestCase {
     
     public void interactiveGlobalBinding() {
         final JComponent content = new JPanel();
-        Action showOptionPaneAction = new AbstractAction("showOption") {
+        @SuppressWarnings("serial")
+		Action showOptionPaneAction = new AbstractAction("showOption") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,13 +58,14 @@ public class KeyBindingDispatcherTest extends InteractiveTestCase {
         };
         content.add(new JButton(showOptionPaneAction));
         content.add(new JTextField(30));
-        JComboBox combo = new JComboBox(new Object[]{"one", "otherlongish"});
+        JComboBox<Object> combo = new JComboBox<Object>(new Object[]{"one", "otherlongish"});
         combo.setEditable(true);
         content.add(combo);
         content.add(new JXDatePicker(new Date()));
         
         KeyBindingDispatcher d = new KeyBindingDispatcher();
-        Action help = new AbstractAction("help") {
+        @SuppressWarnings("serial")
+		Action help = new AbstractAction("help") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,7 +76,8 @@ public class KeyBindingDispatcherTest extends InteractiveTestCase {
         KeyStroke helpStroke = KeyStroke.getKeyStroke("F1");
         d.bind(helpStroke, help);
         
-        Action sink = new AbstractAction("catchA") {
+        @SuppressWarnings("serial")
+		Action sink = new AbstractAction("catchA") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,7 +127,8 @@ public class KeyBindingDispatcherTest extends InteractiveTestCase {
     
     @Test
     public void testBindKeyStrokeActionAutoKeyUnique() {
-        Action dummy = new AbstractAction() {
+        @SuppressWarnings("serial")
+		Action dummy = new AbstractAction() {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,7 +161,4 @@ public class KeyBindingDispatcherTest extends InteractiveTestCase {
         };
     }
     
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(KeyBindingDispatcherTest.class.getName());
 }

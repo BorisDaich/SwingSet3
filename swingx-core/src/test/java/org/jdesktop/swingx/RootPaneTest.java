@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -319,7 +317,8 @@ public class RootPaneTest extends TestCase {
     /**
      * A simple action which can be used for creating components.
      */
-    public static class TestAction extends AbstractAction {
+    @SuppressWarnings("serial")
+	public static class TestAction extends AbstractAction {
 
 	public TestAction(String name, int mnemonic,
 			  String description) {

@@ -22,6 +22,7 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.test.XTestUtils;
 
+@SuppressWarnings("serial")
 public class SynthPanelPainterTest extends JFrame
 {
   private static String synthXml = "<synth>" +

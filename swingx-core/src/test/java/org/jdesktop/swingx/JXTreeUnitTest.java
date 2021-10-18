@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -191,7 +189,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     /**
      * Subclass for testing: access cellRenderer/cellEditor fields 
      */
-    public static class TestTree extends JXTree {
+    @SuppressWarnings("serial")
+	public static class TestTree extends JXTree {
         
         private TreeCellRenderer createdDefaultRenderer;
 
@@ -335,7 +334,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testDelegatingRendererUseCustomDefaultSetNull() {
-        JXTree list = new JXTree() {
+        @SuppressWarnings("serial")
+		JXTree list = new JXTree() {
 
             @Override
             protected TreeCellRenderer createDefaultCellRenderer() {
@@ -356,7 +356,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
      */
     @Test
     public void testDelegatingRendererUseCustomDefault() {
-        JXTree list = new JXTree() {
+        @SuppressWarnings("serial")
+		JXTree list = new JXTree() {
 
             @Override
             protected TreeCellRenderer createDefaultCellRenderer() {
@@ -374,7 +375,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
      * Dummy extension for testing - does nothing more as super.
      * For tree, we subclass swingx renderer, as the default still it core default.
      */
-    public static class CustomDefaultRenderer extends DefaultTreeRenderer {
+    @SuppressWarnings("serial")
+	public static class CustomDefaultRenderer extends DefaultTreeRenderer {
     }
     
     /**
@@ -386,7 +388,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     public void testGetStringForRow() {
         JXTree tree = new JXTree(AncientSwingTeam.createNamedColorTreeModel());
         tree.expandAll();
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {
@@ -412,7 +415,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     public void testGetStringForPath() {
         JXTree tree = new JXTree(AncientSwingTeam.createNamedColorTreeModel());
         tree.expandAll();
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {
@@ -803,7 +807,8 @@ public class JXTreeUnitTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {

@@ -393,7 +393,8 @@ public class JXTableHeaderTest extends InteractiveTestCase {
      */
     public void interactiveDraggedColumnRemoved() {
         final JXTable table = new JXTable(10, 5);
-        Action deleteColumn = new AbstractAction("deleteCurrentColumn") {
+        @SuppressWarnings("serial")
+		Action deleteColumn = new AbstractAction("deleteCurrentColumn") {
 
             public void actionPerformed(ActionEvent e) {
                 TableColumn column = table.getTableHeader().getDraggedColumn();
@@ -415,7 +416,8 @@ public class JXTableHeaderTest extends InteractiveTestCase {
         final JXTable table = new JXTable();
         table.setColumnControlVisible(true);
         JXFrame frame = wrapWithScrollingInFrame(table, "header always visible");
-        Action action = new AbstractAction("toggle model") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("toggle model") {
 
             public void actionPerformed(ActionEvent e) {
                 int columnCount = table.getColumnCount(true);

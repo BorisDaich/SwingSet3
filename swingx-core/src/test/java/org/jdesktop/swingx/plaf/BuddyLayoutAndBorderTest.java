@@ -1,9 +1,8 @@
 package org.jdesktop.swingx.plaf;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 
 import java.awt.Insets;
 
@@ -12,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.prompt.BuddySupport;
 import org.jdesktop.test.EDTRunner;
 import org.junit.Before;
@@ -81,6 +81,6 @@ public class BuddyLayoutAndBorderTest {
 	public void testGetBorderInsetsWithNullDelegate() {
 	    textField.setBorder(null);
 	    blab.install(textField);
-	    assertThat(blab.getRealBorderInsets(), is(new Insets(0, 0, 0, 0)));
+	    assertThat(blab.getRealBorderInsets(), CoreMatchers.is(new Insets(0, 0, 0, 0)));
 	}
 }

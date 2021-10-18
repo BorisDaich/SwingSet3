@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,7 +24,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.util.logging.Logger;
 
@@ -40,7 +37,6 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
@@ -106,9 +102,7 @@ public class RenderingTest extends InteractiveTestCase {
             // list
             JList list = new JList();
             ListCellRenderer listR = list.getCellRenderer();
-            String nameL =
-                     listR.getListCellRendererComponent(list, null, 0, false,
-                            false).getName();
+            String nameL = listR.getListCellRendererComponent(list, null, 0, false, false).getName();
             assertEquals("sanity: checking default name", "List.cellRenderer", nameL);
             assertEquals(nameL, rendererList.
                     getListCellRendererComponent(list, null, 0, false, false).getName());
@@ -207,7 +201,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testHyperlinkStringValue() {
-        AbstractHyperlinkAction<?> linkAction = new AbstractHyperlinkAction<Object>() {
+        @SuppressWarnings("serial")
+		AbstractHyperlinkAction<?> linkAction = new AbstractHyperlinkAction<Object>() {
 
             public void actionPerformed(ActionEvent e) {
                 // nothing
@@ -267,7 +262,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectString() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Point) {
@@ -292,7 +288,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectRenderer() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Point) {
@@ -347,7 +344,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testToolTipManagerHyperlinkProvider() {
-        AbstractHyperlinkAction<?> linkAction = new AbstractHyperlinkAction<Object>() {
+        @SuppressWarnings("serial")
+		AbstractHyperlinkAction<?> linkAction = new AbstractHyperlinkAction<Object>() {
 
             public void actionPerformed(ActionEvent e) {
                 // do nothing
@@ -480,7 +478,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testLabelProviderGetString() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 return "funnyconstant ... haha";
@@ -500,7 +499,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testButtonProviderGetString() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 return "funnyconstant ... haha";
@@ -520,7 +520,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetString() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 return "funnyconstant ... haha";
@@ -541,7 +542,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetStringFromNode() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Point) {
@@ -564,7 +566,8 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetStringNotNullValue() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 return String.valueOf(value) + "added ... ";
@@ -677,7 +680,8 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderIcon() {
         final Icon icon = XTestUtils.loadDefaultIcon();
-        IconValue iv = new IconValue() {
+        @SuppressWarnings("serial")
+		IconValue iv = new IconValue() {
             public Icon getIcon(Object value) {
                 return icon;
             }};
@@ -695,7 +699,8 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderIconAndContent() {
         final Icon icon = XTestUtils.loadDefaultIcon();
-        IconValue iv = new IconValue() {
+        @SuppressWarnings("serial")
+		IconValue iv = new IconValue() {
             public Icon getIcon(Object value) {
                 return icon;
             }};
@@ -805,7 +810,8 @@ public class RenderingTest extends InteractiveTestCase {
             }
             
         };
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 return column.getTitle();

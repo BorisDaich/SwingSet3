@@ -1,6 +1,4 @@
 /**
- * $Id$
- * 
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,8 +18,7 @@
  */
 package org.jdesktop.swingx;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -45,11 +42,12 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.calendar.CalendarUtils;
 import org.jdesktop.swingx.calendar.DateSelectionModel;
+import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.calendar.DaySelectionModel;
 import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
-import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
 import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
 import org.jdesktop.swingx.test.DateSelectionReport;
@@ -237,7 +235,8 @@ public class JXMonthViewTest extends InteractiveTestCase {
      * @param clock the time source used by monthView.
      */
     public static JXMonthView createMonthViewWithClock(final Clock clock) {
-        JXMonthView monthView = new JXMonthView() {
+        @SuppressWarnings("serial")
+		JXMonthView monthView = new JXMonthView() {
 
             @Override
             Date getCurrentDate() {
@@ -2675,8 +2674,8 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
 
         Date date = new Date();
         monthView.setSelectionInterval(date, date);
-        assertThat(listener.getEventCount(), is(1));
-        assertThat(listener.getLastEvent().getEventType(), is(EventType.DATES_SET));
+        assertThat(listener.getEventCount(), CoreMatchers.is(1));
+        assertThat(listener.getLastEvent().getEventType(), CoreMatchers.is(EventType.DATES_SET));
     }
 
 

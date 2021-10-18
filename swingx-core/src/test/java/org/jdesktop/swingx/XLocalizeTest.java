@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -237,7 +235,8 @@ public class XLocalizeTest extends InteractiveTestCase {
         assertNotNull(uiValue);
         assertEquals(name, uiValue);
         final Locale alternative = getAlternativeLocale(findPanel);
-        PropertyChangeListener report = new PropertyChangeListener() {
+        @SuppressWarnings("unused")
+		PropertyChangeListener report = new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -474,7 +473,8 @@ public class XLocalizeTest extends InteractiveTestCase {
         final JXTable table = new JXTable(10, 4);
         table.setColumnControlVisible(true);
         table.getColumnExt(0).setTitle(table.getLocale().getLanguage());
-        Action toggleLocale = new AbstractActionExt("toggleLocale") {
+        @SuppressWarnings("serial")
+		Action toggleLocale = new AbstractActionExt("toggleLocale") {
 
             @Override
             public void actionPerformed(ActionEvent e) {

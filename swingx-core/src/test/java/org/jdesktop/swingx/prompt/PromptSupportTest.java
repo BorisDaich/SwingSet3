@@ -9,7 +9,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.jdesktop.swingx.plaf.BuddyTextFieldUI;
 import org.jdesktop.swingx.plaf.PromptTextFieldUI;

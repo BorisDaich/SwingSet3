@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -63,8 +61,8 @@ import org.junit.runners.JUnit4;
 public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(ComponentAdapterClientTest.class.getName());
+    private static final Logger LOG = Logger.getLogger(ComponentAdapterClientTest.class.getName());
+    
     public static void main(String[] args) {
         ComponentAdapterClientTest test = new ComponentAdapterClientTest();
         try {
@@ -334,7 +332,8 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {

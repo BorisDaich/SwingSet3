@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,20 +19,19 @@
 package org.jdesktop.swingx;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
 
 import javax.swing.ListCellRenderer;
 
+import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.JXComboBox.DelegatingRenderer;
 import org.jdesktop.swingx.JXListTest.CustomDefaultRenderer;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXListT;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
@@ -61,8 +58,8 @@ public class JXComboBoxTest {
         JXComboBox combo = new JXComboBox(new Object[] {1, 2, 3});
         ComponentAdapter adapter = combo.getComponentAdapter();
         
-        assertThat(adapter.column, is(0));
-        assertThat(adapter.row, is(0));
+        assertThat(adapter.column, CoreMatchers.is(0));
+        assertThat(adapter.row, CoreMatchers.is(0));
         
         // corrupt adapter
         adapter.row = 1;
@@ -70,8 +67,8 @@ public class JXComboBoxTest {
         
         adapter = combo.getComponentAdapter(0);
         
-        assertThat(adapter.column, is(0));
-        assertThat(adapter.row, is(0));
+        assertThat(adapter.column, CoreMatchers.is(0));
+        assertThat(adapter.row, CoreMatchers.is(0));
     }
 
     /**
@@ -82,7 +79,7 @@ public class JXComboBoxTest {
         JXComboBox combo = new JXComboBox();
         
         ListCellRenderer renderer = ((DelegatingRenderer) combo.getRenderer()).getDelegateRenderer();
-        assertThat(renderer, is(instanceOf(DefaultListRenderer.class)));
+        assertThat(renderer, CoreMatchers.is(instanceOf(DefaultListRenderer.class)));
     }
 
     /**
@@ -95,10 +92,10 @@ public class JXComboBoxTest {
         JXComboBox combo = new JXComboBox();
         
         ListCellRenderer defaultRenderer = combo.createDefaultCellRenderer();
-        assertThat(defaultRenderer, is(instanceOf(DefaultListRenderer.class)));
+        assertThat(defaultRenderer, CoreMatchers.is(instanceOf(DefaultListRenderer.class)));
         
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
-        assertThat(renderer.getDelegateRenderer(), is(instanceOf(defaultRenderer.getClass())));
+        assertThat(renderer.getDelegateRenderer(), CoreMatchers.is(instanceOf(defaultRenderer.getClass())));
     }
 
     /**
@@ -116,10 +113,10 @@ public class JXComboBoxTest {
         };
         
         ListCellRenderer defaultRenderer = combo.createDefaultCellRenderer();
-        assertThat(defaultRenderer, is(instanceOf(CustomDefaultRenderer.class)));
+        assertThat(defaultRenderer, CoreMatchers.is(instanceOf(CustomDefaultRenderer.class)));
         
         ListCellRenderer renderer = ((DelegatingRenderer) combo.getRenderer()).getDelegateRenderer();
-        assertThat(renderer, is(instanceOf(CustomDefaultRenderer.class)));
+        assertThat(renderer, CoreMatchers.is(instanceOf(CustomDefaultRenderer.class)));
     }
     
     /**
@@ -135,7 +132,7 @@ public class JXComboBoxTest {
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
         combo.setRenderer(null);
         
-        assertThat(renderer.getDelegateRenderer(), is(instanceOf(defaultRenderer.getClass())));
+        assertThat(renderer.getDelegateRenderer(), CoreMatchers.is(instanceOf(defaultRenderer.getClass())));
     }
 
     /**
@@ -156,7 +153,7 @@ public class JXComboBoxTest {
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
         combo.setRenderer(null);
         
-        assertThat(renderer.getDelegateRenderer(), is(instanceOf(defaultRenderer.getClass())));
+        assertThat(renderer.getDelegateRenderer(), CoreMatchers.is(instanceOf(defaultRenderer.getClass())));
     }
 
     /**
@@ -166,7 +163,7 @@ public class JXComboBoxTest {
     public void testRendererNotification() {
         JXComboBox combo = new JXComboBox();
         
-        assertThat(combo.getRenderer(), is(notNullValue()));
+        assertThat(combo.getRenderer(), CoreMatchers.is(notNullValue()));
 
         PropertyChangeReport report = new PropertyChangeReport(combo);
         
@@ -185,7 +182,7 @@ public class JXComboBoxTest {
         JXComboBox combo = new JXComboBox();
         
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
-        assertThat(renderer.getDelegateRenderer(), is(sameInstance(combo.getWrappedRenderer())));
+        assertThat(renderer.getDelegateRenderer(), CoreMatchers.is(sameInstance(combo.getWrappedRenderer())));
     }
 
     /**
@@ -200,7 +197,7 @@ public class JXComboBoxTest {
         ListCellRenderer custom = new DefaultListRenderer();
         combo.setRenderer(custom);
         
-        assertThat(custom, is(sameInstance(combo.getWrappedRenderer())));
+        assertThat(custom, CoreMatchers.is(sameInstance(combo.getWrappedRenderer())));
     }
     
     private StringValue createColorStringValue() {

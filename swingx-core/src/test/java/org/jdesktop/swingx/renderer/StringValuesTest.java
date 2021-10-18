@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -105,7 +103,8 @@ public class StringValuesTest extends TestCase {
     @Test
     public void testUIResource() {
         final String constant = "dummy";
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             @Override
             public String getString(Object value) {
