@@ -30,7 +30,8 @@ import org.jdesktop.swingx.appframework.XProperties.XTaskPaneProperty;
 import org.jdesktop.swingx.search.SearchFactory;
 
 public abstract class SingleXFrameApplication extends SingleFrameApplication {
-    private static final Logger logger = Logger.getLogger(SingleXFrameApplication.class.getName());
+	
+    private static final Logger LOG = Logger.getLogger(SingleXFrameApplication.class.getName());
 
     /**
      * {@inheritDoc} <p>
@@ -116,7 +117,7 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
                 ApplicationContext ac = getContext();
                 ac.getSessionStorage().restore(root, filename);
             } catch (Exception e) {
-                logger.log(Level.WARNING, "couldn't restore sesssion", e);
+                LOG.log(Level.WARNING, "couldn't restore sesssion", e);
             }
         }
         root.addWindowListener(getDialogListener());
@@ -144,16 +145,17 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
      * call {@code super.shutdown()}.
      */
     @Override
-    protected void shutdown() {
-        List<Window> windows = new ArrayList<Window>();
-        windows.add(getMainFrame());
-        for (int i = 0; i < getMainFrame().getOwnedWindows().length; i++) {
-            windows.add(getMainFrame().getOwnedWindows()[i]);
-        }
-        for (Window window : windows) {
-            saveSession(window);
-        }
-    }
+	protected void shutdown() {
+		List<Window> windows = new ArrayList<Window>();
+		windows.add(getMainFrame());
+		for (int i = 0; i < getMainFrame().getOwnedWindows().length; i++) {
+			windows.add(getMainFrame().getOwnedWindows()[i]);
+		}
+		for (Window window : windows) {
+			LOG.info("saveSession for window " + window);
+			saveSession(window);
+		}
+	}
 
     private String sessionFilename(Window window) {
         if (window == null) {
@@ -169,13 +171,14 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
         String filename = sessionFilename(window);
         if (filename != null) {
             ApplicationContext appContext = getContext();
+        	SessionStorage ss = appContext.getSessionStorage();
             try {
-                appContext.getSessionStorage().save(window, filename);
+                ss.save(window, filename);
             }
             catch (IOException e) {
-                logger.log(Level.WARNING, "couldn't save sesssion", e);
+                LOG.log(Level.WARNING, "couldn't save sesssion", e);
             } catch (SecurityException e) {
-                logger.log(Level.WARNING, "couldn't save sesssion", e);
+                LOG.log(Level.WARNING, "couldn't save sesssion", e);
             }
         }
     }
@@ -190,9 +193,9 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
         try {
             context.getLocalStorage().deleteFile("mainFrame.session.xml");
         } catch (IOException e) {
-            logger.log(Level.WARNING, "couldn't delete sesssion", e);
+            LOG.log(Level.WARNING, "couldn't delete sesssion", e);
         } catch (SecurityException e) {
-            logger.log(Level.WARNING, "couldn't delete sesssion", e);
+            LOG.log(Level.WARNING, "couldn't delete sesssion", e);
         }
     }
 
@@ -213,7 +216,7 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
      */
     protected void injectSessionProperties() {
         SessionStorage storage = getContext().getSessionStorage();
-        storage.putProperty(JXTable.class, new XTableProperty());
+        storage.putProperty(JXTable.class, new XTableProperty()); // wg. #2 ausschalten
         storage.putProperty(JXTaskPane.class, new XTaskPaneProperty());
         new XProperties().registerPersistenceDelegates();
     }

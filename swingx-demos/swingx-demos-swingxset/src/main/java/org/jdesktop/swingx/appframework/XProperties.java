@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.swing.SortOrder;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.jdesktop.application.session.PropertySupport;
-import org.jdesktop.application.session.SplitPaneState;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.sort.SortUtils;
@@ -29,6 +29,8 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * Is Factory for custom PersistanceDelegates
  */
 public class XProperties {
+
+    private static final Logger LOG = Logger.getLogger(XProperties.class.getName());
 
     /**
      * 
@@ -57,15 +59,14 @@ public class XProperties {
     public void registerPersistenceDelegates() {
         XMLEncoder encoder = new XMLEncoder(System.out);
         encoder.setPersistenceDelegate(SortKeyState.class,
-                new DefaultPersistenceDelegate(new String[] { "ascending",
-                        "modelIndex"}));
+                new DefaultPersistenceDelegate(new String[] { "ascending", "modelIndex"}));
         encoder.setPersistenceDelegate(ColumnState.class,
                 new DefaultPersistenceDelegate(
-                        new String[] { "width", "preferredWidth", "modelIndex",
-                                "visible", "viewIndex" }));
+                        new String[] { "width", "preferredWidth", "modelIndex", "visible", "viewIndex" }));
         encoder.setPersistenceDelegate(XTableState.class,
-                new DefaultPersistenceDelegate(new String[] { "columnStates",
-                        "sortKeyState", "horizontalScrollEnabled" }));
+                new DefaultPersistenceDelegate(new String[] { "columnStates", "sortKeyState", "horizontalScrollEnabled" }));
+     // ctor:       XTableState(ColumnState[] columnStates, SortKeyState sortKeyState, boolean horizontalScrollEnabled) 
+        encoder.close();
     }
     
     /**
@@ -136,22 +137,27 @@ public class XProperties {
      */
     public static class XTableProperty implements PropertySupport {
 
+    	public XTableProperty() {
+    		LOG.config("ctor");
+    	}
+    	
+    	// implements interface PropertySupport.getSessionState
         public Object getSessionState(Component c) {
+    		LOG.config("Component c:"+c);
             checkComponent(c);
             JXTable table = (JXTable) c;
             List<ColumnState> columnStates = new ArrayList<ColumnState>();
             List<TableColumn> columns = table.getColumns(true);
             List<TableColumn> visibleColumns = table.getColumns();
             for (TableColumn column : columns) {
-                columnStates.add(new ColumnState((TableColumnExt) column, 
-                        visibleColumns.indexOf(column)));
+                columnStates.add(new ColumnState((TableColumnExt) column, visibleColumns.indexOf(column)));
             }
-            XTableState tableState = new XTableState(columnStates.toArray(new ColumnState[columnStates.size()]));
-            tableState.setHorizontalScrollEnabled(table.isHorizontalScrollEnabled());
             List<? extends SortKey> sortKeys = null;
             if (table.getRowSorter() != null) {
                 sortKeys = table.getRowSorter().getSortKeys();
             }
+            XTableState tableState = new XTableState(columnStates.toArray(new ColumnState[columnStates.size()]));
+            tableState.setHorizontalScrollEnabled(table.isHorizontalScrollEnabled());
             // PENDING: store all!
             if ((sortKeys != null) && (sortKeys.size() >0)) {
                 tableState.setSortKey(sortKeys.get(0));
@@ -160,6 +166,7 @@ public class XProperties {
         }
 
         public void setSessionState(Component c, Object state) {
+    		LOG.config("Component c:"+c + " state:"+state);
             checkComponent(c);
             JXTable table = (JXTable) c;
             XTableState tableState = ((XTableState) state);
@@ -167,8 +174,7 @@ public class XProperties {
             List<TableColumn> columns = table.getColumns(true);
             if (canRestore(columnState, columns)) {
                 for (int i = 0; i < columnState.length; i++) {
-                    columnState[i].configureColumn((TableColumnExt) columns
-                            .get(i));
+                    columnState[i].configureColumn((TableColumnExt) columns.get(i));
                 }
                 restoreVisibleSequence(columnState, table.getColumnModel());
             }
@@ -241,59 +247,69 @@ public class XProperties {
         }
         
     }
-    
+
     public static class XTableState {
-        ColumnState[] columnStates = new ColumnState[0];
-        boolean horizontalScrollEnabled;
-        SortKeyState sortKeyState;
-        
+		ColumnState[] columnStates = new ColumnState[0];
+		boolean horizontalScrollEnabled;
+		SortKeyState sortKeyState;
+
+        /**
+         * Constructor used by the custom PersistenceDelegate.
+         */
         public XTableState(ColumnState[] columnStates, SortKeyState sortKeyState, boolean horizontalScrollEnabled) {
-            this.columnStates = copyColumnStates(columnStates);
-            this.sortKeyState = sortKeyState;
-            setHorizontalScrollEnabled(horizontalScrollEnabled);
-            
-        }
-        public void setSortKey(SortKey sortKey) {
-            this.sortKeyState = new SortKeyState(sortKey);
-            
-        }
-        
-        private SortKey getSortKey() {
-            if (sortKeyState != null) {
-                return sortKeyState.getSortKey();
-            }
-            return null;
-        }
-        
+        	LOG.config("columnStates:"+columnStates + " ...");
+			this.columnStates = copyColumnStates(columnStates);
+			this.sortKeyState = sortKeyState;
+			setHorizontalScrollEnabled(horizontalScrollEnabled);
+		}
+
+        /**
+         * Constructor used by property, class XTableProperty
+         */
         public XTableState(ColumnState[] columnStates) {
+        	LOG.config("columnStates:"+columnStates);
             this.columnStates = copyColumnStates(columnStates);
         }
-        
+        public XTableState() {
+        	LOG.info("default ctor");
+        }
+
+		public void setSortKey(SortKey sortKey) {
+			this.sortKeyState = new SortKeyState(sortKey);
+		}
+
+		private SortKey getSortKey() {
+			if (sortKeyState != null) {
+				return sortKeyState.getSortKey();
+			}
+			return null;
+		}
+
         public ColumnState[] getColumnStates() {
-            return copyColumnStates(this.columnStates);
-        }
-        
-        public boolean getHorizontalScrollEnabled() {
-            return horizontalScrollEnabled;
-        }
-        
-        public void setHorizontalScrollEnabled(boolean horizontalScrollEnabled) {
-            this.horizontalScrollEnabled = horizontalScrollEnabled;
-        }
-        
+			return copyColumnStates(this.columnStates);
+		}
+
+		public boolean getHorizontalScrollEnabled() {
+			return horizontalScrollEnabled;
+		}
+
+		public void setHorizontalScrollEnabled(boolean horizontalScrollEnabled) {
+			this.horizontalScrollEnabled = horizontalScrollEnabled;
+		}
+
         private ColumnState[] copyColumnStates(ColumnState[] states) {
-            if (states == null) {
-                throw new IllegalArgumentException("invalid columnWidths");
-            }
-            ColumnState[] copy = new ColumnState[states.length];
-            System.arraycopy(states, 0, copy, 0, states.length);
-            return copy;
-        }
-        
-        public SortKeyState getSortKeyState() {
-            return sortKeyState;
-        }
-    }
+			if (states == null) {
+				throw new IllegalArgumentException("invalid columnWidths");
+			}
+			ColumnState[] copy = new ColumnState[states.length];
+			System.arraycopy(states, 0, copy, 0, states.length);
+			return copy;
+		}
+
+		public SortKeyState getSortKeyState() {
+			return sortKeyState;
+		}
+	}
     
     /**
      * Quick hack to make SortKey encodable. How to write a PersistenceDelegate
@@ -303,8 +319,8 @@ public class XProperties {
      * 
      */
     public static class SortKeyState {
+    	
         int modelIndex;
-
         boolean ascending;
 
         /**
@@ -315,6 +331,7 @@ public class XProperties {
          * @param comparator
          */
         public SortKeyState(boolean ascending, int modelIndex) {
+        	LOG.config("ascending=:"+ascending + " modelIndex="+modelIndex);
             this.ascending = ascending;
             this.modelIndex = modelIndex;
         }
@@ -329,8 +346,7 @@ public class XProperties {
         }
 
         protected SortKey getSortKey() {
-            SortOrder sortOrder = getAscending() ? SortOrder.ASCENDING
-                    : SortOrder.DESCENDING;
+            SortOrder sortOrder = getAscending() ? SortOrder.ASCENDING : SortOrder.DESCENDING;
             return new SortKey(getModelIndex(), sortOrder);
         }
 
@@ -360,6 +376,7 @@ public class XProperties {
          * @param viewIndex
          */
         public ColumnState(int width, int preferredWidth, int modelColumn, boolean visible, int viewIndex) {
+        	LOG.config("width="+width + " preferredWidth="+preferredWidth + " modelColumn="+modelColumn + " ...");
             this.width = width;
             this.preferredWidth = preferredWidth;
             this.modelIndex = modelColumn;
