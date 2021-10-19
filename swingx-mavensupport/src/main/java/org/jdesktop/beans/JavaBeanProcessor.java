@@ -14,6 +14,8 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
@@ -28,6 +30,7 @@ import org.kohsuke.MetaInfServices;
  */
 @SuppressWarnings("nls")
 @MetaInfServices(Processor.class)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class JavaBeanProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
