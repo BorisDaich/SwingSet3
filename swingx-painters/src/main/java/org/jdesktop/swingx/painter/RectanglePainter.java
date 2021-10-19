@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -207,6 +205,10 @@ public class RectanglePainter extends AbstractAreaPainter<Object> {
         case OUTLINE:
             drawBorder(g,shape,width,height);
             break;
+		case NONE:
+//			break;
+		default:
+			break;
         }
 
         // background

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -155,16 +153,20 @@ public class ShapePainter extends AbstractAreaPainter<Object> {
                 //draw/fill the shape
                 drawPathEffects(g, s, rect.width, rect.height);
                 switch (getStyle()) {
-                    case BOTH:
-                        drawShape(g, s, component, rect.width, rect.height);
-                        fillShape(g, s, component, rect.width, rect.height);
-                        break;
-                    case FILLED:
-                        fillShape(g, s, component, rect.width, rect.height);
-                        break;
-                    case OUTLINE:
-                        drawShape(g, s, component, rect.width, rect.height);
-                        break;
+                case BOTH:
+                    drawShape(g, s, component, rect.width, rect.height);
+                    fillShape(g, s, component, rect.width, rect.height);
+                    break;
+                case FILLED:
+                    fillShape(g, s, component, rect.width, rect.height);
+                    break;
+                case OUTLINE:
+                    drawShape(g, s, component, rect.width, rect.height);
+                    break;
+				case NONE:
+//					break;
+				default:
+					break;
                 }
             } finally {
                 g.dispose();
