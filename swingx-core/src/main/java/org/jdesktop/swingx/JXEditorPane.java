@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -142,10 +140,13 @@ import org.jdesktop.swingx.search.Searchable;
  * @author Mark Davidson
  */
 @JavaBean
-public class JXEditorPane extends JEditorPane implements /*Searchable, */Targetable {
+public class JXEditorPane extends JEditorPane implements Targetable {
+	
+	/*
+	 *  Searchable is implemeted in inner class DocumentSearchable
+	 */
 
-    private static final Logger LOG = Logger.getLogger(JXEditorPane.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXEditorPane.class.getName());
 
     private UndoableEditListener undoHandler;
     private UndoManager undoManager;
@@ -401,8 +402,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
                     // is this always possible?
                     boolean dataOnClipboard = false;
                     try {
-                        dataOnClipboard = getToolkit()
-                        .getSystemClipboard().getContents(null) != null;
+                        dataOnClipboard = getToolkit().getSystemClipboard().getContents(null) != null;
                     } catch (Exception e) {
                         // can't do anything - clipboard unaccessible
                     }
@@ -586,17 +586,32 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
      * A {@code Searchable} implementation for {@code Document}s.
      */
     public class DocumentSearchable implements Searchable {
-        @Override
+    	
+        int lastFoundIndex = -1;
+
+        MatchResult lastMatchResult;
+        String lastRegEx;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override // implements Searchable.search
         public int search(String searchString) {
             return search(searchString, -1);
         }
 
-        @Override
+        /**
+         * {@inheritDoc}
+         */
+        @Override // implements Searchable.search
         public int search(String searchString, int columnIndex) {
             return search(searchString, columnIndex, false);
         }
         
-        @Override
+        /**
+         * {@inheritDoc}
+         */
+        @Override // implements Searchable.search
         public int search(String searchString, int columnIndex, boolean backward) {
             Pattern pattern = null;
             if (!isEmpty(searchString)) {
@@ -618,26 +633,30 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
             return (searchString == null) || searchString.length() == 0;
         }
 
-        @Override
+        /**
+         * {@inheritDoc}
+         */
+        @Override // implements Searchable.search
         public int search(Pattern pattern) {
             return search(pattern, -1);
         }
 
-        @Override
+        /**
+         * {@inheritDoc}
+         */
+        @Override // implements Searchable.search
         public int search(Pattern pattern, int startIndex) {
             return search(pattern, startIndex, false);
         }
 
-        int lastFoundIndex = -1;
-
-        MatchResult lastMatchResult;
-        String lastRegEx;
         /**
+         * {@inheritDoc}
+         */
+        /*
          * @return start position of matching string or -1
          */
-        @Override
-        public int search(Pattern pattern, final int startIndex,
-                boolean backwards) {
+        @Override // implements Searchable.search
+        public int search(Pattern pattern, final int startIndex, boolean backwards) {
             if ((pattern == null)
                     || (getDocument().getLength() == 0)
                     || ((startIndex > -1) && (getDocument().getLength() < startIndex))) {
@@ -672,14 +691,13 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
             try {
                 getDocument().getText(start, length, segment);
             } catch (BadLocationException ex) {
-                LOG.log(Level.FINE,
-                        "this should not happen (calculated the valid start/length) " , ex);
+                LOG.log(Level.FINE, "this should not happen (calculated the valid start/length) " , ex);
             }
 
             Matcher matcher = pattern.matcher(segment.toString());
             MatchResult currentResult = getMatchResult(matcher, !backwards);
             if (currentResult != null) {
-                updateStateAfterFound(currentResult, start);
+                updateStateAfterFound(currentResult, start, matcher);
             } else {
                 updateStateAfterNotFound();
             }
@@ -710,8 +728,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
             try {
                 getDocument().getText(start, length, segment);
             } catch (BadLocationException ex) {
-                LOG.log(Level.FINE,
-                        "this should not happen (calculated the valid start/length) " , ex);
+                LOG.log(Level.FINE, "this should not happen (calculated the valid start/length) " , ex);
             }
             Matcher matcher = pattern.matcher(segment.toString());
             MatchResult currentResult = getMatchResult(matcher, true);
@@ -721,7 +738,7 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
                 // better check pattern?
                 if ((currentResult.start() == 0) && 
                    (!lastMatchResult.group().equals(currentResult.group()))) {
-                    updateStateAfterFound(currentResult, start);
+                    updateStateAfterFound(currentResult, start, matcher);
                     return true;
                 } 
             }
@@ -731,7 +748,6 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         /**
          * Checks if the startIndex is a candidate for trying a re-match.
          * 
-         * 
          * @param startIndex
          * @return true if the startIndex should be re-matched, false if not.
          */
@@ -740,18 +756,21 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
         }
 
         /**
+         * 
          * @param currentResult
          * @param offset
+         * @param matcher, this resolves cast exception reported in https://github.com/homebeaver/SwingSet/issues/3
          * @return the start position of the selected text
          */
-        private int updateStateAfterFound(MatchResult currentResult, final int offset) {
+        private int updateStateAfterFound(MatchResult currentResult, final int offset, Matcher matcher) {
             int end = currentResult.end() + offset;
             int found = currentResult.start() + offset; 
             select(found, end);
             getCaret().setSelectionVisible(true);
             lastFoundIndex = found;
             lastMatchResult = currentResult;
-            lastRegEx = ((Matcher) lastMatchResult).pattern().pattern();
+            LOG.config("currentResult:"+currentResult); // java.util.regex.Matcher$ImmutableMatchResult
+            lastRegEx = matcher.pattern().toString();
             return found;
         }
 
@@ -769,8 +788,6 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
             return currentResult;
         }
 
-        /**
-         */
         private void updateStateAfterNotFound() {
             lastFoundIndex = -1;
             lastMatchResult = null;
@@ -780,16 +797,25 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
 
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasCommand(Object command) {
         return targetSupport.hasCommand(command);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object[] getCommands() {
         return targetSupport.getCommands();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean doCommand(Object command, Object value) {
         return targetSupport.doCommand(command, value);
@@ -872,6 +898,10 @@ public class JXEditorPane extends JEditorPane implements /*Searchable, */Targeta
      * @author rbair
      */
     private static final class SloppyHTMLEditorKit extends HTMLEditorKit {
+    	
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void read(Reader in, Document doc, int pos) throws IOException, BadLocationException {
             //read the reader into a String
