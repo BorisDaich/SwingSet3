@@ -58,10 +58,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.8.1</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+<!-- 	  <release>8</release>  -->
+		  <!-- Provide source compatibility with the specified Java SE release. 
+				Supported releases: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17     -->
+          <source>8</source>
+          <!-- Generate class files suitable for the specified Java SE release. -->
+          <target>8</target>
           <generatedSourcesDirectory>${project.generatedAnnotations}</generatedSourcesDirectory>
           <showWarnings>true</showWarnings>
         </configuration>
