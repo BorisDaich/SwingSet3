@@ -29,6 +29,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 @SuppressWarnings("nls")
 public class JVM {
 
+  public final static String JAVA_VERSION = "java.version"; // System Property
   public final static int JDK1_0 = 1000;
   public final static int JDK1_1 = 1100;
   public final static int JDK1_2 = 1200;
@@ -70,7 +71,11 @@ public class JVM {
    *  
    */
   public JVM() {
-    this(System.getProperty("java.version"));
+    this(System.getProperty(JAVA_VERSION));
+  }
+
+  public String toString() {
+	  return "jdkVersion="+jdkVersion + " "+JAVA_VERSION+"="+System.getProperty(JAVA_VERSION);
   }
 
   /**

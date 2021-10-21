@@ -46,7 +46,7 @@ public abstract class PromptTextUITest_Base {
     		assertNotSame(-2, baseline);
     	}else{
         	LOG.info("assertSame(-2,"+baseline);
-//    		assertSame(-2, baseline); // TODO wg. #3 expected same:<-2> was not:<13>
+    		assertSame(-2, baseline);
     	}
     }
 
