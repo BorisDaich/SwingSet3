@@ -20,6 +20,11 @@ import javax.swing.tree.TreePath;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class TreeUtilities {
 
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(TreeUtilities.class.getName());
+
+    private TreeUtilities() {}
+    
     /**
      * An enumeration that is always empty. 
      */
@@ -270,8 +275,8 @@ public class TreeUtilities {
         }
 
         protected Enumeration<M> getChildren(M node) {
-            Enumeration<M> children = node.children();
-            return children;
+        	Enumeration<? extends TreeNode> children = node.children();
+            return (Enumeration<M>)children;
         }
 
     }  // End of class PreorderEnumeration
@@ -328,7 +333,7 @@ public class TreeUtilities {
          * @return
          */
         protected Enumeration<M> getChildren(M node) {
-            return node.children();
+            return (Enumeration<M>)(node.children());
         }
         
 
@@ -374,8 +379,8 @@ public class TreeUtilities {
         }
 
         protected Enumeration<M> getChildren(M node) {
-            Enumeration<M> children = node.children();
-            return children;
+        	Enumeration<? extends TreeNode> children = node.children();
+            return (Enumeration<M>)children;
         }
         
         
@@ -423,9 +428,4 @@ public class TreeUtilities {
         return e;
     }
     
-    private TreeUtilities() {}
-    
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(TreeUtilities.class
-            .getName());
 }

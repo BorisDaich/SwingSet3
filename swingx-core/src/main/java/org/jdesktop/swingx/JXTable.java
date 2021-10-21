@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,7 +19,6 @@
 
 package org.jdesktop.swingx;
 
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
@@ -390,14 +387,7 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
 @JavaBean
 public class JXTable extends JTable implements TableColumnModelExtListener {
 
-    /**
-     * 
-     */
     public static final String FOCUS_PREVIOUS_COMPONENT = "focusPreviousComponent";
-
-    /**
-     * 
-     */
     public static final String FOCUS_NEXT_COMPONENT = "focusNextComponent";
 
     private static final Logger LOG = Logger.getLogger(JXTable.class.getName());
@@ -610,7 +600,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @param rowData Row data, as a Vector of Objects.
      * @param columnNames Column names, as a Vector of Strings.
      */
-    public JXTable(Vector<?> rowData, Vector<?> columnNames) {
+    public JXTable(Vector<? extends Vector> rowData, Vector<?> columnNames) {
         super(rowData, columnNames);
         init();
     }
@@ -4257,7 +4247,9 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
                         // PENDING JW: left-over? we should never reach this ...
                         // need to switch the hierarchy to a popups invoker
                     } else if ((c instanceof Window)
-                            || (c instanceof Applet && c.getParent() == null)) {
+//                            || (c instanceof Applet && c.getParent() == null)
+                    		) 
+                    {
                         if (c == SwingUtilities.getRoot(JXTable.this)) {
                             if (!getCellEditor().stopCellEditing()) {
                                 getCellEditor().cancelCellEditing();

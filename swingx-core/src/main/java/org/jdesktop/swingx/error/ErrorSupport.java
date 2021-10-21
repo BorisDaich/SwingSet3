@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,6 +31,7 @@ import javax.swing.SwingUtilities;
  * @see ErrorEvent
  */
 public class ErrorSupport {
+	
     private List<ErrorListener> listeners;
     private Object source;
     
@@ -68,7 +67,8 @@ public class ErrorSupport {
      * added.
      */
     public ErrorListener[] getErrorListeners() {
-        return listeners.toArray(null);
+    	Object[] objects = listeners.toArray();
+        return (ErrorListener[])objects;
     }
 
     /**
