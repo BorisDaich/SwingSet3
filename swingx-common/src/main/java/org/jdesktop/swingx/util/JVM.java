@@ -39,6 +39,16 @@ public class JVM {
   public final static int JDK1_6N = 1610;
   public final static int JDK1_7 = 1700;
   public final static int JDK1_8 = 1800;
+  public final static int JDK_8  = 8000;
+  public final static int JDK_9  = 9000;
+  public final static int JDK_10 =10000;
+  public final static int JDK_11 =11000;
+  public final static int JDK_12 =12000;
+  public final static int JDK_13 =13000;
+  public final static int JDK_14 =14000;
+  public final static int JDK_15 =15000;
+  public final static int JDK_16 =16000;
+  public final static int JDK_17 =17000;
 
   private static JVM current;
   static {
@@ -67,8 +77,28 @@ public class JVM {
    * Constructor for the OS object
    */
   public JVM(String p_JavaVersion) {
-	if (p_JavaVersion.startsWith("1.8.")) {
-	  jdkVersion = JDK1_8;
+		if (p_JavaVersion.startsWith("17.")) {
+			jdkVersion = JDK_17;
+		} else if (p_JavaVersion.startsWith("16.")) {
+			jdkVersion = JDK_16;
+		} else if (p_JavaVersion.startsWith("15.")) {
+			jdkVersion = JDK_15;
+		} else if (p_JavaVersion.startsWith("14.")) {
+			jdkVersion = JDK_14;
+		} else if (p_JavaVersion.startsWith("13.")) {
+			jdkVersion = JDK_13;
+		} else if (p_JavaVersion.startsWith("12.")) {
+			jdkVersion = JDK_12;
+		} else if (p_JavaVersion.startsWith("11.")) {
+			jdkVersion = JDK_11;
+		} else if (p_JavaVersion.startsWith("10.")) {
+			jdkVersion = JDK_10;
+		} else if (p_JavaVersion.startsWith("9.")) {
+			jdkVersion = JDK_9;
+		} else if (p_JavaVersion.startsWith("8.")) {
+			jdkVersion = JDK_8;
+		} else if (p_JavaVersion.startsWith("1.8.")) {
+			jdkVersion = JDK1_8;
 	} else if (p_JavaVersion.startsWith("1.7.")) {
       jdkVersion = JDK1_7;
     } else if (p_JavaVersion.startsWith("1.6.")) {
