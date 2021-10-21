@@ -41,11 +41,10 @@ public abstract class PromptTextUITest_Base {
     @Test
     public void testGetBaseLine() {
     	int baseline = ui.getBaseline(textComponent, textComponent.getWidth(), textComponent.getHeight());
-    	LOG.info("java.version:"+System.getProperty("java.version") + " JVM.current="+JVM.current());
+    	LOG.config("JVM.current="+JVM.current());
 		if(JVM.current().isOrLater(JVM.JDK1_6)){
     		assertNotSame(-2, baseline);
     	}else{
-        	LOG.info("assertSame(-2,"+baseline);
     		assertSame(-2, baseline);
     	}
     }
