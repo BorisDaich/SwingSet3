@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,13 +29,14 @@ import javax.swing.tree.TreeNode;
  * @author Karl Schaefer
  */
 public interface TreeTableNode extends TreeNode {
+	
     /**
      * Returns an enumeration this node's children.
      * 
      * @return an enumeration of {@code TreeTableNode}s
      */
     @Override
-    Enumeration<? extends TreeTableNode> children();
+    Enumeration<? extends TreeNode> children();
 
     /**
      * Gets the value for this node that corresponds to a particular tabular

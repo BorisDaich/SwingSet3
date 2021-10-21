@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,6 +20,8 @@ package org.jdesktop.swingx.treetable;
 
 import java.util.Enumeration;
 
+import javax.swing.tree.TreeNode;
+
 /**
  * Defines the requirements for a tree table node object that can change -- by
  * adding or removing child nodes, or by changing the contents of a user object
@@ -35,13 +35,14 @@ import java.util.Enumeration;
  * @author Karl Schaefer
  */
 public interface MutableTreeTableNode extends TreeTableNode {
+	
     /**
      * Returns an enumeration this node's children.
      * 
-     * @return an enumeration of {@code TreeTableNode}s
+     * @return an enumeration of {@code MutableTreeTableNode}s
      */
     @Override
-    Enumeration<? extends MutableTreeTableNode> children();
+    Enumeration<? extends TreeNode> children();
     
     /**
      * Adds the {@code child} to this node at the specified {@code index}. This
