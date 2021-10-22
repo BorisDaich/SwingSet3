@@ -1,6 +1,4 @@
 /*
- * $Id: JXListTest.java 3199 2009-01-21 18:37:28Z kschaefe $
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -726,7 +724,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
     protected DefaultListModelF createAscendingListModel(int startRow, int count) {
         DefaultListModelF l = new DefaultListModelF();
         for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(new Integer(row));
+            l.addElement(Integer.valueOf(row));
         }
         return l;
     }

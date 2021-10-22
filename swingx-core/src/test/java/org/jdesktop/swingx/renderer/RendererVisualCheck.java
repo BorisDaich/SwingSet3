@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -420,17 +418,17 @@ public class RendererVisualCheck extends InteractiveTestCase {
     private Object[] columnNames = {
             "Buy/Sell", "Type", "SubType", "Ccy1", "Amount1", "Ccy2", "Amount2", "DealId"};
         private Object[][] data = {
-            {"Buy&Sell", "Ccy Swap", "A1", "EUR", new Double(1000000.00), "USD", new Double(1439000.00), 50},
-            {"Buy&Sell", "Ccy Swap", "A3", "USD", new Double(1438900.00), "EUR", new Double(1000000.00), 50},
-            {"Buy&Sell", "Ccy Swap", "A1", "EUR", new Double(500000.00), "CHF", new Double(550000.00), 350},
-            {"Buy&Sell", "Ccy Swap", "A1", "CHF", new Double(549800.00), "EUR", new Double(500000.00), 350},
-            {"Sell&Buy", "Ccy Swap", "A3", "USD", new Double(1000000.00), "EUR", new Double(749000.00), 2250},
-            {"Sell&Buy", "Ccy Swap", "A1", "EUR", new Double(748900.00), "USD", new Double(1000000.00), 2250},
-            {"Buy&Sell", "Ccy Swap", "A1", "GBP", new Double(1000000.00), "USD", new Double(1638100.00), 400},
-            {"Buy&Sell", "Ccy Swap", "A3", "USD", new Double(1638200.00), "GBP", new Double(1000000.00), 400},
-            {"Sell", "Ccy Spot", "A1", "AUD", new Double(343575.0), "EUR", new Double(250000.0), 11990},
-            {"Buy", "Ccy Spot", "A1", "EUR", new Double(100000.00), "JPY", new Double(1099000.00), 259},
-            {"Sell", "Ccy Fwd", "A3", "DKK", new Double(74889.00), "EUR", new Double(10000.00), 115439},};
+            {"Buy&Sell", "Ccy Swap", "A1", "EUR", Double.valueOf(1000000.00), "USD", Double.valueOf(1439000.00), 50},
+            {"Buy&Sell", "Ccy Swap", "A3", "USD", Double.valueOf(1438900.00), "EUR", Double.valueOf(1000000.00), 50},
+            {"Buy&Sell", "Ccy Swap", "A1", "EUR", Double.valueOf(500000.00), "CHF", Double.valueOf(550000.00), 350},
+            {"Buy&Sell", "Ccy Swap", "A1", "CHF", Double.valueOf(549800.00), "EUR", Double.valueOf(500000.00), 350},
+            {"Sell&Buy", "Ccy Swap", "A3", "USD", Double.valueOf(1000000.00), "EUR", Double.valueOf(749000.00), 2250},
+            {"Sell&Buy", "Ccy Swap", "A1", "EUR", Double.valueOf(748900.00), "USD", Double.valueOf(1000000.00), 2250},
+            {"Buy&Sell", "Ccy Swap", "A1", "GBP", Double.valueOf(1000000.00), "USD", Double.valueOf(1638100.00), 400},
+            {"Buy&Sell", "Ccy Swap", "A3", "USD", Double.valueOf(1638200.00), "GBP", Double.valueOf(1000000.00), 400},
+            {"Sell", "Ccy Spot", "A1", "AUD", Double.valueOf(343575.0), "EUR", Double.valueOf(250000.0), 11990},
+            {"Buy", "Ccy Spot", "A1", "EUR", Double.valueOf(100000.00), "JPY", Double.valueOf(1099000.00), 259},
+            {"Sell", "Ccy Fwd", "A3", "DKK", Double.valueOf(74889.00), "EUR", Double.valueOf(10000.00), 115439},};
 
     public void interactiveAlternateRowGrouping() {
         JXTable table = new JXTable(data, columnNames);

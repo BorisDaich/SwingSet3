@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -265,9 +263,7 @@ public class ShadowRenderer {
             this.size = shadowSize;
         }
         
-        changeSupport.firePropertyChange(SIZE_CHANGED_PROPERTY,
-                                         new Integer(oldSize),
-                                         new Integer(this.size));
+        changeSupport.firePropertyChange(SIZE_CHANGED_PROPERTY, Integer.valueOf(oldSize), Integer.valueOf(this.size));
     }
 
     /**

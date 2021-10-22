@@ -162,7 +162,7 @@ public class SynthCheckBoxPainterTest extends JFrame
         Object[] row = new Object[this.cols];
         this.data.add(row);
         row[0] = "cell " + i + ":" + 0;
-        row[1] = new Boolean(i % 2 == 0);
+        row[1] = Boolean.valueOf(i % 2 == 0);
         row[2] = createIcon();
       }
       // for debugging: solid background in row with striping color

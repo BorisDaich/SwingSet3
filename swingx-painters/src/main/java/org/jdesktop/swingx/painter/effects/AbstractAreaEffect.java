@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,8 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
-
 package org.jdesktop.swingx.painter.effects;
 
 import static org.jdesktop.swingx.util.GraphicsUtilities.createCompatibleTranslucentImage;
@@ -45,7 +41,9 @@ import java.awt.image.BufferedImage;
  */
 @SuppressWarnings("nls")
 public class AbstractAreaEffect implements AreaEffect {
+	
     private static final boolean debug = false;
+    
     /**
      * Creates a new instance of AreaEffect
      */
@@ -82,15 +80,12 @@ public class AbstractAreaEffect implements AreaEffect {
                 if (debug) {
                     g2.setPaint(Color.WHITE);
                     g2.setComposite(AlphaComposite.SrcOver);
-                    g2.drawRect(0, 0, effectBounds.width - 1,
-                            effectBounds.height - 1);
+                    g2.drawRect(0, 0, effectBounds.width - 1, effectBounds.height - 1);
                 }
 
                 // turn on smoothing
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.translate(getEffectWidth() - getOffset().getX(),
-                        getEffectWidth() - getOffset().getY());
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.translate(getEffectWidth() - getOffset().getX(), getEffectWidth() - getOffset().getY());
                 paintBorderGlow(g2, clipShape, width, height);
 
                 // clip out the parts we don't want
@@ -125,9 +120,9 @@ public class AbstractAreaEffect implements AreaEffect {
     BufferedImage _clipImage = null;
     private BufferedImage getClipImage(final Rectangle effectBounds) {
         // set up a temp buffer
-        if(_clipImage == null ||
-                _clipImage.getWidth() != effectBounds.width ||
-                _clipImage.getHeight() != effectBounds.height) {
+        if(_clipImage == null 
+        	|| _clipImage.getWidth() != effectBounds.width 
+        	|| _clipImage.getHeight() != effectBounds.height) {
             _clipImage = createCompatibleTranslucentImage(effectBounds.width, effectBounds.height);
         }
         _clipImage.getGraphics().clearRect(0,0,_clipImage.getWidth(), _clipImage.getHeight());
@@ -285,7 +280,7 @@ public class AbstractAreaEffect implements AreaEffect {
     public void setBrushSteps(int brushSteps) {
         int oldBrushSteps = this.brushSteps;
         this.brushSteps = brushSteps;
-        propertyChangeSupport.firePropertyChange("brushSteps", new Integer(oldBrushSteps), new Integer(brushSteps));
+        propertyChangeSupport.firePropertyChange("brushSteps", Integer.valueOf(oldBrushSteps), Integer.valueOf(brushSteps));
     }
     
     /**
@@ -308,7 +303,7 @@ public class AbstractAreaEffect implements AreaEffect {
     public void setEffectWidth(int effectWidth) {
         int oldEffectWidth = this.effectWidth;
         this.effectWidth = effectWidth;
-        propertyChangeSupport.firePropertyChange("effectWidth", new Integer(oldEffectWidth), new Integer(effectWidth));
+        propertyChangeSupport.firePropertyChange("effectWidth", Integer.valueOf(oldEffectWidth), Integer.valueOf(effectWidth));
     }
     
     /**
@@ -331,7 +326,7 @@ public class AbstractAreaEffect implements AreaEffect {
     public void setRenderInsideShape(boolean renderInsideShape) {
         boolean oldRenderInsideShape = this.renderInsideShape;
         this.renderInsideShape = renderInsideShape;
-        propertyChangeSupport.firePropertyChange("renderInsideShape", new Boolean(oldRenderInsideShape), new Boolean(renderInsideShape));
+        propertyChangeSupport.firePropertyChange("renderInsideShape", Boolean.valueOf(oldRenderInsideShape), Boolean.valueOf(renderInsideShape));
     }
     
     /**
@@ -377,7 +372,7 @@ public class AbstractAreaEffect implements AreaEffect {
     public void setShouldFillShape(boolean shouldFillShape) {
         boolean oldShouldFillShape = this.shouldFillShape;
         this.shouldFillShape = shouldFillShape;
-        propertyChangeSupport.firePropertyChange("shouldFillShape", new Boolean(oldShouldFillShape), new Boolean(shouldFillShape));
+        propertyChangeSupport.firePropertyChange("shouldFillShape", Boolean.valueOf(oldShouldFillShape), Boolean.valueOf(shouldFillShape));
     }
     
     /**
@@ -400,7 +395,7 @@ public class AbstractAreaEffect implements AreaEffect {
     public void setShapeMasked(boolean shapeMasked) {
         boolean oldShapeMasked = this.shapeMasked;
         this.shapeMasked = shapeMasked;
-        propertyChangeSupport.firePropertyChange("shapeMasked", new Boolean(oldShapeMasked), new Boolean(shapeMasked));
+        propertyChangeSupport.firePropertyChange("shapeMasked", Boolean.valueOf(oldShapeMasked), Boolean.valueOf(shapeMasked));
     }
     
 }

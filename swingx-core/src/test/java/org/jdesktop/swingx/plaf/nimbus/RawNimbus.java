@@ -166,33 +166,31 @@ public class RawNimbus {
 
     @SuppressWarnings("serial")
 	public static class SomeData extends AbstractTableModel {
-        protected final String[] names = { "First Name", "Last Name", "Favorite Color",
-                "No.", "Vegetarian" };
+        protected final String[] names = { "First Name", "Last Name", "Favorite Color", "No.", "Vegetarian" };
         protected final Object[][] data = {
-                { "Mark", "Andrews", Color.red, new Integer(2), new Boolean(true) },
-                { "Tom", "Ball", Color.blue, new Integer(99), new Boolean(false) },
-                { "Alan", "Chung", Color.green, new Integer(838), new Boolean(false) },
-                { "Jeff", "Dinkins", Color.cyan, new Integer(8), new Boolean(true) },
-                { "Amy", "Fowler", Color.yellow, new Integer(3), new Boolean(false) },
-                { "Brian", "Gerhold", Color.green, new Integer(0), new Boolean(false) },
-                { "James", "Gosling", Color.magenta, new Integer(21), new Boolean(false) },
-                { "David", "Karlton", Color.red, new Integer(1), new Boolean(false) },
-                { "Dave", "Kloba", Color.yellow, new Integer(14), new Boolean(false) },
-                { "Peter", "Korn", Color.orange, new Integer(12), new Boolean(false) },
-                { "Phil", "Milne", Color.magenta, new Integer(3), new Boolean(false) },
-                { "Dave", "Moore", Color.green, new Integer(88), new Boolean(false) },
-                { "Hans", "Muller", Color.red, new Integer(5), new Boolean(false) },
+                { "Mark", "Andrews", Color.red, Integer.valueOf(2), Boolean.valueOf(true) },
+                { "Tom", "Ball", Color.blue, Integer.valueOf(99), Boolean.valueOf(false) },
+                { "Alan", "Chung", Color.green, Integer.valueOf(838), Boolean.valueOf(false) },
+                { "Jeff", "Dinkins", Color.cyan, Integer.valueOf(8), Boolean.valueOf(true) },
+                { "Amy", "Fowler", Color.yellow, Integer.valueOf(3), Boolean.valueOf(false) },
+                { "Brian", "Gerhold", Color.green, Integer.valueOf(0), Boolean.valueOf(false) },
+                { "James", "Gosling", Color.magenta, Integer.valueOf(21), Boolean.valueOf(false) },
+                { "David", "Karlton", Color.red, Integer.valueOf(1), Boolean.valueOf(false) },
+                { "Dave", "Kloba", Color.yellow, Integer.valueOf(14), Boolean.valueOf(false) },
+                { "Peter", "Korn", Color.orange, Integer.valueOf(12), Boolean.valueOf(false) },
+                { "Phil", "Milne", Color.magenta, Integer.valueOf(3), Boolean.valueOf(false) },
+                { "Dave", "Moore", Color.green, Integer.valueOf(88), Boolean.valueOf(false) },
+                { "Hans", "Muller", Color.red, Integer.valueOf(5), Boolean.valueOf(false) },
 
-                { "Rick", "Levenson", Color.blue, new Integer(2), new Boolean(false) },
-                { "Tim", "Prinzing", Color.blue, new Integer(22), new Boolean(false) },
-                { "Chester", "Rose", Color.black, new Integer(0), new Boolean(false) },
-                { "Ray", "Ryan", Color.gray, new Integer(77), new Boolean(false) },
-                { "Georges", "Saab", Color.red, new Integer(4), new Boolean(false) },
-                { "Willie", "Walker", Color.blue, new Integer(4),
-                        new Boolean(false) },
+                { "Rick", "Levenson", Color.blue, Integer.valueOf(2), Boolean.valueOf(false) },
+                { "Tim", "Prinzing", Color.blue, Integer.valueOf(22), Boolean.valueOf(false) },
+                { "Chester", "Rose", Color.black, Integer.valueOf(0), Boolean.valueOf(false) },
+                { "Ray", "Ryan", Color.gray, Integer.valueOf(77), Boolean.valueOf(false) },
+                { "Georges", "Saab", Color.red, Integer.valueOf(4), Boolean.valueOf(false) },
+                { "Willie", "Walker", Color.blue, Integer.valueOf(4), Boolean.valueOf(false) },
 
-                { "Kathy", "Walrath", Color.blue, new Integer(8), new Boolean(false) },
-                { "Arnaud", "Weber", Color.green, new Integer(44), new Boolean(false) } };
+                { "Kathy", "Walrath", Color.blue, Integer.valueOf(8), Boolean.valueOf(false) },
+                { "Arnaud", "Weber", Color.green, Integer.valueOf(44), Boolean.valueOf(false) } };
 
         public int getColumnCount() {
             return names.length;

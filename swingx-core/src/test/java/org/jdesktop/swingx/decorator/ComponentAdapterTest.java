@@ -240,7 +240,7 @@ public class ComponentAdapterTest extends TestCase {
     public void testColumnIdentifierReverseHidden() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = Integer.valueOf(50);
         table.getColumn(1).setIdentifier(id);
         table.getColumnExt(1).setVisible(false);
         assertEquals(1, adapter.getColumnIndex(id));
@@ -256,7 +256,7 @@ public class ComponentAdapterTest extends TestCase {
     public void testColumnIdentifierReverse() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = Integer.valueOf(50);
         table.getColumn(1).setIdentifier(id);
         assertEquals(1, adapter.getColumnIndex(id));
     }
@@ -270,7 +270,7 @@ public class ComponentAdapterTest extends TestCase {
     public void testColumnIdentifierReverseNotFound() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = Integer.valueOf(50);
         table.getColumn(1).setIdentifier(id);
         assertEquals(-1, adapter.getColumnIndex("unknown"));
     }
@@ -321,7 +321,7 @@ public class ComponentAdapterTest extends TestCase {
     public void testColumnIdentifierAt() {
         JXTableT table =  new JXTableT(new AncientSwingTeam());
         ComponentAdapter adapter = table.getComponentAdapter(0, 0);
-        Object id = new Integer(50);
+        Object id = Integer.valueOf(50);
         table.getColumn(0).setIdentifier(id);
         assertEquals(table.getColumn(0).getIdentifier(), adapter.getColumnIdentifierAt(0));
         // this fails because the adapter returns a string representation of the identifier
@@ -682,7 +682,7 @@ public class ComponentAdapterTest extends TestCase {
     private DefaultTableModel createAscendingModel(int startRow, int count) {
         DefaultTableModel model = new DefaultTableModel(count, 5);
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, 0);
+            model.setValueAt(Integer.valueOf(startRow++), i, 0);
         }
         return model;
     }

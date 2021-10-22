@@ -2,7 +2,6 @@
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx.action;
 
 import java.awt.BorderLayout;
@@ -180,7 +179,7 @@ public class TargetableActionTest extends TestCase {
 		TableModel dataModel = new AbstractTableModel() {
                 public int getColumnCount() { return 4; }
                 public int getRowCount() { return 4;}
-                public Object getValueAt(int row, int col) { return new Integer(row*col); }
+                public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
                 @Override
                 public boolean isCellEditable(int row, int col) { return true; }
             };

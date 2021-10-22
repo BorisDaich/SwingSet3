@@ -3479,7 +3479,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testMixedComparableTypes() {
         
         Object[][] rowData = new Object[][] {
-                new Object[] { Boolean.TRUE, new Integer(2) },
+                new Object[] { Boolean.TRUE, Integer.valueOf(2) },
                 new Object[] { Boolean.TRUE, "BC" } };
         String[] columnNames = new String[] { "Critical", "Task" };
         DefaultTableModel model =  new DefaultTableModel(rowData, columnNames);
@@ -3496,7 +3496,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
     public void testMixedComparableTypesWithNonComparable() {
         
         Object[][] rowData = new Object[][] {
-                new Object[] { Boolean.TRUE, new Integer(2) },
+                new Object[] { Boolean.TRUE, Integer.valueOf(2) },
                 new Object[] { Boolean.TRUE, new Object() } };
         String[] columnNames = new String[] { "Critical", "Task" };
         DefaultTableModel model =  new DefaultTableModel(rowData, columnNames);
@@ -3623,7 +3623,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
             }
         };
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, 0);
+            model.setValueAt(Integer.valueOf(startRow++), i, 0);
         }
         return model;
     }
@@ -3652,7 +3652,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
         };
         int filledColumn = fillLast ? columnCount - 1 : 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            model.setValueAt(new Integer(startRow++), i, filledColumn);
+            model.setValueAt(Integer.valueOf(startRow++), i, filledColumn);
         }
         return model;
     }
@@ -3771,31 +3771,31 @@ public class JXTableUnitTest extends InteractiveTestCase {
             }
 
             columnSamples = new Object[12];
-            columnSamples[0] = new Integer(0);
+            columnSamples[0] = Integer.valueOf(0);
             columnSamples[1] = "Simple String Value";
-            columnSamples[2] = new Integer(1000);
+            columnSamples[2] = Integer.valueOf(1000);
             columnSamples[3] = Boolean.TRUE;
             columnSamples[4] = new Date(100);
-            columnSamples[5] = new Float(1.5);
+            columnSamples[5] = Float.valueOf(1.5f);
             columnSamples[IDX_COL_LINK] = new LinkModel("Sun Micro", "_blank", linkURL);
-            columnSamples[7] = new Integer(3023);
+            columnSamples[7] = Integer.valueOf(3023);
             columnSamples[8] = "John Doh";
             columnSamples[9] = "23434 Testcase St";
-            columnSamples[10] = new Integer(33333);
+            columnSamples[10] = Integer.valueOf(33333);
             columnSamples[11] = Boolean.FALSE;
 
             columnSamples2 = new Object[12];
-            columnSamples2[0] = new Integer(0);
+            columnSamples2[0] = Integer.valueOf(0);
             columnSamples2[1] = "Another String Value";
-            columnSamples2[2] = new Integer(999);
+            columnSamples2[2] = Integer.valueOf(999);
             columnSamples2[3] = Boolean.FALSE;
             columnSamples2[4] = new Date(333);
-            columnSamples2[5] = new Float(22.22);
+            columnSamples2[5] = Float.valueOf(22.22f);
             columnSamples2[IDX_COL_LINK] = new LinkModel("Sun Web", "new_frame", linkURL);
-            columnSamples[7] = new Integer(5503);
+            columnSamples[7] = Integer.valueOf(5503);
             columnSamples[8] = "Jane Smith";
             columnSamples[9] = "2343 Table Blvd.";
-            columnSamples[10] = new Integer(2);
+            columnSamples[10] = Integer.valueOf(2);
             columnSamples[11] = Boolean.TRUE;
 
         }
@@ -3828,8 +3828,8 @@ public class JXTableUnitTest extends InteractiveTestCase {
             else {
                 value = columnSamples2[column];
             }
-            return column == 0 ? new Integer(row >> 3) :
-                column == 3 ? new Boolean(row % 2 == 0) : value;
+            return column == 0 ? Integer.valueOf(row >> 3) :
+                column == 3 ? Boolean.valueOf(row % 2 == 0) : value;
         }
 
         @Override

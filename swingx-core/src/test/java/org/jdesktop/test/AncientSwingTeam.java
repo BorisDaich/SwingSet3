@@ -30,7 +30,6 @@ public class AncientSwingTeam extends AbstractTableModel {
     public static final int BOOLEAN_COLUMN = 4;
 
     /**
-     * 
      * Creates and returns a listModel with items of type NamedColor.
      * @return a ListModel containing items of type NamedColor.
      */
@@ -151,30 +150,29 @@ public class AncientSwingTeam extends AbstractTableModel {
         NamedColor yellow      = new NamedColor(Color.yellow, "Yellow");
 
         protected final Object[][] data = {
-            { "Mark", "Andrews", red, new Integer(2), new Boolean(true) },
-            { "Tom", "Ball", blue, new Integer(99), new Boolean(false) },
-            { "Alan", "Chung", green, new Integer(838), new Boolean(false) },
-            { "Jeff", "Dinkins", turquoise, new Integer(8), new Boolean(true) },
-            { "Amy", "Fowler", yellow, new Integer(3), new Boolean(false) },
-            { "Brian", "Gerhold", green, new Integer(0), new Boolean(false) },
-            { "James", "Gosling", suspectpink, new Integer(21), new Boolean(false) },
-            { "David", "Karlton", red, new Integer(1), new Boolean(false) },
-            { "Dave", "Kloba", yellow, new Integer(14), new Boolean(false) },
-            { "Peter", "Korn", purple, new Integer(12), new Boolean(false) },
-            { "Phil", "Milne", purple, new Integer(3), new Boolean(false) },
-            { "Dave", "Moore", green, new Integer(88), new Boolean(false) },
-            { "Hans", "Muller", rustred, new Integer(5), new Boolean(false) },
+            { "Mark", "Andrews", red, Integer.valueOf(2), Boolean.valueOf(true) },
+            { "Tom", "Ball", blue, Integer.valueOf(99), Boolean.valueOf(false) },
+            { "Alan", "Chung", green, Integer.valueOf(838), Boolean.valueOf(false) },
+            { "Jeff", "Dinkins", turquoise, Integer.valueOf(8), Boolean.valueOf(true) },
+            { "Amy", "Fowler", yellow, Integer.valueOf(3), Boolean.valueOf(false) },
+            { "Brian", "Gerhold", green, Integer.valueOf(0), Boolean.valueOf(false) },
+            { "James", "Gosling", suspectpink, Integer.valueOf(21), Boolean.valueOf(false) },
+            { "David", "Karlton", red, Integer.valueOf(1), Boolean.valueOf(false) },
+            { "Dave", "Kloba", yellow, Integer.valueOf(14), Boolean.valueOf(false) },
+            { "Peter", "Korn", purple, Integer.valueOf(12), Boolean.valueOf(false) },
+            { "Phil", "Milne", purple, Integer.valueOf(3), Boolean.valueOf(false) },
+            { "Dave", "Moore", green, Integer.valueOf(88), Boolean.valueOf(false) },
+            { "Hans", "Muller", rustred, Integer.valueOf(5), Boolean.valueOf(false) },
 
-            { "Rick", "Levenson", blue, new Integer(2), new Boolean(false) },
-            { "Tim", "Prinzing", blue, new Integer(22), new Boolean(false) },
-            { "Chester", "Rose", black, new Integer(0), new Boolean(false) },
-            { "Ray", "Ryan", gray, new Integer(77), new Boolean(false) },
-            { "Georges", "Saab", red, new Integer(4), new Boolean(false) },
-            { "Willie", "Walker", jfcblue, new Integer(4),
-                    new Boolean(false) },
+            { "Rick", "Levenson", blue, Integer.valueOf(2), Boolean.valueOf(false) },
+            { "Tim", "Prinzing", blue, Integer.valueOf(22), Boolean.valueOf(false) },
+            { "Chester", "Rose", black, Integer.valueOf(0), Boolean.valueOf(false) },
+            { "Ray", "Ryan", gray, Integer.valueOf(77), Boolean.valueOf(false) },
+            { "Georges", "Saab", red, Integer.valueOf(4), Boolean.valueOf(false) },
+            { "Willie", "Walker", jfcblue, Integer.valueOf(4), Boolean.valueOf(false) },
 
-            { "Kathy", "Walrath", blue, new Integer(8), new Boolean(false) },
-            { "Arnaud", "Weber", green, new Integer(44), new Boolean(false) } };
+            { "Kathy", "Walrath", blue, Integer.valueOf(8), Boolean.valueOf(false) },
+            { "Arnaud", "Weber", green, Integer.valueOf(44), Boolean.valueOf(false) } };
 
     protected int rowCount = data.length;
 
@@ -253,7 +251,8 @@ public class AncientSwingTeam extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex + length - 1);
     }
     
-    public static class NamedColor extends Color {
+    @SuppressWarnings("serial")
+	public static class NamedColor extends Color {
         String name;
         public NamedColor(Color color, String name) {
             super(color.getRGB());

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -61,10 +59,7 @@ public class StrictNumberFormatter extends NumberFormatter {
     }
 
 
-    /**
-     * 
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("rawtypes")
     private void updateMinMax() {
         Comparable min = null;
         Comparable max = null;
@@ -95,15 +90,15 @@ public class StrictNumberFormatter extends NumberFormatter {
     }
 
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("rawtypes")
     @Override
     public void setMaximum(Comparable max) {
         super.setMaximum(max);
         this.maxAsBig = max != null ? new BigDecimal(max.toString()) : null;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void setMinimum(Comparable minimum) {
         super.setMinimum(minimum);
         this.minAsBig = minimum != null ? new BigDecimal(minimum.toString()) : null;
@@ -142,22 +137,22 @@ public class StrictNumberFormatter extends NumberFormatter {
     private Object convertValueToValueClass(Object value, Class<?> valueClass) {
         if (valueClass != null && (value instanceof Number)) {
             if (valueClass == Integer.class) {
-                return new Integer(((Number)value).intValue());
+                return Integer.valueOf(((Number)value).intValue());
             }
             else if (valueClass == Long.class) {
-                return new Long(((Number)value).longValue());
+                return Long.valueOf(((Number)value).longValue());
             }
             else if (valueClass == Float.class) {
-                return new Float(((Number)value).floatValue());
+                return Float.valueOf(((Number)value).floatValue());
             }
             else if (valueClass == Double.class) {
-                return new Double(((Number)value).doubleValue());
+                return Double.valueOf(((Number)value).doubleValue());
             }
             else if (valueClass == Byte.class) {
-                return new Byte(((Number)value).byteValue());
+                return Byte.valueOf(((Number)value).byteValue());
             }
             else if (valueClass == Short.class) {
-                return new Short(((Number)value).shortValue());
+                return Short.valueOf(((Number)value).shortValue());
             }
         }
         return value;

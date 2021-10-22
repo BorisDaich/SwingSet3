@@ -168,7 +168,7 @@ public class ComponentTreeTableModel extends AbstractTreeTableModel {
         if (column == 0) {
             comp.setName(String.valueOf(value));
         } else if (column == 3) {
-            comp.setSize(new Integer((Integer) value), comp.getHeight());
+            comp.setSize(Integer.valueOf((Integer)value), comp.getHeight());
         }
         nodeChanged(comp);
     }

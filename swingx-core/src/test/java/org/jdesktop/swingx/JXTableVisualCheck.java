@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -91,8 +89,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class JXTableVisualCheck extends JXTableUnitTest {
-    private static final Logger LOG = Logger.getLogger(JXTableVisualCheck.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JXTableVisualCheck.class.getName());
+    
     public static void main(String args[]) {
       JXTableVisualCheck test = new JXTableVisualCheck();
       try {
@@ -1377,18 +1376,18 @@ public class JXTableVisualCheck extends JXTableUnitTest {
             columns[i] = new TableColumnExt(i);
             table.addColumn(columns[i]);
         }
-        columns[0].setPrototypeValue(new Integer(0));
+        columns[0].setPrototypeValue(Integer.valueOf(0));
         columns[1].setPrototypeValue("Simple String Value");
-        columns[2].setPrototypeValue(new Integer(1000));
+        columns[2].setPrototypeValue(Integer.valueOf(1000));
         columns[3].setPrototypeValue(Boolean.TRUE);
         columns[4].setPrototypeValue(new Date(100));
-        columns[5].setPrototypeValue(new Float(1.5));
+        columns[5].setPrototypeValue(Float.valueOf(1.5f));
         columns[6].setPrototypeValue(new LinkModel("Sun Micro", "_blank",
                                               tableModel.linkURL));
-        columns[7].setPrototypeValue(new Integer(3023));
+        columns[7].setPrototypeValue(Integer.valueOf(3023));
         columns[8].setPrototypeValue("John Doh");
         columns[9].setPrototypeValue("23434 Testcase St");
-        columns[10].setPrototypeValue(new Integer(33333));
+        columns[10].setPrototypeValue(Integer.valueOf(33333));
         columns[11].setPrototypeValue(Boolean.FALSE);
 
         table.setVisibleRowCount(12);
@@ -1436,7 +1435,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         columns[4].setHeaderValue("String Value");
         columns[4].setPrototypeValue("Simple String Value");
         columns[3].setHeaderValue("Int Value");
-        columns[3].setPrototypeValue(new Integer(1000));
+        columns[3].setPrototypeValue(Integer.valueOf(1000));
         columns[2].setHeaderValue("Bool");
         columns[2].setPrototypeValue(Boolean.FALSE);
         //columns[2].setSortable(false);
@@ -1444,7 +1443,7 @@ public class JXTableVisualCheck extends JXTableUnitTest {
         columns[1].setPrototypeValue(new Date(0));
         //columns[1].setSortable(false);
         columns[0].setHeaderValue("Float");
-        columns[0].setPrototypeValue(new Float(5.5));
+        columns[0].setPrototypeValue(Float.valueOf(5.5f));
 
         table.setRowHeight(24);
         table.setRowMargin(2);

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -38,8 +36,6 @@ import javax.swing.text.NumberFormatter;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.table.DatePickerCellEditor;
-import org.jdesktop.swingx.table.NumberEditorExt;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,9 +48,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class NumberEditorExtIssues extends InteractiveTestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(NumberEditorExtIssues.class.getName());
+    private static final Logger LOG = Logger.getLogger(NumberEditorExtIssues.class.getName());
     
     private static final String TOO_BIG_INTEGER = "11111111111111111111111111";
     private static final int INTEGER_COLUMN = 0;
@@ -94,7 +90,7 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
 //    @Test
     public void interactiveMixedColumnEditors() {
         // mixed types in column
-        Object[] values = new Object[] {new Integer(10), new Double(10.5), new Date(),
+        Object[] values = new Object[] {Integer.valueOf(10), Double.valueOf(10.5), new Date(),
                 new JLabel("dummy"),
                 new Point(4, 6)};
         DefaultTableModel model = new DefaultTableModel(10, 2) {
@@ -182,7 +178,7 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getInstance();
         // no need to do anything special - parsing of doubles fails if out-off range?
         NumberFormatter formatter = new NumberFormatter(format);
-        String text = "9" + new Double(Double.MAX_VALUE).toString();
+        String text = "9" + Double.valueOf(Double.MAX_VALUE).toString();
         Number number = (Number) formatter.stringToValue(text);
         LOG.info("number: " + number);
     }
@@ -261,7 +257,7 @@ public class NumberEditorExtIssues extends InteractiveTestCase {
         // this passes - everything fitting into double range is acceptable
         format.parse(TOO_BIG_INTEGER);
         // this blows - must fit into Integer.MIN/MAX
-        new Integer(TOO_BIG_INTEGER);
+        Integer.valueOf(TOO_BIG_INTEGER);
     }
     
     @Before

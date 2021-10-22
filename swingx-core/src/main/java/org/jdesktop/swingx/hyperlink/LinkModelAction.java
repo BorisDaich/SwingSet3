@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,8 +38,9 @@ import javax.swing.Action;
  */
 public class LinkModelAction<T extends LinkModel> extends AbstractHyperlinkAction<T> {
     
-    private ActionListener delegate;
     public static final String VISIT_ACTION = "visit";
+    
+    private ActionListener delegate;
     private PropertyChangeListener linkListener;
     
 
@@ -126,7 +125,7 @@ public class LinkModelAction<T extends LinkModel> extends AbstractHyperlinkActio
         if (getTarget() != null) {
             putValue(Action.NAME, getTarget().getText());
             putValue(Action.SHORT_DESCRIPTION, getTarget().getURL().toString());
-            putValue(VISITED_KEY, new Boolean(getTarget().getVisited()));
+            putValue(VISITED_KEY, Boolean.valueOf(getTarget().getVisited()));
         } else {
             Object[] keys = getKeys();
             if (keys == null) return;

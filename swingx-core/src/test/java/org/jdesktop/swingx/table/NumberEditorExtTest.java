@@ -225,7 +225,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Long.class);
-        String text = new Long(Long.MAX_VALUE).toString() + "9";
+        String text = Long.valueOf(Long.MAX_VALUE).toString() + "9";
         formatter.stringToValue(text);
     }
     
@@ -234,7 +234,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Float.class);
-        String text = "9" + new Float(Float.MAX_VALUE).toString();
+        String text = "9" + Float.valueOf(Float.MAX_VALUE).toString();
         formatter.stringToValue(text);
     }
     
@@ -244,7 +244,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Float.class);
-        String text = "-9" + new Float(Float.MAX_VALUE).toString();
+        String text = "-9" + Float.valueOf(Float.MAX_VALUE).toString();
         formatter.stringToValue(text);
     }
     
@@ -270,7 +270,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new StrictNumberFormatter(format);
         formatter.setValueClass(Integer.class);
-        String text = new Integer(Integer.MAX_VALUE).toString() + "1";
+        String text = Integer.valueOf(Integer.MAX_VALUE).toString() + "1";
         formatter.stringToValue(text);
     }
 
@@ -284,8 +284,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     @Test
     public void testEditorValueParsing() {
-        JFormattedTextField field = (JFormattedTextField) cellEditor
-        .getTableCellEditorComponent(table, 100, false, 0, INTEGER_COLUMN);
+        JFormattedTextField field = (JFormattedTextField) cellEditor.getTableCellEditorComponent(table, 100, false, 0, INTEGER_COLUMN);
         // add valid digit
         field.setText(field.getText() + "9");
         assertTrue("valid input " + field.getText(), cellEditor.stopCellEditing());
@@ -302,8 +301,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     @Test
     public void testEditorStrictValueParsing() {
-        JFormattedTextField field = (JFormattedTextField) cellEditorStrict
-                .getTableCellEditorComponent(table, 100, false, 0, INTEGER_COLUMN);
+        JFormattedTextField field = (JFormattedTextField) cellEditorStrict.getTableCellEditorComponent(table, 100, false, 0, INTEGER_COLUMN);
         // add valid digit
         field.setText(field.getText() + "9");
         assertTrue("valid input " + field.getText(), cellEditorStrict.stopCellEditing());
@@ -320,8 +318,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     @Test
     public void testEditorValueExceedBounds() {
-        JFormattedTextField field = (JFormattedTextField) cellEditor
-        .getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
+        JFormattedTextField field = (JFormattedTextField) cellEditor.getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
         // add valid digit - but exceeds Integer bounds so must not return true
         field.setText(field.getText() + "9");
         assertFalse("valid input but exceeds bounds " + field.getText(), cellEditor.stopCellEditing());
@@ -335,8 +332,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     @Test
     public void testEditorStrictValueExceedBounds() {
-        JFormattedTextField field = (JFormattedTextField) cellEditorStrict
-            .getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
+        JFormattedTextField field = (JFormattedTextField) cellEditorStrict.getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
         // add valid digit - but exceeds Integer bounds so must not return true
         field.setText(field.getText() + "9");
         assertFalse("valid input but exceeds bounds " + field.getText(), cellEditorStrict.stopCellEditing());
@@ -350,8 +346,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     @Test(expected = IllegalStateException.class)
     public void testEditorValueIllegalState() {
-        JFormattedTextField field = (JFormattedTextField) cellEditor
-        .getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
+        JFormattedTextField field = (JFormattedTextField) cellEditor.getTableCellEditorComponent(table, Integer.MAX_VALUE, false, 0, INTEGER_COLUMN);
         // add valid digit - but exceeds Integer bounds so must not return true
         field.setText(field.getText() + "9");
         cellEditor.getCellEditorValue();
@@ -377,8 +372,7 @@ public class NumberEditorExtTest extends InteractiveTestCase {
      */
     @Test
     public void testEditorStrictNullValueStandAlone() {
-        cellEditorStrict
-            .getTableCellEditorComponent(table, null, false, 0, INTEGER_COLUMN);
+        cellEditorStrict.getTableCellEditorComponent(table, null, false, 0, INTEGER_COLUMN);
         cellEditorStrict.getCellEditorValue();
     }
 
@@ -594,9 +588,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         final Class<?>[] classes = new Class[] {Byte.class, Short.class, Integer.class,
                 Float.class, Double.class, BigInteger.class, BigDecimal.class, Number.class};
         @SuppressWarnings("serial")
-		DefaultTableModel model = new DefaultTableModel(new String[] {
-                "Byte", "Short", "Integer", "Float", "Double", "BigInteger", 
-                "BigDecimal", "Number"}, 10) {
+		DefaultTableModel model = new DefaultTableModel(new String[] {"Byte", "Short", "Integer", 
+				"Float", "Double", "BigInteger", "BigDecimal", "Number"}, 10) {
             
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -638,9 +631,8 @@ public class NumberEditorExtTest extends InteractiveTestCase {
         final Class<?>[] classes = new Class[] {Byte.class, Short.class, Integer.class,
                 Float.class, Double.class, BigInteger.class, BigDecimal.class, Number.class};
         @SuppressWarnings("serial")
-		DefaultTableModel model = new DefaultTableModel(new String[] {
-                "Byte", "Short", "Integer", "Float", "Double", "BigInteger", 
-                "BigDecimal", "Number"}, 10) {
+		DefaultTableModel model = new DefaultTableModel(new String[] {"Byte", "Short", "Integer", 
+				"Float", "Double", "BigInteger", "BigDecimal", "Number"}, 10) {
             
             @Override
             public Class<?> getColumnClass(int columnIndex) {

@@ -175,7 +175,7 @@ public class ListSortUITest extends InteractiveTestCase {
         assertEquals("second row must be selected", 1, list.getSelectedIndex());
         // add row in model coordinates
         // insert high value
-        Object row = new Integer(100);
+        Object row = Integer.valueOf(100);
         ascendingListModel.addElement(row);
         assertEquals(row, list.getElementAt(0));
         // selection must be moved one below
@@ -384,7 +384,7 @@ public class ListSortUITest extends InteractiveTestCase {
     protected DefaultListModelF createAscendingListModel(int startRow, int count) {
         DefaultListModelF l = new DefaultListModelF();
         for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(new Integer(row));
+            l.addElement(Integer.valueOf(row));
         }
         return l;
     }

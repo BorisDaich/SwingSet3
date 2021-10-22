@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -212,7 +210,7 @@ public class TableColumnExtTest extends TestCase {
     public void testClientPropertyNotification() {
         PropertyChangeReport report = new PropertyChangeReport();
         columnExt.addPropertyChangeListener(report);
-        Object value = new Integer(3);
+        Object value = Integer.valueOf(3);
         columnExt.putClientProperty("somevalue", value);
         assertTrue(report.hasEvents());
         assertEquals(1, report.getEventCount("somevalue"));

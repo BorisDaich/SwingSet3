@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -424,7 +422,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
     }
     int oldDividerSize = this.dividerSize;
     this.dividerSize = dividerSize;
-    firePCS("dividerSize", new Integer( oldDividerSize ), new Integer( dividerSize ));
+    firePCS("dividerSize", Integer.valueOf( oldDividerSize ), Integer.valueOf( dividerSize ));
   }
   
   /**
@@ -447,7 +445,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   {
     boolean oldFloatingDividers = this.floatingDividers;
     this.floatingDividers = floatingDividers;
-    firePCS("floatingDividers", new Boolean( oldFloatingDividers ), new Boolean( floatingDividers ));
+    firePCS("floatingDividers", Boolean.valueOf( oldFloatingDividers ), Boolean.valueOf( floatingDividers ));
   }
   
   /**
@@ -467,7 +465,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable
   {
     boolean oldRemoveDividers = this.removeDividers;
     this.removeDividers = removeDividers;
-    firePCS("removeDividers", new Boolean( oldRemoveDividers ), new Boolean( removeDividers ));
+    firePCS("removeDividers", Boolean.valueOf( oldRemoveDividers ), Boolean.valueOf( removeDividers ));
   }
   
   /**
@@ -610,13 +608,13 @@ public void removeLayoutComponent(Component child) {
     return ((child != null) && child.isVisible() ) ? child.getPreferredSize() : new Dimension(0, 0);
   }
   
-  private Dimension minimumComponentSize(Node node) {
-    if ( layoutMode == NO_MIN_SIZE_LAYOUT )
-      return new Dimension(0, 0);
-
-    Component child = childForNode(node);
-    return ((child != null) && child.isVisible() ) ? child.getMinimumSize() : new Dimension(0, 0);
-  }
+//  private Dimension minimumComponentSize(Node node) { // never used
+//    if ( layoutMode == NO_MIN_SIZE_LAYOUT )
+//      return new Dimension(0, 0);
+//
+//    Component child = childForNode(node);
+//    return ((child != null) && child.isVisible() ) ? child.getMinimumSize() : new Dimension(0, 0);
+//  }
   
   private Dimension preferredNodeSize(Node root) {
     if (root instanceof Leaf) {
@@ -1820,7 +1818,7 @@ public void layoutContainer(Container parent)
      * @param split the node to check
      */
     public void restoreDividers( Split split ) { 
-      boolean nextDividerVisible = false;
+//      boolean nextDividerVisible = false;
       ListIterator<Node> splitChildren = split.getChildren().listIterator();
       while( splitChildren.hasNext()) {
         Node splitChild = splitChildren.next();
