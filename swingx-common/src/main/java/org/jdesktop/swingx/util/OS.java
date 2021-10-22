@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,6 +33,7 @@ public class OS {
   private static final boolean osIsWindowsXP;
   private static final boolean osIsWindows2003;
   private static final boolean osIsWindowsVista;
+  private static final boolean osIsWindows10;
   private static final boolean osIsLinux;
 
     static {
@@ -47,6 +46,7 @@ public class OS {
         osIsWindowsXP = "windows xp".equals(os);
         osIsWindows2003 = "windows 2003".equals(os);
         osIsWindowsVista = "windows vista".equals(os);
+        osIsWindows10 = "windows 10".equals(os);
         osIsLinux = os != null && os.indexOf("linux") != -1;
     }
 
@@ -86,6 +86,13 @@ public class OS {
   }
   
   /**
+   * @return true if this VM is running on Windows 10
+   */
+  public static boolean isWindows10() {
+    return osIsWindows10;
+  }
+  
+  /**
    * @return true if this VM is running on a Linux distribution
    */
   public static boolean isLinux() {
@@ -101,8 +108,8 @@ public class OS {
       return false;
     }
 
-    boolean xpthemeActive = Boolean.TRUE.equals(Toolkit.getDefaultToolkit()
-        .getDesktopProperty("win.xpstyle.themeActive"));
+    // DesktopProperty from java.awt.Toolkit
+    boolean xpthemeActive = Boolean.TRUE.equals(Toolkit.getDefaultToolkit().getDesktopProperty("win.xpstyle.themeActive"));
     if (!xpthemeActive) {
       return false;
     } else {
@@ -127,10 +134,8 @@ public class OS {
     String style = UIManager.getString("win.xpstyle.name");
     if (style == null) {
       // guess the name of the current XPStyle
-      // (win.xpstyle.colorName property found in awt_DesktopProperties.cpp in
-      // JDK source)
-      style = (String)Toolkit.getDefaultToolkit().getDesktopProperty(
-        "win.xpstyle.colorName");
+      // (win.xpstyle.colorName property found in awt_DesktopProperties.cpp in JDK source)
+      style = (String)Toolkit.getDefaultToolkit().getDesktopProperty("win.xpstyle.colorName");
     }
     return style;
   }
