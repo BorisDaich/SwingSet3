@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -104,8 +102,7 @@ public class Utilities {
     public static final int OS_VMS = OS_WIN2000 << 1;
 
     /**
-     *Operating system is one of the Windows variants but we don't know which
-     *one it is
+     *Operating system is one of the Windows variants but we don't know which one it is
      */
     public static final int OS_WIN_OTHER = OS_VMS << 1;
 
@@ -128,7 +125,7 @@ public class Utilities {
     public static final int TYPICAL_WINDOWS_TASKBAR_HEIGHT = 27;
 
     /** A height of the Mac OS X's menu */
-    private static final int TYPICAL_MACOSX_MENU_HEIGHT = 24;
+//    private static final int TYPICAL_MACOSX_MENU_HEIGHT = 24; // NOT USED
     
     private static int operatingSystem = -1;
     
@@ -347,7 +344,7 @@ public class Utilities {
 
                     try {
                         int numb = fields[i].getInt(null);
-                        Integer value = new Integer(numb);
+                        Integer value = Integer.valueOf(numb);
                         names.put(name, value);
                         values.put(value, name);
                     } catch (IllegalArgumentException ex) {
@@ -359,11 +356,11 @@ public class Utilities {
 
         if (names.get("CONTEXT_MENU") == null) { // NOI18N
 
-            Integer n = new Integer(0x20C);
+            Integer n = Integer.valueOf(0x20C);
             names.put("CONTEXT_MENU", n); // NOI18N
             values.put(n, "CONTEXT_MENU"); // NOI18N
 
-            n = new Integer(0x20D);
+            n = Integer.valueOf(0x20D);
             names.put("WINDOWS", n); // NOI18N
             values.put(n, "WINDOWS"); // NOI18N
         }
@@ -390,7 +387,7 @@ public class Utilities {
 
         HashMap[] namesAndValues = initNameAndValues();
 
-        String c = (String) namesAndValues[1].get(new Integer(stroke.getKeyCode()));
+        String c = (String) namesAndValues[1].get(Integer.valueOf(stroke.getKeyCode()));
 
         if (c == null) {
             sb.append(stroke.getKeyChar());
@@ -767,7 +764,7 @@ public class Utilities {
             Integer[] r = new Integer[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Integer(((int[]) array)[i]);
+                r[i] = Integer.valueOf(((int[]) array)[i]);
 
             return r;
         }
@@ -789,7 +786,7 @@ public class Utilities {
             Byte[] r = new Byte[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Byte(((byte[]) array)[i]);
+                r[i] = Byte.valueOf(((byte[]) array)[i]);
 
             return r;
         }
@@ -800,7 +797,7 @@ public class Utilities {
             Character[] r = new Character[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Character(((char[]) array)[i]);
+                r[i] = Character.valueOf(((char[]) array)[i]);
 
             return r;
         }
@@ -811,7 +808,7 @@ public class Utilities {
             Double[] r = new Double[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Double(((double[]) array)[i]);
+                r[i] = Double.valueOf(((double[]) array)[i]);
 
             return r;
         }
@@ -822,7 +819,7 @@ public class Utilities {
             Float[] r = new Float[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Float(((float[]) array)[i]);
+                r[i] = Float.valueOf(((float[]) array)[i]);
 
             return r;
         }
@@ -833,7 +830,7 @@ public class Utilities {
             Long[] r = new Long[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Long(((long[]) array)[i]);
+                r[i] = Long.valueOf(((long[]) array)[i]);
 
             return r;
         }
@@ -844,7 +841,7 @@ public class Utilities {
             Short[] r = new Short[k];
 
             for (i = 0; i < k; i++)
-                r[i] = new Short(((short[]) array)[i]);
+                r[i] = Short.valueOf(((short[]) array)[i]);
 
             return r;
         }
