@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -82,25 +80,25 @@ public class JVM {
    * Constructor for the OS object
    */
   public JVM(String p_JavaVersion) {
-		if (p_JavaVersion.startsWith("17.")) {
+		if (p_JavaVersion.startsWith("17")) {
 			jdkVersion = JDK_17;
-		} else if (p_JavaVersion.startsWith("16.")) {
+		} else if (p_JavaVersion.startsWith("16")) {
 			jdkVersion = JDK_16;
-		} else if (p_JavaVersion.startsWith("15.")) {
+		} else if (p_JavaVersion.startsWith("15")) {
 			jdkVersion = JDK_15;
-		} else if (p_JavaVersion.startsWith("14.")) {
+		} else if (p_JavaVersion.startsWith("14")) {
 			jdkVersion = JDK_14;
-		} else if (p_JavaVersion.startsWith("13.")) {
+		} else if (p_JavaVersion.startsWith("13")) {
 			jdkVersion = JDK_13;
-		} else if (p_JavaVersion.startsWith("12.")) {
+		} else if (p_JavaVersion.startsWith("12")) {
 			jdkVersion = JDK_12;
-		} else if (p_JavaVersion.startsWith("11.")) {
+		} else if (p_JavaVersion.startsWith("11")) {
 			jdkVersion = JDK_11;
-		} else if (p_JavaVersion.startsWith("10.")) {
+		} else if (p_JavaVersion.startsWith("10")) {
 			jdkVersion = JDK_10;
-		} else if (p_JavaVersion.startsWith("9.")) {
+		} else if (p_JavaVersion.startsWith("9")) {
 			jdkVersion = JDK_9;
-		} else if (p_JavaVersion.startsWith("8.")) {
+		} else if (p_JavaVersion.startsWith("8")) {
 			jdkVersion = JDK_8;
 		} else if (p_JavaVersion.startsWith("1.8.")) {
 			jdkVersion = JDK1_8;
