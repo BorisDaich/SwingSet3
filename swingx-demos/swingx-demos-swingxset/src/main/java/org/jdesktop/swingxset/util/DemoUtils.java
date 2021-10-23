@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Window;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.security.Permission;
 import java.util.logging.Logger;
 
 import javax.jnlp.ClipboardService;
@@ -30,8 +31,7 @@ import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 public class DemoUtils {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(DemoUtils.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(DemoUtils.class.getName());
     
     /**
      * Replaces the editor's default copy action in security restricted
@@ -47,8 +47,7 @@ public class DemoUtils {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ClipboardService cs = (ClipboardService)ServiceManager.lookup
-                        ("javax.jnlp.ClipboardService");
+                    ClipboardService cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
                     StringSelection transferable = new StringSelection(editor.getSelectedText());
                     cs.setContents(transferable);
                 } catch (Exception e1) {
@@ -58,12 +57,19 @@ public class DemoUtils {
         };
         editor.getActionMap().put(DefaultEditorKit.copyAction, safeCopy);
     }
-    
+
     private static boolean isRestricted() {
-        SecurityManager manager = System.getSecurityManager();
-        if (manager == null) return false;
+    	// mark for removal since 17:
+        SecurityManager securityMmanager = System.getSecurityManager();
+        if (securityMmanager == null) return false;
         try {
-            manager.checkSystemClipboardAccess();
+//          securityMmanager.checkSystemClipboardAccess();
+        	// deprecated since 8. The dependency on AWTPermission creates an impediment to future modularization of the Java platform. 
+        	// Users of this method should instead invoke checkPermission(java.security.Permission) directly.
+        	// This method calls checkPermission with the AWTPermission("accessClipboard") permission
+        	// java.awt.AWTPermission extends BasicPermission, BasicPermission extends Permission
+        	Permission awtPermission = new java.awt.AWTPermission("accessClipboard");
+        	securityMmanager.checkPermission(awtPermission);
             return false;
         } catch (SecurityException e) {
             // nothing to do - not allowed to access
