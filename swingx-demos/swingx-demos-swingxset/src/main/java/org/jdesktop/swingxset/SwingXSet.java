@@ -28,7 +28,6 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingxset;
 
 import java.awt.BorderLayout;
@@ -139,8 +138,8 @@ public class SwingXSet extends SingleXFrameApplication  {
         UIManager.LookAndFeelInfo lafInfo[] = UIManager.getInstalledLookAndFeels();
         for(int i = 0; i < lafInfo.length; i++) {
             if (lafInfo[i].getName().equals("Nimbus")) {
-                lafInfo[i] = new UIManager.LookAndFeelInfo("Nimbus",
-                        "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+                lafInfo[i] = new UIManager.LookAndFeelInfo("Nimbus", "javax.swing.plaf.nimbus.NimbusLookAndFeel");
+// until Java 8: "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
                 break;
             }
         }
