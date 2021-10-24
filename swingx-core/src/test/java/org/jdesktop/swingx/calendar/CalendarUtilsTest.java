@@ -38,6 +38,7 @@ import org.junit.runners.JUnit4;
  * Tests CalendarUtils.
  * 
  * @author Jeanette Winzenburg
+ * @author Eugen Hanussek https://github.com/homebeaver (use Locale.GERMANY for Calendar used in Germany)
  */
 @RunWith(JUnit4.class)
 public class CalendarUtilsTest extends InteractiveTestCase {
@@ -48,9 +49,29 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     /**
      * default calendar instance
      */
-    private Calendar todayGerman;
+    private Calendar todayGermany;
     private Calendar todayUS;
     private Calendar midJune;
+
+    @Override
+    protected void setUp() throws Exception {
+        todayGermany = Calendar.getInstance(Locale.GERMANY);
+        todayUS = Calendar.getInstance(Locale.US);
+        midJune = Calendar.getInstance(Locale.GERMANY);
+        midJune.set(Calendar.DAY_OF_MONTH, 14);
+        midJune.set(Calendar.MONTH, Calendar.JUNE);
+        midJune.getTimeInMillis();
+    }
+ 
+    @Before
+    public void setUpJ4() throws Exception {
+        setUp();
+    }
+    
+    @After
+    public void tearDownJ4() throws Exception {
+        tearDown();
+    }
 
     @Test
     public void testGetYearInDecade() {
@@ -67,49 +88,49 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     
     @Test
     public void testAddDecadeField() {
-        todayGerman.set(Calendar.YEAR, 2015);
-        CalendarUtils.add(todayGerman, CalendarUtils.DECADE, 1);
-        assertEquals(2025, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2015);
+        CalendarUtils.add(todayGermany, CalendarUtils.DECADE, 1);
+        assertEquals(2025, todayGermany.get(Calendar.YEAR));
     }
     
     @Test
     public void testAddDecadeFieldNegative() {
-        todayGerman.set(Calendar.YEAR, 2015);
-        CalendarUtils.add(todayGerman, CalendarUtils.DECADE, -1);
-        assertEquals(2005, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2015);
+        CalendarUtils.add(todayGermany, CalendarUtils.DECADE, -1);
+        assertEquals(2005, todayGermany.get(Calendar.YEAR));
     }
     
     @Test
     public void testAddNativeField() {
-        todayGerman.set(Calendar.YEAR, 2015);
-        CalendarUtils.add(todayGerman, Calendar.YEAR, 10);
-        assertEquals(2025, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2015);
+        CalendarUtils.add(todayGermany, Calendar.YEAR, 10);
+        assertEquals(2025, todayGermany.get(Calendar.YEAR));
     }
     
     @Test
     public void testSetDecadeField() {
-        todayGerman.set(Calendar.YEAR, 2015);
-        CalendarUtils.set(todayGerman, CalendarUtils.DECADE, 2020);
-        assertEquals(2025, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2015);
+        CalendarUtils.set(todayGermany, CalendarUtils.DECADE, 2020);
+        assertEquals(2025, todayGermany.get(Calendar.YEAR));
     }
     
     @Test
     public void testSetNativeField() {
-        todayGerman.set(Calendar.YEAR, 2015);
-        CalendarUtils.set(todayGerman, Calendar.YEAR, 2025);
-        assertEquals(2025, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2015);
+        CalendarUtils.set(todayGermany, Calendar.YEAR, 2025);
+        assertEquals(2025, todayGermany.get(Calendar.YEAR));
     }
     
     @Test
     public void testGetDecadeField() {
-        todayGerman.set(Calendar.YEAR, 2025);
-        assertEquals(2020, CalendarUtils.get(todayGerman, CalendarUtils.DECADE));
+        todayGermany.set(Calendar.YEAR, 2025);
+        assertEquals(2020, CalendarUtils.get(todayGermany, CalendarUtils.DECADE));
     }
     
     @Test
     public void testGetNativeField() {
-        todayGerman.set(Calendar.YEAR, 2015);
-        assertEquals(2015, CalendarUtils.get(todayGerman, Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2015);
+        assertEquals(2015, CalendarUtils.get(todayGermany, Calendar.YEAR));
     }
 //    
 //    @Test
@@ -124,67 +145,67 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     
     @Test
     public void testStartOfDecade() {
-        todayGerman.set(Calendar.YEAR, 2005);
-        CalendarUtils.startOfDecade(todayGerman);
-        assertTrue(CalendarUtils.isStartOfYear(todayGerman));
-        assertEquals(2000, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2005);
+        CalendarUtils.startOfDecade(todayGermany);
+        assertTrue(CalendarUtils.isStartOfYear(todayGermany));
+        assertEquals(2000, todayGermany.get(Calendar.YEAR));
     }
 
     @Test
     public void testStartOfDecadeWithReturn() {
         midJune.add(Calendar.YEAR, 15);
-        Date startOf10YearsFuture = CalendarUtils.startOfDecade(todayGerman, midJune.getTime());
+        Date startOf10YearsFuture = CalendarUtils.startOfDecade(todayGermany, midJune.getTime());
         CalendarUtils.startOfDecade(midJune);
-        assertTrue(CalendarUtils.isStartOfDecade(todayGerman));
+        assertTrue(CalendarUtils.isStartOfDecade(todayGermany));
         assertEquals(midJune.getTime(), startOf10YearsFuture);
     }
     
     @Test
     public void testIsStartOfDecade() {
-        todayGerman.set(Calendar.YEAR, 2000);
-        CalendarUtils.startOfYear(todayGerman);
-        assertTrue(CalendarUtils.isStartOfDecade(todayGerman));
-        todayGerman.add(Calendar.YEAR, 1);
-        assertFalse(CalendarUtils.isStartOfDecade(todayGerman));
+        todayGermany.set(Calendar.YEAR, 2000);
+        CalendarUtils.startOfYear(todayGermany);
+        assertTrue(CalendarUtils.isStartOfDecade(todayGermany));
+        todayGermany.add(Calendar.YEAR, 1);
+        assertFalse(CalendarUtils.isStartOfDecade(todayGermany));
     }
     
     @Test
     public void testStartOfDecadeByField() {
-        todayGerman.set(Calendar.YEAR, 2005);
-        CalendarUtils.startOf(todayGerman, CalendarUtils.DECADE);
-        assertTrue(CalendarUtils.isStartOfYear(todayGerman));
-        assertEquals(2000, todayGerman.get(Calendar.YEAR));
+        todayGermany.set(Calendar.YEAR, 2005);
+        CalendarUtils.startOf(todayGermany, CalendarUtils.DECADE);
+        assertTrue(CalendarUtils.isStartOfYear(todayGermany));
+        assertEquals(2000, todayGermany.get(Calendar.YEAR));
     }
     
     @Test
     public void testIsStartOfDecadeByField() {
-        todayGerman.set(Calendar.YEAR, 2000);
-        CalendarUtils.startOfYear(todayGerman);
-        assertTrue(CalendarUtils.isStartOf(todayGerman, CalendarUtils.DECADE));
-        todayGerman.add(Calendar.YEAR, 1);
-        assertFalse(CalendarUtils.isStartOf(todayGerman, CalendarUtils.DECADE));
+        todayGermany.set(Calendar.YEAR, 2000);
+        CalendarUtils.startOfYear(todayGermany);
+        assertTrue(CalendarUtils.isStartOf(todayGermany, CalendarUtils.DECADE));
+        todayGermany.add(Calendar.YEAR, 1);
+        assertFalse(CalendarUtils.isStartOf(todayGermany, CalendarUtils.DECADE));
     }
     
     @Test
     public void testSameByDecadeField() {
-        Date now = todayGerman.getTime();
-        CalendarUtils.startOfDecade(todayGerman);
-        Date start = todayGerman.getTime();
-        assertTrue(CalendarUtils.isSame(todayGerman, now, CalendarUtils.DECADE));
-        assertEquals("Calendar unchanged by same decade query", start, todayGerman.getTime());
-        todayGerman.add(Calendar.YEAR, -1);
-        assertFalse(CalendarUtils.isSame(todayGerman, now, CalendarUtils.DECADE));
+        Date now = todayGermany.getTime();
+        CalendarUtils.startOfDecade(todayGermany);
+        Date start = todayGermany.getTime();
+        assertTrue(CalendarUtils.isSame(todayGermany, now, CalendarUtils.DECADE));
+        assertEquals("Calendar unchanged by same decade query", start, todayGermany.getTime());
+        todayGermany.add(Calendar.YEAR, -1);
+        assertFalse(CalendarUtils.isSame(todayGermany, now, CalendarUtils.DECADE));
     }
     
     @Test
     public void testSameByDayField() {
-        Date now = todayGerman.getTime();
-        CalendarUtils.endOfDay(todayGerman);
-        Date end = todayGerman.getTime();
-        assertTrue(CalendarUtils.isSame(todayGerman, now, Calendar.DAY_OF_MONTH));
-        assertEquals(end, todayGerman.getTime());
-        todayGerman.add(Calendar.DAY_OF_MONTH, 1);
-        assertFalse(CalendarUtils.isSame(todayGerman, now, Calendar.DAY_OF_MONTH));
+        Date now = todayGermany.getTime();
+        CalendarUtils.endOfDay(todayGermany);
+        Date end = todayGermany.getTime();
+        assertTrue(CalendarUtils.isSame(todayGermany, now, Calendar.DAY_OF_MONTH));
+        assertEquals(end, todayGermany.getTime());
+        todayGermany.add(Calendar.DAY_OF_MONTH, 1);
+        assertFalse(CalendarUtils.isSame(todayGermany, now, Calendar.DAY_OF_MONTH));
     }
     
     @Test
@@ -220,9 +241,9 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     @Test
     public void testStartOfYearWithReturn() {
         midJune.add(Calendar.YEAR, 10);
-        Date startOf10YearsFuture = CalendarUtils.startOfYear(todayGerman, midJune.getTime());
+        Date startOf10YearsFuture = CalendarUtils.startOfYear(todayGermany, midJune.getTime());
         CalendarUtils.startOfYear(midJune);
-        assertTrue(CalendarUtils.isStartOfMonth(todayGerman));
+        assertTrue(CalendarUtils.isStartOfMonth(todayGermany));
         assertEquals("start of year with return must be same as changing start-of-year", 
                 startOf10YearsFuture, midJune.getTime());
     }
@@ -239,16 +260,16 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     
     @Test
     public void testWeekOfYearInFeb() {
-        todayGerman.set(2008, Calendar.FEBRUARY, 1);
-        Date firstOfFeb = todayGerman.getTime();
-        CalendarUtils.startOfDay(todayGerman);
-        assertTrue(CalendarUtils.isSameDay(todayGerman, firstOfFeb));
-        assertTrue(CalendarUtils.isStartOfMonth(todayGerman));
-        Date startOfFirstOfFeb = todayGerman.getTime();
-        CalendarUtils.startOfWeek(todayGerman);
+        todayGermany.set(2008, Calendar.FEBRUARY, 1);
+        Date firstOfFeb = todayGermany.getTime();
+        CalendarUtils.startOfDay(todayGermany);
+        assertTrue(CalendarUtils.isSameDay(todayGermany, firstOfFeb));
+        assertTrue(CalendarUtils.isStartOfMonth(todayGermany));
+        Date startOfFirstOfFeb = todayGermany.getTime();
+        CalendarUtils.startOfWeek(todayGermany);
         assertTrue("expected calendar before firstOfFeb " 
-                + todayGerman.getTime() + " / " + startOfFirstOfFeb , 
-                todayGerman.getTime().before(startOfFirstOfFeb));
+                + todayGermany.getTime() + " / " + startOfFirstOfFeb , 
+                todayGermany.getTime().before(startOfFirstOfFeb));
     }
     
     /**
@@ -258,14 +279,14 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     @Test
     public void testWeekOfYearInDecember() {
         // a date before the first week of the month
-        todayGerman.set(2007, Calendar.DECEMBER, 1);
-        Date firstOfDecember = todayGerman.getTime();
-        CalendarUtils.startOfWeek(todayGerman);
+        todayGermany.set(2007, Calendar.DECEMBER, 1);
+        Date firstOfDecember = todayGermany.getTime();
+        CalendarUtils.startOfWeek(todayGermany);
 //        int weekOfYear = todayGerman.get(Calendar.WEEK_OF_YEAR);
-        todayGerman.setTime(firstOfDecember);
-        CalendarUtils.endOfMonth(todayGerman);
+        todayGermany.setTime(firstOfDecember);
+        CalendarUtils.endOfMonth(todayGermany);
         // we crossed the year boundary
-        assertEquals(1, todayGerman.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(1, todayGermany.get(Calendar.WEEK_OF_YEAR));
     }
 
     /**
@@ -275,11 +296,11 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     @Test
     public void testStartOfWeekBeforeFirstWeekOfMonth() {
         // a date before the first week of the month
-        todayGerman.set(2008, Calendar.FEBRUARY, 1);
-        LOG.info("2008-02-01 WEEK_OF_MONTH expected:<0> is: "+todayGerman.get(Calendar.WEEK_OF_MONTH));
+        todayGermany.set(2008, Calendar.FEBRUARY, 1);
+        LOG.info("2008-02-01 WEEK_OF_MONTH expected:<0> is: "+todayGermany.get(Calendar.WEEK_OF_MONTH));
 //        assertEquals(0, todayGerman.get(Calendar.WEEK_OF_MONTH)); // TODO wg. #3 expected:<0> but was:<1>
-        CalendarUtils.startOfWeek(todayGerman);
-        assertEquals(Calendar.JANUARY, todayGerman.get(Calendar.MONTH));
+        CalendarUtils.startOfWeek(todayGermany);
+        assertEquals(Calendar.JANUARY, todayGermany.get(Calendar.MONTH));
     }
     
     /**
@@ -288,25 +309,38 @@ public class CalendarUtilsTest extends InteractiveTestCase {
      */
     @Test
     public void testStartOfWeekBeforeFirstWeekOfYear() {
+//    	Calendar cal = Calendar.getInstance( Locale.GERMANY );
+//    	LOG.info("Locale.GERMANY:"+Locale.GERMANY + " FirstDayOfWeek="+cal.getFirstDayOfWeek() );  // 2 = MONDAY
+//    	assertEquals(2, cal.getFirstDayOfWeek());
+////    	cal = Calendar.getInstance( Locale.US );
+////    	System.out.println( cal.getFirstDayOfWeek() );  // 1 = SUNDAY
+////    	cal = Calendar.getInstance( Locale.FRANCE );
+////    	System.out.println( cal.getFirstDayOfWeek() );  // 2 = MONDAY
+    	
+        LOG.info("Locale.GERMANY:"+Locale.GERMANY + " Calendar in GERMANY:"+todayGermany);
+        LOG.info("FirstDayOfWeek in "+Locale.GERMANY + "="+todayGermany.getFirstDayOfWeek());
+        LOG.info("MinimalDaysInFirstWeek in "+Locale.GERMANY + "="+todayGermany.getMinimalDaysInFirstWeek());
+    	assertEquals(2, todayGermany.getFirstDayOfWeek());
+        
         // a date before the first week of the year
-        todayGerman.set(2010, Calendar.JANUARY, 1); // 53 Woche
-        LOG.info("2010-01-01 WEEK_OF_MONTH expected:<0> is: "+todayGerman.get(Calendar.WEEK_OF_MONTH));
-//        assertEquals(0, todayGerman.get(Calendar.WEEK_OF_MONTH)); // TODO wg. #3 expected:<0> but was:<1>
-        LOG.info("2010-01-01 WEEK_OF_YEAR expected:<53> is: "+todayGerman.get(Calendar.WEEK_OF_YEAR));
-//        assertEquals(53, todayGerman.get(Calendar.WEEK_OF_YEAR)); // TODO wg. #3 expected:<53> but was:<1>
-        CalendarUtils.startOfWeek(todayGerman);
-        assertEquals(Calendar.DECEMBER, todayGerman.get(Calendar.MONTH));
+        todayGermany.set(2010, Calendar.JANUARY, 1); // 53 Woche
+        LOG.info("2010-01-01 WEEK_OF_MONTH expected:<0> is: "+todayGermany.get(Calendar.WEEK_OF_MONTH));
+        assertEquals(0, todayGermany.get(Calendar.WEEK_OF_MONTH)); // TODO wg. #3 expected:<0> but was:<1>
+        LOG.info("2010-01-01 WEEK_OF_YEAR expected:<53> is: "+todayGermany.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(53, todayGermany.get(Calendar.WEEK_OF_YEAR)); // TODO wg. #3 expected:<53> but was:<1>
+        CalendarUtils.startOfWeek(todayGermany);
+        assertEquals(Calendar.DECEMBER, todayGermany.get(Calendar.MONTH));
     }
     
     @Test
     public void testSameDay() {
-        Date now = todayGerman.getTime();
-        CalendarUtils.endOfDay(todayGerman);
-        Date end = todayGerman.getTime();
-        assertTrue(CalendarUtils.isSameDay(todayGerman, now));
-        assertEquals(end, todayGerman.getTime());
-        todayGerman.add(Calendar.DAY_OF_MONTH, 1);
-        assertFalse(CalendarUtils.isSameDay(todayGerman, now));
+        Date now = todayGermany.getTime();
+        CalendarUtils.endOfDay(todayGermany);
+        Date end = todayGermany.getTime();
+        assertTrue(CalendarUtils.isSameDay(todayGermany, now));
+        assertEquals(end, todayGermany.getTime());
+        todayGermany.add(Calendar.DAY_OF_MONTH, 1);
+        assertFalse(CalendarUtils.isSameDay(todayGermany, now));
     }
     
     @Test
@@ -375,45 +409,45 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     @Test
     public void testStartOfWeekFromMiddle() {
         int day = Calendar.WEDNESDAY;
-        todayGerman.set(Calendar.DAY_OF_WEEK, day);
-        int week = todayGerman.get(Calendar.WEEK_OF_YEAR);
-        CalendarUtils.startOfWeek(todayGerman);
-        assertEquals(week, todayGerman.get(Calendar.WEEK_OF_YEAR));
-        assertEquals(todayGerman.getFirstDayOfWeek(), todayGerman.get(Calendar.DAY_OF_WEEK));
+        todayGermany.set(Calendar.DAY_OF_WEEK, day);
+        int week = todayGermany.get(Calendar.WEEK_OF_YEAR);
+        CalendarUtils.startOfWeek(todayGermany);
+        assertEquals(week, todayGermany.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(todayGermany.getFirstDayOfWeek(), todayGermany.get(Calendar.DAY_OF_WEEK));
     }
     
     @Test
     public void testStartOfWeekFromFirst() {
-        todayGerman.set(Calendar.DAY_OF_WEEK, todayGerman.getFirstDayOfWeek());
-        int week = todayGerman.get(Calendar.WEEK_OF_YEAR);
-        CalendarUtils.startOfWeek(todayGerman);
-        assertEquals(week, todayGerman.get(Calendar.WEEK_OF_YEAR));
-        assertEquals(todayGerman.getFirstDayOfWeek(), todayGerman.get(Calendar.DAY_OF_WEEK));
+        todayGermany.set(Calendar.DAY_OF_WEEK, todayGermany.getFirstDayOfWeek());
+        int week = todayGermany.get(Calendar.WEEK_OF_YEAR);
+        CalendarUtils.startOfWeek(todayGermany);
+        assertEquals(week, todayGermany.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(todayGermany.getFirstDayOfWeek(), todayGermany.get(Calendar.DAY_OF_WEEK));
     }
     
     @Test
     public void testStartOfWeekFromLast() {
-        todayGerman.set(Calendar.DAY_OF_WEEK, todayGerman.getFirstDayOfWeek());
-        int week = todayGerman.get(Calendar.WEEK_OF_YEAR);
-        todayGerman.add(Calendar.DATE, 6);
+        todayGermany.set(Calendar.DAY_OF_WEEK, todayGermany.getFirstDayOfWeek());
+        int week = todayGermany.get(Calendar.WEEK_OF_YEAR);
+        todayGermany.add(Calendar.DATE, 6);
         // sanity
-        assertEquals(week, todayGerman.get(Calendar.WEEK_OF_YEAR));
-        CalendarUtils.startOfWeek(todayGerman);
-        assertEquals(week, todayGerman.get(Calendar.WEEK_OF_YEAR));
-        assertEquals(todayGerman.getFirstDayOfWeek(), todayGerman.get(Calendar.DAY_OF_WEEK));
+        assertEquals(week, todayGermany.get(Calendar.WEEK_OF_YEAR));
+        CalendarUtils.startOfWeek(todayGermany);
+        assertEquals(week, todayGermany.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(todayGermany.getFirstDayOfWeek(), todayGermany.get(Calendar.DAY_OF_WEEK));
     }
     
     @Test
     public void testStartOfWeekFromFirstJan() {
-        todayGerman.set(Calendar.MONTH, Calendar.JANUARY);
-        todayGerman.set(Calendar.DATE, 1);
-        if (todayGerman.get(Calendar.DAY_OF_WEEK) == todayGerman.getFirstDayOfWeek()) {
-            todayGerman.add(Calendar.YEAR, -1);
+        todayGermany.set(Calendar.MONTH, Calendar.JANUARY);
+        todayGermany.set(Calendar.DATE, 1);
+        if (todayGermany.get(Calendar.DAY_OF_WEEK) == todayGermany.getFirstDayOfWeek()) {
+            todayGermany.add(Calendar.YEAR, -1);
         }
-        int week = todayGerman.get(Calendar.WEEK_OF_YEAR);
-        CalendarUtils.startOfWeek(todayGerman);
-        assertEquals(week, todayGerman.get(Calendar.WEEK_OF_YEAR));
-        assertEquals(todayGerman.getFirstDayOfWeek(), todayGerman.get(Calendar.DAY_OF_WEEK));
+        int week = todayGermany.get(Calendar.WEEK_OF_YEAR);
+        CalendarUtils.startOfWeek(todayGermany);
+        assertEquals(week, todayGermany.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(todayGermany.getFirstDayOfWeek(), todayGermany.get(Calendar.DAY_OF_WEEK));
     }
     
     @Test
@@ -430,27 +464,27 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     public void testIsStartOfMonth() {
         // want to be in the middle of a year
         int month = 5;
-        todayGerman.set(Calendar.MONTH, month);
-        CalendarUtils.startOfMonth(todayGerman);
-        Date start = todayGerman.getTime();
-        assertTrue(CalendarUtils.isStartOfMonth(todayGerman));
+        todayGermany.set(Calendar.MONTH, month);
+        CalendarUtils.startOfMonth(todayGermany);
+        Date start = todayGermany.getTime();
+        assertTrue(CalendarUtils.isStartOfMonth(todayGermany));
         // sanity: calendar must not be changed
-        assertEquals(start, todayGerman.getTime());
-        todayGerman.add(Calendar.MILLISECOND, 1);
-        assertFalse(CalendarUtils.isStartOfMonth(todayGerman));
+        assertEquals(start, todayGermany.getTime());
+        todayGermany.add(Calendar.MILLISECOND, 1);
+        assertFalse(CalendarUtils.isStartOfMonth(todayGermany));
     }
     
     @Test
     public void testIsEndOfMonth() {
         // want to be in the middle of a year
         int month = 5;
-        todayGerman.set(Calendar.MONTH, month);
-        CalendarUtils.endOfMonth(todayGerman);
-        Date start = todayGerman.getTime();
-        assertTrue(CalendarUtils.isEndOfMonth(todayGerman));
-        assertEquals(start, todayGerman.getTime());
-        todayGerman.add(Calendar.MILLISECOND, -1);
-        assertFalse(CalendarUtils.isEndOfMonth(todayGerman));
+        todayGermany.set(Calendar.MONTH, month);
+        CalendarUtils.endOfMonth(todayGermany);
+        Date start = todayGermany.getTime();
+        assertTrue(CalendarUtils.isEndOfMonth(todayGermany));
+        assertEquals(start, todayGermany.getTime());
+        todayGermany.add(Calendar.MILLISECOND, -1);
+        assertFalse(CalendarUtils.isEndOfMonth(todayGermany));
         // sanity: calendar must not be changed
     }
     
@@ -548,38 +582,38 @@ public class CalendarUtilsTest extends InteractiveTestCase {
      */
     @Test
     public void testNextMonthCal() {
-        todayGerman.set(Calendar.MONTH, Calendar.JANUARY);
-        Date date = todayGerman.getTime();
+        todayGermany.set(Calendar.MONTH, Calendar.JANUARY);
+        Date date = todayGermany.getTime();
         for (int i = Calendar.JANUARY; i <= Calendar.DECEMBER; i++) {
-            int month = todayGerman.get(Calendar.MONTH);
-            CalendarUtils.startOfMonth(todayGerman);
-            assertEquals(month, todayGerman.get(Calendar.MONTH));
-            CalendarUtils.endOfMonth(todayGerman);
-            assertEquals(month, todayGerman.get(Calendar.MONTH));
+            int month = todayGermany.get(Calendar.MONTH);
+            CalendarUtils.startOfMonth(todayGermany);
+            assertEquals(month, todayGermany.get(Calendar.MONTH));
+            CalendarUtils.endOfMonth(todayGermany);
+            assertEquals(month, todayGermany.get(Calendar.MONTH));
             // restore original and add
-            todayGerman.setTime(date);
-            todayGerman.add(Calendar.MONTH, 1);
-            date = todayGerman.getTime();
+            todayGermany.setTime(date);
+            todayGermany.add(Calendar.MONTH, 1);
+            date = todayGermany.getTime();
             if (i < Calendar.DECEMBER) {
-                assertEquals(month + 1, todayGerman.get(Calendar.MONTH));
+                assertEquals(month + 1, todayGermany.get(Calendar.MONTH));
             } else {
-                assertEquals(Calendar.JANUARY, todayGerman.get(Calendar.MONTH));
+                assertEquals(Calendar.JANUARY, todayGermany.get(Calendar.MONTH));
             }
         }
     }
     
     @Test
     public void testNextMonth() {
-        todayGerman.set(Calendar.MONTH, Calendar.JANUARY);
-        todayGerman.set(Calendar.DATE, 31);
+        todayGermany.set(Calendar.MONTH, Calendar.JANUARY);
+        todayGermany.set(Calendar.DATE, 31);
         for (int i = Calendar.JANUARY; i <= Calendar.DECEMBER; i++) {
-            int month = todayGerman.get(Calendar.MONTH);
-            long nextMonth = DateUtils.getNextMonth(todayGerman.getTimeInMillis());
-            todayGerman.setTimeInMillis(nextMonth);
+            int month = todayGermany.get(Calendar.MONTH);
+            long nextMonth = DateUtils.getNextMonth(todayGermany.getTimeInMillis());
+            todayGermany.setTimeInMillis(nextMonth);
             if (i < Calendar.DECEMBER) {
-                assertEquals(month + 1, todayGerman.get(Calendar.MONTH));
+                assertEquals(month + 1, todayGermany.get(Calendar.MONTH));
             } else {
-                assertEquals(Calendar.JANUARY, todayGerman.get(Calendar.MONTH));
+                assertEquals(Calendar.JANUARY, todayGermany.get(Calendar.MONTH));
             }
         }
     }
@@ -635,7 +669,7 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     
     @Test
     public void testFlushedInitially() {
-        assertFlushed(todayGerman);
+        assertFlushed(todayGermany);
         assertFlushed(todayUS);
         assertFlushed(midJune);
     }
@@ -645,25 +679,6 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     private void assertFlushed(Calendar calendar) {
         assertTrue("must be flushed but was: " + calendar, CalendarUtils.isFlushed(calendar));
         
-    }
-    @Override
-    protected void setUp() throws Exception {
-        todayGerman = Calendar.getInstance(Locale.GERMAN);
-        todayUS = Calendar.getInstance(Locale.US);
-        midJune = Calendar.getInstance(Locale.GERMAN);
-        midJune.set(Calendar.DAY_OF_MONTH, 14);
-        midJune.set(Calendar.MONTH, Calendar.JUNE);
-        midJune.getTimeInMillis();
-    }
- 
-    @Before
-    public void setUpJ4() throws Exception {
-        setUp();
-    }
-    
-    @After
-    public void tearDownJ4() throws Exception {
-        tearDown();
     }
 
 }

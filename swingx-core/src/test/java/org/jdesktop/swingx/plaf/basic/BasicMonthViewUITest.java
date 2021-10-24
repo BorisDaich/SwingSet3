@@ -52,6 +52,7 @@ import org.junit.runners.JUnit4;
  * Tests to expose known issues of BasicMonthViewUI.
  * 
  * @author Jeanette Winzenburg
+ * @author Eugen Hanussek https://github.com/homebeaver (use Locale.GERMANY for Calendar used in Germany)
  */
 @RunWith(JUnit4.class)
 public class BasicMonthViewUITest extends InteractiveTestCase {
@@ -122,7 +123,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
      */
     @Test
     public void testWeekNumbersWrapBack() {
-        assertWeekNumbers(Locale.GERMAN, 2011, Calendar.JANUARY, Calendar.SATURDAY, 52, 6);
+        assertWeekNumbers(Locale.GERMANY, 2011, Calendar.JANUARY, Calendar.SATURDAY, 52, 6);
     }
     
     /**
@@ -132,7 +133,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
      */
     @Test
     public void testWeekNumbersWrapForward() {
-        assertWeekNumbers(Locale.GERMAN, 2008, Calendar.DECEMBER, Calendar.MONDAY, 49, 5);
+        assertWeekNumbers(Locale.GERMANY, 2008, Calendar.DECEMBER, Calendar.MONDAY, 49, 5);
     }
 
     /**
@@ -142,7 +143,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
      */
     @Test
     public void testWeekNumbersNormal() {
-        assertWeekNumbers(Locale.GERMAN, 2008, Calendar.OCTOBER, Calendar.WEDNESDAY, 40, 5);
+        assertWeekNumbers(Locale.GERMANY, 2008, Calendar.OCTOBER, Calendar.WEDNESDAY, 40, 5);
     }
 
     /**
@@ -167,8 +168,8 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
 		locale:de 2010-2-01 sanity - weekOfYear expectedWeek=5 is=6
 		locale:de 2012-4-01 sanity - weekOfYear expectedWeek=13 is=14
  */
-//        LOG.info("locale:"+locale+" "+year+"-"+(1+month)+"-01 sanity - weekOfYear expectedWeek="+expectedWeek + " is="+calendar.get(Calendar.WEEK_OF_YEAR));
-//        assertEquals("sanity - weekOfYear", expectedWeek, calendar.get(Calendar.WEEK_OF_YEAR)); // TODO wg. #3 expected:<52> but was:<1>
+        LOG.info("locale:"+locale+" "+year+"-"+(1+month)+"-01 sanity - weekOfYear expectedWeek="+expectedWeek + " is="+calendar.get(Calendar.WEEK_OF_YEAR));
+        assertEquals("sanity - weekOfYear", expectedWeek, calendar.get(Calendar.WEEK_OF_YEAR)); // TODO wg. #3 expected:<52> but was:<1>
 
         monthView.setFirstDisplayedDay(calendar.getTime());
 /* Fehler:
@@ -176,8 +177,8 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
  */
         LOG.info("locale:"+locale+" "+year+"-"+(1+month)+"-01 number of weeks in month expectedWeek="+expectedWeekNumber
         		+ " is="+((BasicMonthViewUI) monthView.getUI()).getWeeks(monthView.getCalendar()) );
-//        assertEquals("number of weeks in month", expectedWeekNumber, 
-//                ((BasicMonthViewUI) monthView.getUI()).getWeeks(monthView.getCalendar())); // TODO wg. #3
+        assertEquals("number of weeks in month", expectedWeekNumber, 
+                ((BasicMonthViewUI) monthView.getUI()).getWeeks(monthView.getCalendar())); // TODO wg. #3
     }
     /**
      * Issue #1068-swingx: week numbering broken for some years and locales
@@ -186,7 +187,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
      */
     @Test
     public void testWeekNumbersFull6() {
-        assertWeekNumbers(Locale.GERMAN, 2012, Calendar.APRIL, Calendar.SUNDAY, 13, 6);
+        assertWeekNumbers(Locale.GERMANY, 2012, Calendar.APRIL, Calendar.SUNDAY, 13, 6);
     }
 
     /**
@@ -196,7 +197,7 @@ public class BasicMonthViewUITest extends InteractiveTestCase {
      */
     @Test
     public void testWeekNumbersMinimum4() {
-        assertWeekNumbers(Locale.GERMAN, 2010, Calendar.FEBRUARY, Calendar.MONDAY, 5, 4);
+        assertWeekNumbers(Locale.GERMANY, 2010, Calendar.FEBRUARY, Calendar.MONDAY, 5, 4);
     }
     
 
