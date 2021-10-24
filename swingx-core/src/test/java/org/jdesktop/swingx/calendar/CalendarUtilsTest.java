@@ -297,37 +297,31 @@ public class CalendarUtilsTest extends InteractiveTestCase {
     public void testStartOfWeekBeforeFirstWeekOfMonth() {
         // a date before the first week of the month
         todayGermany.set(2008, Calendar.FEBRUARY, 1);
-        LOG.info("2008-02-01 WEEK_OF_MONTH expected:<0> is: "+todayGermany.get(Calendar.WEEK_OF_MONTH));
-//        assertEquals(0, todayGerman.get(Calendar.WEEK_OF_MONTH)); // TODO wg. #3 expected:<0> but was:<1>
+        LOG.config("2008-02-01 WEEK_OF_MONTH expected:<0> is: "+todayGermany.get(Calendar.WEEK_OF_MONTH));
+        assertEquals(0, todayGermany.get(Calendar.WEEK_OF_MONTH));
         CalendarUtils.startOfWeek(todayGermany);
         assertEquals(Calendar.JANUARY, todayGermany.get(Calendar.MONTH));
     }
     
     /**
      * test to characterize startofweek behaviour is we are in a 
-     * calendar with minimalDays > 1.
+     * calendar with minimalDays > 1
+     * @see https://github.com/homebeaver/SwingSet/issues/4
      */
     @Test
     public void testStartOfWeekBeforeFirstWeekOfYear() {
-//    	Calendar cal = Calendar.getInstance( Locale.GERMANY );
-//    	LOG.info("Locale.GERMANY:"+Locale.GERMANY + " FirstDayOfWeek="+cal.getFirstDayOfWeek() );  // 2 = MONDAY
-//    	assertEquals(2, cal.getFirstDayOfWeek());
-////    	cal = Calendar.getInstance( Locale.US );
-////    	System.out.println( cal.getFirstDayOfWeek() );  // 1 = SUNDAY
-////    	cal = Calendar.getInstance( Locale.FRANCE );
-////    	System.out.println( cal.getFirstDayOfWeek() );  // 2 = MONDAY
-    	
-        LOG.info("Locale.GERMANY:"+Locale.GERMANY + " Calendar in GERMANY:"+todayGermany);
-        LOG.info("FirstDayOfWeek in "+Locale.GERMANY + "="+todayGermany.getFirstDayOfWeek());
-        LOG.info("MinimalDaysInFirstWeek in "+Locale.GERMANY + "="+todayGermany.getMinimalDaysInFirstWeek());
-    	assertEquals(2, todayGermany.getFirstDayOfWeek());
+        LOG.config("Locale.GERMANY:"+Locale.GERMANY + " Calendar in GERMANY:"+todayGermany);
+        LOG.config("FirstDayOfWeek in "+Locale.GERMANY + "="+todayGermany.getFirstDayOfWeek());
+        LOG.config("MinimalDaysInFirstWeek in "+Locale.GERMANY + "="+todayGermany.getMinimalDaysInFirstWeek());
+    	assertEquals(2, todayGermany.getFirstDayOfWeek());   // 2 = MONDAY
+    	assertEquals(4, todayGermany.getMinimalDaysInFirstWeek());
         
         // a date before the first week of the year
-        todayGermany.set(2010, Calendar.JANUARY, 1); // 53 Woche
-        LOG.info("2010-01-01 WEEK_OF_MONTH expected:<0> is: "+todayGermany.get(Calendar.WEEK_OF_MONTH));
-        assertEquals(0, todayGermany.get(Calendar.WEEK_OF_MONTH)); // TODO wg. #3 expected:<0> but was:<1>
-        LOG.info("2010-01-01 WEEK_OF_YEAR expected:<53> is: "+todayGermany.get(Calendar.WEEK_OF_YEAR));
-        assertEquals(53, todayGermany.get(Calendar.WEEK_OF_YEAR)); // TODO wg. #3 expected:<53> but was:<1>
+        todayGermany.set(2010, Calendar.JANUARY, 1);
+        LOG.config("2010-01-01 WEEK_OF_MONTH expected:<0> is: "+todayGermany.get(Calendar.WEEK_OF_MONTH));
+        assertEquals(0, todayGermany.get(Calendar.WEEK_OF_MONTH));
+        LOG.config("2010-01-01 WEEK_OF_YEAR expected:<53> is: "+todayGermany.get(Calendar.WEEK_OF_YEAR));
+        assertEquals(53, todayGermany.get(Calendar.WEEK_OF_YEAR));
         CalendarUtils.startOfWeek(todayGermany);
         assertEquals(Calendar.DECEMBER, todayGermany.get(Calendar.MONTH));
     }
