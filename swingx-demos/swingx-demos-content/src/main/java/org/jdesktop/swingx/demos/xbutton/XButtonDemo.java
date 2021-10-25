@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,21 +18,37 @@
  */
 package org.jdesktop.swingx.demos.xbutton;
 
-import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImageOp;
+import java.util.logging.Logger;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
 
 import org.jdesktop.application.Application;
+import org.jdesktop.swingx.JXButton;
+import org.jdesktop.swingx.JXLabel;
+import org.jdesktop.swingx.image.FastBlurFilter;
+import org.jdesktop.swingx.painter.MattePainter;
+import org.jdesktop.swingx.painter.Painter;
+import org.jdesktop.swingx.util.PaintUtils;
+import org.jdesktop.swingxset.DefaultDemoPanel;
+import org.jdesktop.swingxset.SwingXSet;
 
 import com.sun.swingset3.DemoProperties;
 
 /**
  * A demo for the {@code JXButton}.
  *
- * @author Karl George Schaefer
+ * @author Karl George Schaefer (create)
+ * @author Eugen Hanussek https://github.com/homebeaver (implemetation)
  */
 @DemoProperties(
     value = "JXButton Demo",
@@ -48,41 +62,189 @@ import com.sun.swingset3.DemoProperties;
     }
 )
 @SuppressWarnings("serial")
-public class XButtonDemo extends JPanel {
+public class XButtonDemo extends DefaultDemoPanel {
     
+    private static final Logger LOG = Logger.getLogger(XButtonDemo.class.getName());
+
     /**
      * main method allows us to run as a standalone demo.
      */
+    /*
+     * damit diese Klasse als einzige im SwingXSet gestartet werden kann (Application.launch),
+     * muss sie in einem file stehen (==>demolist2).
+     * Dieses file wird dann vom DemoCreator eingelesen, "-a"/"-augment" erweitert den demo-Vorrat.
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame(XButtonDemo.class.getAnnotation(DemoProperties.class).value());
-                
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new XButtonDemo());
-                frame.setPreferredSize(new Dimension(800, 600));
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
-    }
-    
-    public XButtonDemo() {
-        createBusyLabelDemo();
-        
-        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
-        
-        bind();
+    	Application.launch(SwingXSet.class, new String[] {"bin/META-INF/onlyXButtonDemo"});
+//    	Application.launch(SwingXSet.class, new String[] {"-a", "??????"});
     }
 
-    private void createBusyLabelDemo() {
-        // TODO Auto-generated method stub
-        add(new JLabel("Not Implemented"));
+    public XButtonDemo() {
+    	super();
     }
     
-    private void bind() {
-        // TODO Auto-generated method stub
-        
+    private static class RingArray {
+
+    	private int i;
+    	private String[] alValues;
+
+    	public RingArray(String[] values) {
+    		alValues = values;
+    		i = alValues.length;
+    	}
+    	
+    	public String get() {
+    		i++;
+    		if (i >= alValues.length) {
+    			i = 0;
+    		}
+    		return alValues[i];
+    	}
     }
+
+    /*
+     * aus JXButtonVisualCheck
+     */
+    private void interactiveFontAndBackgroundCheck() {
+        Font font = Font.decode("Arial-BOLDITALIC-14");
+//        Color background = Color.LIGHT_GRAY;
+        Color background = new Color(168, 204, 241); // LIGHT_BLUE
+        Color orangeBG = Color.ORANGE; // new Color(255, 200, 0);
+        final Painter<?> aerithBgPainter = new MattePainter(PaintUtils.AERITH, true);
+        final Painter<?> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
+ 
+        JButton button1 = new JButton("Default");
+        JButton button2 = new JButton("Font changed");
+        button2.setFont(font);
+        JButton button3 = new JButton("Background changed");
+        button3.setBackground(background);
+        JButton button4 = new JButton("Background changed");
+        button4.setBackground(background);
+//        button4.setBackgroundPainter(backgroundPainter);
+        JButton button5 = new JButton("Font and Background changed");
+        button5.setFont(font);
+        button5.setBackground(orangeBG);
+        JButton button6 = new JButton("Font and Background changed");
+        button6.setFont(font);
+        button6.setBackground(orangeBG);
+//        button6.setBackgroundPainter(backgroundPainter);
+
+        JXButton xbutton1 = new JXButton("Default (push)");
+        //<snip>Add action listener using Lambda expression
+    	RingArray ringArray = new RingArray(new String[] {"Hello", "Goodbye", "SwingLabs", "Turkey Bowl"});
+    	xbutton1.addActionListener(event -> {
+    		xbutton1.setText(ringArray.get());
+        });
+        //</snip>
+        
+        JXButton xbutton2 = new JXButton("Font changed (blur when cursor over)");
+        Color foreground = xbutton2.getForeground();
+        xbutton2.setFont(font);
+
+        final MattePainter fp = new MattePainter(foreground);
+        xbutton2.setForegroundPainter(fp); 
+        
+        JXButton xbutton3 = new JXButton("Background changed");
+        xbutton3.setBackground(background);
+        JXButton xbutton4 = new JXButton("BackgroundPainter changed");
+        xbutton4.setBackgroundPainter(aerithBgPainter);
+        
+        JXButton xbutton5 = new JXButton("Font and Background changed");
+        xbutton5.setFont(font);
+        xbutton5.setBackground(orangeBG);
+        
+        JXButton xbutton6 = new JXButton("Font and BackgroundPainter changed");
+        xbutton6.setFont(font);
+        xbutton6.setBackgroundPainter(orangeBgPainter);
+
+        // mouse over effects:
+        xbutton2.addMouseListener(new MouseAdapter() { // blur
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                fp.setFilters(new FastBlurFilter());
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void mouseExited(MouseEvent e) {
+                fp.setFilters((BufferedImageOp[]) null);
+            }          
+        });
+
+        xbutton4.addMouseListener(new MouseAdapter() { // disable BG painter
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                xbutton4.setBackgroundPainter(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                xbutton4.setBackgroundPainter(aerithBgPainter);
+            }          
+        });
+
+        xbutton6.addMouseListener(new MouseAdapter() { // disable BG painter
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                xbutton6.setBackgroundPainter(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                xbutton6.setBackgroundPainter(orangeBgPainter);
+            }          
+        });
+
+        JPanel panel = new JPanel(new GridLayout(7, 2, 1, 1));
+        panel.add(new JXLabel(JButton.class.getSimpleName(), SwingConstants.CENTER));
+        panel.add(new JXLabel(JXButton.class.getSimpleName(), SwingConstants.CENTER));
+        panel.add(button1);
+        panel.add(xbutton1);
+        panel.add(button2);
+        panel.add(xbutton2);
+        panel.add(button3);
+        panel.add(xbutton3);
+        panel.add(button4);
+        panel.add(xbutton4);
+        panel.add(button5);
+        panel.add(xbutton5);
+        panel.add(button6);
+        panel.add(xbutton6);
+
+        add(panel);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void bind() {
+    	/* aus XLabelDemo
+    	 * param READ :	strategy the update strategy for the binding
+    	 * param lineWrap: sourceObject the source object
+    	 * param sourceProperty the source property
+    	 * param label : targetObject the target object
+    	 * param targetProperty the target property
+    	 */
+//        Bindings.createAutoBinding(READ, lineWrap, BeanProperty.create("selected"), label, BeanProperty.create("lineWrap")).bind();
+
+    	// TODO Auto-generated method stub       
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	protected void createDemo() {
+		LOG.info("????");
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        
+        interactiveFontAndBackgroundCheck();
+        
+	}
 }

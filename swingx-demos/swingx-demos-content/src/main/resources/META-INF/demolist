@@ -38,7 +38,7 @@ org.jdesktop.swingx.demos.hyperlink.HyperlinkDemo
 org.jdesktop.swingx.demos.datepicker.DatePickerDemo
 org.jdesktop.swingx.demos.monthview.MonthViewDemo
 org.jdesktop.swingx.demos.monthviewext.MonthViewExtDemo
-#org.jdesktop.swingx.demos.xbutton.XButtonDemo
+org.jdesktop.swingx.demos.xbutton.XButtonDemo
 org.jdesktop.swingx.demos.xlabel.XLabelDemo
 org.jdesktop.swingx.demos.imagepanel.ImagePanelDemo
 org.jdesktop.swingx.demos.imageview.ImageViewDemo
