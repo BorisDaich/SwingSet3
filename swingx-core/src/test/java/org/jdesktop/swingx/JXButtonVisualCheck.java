@@ -254,7 +254,10 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) {
         JXButtonVisualCheck test = new JXButtonVisualCheck();
         try {
-            test.runInteractiveTests("interactiveFontAndBackgroundCheck");
+            test.runInteractiveTests("interactiveActionButton");
+//            test.runInteractiveTests("interactiveFontAndBackgroundCheck");
+//            test.runInteractiveTests("interactiveForegroundCheck");
+//            test.runInteractiveTests("interactiveBackgroundCheck");
           } catch (Exception e) {
               System.err.println("exception when executing interactive tests:");
               e.printStackTrace();
