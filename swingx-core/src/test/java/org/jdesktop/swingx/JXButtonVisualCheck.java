@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -54,6 +52,8 @@ import org.jdesktop.swingx.util.PaintUtils;
  */
 @SuppressWarnings("nls")
 public class JXButtonVisualCheck extends InteractiveTestCase {
+
+    private static final String[] buttonText = new String[] {"Hello", "Goodbye", "SwingLabs", "Turkey Bowl"};
 
     /**
      * Test for issue #761.
@@ -120,18 +120,13 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         final MattePainter p = new MattePainter(PaintUtils.BLUE_EXPERIENCE, true);
         p.setFilters(new FastBlurFilter());
         button.setForegroundPainter(p);
-        button.addActionListener(new ActionListener(){
-            private String[] values = new String[] {"Hello", "Goodbye", "SwingLabs", "Turkey Bowl"};
-            private int index = 1;
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                button.setText(values[index]);
-                index++;
-                if (index >= values.length) {
-                    index = 0;
-                }
-            }
+        
+        // Add action listener using Lambda expression
+    	RingArray ringArray = new RingArray(buttonText);
+    	button.addActionListener(event -> {
+    		button.setText(ringArray.get());
         });
+
         BufferedImage im;
         try {
             im = ImageIO.read(JXButton.class.getResource("plaf/basic/resources/error16.png"));
@@ -167,18 +162,13 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         final JXButton button = new JXButton("Sample");
         MattePainter p = new MattePainter(PaintUtils.AERITH, true);
         button.setBackgroundPainter(p);
-        button.addActionListener(new ActionListener(){
-            private String[] values = new String[] {"Hello", "Goodbye", "SwingLabs", "Turkey Bowl"};
-            private int index = 1;
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                button.setText(values[index]);
-                index++;
-                if (index >= values.length) {
-                    index = 0;
-                }
-            }
+        
+        // Add action listener using Lambda expression
+    	RingArray ringArray = new RingArray(buttonText);
+    	button.addActionListener(event -> {
+    		button.setText(ringArray.get());
         });
+    	
         BufferedImage im;
         try {
             im = ImageIO.read(JXButton.class.getResource("plaf/basic/resources/error16.png"));
@@ -254,9 +244,9 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) {
         JXButtonVisualCheck test = new JXButtonVisualCheck();
         try {
-            test.runInteractiveTests("interactiveActionButton");
+//            test.runInteractiveTests("interactiveActionButton");
 //            test.runInteractiveTests("interactiveFontAndBackgroundCheck");
-//            test.runInteractiveTests("interactiveForegroundCheck");
+            test.runInteractiveTests("interactiveForegroundCheck");
 //            test.runInteractiveTests("interactiveBackgroundCheck");
           } catch (Exception e) {
               System.err.println("exception when executing interactive tests:");
@@ -268,6 +258,25 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
      * do nothing test - keep the testrunner happy.
      */
     public void testDummy() {
+    }
+
+    private static class RingArray {
+
+    	private int i;
+    	private String[] alValues;
+
+    	public RingArray(String[] values) {
+    		alValues = values;
+    		i = alValues.length;
+    	}
+    	
+    	public String get() {
+    		i++;
+    		if (i >= alValues.length) {
+    			i = 0;
+    		}
+    		return alValues[i];
+    	}
     }
 
 }
