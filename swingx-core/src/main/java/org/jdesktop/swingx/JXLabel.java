@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,10 +16,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -167,11 +163,6 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
 
     private static final String oldRendererKey = "was" + BasicHTML.propertyKey;
     
-//    private static final Logger log = Logger.getAnonymousLogger();
-//    static {
-//        log.setLevel(Level.FINEST);
-//    }
-
     /**
      * Create a new JXLabel. This has the same semantics as creating a new JLabel.
      */
@@ -310,6 +301,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
     @SuppressWarnings("deprecation")
     public void reshape(int x, int y, int w, int h) {
         int oldH = getHeight();
+        // TODO Deprecated.  As of JDK 5,replaced by Component.setBounds(int, int, int, int). 
         super.reshape(x, y, w, h);
         if (!isLineWrap()) {
             return;
@@ -572,7 +564,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
 
     private Container getViewport() {
         for(Container p = this; p != null; p = p.getParent()) {
-            if(p instanceof Window || p instanceof Applet || p instanceof JViewport) {
+//            if(p instanceof Window || p instanceof Applet || p instanceof JViewport) { // Applet is deprecated since version 9 and marked for removal
+            if(p instanceof Window || p instanceof JViewport) {
                 return p;
             }
         }
