@@ -223,7 +223,7 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
             		.getMousePosition(); // throws HeadlessException
         } catch (java.awt.HeadlessException ex) {
         	// on linux: No X11 DISPLAY variable was set, ...
-        	LOG.warning("Operation component.getMousePosition(): "+ex.toString());
+        	LOG.warning("Operation component.getMousePosition() throws "+ex.toString());
         } catch (ClassCastException ignore) {
             // caused by core issue on Mac/Java 7
             
@@ -236,8 +236,8 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
             if (w != null && isDescendingFrom(e.getComponent(), w)) {
                 try {
                 	// The method doPrivileged(PrivilegedAction<PointerInfo>) from the type AccessController is deprecated
-                    @SuppressWarnings("deprecation")
                 	// The type AccessController has been deprecated since version 17 and marked for removal
+                    @SuppressWarnings("deprecation")
 					PointerInfo pi = java.security.AccessController.doPrivileged(
                         new java.security.PrivilegedAction<PointerInfo>() {
                             @Override
