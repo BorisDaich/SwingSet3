@@ -4,11 +4,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -52,20 +54,27 @@ public class BuddyLayoutAndBorderTest {
 	@Test
 	public void testPreferredWidth() throws Exception {
 		JButton btn = new JButton("hey");
-		int txtWidth = textField.getPreferredSize().width;
-//		int btnWidth = btn.getPreferredSize().width;
+		/*
 
-		// expected same:<5> was not:<4>
-		LOG.info("assertSame: expected="+txtWidth + " is="+blab.preferredLayoutSize(textField).width);
-//		assertSame(txtWidth, blab.preferredLayoutSize(textField).width); // TODO wg. #3 expected same:<5> was not:<4>
+@see https://github.com/homebeaver/SwingSet/issues/6
+Bei der Berechnung textField.getPreferredSize() wird in BasicTextUI.getPreferredSize()
+caretMargin addiert (=1 , DEFAULT_CARET_MARGIN)
+
+		 */
+		int txtWidth = textField.getPreferredSize().width - 1; // minus caretMargin
+		Dimension dim = textField.getMinimumSize();
+
+		// PS: para textField wird in preferredLayoutSize gar nicht verwendet!!!
+		LOG.info("textField.MinimumSize="+dim+" assertSame: expected (txtWidth-caretMargin)="+txtWidth + " is="+blab.preferredLayoutSize(textField).width);
+		assertSame(txtWidth, blab.preferredLayoutSize(textField).width);
 
 		BuddySupport.addLeft(btn, textField);
 
-//		assertSame(String.format("preferred layout size should be %d", txtWidth),
-//				txtWidth, blab.preferredLayoutSize(textField).width);
+		assertSame(String.format("preferred layout size should be %d", txtWidth),
+				txtWidth, blab.preferredLayoutSize(textField).width);
 
 		btn.setVisible(false);
-//		assertSame(txtWidth, blab.preferredLayoutSize(textField).width);
+		assertSame(txtWidth, blab.preferredLayoutSize(textField).width);
 	}
 
 	@Test
