@@ -222,7 +222,8 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
             componentLocation = e.getComponent()
             		.getMousePosition(); // throws HeadlessException
         } catch (java.awt.HeadlessException ex) {
-        	LOG.warning(ex.toString());
+        	// on linux: No X11 DISPLAY variable was set, ...
+        	LOG.warning("Operation component.getMousePosition(): "+ex.toString());
         } catch (ClassCastException ignore) {
             // caused by core issue on Mac/Java 7
             
@@ -278,8 +279,7 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
      * @see #updateRolloverPoint(JComponent, Point)
      * @see #updateClientProperty(JComponent, String, boolean)
      */
-    protected void updateRollover(MouseEvent e, String property,
-            boolean fireAlways) {
+    protected void updateRollover(MouseEvent e, String property, boolean fireAlways) {
         updateRolloverPoint((JComponent) e.getComponent(), e.getPoint());
         updateClientProperty((JComponent) e.getComponent(), property, fireAlways);
     }
