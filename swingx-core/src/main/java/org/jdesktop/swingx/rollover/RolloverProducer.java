@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -50,12 +48,10 @@ import javax.swing.JComponent;
  * 
  * @author Jeanette Winzenburg
  */
-public abstract class RolloverProducer implements MouseListener, MouseMotionListener, 
-   ComponentListener {
+public abstract class RolloverProducer implements MouseListener, MouseMotionListener, ComponentListener {
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(RolloverProducer.class
-            .getName());
+//    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(RolloverProducer.class.getName());
     
     /** 
      * Key for client property mapped from mouse-triggered action.
@@ -223,7 +219,10 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
         Point componentLocation = null;
         
         try {
-            componentLocation = e.getComponent().getMousePosition();
+            componentLocation = e.getComponent()
+            		.getMousePosition(); // throws HeadlessException
+        } catch (java.awt.HeadlessException ex) {
+        	LOG.warning(ex.toString());
         } catch (ClassCastException ignore) {
             // caused by core issue on Mac/Java 7
             
@@ -235,7 +234,10 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
             
             if (w != null && isDescendingFrom(e.getComponent(), w)) {
                 try {
-                    PointerInfo pi = java.security.AccessController.doPrivileged(
+                	// The method doPrivileged(PrivilegedAction<PointerInfo>) from the type AccessController is deprecated
+                    @SuppressWarnings("deprecation")
+                	// The type AccessController has been deprecated since version 17 and marked for removal
+					PointerInfo pi = java.security.AccessController.doPrivileged(
                         new java.security.PrivilegedAction<PointerInfo>() {
                             @Override
                             public PointerInfo run() {
