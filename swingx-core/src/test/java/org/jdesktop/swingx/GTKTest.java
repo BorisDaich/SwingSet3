@@ -27,15 +27,17 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class GTKTest extends InteractiveTestCase {
     
-    String[] borderKeys = {"focusCellHighlightBorder", "focusSelectedCellHighlightBorder", 
-            "noFocusBorder"};
+//    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(GTKTest.class.getName());
+
+    String[] borderKeys = {"focusCellHighlightBorder", "focusSelectedCellHighlightBorder", "noFocusBorder"};
     
     static boolean hasGTK; 
     
     @Test
     public void testUninstallBorder() throws Exception {
         if (!hasGTK) {
-            LOG.info("couldn't install GTK, is " + UIManager.getLookAndFeel());
+            LOG.info("couldn't install GTK, L&F is " + UIManager.getLookAndFeel());
             return;
         }
         LookAndFeel old = UIManager.getLookAndFeel();
@@ -76,9 +78,6 @@ public class GTKTest extends InteractiveTestCase {
             assertTrue("expected border of type SafeBorder but was: " + border.getClass().getName(),
                 border instanceof SafeBorder);
     }
-
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(GTKTest.class.getName());
 
     public static void main(String[] args) throws Exception {
         beforeClass();
