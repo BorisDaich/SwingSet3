@@ -84,8 +84,8 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 		Dimension cd = super.getPreferredSize(c);
 		Dimension ld = c.getLayout().preferredLayoutSize(c);
 
-		d.height = Math.max(cd.height, ld.height);
-		d.width = Math.max(cd.width, ld.width);
+		d.height = Math.max(cd.height, ld==null ? 0 : ld.height);
+		d.width = Math.max(cd.width, ld==null ? 0 : ld.width);
 
 		return d;
 	}
