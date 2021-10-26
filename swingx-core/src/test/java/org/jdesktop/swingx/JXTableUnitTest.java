@@ -388,15 +388,19 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @Test
     public void testColumnControlOnUpdateCO() {
     	LOG.info(ENTERING);
-        JXTable table = new JXTable(10, 2);
-        JScrollPane scrollPane = new JScrollPane(table);
-        table.setColumnControlVisible(true);
-        toggleComponentOrientation(scrollPane);
-        //        scrollPane.setLayout(new ScrollPaneLayout());
-        assertSame("sanity: column control in trailing corner", 
-                table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
-        assertNull("column control must not be in leading corner", 
-                scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER));
+    	try {
+            JXTable table = new JXTable(10, 2);
+            JScrollPane scrollPane = new JScrollPane(table);
+            table.setColumnControlVisible(true);
+            toggleComponentOrientation(scrollPane);
+//        	scrollPane.setLayout(new ScrollPaneLayout());
+            assertSame("sanity: column control in trailing corner", 
+                    table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
+            assertNull("column control must not be in leading corner", 
+                    scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER));
+    	} catch (java.awt.HeadlessException ex) {
+        	LOG.warning(ex.toString());        
+    	}
     	LOG.info("exiting");        
     }
     
