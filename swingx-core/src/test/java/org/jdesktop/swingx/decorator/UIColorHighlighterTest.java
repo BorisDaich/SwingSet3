@@ -63,7 +63,7 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
         setLookAndFeel("Metal");
         assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
         setLookAndFeel("Nimbus");
-        LOG.info(ALTERNATE_COLOR+" "+UIManager.getColor(ALTERNATE_COLOR));
+        LOG.config(ALTERNATE_COLOR+" "+UIManager.getColor(ALTERNATE_COLOR));
         assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
         setLookAndFeel("Metal");
         assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
@@ -100,20 +100,12 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
             return;
         }
         setLookAndFeel("Nimbus");
-        LOG.info("UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
+        LOG.config("UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
         assertNotNull("Nimbus without addon has alternate color ", UIManager.getColor(ALTERNATE_COLOR));
         new JXTable();
-        LOG.info(OS + ": new JXTable(); UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
-/* is not Null on Windows!:
-INFORMATION: new JXTable(); UIManager.getColor(Table.alternateRowColor):DerivedColor(color=242,242,242 parent=nimbusLightBackground offsets=0.0,0.0,-0.05098039,0 pColor=255,255,255
-
-Linux:
-Oct 18, 2021 11:21:59 AM org.jdesktop.swingx.decorator.UIColorHighlighterTest testAlternateXTable
-INFO: new JXTable(); UIManager.getColor(Table.alternateRowColor):null
-
- */
-//        assertNull("Nimbus with addon has alternate removed but was: \n " 
-//                + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
+        LOG.config(OS + ": new JXTable(); UIManager.getColor(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
+        assertNull("Nimbus with addon has alternate removed but was: \n " 
+                + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
     }
 
     @Override
