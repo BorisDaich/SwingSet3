@@ -58,8 +58,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class TableRendererTest extends InteractiveTestCase {
 
-    private static final Logger LOG = Logger.getLogger(TableRendererTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(TableRendererTest.class.getName());
     
     private JTable table;
     private int coreColumn;
@@ -160,6 +159,7 @@ public class TableRendererTest extends InteractiveTestCase {
         cellContext.dropOn = true;
         assertTrue("context must use dropOn flag ... dooh", cellContext.isDropOn());
     }
+    
     /**
      * Issue #484-swingx: dnd on color not showing.
      * Can't really test - can't mock a drop-on only bare context methods.
@@ -167,15 +167,16 @@ public class TableRendererTest extends InteractiveTestCase {
     @Test
     public void testCellContextDropOnColors() {
         TableCellContext cellContext = new TableCellContext();
-        Color dropBackground = UIManager.getColor("Table.dropCellBackground");
-        LOG.info("background " + dropBackground);
-        if (dropBackground != null) {
-            assertEquals(dropBackground, cellContext.getDropCellBackground());
+        Color dropCellBackgroundColor = UIManager.getColor("Table.dropCellBackground");
+        LOG.info("dropCellBackground color " + dropCellBackgroundColor);
+        if (dropCellBackgroundColor != null) {
+            assertEquals(dropCellBackgroundColor, cellContext.getDropCellBackground());
         }
-        Color dropForeground = UIManager.getColor("Table.dropCellForeground");
-        LOG.info("foreground " + dropForeground);
-        if (dropForeground != null) {
-            assertEquals(dropForeground, cellContext.getDropCellForeground());
+        
+        Color dropCellForegroundColor = UIManager.getColor("Table.dropCellForeground");
+        LOG.info("dropCellForeground color " + dropCellForegroundColor);
+        if (dropCellForegroundColor != null) {
+            assertEquals(dropCellForegroundColor, cellContext.getDropCellForeground());
         }
     }
     /**
