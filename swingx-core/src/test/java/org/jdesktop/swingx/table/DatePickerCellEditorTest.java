@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,6 +20,7 @@ package org.jdesktop.swingx.table;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -36,6 +35,9 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class DatePickerCellEditorTest extends InteractiveTestCase {
+	
+    private static Logger LOG = Logger.getLogger(DatePickerCellEditorTest.class.getName());
+
     public static void main(String[] args) {
         setSystemLF(true);
         DatePickerCellEditorTest test = new DatePickerCellEditorTest();
@@ -67,6 +69,7 @@ public class DatePickerCellEditorTest extends InteractiveTestCase {
 //        Date fullCycle = editor.getFormats()[0].parse(dateString);
 //        assertEquals("the formatted input date string must be same", fullCycle, editor.getValueAsDate(dateString));
         String nonsenseString = "invalid";
+        LOG.info("Detect an unparseable nonsenseString:"+nonsenseString);
         assertNull("invalid string maps to null", editor.getValueAsDate(nonsenseString));
         assertNull("empty String maps to null", editor.getValueAsDate(""));
         // same with date/string wrapped into TreeNode

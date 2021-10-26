@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -51,9 +49,11 @@ import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
  * @author Richard Osbald
  * @author Jeanette Winzenburg
  */
-public class DatePickerCellEditor extends AbstractCellEditor implements
-        TableCellEditor, TreeCellEditor {
+public class DatePickerCellEditor extends AbstractCellEditor implements TableCellEditor, TreeCellEditor {
 
+    private static Logger LOG = Logger.getLogger(DatePickerCellEditor.class.getName());
+    private static final long serialVersionUID = -1L;
+    
     protected JXDatePicker datePicker;
 
     protected DateFormat dateFormat;
@@ -63,11 +63,6 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
     private ActionListener pickerActionListener;
 
     protected boolean ignoreAction;
-
-    private static Logger logger = Logger.getLogger(DatePickerCellEditor.class
-            .getName());
-
-    private static final long serialVersionUID = -1L;
 
     /**
      * Instantiates a editor with the default dateFormat.
@@ -245,7 +240,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
      * @param e
      */
     protected void handleParseException(ParseException e) {
-        logger.log(Level.SEVERE, e.getMessage(), e.getMessage());
+        LOG.log(Level.SEVERE, e.getMessage(), e.getMessage());
     }
 
     protected boolean isEmpty(Object value) {
@@ -334,6 +329,5 @@ public class DatePickerCellEditor extends AbstractCellEditor implements
         };
         return l;
     }
-
 
 }
