@@ -397,7 +397,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
                 table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
         assertNull("column control must not be in leading corner", 
                 scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER));
-        
+    	LOG.info("exiting");        
     }
     
     /**
@@ -418,7 +418,7 @@ public class JXTableUnitTest extends InteractiveTestCase {
                 table.getColumnControl(), scrollPane.getCorner(JScrollPane.UPPER_TRAILING_CORNER));
         assertNull("column control must not be in leading corner", 
                 scrollPane.getCorner(JScrollPane.UPPER_LEADING_CORNER));
-        
+    	LOG.info("exiting");        
     }
         
     @Test
