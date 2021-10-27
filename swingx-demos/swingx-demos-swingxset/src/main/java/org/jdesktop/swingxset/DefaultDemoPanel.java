@@ -21,6 +21,7 @@
 package org.jdesktop.swingxset;
 
 import java.awt.Dimension;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -81,7 +82,11 @@ public abstract class DefaultDemoPanel extends JXPanel {
                     JFrame frame = new JFrame(clazz.getAnnotation(DemoProperties.class).value());
                     
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame.getContentPane().add(clazz.newInstance());
+                    
+                    // throws NoSuchMethodException, InvocationTargetException
+                    // , InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+                    frame.getContentPane().add(clazz.getDeclaredConstructor().newInstance());
+                    
                     frame.setPreferredSize(new Dimension(800, 600));
                     frame.pack();
                     frame.setLocationRelativeTo(null);
@@ -90,7 +95,19 @@ public abstract class DefaultDemoPanel extends JXPanel {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                }
+                } catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
     }

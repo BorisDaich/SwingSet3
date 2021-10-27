@@ -22,6 +22,7 @@
 package org.jdesktop.swingxset;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,8 +43,7 @@ import com.sun.swingset3.Demo;
 public class DemoCreator {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(DemoCreator.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(DemoCreator.class.getName());
     private static final DemoCreator INSTANCE = new DemoCreator();
     
     public List<Demo> createDemos(String[] args, String metaSource) {
@@ -83,12 +83,25 @@ public class DemoCreator {
 
         // First look for any demo list files specified on the command-line
         for(String arg : args) {
+        	LOG.info("arg:"+arg);
             if (arg.equals("-a") || arg.equals("-augment")) {
                 augment = true;
             } else {
                 // process argument as filename containing names of demo classes
                 try {
-                    demoList.addAll(readDemoClassNames(new FileReader(arg) /*filename*/));
+                	File f = new File(arg);
+                	String dir = ""; // prefix to arg
+                	if(f.canRead()) {
+                    	LOG.info("AbsolutePath:"+f.getAbsolutePath());
+                	} else {
+                		LOG.warning("cannot read "+f + " >>> try default eclipse output folder ...");
+                		dir = "bin/"; // this is default eclipse output folder
+                		f = new File(dir+arg);
+                		if(!f.canRead()) {
+                			dir = "target/classes/"; // m2e output folder        			
+                		}
+                	}
+                    demoList.addAll(readDemoClassNames(new FileReader(dir+arg) /*filename*/));
                 } catch (IOException ex) {
                     exception = ex;
                     LOG.log(Level.WARNING, "unable to read demo class names from file: "+arg, ex);

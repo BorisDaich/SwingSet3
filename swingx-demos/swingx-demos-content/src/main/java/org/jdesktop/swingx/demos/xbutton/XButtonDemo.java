@@ -71,12 +71,11 @@ public class XButtonDemo extends DefaultDemoPanel {
      */
     /*
      * damit diese Klasse als einzige im SwingXSet gestartet werden kann (Application.launch),
-     * muss sie in einem file stehen (==>demolist2).
+     * muss sie in einem file stehen (==>onlyXButtonDemo).
      * Dieses file wird dann vom DemoCreator eingelesen, "-a"/"-augment" erweitert den demo-Vorrat.
      */
     public static void main(String[] args) {
-    	Application.launch(SwingXSet.class, new String[] {"bin/META-INF/onlyXButtonDemo"});
-//    	Application.launch(SwingXSet.class, new String[] {"-a", "??????"});
+    	Application.launch(SwingXSet.class, new String[] {"META-INF/onlyXButtonDemo"});
     }
 
     public XButtonDemo() {
@@ -240,7 +239,7 @@ public class XButtonDemo extends DefaultDemoPanel {
      */
 	@Override
 	protected void createDemo() {
-		LOG.info("????");
+		LOG.info("ctor");
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         

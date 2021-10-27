@@ -28,7 +28,6 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.sun.swingset3;
 
 import java.awt.Component;
@@ -61,15 +60,13 @@ public class Demo {
         return parts.length >= 2? parts[parts.length-2] : "general";
     }
     
-    public static String deriveCategoryFromPackageName(Class demoClass) {
-        String packageName = demoClass.getPackage() != null? 
-            demoClass.getPackage().getName() : null;
+    public static String deriveCategoryFromPackageName(Class<?> demoClass) {
+        String packageName = demoClass.getPackage() != null ? demoClass.getPackage().getName() : null;
         if (packageName != null) {
             // if root package is swingset3, then remove it
             String swingsetPackageName = Demo.class.getPackage().getName();
             if (packageName.startsWith(swingsetPackageName + ".demos.")) {
-                packageName = packageName.replaceFirst(swingsetPackageName + ".demos.",
-                        "");
+                packageName = packageName.replaceFirst(swingsetPackageName + ".demos.", "");
             }
         }
         return packageName != null? packageName : "general";        
@@ -80,7 +77,7 @@ public class Demo {
         return convertToDemoName(simpleName);
     }
     
-    public static String deriveNameFromClassName(Class demoClass) {
+    public static String deriveNameFromClassName(Class<?> demoClass) {
         String className = demoClass.getSimpleName();
         return convertToDemoName(className);
     }
@@ -108,7 +105,7 @@ public class Demo {
     
     private State state;
     
-    private Exception failException;
+    private Exception failException; // set, but not used
     
     private PropertyChangeSupport pcs;
     
@@ -137,7 +134,7 @@ public class Demo {
         pcs = new PropertyChangeSupport(this);
     }
     
-    public Class getDemoClass() {
+    public Class<?> getDemoClass() {
         return demoClass;
     }
  
@@ -204,8 +201,7 @@ public class Demo {
                 for (String path : sourceFilePaths) {
                     URL url = getClass().getClassLoader().getResource(path);
                     if (url == null) {
-                        SwingXSet.logger.log(Level.WARNING,
-                                "unable to load source file '" + path + "'");
+                        SwingXSet.logger.log(Level.WARNING, "unable to load source file '" + path + "'");
                     } else {
                         pathURLs.add(url);
                     }
@@ -226,8 +222,7 @@ public class Demo {
         if (component != null && !demoClass.isInstance(component)) {
             setState(State.FAILED);
             IllegalArgumentException e =
-                    new IllegalArgumentException("component must be an instance of " +
-                    demoClass.getCanonicalName());
+                    new IllegalArgumentException("component must be an instance of " + demoClass.getCanonicalName());
             failException = e;
             throw e;
         }
@@ -246,7 +241,7 @@ public class Demo {
     public Component createDemoComponent() throws Exception {
         Component component = null;
         try {
-            component = (Component)demoClass.newInstance();
+            component = (Component)demoClass.getDeclaredConstructor().newInstance();
             setDemoComponent(component);
         } catch (Exception e) {
             System.err.println(e);
@@ -297,8 +292,7 @@ public class Demo {
             failException = ite;
             setState(State.FAILED);
         } catch (NullPointerException npe) {
-            SwingXSet.logger.log(Level.SEVERE, "init method called before demo was instantiated: "
-                    +demoClass.getName(), npe);
+            SwingXSet.logger.log(Level.SEVERE, "init method called before demo was instantiated: "+demoClass.getName(), npe);
             failException = npe;
             setState(State.FAILED);
         }
@@ -322,8 +316,7 @@ public class Demo {
             failException = ite;
             setState(State.FAILED);
         } catch (NullPointerException npe) {
-            SwingXSet.logger.log(Level.SEVERE, "start method called before demo was instantiated: "
-                    +demoClass.getName(), npe);
+            SwingXSet.logger.log(Level.SEVERE, "start method called before demo was instantiated: "+demoClass.getName(), npe);
             failException = npe;
             setState(State.FAILED);
         }
