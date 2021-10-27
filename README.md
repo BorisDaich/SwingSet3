@@ -5,7 +5,7 @@ from the SwingX development SVN repository on [java.net](https://en.wikipedia.or
 before Oracle acquired Sun and took that site offline permanently. The code is therefore more recent
 than any released version of SwingX by [SwingLabs](https://en.wikipedia.org/wiki/SwingLabs). The last jar published was version 1.6.5-1 dated Feb 27 2013, see tags on [ebourg/swingx](https://github.com/ebourg/swingx).
 
-- the last commit 820656cece5d727e85c32f335a3363bc852d07d8 by user "kleopatra" was made at 17:59:46, October 09, 2013.
+- the last [commit](https://github.com/homebeaver/SwingSet3/commit/820656cece5d727e85c32f335a3363bc852d07d8) by user "kleopatra" was made at 17:59:46, October 09, 2013.
 - see also this Stack Overflow question and its answers and comments: [what-is-the-status-of-swinglabs-swingx-post-acquisition](https://stackoverflow.com/questions/6818528/what-is-the-status-of-swinglabs-swingx-post-acquisition)
 
 ### post SwingLabs forks
