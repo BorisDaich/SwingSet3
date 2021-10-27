@@ -1,58 +1,18 @@
-# SwingX, salvaged
+# SwingX (SwingSet3)
 
-This repository contains a copy of the source code for the SwingX library. The code was downloaded
+This repository contains a copy of the source code for the SwingX library. The code was downloaded and salvaged
 from the SwingX development SVN repository on [java.net](https://en.wikipedia.org/wiki/Java.net)
 before Oracle acquired Sun and took that site offline permanently. The code is therefore more recent
-than any released version of SwingX. It might have had version number 1.6.6 had it ever been
-released.
+than any released version of SwingX by [SwingLabs](https://en.wikipedia.org/wiki/SwingLabs). The last jar published was version 1.6.5-1 dated Feb 27 2013, see [ebourg/swingx](https://github.com/ebourg/swingx).
 
-The code was downloaded from https://svn.java.net/svn/swingx~svn/trunk. The downloaded commit was
-SVN revision 4316 by user "kleopatra", made at 11:59:46 AM, Wednesday, October 09, 2013.
+- the last commit 820656c https://github.com/homebeaver/SwingSet3/commit/820656cece5d727e85c32f335a3363bc852d07d8 by user "kleopatra" was made at 17:59:46, October 09, 2013.
+- see also this Stack Overflow question and its answers and comments: https://stackoverflow.com/questions/6818528/what-is-the-status-of-swinglabs-swingx-post-acquisition
 
-Other repositories have copies of the entire original SVN revision history:
-* https://github.com/RockManJoe64/swingx
-* https://github.com/ebourg/swingx
+### post SwingLabs forks
 
-See also this Stack Overflow question and its answers and comments: https://stackoverflow.com/questions/6818528/what-is-the-status-of-swinglabs-swingx-post-acquisition
+[Softec AG fork](https://github.com/Softec-Open-Source-Division/swingx) made updates to [v1.6.6](https://github.com/Softec-Open-Source-Division/swingx/releases/tag/v1.6.6) without publishing a jar
 
-## Eclipse import and the SwingXSet demo program
+**This SwingSet3 fork** continues the work with [v1.6.6-1 jar](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.6-1) build for Java 8
 
-The original SwingX source code included Maven pom.xml files, but did not include any development
-environment configuration files. The build-swingx-demos branch of this repository adds Eclipse
-project files so that the source code can be imported in Eclipse easily.
+The goal of this fork is a SwingSet3 jar v1.6.7+ for [OpenJDK](https://en.wikipedia.org/wiki/OpenJDK) (Adoptium or Temurin)
 
-The build-swingx-demos branch also modifies the pom files to build the swingx-demos project, which
-is disabled by default. swingx-demos contains SwingXSet, which is a useful demo program that shows
-off various nonstandard Swing components added by SwingX, similar to what the SwingSet program does
-for the base set of Swing components.
-
-**If you are just looking for a binary of SwingXSet so that you can preview the various SwingX
-components, you can download an executable JAR file from
-[the releases page](https://github.com/arotenberg/swingx/releases).**
-
-
-## The original SwingX readme
-
-Readme - SwingLabs SwingX Project - http://swingx.dev.java.net
-
-
-SwingX is a library of components and utilities extending the Java Swing library; read more at our website, 
-http://swingx.dev.java.net, and Wiki page, http://wiki.java.net/bin/view/Javadesktop/SwingLabsSwingX
-
-
-### Getting the Latest Source
-
-1) Check out the lastest code
-Download the latest release from our SVN repository; full instructions are at
-https://swingx.dev.java.net/servlets/ProjectSource
-
-### Building the Source
-
-SwingX relies on Maven for controlling compilation, building docs, testing, etc. You can use our POM files to build the project, some IDEs can directly invoke Maven for you.
-
-To compile from the command line, you'll need to have Apache Maven 3.x installed; see http://maven.apache.org. 
-
-You can build SwingX by going to the command line and typing
-mvn package
-
-That should be it--this will test and build swingx.jar in the target directory. 
