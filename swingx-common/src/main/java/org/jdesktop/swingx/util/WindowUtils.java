@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.util;
 
 import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
@@ -46,6 +43,7 @@ import javax.swing.SwingUtilities;
  * @author Richard Bair
  */
 public final class WindowUtils {
+	
     /**
      * Hide the constructor - don't wan't anybody creating an instance of this
      */

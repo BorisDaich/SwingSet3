@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.util;
 
 import java.awt.AlphaComposite;
@@ -92,13 +89,13 @@ import javax.swing.JComponent;
  */
 @SuppressWarnings("nls")
 public class GraphicsUtilities {
+	
     private GraphicsUtilities() {
     }
 
     // Returns the graphics configuration for the primary screen
     private static GraphicsConfiguration getGraphicsConfiguration() {
-        return GraphicsEnvironment.getLocalGraphicsEnvironment().
-                    getDefaultScreenDevice().getDefaultConfiguration();
+        return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     }
 
     private static boolean isHeadless() {
@@ -113,8 +110,7 @@ public class GraphicsUtilities {
      * @return a compatible buffered image of the input
      */
     public static BufferedImage convertToBufferedImage(Image img) {
-        BufferedImage buff = createCompatibleTranslucentImage(
-                img.getWidth(null), img.getHeight(null));
+        BufferedImage buff = createCompatibleTranslucentImage(img.getWidth(null), img.getHeight(null));
         Graphics2D g2 = buff.createGraphics();
 
         try {
@@ -140,8 +136,7 @@ public class GraphicsUtilities {
     public static BufferedImage createColorModelCompatibleImage(BufferedImage image) {
         ColorModel cm = image.getColorModel();
         return new BufferedImage(cm,
-            cm.createCompatibleWritableRaster(image.getWidth(),
-                                              image.getHeight()),
+            cm.createCompatibleWritableRaster(image.getWidth(), image.getHeight()),
             cm.isAlphaPremultiplied(), null);
     }
 
@@ -189,12 +184,10 @@ public class GraphicsUtilities {
      * @return a new compatible <code>BufferedImage</code> with the same
      *   transparency as <code>image</code> and the specified dimension
      */
-    public static BufferedImage createCompatibleImage(BufferedImage image,
-                                                      int width, int height) {
+    public static BufferedImage createCompatibleImage(BufferedImage image, int width, int height) {
         return isHeadless() ?
-                new BufferedImage(width, height, image.getType()) :
-                getGraphicsConfiguration().createCompatibleImage(width, height,
-                                                   image.getTransparency());
+            new BufferedImage(width, height, image.getType()) :
+            getGraphicsConfiguration().createCompatibleImage(width, height, image.getTransparency());
     }
 
     /**
@@ -216,8 +209,8 @@ public class GraphicsUtilities {
      */
     public static BufferedImage createCompatibleImage(int width, int height) {
         return isHeadless() ?
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB) :
-                getGraphicsConfiguration().createCompatibleImage(width, height);
+            new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB) :
+            getGraphicsConfiguration().createCompatibleImage(width, height);
     }
 
     /**
@@ -237,12 +230,10 @@ public class GraphicsUtilities {
      * @return a new translucent compatible <code>BufferedImage</code> of the
      *   specified width and height
      */
-    public static BufferedImage createCompatibleTranslucentImage(int width,
-                                                                 int height) {
+    public static BufferedImage createCompatibleTranslucentImage(int width, int height) {
         return isHeadless() ?
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB) :
-                getGraphicsConfiguration().createCompatibleImage(width, height,
-                                                   Transparency.TRANSLUCENT);
+            new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB) :
+            getGraphicsConfiguration().createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
 
     /**
@@ -285,8 +276,7 @@ public class GraphicsUtilities {
      *   specified width and height
      * @throws java.io.IOException if the image cannot be read or loaded
      */
-    public static BufferedImage loadCompatibleImage(URL resource)
-            throws IOException {
+    public static BufferedImage loadCompatibleImage(URL resource) throws IOException {
         BufferedImage image = ImageIO.read(resource);
         return toCompatibleImage(image);
     }
@@ -313,8 +303,7 @@ public class GraphicsUtilities {
             return image;
         }
 
-        if (image.getColorModel().equals(
-                getGraphicsConfiguration().getColorModel())) {
+        if (image.getColorModel().equals(getGraphicsConfiguration().getColorModel())) {
             return image;
         }
 
@@ -333,6 +322,13 @@ public class GraphicsUtilities {
         return compatibleImage;
     }
 
+    private static final String SIZE_MUST_BE_LOWER_THEN_IMAGE_WIDTH = "newSize must be lower than the image width";
+    private static final String SIZE_MUST_BE_LOWER_THEN_IMAGE_HIGHGTH = "newSize must be lower than the image height";
+    private static final String SIZES_MUST_BE_LOWER_THEN_IMAGE_DIM = "newWidth and newHeight cannot be greater than the image dimensions";
+    private static final String SIZE_MUST_BE_GREATER_THEN_0 = "newSize must be greater than 0";
+    private static final String SIZES_MUST_BE_GREATER_THEN_0 = "newWidth and newHeight must be greater than 0";
+    private static final String PIXELS_MUST_BE_GREATER_THEN_WH = "pixels array must have a length >= w*h";
+    
     /**
      * <p>Returns a thumbnail of a source image. <code>newSize</code> defines
      * the length of the longest dimension of the thumbnail. The other
@@ -355,19 +351,16 @@ public class GraphicsUtilities {
      * @throws IllegalArgumentException if <code>newSize</code> is larger than
      *   the largest dimension of <code>image</code> or &lt;= 0
      */
-    public static BufferedImage createThumbnailFast(BufferedImage image,
-                                                    int newSize) {
+    public static BufferedImage createThumbnailFast(BufferedImage image, int newSize) {
         float ratio;
         int width = image.getWidth();
         int height = image.getHeight();
 
         if (width > height) {
             if (newSize >= width) {
-                throw new IllegalArgumentException("newSize must be lower than" +
-                                                   " the image width");
+                throw new IllegalArgumentException(SIZE_MUST_BE_LOWER_THEN_IMAGE_WIDTH);
             } else if (newSize <= 0) {
-                 throw new IllegalArgumentException("newSize must" +
-                                                    " be greater than 0");
+                 throw new IllegalArgumentException(SIZE_MUST_BE_GREATER_THEN_0);
             }
 
             ratio = (float) width / (float) height;
@@ -375,11 +368,9 @@ public class GraphicsUtilities {
             height = (int) (newSize / ratio);
         } else {
             if (newSize >= height) {
-                throw new IllegalArgumentException("newSize must be lower than" +
-                                                   " the image height");
+                throw new IllegalArgumentException(SIZE_MUST_BE_LOWER_THEN_IMAGE_HIGHGTH);
             } else if (newSize <= 0) {
-                 throw new IllegalArgumentException("newSize must" +
-                                                    " be greater than 0");
+                 throw new IllegalArgumentException(SIZE_MUST_BE_GREATER_THEN_0);
             }
 
             ratio = (float) height / (float) width;
@@ -391,8 +382,7 @@ public class GraphicsUtilities {
         Graphics2D g2 = temp.createGraphics();
         
         try {
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2.drawImage(image, 0, 0, temp.getWidth(), temp.getHeight(), null);
         } finally {
             g2.dispose();
@@ -423,16 +413,11 @@ public class GraphicsUtilities {
      *   than the height of <code>image</code> or if one of the dimensions
      *   is &lt;= 0
      */
-    public static BufferedImage createThumbnailFast(BufferedImage image,
-                                                    int newWidth, int newHeight) {
-        if (newWidth >= image.getWidth() ||
-            newHeight >= image.getHeight()) {
-            throw new IllegalArgumentException("newWidth and newHeight cannot" +
-                                               " be greater than the image" +
-                                               " dimensions");
+    public static BufferedImage createThumbnailFast(BufferedImage image, int newWidth, int newHeight) {
+        if (newWidth >= image.getWidth() || newHeight >= image.getHeight()) {
+            throw new IllegalArgumentException(SIZES_MUST_BE_LOWER_THEN_IMAGE_DIM);
         } else if (newWidth <= 0 || newHeight <= 0) {
-            throw new IllegalArgumentException("newWidth and newHeight must" +
-                                               " be greater than 0");
+            throw new IllegalArgumentException(SIZES_MUST_BE_GREATER_THEN_0);
         }
 
         BufferedImage temp = createCompatibleImage(image, newWidth, newHeight);
@@ -470,8 +455,7 @@ public class GraphicsUtilities {
      * @throws IllegalArgumentException if <code>newSize</code> is larger than
      *   the largest dimension of <code>image</code> or &lt;= 0
      */
-    public static BufferedImage createThumbnail(BufferedImage image,
-                                                int newSize) {
+    public static BufferedImage createThumbnail(BufferedImage image, int newSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -480,17 +464,14 @@ public class GraphicsUtilities {
 
         if (isWidthGreater) {
             if (newSize >= width) {
-                throw new IllegalArgumentException("newSize must be lower than" +
-                                                   " the image width");
+                throw new IllegalArgumentException(SIZE_MUST_BE_LOWER_THEN_IMAGE_WIDTH);
             }
         } else if (newSize >= height) {
-            throw new IllegalArgumentException("newSize must be lower than" +
-                                               " the image height");
+            throw new IllegalArgumentException(SIZE_MUST_BE_LOWER_THEN_IMAGE_HIGHGTH);
         }
 
         if (newSize <= 0) {
-            throw new IllegalArgumentException("newSize must" +
-                                               " be greater than 0");
+            throw new IllegalArgumentException(SIZE_MUST_BE_GREATER_THEN_0);
         }
 
         float ratioWH = (float) width / (float) height;
@@ -529,11 +510,9 @@ public class GraphicsUtilities {
                     }
                     temp = createCompatibleImage(image, width, height);
                     g2 = temp.createGraphics();
-                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                 }
-                g2.drawImage(thumb, 0, 0, width, height,
-                        0, 0, previousWidth, previousHeight, null);
+                g2.drawImage(thumb, 0, 0, width, height, 0, 0, previousWidth, previousHeight, null);
     
                 previousWidth = width;
                 previousHeight = height;
@@ -584,20 +563,16 @@ public class GraphicsUtilities {
      *   the width of <code>image</code> or if code>newHeight</code> is larger
      *   than the height of <code>image or if one the dimensions is not &gt; 0</code>
      */
-    public static BufferedImage createThumbnail(BufferedImage image,
-                                                int newWidth, int newHeight) {
+    public static BufferedImage createThumbnail(BufferedImage image, int newWidth, int newHeight) {
         int width = image.getWidth();
         int height = image.getHeight();
 
         boolean isTranslucent = image.getTransparency() != Transparency.OPAQUE;
 
         if (newWidth >= width || newHeight >= height) {
-            throw new IllegalArgumentException("newWidth and newHeight cannot" +
-                                               " be greater than the image" +
-                                               " dimensions");
+            throw new IllegalArgumentException(SIZES_MUST_BE_LOWER_THEN_IMAGE_DIM);
         } else if (newWidth <= 0 || newHeight <= 0) {
-            throw new IllegalArgumentException("newWidth and newHeight must" +
-                                               " be greater than 0");
+            throw new IllegalArgumentException(SIZES_MUST_BE_GREATER_THEN_0);
         }
 
         BufferedImage thumb = image;
@@ -633,11 +608,9 @@ public class GraphicsUtilities {
                     }
                     temp = createCompatibleImage(image, width, height);
                     g2 = temp.createGraphics();
-                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                 }
-                g2.drawImage(thumb, 0, 0, width, height,
-                             0, 0, previousWidth, previousHeight, null);
+                g2.drawImage(thumb, 0, 0, width, height, 0, 0, previousWidth, previousHeight, null);
     
                 previousWidth = width;
                 previousHeight = height;
@@ -655,8 +628,7 @@ public class GraphicsUtilities {
             g2 = temp.createGraphics();
             
             try {
-                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                 g2.drawImage(thumb, 0, 0, width, height, 0, 0, width, height, null);
             } finally {
                 g2.dispose();
@@ -686,8 +658,7 @@ public class GraphicsUtilities {
      * @throws IllegalArgumentException is <code>pixels</code> is non-null and
      *   of length &lt; w*h
      */
-    public static int[] getPixels(BufferedImage img,
-                                  int x, int y, int w, int h, int[] pixels) {
+    public static int[] getPixels(BufferedImage img, int x, int y, int w, int h, int[] pixels) {
         if (w == 0 || h == 0) {
             return new int[0];
         }
@@ -695,8 +666,7 @@ public class GraphicsUtilities {
         if (pixels == null) {
             pixels = new int[w * h];
         } else if (pixels.length < w * h) {
-            throw new IllegalArgumentException("pixels array must have a length" +
-                                               " >= w*h");
+            throw new IllegalArgumentException(PIXELS_MUST_BE_GREATER_THEN_WH);
         }
 
         int imageType = img.getType();
@@ -725,13 +695,11 @@ public class GraphicsUtilities {
      * @throws IllegalArgumentException is <code>pixels</code> is non-null and
      *   of length &lt; w*h
      */
-    public static void setPixels(BufferedImage img,
-                                 int x, int y, int w, int h, int[] pixels) {
+    public static void setPixels(BufferedImage img, int x, int y, int w, int h, int[] pixels) {
         if (pixels == null || w == 0 || h == 0) {
             return;
         } else if (pixels.length < w * h) {
-            throw new IllegalArgumentException("pixels array must have a length" +
-                                               " >= w*h");
+            throw new IllegalArgumentException(PIXELS_MUST_BE_GREATER_THEN_WH);
         }
 
         int imageType = img.getType();
@@ -771,10 +739,7 @@ public class GraphicsUtilities {
      * Draws an image on top of a component by doing a 3x3 grid stretch of the image
      * using the specified insets.
      */
-    public static void tileStretchPaint(Graphics g, 
-                JComponent comp,
-                BufferedImage img,
-                Insets ins) {
+    public static void tileStretchPaint(Graphics g, JComponent comp, BufferedImage img, Insets ins) {
         
         int left = ins.left;
         int right = ins.right;

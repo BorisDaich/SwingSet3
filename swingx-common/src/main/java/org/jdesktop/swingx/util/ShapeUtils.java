@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -48,14 +46,12 @@ public final class ShapeUtils {
         return generatePolygon(sides, outsideRadius, 0, normalize);
     }
 
-    public static Shape generatePolygon(int sides, int outsideRadius, int insideRadius,
-            boolean normalize) {
+    public static Shape generatePolygon(int sides, int outsideRadius, int insideRadius, boolean normalize) {
         Shape shape = generatePolygon(sides, outsideRadius, insideRadius);
         if (normalize) {
             Rectangle2D bounds = shape.getBounds2D();
             GeneralPath path = new GeneralPath(shape);
-            shape = path.createTransformedShape(AffineTransform.getTranslateInstance(
-                    -bounds.getX(), -bounds.getY()));
+            shape = path.createTransformedShape(AffineTransform.getTranslateInstance(-bounds.getX(), -bounds.getY()));
         }
         return shape;
     }

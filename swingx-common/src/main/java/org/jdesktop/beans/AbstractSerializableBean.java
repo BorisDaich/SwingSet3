@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -45,8 +43,8 @@ import java.io.Serializable;
  * @see ObjectOutputStream
  */
 @SuppressWarnings("serial")
-public abstract class AbstractSerializableBean extends AbstractBean implements
-        Serializable {
+public abstract class AbstractSerializableBean extends AbstractBean implements Serializable {
+	
     /**
      * Creates a new instance of {@code AbstractSerializableBean}.
      */
@@ -65,8 +63,7 @@ public abstract class AbstractSerializableBean extends AbstractBean implements
      * @throws NullPointerException
      *             if any parameter is {@code null}
      */
-    protected AbstractSerializableBean(PropertyChangeSupport pcs,
-            VetoableChangeSupport vcs) {
+    protected AbstractSerializableBean(PropertyChangeSupport pcs, VetoableChangeSupport vcs) {
         super(pcs, vcs);
     }
 
@@ -88,8 +85,7 @@ public abstract class AbstractSerializableBean extends AbstractBean implements
         s.writeObject(null);
     }
 
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException,
-            IOException {
+    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
         s.defaultReadObject();
 
         Object listenerOrNull;

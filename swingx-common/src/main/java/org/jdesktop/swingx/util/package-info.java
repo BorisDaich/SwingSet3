@@ -19,6 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
+/* JDNC: SwingLabs subproject
+ * Contained components to simplify the development of Swing-based rich client Java applications. 
+ * This project has been replaced by the Swing Application Framework (JSR 296).
+ * @see https://en.wikipedia.org/wiki/Swing_Application_Framework
+ */
 /**Contains utility API required by JDNC's Swing Extensions.
 
 <h2>Package Specification</h2>
