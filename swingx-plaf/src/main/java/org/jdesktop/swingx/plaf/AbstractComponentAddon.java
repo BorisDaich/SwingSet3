@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -67,8 +65,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @param addon
      * @param defaults
      */
-    protected void addBasicDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
     }
 
     /**
@@ -89,8 +86,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @param addon
      * @param defaults
      */
-    protected void addMetalDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         addBasicDefaults(addon, defaults);
     }
 
@@ -101,8 +97,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @param addon
      * @param defaults
      */
-    protected void addMotifDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addMotifDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         addBasicDefaults(addon, defaults);
     }
 
@@ -113,8 +108,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @param addon
      * @param defaults
      */
-    protected void addWindowsDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addWindowsDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         addBasicDefaults(addon, defaults);
     }
 
@@ -125,8 +119,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @param addon
      * @param defaults
      */
-    protected void addLinuxDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addLinuxDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         addBasicDefaults(addon, defaults);
     }
 
@@ -137,8 +130,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @param addon
      * @param defaults
      */
-    protected void addNimbusDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         addBasicDefaults(addon, defaults);
     }
 
@@ -164,6 +156,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      */
     private Object[] getDefaults(LookAndFeelAddons addon) {
         DefaultsList defaults = new DefaultsList();
+        
         if (isWindows(addon)) {
             addWindowsDefaults(addon, defaults);
         } else if (isMetal(addon)) {
@@ -235,8 +228,7 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
      * @return true if the current look and feel is one of JGoodies Plastic l&fs
      */
     protected boolean isPlastic() {
-        return UIManager.getLookAndFeel().getClass().getName()
-                .contains("Plastic");
+        return UIManager.getLookAndFeel().getClass().getName().contains("Plastic");
     }
 
     /**

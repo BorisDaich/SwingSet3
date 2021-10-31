@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,6 +38,11 @@ public class WindowsLookAndFeelAddons extends BasicLookAndFeelAddons {
 
     public static final String VISTA_VISUAL_STYLE = "NormalColor";
     
+    @Override
+	public String toString() {
+		return "["+this.getClass().getSimpleName()+", "+super.toString()+"]";		
+	}
+
     /**
      * {@inheritDoc}
      */

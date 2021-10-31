@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -36,6 +34,12 @@ import org.kohsuke.MetaInfServices;
  */
 @MetaInfServices(LookAndFeelAddons.class)
 public class MetalLookAndFeelAddons extends BasicLookAndFeelAddons {
+	
+    @Override
+	public String toString() {
+		return "["+this.getClass().getSimpleName()+", "+super.toString()+"]";		
+	}
+
     /**
      * {@inheritDoc}
      */

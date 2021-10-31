@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,8 +20,9 @@ package org.jdesktop.swingx.plaf;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessController;
+import java.security.AccessController; // Deprecated since="17" forRemoval
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,9 +70,9 @@ import org.jdesktop.swingx.painter.Painter;
  */
 @SuppressWarnings("nls")
 public abstract class LookAndFeelAddons {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(LookAndFeelAddons.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(LookAndFeelAddons.class.getName());
     
     private static List<ComponentAddon> contributedComponents = new ArrayList<ComponentAddon>();
 
@@ -85,6 +84,11 @@ public abstract class LookAndFeelAddons {
     private static boolean trackingChanges = false;
     private static PropertyChangeListener changeListener;
 
+    @Override
+    public String toString() {
+    	return ""+contributedComponents.size()+" contributedComponents, trackingChanges="+trackingChanges;
+    }
+    
     static {
         // load the default addon
         String addonClassname = getBestMatchAddonClassName();
@@ -170,7 +174,7 @@ public abstract class LookAndFeelAddons {
         }
     }
 
-    public void unloadDefaults(@SuppressWarnings("unused") Object[] keysAndValues) {
+    public void unloadDefaults(Object[] keysAndValues) {
         // commented after Issue 446.
         /*
          * for (int i = 0, c = keysAndValues.length; i < c; i = i + 2) {
@@ -178,14 +182,14 @@ public abstract class LookAndFeelAddons {
          */
     }
 
-    public static void setAddon(String addonClassName) throws InstantiationException,
-            IllegalAccessException, ClassNotFoundException {
+    public static void setAddon(String addonClassName) throws ClassNotFoundException, InstantiationException, IllegalAccessException 
+    	, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         setAddon(Class.forName(addonClassName, true, getClassLoader()));
     }
 
-    public static void setAddon(Class<?> addonClass) throws InstantiationException,
-            IllegalAccessException {
-        LookAndFeelAddons addon = (LookAndFeelAddons) addonClass.newInstance();
+    public static void setAddon(Class<?> addonClass) throws InstantiationException, IllegalAccessException
+    	, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        LookAndFeelAddons addon = (LookAndFeelAddons) addonClass.getDeclaredConstructor().newInstance();
         setAddon(addon);
     }
 
@@ -211,39 +215,47 @@ public abstract class LookAndFeelAddons {
         return currentAddon;
     }
 
-    private static ClassLoader getClassLoader() {
+    static class ClassLoaderPrivilegedAction implements PrivilegedAction<ClassLoader> {
+
+    	Class<?> type = null;
+    	Thread thread = null;
+
+    	ClassLoaderPrivilegedAction(Class<?> clazz) {
+    		this.type = clazz;
+    	}
+    	ClassLoaderPrivilegedAction(Thread t) {
+    		this.thread = t;
+    	}
+    	ClassLoaderPrivilegedAction() {
+    	}
+    	
+		@Override
+		public ClassLoader run() {
+			if(type!=null) return type.getClassLoader();
+			if(thread!=null) return thread.getContextClassLoader();
+			return ClassLoader.getSystemClassLoader();
+		}
+    	
+    }
+    
+	private static ClassLoader getClassLoader() {
         ClassLoader cl = null;
         
         try {
-            cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                @Override
-                public ClassLoader run() {
-                    return LookAndFeelAddons.class.getClassLoader();
-                }
-            });
+    		cl = AccessController.doPrivileged(new ClassLoaderPrivilegedAction(LookAndFeelAddons.class));
         } catch (SecurityException ignore) { }
         
         if (cl == null) {
             final Thread t = Thread.currentThread();
             
             try {
-                cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                    @Override
-                    public ClassLoader run() {
-                        return t.getContextClassLoader();
-                    }
-                });
+        		cl = AccessController.doPrivileged(new ClassLoaderPrivilegedAction(t));
             } catch (SecurityException ignore) { }
         }
         
         if (cl == null) {
             try {
-                cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                    @Override
-                    public ClassLoader run() {
-                        return ClassLoader.getSystemClassLoader();
-                    }
-                });
+        		cl = AccessController.doPrivileged(new ClassLoaderPrivilegedAction());
             } catch (SecurityException ignore) { }
         }
         
@@ -353,6 +365,21 @@ public abstract class LookAndFeelAddons {
         return className;
     }
 
+    public static class IterableLAFAddonsPrivilegedAction implements PrivilegedAction<Iterable<LookAndFeelAddons>> {
+
+    	ServiceLoader<LookAndFeelAddons> loader; // class ServiceLoader<S> implements Iterable<S>
+
+    	IterableLAFAddonsPrivilegedAction(ServiceLoader<LookAndFeelAddons> l) {
+    		this.loader = l;
+    	}
+    	
+		@Override
+		public Iterable<LookAndFeelAddons> run() {
+            loader.iterator().hasNext();
+            return loader;
+		}
+    	
+    }
     /**
      * Returns the LookAndFeelAddons from the ServiceLoader.
      * 
@@ -364,20 +391,20 @@ public abstract class LookAndFeelAddons {
      * @return the LookAndFeelAddons from the ServiceLoader
      */
     protected static Iterable<LookAndFeelAddons> getProvidedLookAndFeelAddons() {
-        final ServiceLoader<LookAndFeelAddons> loader = ServiceLoader.load(LookAndFeelAddons.class,
-                getClassLoader());
+        final ServiceLoader<LookAndFeelAddons> loader = ServiceLoader.load(LookAndFeelAddons.class, getClassLoader());
         // need to access the iterator inside a privileged action
         // probably because it's lazily loaded
-        AccessController
-                .doPrivileged(new PrivilegedAction<Iterable<LookAndFeelAddons>>() {
-                    @Override
-                    public Iterable<LookAndFeelAddons> run() {
-                        loader.iterator().hasNext();
-                        return loader;
-                    }
-                });
-
-        return loader;
+		return AccessController.doPrivileged(new IterableLAFAddonsPrivilegedAction(loader));
+//        AccessController
+//                .doPrivileged(new PrivilegedAction<Iterable<LookAndFeelAddons>>() {
+//                    @Override
+//                    public Iterable<LookAndFeelAddons> run() {
+//                        loader.iterator().hasNext();
+//                        return loader;
+//                    }
+//                });
+//
+//        return loader;
     }
 
     /**

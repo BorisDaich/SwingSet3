@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,15 +27,18 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * additional pluggable UIs.
  */
 public abstract class BasicLookAndFeelAddons extends LookAndFeelAddons {
-    /**
+
+	// resources in swingx-plaf
+	private static final String BUNDLE_NAME = "org.jdesktop.swingx.plaf.basic.resources.swingx";
+	
+	/**
      * {@inheritDoc}
      */
     @Override
     public void initialize() {
         super.initialize();
         //must add resource bundle after adding component values
-        UIManagerExt.addResourceBundle(
-                "org.jdesktop.swingx.plaf.basic.resources.swingx");
+        UIManagerExt.addResourceBundle(BUNDLE_NAME);
     }
 
     /**
@@ -46,8 +47,7 @@ public abstract class BasicLookAndFeelAddons extends LookAndFeelAddons {
     @Override
     public void uninitialize() {
         //must remove resource bundle before adding component values
-        UIManagerExt.removeResourceBundle(
-                "org.jdesktop.swingx.plaf.basic.resources.swingx");
+        UIManagerExt.removeResourceBundle(BUNDLE_NAME);
         super.uninitialize();
     }
 }
