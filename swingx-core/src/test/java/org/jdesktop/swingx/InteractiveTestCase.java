@@ -57,10 +57,10 @@ import org.jdesktop.swingx.search.SearchFactory;
  * @version 1.0
  */
 public abstract class InteractiveTestCase extends junit.framework.TestCase {
-    private static final Logger LOG = Logger
-            .getLogger(InteractiveTestCase.class.getName());
+	
+    private static final Logger LOG = Logger.getLogger(InteractiveTestCase.class.getName());
+    
     protected Point frameLocation = new Point(0,0);
-    protected boolean systemLF;
     
     public InteractiveTestCase() {
         super();

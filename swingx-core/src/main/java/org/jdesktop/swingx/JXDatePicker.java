@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -167,9 +165,9 @@ import org.jdesktop.swingx.util.Contract;
  */
 @JavaBean
 public class JXDatePicker extends JComponent {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXDatePicker.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXDatePicker.class.getName());
     static {
         LookAndFeelAddons.contribute(new DatePickerAddon());
     }

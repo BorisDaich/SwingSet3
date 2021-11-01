@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -34,6 +32,7 @@ import org.jdesktop.swingx.util.OS;
  * @author Joshua Outwater
  */
 public class DatePickerAddon extends AbstractComponentAddon {
+	
     public DatePickerAddon() {
         super("JXDatePicker");
     }
@@ -122,8 +121,7 @@ public class DatePickerAddon extends AbstractComponentAddon {
         // (at the moment the OS-X icon looks most similar, it's much better
         //  than no icon...)
         defaults.add ("JXDatePicker.arrowIcon",
-            LookAndFeel.makeIcon (DatePickerAddon.class, 
-            "macosx/resources/combo-osx.png"));
+            LookAndFeel.makeIcon(DatePickerAddon.class, "macosx/resources/combo-osx.png"));
 
         // Issue #913-swingx: ugly in Nimbus
         // remove the border which was installed in addBasicDefaults

@@ -81,7 +81,19 @@ public class JXDatePickerTest extends InteractiveTestCase {
     private static final Logger LOG = Logger.getLogger(JXDatePickerTest.class.getName());
     
     private Calendar calendar;
-    
+   
+    @Override
+    @Before
+       public void setUp() {
+        calendar = Calendar.getInstance();
+//        LOG.info("calendar:"+calendar);
+    }
+
+    @Override
+    @After
+       public void tearDown() {
+    }
+
     /**
      * Issue #1393-swingx: JXDatePicker children must show parent popup if inherits true
      * 
@@ -1581,7 +1593,8 @@ public class JXDatePickerTest extends InteractiveTestCase {
             return;
         }
         // sanity ...
-        LOG.info(">>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
+        LOG.info("calendar:"+calendar
+        		+"\n>>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
         assertFalse("", date.equals(picker.getDate())); // <================
         PropertyChangeReport report = new PropertyChangeReport();
         picker.addPropertyChangeListener("date", report);
@@ -1611,7 +1624,8 @@ public class JXDatePickerTest extends InteractiveTestCase {
             return;
         }
         // sanity ...
-        LOG.info(">>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
+        LOG.info("calendar:"+calendar
+        		+"\n>>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
         assertFalse("", date.equals(picker.getDate())); // <=============== ????
         picker.commitEdit();
         assertSynchAll(picker, date);
@@ -2126,17 +2140,4 @@ public class JXDatePickerTest extends InteractiveTestCase {
         return cal.getTime();
     }
     
-
-    @Override
-    @Before
-       public void setUp() {
-        calendar = Calendar.getInstance();
-    }
-
-    @Override
-    @After
-       public void tearDown() {
-    }
-
-
 }
