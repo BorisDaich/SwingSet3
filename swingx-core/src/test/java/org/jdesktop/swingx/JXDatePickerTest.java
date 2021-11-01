@@ -85,7 +85,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     @Override
     @Before
        public void setUp() {
-        calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance(Locale.GERMANY);
 //        LOG.info("calendar:"+calendar);
     }
 
