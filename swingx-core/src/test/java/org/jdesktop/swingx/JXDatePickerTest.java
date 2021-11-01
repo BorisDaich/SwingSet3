@@ -85,8 +85,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
     @Override
     @Before
        public void setUp() {
-        calendar = Calendar.getInstance(Locale.GERMANY);
-//        LOG.info("calendar:"+calendar);
+        calendar = Calendar.getInstance();
     }
 
     @Override
@@ -1583,7 +1582,9 @@ public class JXDatePickerTest extends InteractiveTestCase {
         Format[] formats = picker.getFormats();
         assertEquals(picker.getDate(), formats[0].parseObject(text));
         // manipulate the text, not entirely safe ...
-        String changed = text.replace('0', '1');
+        LOG.info("text:"+text);
+//        String changed = text.replace('0', '1'); // funktioniert nur an Tagen mit 0, also nicht am 11.Nov
+        String changed = text.replace('2', '1');
         picker.getEditor().setText(changed);
         Date date;
         try {
@@ -1614,7 +1615,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
         Format[] formats = picker.getFormats();
         assertEquals(picker.getDate(), formats[0].parseObject(text));
         // manipulate the text, not entirely safe ...
-        String changed = text.replace('0', '1');
+        String changed = text.replace('2', '1');
         picker.getEditor().setText(changed);
         Date date;
         try {
