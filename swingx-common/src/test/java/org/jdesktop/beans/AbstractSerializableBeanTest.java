@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,16 +29,15 @@ import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.Serializable;
 
-import junit.framework.TestCase;
-
 import org.jdesktop.test.SerializableSupport;
 import org.junit.Test;
 
 /**
- * @author <a href="mailto:jesse@swank.ca">Jesse Wilson</a>
+ * @author <a href="https://github.com/swankjesse">Jesse Wilson</a>
  */
 @SuppressWarnings({"nls", "serial"})
 public class AbstractSerializableBeanTest {
+	
     private static class ShoeSizeCap implements VetoableChangeListener, Serializable {
         @Override
         public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {

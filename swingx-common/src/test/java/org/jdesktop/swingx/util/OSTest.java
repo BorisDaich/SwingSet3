@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -24,6 +22,8 @@ package org.jdesktop.swingx.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.logging.Logger;
+
 import org.junit.Test;
 
 /**
@@ -33,23 +33,29 @@ import org.junit.Test;
  */
 @SuppressWarnings("nls")
 public class OSTest {
-    /**
+	
+    private static final Logger LOG = Logger.getLogger(OSTest.class.getName());
+    private static final String OS_NAME_PROP = "os.name";
+    
+   /**
      * Issue 1260-swingx: NPE in static initializer of OS
      */
     @Test
     public void testOSNPE() {
-        String oldProperty = System.getProperty("os.name");
+        String oldProperty = System.getProperty(OS_NAME_PROP);
+        LOG.config("isLinux="+OS.isLinux() + ", isWindows="+OS.isWindows());
         try {
             if (oldProperty != null) {
-                System.clearProperty("os.name");
-                assertNull(System.getProperty("os.name"));
+                System.clearProperty(OS_NAME_PROP);
+                assertNull(System.getProperty(OS_NAME_PROP));
             }
-            OS.isLinux();
+            boolean isLinux = OS.isLinux();
+            LOG.config("System.clearProperty done: isLinux="+isLinux + ", isWindows="+OS.isWindows());
             
         } finally {
             if (oldProperty != null) {
-                System.setProperty("os.name", oldProperty);
-                assertEquals(oldProperty, System.getProperty("os.name"));
+                System.setProperty(OS_NAME_PROP, oldProperty);
+                assertEquals(oldProperty, System.getProperty(OS_NAME_PROP));
             }
         }
     }
