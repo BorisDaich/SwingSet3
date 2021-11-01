@@ -94,9 +94,9 @@ INFORMATION: org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@424c0bc4 ad
      */
     @BeforeClass
     public static void install() {
+        String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+		LOG.info("systemLookAndFeelClassName="+systemLookAndFeelClassName);
         try {
-            String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-            System.out.println(systemLookAndFeelClassName);
 			UIManager.setLookAndFeel(systemLookAndFeelClassName);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,8 +128,7 @@ INFORMATION: org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@424c0bc4 ad
     }
 
     public static String getLookAndFeelClassName(final String nameSnippet) {
-        final UIManager.LookAndFeelInfo[] plafs = UIManager
-                .getInstalledLookAndFeels();
+        final UIManager.LookAndFeelInfo[] plafs = UIManager.getInstalledLookAndFeels();
         for (final UIManager.LookAndFeelInfo info : plafs) {
             if (info.getName().contains(nameSnippet)) {
                 return info.getClassName();
