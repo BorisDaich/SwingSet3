@@ -1602,9 +1602,9 @@ public class JXDatePickerTest extends InteractiveTestCase {
             return;
         }
         // sanity ...
-        LOG.info("calendar:"+calendar
+        LOG.fine("calendar:"+calendar
         		+"\n>>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
-        assertFalse("", date.equals(picker.getDate())); // <================
+        assertFalse("", date.equals(picker.getDate()));
         PropertyChangeReport report = new PropertyChangeReport();
         picker.addPropertyChangeListener("date", report);
         picker.commitEdit();
@@ -1643,9 +1643,9 @@ public class JXDatePickerTest extends InteractiveTestCase {
             return;
         }
         // sanity ...
-        LOG.info("calendar:"+calendar
+        LOG.fine("calendar:"+calendar
         		+"\n>>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
-        assertFalse("", date.equals(picker.getDate())); // <=============== ????
+        assertFalse("", date.equals(picker.getDate()));
         picker.commitEdit();
         assertSynchAll(picker, date);
     }
