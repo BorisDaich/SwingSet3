@@ -60,7 +60,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Test case for <code>JXMonthView</code>
  *
@@ -73,8 +72,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class JXMonthViewTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(JXMonthViewTest.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JXMonthViewTest.class.getName());
+    
     private Locale componentLocale;
     // pre-defined reference dates - all relative to current date at around 5 am
     private Date today;
@@ -2066,7 +2066,17 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         at org.jdesktop.swingx.JXMonthViewTest.testTimeZoneChangeToday(JXMonthViewTest.java:1385)
         at org.jmock.core.VerifyingTestCase.runBare(VerifyingTestCase.java:39)
 
-
+ ********** spurious failure - so try extensiv debug output:
+ server locale: en
+ server timezone: sun.util.calendar.ZoneInfo[id="Etc/UTC",offset=0,dstSavings=0,useDaylight=false,transitions=0,lastRule=null]
+ server local time: Sun Oct 31 17:02:40 UTC 2021
+ first timeZone sun.util.calendar.ZoneInfo[id="GMT+04:00",offset=14400000,dstSavings=0,useDaylight=false,transitions=0,lastRule=null]
+ first timezone offset / min 240
+ second timezone sun.util.calendar.ZoneInfo[id="GMT+07:00",offset=25200000,dstSavings=0,useDaylight=false,transitions=0,lastRule=null]
+ second timezone offset / min 420
+ monthView locale: en
+ monthView anchor Sun Oct 31 17:02:40 UTC 2021
+ monthView firstDisplayed Sun Oct 31 17:00:00 UTC 2021 expected:<-180> but was:<44460>
  */
     
     }   
