@@ -77,8 +77,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class JXDatePickerTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(JXDatePickerTest.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JXDatePickerTest.class.getName());
     
     private Calendar calendar;
     
@@ -1581,7 +1581,8 @@ public class JXDatePickerTest extends InteractiveTestCase {
             return;
         }
         // sanity ...
-        assertFalse("", date.equals(picker.getDate()));
+        LOG.info(">>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
+        assertFalse("", date.equals(picker.getDate())); // <================
         PropertyChangeReport report = new PropertyChangeReport();
         picker.addPropertyChangeListener("date", report);
         picker.commitEdit();
@@ -1610,7 +1611,8 @@ public class JXDatePickerTest extends InteractiveTestCase {
             return;
         }
         // sanity ...
-        assertFalse("", date.equals(picker.getDate()));
+        LOG.info(">>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
+        assertFalse("", date.equals(picker.getDate())); // <=============== ????
         picker.commitEdit();
         assertSynchAll(picker, date);
     }
