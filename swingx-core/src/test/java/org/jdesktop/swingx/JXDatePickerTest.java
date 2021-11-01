@@ -1581,11 +1581,19 @@ public class JXDatePickerTest extends InteractiveTestCase {
         String text = picker.getEditor().getText();
         Format[] formats = picker.getFormats();
         assertEquals(picker.getDate(), formats[0].parseObject(text));
-        // manipulate the text, not entirely safe ...
-        LOG.info("text:"+text);
-//        String changed = text.replace('0', '1'); // funktioniert nur an Tagen mit 0, also nicht am 11.Nov
-        String changed = text.replace('2', '1');
-        picker.getEditor().setText(changed);
+
+        String changed = null;
+        if(text.indexOf('0')>=0) {
+            changed = text.replace('0', '1');
+            picker.getEditor().setText(changed);
+        } else {
+        	// expl.: no 0 in "11/1/21" (locale: en) @see https://github.com/homebeaver/SwingSet/issues/11
+        	// (locale: de) 01.11.2021 
+        	if(text.startsWith("11") || text.startsWith("12"))
+            changed = text.replaceFirst("1", "0");
+            picker.getEditor().setText(changed);
+        }
+
         Date date;
         try {
             date = (Date) formats[0].parseObject(changed);
@@ -1614,9 +1622,19 @@ public class JXDatePickerTest extends InteractiveTestCase {
         String text = picker.getEditor().getText();
         Format[] formats = picker.getFormats();
         assertEquals(picker.getDate(), formats[0].parseObject(text));
-        // manipulate the text, not entirely safe ...
-        String changed = text.replace('2', '1');
-        picker.getEditor().setText(changed);
+        
+        String changed = null;
+        if(text.indexOf('0')>=0) {
+            changed = text.replace('0', '1');
+            picker.getEditor().setText(changed);
+        } else {
+        	// expl.: no 0 in "11/1/21" (locale: en) @see https://github.com/homebeaver/SwingSet/issues/11
+        	// (locale: de) 01.11.2021 
+        	if(text.startsWith("11") || text.startsWith("12"))
+            changed = text.replaceFirst("1", "0");
+            picker.getEditor().setText(changed);
+        }
+        
         Date date;
         try {
             date = (Date) formats[0].parseObject(changed);
