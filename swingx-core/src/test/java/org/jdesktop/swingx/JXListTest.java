@@ -501,8 +501,9 @@ public class JXListTest extends InteractiveTestCase {
         list.setSortable(false);
         Collator comparator = Collator.getInstance();
         list.setComparator(comparator);
-        ListSortController<?> controller = new ListSortController<ListModel<Object>>(list.getModel());
+        ListSortController<ListModel<Object>> controller = new ListSortController<ListModel<Object>>(list.getModel());
         list.setRowSorter(controller);
+
         assertEquals("sortable propagated", false, controller.isSortable(0));
         assertSame("comparator propagated", comparator, controller.getComparator(0));
         assertEquals("sortsOnUpdates propagated", false, controller.getSortsOnUpdates());
