@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -28,10 +26,11 @@ import javax.swing.ListModel;
  * 
  * @author Jeanette Winzenburg
  */
-public class ListSortController<M extends ListModel> extends DefaultSortController<M> {
+public class ListSortController<M extends ListModel<?>> extends DefaultSortController<M> {
 
     /** underlying model */
     private M listModel;
+    
     /**
      * @param model
      */
@@ -48,8 +47,9 @@ public class ListSortController<M extends ListModel> extends DefaultSortControll
      */
     public void setModel(M model) {
         listModel = model;
-        if (model != null)
+        if (model != null) {
             cachedModelRowCount = model.getSize();
+        }
         setModelWrapper(new ListRowSorterModelWrapper());
     }
 

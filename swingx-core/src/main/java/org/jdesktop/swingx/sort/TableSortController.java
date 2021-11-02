@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,6 +30,7 @@ import javax.swing.table.TableModel;
  * @author Jeanette Winzenburg
  */
 public class TableSortController<M extends TableModel> extends DefaultSortController<M>  {
+
     /**
      * Underlying model.
      */
@@ -58,8 +57,9 @@ public class TableSortController<M extends TableModel> extends DefaultSortContro
      */
     public void setModel(M model) {
         tableModel = model;
-        if (model != null)
+        if (model != null) {
             cachedModelRowCount = model.getRowCount();
+        }
         setModelWrapper(new TableRowSorterModelWrapper());
     }
 

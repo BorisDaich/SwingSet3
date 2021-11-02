@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -37,13 +35,11 @@ import org.junit.runners.JUnit4;
  * @author Jeanette Winzenburg
  */
 @RunWith(JUnit4.class)
-public class ListSortControllerTest extends AbstractTestSortController<ListSortController<ListModel>, ListModel> {
+public class ListSortControllerTest extends AbstractTestSortController<ListSortController<ListModel<Object>>, ListModel<Object>> {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(ListSortControllerTest.class.getName());
-    /**
-     */
+    private static final Logger LOG = Logger.getLogger(ListSortControllerTest.class.getName());
+
     @Test
     public void testUseStringValueProvider() {
         registry.setStringValue(sv, 0);
@@ -59,9 +55,8 @@ public class ListSortControllerTest extends AbstractTestSortController<ListSortC
     }
     
     @Override
-    protected ListSortController<ListModel> createDefaultSortController(
-            ListModel model) {
-        return new ListSortController<ListModel>(model);
+    protected ListSortController<ListModel<Object>> createDefaultSortController(ListModel<Object> model) {
+        return new ListSortController<ListModel<Object>>(model);
     }
 
     @Override

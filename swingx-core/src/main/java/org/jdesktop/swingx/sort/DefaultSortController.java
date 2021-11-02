@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -47,15 +45,21 @@ import org.jdesktop.swingx.util.Contract;
  * 
  * @author Jeanette Winzenburg
  */
-public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integer> implements
-        SortController<M> {
+public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integer> implements SortController<M> {
 
     /**
      * Comparator that uses compareTo on the contents.
      */
+    @SuppressWarnings({ "rawtypes" })
+    public static final Comparator COMPARABLE_COMPARATOR = new ComparableComparator();
+    
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final Comparator COMPARABLE_COMPARATOR =
-            new ComparableComparator();
+    private static class ComparableComparator implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            return ((Comparable)o1).compareTo(o2);
+        }
+    }
 
     private final static SortOrder[] DEFAULT_CYCLE = new SortOrder[] {SortOrder.ASCENDING, SortOrder.DESCENDING};
 
@@ -174,8 +178,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
 
     private void checkColumn(int column) {
         if (column < 0 || column >= getModelWrapper().getColumnCount()) {
-            throw new IndexOutOfBoundsException(
-                    "column beyond range of TableModel");
+            throw new IndexOutOfBoundsException("column beyond range of TableModel");
         }
     }
 
@@ -287,14 +290,6 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
         
     };
     
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static class ComparableComparator implements Comparator {
-        @Override
-        public int compare(Object o1, Object o2) {
-            return ((Comparable)o1).compareTo(o2);
-        }
-    }
 
 //-------------------------- replacing super for more consistent conversion/rowCount behaviour
 

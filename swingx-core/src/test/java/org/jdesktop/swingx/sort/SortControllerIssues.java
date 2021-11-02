@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -46,8 +44,8 @@ public class SortControllerIssues extends InteractiveTestCase {
      */
     @Test
     public void testComparableComparatorList() {
-        ListModel model = new DefaultComboBoxModel(new Integer[] {10, 2});
-        ListSortController<ListModel> sorter = new ListSortController<ListModel>(model);
+        ListModel<Object> model = new DefaultComboBoxModel(new Integer[] {10, 2});
+        ListSortController<ListModel<Object>> sorter = new ListSortController<ListModel<Object>>(model);
         List<SortKey> keys = new ArrayList<SortKey>();
         keys.add(new SortKey(0, SortOrder.ASCENDING));
         sorter.setSortKeys(keys);

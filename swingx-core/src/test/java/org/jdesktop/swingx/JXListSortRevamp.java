@@ -46,7 +46,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
 
     protected ListModel listModel;
     protected DefaultListModelF ascendingListModel;
-    private ListSortController<ListModel> controller;
+    private ListSortController<ListModel<Object>> controller;
     private JXList list;
 
     public static void main(String[] args) {
@@ -115,7 +115,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
             tableModel.setValueAt(i, i, 0);
         }
         final JXTable table = new JXTable(tableModel);
-        final ListSortController<ListModel> controller = new ListSortController<ListModel>(list.getModel());
+        final ListSortController<ListModel<Object>> controller = new ListSortController<ListModel<Object>>(list.getModel());
         list.setRowSorter(controller);
         controller.setComparator(0, TableSortController.COMPARABLE_COMPARATOR);
         Action sort = new AbstractAction("toggle sort") {
@@ -780,7 +780,7 @@ public class JXListSortRevamp extends InteractiveTestCase {
         listModel = createListModel();
         ascendingListModel = createAscendingListModel(0, 22);
         list = new JXList(ascendingListModel);
-        controller = new ListSortController<ListModel>(list.getModel());
+        controller = new ListSortController<ListModel<Object>>(list.getModel());
         controller.setComparator(0, TableSortController.COMPARABLE_COMPARATOR);
         list.setRowSorter(controller);
 

@@ -58,13 +58,13 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ListSortUITest extends InteractiveTestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(ListSortUITest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(ListSortUITest.class.getName());
     
     protected DefaultListModelF ascendingListModel;
     private JXList list;
-    private ListSortController<ListModel> controller;
+    private ListSortController<ListModel<Object>> controller;
 //    private ListSortUI sortUI;
     private int testRow;
 
@@ -137,7 +137,7 @@ public class ListSortUITest extends InteractiveTestCase {
 
     @Test(expected = IllegalStateException.class)
     public void testConstructorDifferentSorter() {
-        new ListSortUI(new JXList(true), new ListSortController<ListModel>(ascendingListModel));
+        new ListSortUI(new JXList(true), new ListSortController<ListModel<Object>>(ascendingListModel));
     }
     
     @Test(expected = NullPointerException.class)
@@ -147,7 +147,7 @@ public class ListSortUITest extends InteractiveTestCase {
     
     @Test(expected = NullPointerException.class)
     public void testConstructorNullList() {
-        new ListSortUI(null, new ListSortController<ListModel>(ascendingListModel));
+        new ListSortUI(null, new ListSortController<ListModel<Object>>(ascendingListModel));
     }
     
     @Test
@@ -414,7 +414,7 @@ public class ListSortUITest extends InteractiveTestCase {
         super.setUp();
         ascendingListModel = createAscendingListModel(0, 20);
         list = new JXList(ascendingListModel, true);
-        controller = new ListSortController<ListModel>(list.getModel());
+        controller = new ListSortController<ListModel<Object>>(list.getModel());
         list.setComparator(TableSortController.COMPARABLE_COMPARATOR);
         list.setRowSorter(controller);
         testRow = 2;
