@@ -20,6 +20,9 @@ import org.jdesktop.swingx.prompt.BuddySupport;
 import org.jdesktop.swingx.prompt.BuddySupport.Position;
 
 public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChangeListener, UIResource {
+	
+//    private static final Logger LOG = Logger.getLogger(BuddyLayoutAndBorder.class.getName());
+
 	private JTextField textField;
 
 	private Border borderDelegate;
@@ -249,7 +252,10 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		}
 	}
 
-	@Override
+	/**
+	 * @inherited
+	 */
+	@Override // implements PropertyChangeListener
     public void propertyChange(PropertyChangeEvent evt) {
 		replaceBorderIfNecessary();
 	}

@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
