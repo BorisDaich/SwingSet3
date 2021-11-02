@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -36,10 +34,10 @@ import javax.swing.plaf.UIResource;
  */
 public class TableAddon extends AbstractComponentAddon {
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(TableAddon.class
-            .getName());
-    
+    private static final Logger LOG = Logger.getLogger(TableAddon.class.getName());
+
+    public static final String TABLE_ALTERNATE_ROW_COLOR = "Table.alternateRowColor";
+
     /**
      * @param name
      */
@@ -47,23 +45,24 @@ public class TableAddon extends AbstractComponentAddon {
         super("JXTable");
     }
 
-    
-    
+    /**
+     * @inherited
+     */
     @Override
-    protected void addNimbusDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addNimbusDefaults(addon, defaults);
         // JW: Hacking around core issue #6882917
         // which is the underlying reason for issue #1180-swingx
         // (SwingX vs Nimbus table striping)
-        if (Boolean.TRUE.equals(UIManager.get("Nimbus.keepAlternateRowColor"))) return;
-        Object value = UIManager.getLookAndFeelDefaults().remove("Table.alternateRowColor");
+        Object keepAlternateRowColor = UIManager.get("Nimbus.keepAlternateRowColor");
+        LOG.info("keepAlternateRowColor:"+keepAlternateRowColor);
+        if (Boolean.TRUE.equals(keepAlternateRowColor)) return;
+        
+        Object value = UIManager.getLookAndFeelDefaults().remove(TABLE_ALTERNATE_ROW_COLOR);
         if (value instanceof Color) {
             defaults.add("UIColorHighlighter.stripingBackground", value, false);
         }
     }
-
-
 
     /** 
      * @inherited <p>
@@ -71,16 +70,14 @@ public class TableAddon extends AbstractComponentAddon {
      * PENDING JW: move to addLinuxDefaults after testing
      */
     @Override
-    protected void addBasicDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addBasicDefaults(addon, defaults);
         if (isGTK()) {
             replaceListTableBorders(addon, defaults);
         }
     }
 
-    private void replaceListTableBorders(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    private void replaceListTableBorders(LookAndFeelAddons addon, DefaultsList defaults) {
         replaceBorder(defaults, "Table.", "focusCellHighlightBorder");
         replaceBorder(defaults, "Table.", "focusSelectedCellHighlightBorder");
         replaceBorder(defaults, "Table.", "noFocusBorder");
@@ -93,8 +90,7 @@ public class TableAddon extends AbstractComponentAddon {
      * @param componentPrefix
      * @param borderKey
      */
-    private void replaceBorder(DefaultsList defaults, String componentPrefix,
-            String borderKey) {
+    private void replaceBorder(DefaultsList defaults, String componentPrefix, String borderKey) {
         String key = componentPrefix + borderKey;
         Border border = UIManager.getBorder(componentPrefix + borderKey);
         if (border instanceof AbstractBorder && border instanceof UIResource

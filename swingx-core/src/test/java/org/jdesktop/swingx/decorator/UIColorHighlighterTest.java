@@ -19,6 +19,8 @@
  */
 package org.jdesktop.swingx.decorator;
 
+import static org.jdesktop.swingx.plaf.TableAddon.TABLE_ALTERNATE_ROW_COLOR;
+
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
@@ -44,8 +46,7 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
     
     private static String OS = System.getProperty("os.name");
     
-    private static final String ALTERNATE_COLOR = "Table.alternateRowColor";
-
+    private static final String ALTERNATE_COLOR = TABLE_ALTERNATE_ROW_COLOR;
     
     /**
      * Sanity: testing assumption that raw core Nimbus has intalled the alternate 
