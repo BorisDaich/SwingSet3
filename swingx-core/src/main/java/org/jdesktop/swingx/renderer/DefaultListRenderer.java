@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -67,10 +65,9 @@ import javax.swing.ListCellRenderer;
  * @see IconValue
  * @see MappedValue
  * 
- * 
  */
-public class DefaultListRenderer extends AbstractRenderer
-    implements ListCellRenderer {
+//@SuppressWarnings("serial")
+public class DefaultListRenderer extends AbstractRenderer implements ListCellRenderer<Object> {
 
     protected ListCellContext cellContext;
 
@@ -175,7 +172,7 @@ public class DefaultListRenderer extends AbstractRenderer
      * @return a component to render the given list cell.
      */
     @Override
-    public Component getListCellRendererComponent(JList list, Object value,
+    public Component getListCellRendererComponent(JList<? extends Object> list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
         cellContext.installContext(list, value, index, 0, isSelected,
                 cellHasFocus, true, true);
