@@ -3,12 +3,12 @@
   <parent>
     <artifactId>swingx-demos</artifactId>
     <groupId>org.swinglabs.swingx</groupId>
-    <version>1.6.5-1-SNAPSHOT</version>
+    <version>1.6.7-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>swingx-demos-swingxset</artifactId>
   <packaging>jar</packaging>
-  <name>SwingXSet</name>
+  <name>Demo SwingXSet</name>
   <description>A version of SwingSet3 that uses SwingX components to build the base application.</description>
   <dependencies>
   	<dependency>
@@ -29,6 +29,16 @@
   		<artifactId>bsaf</artifactId>
   		<type>jar</type>
   		<scope>compile</scope>
+<!--  uncomment this to exclude jnlp (webStart) from dependency
+	it is used in bsaf org.jdesktop.application.LocalStorage 
+	and (swingx-demos-swingxset) jdesktop.swingxset.util.DemoUtils com.sun.swingset3.demos.DemoUtilities
+	    <exclusions>
+	        <exclusion>
+	            <groupId>javax.jnlp</groupId>
+	            <artifactId>jnlp</artifactId>
+	        </exclusion>
+	    </exclusions>
+  -->
   	</dependency>
   	<dependency>
   		<groupId>it.tidalwave.betterbeansbinding</groupId>

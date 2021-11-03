@@ -3,7 +3,7 @@
   <parent>
     <artifactId>swingx-project</artifactId>
     <groupId>org.swinglabs.swingx</groupId>
-    <version>1.6.5-1-SNAPSHOT</version>
+    <version>1.6.7-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>swingx-demos</artifactId>
@@ -21,7 +21,7 @@
     <dependency>
     	<groupId>com.github.insubstantial</groupId>
     	<artifactId>trident</artifactId>
-    	<version>7.1</version>
+    	<version>7.3</version> <!--  7.1 -->
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
