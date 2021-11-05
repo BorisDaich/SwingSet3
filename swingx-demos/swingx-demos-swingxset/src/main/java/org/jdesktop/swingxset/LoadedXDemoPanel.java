@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -27,6 +25,7 @@ import java.awt.GradientPaint;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -48,6 +47,9 @@ import com.sun.swingset3.utilities.RoundedBorder;
 import com.sun.swingset3.utilities.Utilities;
 
 public class LoadedXDemoPanel extends JXTitledPanel {
+	
+    private static final Logger LOG = Logger.getLogger(LoadedXDemoPanel.class.getName());
+
     private JComponent descriptionArea;
 
     private JComponent demoPanel;
@@ -57,9 +59,11 @@ public class LoadedXDemoPanel extends JXTitledPanel {
         initComponents(demo);
         layoutComponents();
         setBorder(new RoundedBorder(5));//DemoXPanel.roundedBorder);
-        if (descriptionArea != null)
+        if (descriptionArea != null) {
             demoPanel.setBorder(DemoXPanel.roundedBorder);
+        }
         applyDefaults();
+        LOG.config("descriptionArea:"+descriptionArea + " demoPanel:"+demoPanel);
     }
 
     private void layoutComponents() {
@@ -94,6 +98,7 @@ public class LoadedXDemoPanel extends JXTitledPanel {
      */
     private void initComponents(Demo demo) throws Exception {
         URL description = demo.getHTMLDescription();
+        LOG.info("URL description:"+description);
         if (description != null) {
             descriptionArea = createDescriptionArea(description);
         }
@@ -102,17 +107,16 @@ public class LoadedXDemoPanel extends JXTitledPanel {
     }
 
     private JComponent createDescriptionArea(URL descriptionURL) {
-        final JEditorPane editor =  new HTMLPanel();
-
+    	
+        final JEditorPane editor =  new HTMLPanel(); // HTMLPanel extends JXEditorPane
         editor.setEditable(false);
-
         editor.setMargin(DemoXPanel.margin);
         editor.setOpaque(true);
+        
         try {
             editor.setPage(descriptionURL);
         } catch (IOException e) {
-            System.err.println("couldn't load description from URL:"
-                    + descriptionURL);
+            System.err.println("couldn't load description from URL:" + descriptionURL);
         }
         return editor;
     }
@@ -121,8 +125,7 @@ public class LoadedXDemoPanel extends JXTitledPanel {
     public void doLayout() {
         super.doLayout();
         if (descriptionArea != null) {
-            // manual tweaking of demo panel: displace slightly to overlap the
-            // title
+            // manual tweaking of demo panel: displace slightly to overlap the title
             // PENDING JW: displace so that it is below the title baseline
             Rectangle bounds = demoPanel.getBounds();
             int delta = getUI().getTitleBar().getHeight() / 2;

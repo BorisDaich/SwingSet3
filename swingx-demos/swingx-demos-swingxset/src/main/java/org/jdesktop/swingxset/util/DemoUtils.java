@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Window;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Method;
 import java.security.Permission;
 import java.util.logging.Logger;
 
@@ -48,9 +49,19 @@ public class DemoUtils {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                	javax.jnlp.ClipboardService cs = (javax.jnlp.ClipboardService)javax.jnlp.ServiceManager.lookup("javax.jnlp.ClipboardService");
-                    StringSelection transferable = new StringSelection(editor.getSelectedText());
-                    cs.setContents(transferable);
+                	ClassLoader cl = ClassLoader.getSystemClassLoader();
+                	Class<?> typeServiceManager = cl.loadClass("javax.jnlp.ServiceManager");
+                	Method lookup = typeServiceManager.getMethod("lookup", String.class);
+//                	javax.jnlp.ClipboardService cs = (javax.jnlp.ClipboardService)javax.jnlp.ServiceManager.lookup("javax.jnlp.ClipboardService");
+                	Object clipboardService = lookup.invoke("javax.jnlp.ClipboardService");
+                	
+                	StringSelection transferable = new StringSelection(editor.getSelectedText());
+//                    cs.setContents(transferable);
+                	// Interface ClipboardService
+                	//  with Method setContents(java.awt.datatransfer.Transferable contents)
+                	Class<?> typeClipboardService = cl.loadClass("javax.jnlp.ClipboardService");
+                	Method setContents = typeClipboardService.getMethod("setContents", java.awt.datatransfer.Transferable.class);
+                	setContents.invoke(typeClipboardService.cast(clipboardService), (java.awt.datatransfer.Transferable)transferable);
                 } catch (Exception e1) {
                     // do nothing
                 }

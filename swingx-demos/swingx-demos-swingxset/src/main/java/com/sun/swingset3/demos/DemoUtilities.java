@@ -36,7 +36,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URI;
+import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.swing.SwingConstants;
@@ -118,15 +120,6 @@ public class DemoUtilities {
 
     // do not import jnlp : javax.jnlp.UnavailableServiceException extends java.lang.Exception
     public static boolean browse(URI uri) throws IOException, Exception {
-    	// -- TEST
-//    	LOG.info("Running in sandbox, try using WebStart service");              	
-//    	javax.jnlp.BasicService basicService =
-//                (javax.jnlp.BasicService) javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
-//
-//        if (basicService.isWebBrowserSupported()) {
-//            return basicService.showDocument(uri.toURL());
-//        }
-    	// << TEST
     	LOG.info("Try using the Desktop api first");              	
         try {
         	// On some platforms the Desktop API may not besupported; 
@@ -142,12 +135,24 @@ public class DemoUtilities {
 
         } catch (SecurityException e) {
         	LOG.info("Running in sandbox, try using WebStart service");              	
-        	javax.jnlp.BasicService basicService =
-                    (javax.jnlp.BasicService) javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
+//        	javax.jnlp.BasicService basicService =
+//                    (javax.jnlp.BasicService) javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
+        	ClassLoader cl = ClassLoader.getSystemClassLoader();
+        	Class<?> typeServiceManager = cl.loadClass("javax.jnlp.ServiceManager");
+        	Method lookup = typeServiceManager.getMethod("lookup", String.class);
+        	Object basicService = lookup.invoke("javax.jnlp.BasicService");
 
-            if (basicService.isWebBrowserSupported()) {
-                return basicService.showDocument(uri.toURL());
-            }
+        	Class<?> typeBasicService = cl.loadClass("javax.jnlp.BasicService");
+        	Method isWebBrowserSupported = typeBasicService.getMethod("isWebBrowserSupported");
+        	Method showDocument = typeBasicService.getMethod("showDocument", URL.class);
+        	Object bool = isWebBrowserSupported.invoke(typeBasicService.cast(basicService));
+//            if (basicService.isWebBrowserSupported()) {
+//                return basicService.showDocument(uri.toURL());
+//            }
+        	if(Boolean.TRUE.equals(bool)) {
+        		Object ret = showDocument.invoke(typeBasicService.cast(basicService), uri.toURL());
+        		return (Boolean)ret;
+        	}
         }
 
         return false;

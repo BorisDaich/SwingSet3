@@ -35,6 +35,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.util.EventListener;
+import java.util.logging.Logger;
 
 import javax.swing.JEditorPane;
 import javax.swing.event.HyperlinkEvent;
@@ -48,6 +49,8 @@ import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.ObjectView;
+
+import org.jdesktop.swingx.JXEditorPane;
 
 import com.sun.swingset3.demos.DemoUtilities;
 
@@ -70,8 +73,13 @@ import com.sun.swingset3.demos.DemoUtilities;
  * clicking on hyperlinks bring up the associated url in the browser.
  * 
  * @author aim
+ * @author homebeaver (use hyperlinkHandler as HyperlinkListener)
  */
-public class HTMLPanel extends JEditorPane {
+// JXEditorPane extends JEditorPane, no extended features used
+public class HTMLPanel extends JXEditorPane {
+	
+    private static final Logger LOG = Logger.getLogger(HTMLPanel.class.getName());
+
     /**
      * Callback interface for getting notification when components specified in the
      * <object> tag are created in the editor pane.
@@ -91,8 +99,9 @@ public class HTMLPanel extends JEditorPane {
         setEditable(false); // VERY IMPORTANT!
         if (hyperlinkHandler == null) {
             hyperlinkHandler = new HyperlinkHandler();
+            addHyperlinkListener(hyperlinkHandler);
         }
-        addHyperlinkListener(hyperlinkHandler);
+        LOG.config("ctor done");
     }
 
     public void addComponentCreationListener(HTMLPanel.ComponentCreationListener l) {
@@ -161,9 +170,17 @@ public class HTMLPanel extends JEditorPane {
 
     // single instance of handler is shared for ALL DemoPanel instances
     public static class HyperlinkHandler implements HyperlinkListener {
+    	
         Cursor defaultCursor;
+        
+        HyperlinkHandler() {
+            LOG.config("ctor");
+        }
 
+        // Wird aufgerufen,wenn ein Hypertext-Link aktualisiert wird,
+        // wenn der Nutzer den Mauszeiger über einen Link führt oder darauf klickt.
         public void hyperlinkUpdate(HyperlinkEvent event) {
+            LOG.config("HyperlinkEvent event:"+event);
             JEditorPane descriptionPane = (JEditorPane) event.getSource();
             HyperlinkEvent.EventType type = event.getEventType();
             if (type == HyperlinkEvent.EventType.ACTIVATED) {
