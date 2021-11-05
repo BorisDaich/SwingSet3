@@ -46,6 +46,7 @@ import com.sun.swingset3.utilities.HTMLPanel;
 import com.sun.swingset3.utilities.RoundedBorder;
 import com.sun.swingset3.utilities.Utilities;
 
+@SuppressWarnings("serial")
 public class LoadedXDemoPanel extends JXTitledPanel {
 	
     private static final Logger LOG = Logger.getLogger(LoadedXDemoPanel.class.getName());
@@ -121,6 +122,9 @@ public class LoadedXDemoPanel extends JXTitledPanel {
         return editor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doLayout() {
         super.doLayout();
@@ -135,6 +139,9 @@ public class LoadedXDemoPanel extends JXTitledPanel {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateUI() {
         super.updateUI();
@@ -144,7 +151,6 @@ public class LoadedXDemoPanel extends JXTitledPanel {
         applyDefaults();
     }
 
-    @SuppressWarnings("unchecked")
     private void applyDefaults() {
         Color color = UIManager.getColor(SwingXSet.TITLE_GRADIENT_COLOR2_KEY);
         GradientPaint gradient = new GradientPaint(0f, 0f, UIManager

@@ -76,6 +76,7 @@ import com.sun.swingset3.demos.DemoUtilities;
  * @author homebeaver (use hyperlinkHandler as HyperlinkListener)
  */
 // JXEditorPane extends JEditorPane, no extended features used
+@SuppressWarnings("serial")
 public class HTMLPanel extends JXEditorPane {
 	
     private static final Logger LOG = Logger.getLogger(HTMLPanel.class.getName());
