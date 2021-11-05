@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.security.Permission;
 import java.util.logging.Logger;
 
-import javax.jnlp.ClipboardService;
-import javax.jnlp.ServiceManager;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -27,6 +25,9 @@ import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
 /**
  * Misc. convenience methods ;-) 
+ * 
+ * @author kschaefe
+ * @author Eugen Hanussek https://github.com/homebeaver (avoid import of jnlp)
  */
 public class DemoUtils {
 
@@ -47,7 +48,7 @@ public class DemoUtils {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ClipboardService cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
+                	javax.jnlp.ClipboardService cs = (javax.jnlp.ClipboardService)javax.jnlp.ServiceManager.lookup("javax.jnlp.ClipboardService");
                     StringSelection transferable = new StringSelection(editor.getSelectedText());
                     cs.setContents(transferable);
                 } catch (Exception e1) {
@@ -91,8 +92,7 @@ public class DemoUtils {
      * the ResourceMap of the parent's class.
      */
     public static void injectResources(Object parent, Component child) {
-        Application.getInstance().getContext().getResourceMap(parent.getClass())
-            .injectComponents(child);
+        Application.getInstance().getContext().getResourceMap(parent.getClass()).injectComponents(child);
     }
     
     /**
@@ -101,8 +101,7 @@ public class DemoUtils {
      * 
      */
     public static Icon getResourceIcon(Class<?> baseClass, String key) {
-        return Application.getInstance().getContext()
-            .getResourceMap(baseClass).getIcon(key);
+        return Application.getInstance().getContext().getResourceMap(baseClass).getIcon(key);
     }
 
     /**
@@ -111,8 +110,7 @@ public class DemoUtils {
      * 
      */
     public static String getResourceString(Class<?> baseClass, String key) {
-        return Application.getInstance().getContext()
-            .getResourceMap(baseClass).getString(key);
+        return Application.getInstance().getContext().getResourceMap(baseClass).getString(key);
     }
 
     public static Action getAction(Object actionProvider, String key) {
@@ -129,20 +127,19 @@ public class DemoUtils {
 
 //----------------------- Window transparency convenience support
     
-    public static void fadeOutAndDispose(final Window window,
-            int fadeOutDuration) {
+    public static void fadeOutAndDispose(final Window window, int fadeOutDuration) {
         fadeOutAndEnd(window, fadeOutDuration, false);
     }
 
     public static void fadeOutAndExit(Window window, int fadeOutDuration) {
         fadeOutAndEnd(window, fadeOutDuration, true);
     }
+    
     /**
      * @param window
      * @param fadeOutDuration
      */
-    private static void fadeOutAndEnd(final Window window, int fadeOutDuration, 
-            final boolean exit) {
+    private static void fadeOutAndEnd(final Window window, int fadeOutDuration, final boolean exit) {
         Timeline dispose = new Timeline(new WindowFader(window));
         dispose.addPropertyToInterpolate("opacity", 1.0f,
 //                AWTUtilitiesWrapper.getWindowOpacity(window), 

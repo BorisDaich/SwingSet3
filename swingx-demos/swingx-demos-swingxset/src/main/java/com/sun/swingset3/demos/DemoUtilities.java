@@ -37,23 +37,24 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.io.IOException;
 import java.net.URI;
+import java.util.logging.Logger;
 
-import javax.jnlp.BasicService;
-import javax.jnlp.ServiceManager;
-import javax.jnlp.UnavailableServiceException;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 /**
  * @author Pavel Porvatov
+ * @author Eugen Hanussek https://github.com/homebeaver (avoid import of jnlp)
  */
 public class DemoUtilities {
+	
+    private static final Logger LOG = Logger.getLogger(DemoUtilities.class.getName());
+
     private DemoUtilities() {
-        // Hide constructor
+    	LOG.info("// Hide constructor");  // all mathods are static      
     }
 
-    public static void setToplevelLocation(Window toplevel, Component component,
-            int relativePosition) {
+    public static void setToplevelLocation(Window toplevel, Component component, int relativePosition) {
 
         Rectangle compBounds = component.getBounds();
 
@@ -115,17 +116,34 @@ public class DemoUtilities {
         toplevel.setLocation(x, y);
     }
 
-    public static boolean browse(URI uri) throws IOException , UnavailableServiceException {
-        // Try using the Desktop api first
+    // do not import jnlp : javax.jnlp.UnavailableServiceException extends java.lang.Exception
+    public static boolean browse(URI uri) throws IOException, Exception {
+    	// -- TEST
+//    	LOG.info("Running in sandbox, try using WebStart service");              	
+//    	javax.jnlp.BasicService basicService =
+//                (javax.jnlp.BasicService) javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
+//
+//        if (basicService.isWebBrowserSupported()) {
+//            return basicService.showDocument(uri.toURL());
+//        }
+    	// << TEST
+    	LOG.info("Try using the Desktop api first");              	
         try {
-            Desktop desktop = Desktop.getDesktop();
-            desktop.browse(uri);
+        	// On some platforms the Desktop API may not besupported; 
+        	// use the isDesktopSupported method todetermine if the current desktop is supported.
+        	if(Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(uri);
+                return true;
+        	} else {
+            	LOG.warning("Desktop not besupported on this platform.");              	
+                return false;
+        	}
 
-            return true;
         } catch (SecurityException e) {
-//             Running in sandbox, try using WebStart service
-            BasicService basicService =
-                    (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+        	LOG.info("Running in sandbox, try using WebStart service");              	
+        	javax.jnlp.BasicService basicService =
+                    (javax.jnlp.BasicService) javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
 
             if (basicService.isWebBrowserSupported()) {
                 return basicService.showDocument(uri.toURL());
