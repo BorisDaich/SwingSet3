@@ -56,8 +56,92 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  *
  * @author rbair
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public abstract class AbstractPainter<T> extends AbstractBean implements Painter<T> {
+	
+    /**
+     * Subclasses must implement this method and perform custom painting operations here.
+     * 
+     * @param width 
+     * @param height 
+     * @param g The Graphics2D object in which to paint
+     * @param object
+     */
+    protected abstract void doPaint(Graphics2D g, T object, int width, int height);
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public final void paint(Graphics2D g, T obj, int width, int height) {
+        if (g == null) {
+            throw new NullPointerException("The Graphics2D must be supplied");
+        }
+
+        if(!isVisible() || width < 1 || height < 1) {
+            return;
+        }
+
+        configureGraphics(g);
+
+        //paint to a temporary image if I'm caching, or if there are filters to apply
+        if (shouldUseCache() || filters.length > 0) {
+            validate(obj);
+            BufferedImage cache = cachedImage == null ? null : cachedImage.get();
+            boolean invalidCache = null == cache || 
+                                        cache.getWidth() != width || 
+                                        cache.getHeight() != height;
+
+            if (cacheCleared || invalidCache || isDirty()) {
+                //rebuild the cacheable. I do this both if a cacheable is needed, and if any
+                //filters exist. I only *save* the resulting image if caching is turned on
+                if (invalidCache) {
+                    cache = GraphicsUtilities.createCompatibleTranslucentImage(width, height);
+                }
+                Graphics2D gfx = cache.createGraphics();
+                
+                try {
+                    gfx.setClip(0, 0, width, height);
+
+                    if (!invalidCache) {
+                        // If we are doing a repaint, but we didn't have to
+                        // recreate the image, we need to clear it back
+                        // to a fully transparent background.
+                        Composite composite = gfx.getComposite();
+                        gfx.setComposite(AlphaComposite.Clear);
+                        gfx.fillRect(0, 0, width, height);
+                        gfx.setComposite(composite);
+                    }
+
+                    configureGraphics(gfx);
+                    doPaint(gfx, obj, width, height);
+                } finally {
+                    gfx.dispose();
+                }
+
+                if (!isInPaintContext()) {
+                    for (BufferedImageOp f : getFilters()) {
+                        cache = f.filter(cache, null);
+                    }
+                }
+
+                //only save the temporary image as the cacheable if I'm caching
+                if (shouldUseCache()) {
+                    cachedImage = new SoftReference<BufferedImage>(cache);
+                    cacheCleared = false;
+                }
+            }
+
+            g.drawImage(cache, 0, 0, null);
+        } else {
+            //can't use the cacheable, so just paint
+            doPaint(g, obj, width, height);
+        }
+
+        //painting has occured, so restore the dirty bit to false
+        setDirty(false);
+    }
+
     /**
      * An enum representing the possible interpolation values of Bicubic, Bilinear, and
      * Nearest Neighbor. These map to the underlying RenderingHints,
@@ -346,96 +430,12 @@ public abstract class AbstractPainter<T> extends AbstractBean implements Painter
     protected void configureGraphics(Graphics2D g) {
         //configure antialiasing
         if(isAntialiasing()) {
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         } else {
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_OFF);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         }
 
         getInterpolation().configureGraphics(g);
     }
     
-    /**
-     * Subclasses must implement this method and perform custom painting operations
-     * here.
-     * @param width 
-     * @param height 
-     * @param g The Graphics2D object in which to paint
-     * @param object
-     */
-    protected abstract void doPaint(Graphics2D g, T object, int width, int height);
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public final void paint(Graphics2D g, T obj, int width, int height) {
-        if (g == null) {
-            throw new NullPointerException("The Graphics2D must be supplied");
-        }
-
-        if(!isVisible() || width < 1 || height < 1) {
-            return;
-        }
-
-        configureGraphics(g);
-
-        //paint to a temporary image if I'm caching, or if there are filters to apply
-        if (shouldUseCache() || filters.length > 0) {
-            validate(obj);
-            BufferedImage cache = cachedImage == null ? null : cachedImage.get();
-            boolean invalidCache = null == cache || 
-                                        cache.getWidth() != width || 
-                                        cache.getHeight() != height;
-
-            if (cacheCleared || invalidCache || isDirty()) {
-                //rebuild the cacheable. I do this both if a cacheable is needed, and if any
-                //filters exist. I only *save* the resulting image if caching is turned on
-                if (invalidCache) {
-                    cache = GraphicsUtilities.createCompatibleTranslucentImage(width, height);
-                }
-                Graphics2D gfx = cache.createGraphics();
-                
-                try {
-                    gfx.setClip(0, 0, width, height);
-
-                    if (!invalidCache) {
-                        // If we are doing a repaint, but we didn't have to
-                        // recreate the image, we need to clear it back
-                        // to a fully transparent background.
-                        Composite composite = gfx.getComposite();
-                        gfx.setComposite(AlphaComposite.Clear);
-                        gfx.fillRect(0, 0, width, height);
-                        gfx.setComposite(composite);
-                    }
-
-                    configureGraphics(gfx);
-                    doPaint(gfx, obj, width, height);
-                } finally {
-                    gfx.dispose();
-                }
-
-                if (!isInPaintContext()) {
-                    for (BufferedImageOp f : getFilters()) {
-                        cache = f.filter(cache, null);
-                    }
-                }
-
-                //only save the temporary image as the cacheable if I'm caching
-                if (shouldUseCache()) {
-                    cachedImage = new SoftReference<BufferedImage>(cache);
-                    cacheCleared = false;
-                }
-            }
-
-            g.drawImage(cache, 0, 0, null);
-        } else {
-            //can't use the cacheable, so just paint
-            doPaint(g, obj, width, height);
-        }
-
-        //painting has occured, so restore the dirty bit to false
-        setDirty(false);
-    }
 }

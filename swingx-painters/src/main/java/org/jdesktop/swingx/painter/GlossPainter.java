@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
@@ -48,9 +45,38 @@ import org.jdesktop.beans.JavaBean;
  *
  * @author Romain Guy <romain.guy@mac.com>
  */
+//see org.jdesktop.swingx.demos.painter.PainterDemo
 @JavaBean
-@SuppressWarnings("nls")
 public class GlossPainter extends AbstractPainter<Object> {
+	
+    /**
+     * draws an ellipse in the gloss area
+     * 
+     * @inheritDoc
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+        if (getPaint() != null) {
+            Ellipse2D ellipse = new Ellipse2D.Double(-width / 2.0,
+                height / 2.7, width * 2.0,
+                height * 2.0);
+
+            Area gloss = new Area(ellipse);
+            if (getPosition() == GlossPosition.TOP) {
+                Area area = new Area(new Rectangle(0, 0, width, height));
+                area.subtract(new Area(ellipse));
+                gloss = area;
+            }
+            /*
+            if(getClip() != null) {
+                gloss.intersect(new Area(getClip()));
+            }*/
+            g.setPaint(getPaint());
+            g.fill(gloss);
+        }
+    }
+
+
     /**
      * <p>Used to define the position of the gloss on the painted area.</p>
      */
@@ -99,32 +125,6 @@ public class GlossPainter extends AbstractPainter<Object> {
     public GlossPainter(Paint paint, GlossPosition position) {
         this.setPaint(paint);
         this.setPosition(position);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
-        if (getPaint() != null) {
-            Ellipse2D ellipse = new Ellipse2D.Double(-width / 2.0,
-                height / 2.7, width * 2.0,
-                height * 2.0);
-
-            Area gloss = new Area(ellipse);
-            if (getPosition() == GlossPosition.TOP) {
-                Area area = new Area(new Rectangle(0, 0,
-                    width, height));
-                area.subtract(new Area(ellipse));
-                gloss = area;
-            }
-            /*
-            if(getClip() != null) {
-                gloss.intersect(new Area(getClip()));
-            }*/
-            g.setPaint(getPaint());
-            g.fill(gloss);
-        }
     }
 
     /**

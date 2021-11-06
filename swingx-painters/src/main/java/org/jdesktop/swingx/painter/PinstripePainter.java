@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import static java.lang.Math.hypot;
@@ -62,8 +59,55 @@ import org.jdesktop.beans.JavaBean;
  * 
  * @author rbair
  */
+// see org.jdesktop.swingx.demos.painter.PainterDemo
 @JavaBean
 public class PinstripePainter extends AbstractPainter<Object> {
+	
+    /**
+     * draws pinstripes at the angle specified in this class and at the given distance apart
+     * 
+     * @inheritDoc
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+
+        Shape oldClip = g.getClip();
+        Shape newClip;
+
+        if (oldClip == null) {
+            newClip = new Rectangle(width, height);
+        } else {
+            Rectangle r = oldClip.getBounds();
+            r.width = width;
+            r.height = height;
+
+            Area a = new Area(r);
+            a.intersect(new Area(oldClip));
+
+            newClip = a;
+        }
+
+        int startX = newClip.getBounds().x;
+        int startY = newClip.getBounds().y;
+
+        g.setClip(newClip);
+        g.setPaint(getForegroundPaint(getPaint(), component));
+        g.setStroke(new BasicStroke((float) getStripeWidth()));
+        g.rotate(toRadians(getAngle()));
+
+        double hypLength = hypot(width, height);
+        double gap = getSpacing() + getStripeWidth();
+
+        int numLines = (int) round(hypLength / gap);
+
+        for (int i = 0; i < numLines; i++) {
+            double x = i * gap;
+            g.draw(new Line2D.Double(startX + x, startY - hypLength, startX + x, startY + hypLength));
+        }
+
+        g.setClip(oldClip);
+    }
+
     /**
      * The angle in degrees to paint the pinstripes at. The default value is 45. The value will be
      * between 0 and 360 inclusive. The setAngle method will ensure this.
@@ -237,47 +281,4 @@ public class PinstripePainter extends AbstractPainter<Object> {
         firePropertyChange("spacing", old, getSpacing());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
-        // draws pinstripes at the angle specified in this class and at the given distance apart
-        Shape oldClip = g.getClip();
-        Shape newClip;
-
-        if (oldClip == null) {
-            newClip = new Rectangle(width, height);
-        } else {
-            Rectangle r = oldClip.getBounds();
-            r.width = width;
-            r.height = height;
-
-            Area a = new Area(r);
-            a.intersect(new Area(oldClip));
-
-            newClip = a;
-        }
-
-        int startX = newClip.getBounds().x;
-        int startY = newClip.getBounds().y;
-
-        g.setClip(newClip);
-        g.setPaint(getForegroundPaint(getPaint(), component));
-        g.setStroke(new BasicStroke((float) getStripeWidth()));
-        g.rotate(toRadians(getAngle()));
-
-        double hypLength = hypot(width, height);
-        double gap = getSpacing() + getStripeWidth();
-
-        int numLines = (int) round(hypLength / gap);
-
-        for (int i = 0; i < numLines; i++) {
-            double x = i * gap;
-
-            g.draw(new Line2D.Double(startX + x, startY - hypLength, startX + x, startY + hypLength));
-        }
-
-        g.setClip(oldClip);
-    }
 }
