@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.Graphics2D;
@@ -57,6 +54,7 @@ import java.awt.Graphics2D;
  * @see CompoundPainter
  */
 public interface Painter<T> {
+	
     /**
      * <p>Renders to the given {@link java.awt.Graphics2D} object. Implementations
      * of this method <em>may</em> modify state on the <code>Graphics2D</code>, and are not

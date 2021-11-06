@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.Graphics2D;
@@ -63,8 +60,28 @@ import org.jdesktop.beans.JavaBean;
  * @author rbair
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class CompoundPainter<T> extends AbstractPainter<T> {
+	
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+	protected void doPaint(Graphics2D g, T component, int width, int height) {
+		for (Painter<T> p : getPainters()) {
+			Graphics2D temp = (Graphics2D) g.create();
+
+			try {
+				p.paint(temp, component, width, height);
+				if (isClipPreserved()) {
+					g.setClip(temp.getClip());
+				}
+			} finally {
+				temp.dispose();
+			}
+		}
+	}
+
     private static class Handler implements PropertyChangeListener {
         private final WeakReference<CompoundPainter<?>> ref;
         
@@ -221,7 +238,8 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
         boolean dirty = false;
         for (Painter<?> p : painters) {
             if (p instanceof AbstractPainter) {
-                AbstractPainter ap = (AbstractPainter) p;
+                @SuppressWarnings("unchecked")
+				AbstractPainter<T> ap = (AbstractPainter<T>) p;
                 ap.validate(object);
                 if (ap.isDirty()) {
                     dirty = true;
@@ -346,25 +364,6 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
      */
     public void clearLocalCache() {
         super.clearCache();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, T component, int width, int height) {
-        for (Painter<T> p : getPainters()) {
-            Graphics2D temp = (Graphics2D) g.create();
-            
-            try {
-                p.paint(temp, component, width, height);
-            if(isClipPreserved()) {
-                g.setClip(temp.getClip());
-            }
-            } finally {
-                temp.dispose();
-            }
-        }
     }
 
     /**
