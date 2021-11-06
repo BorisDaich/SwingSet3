@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.BasicStroke;
@@ -64,8 +61,59 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
  * @author Richard
  */
 @JavaBean
-@SuppressWarnings("nls")
+/*
+
+	AbstractPainter<T> extends AbstractBean implements Painter<T>
+		abstract void doPaint(Graphics2D g, T object, int width, int height)
+		
+	AbstractLayoutPainter<T> extends AbstractPainter<T>
+	
+	AbstractAreaPainter<T> extends AbstractLayoutPainter<T>
+    	abstract Shape provideShape(Graphics2D g, T comp, int width, int height);
+
+ */
 public class ImagePainter extends AbstractAreaPainter<Object> {
+	
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+        Shape shape = provideShape(g, component,width,height);
+        
+        switch (getStyle()) {
+            case BOTH:
+                drawBackground(g,shape,width,height);
+                drawBorder(g,shape,width,height);
+                break;
+            case FILLED:
+                drawBackground(g,shape,width,height);
+                break;
+            case OUTLINE:
+                drawBorder(g,shape,width,height);
+                break;
+            case NONE:
+                break;
+            default:
+                break;
+        }
+    }
+  
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	protected Shape provideShape(Graphics2D g, Object comp, int width, int height) {
+		if (getImage() != null) {
+			BufferedImage bi = getImage();
+			int imgWidth = bi.getWidth();
+			int imgHeight = bi.getHeight();
+
+			return calculateLayout(imgWidth, imgHeight, width, height);
+		}
+		return new Rectangle(0, 0, 0, 0);
+	}   
+
     public enum ScaleType { InsideFit, OutsideFit, Distort }
     
     /**
@@ -142,31 +190,6 @@ public class ImagePainter extends AbstractAreaPainter<Object> {
      */
     public BufferedImage getImage() {
         return img;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
-        Shape shape = provideShape(g, component,width,height);
-        
-        switch (getStyle()) {
-            case BOTH:
-                drawBackground(g,shape,width,height);
-                drawBorder(g,shape,width,height);
-                break;
-            case FILLED:
-                drawBackground(g,shape,width,height);
-                break;
-            case OUTLINE:
-                drawBorder(g,shape,width,height);
-                break;
-            case NONE:
-                break;
-            default:
-                break;
-        }
     }
     
     private void drawBackground(Graphics2D g, Shape shape, int width, int height) {
@@ -379,22 +402,6 @@ public class ImagePainter extends AbstractAreaPainter<Object> {
         this.verticalRepeat = verticalRepeat;
         setDirty(true);
         firePropertyChange("verticalRepeat",old,this.verticalRepeat);
-    }
-    
-    /**
-     *
-     */
-    @Override
-    protected Shape provideShape(Graphics2D g, Object comp, int width, int height) {
-        if(getImage() != null) {
-            BufferedImage bi = getImage();
-            int imgWidth = bi.getWidth();
-            int imgHeight = bi.getHeight();
-            
-            return calculateLayout(imgWidth, imgHeight, width, height);
-        }
-        return new Rectangle(0,0,0,0);
-        
     }
     
     /**

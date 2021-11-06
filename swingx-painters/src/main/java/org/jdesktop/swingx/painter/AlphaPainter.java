@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,8 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.AlphaComposite;
@@ -33,8 +29,9 @@ import org.jdesktop.beans.JavaBean;
  * @author joshy
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class AlphaPainter<T> extends CompoundPainter<T> {
+	
     private float alpha = 1.0f;
 
     /**
@@ -58,24 +55,6 @@ public class AlphaPainter<T> extends CompoundPainter<T> {
             g2.dispose();
         }
     }
-    /*
-    public static void main(String ... args) {
-        JXPanel panel = new JXPanel();
-        AlphaPainter alpha = new AlphaPainter();
-        alpha.setAlpha(1f);
-        alpha.setPainters(new PinstripePainter(new Color(255,255,255,125),45,20,20));
-        
-        panel.setBackgroundPainter(new CompoundPainter(
-                new MattePainter(Color.RED),
-                alpha
-                ));
-        
-        JFrame frame = new JFrame();
-        frame.add(panel);
-        frame.pack();
-        frame.setSize(200,200);
-        frame.setVisible(true);
-    }*/
 
     /**
      * Returns the current alpha value for this painter. This is the alpha value that will be applied 

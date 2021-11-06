@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
@@ -52,9 +49,23 @@ import org.jdesktop.swingx.util.PaintUtils;
  *
  * @author joshua@marinacci.org
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public abstract class AbstractAreaPainter<T> extends AbstractLayoutPainter<T> {
+  
+	// still abstract: void doPaint(Graphics2D g, T object, int width, int height)
+
+    /**
+     * Returns the outline shape of this painter. Subclasses must implement this method. 
+     * This shape will be used for filling, stroking, and clipping.
+     * @return the outline shape of this painter
+     * @param g graphics
+     * @param comp The Object this painter will be painted on.
+     * @param width the width to paint
+     * @param height the height to paint
+     */
+    protected abstract Shape provideShape(Graphics2D g, T comp, int width, int height);
     
+
     /**
      * Different available fill styles. BOTH indicates that both the outline,
      * and the fill should be painted. This is the default. FILLED indicates that
@@ -231,17 +242,6 @@ public abstract class AbstractAreaPainter<T> extends AbstractLayoutPainter<T> {
     Paint calculateSnappedPaint(Paint p, int width, int height) {
         return PaintUtils.resizeGradient(p, width, height);
     }
-    
-    /**
-     * Returns the outline shape of this painter. Subclasses must implement this method. This shape
-     * will be used for filling, stroking, and clipping.
-     * @return the outline shape of this painter
-     * @param g graphics
-     * @param comp The Object this painter will be painted on.
-     * @param width the width to paint
-     * @param height the height to paint
-     */
-    protected abstract Shape provideShape(Graphics2D g, T comp, int width, int height);
     
     /**
      * Sets the path effects to be drawn on this painter. Set this to null in order to remove all installed effects.

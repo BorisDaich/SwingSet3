@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -23,10 +21,13 @@ package org.jdesktop.swingx.painter;
 import java.awt.Graphics2D;
 
 /**
- * A collection of static painters.  These painters do not store state and are safe to reuse.
+ * A collection of static painters. 
+ * These painters do not store state and are safe to reuse.
+ * 
  * @author kschaefer
  */
 public final class Painters {
+	
     public static final Painter<Object> EMPTY_PAINTER = new Painter<Object>() {
         @Override
         public void paint(Graphics2D g, Object object, int width, int height) {

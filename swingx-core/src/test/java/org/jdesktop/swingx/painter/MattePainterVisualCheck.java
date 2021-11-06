@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,6 +30,7 @@ import org.jdesktop.swingx.JXPanel;
  * @author kschaefer
  */
 public class MattePainterVisualCheck extends InteractiveTestCase {
+	
     /**
      * Do nothing, make the test runner happy
      * (would output a warning without a test fixture).

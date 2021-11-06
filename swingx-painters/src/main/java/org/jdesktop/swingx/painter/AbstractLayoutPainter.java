@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -70,8 +68,10 @@ import java.awt.Rectangle;
  * 
  * @author joshua@marinacci.org
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public abstract class AbstractLayoutPainter<T> extends AbstractPainter<T> {
+	
+	// still abstract: void doPaint(Graphics2D g, T object, int width, int height)
    
     /**
      * Specifies how to draw the image, i.e. what kind of Style to use

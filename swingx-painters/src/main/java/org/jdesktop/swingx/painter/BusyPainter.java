@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
@@ -41,92 +38,13 @@ import org.jdesktop.swingx.util.PaintUtils;
  * A specific painter that paints an "infinite progress" like animation.
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class BusyPainter extends AbstractPainter<Object> {
-
-    /**
-     * Direction is used to set the initial direction in which the
-     * animation starts.
-     * 
-     * @see BusyPainter#setDirection(Direction)
-     */
-    public static enum Direction {
-        /**
-         * cycle proceeds forward
-         */
-        RIGHT,
-        /** cycle proceeds backward */
-        LEFT,
-    }
-
-    private int frame = -1;
-
-    private int points = 8;
-
-    private Color baseColor = new Color(200, 200, 200);
-
-    private Color highlightColor = Color.BLACK;
-
-    private int trailLength = 4;
-
-    private Shape pointShape;
-
-    private Shape trajectory;
-
-    private Direction direction = Direction.RIGHT;
-
-    private boolean paintCentered;
-
-    /**
-     * Creates new busy painter initialized to the shape of circle and bounds size 26x26 points.
-     */
-    public BusyPainter() {
-        this(26);
-    }
-
-    /**
-     * Creates new painter initialized to the shape of circle and bounds of square of specified height.
-     * @param height Painter height.
-     */
-    public BusyPainter(int height) {
-        this(getScaledDefaultPoint(height), getScaledDefaultTrajectory(height));
-    }
-    
-    /**
-     * Initializes painter to the specified trajectory and and point shape. Bounds are dynamically calculated to so the specified trajectory fits in.
-     * @param point Point shape.
-     * @param trajectory Trajectory shape.
-     */
-    public BusyPainter(Shape point, Shape trajectory) {
-        init(point, trajectory, Color.LIGHT_GRAY, Color.BLACK);
-    }
-
-    protected static Shape getScaledDefaultTrajectory(int height) {
-        return new Ellipse2D.Float(((height * 8) / 26) / 2, ((height * 8) / 26) / 2, height
-                - ((height * 8) / 26), height - ((height * 8) / 26));
-    }
-
-    protected static Shape getScaledDefaultPoint(int height) {
-        return new RoundRectangle2D.Float(0, 0, (height * 8) / 26, 4,
-                4, 4);
-    }
-
-    /**
-     * Initializes painter to provided shapes and default colors.
-     * @param point Point shape.
-     * @param trajectory Trajectory shape.
-     */
-    protected void init(Shape point, Shape trajectory, Color baseColor, Color highlightColor) {
-        this.baseColor = baseColor;
-        this.highlightColor = highlightColor;
-        this.pointShape = point;
-        this.trajectory = trajectory;
-    }
 
     /**
      * @inheritDoc
      */
-    @Override
+    @Override // implements the abstract method AbstractPainter.doPaint
     protected void doPaint(Graphics2D g, Object t, int width, int height) {
         Rectangle r = getTrajectory().getBounds();
         int tw = width - r.width - 2*r.x;
@@ -225,6 +143,97 @@ public class BusyPainter extends AbstractPainter<Object> {
     }
 
     /**
+     * Direction is used to set the initial direction in which the
+     * animation starts.
+     * 
+     * @see BusyPainter#setDirection(Direction)
+     */
+    public static enum Direction {
+        /**
+         * cycle proceeds forward
+         */
+        RIGHT,
+        /** cycle proceeds backward */
+        LEFT,
+    }
+
+    private int frame = -1;
+
+    private int points = 8;
+
+    private Color baseColor = new Color(200, 200, 200);
+
+    private Color highlightColor = Color.BLACK;
+
+    private int trailLength = 4;
+
+    private Shape pointShape;
+
+    private Shape trajectory;
+
+    private Direction direction = Direction.RIGHT;
+
+    private boolean paintCentered;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[frame="+frame + ", points="+points + 
+        		", baseColor="+baseColor + ", highlightColor="+highlightColor + 
+        		", trailLength="+trailLength + ", direction="+direction +
+        		", pointShape="+pointShape + ", trajectory="+trajectory +
+        		", paintCentered="+paintCentered + "]";
+    }
+
+    /**
+     * Creates new busy painter initialized to the shape of circle and bounds size 26x26 points.
+     */
+    public BusyPainter() {
+        this(26);
+    }
+
+    /**
+     * Creates new painter initialized to the shape of circle and bounds of square of specified height.
+     * @param height Painter height.
+     */
+    public BusyPainter(int height) {
+        this(getScaledDefaultPoint(height), getScaledDefaultTrajectory(height));
+    }
+    
+    /**
+     * Initializes painter to the specified trajectory and and point shape. 
+     * Bounds are dynamically calculated to so the specified trajectory fits in.
+     * @param point Point shape.
+     * @param trajectory Trajectory shape.
+     */
+    public BusyPainter(Shape point, Shape trajectory) {
+        init(point, trajectory, Color.LIGHT_GRAY, Color.BLACK);
+    }
+
+    protected static Shape getScaledDefaultTrajectory(int height) {
+        return new Ellipse2D.Float(((height * 8) / 26) / 2, ((height * 8) / 26) / 2, height
+                - ((height * 8) / 26), height - ((height * 8) / 26));
+    }
+
+    protected static Shape getScaledDefaultPoint(int height) {
+        return new RoundRectangle2D.Float(0, 0, (height * 8) / 26, 4, 4, 4);
+    }
+
+    /**
+     * Initializes painter to provided shapes and default colors.
+     * @param point Point shape.
+     * @param trajectory Trajectory shape.
+     */
+    protected void init(Shape point, Shape trajectory, Color baseColor, Color highlightColor) {
+        this.baseColor = baseColor;
+        this.highlightColor = highlightColor;
+        this.pointShape = point;
+        this.trajectory = trajectory;
+    }
+
+    /**
      * Gets value of centering hint. If true, shape will be positioned in the center of painted area.
      * @return Whether shape will be centered over painting area or not.
      */
@@ -272,8 +281,7 @@ public class BusyPainter extends AbstractPainter<Object> {
 
     }
 
-    private Point2D.Float calcPoint(float dist2go, Point2D.Float startPoint,
-            float[] sgmt, int w, int h) {
+    private Point2D.Float calcPoint(float dist2go, Point2D.Float startPoint, float[] sgmt, int w, int h) {
         Float f = new Point2D.Float();
         if (sgmt[7] == PathIterator.SEG_LINETO) {
             // linear
@@ -465,14 +473,12 @@ public class BusyPainter extends AbstractPainter<Object> {
         }
 
         for (int t = 0; t < getTrailLength(); t++) {
-            if (direction == Direction.RIGHT
-                    && i == (frame - t + getPoints()) % getPoints()) {
+            if (direction == Direction.RIGHT && i == (frame - t + getPoints()) % getPoints()) {
                 float terp = 1 - ((float) (getTrailLength() - t))
                         / (float) getTrailLength();
                 return PaintUtils.interpolate(getBaseColor(),
                         getHighlightColor(), terp);
-            } else if (direction == Direction.LEFT
-                    && i == (frame + t) % getPoints()) {
+            } else if (direction == Direction.LEFT && i == (frame + t) % getPoints()) {
                 float terp = ((float) (t)) / (float) getTrailLength();
                 return PaintUtils.interpolate(getBaseColor(),
                         getHighlightColor(), terp);
