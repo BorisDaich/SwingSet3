@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.BasicStroke;
@@ -37,11 +36,48 @@ import org.jdesktop.swingx.util.ShapeUtils;
 /**
  * A painter which paints square and rounded rectangles
  * 
+ * @see PainterDemo#createCompoundPainterDemos()
+ * 
  * @author joshua.marinacci@sun.com
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class RectanglePainter extends AbstractAreaPainter<Object> {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+        Shape shape = provideShape(g, component, width, height);
+        switch (getStyle()) {
+        case BOTH:
+            drawBackground(g,shape,width,height);
+            drawBorder(g,shape,width,height);
+            break;
+        case FILLED:
+            drawBackground(g,shape,width,height);
+            break;
+        case OUTLINE:
+            drawBorder(g,shape,width,height);
+            break;
+		case NONE:
+//			break;
+		default:
+			break;
+        }
+
+        // background
+        // border
+        // leave the clip to support masking other painters
+        ShapeUtils.mergeClip(g,shape);
+        /*
+        Area area = new Area(g.getClip());
+        area.intersect(new Area(shape));//new Rectangle(0,0,width,height)));
+        g.setClip(area);*/
+        //g.setClip(shape);
+    }
+
     private boolean rounded = false;
     //private Insets insets = new Insets(0,0,0,0);
     private int roundWidth = 20;
@@ -187,39 +223,6 @@ public class RectanglePainter extends AbstractAreaPainter<Object> {
             shape = new RoundRectangle2D.Double(x, y, width, height, roundWidth, roundHeight);
         }
         return shape;
-    }
-
-
-
-    @Override
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
-        Shape shape = provideShape(g, component, width, height);
-        switch (getStyle()) {
-        case BOTH:
-            drawBackground(g,shape,width,height);
-            drawBorder(g,shape,width,height);
-            break;
-        case FILLED:
-            drawBackground(g,shape,width,height);
-            break;
-        case OUTLINE:
-            drawBorder(g,shape,width,height);
-            break;
-		case NONE:
-//			break;
-		default:
-			break;
-        }
-
-        // background
-        // border
-        // leave the clip to support masking other painters
-        ShapeUtils.mergeClip(g,shape);
-        /*
-        Area area = new Area(g.getClip());
-        area.intersect(new Area(shape));//new Rectangle(0,0,width,height)));
-        g.setClip(area);*/
-        //g.setClip(shape);
     }
 
     private void drawBorder(Graphics2D g, Shape shape, int width, int height) {
