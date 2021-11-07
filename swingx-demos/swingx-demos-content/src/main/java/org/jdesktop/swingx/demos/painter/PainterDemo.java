@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,6 +31,7 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.util.logging.Logger;
@@ -81,6 +80,8 @@ import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter.VerticalAlignment;
 import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.AbstractPainter.Interpolation;
+import org.jdesktop.swingx.painter.BusyPainter;
+import org.jdesktop.swingx.painter.CheckerboardPainter;
 import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.GlossPainter;
 import org.jdesktop.swingx.painter.GlossPainter.GlossPosition;
@@ -275,6 +276,10 @@ public class PainterDemo extends JPanel {
         root.add(createTransformPainterDemos());
         root.add(createGlossPainterDemos());
         root.add(createPinstripePainterDemos());
+        
+        root.add(createBusyPainterDemos()); // EUG
+        root.add(createCheckerboardPainterDemos()); // EUG      
+        
         root.add(createMattePainterDemos());
         root.add(createCompoundPainterDemos());
         return new DefaultTreeModel(root);
@@ -448,11 +453,9 @@ public class PainterDemo extends JPanel {
     }
     
     private MutableTreeNode createGlossPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Gloss Painter Demos",
-                null);
+        DefaultMutableTreeNode node = createInfoNode("Gloss Painter Demos", null);
 
-        RectanglePainter rp = new RectanglePainter(20, 20, 20,
-                20, 20, 20);
+        RectanglePainter rp = new RectanglePainter(20, 20, 20, 20, 20, 20);
         rp.setFillPaint(Color.RED);
         rp.setBorderPaint(Color.RED.darker());
         rp.setStyle(RectanglePainter.Style.BOTH);
@@ -512,6 +515,50 @@ public class PainterDemo extends JPanel {
         cp = new CompoundPainter<Object>(black, pp);
         node.add(createInfoNode("pinstripe w/ 200px gradient", cp));
         
+        return node;
+    }
+    
+    private MutableTreeNode createBusyPainterDemos() {
+        DefaultMutableTreeNode node = createInfoNode("Busy Painter Demos", null);
+        MattePainter black = new MattePainter(Color.BLACK);
+        
+        BusyPainter bp = new BusyPainter();
+        LOG.info("BusyPainter bp"+bp);
+        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, bp);
+        node.add(createInfoNode("(default)shape of circle and bounds size 26x26 points", cp));
+        
+        bp = new BusyPainter(52);
+        bp.setFrame(3);
+        bp.setPaintCentered(true);
+        bp.setBaseColor(Color.RED);
+        bp.setDirection(BusyPainter.Direction.LEFT);
+        LOG.info("BusyPainter bp"+bp);
+        cp = new CompoundPainter<Object>(black, bp);
+        node.add(createInfoNode("Centers red shape in the area, height is 52.", cp));
+                
+        return node;
+    }
+    
+    private MutableTreeNode createCheckerboardPainterDemos() {
+        DefaultMutableTreeNode node = createInfoNode("Checkerboard Painter Demo", null);
+        MattePainter black = new MattePainter(Color.BLACK);
+        
+        CheckerboardPainter bp = new CheckerboardPainter();
+        LOG.info("CheckerboardPainter bp"+bp);
+        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, bp);
+        node.add(createInfoNode("(default) Checkerboard white+light gray, square size 8x8", cp));
+        
+        GradientPaint gp = new GradientPaint(
+        		new Point2D.Double(0, 0), Color.BLACK, 
+        		new Point2D.Double(0, 32), Color.GRAY	);
+        bp = new CheckerboardPainter();
+        bp.setDarkPaint(gp);
+        bp.setLightPaint(Color.WHITE);
+        bp.setSquareSize(32);
+        LOG.info("CheckerboardPainter bp"+bp);
+        cp = new CompoundPainter<Object>(black, bp);
+        node.add(createInfoNode("Checkerboard white+GradientPaint for the dark, square size 32", cp));
+                
         return node;
     }
     
@@ -580,8 +627,7 @@ public class PainterDemo extends JPanel {
         node.add(createInfoNode("A Cool Logo", cp));
         
         mp = new MattePainter(Color.GRAY);
-        ShapePainter sp = new ShapePainter(
-                ShapeUtils.generatePolygon(30, 50, 45, true), Color.RED);
+        ShapePainter sp = new ShapePainter(ShapeUtils.generatePolygon(30, 50, 45, true), Color.RED);
         sp.setStyle(ShapePainter.Style.FILLED);
         sp.setBorderPaint(Color.BLUE);
         ShadowPathEffect starShadow = new ShadowPathEffect();

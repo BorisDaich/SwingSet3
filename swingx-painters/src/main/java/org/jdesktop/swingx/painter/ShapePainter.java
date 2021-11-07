@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import static org.jdesktop.swingx.painter.PainterUtils.getBackgroundPaint;
@@ -33,10 +32,9 @@ import java.awt.geom.Ellipse2D;
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.painter.effects.AreaEffect;
 
-
 /**
- * <p>A Painter that paints java.awt.Shapes. It uses a stroke and a fillPaint to do so. The
- * shape is painted as is, at a specific location. If no Shape is specified, nothing
+ * <p>A Painter that paints java.awt.Shapes. It uses a stroke and a fillPaint to do so. 
+ * The shape is painted as is, at a specific location. If no Shape is specified, nothing
  * will be painted. If no stroke is specified, the default for the Graphics2D
  * will be used. If no fillPaint is specified, the component background color
  * will be used. The shape can be positioned using the insets, horizontal, and
@@ -46,14 +44,66 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
  * <pre><code>
  *  Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, 50, 50);
  *  ShapePainter p = new ShapePainter(rect);
- * p.setHorizontal(HorizontalAlignment.RIGHT);
- * p.setVertical(VerticalAlignment.CENTER);
+ *  p.setHorizontal(HorizontalAlignment.RIGHT);
+ *  p.setVertical(VerticalAlignment.CENTER);
  * </code></pre>
+ * 
+ * <p>This example is implemented as part of CompoundPainterDemos:
+ * <pre><code>
+ *  ShapePainter sp = new ShapePainter(ShapeUtils.generatePolygon(30, 50, 45, true), Color.RED);
+ *  sp.setStyle(ShapePainter.Style.FILLED);
+ *  sp.setBorderPaint(Color.BLUE);
+ *  ShadowPathEffect starShadow = new ShadowPathEffect(); ...
+ *  sp.setAreaEffects(starShadow);
+ * </code></pre>
+ * 
  * @author rbair
+ * @see PainterDemo#createCompoundPainterDemos()
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class ShapePainter extends AbstractAreaPainter<Object> {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+	protected void doPaint(Graphics2D g, Object component, int w, int h) {
+		g.setStroke(new BasicStroke(this.getBorderWidth()));
+
+		if (getShape() != null) {
+			Shape s = provideShape(g, component, w, h);
+			Rectangle bounds = s.getBounds();
+			Rectangle rect = calculateLayout(bounds.width, bounds.height, w, h);
+			// u.p("rect = " + rect);
+			g = (Graphics2D) g.create();
+
+			try {
+				g.translate(rect.x, rect.y);
+				// draw/fill the shape
+				drawPathEffects(g, s, rect.width, rect.height);
+				switch (getStyle()) {
+				case BOTH:
+					drawShape(g, s, component, rect.width, rect.height);
+					fillShape(g, s, component, rect.width, rect.height);
+					break;
+				case FILLED:
+					fillShape(g, s, component, rect.width, rect.height);
+					break;
+				case OUTLINE:
+					drawShape(g, s, component, rect.width, rect.height);
+					break;
+				case NONE:
+//					break;
+				default:
+					break;
+				}
+			} finally {
+				g.dispose();
+			}
+		}
+	}
+
     /**
      * The Shape to fillPaint. If null, nothing is painted.
      */
@@ -134,45 +184,6 @@ public class ShapePainter extends AbstractAreaPainter<Object> {
         return shape;
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, Object component, int w, int h) {
-        g.setStroke(new BasicStroke(this.getBorderWidth()));
-        
-        if(getShape() != null) {
-            Shape s = provideShape(g,component, w, h);
-            Rectangle bounds = s.getBounds();
-            Rectangle rect = calculateLayout(bounds.width, bounds.height, w, h);
-            //u.p("rect = " + rect);
-            g = (Graphics2D)g.create();
-            
-            try {
-                g.translate(rect.x, rect.y);
-                //draw/fill the shape
-                drawPathEffects(g, s, rect.width, rect.height);
-                switch (getStyle()) {
-                case BOTH:
-                    drawShape(g, s, component, rect.width, rect.height);
-                    fillShape(g, s, component, rect.width, rect.height);
-                    break;
-                case FILLED:
-                    fillShape(g, s, component, rect.width, rect.height);
-                    break;
-                case OUTLINE:
-                    drawShape(g, s, component, rect.width, rect.height);
-                    break;
-				case NONE:
-//					break;
-				default:
-					break;
-                }
-            } finally {
-                g.dispose();
-        }
-    }
-    }
     
     private void drawShape(Graphics2D g, Shape s, Object component, int w, int h) {
         g.setPaint(calculateStrokePaint(component, w, h));
@@ -215,4 +226,5 @@ public class ShapePainter extends AbstractAreaPainter<Object> {
             }
         }
     }
+    
 }

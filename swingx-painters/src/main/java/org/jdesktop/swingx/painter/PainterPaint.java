@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -38,7 +36,9 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  *
  * @author Karl George Schaefer
  */
+//interface Paint extends interface Transparency is used in JXButton
 public class PainterPaint<T> implements Paint {
+	
     protected static class PainterPaintContext<T> implements PaintContext {
         private Painter<T> painter;
         private T object;
@@ -105,7 +105,7 @@ public class PainterPaint<T> implements Paint {
     /**
      * {@inheritDoc}
      */
-    @Override
+    @Override // implements Paint.createContext
     public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
             Rectangle2D userBounds, AffineTransform xform, RenderingHints hints) {
         return context;
@@ -114,7 +114,7 @@ public class PainterPaint<T> implements Paint {
     /**
      * {@inheritDoc}
      */
-    @Override
+    @Override // implements Transparency.getTransparency
     public int getTransparency() {
         return Transparency.BITMASK;
     }

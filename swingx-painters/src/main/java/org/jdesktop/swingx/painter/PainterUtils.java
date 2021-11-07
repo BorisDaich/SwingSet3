@@ -4,7 +4,9 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Paint;
 
+// all methods are static
 final class PainterUtils {
+	
     private PainterUtils() {
         //prevent instantiation
     }
