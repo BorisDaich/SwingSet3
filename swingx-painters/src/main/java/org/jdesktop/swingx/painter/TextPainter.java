@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -42,12 +40,62 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
 /**
  * A painter which draws text. If the font, text, and paint are not provided they will be
  * obtained from the object being painted if it is a Swing text component.
- *
+ * <p>
+ * There are demos: 
+ * <br> - Text Painter Demos
+ * <br> - Compound Painter Transform Demos : ...
+ * <br> - Compound Painter Gradient Demos : "text on blue", "A Cool Logo", "Coming Soon badge"
+ * </p>
+ * 
  * @author rbair
+ *  
+ * @see PainterDemo#createTextPainterDemos()
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class TextPainter extends AbstractAreaPainter<Object> {
+	
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+        Font f = calculateFont(component);
+        if (f != null) {
+            g.setFont(f);
+        }
+        
+        Paint paint = getForegroundPaint(getFillPaint(), component);
+        String t = calculateText(component);
+        
+        // get the font metrics
+        FontMetrics metrics = g.getFontMetrics(g.getFont());
+        //Rectangle2D rect = metrics.getStringBounds(text,g);
+        
+        int tw = metrics.stringWidth(t);
+        int th = metrics.getHeight();
+        Rectangle res = calculateLayout(tw, th, width, height);
+        
+        g.translate(res.x, res.y);
+        
+        if(isPaintStretched()) {
+            paint = calculateSnappedPaint(paint, res.width, res.height);
+        }
+        
+        if (paint != null) {
+            g.setPaint(paint);
+        }
+        
+        g.drawString(t, 0, 0 + metrics.getAscent());
+        if(getAreaEffects() != null) {
+            Shape shape = provideShape(g, component, width, height);
+            for(AreaEffect ef : getAreaEffects()) {
+                ef.apply(g, shape, width, height);
+            }
+        }
+        g.translate(-res.x,-res.y);
+    }
+
     private String text = "";
     private Font font = null;
     
@@ -132,47 +180,6 @@ public class TextPainter extends AbstractAreaPainter<Object> {
         return text;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
-        Font f = calculateFont(component);
-        if (f != null) {
-            g.setFont(f);
-        }
-        
-        Paint paint = getForegroundPaint(getFillPaint(), component);
-        String t = calculateText(component);
-        
-        // get the font metrics
-        FontMetrics metrics = g.getFontMetrics(g.getFont());
-        //Rectangle2D rect = metrics.getStringBounds(text,g);
-        
-        int tw = metrics.stringWidth(t);
-        int th = metrics.getHeight();
-        Rectangle res = calculateLayout(tw, th, width, height);
-        
-        g.translate(res.x, res.y);
-        
-        if(isPaintStretched()) {
-            paint = calculateSnappedPaint(paint, res.width, res.height);
-        }
-        
-        if (paint != null) {
-            g.setPaint(paint);
-        }
-        
-        g.drawString(t, 0, 0 + metrics.getAscent());
-        if(getAreaEffects() != null) {
-            Shape shape = provideShape(g, component, width, height);
-            for(AreaEffect ef : getAreaEffects()) {
-                ef.apply(g, shape, width, height);
-            }
-        }
-        g.translate(-res.x,-res.y);
-    }
-    
     private String calculateText(final Object component) {
         // prep the text
         String t = getText();
@@ -212,4 +219,5 @@ public class TextPainter extends AbstractAreaPainter<Object> {
         GlyphVector vect = f.createGlyphVector(g2.getFontRenderContext(),t);
         return vect.getOutline(0f,0f+ metrics.getAscent());
     }
+    
 }
