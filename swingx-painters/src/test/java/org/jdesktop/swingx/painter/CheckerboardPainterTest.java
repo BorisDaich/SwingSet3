@@ -47,6 +47,6 @@ public class CheckerboardPainterTest extends AbstractPainterTest {
         CheckerboardPainter cp = (CheckerboardPainter) p;
         assertThat(cp.getDarkPaint(), CoreMatchers.<Paint>is(new Color(204, 204, 204)));
         assertThat(cp.getLightPaint(), CoreMatchers.<Paint>is(Color.WHITE));
-        assertThat(cp.getSquareSize(), CoreMatchers.is(8d));
+        assertThat(cp.getSquareSize(), CoreMatchers.is(8));
     }
 }

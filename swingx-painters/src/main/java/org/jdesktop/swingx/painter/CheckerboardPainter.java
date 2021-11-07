@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
@@ -56,13 +53,23 @@ import org.jdesktop.swingx.util.PaintUtils;
  * @author rbair
  */
 @JavaBean
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class CheckerboardPainter extends AbstractPainter<Object> {
+	
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implements the abstract method AbstractPainter.doPaint
+    protected void doPaint(Graphics2D g, Object t, int width, int height) {
+        g.setPaint(getCheckerPaint(t));
+        g.fillRect(0, 0, width, height);
+    }
+
     private transient Paint checkerPaint;
     
-    private Paint darkPaint = new Color(204, 204, 204);
+    private Paint darkPaint = new Color(204, 204, 204); // light gray, Color.LIGHT_GRAY is (192, 192, 192)
     private Paint lightPaint = Color.WHITE;
-    private double squareSize = 8;
+    private int squareSize = 8;
     
     /**
      * Create a new CheckerboardPainter. By default the light color is Color.WHITE,
@@ -90,8 +97,7 @@ public class CheckerboardPainter extends AbstractPainter<Object> {
      * @param lightPaint the paint used to draw the light squares
      * @param squareSize the squareSize of the checker board squares
      */
-    //TODO squareSize should become int? only ever treated as one
-    public CheckerboardPainter(Paint darkPaint, Paint lightPaint, double squareSize) {
+    public CheckerboardPainter(Paint darkPaint, Paint lightPaint, int squareSize) {
         this.darkPaint = darkPaint;
         this.lightPaint = lightPaint;
         this.squareSize = squareSize;
@@ -104,7 +110,7 @@ public class CheckerboardPainter extends AbstractPainter<Object> {
      * 
      * @param squareSize the squareSize of one side of a square tile. Must be > 0.
      */
-    public void setSquareSize(double squareSize) {
+    public void setSquareSize(int squareSize) {
         if (squareSize <= 0) {
             throw new IllegalArgumentException("Length must be > 0");
         }
@@ -121,7 +127,7 @@ public class CheckerboardPainter extends AbstractPainter<Object> {
      * 
      * @return the squareSize. Will be > 0
      */
-    public double getSquareSize() {
+    public int getSquareSize() {
         return squareSize;
     }
     
@@ -183,17 +189,9 @@ public class CheckerboardPainter extends AbstractPainter<Object> {
             Paint p1 = PainterUtils.getForegroundPaint(getLightPaint(), c);
             Paint p2 = PainterUtils.getBackgroundPaint(getDarkPaint(), c);
             
-            checkerPaint = PaintUtils.getCheckerPaint(p1, p2, (int)(getSquareSize() * 2));
+            checkerPaint = PaintUtils.getCheckerPaint(p1, p2, (getSquareSize() * 2));
         }
         return checkerPaint;
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doPaint(Graphics2D g, Object t, int width, int height) {
-        g.setPaint(getCheckerPaint(t));
-        g.fillRect(0, 0, width, height);
-    }
 }
