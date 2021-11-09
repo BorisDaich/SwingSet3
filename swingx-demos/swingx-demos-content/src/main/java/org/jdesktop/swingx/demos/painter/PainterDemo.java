@@ -532,7 +532,11 @@ public class PainterDemo extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
             int frame = busyPainter.getFrame();
-            frame = (frame+1)%busyPainter.getPoints();
+            if(busyPainter.getDirection()==BusyPainter.Direction.LEFT) {
+                frame = frame>0 ? frame-1 : busyPainter.getPoints()-1;
+            } else {
+                frame = (frame+1)%busyPainter.getPoints();
+            }
             busyPainter.setFrame(frame);
 		}
     	
@@ -557,7 +561,7 @@ public class PainterDemo extends JPanel {
         bp.setCacheable(true);
         bp.setPaintCentered(true);
         bp.setBaseColor(Color.RED);
-        bp.setDirection(BusyPainter.Direction.LEFT); // BUG TODO rotates RIGHT
+        bp.setDirection(BusyPainter.Direction.LEFT);
         LOG.info("BusyPainter bp"+bp);
         BusyPainterAction bpa = new BusyPainterAction(bp);
         bpa.startTimer(100);
