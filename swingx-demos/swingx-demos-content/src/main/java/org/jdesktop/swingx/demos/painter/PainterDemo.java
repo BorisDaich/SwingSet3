@@ -30,6 +30,8 @@ import java.awt.LinearGradientPaint;
 import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -50,6 +52,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -175,6 +178,7 @@ import com.sun.swingset3.DemoProperties;
  *
  * @author Karl George Schaefer
  * @author joshy (original PainterDemoSet)
+ * @author Eugen Hanussek https://github.com/homebeaver (BusyPainterDemos+CheckerboardPainterDemos)
  */
 @DemoProperties(
     value = "Painter Demo",
@@ -277,8 +281,8 @@ public class PainterDemo extends JPanel {
         root.add(createGlossPainterDemos());
         root.add(createPinstripePainterDemos());
         
-        root.add(createBusyPainterDemos()); // EUG
-        root.add(createCheckerboardPainterDemos()); // EUG      
+        root.add(createBusyPainterDemos());
+        root.add(createCheckerboardPainterDemos());  
         
         root.add(createMattePainterDemos());
         root.add(createCompoundPainterDemos());
@@ -518,21 +522,45 @@ public class PainterDemo extends JPanel {
         return node;
     }
     
+    public class BusyPainterAction implements ActionListener {
+
+    	BusyPainter busyPainter;
+    	public BusyPainterAction(BusyPainter bp) {
+    		busyPainter = bp;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+            int frame = busyPainter.getFrame();
+            frame = (frame+1)%busyPainter.getPoints();
+            busyPainter.setFrame(frame);
+		}
+    	
+		public void startTimer(int delay) {
+			Timer timer = new Timer(delay, this);
+			timer.start();
+		}
+    }
+    
     private MutableTreeNode createBusyPainterDemos() {
         DefaultMutableTreeNode node = createInfoNode("Busy Painter Demos", null);
         MattePainter black = new MattePainter(Color.BLACK);
         
-        BusyPainter bp = new BusyPainter();
-        LOG.info("BusyPainter bp"+bp);
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, bp);
+        final BusyPainter bp1 = new BusyPainter(); // final wg. int frame =
+        LOG.info("BusyPainter bp"+bp1);
+        BusyPainterAction bpa1 = new BusyPainterAction(bp1);
+        bpa1.startTimer(100);        
+        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, bp1);
         node.add(createInfoNode("(default)shape of circle and bounds size 26x26 points", cp));
         
-        bp = new BusyPainter(52);
-        bp.setFrame(3);
+        final BusyPainter bp = new BusyPainter(52); // final wg. int frame =
+        bp.setCacheable(true);
         bp.setPaintCentered(true);
         bp.setBaseColor(Color.RED);
-        bp.setDirection(BusyPainter.Direction.LEFT);
+        bp.setDirection(BusyPainter.Direction.LEFT); // BUG TODO rotates RIGHT
         LOG.info("BusyPainter bp"+bp);
+        BusyPainterAction bpa = new BusyPainterAction(bp);
+        bpa.startTimer(100);
         cp = new CompoundPainter<Object>(black, bp);
         node.add(createInfoNode("Centers red shape in the area, height is 52.", cp));
                 
