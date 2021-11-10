@@ -30,6 +30,7 @@ import org.junit.Test;
  * Test for BusyPainter.
  */
 public class BusyPainterTest extends AbstractPainterTest {
+	
     /**
      * {@inheritDoc}
      */
@@ -44,14 +45,16 @@ public class BusyPainterTest extends AbstractPainterTest {
         super.testDefaults();
         
         BusyPainter bp = (BusyPainter) p;
+        int defaultHeight = 26;
         assertThat(bp.getBaseColor(), CoreMatchers.is(Color.LIGHT_GRAY));
         assertThat(bp.getDirection(), CoreMatchers.is(BusyPainter.Direction.RIGHT));
         assertThat(bp.getFrame(), CoreMatchers.is(-1));
         assertThat(bp.getHighlightColor(), CoreMatchers.is(Color.BLACK));
         assertThat(bp.getPoints(), CoreMatchers.is(8));
-        assertThat(bp.getPointShape(), CoreMatchers.is(BusyPainter.getScaledDefaultPoint(26)));
+        assertThat(bp.getHeight(), CoreMatchers.is(defaultHeight));
+        assertThat(bp.getPointShape(), CoreMatchers.is(BusyPainter.getScaledDefaultPoint(defaultHeight)));
         assertThat(bp.getTrailLength(), CoreMatchers.is(4));
-        assertThat(bp.getTrajectory(), CoreMatchers.is(BusyPainter.getScaledDefaultTrajectory(26)));
+        assertThat(bp.getTrajectory(), CoreMatchers.is(BusyPainter.getScaledDefaultTrajectory(defaultHeight)));
         assertThat(bp.isPaintCentered(), CoreMatchers.is(false));
     }
 }
