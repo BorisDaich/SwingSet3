@@ -25,6 +25,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D.Float;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
@@ -602,6 +603,21 @@ public class BusyPainter extends AbstractPainter<Object> {
         return trajectory;
     }
 
+    // JW: how do we ask for the height of the painter?
+    /**
+     * calculates the height of the painter
+     * 
+     * @return
+     */
+    public final int getHeight() {
+        Shape pshape = getPointShape();
+        Shape tshape = getTrajectory();
+        Rectangle2D prectangle = pshape.getBounds2D();
+        Rectangle2D trectangle = tshape.getBounds2D();
+        double height = prectangle.getHeight() + prectangle.getY() + trectangle.getHeight() + trectangle.getY();
+        return Double.valueOf(height).intValue();
+    }
+    
     /**
      * Sets new trajectory. Expected trajectory have to be closed shape. Bound property.
      * @param trajectory New trajectory.
