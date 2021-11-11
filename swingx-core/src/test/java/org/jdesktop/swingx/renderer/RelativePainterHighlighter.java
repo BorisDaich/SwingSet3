@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,6 +33,9 @@ import org.jdesktop.swingx.painter.Painter;
 
 @SuppressWarnings("unchecked")
 public class RelativePainterHighlighter extends PainterHighlighter {
+	
+    private static final Logger LOG = Logger.getLogger(RelativePainterHighlighter.class.getName());
+
     // the fixed value to compare against (should be Comparable)
     private Relativizer relativizer;
     
@@ -69,8 +70,8 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     }
     
     @Override
-    protected Component doHighlight(Component component,
-            ComponentAdapter adapter) {
+    protected Component doHighlight(Component component, ComponentAdapter adapter) {
+    	LOG.fine("relativizer:"+relativizer);
         float xPercent = relativizer.getRelativeValue(adapter);
         getPainter().setXFactor(xPercent);
         getPainter().setVisible(xPercent != Relativizer.ZERO);
@@ -94,8 +95,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     }
 
     @Override
-    protected boolean canHighlight(Component component,
-            ComponentAdapter adapter) {
+    protected boolean canHighlight(Component component, ComponentAdapter adapter) {
         return relativizer != null && super.canHighlight(component, adapter);
     }
     
@@ -112,7 +112,6 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          * @return
          */
         public float getRelativeValue(ComponentAdapter adapter);
-
     }
 
     
@@ -148,9 +147,15 @@ public class RelativePainterHighlighter extends PainterHighlighter {
             this.spread = spreadColumns;
         }
         
+        /**
+         *  {@inheritDoc}
+         */
         @Override
         public float getRelativeValue(ComponentAdapter adapter) {
-            if (getNumber(adapter) == null) {
+            if (adapter == null) {
+                return ZERO;
+            }
+            if (getNumber(adapter) == null) { // EUG besser gleich getFloat TODO
                 return ZERO;
             }
             float value = getNumber(adapter).floatValue();
@@ -184,8 +189,36 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          * @return
          */
         protected Number getNumber(ComponentAdapter adapter) {
-            if (adapter.getValue() instanceof Number)
-                return (Number) adapter.getValue(valueColumn);
+            if(adapter!=null && adapter.getValue() instanceof Number) {
+            	Object o = adapter.getValue(valueColumn);
+            	if(o instanceof String) {
+            		try {
+            			return Integer.parseInt((String)o);
+            		} catch (NumberFormatException e) {
+            			// For input string: "Mark"
+//            			LOG.warning("parseInt:"+e);
+            		}
+            		try {
+            			return Long.parseLong((String)o);
+            		} catch (NumberFormatException e) {
+//            			LOG.warning("parseLong:"+e);
+            		}
+            		try {
+                		return Float.parseFloat((String)o);
+            		} catch (NumberFormatException e) {
+//            			LOG.warning("parseFloat:"+e);
+            		}
+            		try {
+            			return Double.parseDouble((String)o);
+            		} catch (NumberFormatException e) {
+            			LOG.warning("parseDouble:"+e);
+            		}
+            		return null;
+            	}
+            	if(o instanceof Number) {
+            		return (Number)o;
+            	}
+            }
             return null;
         }
 
@@ -327,7 +360,4 @@ public class RelativePainterHighlighter extends PainterHighlighter {
         
     }
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(RelativePainterHighlighter.class.getName());
 }

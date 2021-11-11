@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -90,9 +88,7 @@ import org.jdesktop.test.AncientSwingTeam;
  */
 public class HighlighterClientVisualCheck extends InteractiveTestCase {
     
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(HighlighterClientVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(HighlighterClientVisualCheck.class.getName());
     
     protected TableModel tableModel;
     protected Color background = Color.RED;
@@ -105,12 +101,12 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
       HighlighterClientVisualCheck test = new HighlighterClientVisualCheck();
       try {
 //          setLookAndFeel("Nimbus");
-         test.runInteractiveTests();
-//          test.runInteractive("JP");
+//         test.runInteractiveTests();
+          test.runInteractive("JP"); //interactiveTablePatternHighlighterJP
 //          test.runInteractiveTests(".*Striping.*");
 //         test.runInteractiveTests(".*ToolTip.*");
 //         test.runInteractiveTests("interactive.*Search.*");
-//         test.runInteractiveTests("interactive.*BorderHighlighter.*");
+//         test.runInteractiveTests("interactive.*BorderHighlighter.*"); 
       } catch (Exception e) {
           System.err.println("exception when executing interactive tests:");
           e.printStackTrace();
@@ -199,55 +195,61 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
      * 
      */
     public void interactiveTablePatternHighlighterJP() {
+        String title = "JXTable: Multiple Highlighters";
         JXTable table = new JXTable(tableModel);
         table.setVisibleRowCount(table.getRowCount());
         table.setVisibleColumnCount(7);
         table.packAll();
-        table.setColumnControlVisible(true);
+        table.setColumnControlVisible(true); // ColumnControl icon
+        LOG.info("ValueAt(0, 3) is Number? : " + (table.getValueAt(0, 3) instanceof Number));
+/* Highlighter:
 
-        Font font = table.getFont().deriveFont(Font.BOLD | Font.ITALIC);
+- simpleStriping: first row white, second gray, third white, ...
+- shading: gray shading column 1 (Last Names)
+- magenta: show rows in MAGENTA for (patternPredicate) Last Names which starts with M
+- derivedFont: show rows in BOLD and ITALIC, same patternPredicate as magenta hl
+- gradient:
+ */
         Highlighter simpleStriping = HighlighterFactory.createSimpleStriping();
-        PatternPredicate patternPredicate = new PatternPredicate("^M", 1);
-        ColorHighlighter magenta = new ColorHighlighter(patternPredicate, null,
-                Color.MAGENTA, null, Color.MAGENTA);
-        FontHighlighter derivedFont = new FontHighlighter(patternPredicate,
-                font);
-        AbstractHighlighter gradient = createRelativeGradientHighlighter(HorizontalAlignment.LEFT, AncientSwingTeam.INTEGER_COLUMN);
-        gradient.setHighlightPredicate(new HighlightPredicate.ColumnHighlightPredicate(AncientSwingTeam.INTEGER_COLUMN));
         
-        LOG.info("" + (table.getValueAt(0, 3) instanceof Number));
-        Highlighter shading = new ShadingColorHighlighter(
-                new HighlightPredicate.ColumnHighlightPredicate(1));
+        Highlighter shading = new ShadingColorHighlighter(new HighlightPredicate.ColumnHighlightPredicate(1));
+        
+        PatternPredicate patternPredicate = new PatternPredicate("^M", 1); // Last Names starts with M
+        ColorHighlighter magenta = new ColorHighlighter(patternPredicate, null, Color.MAGENTA, null, Color.MAGENTA);
+        
+        Font font = table.getFont().deriveFont(Font.BOLD | Font.ITALIC);
+        FontHighlighter derivedFont = new FontHighlighter(patternPredicate, font);
+        
+        AbstractHighlighter gradient = createRelativeGradientHighlighter(HorizontalAlignment.LEFT, AncientSwingTeam.INTEGER_COLUMN);
+        gradient.setHighlightPredicate(new HighlightPredicate.ColumnHighlightPredicate(AncientSwingTeam.INTEGER_COLUMN));      
 
-        table.setHighlighters(simpleStriping, magenta, derivedFont, shading //);
-                , gradient);
-        showWithScrollingInFrame(table, "Multiple Highlighters");
+        table.setHighlighters(simpleStriping, shading, magenta, derivedFont, gradient);
+        showWithScrollingInFrame(table, title);
     }
 
     /**
      * Simulates table by one-list per column.
      * 
-     * NOTE: the only purpose is to demonstrate the similarity
-     * of highlighter usage across collection components!
+     * NOTE: the only purpose is to demonstrate the similarity of highlighter usage across collection components!
      * (shown as example in Javapolis 2007)
      * 
      * @see #interactiveTablePatternHighlighterJP()
      */
     public void interactiveListPatternHighlighterJP() {
+        String title = "JXList: Multiple Highlighters";
+        String statusMessage = "demonstrates the similarity of highlighter usage across collection components";
         JXTable source = new JXTable(tableModel);
+        
         source.toggleSortOrder(3);
         Font font = source.getFont().deriveFont(Font.BOLD | Font.ITALIC);
         Highlighter simpleStriping = HighlighterFactory.createSimpleStriping();
         String pattern = "^M";
         PatternPredicate patternPredicate = new PatternPredicate(pattern, 0);
-        ColorHighlighter magenta = new ColorHighlighter(patternPredicate, null,
-                Color.MAGENTA, null, Color.MAGENTA);
-        FontHighlighter derivedFont = new FontHighlighter(patternPredicate,
-                font);
-        Highlighter gradient = createRelativeGradientHighlighter(
-                HorizontalAlignment.LEFT, 0);
-        Highlighter shading = new ShadingColorHighlighter(
-                new HighlightPredicate.ColumnHighlightPredicate(0));
+        ColorHighlighter magenta = new ColorHighlighter(patternPredicate, null, Color.MAGENTA, null, Color.MAGENTA);
+        FontHighlighter derivedFont = new FontHighlighter(patternPredicate, font);
+        Highlighter gradient = createRelativeGradientHighlighter(HorizontalAlignment.LEFT, 0);
+        Highlighter shading = new ShadingColorHighlighter(new HighlightPredicate.ColumnHighlightPredicate(0));
+
         // create and configure one JXList per column.
         List<JXList> lists = new ArrayList<JXList>();
         // first name
@@ -258,24 +260,19 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         JXList list1 = new JXList(createListModel(source, 1));
         list1.setHighlighters(simpleStriping, magenta, derivedFont, shading);
         lists.add(list1);
-
         // color
         JXList listc = new JXList(createListModel(source, 2));
         listc.setHighlighters(simpleStriping);
         lists.add(listc);
-
         // number
         JXList listn = new JXList(createListModel(source, AncientSwingTeam.INTEGER_COLUMN));
-        listn.setCellRenderer(new DefaultListRenderer(
-                StringValues.NUMBER_TO_STRING, JLabel.RIGHT));
+        listn.setCellRenderer(new DefaultListRenderer(StringValues.NUMBER_TO_STRING, JLabel.RIGHT));
         listn.setHighlighters(simpleStriping, gradient);
         lists.add(listn);
-
         // boolean
         JXList listb = new JXList(createListModel(source, 4));
         listb.setCellRenderer(new DefaultListRenderer(new CheckBoxProvider()));
-        listb.setFixedCellHeight(list0.getPreferredSize().height
-                / source.getRowCount());
+        listb.setFixedCellHeight(list0.getPreferredSize().height / source.getRowCount());
         listb.setHighlighters(simpleStriping, magenta, derivedFont, gradient);
         lists.add(listb);
 
@@ -285,22 +282,23 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
             l.setFont(source.getFont());
             panel.add(new JScrollPane(l));
         }
-        showInFrame(panel, "Multiple Highlighters");
+        JXFrame frame = showInFrame(panel, title);
+        addStatusMessage(frame, statusMessage);
     }
 
     /**
+     * RelativeGradientHighlighter to be used in interactive*HighlighterJP
      * @param right
-     * @return
+     * @param column
+     * @return RelativeGradientHighlighter
      */
-    private RelativePainterHighlighter createRelativeGradientHighlighter(
-            HorizontalAlignment right, int column) {
+    private RelativePainterHighlighter createRelativeGradientHighlighter(HorizontalAlignment right, int column) {
         Color startColor = PaintUtils.setAlpha(Color.RED, 130);
         Color endColor = PaintUtils.setAlpha(Color.RED.brighter(), 0);
         boolean isRightAligned = HorizontalAlignment.RIGHT == right;
-        GradientPaint paint = new GradientPaint(new Point2D.Double(0, 0),
-                isRightAligned ? endColor : startColor, 
-                new Point2D.Double(100, 0), 
-                isRightAligned ? startColor : endColor);
+        GradientPaint paint = new GradientPaint(
+        		new Point2D.Double(0, 0), isRightAligned ? endColor : startColor, 
+                new Point2D.Double(100, 0), isRightAligned ? startColor : endColor);
         MattePainter painter = new MattePainter(paint);
         painter.setPaintStretched(true);
         RelativePainterHighlighter p = new RelativePainterHighlighter(painter);

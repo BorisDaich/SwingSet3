@@ -138,9 +138,8 @@ import org.jdesktop.test.AncientSwingTeam;
  * @author Jeanette Winzenburg
  */
 public class RendererVisualCheck extends InteractiveTestCase {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(RendererVisualCheck.class.getName());
+
+    private static final Logger LOG = Logger.getLogger(RendererVisualCheck.class.getName());
     
     public static void main(String[] args) {
         // Note JW: to check opacity issue in renderers _do not_ toggle
@@ -150,7 +149,7 @@ public class RendererVisualCheck extends InteractiveTestCase {
         setLAF("Nim");
         RendererVisualCheck test = new RendererVisualCheck();
         try {
-//            test.runInteractiveTests();
+            test.runInteractiveTests();
 //          test.runInteractiveTests(".*CheckBox.*");
 //          test.runInteractiveTests(".*CustomIcons.*");
 //          test.runInteractiveTests(".*XLabel.*");
@@ -161,8 +160,8 @@ public class RendererVisualCheck extends InteractiveTestCase {
 //          test.runInteractiveTests("interactive.*ColumnControl.*");
 //            test.runInteractive("RowGrouping");
 //          test.runInteractive("Link");
-            test.runInteractive("Opacity");
-            test.runInteractive("CheckBox");
+//            test.runInteractive("Opacity");
+//            test.runInteractive("CheckBox");
 //          test.runInteractive("TreeRenderer");
 //          test.runInteractive("URI");
             

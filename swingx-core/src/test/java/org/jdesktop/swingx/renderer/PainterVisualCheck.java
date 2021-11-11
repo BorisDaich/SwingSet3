@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -61,24 +59,25 @@ import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
+import org.jdesktop.swingx.decorator.HighlightPredicate.ColumnHighlightPredicate;
+import org.jdesktop.swingx.decorator.HighlightPredicate.NotHighlightPredicate;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.decorator.PainterHighlighter;
-import org.jdesktop.swingx.decorator.HighlightPredicate.ColumnHighlightPredicate;
-import org.jdesktop.swingx.decorator.HighlightPredicate.NotHighlightPredicate;
+import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
+import org.jdesktop.swingx.painter.AbstractLayoutPainter.VerticalAlignment;
 import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.BusyPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.ShapePainter;
-import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
-import org.jdesktop.swingx.painter.AbstractLayoutPainter.VerticalAlignment;
 import org.jdesktop.swingx.painter.effects.InnerGlowPathEffect;
 import org.jdesktop.swingx.renderer.RelativePainterHighlighter.NumberRelativizer;
 import org.jdesktop.swingx.renderer.RelativePainterHighlighter.RelativePainter;
 import org.jdesktop.swingx.sort.DefaultSortController;
 import org.jdesktop.swingx.table.ColumnControlButton;
+import org.jdesktop.swingx.table.TableColumnExt;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.util.PaintUtils;
@@ -96,29 +95,32 @@ import org.jdesktop.test.AncientSwingTeam;
  * @author Jeanette Winzenburg
  */
 public class PainterVisualCheck extends InteractiveTestCase {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger
-            .getLogger(PainterVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(PainterVisualCheck.class.getName());
     public static void main(String args[]) {
 //      setSystemLF(true);
       PainterVisualCheck test = new PainterVisualCheck();
       try {
+//          test.runInteractiveTests("interactiveTriangleRenderer");  
 //        test.runInteractiveTests();
 //         test.runInteractiveTests("interactive.*ValueBasedG.*");
 //         test.runInteractiveTests("interactive.*Icon.*");
-        test.runInteractiveTests("interactive.*Busy.*");
-//        test.runInteractiveTests("interactive.*Animated.*");
+//        test.runInteractiveTests("interactive.*Busy.*");
+        test.runInteractiveTests("interactive.*Animated.*");
+//          test.runInteractiveTests("interactiveValueBasedRelativePainterHighlight");
       } catch (Exception e) {
           System.err.println("exception when executing interactive tests:");
           e.printStackTrace();
       }
-  }
+    }
     
     public void interactiveTriangleRenderer() {
+        String title = "Renderer with Triangle marker";
         JXTable table = new JXTable(new AncientSwingTeam());
+        
         ShapePainter painter = new ShapePainter();
-        Shape polygon = new Polygon(new int[] { 0, 5, 5 },
-                new int[] { 0, 0, 5 }, 3);
+        Shape polygon = new Polygon(new int[] { 0, 5, 5 }, new int[] { 0, 0, 5 }, 3);
         painter.setShape(polygon);
         painter.setFillPaint(Color.RED);
         painter.setStyle(ShapePainter.Style.FILLED);
@@ -126,25 +128,27 @@ public class PainterVisualCheck extends InteractiveTestCase {
         // hmm.. how to make this stick to the trailing upper corner?
         painter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         painter.setVerticalAlignment(VerticalAlignment.TOP);
-        Highlighter hl = new PainterHighlighter(new ColumnHighlightPredicate(3), painter); 
+        Highlighter hl = new PainterHighlighter(new ColumnHighlightPredicate(3), painter);
+        
         table.addHighlighter(hl);
-        showWithScrollingInFrame(table, "Renderer with Triangle marker");
+        showWithScrollingInFrame(table, title);
     }
 
     /**
      * Use Painter for an underline-rollover effect.
      */
     public void interactiveRolloverPainter() {
-        TableModel model = new AncientSwingTeam();
-        JXTable table = new JXTable(model);
+        String title = "painter-aware renderer rollover";
+        JXTable table = new JXTable(new AncientSwingTeam());
+        
         MattePainter matte = new MattePainter(getTransparentColor(Color.RED, 80));
         RelativePainter<?> painter = new RelativePainter<Object>(matte);
         painter.setYFactor(0.2);
         painter.setVerticalAlignment(VerticalAlignment.BOTTOM);
         Highlighter hl = new PainterHighlighter(HighlightPredicate.ROLLOVER_ROW, painter);
+        
         table.addHighlighter(hl);
-        JXFrame frame = wrapWithScrollingInFrame(table, 
-                "painter-aware renderer rollover");
+        JXFrame frame = wrapWithScrollingInFrame(table, title);
         addStatusComponent(frame, new JLabel("gradient background of cells with value's containing 'y'"));
         show(frame);
     }
@@ -172,16 +176,16 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * Use SwingX extended default renderer.
      */
     public void interactiveTableBarHighlight() {
-        TableModel model = new AncientSwingTeam();
-        JXTable table = new JXTable(model);
+        String title = "painter-aware renderer with value-based highlighting";
+        JXTable table = new JXTable(new AncientSwingTeam());
+        
         MattePainter p =  new MattePainter(getTransparentColor(Color.BLUE, 125));
         RelativePainter<?> relativePainter = new RelativePainter<Object>(p);
         relativePainter.setXFactor(.5);
-        Highlighter hl = new PainterHighlighter(createComponentTextBasedPredicate("y"), 
-                relativePainter);
+        Highlighter hl = new PainterHighlighter(createComponentTextBasedPredicate("y"), relativePainter);
+        
         table.addHighlighter(hl);
-        JXFrame frame = wrapWithScrollingInFrame(table, 
-                "painter-aware renderer with value-based highlighting");
+        JXFrame frame = wrapWithScrollingInFrame(table, title);
         addMessage(frame, "bar in cells with value containing y");
         show(frame);
     }
@@ -194,44 +198,43 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * render Actions in a JXList. Apply striping and a simple gradient highlighter.
      */
     public void interactiveTableWithListColumnControl() {
+        String title = "checkbox list-renderer - striping and gradient";
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
         JXList list = new JXList();
         Highlighter highlighter = HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER);
         table.addHighlighter(highlighter);
+        
         Painter<?> gradient = createGradientPainter(Color.YELLOW, .7f, true);
         list.setHighlighters(highlighter, new PainterHighlighter(gradient));
         // quick-fill and hook to table columns' visibility state
         configureList(list, table, false);
+        
         // a custom rendering button controller showing both checkbox and text
-        StringValue sv = new StringValue() {
-
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
             public String getString(Object value) {
                 if (value instanceof AbstractActionExt) {
                     return ((AbstractActionExt) value).getName();
                 }
                 return "";
-            }
-            
+            }           
         };
         BooleanValue bv = new BooleanValue() {
-
             public boolean getBoolean(Object value) {
                 if (value instanceof AbstractActionExt) {
                     return ((AbstractActionExt) value).isSelected();
                 }
                 return false;
-            }
-            
+            }        
         };
         CheckBoxProvider wrapper = new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
+        
         list.setCellRenderer(new DefaultListRenderer(wrapper));
-        JXFrame frame = showWithScrollingInFrame(table, list,
-                "checkbox list-renderer - striping and gradient");
+        JXFrame frame = showWithScrollingInFrame(table, list, title);
         addStatusMessage(frame, "fake editable list: space/doubleclick on selected item toggles column visibility");
         frame.pack();
     }
-
 
     /**
      * Creates and returns a Painter with a gradient paint starting with
@@ -242,15 +245,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * @param transparent
      * @return
      */
-    protected Painter<?> createGradientPainter(Color startColor, float end,
-            boolean transparent) {
+    protected Painter<?> createGradientPainter(Color startColor, float end, boolean transparent) {
         startColor = getTransparentColor(startColor, transparent ? 125 : 254);
         Color endColor = getTransparentColor(Color.WHITE, 0);
         GradientPaint paint = new GradientPaint(
-                    new Point2D.Double(0, 0),
-                    startColor,
-                   new Point2D.Double(1000, 0),
-                   endColor);
+        		new Point2D.Double(0, 0), startColor,
+        		new Point2D.Double(1000, 0), endColor
+        		);
 
         MattePainter painter = new MattePainter(paint);
         painter.setPaintStretched(true);
@@ -262,8 +263,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
     }
 
     private static Color getTransparentColor(Color base, int transparency) {
-        return new Color(base.getRed(), base.getGreen(), base.getBlue(),
-                transparency);
+        return new Color(base.getRed(), base.getGreen(), base.getBlue(), transparency);
     }
     
     // ------------------------
@@ -271,62 +271,74 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * Use highlighter with background image painter. Shared by table and list.
      */
     public void interactiveIconPainterHighlight() throws Exception {
-        TableModel model = new AncientSwingTeam();
-        JXTable table = new JXTable(model);
-        ComponentProvider<JLabel> controller = new LabelProvider(
-                JLabel.RIGHT);
-        table.getColumn(0).setCellRenderer(
-                new DefaultTableRenderer(controller));
+        String title = "image highlighting plus striping";
+        JXTable table = new JXTable(new AncientSwingTeam());
+        
+        ComponentProvider<JLabel> controller = new LabelProvider(JLabel.RIGHT);
+        table.getColumn(0).setCellRenderer(new DefaultTableRenderer(controller));
         final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage());
         HighlightPredicate predicate = new ColumnHighlightPredicate(0);
         Highlighter iconHighlighter = new PainterHighlighter(predicate, imagePainter );
         Highlighter alternateRowHighlighter = HighlighterFactory.createSimpleStriping();
         table.addHighlighter(alternateRowHighlighter);
         table.addHighlighter(iconHighlighter);
+        
         // re-use component controller and highlighter in a JXList
         JXList list = new JXList(createListNumberModel(), true);
         list.setCellRenderer(new DefaultListRenderer(controller));
         list.addHighlighter(alternateRowHighlighter);
         list.addHighlighter(iconHighlighter);
         list.toggleSortOrder();
-        final JXFrame frame = showWithScrollingInFrame(table, list,
-                "image highlighting plus striping");
+        
+        final JXFrame frame = showWithScrollingInFrame(table, list, title);
         frame.pack();
     }
   
     /**
-     * Use highlighter with image painter which is positioned relative to 
-     * cell value. 
+     * Use highlighter with image painter which is positioned relative to cell value. 
      */
     public void interactiveValueBasedRelativePainterHighlight()  {
-        TableModel model = new AncientSwingTeam();
-        JXTable table = new JXTable(model);
+        String title = "value-based image position (with relativePainterHighlighter)";
+        JXTable table = new JXTable(new AncientSwingTeam());
+        
+        TableColumnExt tableColumnExt3 = table.getColumnExt(AncientSwingTeam.INTEGER_COLUMN);
+        LOG.info("tableColumnExt3.Title:"+tableColumnExt3.getTitle());
+        
         final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         imagePainter.setAreaEffects(new InnerGlowPathEffect());
         RelativePainterHighlighter iconHighlighter = new RelativePainterHighlighter(imagePainter);
         iconHighlighter.setHorizontalAlignment(HorizontalAlignment.LEFT);
         iconHighlighter.setRelativizer(new NumberRelativizer(100));
-        table.getColumnExt(3).addHighlighter(iconHighlighter);
+        // TODO addHighlighter für list OK?! (unten) / für table nix zu erkennen ?????
+//        tableColumnExt3.addHighlighter(iconHighlighter);
+        table.addHighlighter(iconHighlighter);
+        // addColumn(new TableColumn(modelColumn, width, cellRenderer, cellEditor));
+        //table.addColumn(tableColumnExt3);
+        LOG.info("#Highlighters="+table.getHighlighters().length);
+        if(table.getHighlighters().length>0) {
+        	Highlighter h0 = table.getHighlighters()[0];
+            LOG.info("Highlighter.0="+h0);
+        }
+        
         // re-use component controller and highlighter in a JXList
-        JXList list = new JXList(createListNumberModel(), true);
+        JXList list = new JXList(createListNumberModel(), true); // true: autoCreateRowSorter
         list.setCellRenderer(new DefaultListRenderer(new LabelProvider(JLabel.RIGHT)));
         list.addHighlighter(iconHighlighter);
         list.setComparator(DefaultSortController.COMPARABLE_COMPARATOR);
         list.toggleSortOrder();
-        showWithScrollingInFrame(table, list, 
-            "value-based image position (with relativePainterHighlighter)");
+        
+        showWithScrollingInFrame(table, list, title);
     }
-    
-    
-    
+     
     /**
      * Use highlighter with image painter which is marching across the 
      * cell range (same for all, independent of value).
      */
-    public void interactiveAnimatedIconPainterHighlight()  {
-        TableModel model = new AncientSwingTeam();
-        JXTable table = new JXTable(model);
+    public void interactiveAnimatedIconPainterHighlight()  {  // EUG TODO
+        String title = "Animated highlighter: marching icon on rollover";
+        JXTable table = new JXTable(new AncientSwingTeam());
+        
         table.getColumn(1).setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider()));
         ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
@@ -339,52 +351,39 @@ public class PainterVisualCheck extends InteractiveTestCase {
                 double fraction = painter.getXFactor();
                 fraction = fraction > 1 ? 0.0 : fraction + 0.1;
                 painter.setXFactor(fraction);
-            }
-            
+            }           
         };
         table.addHighlighter(iconHighlighter);
-        showWithScrollingInFrame(table, 
-                "Animated highlighter: marching icon on rollover");
+        showWithScrollingInFrame(table, title); 
         Timer timer = new Timer(100, l);
         timer.start();
     }
-    
+
     /**
      * Use highlighter with BusyPainter.
      */
     public void interactiveAnimatedBusyPainterHighlight()  {
-        TableModel model = new AncientSwingTeam();
-        JXTable table = new JXTable(model);
-        table.getColumn(0).setCellRenderer(new DefaultTableRenderer(
-                new HyperlinkProvider()));
-        final BusyPainter busyPainter = new BusyPainter() {
-            /**
-             * Overridden to fix Issue #861-swingx: must notify on change
-             * @param frame
-             */
-//            @Override
-//            public void setFrame(int frame) {
-//                int old = getFrame();
-//                super.setFrame(frame);
-//                firePropertyChange("frame", old, getFrame());
-//            }
-            
-        };
-        // JW: how do we ask for the height of the painter?
-        table.setRowHeight(26);
+        String title = "Animated highlighter: Rollover Last Name";
+        JXTable table = new JXTable(new AncientSwingTeam());
+        
+        table.getColumn(0).setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider()));
+        final BusyPainter busyPainter = new BusyPainter();
+        
+        // JW: how do we ask for the height of the painter? ==> getHeight
+        table.setRowHeight(busyPainter.getHeight());
+        
         PainterHighlighter iconHighlighter = new PainterHighlighter();
-        HighlightPredicate predicate = new HighlightPredicate() {
-
-            @Override
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
-                
-                return 
-                   adapter.convertRowIndexToModel(adapter.row) == 1;
-            }
-            
-        };
-        iconHighlighter.setHighlightPredicate(predicate); //HighlightPredicate.ROLLOVER_ROW);
+        
+        // show highlighter on 5-th row:
+//        HighlightPredicate predicate = new HighlightPredicate() {
+//            @Override
+//            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {       
+//                return adapter.convertRowIndexToModel(adapter.row) == 4; // die Zeile für isHighlighted, also die 5te
+//            }            
+//        };  
+//        iconHighlighter.setHighlightPredicate(predicate); //HighlightPredicate.ROLLOVER_ROW);
+        
+        iconHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_CELL);
         iconHighlighter.setPainter(busyPainter);
         ActionListener l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -392,11 +391,10 @@ public class PainterVisualCheck extends InteractiveTestCase {
                 frame = (frame+1)%busyPainter.getPoints();
                 busyPainter.setFrame(frame);
             }
-            
         };
         table.getColumnExt(1).addHighlighter(iconHighlighter);
-        showWithScrollingInFrame(table, 
-                "Animated highlighter: BusyPainter on Rollover");
+
+        showWithScrollingInFrame(table, title);
         Timer timer = new Timer(100, l);
         timer.start();
     }
@@ -407,7 +405,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * Currently this works only with a local version which has WrappingIconPanel
      * implement the PainterAware by delegating to its content delegate. 
      */
-    public void interactiveAnimatedIconPainterHighlightTree()  {
+    public void interactiveAnimatedIconPainterHighlightTree()  { // EUG TODO
+        String title = "Animated highlighter: marching icon on rollover";
         TreeModel model = new FileSystemModel();
         JXTree tree = new JXTree(model);
         tree.setRolloverEnabled(true);
@@ -424,12 +423,11 @@ public class PainterVisualCheck extends InteractiveTestCase {
                 double fraction = painter.getXFactor();
                 fraction = fraction > 1 ? 0.0 : fraction + 0.1;
                 painter.setXFactor(fraction);
-            }
-            
+            }    
         };
         tree.addHighlighter(iconHighlighter);
-        showWithScrollingInFrame(tree, 
-                "Animated highlighter: marching icon on rollover");
+        
+        showWithScrollingInFrame(tree, title);
         Timer timer = new Timer(100, l);
         timer.start();
     }
@@ -631,12 +629,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * 
      * @return a ListModel wrapped around the AncientSwingTeam's Number column.
      */
-    private ListModel createListNumberModel() {
+    private ListModel<Object> createListNumberModel() {
         AncientSwingTeam tableModel = new AncientSwingTeam();
-        int colorColumn = 3;
-        DefaultListModel model = new DefaultListModel();
+        int numberColumn = 3;
+        assertEquals(AncientSwingTeam.INTEGER_COLUMN, numberColumn);
+        DefaultListModel<Object> model = new DefaultListModel<Object>();
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            model.addElement(tableModel.getValueAt(i, colorColumn));
+            model.addElement(tableModel.getValueAt(i, numberColumn));
         }
         return model;
     }

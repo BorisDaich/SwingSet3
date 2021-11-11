@@ -60,7 +60,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Tests swingx rendering infrastructure: ComponentProvider, CellContext, 
  * ..
@@ -70,9 +69,9 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class RenderingTest extends InteractiveTestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(RenderingTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(RenderingTest.class.getName());
 
     /**
      * Issue #1339-swingx: set name of rendering component for Synth-based LAFs.
@@ -82,8 +81,7 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testRenderingComponentNames() throws Exception {
         ComponentProvider<?> provider = new LabelProvider();
-        assertEquals("default name expected null", null, provider
-                .getRendererComponent(null).getName());
+        assertEquals("default name expected null", null, provider.getRendererComponent(null).getName());
         // use the same provider for all types of renderers
         DefaultTableRenderer rendererTable = new DefaultTableRenderer(provider);
         DefaultListRenderer rendererList = new DefaultListRenderer(provider);
@@ -96,22 +94,17 @@ public class RenderingTest extends InteractiveTestCase {
             TableCellRenderer tableT = table.getDefaultRenderer(Object.class);
             String nameT = tableT.getTableCellRendererComponent(table, null, false, false, 0, 0).getName();
             assertEquals("sanity: checking default name", "Table.cellRenderer", nameT);
-            assertEquals(nameT, rendererTable
-                    .getTableCellRendererComponent(null, null, false, false, 0,
-                            0).getName());
+            assertEquals(nameT, rendererTable.getTableCellRendererComponent(null, null, false, false, 0, 0).getName());
             // list
             JList list = new JList();
             ListCellRenderer listR = list.getCellRenderer();
             String nameL = listR.getListCellRendererComponent(list, null, 0, false, false).getName();
             assertEquals("sanity: checking default name", "List.cellRenderer", nameL);
-            assertEquals(nameL, rendererList.
-                    getListCellRendererComponent(list, null, 0, false, false).getName());
+            assertEquals(nameL, rendererList.getListCellRendererComponent(list, null, 0, false, false).getName());
             // tree
             JTree tree = new JTree();
             TreeCellRenderer treeR = tree.getCellRenderer();
-            String nameTree =
-                     treeR.getTreeCellRendererComponent(tree, null, false,
-                            false, false, 1, false).getName();
+            String nameTree =treeR.getTreeCellRendererComponent(tree, null, false, false, false, 1, false).getName();
             assertEquals("sanity: checking default name", "Tree.cellRenderer", nameTree);
             assertEquals(nameTree, rendererTree.
                     getTreeCellRendererComponent(tree, null, false, false, false, 0, false).getName());

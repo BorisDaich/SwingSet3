@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -34,7 +32,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Test serializable of all SwingX components.
  * 
@@ -42,13 +39,11 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class SerializableTest extends InteractiveTestCase {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(SerializableTest.class.getName());
+	
+    private static final Logger LOG = Logger.getLogger(SerializableTest.class.getName());
 
     /**
-     * Issue #423-swingx: all descendants of JComponent must be 
-     * serializable.
+     * Issue #423-swingx: all descendants of JComponent must be serializable.
      * 
      * Regression after painter merge: JXPanel$1
      * is not serializable.
