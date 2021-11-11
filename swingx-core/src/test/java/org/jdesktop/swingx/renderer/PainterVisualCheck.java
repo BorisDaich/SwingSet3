@@ -335,17 +335,18 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * Use highlighter with image painter which is marching across the 
      * cell range (same for all, independent of value).
      */
-    public void interactiveAnimatedIconPainterHighlight()  {  // EUG TODO
+    public void interactiveAnimatedIconPainterHighlight()  {
         String title = "Animated highlighter: marching icon on rollover";
         JXTable table = new JXTable(new AncientSwingTeam());
         
         table.getColumn(1).setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider()));
-        ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
+
+        final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
-        PainterHighlighter iconHighlighter = new PainterHighlighter();
-        iconHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_ROW);
-        iconHighlighter.setPainter(painter);
+        painter.setVisible(true); // by default, the painter is NOT visible
+        PainterHighlighter highlighter = new PainterHighlighter(HighlightPredicate.ROLLOVER_CELL, painter);
+
         ActionListener l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 double fraction = painter.getXFactor();
@@ -353,10 +354,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
                 painter.setXFactor(fraction);
             }           
         };
-        table.addHighlighter(iconHighlighter);
-        showWithScrollingInFrame(table, title); 
         Timer timer = new Timer(100, l);
         timer.start();
+        
+        table.getColumnExt(1).addHighlighter(highlighter); // add to 2nd Column
+//        table.addHighlighter(highlighter); // add to all Columns
+
+        showWithScrollingInFrame(table, title);
     }
 
     /**

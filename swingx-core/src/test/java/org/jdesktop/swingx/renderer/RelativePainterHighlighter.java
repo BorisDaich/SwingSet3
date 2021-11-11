@@ -22,6 +22,8 @@ package org.jdesktop.swingx.renderer;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import org.jdesktop.swingx.JXTable;
@@ -29,9 +31,12 @@ import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.PainterHighlighter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
+import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.Painter;
 
 @SuppressWarnings("unchecked")
+//Specialized PainterHighlighter which has a Relativizer
+// similar code see (demo) org.jdesktop.swingxset.util.RelativePainterHighlighter
 public class RelativePainterHighlighter extends PainterHighlighter {
 	
     private static final Logger LOG = Logger.getLogger(RelativePainterHighlighter.class.getName());
@@ -55,7 +60,6 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     public HorizontalAlignment getHorizontalAlignment() {
         return getPainter().getHorizontalAlignment();
     }
-    
 
     /**
      * @param maxValue the maxValue to set
@@ -72,15 +76,18 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     @Override
     protected Component doHighlight(Component component, ComponentAdapter adapter) {
     	LOG.fine("relativizer:"+relativizer);
+        // configures the RelativePainter with the value returned by the Relativizer
         float xPercent = relativizer.getRelativeValue(adapter);
         getPainter().setXFactor(xPercent);
         getPainter().setVisible(xPercent != Relativizer.ZERO);
         return super.doHighlight(component, adapter);
     }
+
     /**
-     * Overridden to wrap a RelativePainter around the given, if not
-     * already is of type RelativePainter.
+     * Overridden to wrap a RelativePainter around the given, 
+     * if not already is of type RelativePainter.
      */
+    // Wraps Painter into RelativePainter (hack around missing api in swingx)
     @Override
     public void setPainter(Painter painter) {
         if (!(painter instanceof RelativePainter)) {
@@ -101,9 +108,8 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     
 //------------------- Relativizer
     
+    // One-method interface to map a cell value to a float
     public static interface Relativizer {
-        public static final float ZERO = 0.0f;
-        public static final float ONE = 1.0f;
         /**
          * Returns a float in the range of 0.0f to 1.0f inclusive which
          * indicates the relative value of the given adapter's value.
@@ -112,9 +118,11 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          * @return
          */
         public float getRelativeValue(ComponentAdapter adapter);
-    }
 
-    
+        public static final float ZERO = 0.0f;
+        public static final float ONE = 1.0f;
+
+    }
 
     public static class NumberRelativizer implements Relativizer {
 
@@ -148,6 +156,8 @@ public class RelativePainterHighlighter extends PainterHighlighter {
         }
         
         /**
+         * Simplistic base implementation of Relativizer which handles Numbers
+         * <p>
          *  {@inheritDoc}
          */
         @Override
@@ -185,9 +195,17 @@ public class RelativePainterHighlighter extends PainterHighlighter {
         }
 
         /**
-         * @param adapter
-         * @return
+         * Returns a Number representation of the cell value or null if it
+         * doesn't have any. Subclasses are meant to override this for custom
+         * mappings.
+         * <p>
+         * 
+         * This implementation checks and returns the type of the current cell.
+         * 
+         * @param adapter the ComponentAdapter which defines the current cell.
+         * @return a Number representing the current cell or null
          */
+        // simple value-to-Number mapping which handles Number types.
         protected Number getNumber(ComponentAdapter adapter) {
             if(adapter!=null && adapter.getValue() instanceof Number) {
             	Object o = adapter.getValue(valueColumn);
@@ -269,12 +287,14 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     
     //--------- hack around missing size proportional painters
     
-    public static class RelativePainter<T> extends AbstractLayoutPainter<T> {
+    public static class RelativePainter<T> extends AbstractLayoutPainter<T> implements PropertyChangeListener {
 
         private Painter<? super T> painter;
         private double xFactor;
         private double yFactor;
         private boolean visible;
+
+//        private PropertyChangeListener painterListener;
 
         public RelativePainter() {
             this(null);
@@ -283,15 +303,19 @@ public class RelativePainterHighlighter extends PainterHighlighter {
         
         public RelativePainter(Painter<? super T> delegate) {
             this.painter = delegate;
+            installPainterListener();
         }
         
         public RelativePainter(Painter<? super T> delegate, double xPercent) {
             this(delegate);
             xFactor = xPercent;
         }
+        
         public void setPainter(Painter<? super T> painter) {
+            uninstallPainterListener();
             Object old = getPainter();
             this.painter = painter;
+            installPainterListener();
             firePropertyChange("painter", old, getPainter());
         }
         
@@ -357,7 +381,75 @@ public class RelativePainterHighlighter extends PainterHighlighter {
             this.visible = visible;
             firePropertyChange("visible", !visible, isVisible());
         }
-        
+
+        /**
+         * Installs a listener to the painter if appropriate. This
+         * implementation registers its painterListener if the Painter is of
+         * type AbstractPainter.
+         */
+        protected void installPainterListener() {
+            if (getPainter() instanceof AbstractPainter) {
+                ((AbstractPainter) getPainter())
+                        .addPropertyChangeListener(getPainterListener());
+            }
+        }
+
+        /**
+         * Uninstalls a listener from the painter if appropriate. This
+         * implementation removes its painterListener if the Painter is of type
+         * AbstractPainter.
+         */
+        protected void uninstallPainterListener() {
+            if (getPainter() instanceof AbstractPainter) {
+                ((AbstractPainter) getPainter())
+                        .removePropertyChangeListener(getPainterListener());
+            }
+        }
+
+        /**
+         * Lazyly creates and returns the property change listener used to
+         * listen to changes of the painter.
+         * 
+         * @return the property change listener used to listen to changes of the
+         *         painter.
+         */
+        protected final PropertyChangeListener getPainterListener() {
+//            if (painterListener == null) {
+//                painterListener = createPainterListener();
+//            }
+//            return painterListener;
+        	return this;
+        }
+
+        /**
+         * Creates and returns the property change listener used to listen to
+         * changes of the painter.
+         * <p>
+         * 
+         * This implementation fires a stateChanged on receiving any
+         * propertyChange, if the isAdjusting flag is false. Otherwise does
+         * nothing.
+         * 
+         * @return the property change listener used to listen to changes of the
+         *         painter.
+         */
+//        protected PropertyChangeListener createPainterListener() {
+//            PropertyChangeListener l = new PropertyChangeListener() {
+//
+//                public void propertyChange(PropertyChangeEvent evt) {
+//                    setDirty(true);
+//                }
+//
+//            };
+//            return l;
+//        }
+
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			setDirty(true);			
+		}
+
     }
 
 }

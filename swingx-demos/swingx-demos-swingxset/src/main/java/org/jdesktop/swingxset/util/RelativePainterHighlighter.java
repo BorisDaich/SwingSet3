@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,9 +29,9 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.PainterHighlighter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter;
+import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
 import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.Painter;
-import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
 
 // <snip> Relative Decorator
 // Specialized PainterHighlighter which has a Relativizer
@@ -72,11 +70,9 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     }
 
     @Override
-    protected Component doHighlight(Component component,
-            ComponentAdapter adapter) {
+    protected Component doHighlight(Component component, ComponentAdapter adapter) {
         // <snip> Relative Decorator
-        // configures the RelativePainter with the value returned by the
-        // Relativizer
+        // configures the RelativePainter with the value returned by the Relativizer
         float xPercent = relativizer.getRelativeValue(adapter);
         getPainter().setXFactor(xPercent);
         getPainter().setVisible(xPercent != Relativizer.ZERO);
@@ -85,8 +81,8 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     }
 
     /**
-     * Overridden to wrap a RelativePainter around the given, if not already is
-     * of type RelativePainter.
+     * Overridden to wrap a RelativePainter around the given, 
+     * if not already is of type RelativePainter.
      */
     // <snip> Relative Decorator
     // Wraps Painter into RelativePainter (hack around missing api in swingx)
@@ -110,7 +106,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
         return relativizer != null && super.canHighlight(component, adapter);
     }
 
-    // ------------------- Relativizer
+//------------------- Relativizer
 
     // <snip> Relativizer
     // One-method interface to map a cell value to a float
@@ -123,11 +119,9 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          * @return
          */
         public float getRelativeValue(ComponentAdapter adapter);
-
         // </snip>
 
         public static final float ZERO = 0.0f;
-
         public static final float ONE = 1.0f;
 
     }
@@ -135,11 +129,8 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     public static class NumberRelativizer implements Relativizer {
 
         private Number max;
-
         private Number current;
-
         private int valueColumn;
-
         private boolean spread;
 
         public NumberRelativizer(Number max) {
@@ -159,8 +150,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
             this(column, false, max, current);
         }
 
-        public NumberRelativizer(int column, boolean spreadColumns, Number max,
-                Number current) {
+        public NumberRelativizer(int column, boolean spreadColumns, Number max, Number current) {
             this.current = current;
             this.max = max;
             this.valueColumn = column;
@@ -244,8 +234,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
             }
             JXTable table = (JXTable) adapter.getComponent();
             // PENDING JW: guard against null header
-            return table.getTableHeader().columnAtPoint(
-                    new Point(pixelLocation, 10));
+            return table.getTableHeader().columnAtPoint(new Point(pixelLocation, 10));
         }
 
         protected Number getCurrent() {
@@ -270,11 +259,8 @@ public class RelativePainterHighlighter extends PainterHighlighter {
     public static class RelativePainter<T> extends AbstractLayoutPainter<T> {
 
         private Painter<? super T> painter;
-
         private double xFactor;
-
         private double yFactor;
-
         private boolean visible;
 
         private PropertyChangeListener painterListener;
@@ -324,8 +310,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
 
         @Override
         protected void doPaint(Graphics2D g, T object, int width, int height) {
-            if (painter == null)
-                return;
+            if (painter == null) return;
             // use epsilon
             if (xFactor != 0.0) {
                 int oldWidth = width;
@@ -360,8 +345,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          */
         @Override
         public void setVisible(boolean visible) {
-            if (isVisible() == visible)
-                return;
+            if (isVisible() == visible) return;
             this.visible = visible;
             firePropertyChange("visible", !visible, isVisible());
         }
