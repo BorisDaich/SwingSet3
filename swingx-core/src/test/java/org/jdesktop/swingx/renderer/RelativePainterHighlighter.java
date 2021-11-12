@@ -207,36 +207,32 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          */
         // simple value-to-Number mapping which handles Number types.
         protected Number getNumber(ComponentAdapter adapter) {
-            if(adapter!=null && adapter.getValue() instanceof Number) {
-            	Object o = adapter.getValue(valueColumn);
-            	if(o instanceof String) {
-            		try {
-            			return Integer.parseInt((String)o);
-            		} catch (NumberFormatException e) {
-            			// For input string: "Mark"
-//            			LOG.warning("parseInt:"+e);
-            		}
-            		try {
-            			return Long.parseLong((String)o);
-            		} catch (NumberFormatException e) {
-//            			LOG.warning("parseLong:"+e);
-            		}
-            		try {
-                		return Float.parseFloat((String)o);
-            		} catch (NumberFormatException e) {
-//            			LOG.warning("parseFloat:"+e);
-            		}
-            		try {
-            			return Double.parseDouble((String)o);
-            		} catch (NumberFormatException e) {
-            			LOG.warning("parseDouble:"+e);
-            		}
-            		return null;
-            	}
-            	if(o instanceof Number) {
-            		return (Number)o;
-            	}
-            }
+        	if(adapter==null) return null;
+        	Object v = adapter.getValue();
+        	LOG.fine("adapter.Value:"+v+" type:"+v.getClass());
+        	if(v instanceof Integer) {
+        		return (Integer)v;
+        	}
+        	if(v instanceof Long) {
+        		return (Long)v;
+        	}
+        	if(v instanceof Float) {
+        		return (Float)v;
+        	}
+        	if(v instanceof Double) {
+        		return (Double)v;
+        	}
+        	if(v instanceof Number) {
+        		return (Number)v;
+        	}
+        	if(v instanceof String) {
+        		try {
+        			return Integer.parseInt((String)v);
+        		} catch (NumberFormatException e) {
+        			// For input string: "Mark"
+        			LOG.fine("parseInt:"+e);
+        		}
+        	}
             return null;
         }
 

@@ -23,6 +23,7 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
  * SwingSet... 
  * Can remove/add rows.
  */
+@SuppressWarnings("serial")
 public class AncientSwingTeam extends AbstractTableModel {
 
     public static final int COLOR_COLUMN = 2;
@@ -33,9 +34,9 @@ public class AncientSwingTeam extends AbstractTableModel {
      * Creates and returns a listModel with items of type NamedColor.
      * @return a ListModel containing items of type NamedColor.
      */
-    public static ListModel createNamedColorListModel() {
+    public static ListModel<Object> createNamedColorListModel() {
         final TableModel wrappee = new AncientSwingTeam();
-        ListModel model = new AbstractListModel() {
+        ListModel<Object> model = new AbstractListModel<Object>() {
 
             public Object getElementAt(int index) {
                 return wrappee.getValueAt(index, 2);
@@ -49,7 +50,7 @@ public class AncientSwingTeam extends AbstractTableModel {
         return model;
     };
     
-    public static ComboBoxModel createNamedColorComboBoxModel() {
+    public static ComboBoxModel<Object> createNamedColorComboBoxModel() {
         return new ListModelComboBoxWrapper(createNamedColorListModel());
     }
     
@@ -125,54 +126,54 @@ public class AncientSwingTeam extends AbstractTableModel {
         return node;
     };
     
-    protected final String[] names = { "First Name", "Last Name", "Favorite Color",
-            "No.", "Vegetarian" };
-        NamedColor aqua        = new NamedColor(new Color(127, 255, 212), "Aqua");
-        NamedColor beige       = new NamedColor(new Color(245, 245, 220), ("Beige"));
-        NamedColor black       = new NamedColor(Color.black, "Black");
-        NamedColor blue        = new NamedColor(new Color(0, 0, 222), "Blue");
-        NamedColor eblue       = new NamedColor(Color.blue, "Electric Blue");
-        NamedColor jfcblue     = new NamedColor(new Color(204, 204, 255), "JFC Primary");
-        NamedColor jfcblue2    = new NamedColor(new Color(153, 153, 204), "JFC SEcondary");
-        NamedColor cybergreen  = new NamedColor(Color.green.darker().brighter(), "Cyber Green");
-        NamedColor darkgreen   = new NamedColor(new Color(0, 100, 75), "darkgreen");
-        NamedColor forestgreen = new NamedColor(Color.green.darker(), "Forest Green");
-        NamedColor gray        = new NamedColor(Color.gray, "Gray");
-        NamedColor green       = new NamedColor(Color.green, "Green");
-        NamedColor orange      = new NamedColor(new Color(255, 165, 0), "Orange");
-        NamedColor purple      = new NamedColor(new Color(160, 32, 240),  "Purple");
-        NamedColor red         = new NamedColor(Color.red, "Red");
-        NamedColor rustred     = new NamedColor(Color.red.darker(), "Rust Red");
-        NamedColor sunpurple   = new NamedColor(new Color(100, 100, 255), "Sun Purple");
-        NamedColor suspectpink = new NamedColor(new Color(255, 105, 180), "Suspect Pink");
-        NamedColor turquoise   = new NamedColor(new Color(0, 255, 255), "Turquoise");
-        NamedColor violet      = new NamedColor(new Color(238, 130, 238), "Violet");
-        NamedColor yellow      = new NamedColor(Color.yellow, "Yellow");
+	NamedColor aqua = new NamedColor(new Color(127, 255, 212), "Aqua");
+	NamedColor beige = new NamedColor(new Color(245, 245, 220), ("Beige"));
+	NamedColor black = new NamedColor(Color.black, "Black");
+	NamedColor blue = new NamedColor(new Color(0, 0, 222), "Blue");
+	NamedColor eblue = new NamedColor(Color.blue, "Electric Blue");
+	NamedColor jfcblue = new NamedColor(new Color(204, 204, 255), "JFC Primary");
+	NamedColor jfcblue2 = new NamedColor(new Color(153, 153, 204), "JFC SEcondary");
+	NamedColor cybergreen = new NamedColor(Color.green.darker().brighter(), "Cyber Green");
+	NamedColor darkgreen = new NamedColor(new Color(0, 100, 75), "darkgreen");
+	NamedColor forestgreen = new NamedColor(Color.green.darker(), "Forest Green");
+	NamedColor gray = new NamedColor(Color.gray, "Gray");
+	NamedColor green = new NamedColor(Color.green, "Green");
+	NamedColor orange = new NamedColor(new Color(255, 165, 0), "Orange");
+	NamedColor purple = new NamedColor(new Color(160, 32, 240), "Purple");
+	NamedColor red = new NamedColor(Color.red, "Red");
+	NamedColor rustred = new NamedColor(Color.red.darker(), "Rust Red");
+	NamedColor sunpurple = new NamedColor(new Color(100, 100, 255), "Sun Purple");
+	NamedColor suspectpink = new NamedColor(new Color(255, 105, 180), "Suspect Pink");
+	NamedColor turquoise = new NamedColor(new Color(0, 255, 255), "Turquoise");
+	NamedColor violet = new NamedColor(new Color(238, 130, 238), "Violet");
+	NamedColor yellow = new NamedColor(Color.yellow, "Yellow");
 
-        protected final Object[][] data = {
-            { "Mark", "Andrews", red, Integer.valueOf(2), Boolean.valueOf(true) },
-            { "Tom", "Ball", blue, Integer.valueOf(99), Boolean.valueOf(false) },
-            { "Alan", "Chung", green, Integer.valueOf(838), Boolean.valueOf(false) },
-            { "Jeff", "Dinkins", turquoise, Integer.valueOf(8), Boolean.valueOf(true) },
-            { "Amy", "Fowler", yellow, Integer.valueOf(3), Boolean.valueOf(false) },
-            { "Brian", "Gerhold", green, Integer.valueOf(0), Boolean.valueOf(false) },
-            { "James", "Gosling", suspectpink, Integer.valueOf(21), Boolean.valueOf(false) },
-            { "David", "Karlton", red, Integer.valueOf(1), Boolean.valueOf(false) },
-            { "Dave", "Kloba", yellow, Integer.valueOf(14), Boolean.valueOf(false) },
-            { "Peter", "Korn", purple, Integer.valueOf(12), Boolean.valueOf(false) },
-            { "Phil", "Milne", purple, Integer.valueOf(3), Boolean.valueOf(false) },
-            { "Dave", "Moore", green, Integer.valueOf(88), Boolean.valueOf(false) },
-            { "Hans", "Muller", rustred, Integer.valueOf(5), Boolean.valueOf(false) },
+	protected final String[] names = { "First Name", "Last Name", "Favorite Color", "No.", "Vegetarian" };
+    protected final Object[][] data = {
+        { "Mark", "Andrews", red, Integer.valueOf(2), Boolean.valueOf(true) },
+        { "Tom", "Ball", blue, Integer.valueOf(99), Boolean.valueOf(false) },
+        { "Alan", "Chung", green, Integer.valueOf(838), Boolean.valueOf(false) },
+        { "Jeff", "Dinkins", turquoise, Integer.valueOf(8), Boolean.valueOf(true) },
+        { "Amy", "Fowler", yellow, Integer.valueOf(3), Boolean.valueOf(false) },
+        { "Brian", "Gerhold", green, Integer.valueOf(0), Boolean.valueOf(false) },
+        { "James", "Gosling", suspectpink, Integer.valueOf(21), Boolean.valueOf(false) },
+        { "David", "Karlton", red, Integer.valueOf(1), Boolean.valueOf(false) },
+        { "Dave", "Kloba", yellow, Integer.valueOf(14), Boolean.valueOf(false) },
+        { "Peter", "Korn", purple, Integer.valueOf(12), Boolean.valueOf(false) },
+        { "Phil", "Milne", purple, Integer.valueOf(3), Boolean.valueOf(false) },
+        { "Dave", "Moore", green, Integer.valueOf(88), Boolean.valueOf(false) },
+        { "Hans", "Muller", rustred, Integer.valueOf(5), Boolean.valueOf(false) },
 
-            { "Rick", "Levenson", blue, Integer.valueOf(2), Boolean.valueOf(false) },
-            { "Tim", "Prinzing", blue, Integer.valueOf(22), Boolean.valueOf(false) },
-            { "Chester", "Rose", black, Integer.valueOf(0), Boolean.valueOf(false) },
-            { "Ray", "Ryan", gray, Integer.valueOf(77), Boolean.valueOf(false) },
-            { "Georges", "Saab", red, Integer.valueOf(4), Boolean.valueOf(false) },
-            { "Willie", "Walker", jfcblue, Integer.valueOf(4), Boolean.valueOf(false) },
+        { "Rick", "Levenson", blue, Integer.valueOf(2), Boolean.valueOf(false) },
+        { "Tim", "Prinzing", blue, Integer.valueOf(22), Boolean.valueOf(false) },
+        { "Chester", "Rose", black, Integer.valueOf(0), Boolean.valueOf(false) },
+        { "Ray", "Ryan", gray, Integer.valueOf(77), Boolean.valueOf(false) },
+        { "Georges", "Saab", red, Integer.valueOf(4), Boolean.valueOf(false) },
+        { "Willie", "Walker", jfcblue, Integer.valueOf(4), Boolean.valueOf(false) },
 
-            { "Kathy", "Walrath", blue, Integer.valueOf(8), Boolean.valueOf(false) },
-            { "Arnaud", "Weber", green, Integer.valueOf(44), Boolean.valueOf(false) } };
+        { "Kathy", "Walrath", blue, Integer.valueOf(8), Boolean.valueOf(false) },
+        { "Arnaud", "Weber", green, Integer.valueOf(44), Boolean.valueOf(false) } 
+    };
 
     protected int rowCount = data.length;
 
@@ -251,8 +252,7 @@ public class AncientSwingTeam extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex + length - 1);
     }
     
-    @SuppressWarnings("serial")
-	public static class NamedColor extends Color {
+    public static class NamedColor extends Color {
         String name;
         public NamedColor(Color color, String name) {
             super(color.getRGB());

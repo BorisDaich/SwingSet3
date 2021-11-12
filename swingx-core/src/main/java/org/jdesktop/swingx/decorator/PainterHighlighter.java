@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -124,8 +122,6 @@ public class PainterHighlighter extends AbstractHighlighter {
         setPainter(painter);
     }
 
-    
-
     /**
      * Returns to Painter used in this Highlighter. 
      * 
@@ -171,7 +167,6 @@ public class PainterHighlighter extends AbstractHighlighter {
         }
     }
 
- 
     /**
      * Lazyly creates and returns the property change listener used
      * to listen to changes of the painter.
@@ -228,12 +223,11 @@ public class PainterHighlighter extends AbstractHighlighter {
     /**
      * {@inheritDoc}
      * <p>
-     * This implementation sets the painter if it is not null. Does nothing
-     * otherwise.
+     * This implementation sets the painter if it is not null. 
+     * Does nothing otherwise.
      */
     @Override
-    protected Component doHighlight(Component component,
-            ComponentAdapter adapter) {
+    protected Component doHighlight(Component component, ComponentAdapter adapter) {
        ((PainterAware) component).setPainter(painter);
         return component;
     }
@@ -248,6 +242,5 @@ public class PainterHighlighter extends AbstractHighlighter {
     protected boolean canHighlight(Component component, ComponentAdapter adapter) {
         return getPainter() != null && (component instanceof PainterAware);
     }
-    
-    
+       
 }

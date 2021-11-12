@@ -104,10 +104,10 @@ public class PainterVisualCheck extends InteractiveTestCase {
       try {
 //          test.runInteractiveTests("interactiveTriangleRenderer");  
 //        test.runInteractiveTests();
-//         test.runInteractiveTests("interactive.*ValueBasedG.*");
+         test.runInteractiveTests("interactive.*ValueBased.*"); 
 //         test.runInteractiveTests("interactive.*Icon.*");
 //        test.runInteractiveTests("interactive.*Busy.*");
-        test.runInteractiveTests("interactive.*Animated.*");
+//        test.runInteractiveTests("interactive.*Animated.*");
 //          test.runInteractiveTests("interactiveValueBasedRelativePainterHighlight");
       } catch (Exception e) {
           System.err.println("exception when executing interactive tests:");
@@ -307,24 +307,29 @@ public class PainterVisualCheck extends InteractiveTestCase {
         final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         imagePainter.setAreaEffects(new InnerGlowPathEffect());
-        RelativePainterHighlighter iconHighlighter = new RelativePainterHighlighter(imagePainter);
-        iconHighlighter.setHorizontalAlignment(HorizontalAlignment.LEFT);
-        iconHighlighter.setRelativizer(new NumberRelativizer(100));
-        // TODO addHighlighter für list OK?! (unten) / für table nix zu erkennen ?????
-//        tableColumnExt3.addHighlighter(iconHighlighter);
-        table.addHighlighter(iconHighlighter);
-        // addColumn(new TableColumn(modelColumn, width, cellRenderer, cellEditor));
-        //table.addColumn(tableColumnExt3);
-        LOG.info("#Highlighters="+table.getHighlighters().length);
-        if(table.getHighlighters().length>0) {
-        	Highlighter h0 = table.getHighlighters()[0];
-            LOG.info("Highlighter.0="+h0);
-        }
         
-        // re-use component controller and highlighter in a JXList
+        final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
+        painter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
+        painter.setVisible(true); // by default, the painter is NOT visible
+
+        PainterHighlighter highlighter = new PainterHighlighter();
+        highlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_CELL);
+        highlighter.setPainter(painter);
+        table.getColumnExt(1).addHighlighter(highlighter); // add to 2nd Column at RIGHT
+        
+        RelativePainterHighlighter rHighlighter = new RelativePainterHighlighter(painter);
+        rHighlighter.setHorizontalAlignment(HorizontalAlignment.LEFT);
+        rHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_CELL);
+        rHighlighter.setRelativizer(new NumberRelativizer(100));
+        tableColumnExt3.addHighlighter(rHighlighter); // add to INTEGER_COLUMN
+        
+        // DO NOT re-use component controller and highlighter in a JXList, reuse imagePainter
+        final RelativePainter<?> rpainter = new RelativePainter<Component>(imagePainter);
+        RelativePainterHighlighter lHighlighter = new RelativePainterHighlighter(rpainter);
+        lHighlighter.setRelativizer(new NumberRelativizer(100));
         JXList list = new JXList(createListNumberModel(), true); // true: autoCreateRowSorter
         list.setCellRenderer(new DefaultListRenderer(new LabelProvider(JLabel.RIGHT)));
-        list.addHighlighter(iconHighlighter);
+        list.addHighlighter(lHighlighter);
         list.setComparator(DefaultSortController.COMPARABLE_COMPARATOR);
         list.toggleSortOrder();
         
@@ -409,7 +414,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * Currently this works only with a local version which has WrappingIconPanel
      * implement the PainterAware by delegating to its content delegate. 
      */
-    public void interactiveAnimatedIconPainterHighlightTree()  { // EUG TODO
+    public void interactiveAnimatedIconPainterHighlightTree()  {
         String title = "Animated highlighter: marching icon on rollover";
         TreeModel model = new FileSystemModel();
         JXTree tree = new JXTree(model);
@@ -419,6 +424,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
+        painter.setVisible(true); // by default, the painter is NOT visible
         PainterHighlighter iconHighlighter = new PainterHighlighter();
         iconHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_ROW);
         iconHighlighter.setPainter(painter);
@@ -443,7 +449,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * @throws IOException
      */
     public void interactivePerRowImage() throws IOException {
-        
+        String title = "painter in renderer";
         JXTable table = new JXTable(new AncientSwingTeam());
         table.setForeground(Color.MAGENTA);
         table.setSelectionForeground(Color.BLUE);
@@ -452,22 +458,17 @@ public class PainterVisualCheck extends InteractiveTestCase {
         final BufferedImage moon = XTestUtils.loadDefaultImage("moon.jpg");
         final BufferedImage rocket = XTestUtils.loadDefaultImage("500by500.png");
         HighlightPredicate rocketPredicate = new HighlightPredicate() {
-
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
+            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
                 return ((Integer) adapter.getValue(3)).intValue() < 50;
             }
-            
         };
         HighlightPredicate moonPredicate = new NotHighlightPredicate(rocketPredicate);
         table.setHighlighters(
-                new SubImagePainterHighlighter(rocketPredicate, 
-                        new SubImagePainter(rocket))
+                new SubImagePainterHighlighter(rocketPredicate, new SubImagePainter(rocket))
                 ,
-                new SubImagePainterHighlighter(moonPredicate, 
-                        new SubImagePainter(moon))
+                new SubImagePainterHighlighter(moonPredicate, new SubImagePainter(moon))
         );
-        JXFrame frame = wrapWithScrollingInFrame(table, "painter in renderer");
+        JXFrame frame = wrapWithScrollingInFrame(table, title);
         show(frame);
     }
     
@@ -476,15 +477,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * 
      */
     public static class SubImagePainterHighlighter extends PainterHighlighter {
-
-        
+  
         public SubImagePainterHighlighter(HighlightPredicate predicate, SubImagePainter painter) {
             super(predicate, painter);
         }
         
         @Override
-        protected Component doHighlight(Component component,
-                ComponentAdapter adapter) {
+        protected Component doHighlight(Component component, ComponentAdapter adapter) {
             Rectangle cellRect = getCellBounds(adapter);
             ((SubImagePainter) getPainter()).setImageClip(cellRect);
             return super.doHighlight(component, adapter);
@@ -493,25 +492,23 @@ public class PainterVisualCheck extends InteractiveTestCase {
         private Rectangle getCellBounds(ComponentAdapter adapter) {
             // PENDING JW: add method to adapter
             JXTable table = (JXTable) adapter.getComponent();
-            Rectangle cellRect = table.getCellRect(adapter.row, 
-                    adapter.column, false);
+            Rectangle cellRect = table.getCellRect(adapter.row, adapter.column, false);
             return cellRect;
         }
 
         @Override
-        protected boolean canHighlight(Component component,
-                ComponentAdapter adapter) {
+        protected boolean canHighlight(Component component, ComponentAdapter adapter) {
             return super.canHighlight(component, adapter) 
                 && (adapter.getComponent() instanceof JTable);
         }
 
-        
     }
     
     /**
      * Simple Painter for subimage.
      */
     public static class SubImagePainter extends AbstractPainter<Object> {
+    	
         BufferedImage image;
         Rectangle imageClip;
 
@@ -525,16 +522,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
         }
         
         @Override
-        protected void doPaint(Graphics2D g, Object object, int width,
-                int height) {
+        protected void doPaint(Graphics2D g, Object object, int width, int height) {
             if ((imageClip == null) || (imageClip.width <= 0) || (imageClip.height <= 0)) return;
             if (imageClip.x + width >= image.getWidth()) return;
             if (imageClip.y + height >= image.getWidth()) return;
-            Image subImage = image.getSubimage(
-                    imageClip.x, imageClip.y, 
-                    width, height);
-            g.drawImage(subImage, 0, 0, width, height, null);
             
+            Image subImage = image.getSubimage(imageClip.x, imageClip.y, width, height);
+            g.drawImage(subImage, 0, 0, width, height, null);        
         }
         
     }
@@ -545,33 +539,56 @@ public class PainterVisualCheck extends InteractiveTestCase {
     
     /**
      * Use transparent gradient painter for value-based background highlighting
-     * with SwingX extended default renderer. Shared by table and list with
-     * striping.
+     * with SwingX extended default renderer. Shared by table and list with striping.
      */
     public void interactiveValueBasedGradientHighlightPlusStriping() {
+    	String title = "transparent value relative highlighting plus striping";
+    	String statusMessage = "uses a PainterAwareLabel in renderer";
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
-        ComponentProvider<JLabel> controller = new LabelProvider(
-                JLabel.RIGHT) ;
-        RelativePainterHighlighter gradientHighlighter = 
-            createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
-        table.addHighlighter(gradientHighlighter);
+        
+        ComponentProvider<JLabel> controller = new LabelProvider(JLabel.RIGHT);
+        
+        Color startColor = PaintUtils.setAlpha(Color.RED, 130);
+        Color endColor = PaintUtils.setAlpha(Color.RED.brighter(), 0);
+        boolean isRightAligned = true;
+        GradientPaint paint = new GradientPaint(
+        		new Point2D.Double(0, 0), isRightAligned ? endColor : startColor, 
+                new Point2D.Double(100, 0), isRightAligned ? startColor : endColor
+                );
+        MattePainter painter = new MattePainter(paint);
+        painter.setPaintStretched(true);
+        PainterHighlighter columnHighlighter = new PainterHighlighter();
+        columnHighlighter.setHighlightPredicate(HighlightPredicate.ALWAYS);
+        columnHighlighter.setPainter(painter);
+        table.getColumnExt(1).addHighlighter(columnHighlighter); // add to 2nd Column
+
+        RelativePainterHighlighter gradientHighlighter = createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
+        RelativePainter rp = gradientHighlighter.getPainter();
+        
+        TableColumnExt tableColumnExt3 = table.getColumnExt(AncientSwingTeam.INTEGER_COLUMN);
+        LOG.info("tableColumnExt3.Title:"+tableColumnExt3.getTitle());
+//        gradientHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_CELL); // OK
+        gradientHighlighter.setHighlightPredicate(HighlightPredicate.ALWAYS);
+        tableColumnExt3.addHighlighter(gradientHighlighter); // add to INTEGER_COLUMN
+        
+        
         Highlighter alternateRowHighlighter = HighlighterFactory.createSimpleStriping();
         table.addHighlighter(alternateRowHighlighter);
-        table.addHighlighter(gradientHighlighter);
-        // re-use component controller and highlighter in a JXList
+        
+        // DO NOT re-use component controller and highlighter in a JXList, reuse imagePainter
+        RelativePainterHighlighter rgpHighlighter = createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
         JXList list = new JXList(createListNumberModel(), true);
         list.setCellRenderer(new DefaultListRenderer(controller));
         list.addHighlighter(alternateRowHighlighter);
-        list.addHighlighter(gradientHighlighter);
+        list.addHighlighter(rgpHighlighter);
         list.toggleSortOrder();
-        final JXFrame frame = wrapWithScrollingInFrame(table, list,
-                "transparent value relative highlighting plus striping");
-        addStatusMessage(frame,
-                "uses a PainterAwareLabel in renderer");
+
+        final JXFrame frame = wrapWithScrollingInFrame(table, list, title);
+        addStatusMessage(frame, statusMessage);
         // crude binding to play with options - the factory is incomplete...
 //        addStatusComponent(frame, createTransparencyToggle(gradientHighlighter));
-//        show(frame);
+        show(frame);
     }
 
     /**
@@ -608,19 +625,20 @@ public class PainterVisualCheck extends InteractiveTestCase {
     
     /**
      * @param right
-     * @return
+     * @return RelativePainterHighlighter
      */
-    private RelativePainterHighlighter createRelativeGradientHighlighter(
-            HorizontalAlignment right, Number max) {
+    private RelativePainterHighlighter createRelativeGradientHighlighter(HorizontalAlignment right, Number max) {
         Color startColor = PaintUtils.setAlpha(Color.RED, 130);
         Color endColor = PaintUtils.setAlpha(Color.RED.brighter(), 0);
         boolean isRightAligned = HorizontalAlignment.RIGHT == right;
-        GradientPaint paint = new GradientPaint(new Point2D.Double(0, 0),
-                isRightAligned ? endColor : startColor, 
-                new Point2D.Double(100, 0), 
-                isRightAligned ? startColor : endColor);
+        GradientPaint paint = new GradientPaint(
+        		new Point2D.Double(0, 0), isRightAligned ? endColor : startColor, 
+                new Point2D.Double(100, 0), isRightAligned ? startColor : endColor
+                );
         MattePainter painter = new MattePainter(paint);
         painter.setPaintStretched(true);
+        final RelativePainter<?> rPainter = new RelativePainter<Component>(painter);
+        rPainter.setVisible(true); // by default, the painter is NOT visible
         RelativePainterHighlighter p = new RelativePainterHighlighter(painter);
         p.setHorizontalAlignment(right);
         p.setRelativizer(new NumberRelativizer(max));

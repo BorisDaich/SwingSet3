@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.color;
 
 import java.awt.Color;
@@ -48,7 +45,9 @@ import org.jdesktop.swingx.util.PaintUtils;
  *  
  * @author joshy
  */
+@SuppressWarnings("serial") // super Same-version serialization only
 public class GradientPreviewPanel extends JXPanel {
+
     private Paint checker_texture = null;
     private Point2D start, end;
     public JXGradientChooser picker;

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -42,8 +40,8 @@ import org.jdesktop.swingx.calendar.CalendarUtils;
  * @author Jeanette Winzenburg
  */
 public class XTestUtils {
-    private static final Logger LOG = Logger.getLogger(XTestUtils.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(XTestUtils.class.getName());
     
     private static String IMAGE_DIR = "resources/images/";
     private static Class<?> BASE = JXTable.class; 

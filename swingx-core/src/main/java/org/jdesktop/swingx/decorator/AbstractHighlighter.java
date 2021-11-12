@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -156,8 +154,9 @@ public abstract class AbstractHighlighter implements Highlighter {
     /**
      * {@inheritDoc}
      * 
-     * This calls doHighlight to apply the decoration if both HighlightPredicate
-     * isHighlighted and canHighlight return true. Returns the undecorated component otherwise.
+     * This calls doHighlight to apply the decoration 
+     * if both HighlightPredicate isHighlighted and canHighlight return true. 
+     * Returns the undecorated component otherwise.
      * 
      * @param component the cell renderer component that is to be decorated
      * @param adapter the ComponentAdapter for this decorate operation
@@ -168,8 +167,7 @@ public abstract class AbstractHighlighter implements Highlighter {
      */
     @Override
     public Component highlight(Component component, ComponentAdapter adapter) {
-        if (canHighlight(component, adapter) && 
-                getHighlightPredicate().isHighlighted(component, adapter)) {
+        if(canHighlight(component, adapter) && getHighlightPredicate().isHighlighted(component, adapter)) {
             component = doHighlight(component, adapter);
         }
         return component;
@@ -200,9 +198,7 @@ public abstract class AbstractHighlighter implements Highlighter {
      * 
      * @see #highlight(Component, ComponentAdapter)
      */
-    protected abstract Component doHighlight(Component component,
-            ComponentAdapter adapter);
-
+    protected abstract Component doHighlight(Component component, ComponentAdapter adapter);
 
     /**
      * Returns true if the to objects are either both null or equal
