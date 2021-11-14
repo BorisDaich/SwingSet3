@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,8 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
-
 package org.jdesktop.swingx.painter.effects;
 
 import java.awt.Color;
@@ -28,6 +24,17 @@ import java.awt.Point;
 /**
  * An effect which draws a shadow inside the path painter.
  * @author joshy
+
+
+    public ShadowPathEffect() {
+        super();
+        setBrushColor(Color.BLACK);
+        setRenderInsideShape(false);
+        setShouldFillShape(true);
+        setOffset(new Point(3,3));
+    }
+
+
  */
 public class InnerShadowPathEffect extends AbstractAreaEffect {
     

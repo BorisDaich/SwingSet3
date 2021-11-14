@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,8 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
-
 package org.jdesktop.swingx.painter.effects;
 
 import java.awt.AlphaComposite;
@@ -110,8 +106,7 @@ public class NeonBorderEffect extends AbstractAreaEffect {
             }
             
             // to make the effect softer use a different stroke
-            gfx.setStroke(new BasicStroke(brushWidth,
-                    BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            gfx.setStroke(new BasicStroke(brushWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             //gfx.setStroke(new BasicStroke(brushWidth));
             gfx.draw(clipShape);
         }

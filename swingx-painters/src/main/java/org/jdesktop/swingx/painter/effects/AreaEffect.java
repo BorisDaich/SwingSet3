@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -28,6 +26,7 @@ import java.awt.Shape;
  * @author joshy
  */
 public interface AreaEffect {
+	
     /*
      * Applies the shape effect. This effect will be drawn on top of the graphics context.
      */

@@ -39,25 +39,14 @@ import java.awt.image.BufferedImage;
  * dropshadows and glows.
  * @author joshy
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class AbstractAreaEffect implements AreaEffect {
 	
-    private static final boolean debug = false;
-    
     /**
-     * Creates a new instance of AreaEffect
+     * 
+     * @inheritDoc
      */
-    public AbstractAreaEffect() {
-        setBrushColor(Color.BLACK);
-        setBrushSteps(10);
-        setEffectWidth(8);
-        setRenderInsideShape(false);
-        setOffset(new Point(4,4));
-        setShouldFillShape(true);
-        setShapeMasked(true);
-    }
-    
-    @Override
+    @Override // implements the abstract method AreaEffect.apply
     public void apply(Graphics2D g, Shape clipShape, int width, int height) {
         // create a rect to hold the bounds
         width = (int)(clipShape.getBounds2D().getWidth() + clipShape.getBounds2D().getX());
@@ -115,6 +104,21 @@ public class AbstractAreaEffect implements AreaEffect {
         //g.draw(clipShape.getBounds2D());
         //g.drawRect(0,0,width,height);
         
+    }
+
+    private static final boolean debug = false;
+    
+    /**
+     * Creates a new instance of AreaEffect
+     */
+    public AbstractAreaEffect() {
+        setBrushColor(Color.BLACK);
+        setBrushSteps(10);
+        setEffectWidth(8);
+        setRenderInsideShape(false);
+        setOffset(new Point(4,4));
+        setShouldFillShape(true);
+        setShapeMasked(true);
     }
     
     BufferedImage _clipImage = null;
