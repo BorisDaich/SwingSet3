@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -82,12 +80,13 @@ import javax.swing.border.EmptyBorder;
  */
 public class CellContext implements Serializable {
 
-    /** the default border for unfocused cells. */
+	private static final long serialVersionUID = -7094058140472179140L;
+
+	/** the default border for unfocused cells. */
     protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
 
     /** ?? the default border for unfocused cells. ?? */
-    private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1,
-            1);
+    private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
 
     /**
      * Returns the shared border for unfocused cells.
@@ -97,6 +96,7 @@ public class CellContext implements Serializable {
      * @return the border for unfocused cells.
      */
     private static Border getNoFocusBorder() {
+    	// getSecurityManager Deprecated since="17" forRemoval
         if (System.getSecurityManager() != null) {
             return SAFE_NO_FOCUS_BORDER;
         } else {
@@ -348,8 +348,7 @@ public class CellContext implements Serializable {
     protected Border getFocusBorder() {
         Border border = null;
         if (isSelected()) {
-            border = UIManager
-                    .getBorder(getUIKey("focusSelectedCellHighlightBorder"));
+            border = UIManager.getBorder(getUIKey("focusSelectedCellHighlightBorder"));
         }
         if (border == null) {
             border = UIManager.getBorder(getUIKey("focusCellHighlightBorder"));

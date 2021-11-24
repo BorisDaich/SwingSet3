@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import java.awt.Graphics2D;
@@ -37,6 +34,7 @@ import org.jdesktop.swingx.painter.Painter;
  * @param <T> a subclass of JComponent
  */
 public class PainterUIResource<T extends JComponent> implements Painter<T>, UIResource {
+	
     private Painter<? super T> p;
 
     /**

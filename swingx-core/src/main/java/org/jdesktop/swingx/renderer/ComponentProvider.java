@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -126,9 +124,11 @@ import org.jdesktop.swingx.plaf.UIDependent;
  * @see DefaultTreeRenderer
  * @see DefaultVisuals
  */
-public abstract class ComponentProvider<T extends JComponent> 
-    implements Serializable, UIDependent {
-    /** component to render with. */
+public abstract class ComponentProvider<T extends JComponent> implements Serializable, UIDependent {
+	
+	private static final long serialVersionUID = -492003578788855414L;
+	
+	/** component to render with. */
     protected T rendererComponent;
     /** configurator of default visuals. */
     protected DefaultVisuals<T> defaultVisuals;

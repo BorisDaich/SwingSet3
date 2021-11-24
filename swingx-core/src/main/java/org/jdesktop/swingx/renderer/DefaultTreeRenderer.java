@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,12 +18,10 @@
  */
 package org.jdesktop.swingx.renderer;
 
-
 import java.awt.Component;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
-
 
 /**
  * Adapter to glue SwingX renderer support to core api.
@@ -36,10 +32,11 @@ import javax.swing.tree.TreeCellRenderer;
  * 
  * 
  */
-public class DefaultTreeRenderer extends AbstractRenderer
-        implements TreeCellRenderer {
+public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRenderer {
 
-    private TreeCellContext cellContext;
+	private static final long serialVersionUID = -7173650392149697228L;
+	
+	private TreeCellContext cellContext;
     
     /**
      * Instantiates a default tree renderer with the default component
@@ -143,8 +140,7 @@ public class DefaultTreeRenderer extends AbstractRenderer
     public Component getTreeCellRendererComponent(JTree tree, Object value,
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
-        cellContext.installContext(tree, value, row, 0, selected, hasFocus,
-                expanded, leaf);
+        cellContext.installContext(tree, value, row, 0, selected, hasFocus, expanded, leaf);
         Component comp = componentController.getRendererComponent(cellContext);
         // fix issue #1040-swingx: memory leak if value not released
         cellContext.replaceValue(null);

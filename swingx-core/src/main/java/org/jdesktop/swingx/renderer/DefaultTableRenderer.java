@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,12 +18,10 @@
  */
 package org.jdesktop.swingx.renderer;
 
-
 import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
-
 
 /**
  * Adapter to glue SwingX renderer support to core api. It has convenience
@@ -64,11 +60,11 @@ import javax.swing.table.TableCellRenderer;
  * @see CellContext
  * 
  */
-public class DefaultTableRenderer extends AbstractRenderer
-        implements TableCellRenderer {
+public class DefaultTableRenderer extends AbstractRenderer implements TableCellRenderer {
 
-    private TableCellContext cellContext;
-    
+	private static final long serialVersionUID = 8540505765180065684L;
+	
+	private TableCellContext cellContext;
     
     /**
      * Instantiates a default table renderer with the default component
@@ -139,8 +135,7 @@ public class DefaultTableRenderer extends AbstractRenderer
      * @param iconValue the converter to use for the icon representation
      * @param alignment the rendering component's horizontal alignment
      */
-    public DefaultTableRenderer(StringValue stringValue, IconValue iconValue,
-            int alignment) {
+    public DefaultTableRenderer(StringValue stringValue, IconValue iconValue, int alignment) {
         this(new MappedValue(stringValue, iconValue), alignment);
     }
 
@@ -165,8 +160,7 @@ public class DefaultTableRenderer extends AbstractRenderer
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
-        cellContext.installContext(table, value, row, column, isSelected, hasFocus,
-                true, true);
+        cellContext.installContext(table, value, row, column, isSelected, hasFocus, true, true);
         Component comp = componentController.getRendererComponent(cellContext);
         // fix issue #1040-swingx: memory leak if value not released
         cellContext.replaceValue(null);
@@ -180,7 +174,6 @@ public class DefaultTableRenderer extends AbstractRenderer
     protected ComponentProvider<?> createDefaultComponentProvider() {
         return new LabelProvider();
     }
-
 
 }
 

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,10 +37,11 @@ import org.jdesktop.swingx.rollover.RolloverRenderer;
  * 
  * @author Jeanette Winzenburg
  */
-public abstract class AbstractRenderer 
-    implements  RolloverRenderer, StringValue, Serializable, UIDependent {
+public abstract class AbstractRenderer implements RolloverRenderer, StringValue, Serializable, UIDependent {
 
-    protected ComponentProvider<?> componentController;
+	private static final long serialVersionUID = 5800804087287351161L;
+	
+	protected ComponentProvider<?> componentController;
 
     public AbstractRenderer(ComponentProvider<?> provider) {
         if (provider ==  null) {
@@ -77,7 +76,7 @@ public abstract class AbstractRenderer
         return componentController.getString(value);
     }
 
- // ------------ implement RolloverRenderer   
+// ------------ implement RolloverRenderer   
     
     /**
      * {@inheritDoc}
@@ -98,6 +97,8 @@ public abstract class AbstractRenderer
                 && ((RolloverRenderer) componentController).isEnabled();
     }
 
+ // ------------ implement UIDependent
+    
     /**
      * {@inheritDoc}
      */
@@ -121,6 +122,5 @@ public abstract class AbstractRenderer
     public void setForeground(Color foreground) {
         componentController.getDefaultVisuals().setForeground(foreground);
     }
-
 
 }

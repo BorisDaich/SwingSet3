@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -66,8 +64,9 @@ import javax.swing.JComponent;
  */
 public class DefaultVisuals<T extends JComponent> implements Serializable {
 
+	private static final long serialVersionUID = -2590817387758753406L;
 
-    private Color unselectedForeground;
+	private Color unselectedForeground;
 
     private Color unselectedBackground;
 
@@ -156,8 +155,7 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
             // leave the decistion to the context?
         } else {
             renderingComponent.setEnabled(context.getComponent().isEnabled());
-            renderingComponent.applyComponentOrientation(context.getComponent()
-                    .getComponentOrientation());
+            renderingComponent.applyComponentOrientation(context.getComponent().getComponentOrientation());
         }
     }
 
@@ -258,8 +256,6 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
         if (unselectedBackground != null)
             return unselectedBackground;
         return context.getBackground();
-    }
-
-    
+    }    
 
 }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -37,7 +35,9 @@ import javax.swing.JLabel;
  */
 public class LabelProvider extends ComponentProvider<JLabel> {
 
-    /**
+	private static final long serialVersionUID = 6242436384829975153L;
+
+	/**
      * Instantiates a LabelProvider with default to-String converter and LEADING
      * horizontal alignment .
      * <p>

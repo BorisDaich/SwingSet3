@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -46,7 +44,9 @@ import java.text.Format;
  */
 public class FormatStringValue implements StringValue {
 
-    /** the format used in creating the String representation. */
+	private static final long serialVersionUID = 2536217336201165440L;
+	
+	/** the format used in creating the String representation. */
     protected Format format;
 
     /**
