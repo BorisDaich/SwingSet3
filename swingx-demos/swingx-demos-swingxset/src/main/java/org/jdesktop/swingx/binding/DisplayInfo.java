@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -38,8 +36,7 @@ public class DisplayInfo<T> {
     }
     
     public DisplayInfo(String description, T item) {
-        this.description = Contract.asNotNull(description,
-            "description cannot be null");
+        this.description = Contract.asNotNull(description, "description cannot be null");
         this.item = item;
     }
     

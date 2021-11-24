@@ -26,13 +26,22 @@ import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
  * @author Karl Schaefer
  */
 public class LabelHandler {
+	
     private static final Object LABEL_FOR_BINDING_KEY = new Object();
     
     public void add(JLabel label, JComponent component) {
         label.setLabelFor(component);
-        Binding binding =  Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
-                component, BeanProperty.create("enabled"), 
-                label, BeanProperty.create("enabled"));
+        /* createAutoBinding Type Parameters:<SS> <SV> <TS> <TV> 
+         * Parameters:strategy the update strategy for the binding
+         * sourceObject the source object
+         * sourceProperty the source property
+         * targetObject the target object
+         * targetProperty the target property
+         */
+        Binding<?, ?, ?, ?> binding =  Bindings.createAutoBinding(UpdateStrategy.READ_WRITE
+        		, component, BeanProperty.create("enabled")
+        		,     label, BeanProperty.create("enabled")
+        		);
         binding.bind();
     }
 
@@ -76,12 +85,13 @@ public class LabelHandler {
             //use the ternary operator to ensure that we always check valid properties
             //we get the same effect using ${labelFor.enabled} but that results in log
             //warnings when the labelFor property is null/empty.
-            bg.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE, label,
-                    ELProperty.create("${empty labelFor ? enabled : labelFor.enabled}"), label,
-                    BeanProperty.create("enabled")));
-            bg.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE, label,
-                    ELProperty.create("${empty labelFor ? visible : labelFor.visible}"), label,
-                    BeanProperty.create("visible")));
+            bg.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE // strategy AutoBinding tries to keep both the source and target in sync with each other
+            		, label, ELProperty.create("${empty labelFor ? enabled : labelFor.enabled}") // source: object, prop
+            		, label, BeanProperty.create("enabled") // target: object, prop
+            		));
+            bg.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE
+            		, label, ELProperty.create("${empty labelFor ? visible : labelFor.visible}")
+            		, label, BeanProperty.create("visible")));
             bg.bind();
             
             label.putClientProperty(LABEL_FOR_BINDING_KEY, bg);

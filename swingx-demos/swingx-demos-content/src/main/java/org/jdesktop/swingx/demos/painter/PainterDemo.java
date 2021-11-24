@@ -36,6 +36,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -195,52 +198,8 @@ import com.sun.swingset3.DemoProperties;
 @SuppressWarnings("serial")
 public class PainterDemo extends JPanel {
     
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(PainterDemo.class
-            .getName());
-    
-    private JXTree painterDemos;
-    private JXPanel painterDisplay;
-    private JComboBox horizontalAlignmentBox;
-    private JComboBox verticalAlignmentBox;
-    private PainterControl painterControl;
+    private static final Logger LOG = Logger.getLogger(PainterDemo.class.getName());
 
-    private JSlider insetSlider;
-
-    private JCheckBox fillHorizontal;
-
-    private JCheckBox fillVertical;
-
-    private JXCollapsiblePane layoutPainterControlPanel;
-
-    private JXCollapsiblePane basePainterControlPanel;
-
-//    private JComponent painterControlPanel;
-    
-    private JComboBox filterBox;
-    
-    private JComboBox interpolationBox;
-
-    private JCheckBox visibleBox;
-
-    private JCheckBox antialiasBox;
-
-    private JXTitledSeparator layoutSeparator;
-
-    private JXTitledSeparator baseSeparator;
-
-    private JComponent areaSeparator;
-
-    private JComboBox styleBox;
-
-    private JXCollapsiblePane areaPainterControlPanel;
-
-    private JComboBox effectBox;
-
-    private JCheckBox paintStretchedBox;
-
-    private JSlider borderWidthSlider;
-    
     /**
      * main method allows us to run as a standalone demo.
      */
@@ -258,7 +217,50 @@ public class PainterDemo extends JPanel {
             }
         });
     }
-    
+
+    private JXTree painterDemos;
+    private JXPanel painterDisplay;
+    private PainterControl painterControl; // implements AbstractBean, instance created on bind()
+
+    /* properties panel (painterControlPanel) made by createPainterPropertiesPanel() consists of
+     * - basePainterControlPanel
+     * - layoutPainterControlPanel
+     * - areaPainterControlPanel
+     */
+    private JXCollapsiblePane basePainterControlPanel;
+    private JXCollapsiblePane layoutPainterControlPanel;
+    private JXCollapsiblePane areaPainterControlPanel;
+
+    /*
+     * Base Properties / basePainterControlPanel: createBasePainterControlPanel()
+     */
+    private JXTitledSeparator baseSeparator;
+    // TODO JComboBox -> JXComboBox
+    private JComboBox<?> interpolationBox;
+    private JComboBox<DisplayInfo<BufferedImageOp>> filterBox;
+//    private JComboBox<?> filterBox; // TODO raus: so geht es nicht
+    private JCheckBox visibleBox;
+    private JCheckBox antialiasBox;
+
+    /*
+     * Layout Properties / layoutPainterControlPanel: createLayoutPainterControl()
+     */
+    private JXTitledSeparator layoutSeparator;
+    private JComboBox<HorizontalAlignment> horizontalAlignmentBox;
+    private JComboBox<VerticalAlignment> verticalAlignmentBox;
+    private JSlider insetSlider;
+    private JCheckBox fillHorizontal;
+    private JCheckBox fillVertical;
+
+    /*
+     * Area Properties / areaPainterControlPanel: createAreaPainterControlPanel()
+     */
+    private JComponent areaSeparator;
+    private JComboBox<Style> styleBox;
+    private JComboBox<DisplayInfo<AreaEffect>> effectBox;
+    private JSlider borderWidthSlider;
+    private JCheckBox paintStretchedBox;
+   
     public PainterDemo() {
         super(new BorderLayout());
         createPainterDemo();
@@ -290,12 +292,8 @@ public class PainterDemo extends JPanel {
     }
 
     
-    
-    @SuppressWarnings("unchecked")
-    private DefaultMutableTreeNode createInfoNode(String desc, Painter painter) {
-        DefaultMutableTreeNode pin = new DefaultMutableTreeNode(
-                new DisplayInfo<Painter>(desc, painter));
-        return pin;
+    private DefaultMutableTreeNode createInfoNode(String desc, Painter<Object> painter) {
+        return new DefaultMutableTreeNode(new DisplayInfo<Painter<Object>>(desc, painter));
     }
     
     //TODO all this ImageIO stuff should be off EDT
@@ -345,8 +343,7 @@ public class PainterDemo extends JPanel {
         
         try {
             BufferedImage img = ImageIO.read(getClass().getResourceAsStream("a-glyph.png"));
-            node.add(createInfoNode("An image of 'A' with transparent parts", 
-                    new ImagePainter(img)));
+            node.add(createInfoNode("An image of 'A' with transparent parts", new ImagePainter(img)));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -387,12 +384,13 @@ public class PainterDemo extends JPanel {
     
     private MutableTreeNode createTextPainterDemos() {
         DefaultMutableTreeNode node = createInfoNode("Text Painter Demos", null);
+        String textToPaint = "Neon";
         Font font = new Font("SansSerif", Font.BOLD, 80);
         
-        TextPainter tp = new TextPainter("Neon", font, Color.RED);
+        TextPainter tp = new TextPainter(textToPaint, font, Color.RED);
         node.add(createInfoNode("Text", tp));
         
-        tp = new TextPainter("Neon",font,Color.BLACK);
+        tp = new TextPainter(textToPaint, font, Color.BLACK);
         tp.setFillPaint(PaintUtils.AERITH);
         node.add(createInfoNode("Text with gradient", tp));
         
@@ -676,10 +674,13 @@ public class PainterDemo extends JPanel {
     /**
      * Create and return model for filter selection combobox.
      * 
-     * @return
+     * @return ComboBoxModel<E> aModel
      */
-    private ComboBoxModel createFilterList() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    // @param <E> the type of the elements of this model: DisplayInfo<BufferedImageOp>
+    private ComboBoxModel<DisplayInfo<BufferedImageOp>> createFilterList() {
+        DefaultComboBoxModel<DisplayInfo<BufferedImageOp>> model = new DefaultComboBoxModel<DisplayInfo<BufferedImageOp>>();
+//    private ComboBoxModel<E> createFilterList() {
+//        DefaultComboBoxModel<E> model = new DefaultComboBoxModel<E>();
         model.addElement(new DisplayInfo<BufferedImageOp>("- none - ", null));
         model.addElement(new DisplayInfo<BufferedImageOp>(new AverageFilter()));
         model.addElement(new DisplayInfo<BufferedImageOp>(new BlockFilter()));
@@ -747,20 +748,19 @@ public class PainterDemo extends JPanel {
      * Create and returns model for effects selection combobox
      * @return
      */
-    private ComboBoxModel createAreaEffectsList() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private ComboBoxModel<DisplayInfo<AreaEffect>> createAreaEffectsList() {
+        DefaultComboBoxModel<DisplayInfo<AreaEffect>> model = new DefaultComboBoxModel<DisplayInfo<AreaEffect>>();
         model.addElement(new DisplayInfo<AreaEffect>(" - none -", null));
         model.addElement(new DisplayInfo<AreaEffect>(new GlowPathEffect()));
         model.addElement(new DisplayInfo<AreaEffect>(new InnerGlowPathEffect()));
+        model.addElement(new DisplayInfo<AreaEffect>(new ShadowPathEffect()));
         model.addElement(new DisplayInfo<AreaEffect>(new InnerShadowPathEffect()));
         model.addElement(new DisplayInfo<AreaEffect>(new NeonBorderEffect()));
-        model.addElement(new DisplayInfo<AreaEffect>(new ShadowPathEffect()));
         return model;
     }
     
 //------------------------------- Binding
     
-    @SuppressWarnings("unchecked")
     private void bind() {
         // fill and configure painter tree
         painterDemos.setModel(createPainters());
@@ -771,33 +771,61 @@ public class PainterDemo extends JPanel {
         bindSelection(painterDisplay, painterControl);
         
         // bindEnabled
-        bindEnabled("areaEnabled", areaSeparator, styleBox, effectBox, 
-                borderWidthSlider, paintStretchedBox);
-        bindEnabled("alignEnabled", layoutSeparator, horizontalAlignmentBox, 
-                verticalAlignmentBox, insetSlider, fillHorizontal, fillVertical);
-        bindEnabled("baseEnabled", baseSeparator, interpolationBox, 
-                visibleBox, antialiasBox);
+        bindEnabled("areaEnabled", areaSeparator, styleBox, effectBox, borderWidthSlider, paintStretchedBox);
+        bindEnabled("alignEnabled", layoutSeparator, horizontalAlignmentBox, verticalAlignmentBox, insetSlider, fillHorizontal, fillVertical);
+        bindEnabled("baseEnabled", baseSeparator, interpolationBox, visibleBox, antialiasBox);
         
         // bind collapsed
-        bindInversCollapsed("baseEnabled", layoutPainterControlPanel,
-                basePainterControlPanel, areaPainterControlPanel);
+        bindInversCollapsed("baseEnabled", layoutPainterControlPanel, basePainterControlPanel, areaPainterControlPanel);
    }
 
-    @SuppressWarnings("unchecked")
+    /*
+     * used in bind(): bindSelection(painterDisplay // JXPanel
+     *                             , painterControl // PainterControl
+     *                             );
+     */
+//    @SuppressWarnings("unchecked")
     private void bindSelection(Object... components) {
-        painterDemos.setCellRenderer(new DefaultTreeRenderer(
-                DisplayValues.DISPLAY_INFO_DESCRIPTION)); 
-        Converter<?, ?> painterConverter = new DisplayInfoConverter<Painter>();
+        painterDemos.setCellRenderer(new DefaultTreeRenderer(DisplayValues.DISPLAY_INFO_DESCRIPTION));
+/*
+//        public abstract class Converter<S, T> // <S> the source type
+// public class DisplayInfoConverter<T> extends Converter<DisplayInfo<T>, T>  TODO EUG 
+//                                      source: DisplayInfo<T> , target T
+ * Converter<DisplayInfo<Painter<Object>>, Painter<Object>>
+//        public T convertForward(DisplayInfo<T> info) {
+//        public DisplayInfo<T> convertReverse(T item) {
+
+for:
+BeanProperty.create // Creates an instance of BeanProperty for the given path.
+Bindings.createAutoBinding // Creates an instance of AutoBinding that binds a property of a source object to a property of a target object.
+ @param strategy READ: keep the target in sync with the source
+ @param sourceObject the source object
+ @param sourceProperty the source property
+     * @param targetObject the target object
+     * @param targetProperty the target property
+Type safety: Unchecked invocation createAutoBinding(AutoBinding.UpdateStrategy, 
+JXTree, BeanProperty<JXTree,Object>, Object, BeanProperty) 
+of the generic method createAutoBinding(AutoBinding.UpdateStrategy, SS, Property<SS,SV>, TS, Property<TS,TV>) of type Bindings
+ */
+        //Converter<DisplayInfo<Painter<Object>>, Painter<Object>> painterConverter = new DisplayInfoConverter<Painter<Object>>();
+        Converter<?, ?> painterConverter = new DisplayInfoConverter<Painter<Object>>();
         BindingGroup group = new BindingGroup();
         for (int i = 0; i < components.length; i++) {
-            BeanProperty p = BeanProperty.create(
-                    i == 0 ? "backgroundPainter" : "painter");
-            Binding b = Bindings.createAutoBinding(READ,
-                    painterDemos, BeanProperty.create("selectedElement_UNWRAP_NODE"),
-                    components[i], p);
-            b.setConverter(painterConverter);
-            group.addBinding(b);
-            
+        	//@SuppressWarnings("rawtypes") // sourceProperty generic type BeanProperty<S,V>
+			BeanProperty<JXTree, String> sv =
+        			BeanProperty.create("selectedElement_UNWRAP_NODE"); // calls new BeanProperty<S, V>(null, path)
+            //@SuppressWarnings("rawtypes") // targetProperty generic type BeanProperty<S,V>
+			BeanProperty<Object, String> tv = 
+				BeanProperty.create(i == 0 ? "backgroundPainter" : "painter");
+            @SuppressWarnings("rawtypes") // generic type Binding<SS,SV,TS,TV>
+			Binding b = 
+//			Binding<JXTree, String, Object, String> b = 
+            	Bindings.createAutoBinding(READ, // strategy: keep the target in sync with the source
+                    painterDemos, sv, // SS:JXTree, Property<SS,SV>
+                    components[i], tv // TS, Property<TS,TV>
+            		);
+            b.setConverter(painterConverter); // Converter<SV, TV> converter
+            group.addBinding(b);       
         }
         group.bind();
     }
@@ -808,6 +836,7 @@ public class PainterDemo extends JPanel {
     private void bindInversCollapsed(String property, JComponent... components ) {
         BindingGroup group = new BindingGroup();
         for (JComponent comp : components) {
+        	LOG.info(property+":comp:"+comp);
             group.addBinding(Bindings.createAutoBinding(READ,
                     painterControl, ELProperty.create("${!" + property + "}"),
                     comp, BeanProperty.create("collapsed")));
@@ -818,13 +847,25 @@ public class PainterDemo extends JPanel {
     /**
      * @param string
      */
+    /*
+     * used in bind(): 
+        bindEnabled("areaEnabled"
+        , areaSeparator
+        , styleBox
+        , effectBox
+        , borderWidthSlider
+        , paintStretchedBox
+        );
+        bindEnabled("alignEnabled", layoutSeparator, horizontalAlignmentBox, verticalAlignmentBox, insetSlider, fillHorizontal, fillVertical);
+        bindEnabled("baseEnabled", baseSeparator, interpolationBox, visibleBox, antialiasBox);
+     */
     private void bindEnabled(String property, JComponent... components ) {
         BindingGroup group = new BindingGroup();
         for (JComponent comp : components) {
+        	LOG.info(property+":comp:"+comp);
             group.addBinding(Bindings.createAutoBinding(READ,
                     painterControl, BeanProperty.create(property),
-                    comp, BeanProperty.create("enabled")));
-            
+                    comp, BeanProperty.create("enabled")));       
         }
         group.bind();
     }
@@ -847,23 +888,72 @@ public class PainterDemo extends JPanel {
             // effects
             effectBox.setRenderer(new DefaultListRenderer(effectInfo));
             effectBox.setModel(createAreaEffectsList());
-            styleBox.setModel(
-                    new EnumComboBoxModel<Style>(Style.class));
+//            styleBox.setModel(new EnumComboBoxModel<Style>(Style.class));
+            styleBox.setModel(createStyleList());
             
             // base
             interpolationBox.setModel(
                     new EnumComboBoxModel<Interpolation>(Interpolation.class));
-            filterBox.setModel(createFilterList());
+            ComboBoxModel<DisplayInfo<BufferedImageOp>> comboBoxModel = createFilterList();
+            filterBox.setModel(comboBoxModel);
             filterBox.setRenderer(new DefaultListRenderer(effectInfo));
             
             // layout data
-            horizontalAlignmentBox.setModel(
-                    new EnumComboBoxModel<HorizontalAlignment>(HorizontalAlignment.class));
-            verticalAlignmentBox.setModel(
-                    new EnumComboBoxModel<VerticalAlignment>(VerticalAlignment.class));
-
+//            horizontalAlignmentBox.setModel(new EnumComboBoxModel<HorizontalAlignment>(HorizontalAlignment.class));
+//            // TODO: createHorizontalAlignmentList() wie createFilterList();
+//            ComboBoxModel<HorizontalAlignment> comboBoxModel_HA = createHorizontalAlignmentList();
+            horizontalAlignmentBox.setModel(createHorizontalAlignmentList());
+            
+            //verticalAlignmentBox.setModel(new EnumComboBoxModel<VerticalAlignment>(VerticalAlignment.class));
+//            ComboBoxModel<VerticalAlignment> comboBoxModel_VA = createVerticalAlignmentList();
+            verticalAlignmentBox.setModel(createVerticalAlignmentList(HorizontalAlignment.class));
         }
-        
+
+        private ComboBoxModel<Style> createStyleList() {
+        	// Enum class E -to-> Collection
+        	ArrayList<Style> al = new ArrayList<Style>(EnumSet.allOf(AbstractAreaPainter.Style.class));
+        	// ComboBoxModel via DefaultComboBoxModel ctor with Vector
+            return new DefaultComboBoxModel<Style>(new Vector<Style>(al));
+        }
+
+/*
+        Type safety: The expression of type EnumComboBoxModel<AbstractLayoutPainter.HorizontalAlignment> 
+        needs unchecked conversion to conform to ComboBoxModel<AbstractLayoutPainter.HorizontalAlignment>
+
+statt
+            horizontalAlignmentBox.setModel(new EnumComboBoxModel<HorizontalAlignment>(HorizontalAlignment.class));
+versuche
+            ComboBoxModel<HorizontalAlignment> comboBoxModel = createHorizontalAlignmentList();     
+            horizontalAlignmentBox.setModel(comboBoxModel);
+
+ */
+        private ComboBoxModel<HorizontalAlignment> createHorizontalAlignmentList() {
+        	// Enum class E -to-> Collection
+//        	EnumSet<HorizontalAlignment> es = EnumSet.allOf(HorizontalAlignment.class);
+        	ArrayList<HorizontalAlignment> al = new ArrayList<HorizontalAlignment>(EnumSet.allOf(HorizontalAlignment.class));
+        	// ComboBoxModel via DefaultComboBoxModel ctor with Vector
+//        	Vector<HorizontalAlignment> v = new Vector<HorizontalAlignment>(al);
+//        	DefaultComboBoxModel<HorizontalAlignment> model = new DefaultComboBoxModel<HorizontalAlignment>(v);
+            return new DefaultComboBoxModel<HorizontalAlignment>(new Vector<HorizontalAlignment>(al));
+        }
+
+        private ComboBoxModel<VerticalAlignment> createVerticalAlignmentList(Class<?> elementType) {
+        	if(elementType!=AbstractLayoutPainter.VerticalAlignment.class) {
+        		LOG.severe("NICHT fuer "+elementType);
+        	}
+        	// Enum class E -to-> EnumSet<E>
+        	// public static <E extends Enum<E>> EnumSet<E> allOf(Class<E> elementType) 
+        	EnumSet<VerticalAlignment> es = EnumSet.allOf(AbstractLayoutPainter.VerticalAlignment.class);
+        	// EnumSet<E> -to-> Collection
+        	ArrayList<VerticalAlignment> al = new ArrayList<VerticalAlignment>(es);
+        	// Collection -to-> Vector<E>
+        	// public Vector(Collection<? extends E> c) 
+        	Vector<VerticalAlignment> v = new Vector<VerticalAlignment>(al);
+        	
+        	DefaultComboBoxModel<VerticalAlignment> model = new DefaultComboBoxModel<VerticalAlignment>(v);
+            return model;
+        }
+
         /**
          * @return the areaEnabled
          */
@@ -918,7 +1008,7 @@ public class PainterDemo extends JPanel {
                 Binding effectsBinding = (Bindings.createAutoBinding(READ, 
                         effectBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("areaEffects")));
-                effectsBinding.setConverter(new DisplayInfoArrayConverter(AreaEffect.class));
+                effectsBinding.setConverter(new DisplayInfoArrayConverter<AreaEffect>(AreaEffect.class));
                 areaGroup.addBinding(effectsBinding);
                 Binding borderWidthBinding = (Bindings.createAutoBinding(READ, 
                         borderWidthSlider, BeanProperty.create("value"),
@@ -947,7 +1037,7 @@ public class PainterDemo extends JPanel {
                 Binding filterBinding = (Bindings.createAutoBinding(READ, 
                         filterBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("filters")));
-                filterBinding.setConverter(new DisplayInfoArrayConverter(BufferedImageOp.class));
+                filterBinding.setConverter(new DisplayInfoArrayConverter<BufferedImageOp>(BufferedImageOp.class));
                 baseGroup.addBinding(filterBinding);
                 baseGroup.bind();
                 
@@ -1061,27 +1151,38 @@ public class PainterDemo extends JPanel {
         add(contents);
     }
 
+    /* some notes on jgoodies layout and builder (used in create*Panel):
+     * dlu   == dialog units
+     * r:d:n == RIGHT:DEFAULT:NONE == [columnAlignment:] size [:resizeBehavior]
+     * f:d:n == FILL:DEFAULT:NONE == [columnAlignment:] size [:resizeBehavior]
+     * t:d:n == TOP:DEFAULT:NONE == rowSpec
+     * c:d:n == CENTER:DEFAULT:NONE == rowSpec
+     * @see jgoodies-forms whitepaper.pdf
+     */
+
     /**
-     * @param painterControlPanel
-     * @return
+     * PainterPropertiesPanel consists of
+     * 	basePainterControlPanel + layoutPainterControlPanel + areaPainterControlPanel
+     * 
+     * @return properties panel
      */
     private JXPanel createPainterPropertiesPanel() {
         basePainterControlPanel = createBasePainterControlPanel();
         layoutPainterControlPanel = createLayoutPainterControl();
         areaPainterControlPanel = createAreaPainterControlPanel();
         JXPanel properties = new JXPanel();
+        // jgoodies layout and builder:
         FormLayout formLayout = new FormLayout(
-                " f:d:n, l:4dlu:n, f:d:n, l:4dlu:n, f:d:n ", // columns
-                "t:d:n " 
-        ); // rows
+                "f:d:n, l:4dlu:n, f:d:n, l:4dlu:n, f:d:n", // encodedColumnSpecs 3cols + gaps
+                "t:d:n" // encodedRowSpecs: one row
+        );
         
         PanelBuilder builder = new PanelBuilder(formLayout, properties);
         builder.setBorder(Borders.DLU4_BORDER);
-        CellConstraints cl = new CellConstraints();
-//        CellConstraints cc = new CellConstraints();
+        CellConstraints cl = new CellConstraints(); // jgoodies
         int currentColumn = 1;
         builder.add(basePainterControlPanel, cl.xy(currentColumn, 1));
-        currentColumn +=2;
+        currentColumn +=2; // skip gap
         builder.add(layoutPainterControlPanel, cl.xy(currentColumn, 1));
         currentColumn +=2;
         builder.add(areaPainterControlPanel, cl.xy(currentColumn, 1));
@@ -1089,83 +1190,22 @@ public class PainterDemo extends JPanel {
         return properties;
     }
 
-
     /**
-     * @return
-     */
-    private JXCollapsiblePane createAreaPainterControlPanel() {
-        JXCollapsiblePane painterControl = new JXCollapsiblePane();
-        FormLayout formLayout = new FormLayout(
-                "5dlu, r:d:n, l:4dlu:n, f:d:n", // columns
-                "c:d:n " +
-                ", t:4dlu:n, c:d:n " +
-                ", t:4dlu:n, c:d:n" +
-                ", t:4dlu:n, c:d:n" +
-                ", t:4dlu:n, c:d:n"
-        ); // rows
-        PanelBuilder builder = new PanelBuilder(formLayout, painterControl);
-        builder.setBorder(Borders.DLU4_BORDER);
-        CellConstraints cl = new CellConstraints();
-        CellConstraints cc = new CellConstraints();
-        
-        areaSeparator = new JXTitledSeparator();
-        areaSeparator.setName("areaPainterSeparator");
-        builder.add(areaSeparator, cc.xywh(1, 1, 4, 1));
-        
-        int labelColumn = 2;
-        int widgetColumn = labelColumn + 2;
-        int currentRow = 3;
-        styleBox = new JComboBox();
-        styleBox.setName("styleBox");
-        
-        JLabel styleBoxLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
-                styleBox, cc.xywh(widgetColumn, currentRow, 1, 1));
-        currentRow += 2;
-        styleBoxLabel.setName("styleBoxLabel");
-        LabelHandler.bindLabelFor(styleBoxLabel, styleBox);
-        
-        effectBox = new JComboBox();
-        effectBox.setName("areaEffectBox");
-        
-        JLabel effectLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
-                effectBox, cc.xywh(widgetColumn, currentRow, 1, 1));
-        currentRow += 2;
-        effectLabel.setName("effectLabel");
-        LabelHandler.bindLabelFor(effectLabel, effectBox);
-        
-        borderWidthSlider = new JSlider(0, 100, 0);
-        borderWidthSlider.setPaintLabels(true);
-        borderWidthSlider.setPaintTicks(true);
-        borderWidthSlider.setMajorTickSpacing(50);
-        
-        JLabel insets = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1), borderWidthSlider,
-                cc.xywh(widgetColumn, currentRow, 1, 1));
-        insets.setName("borderWidthLabel");
-        LabelHandler.bindLabelFor(insets, borderWidthSlider);
-        currentRow += 2;
-        
-        paintStretchedBox = new JCheckBox();
-        paintStretchedBox.setName("paintStretchedBox");
-        builder.add(paintStretchedBox, cc.xywh(widgetColumn, currentRow, 1, 1));
-        currentRow += 2;
-        
-        return painterControl;
-    }
-    
-    /**
-     * @return
+     * @return control collapsiblePane
      */
     private JXCollapsiblePane createBasePainterControlPanel() {
-        JXCollapsiblePane painterControl = new JXCollapsiblePane();
+        JXCollapsiblePane pane = new JXCollapsiblePane();
+        // jgoodies layout and builder:
         FormLayout formLayout = new FormLayout(
-                "5dlu, r:d:n, l:4dlu:n, f:d:n", // columns
-                "c:d:n " +
-                ", t:4dlu:n, c:d:n " +
-                ", t:4dlu:n, c:d:n" +
-                ", t:4dlu:n, c:d:n" +
-                ", t:4dlu:n, c:d:n"
-                ); // rows
-        PanelBuilder builder = new PanelBuilder(formLayout, painterControl);
+                "5dlu, r:d:n, l:4dlu:n, f:d:n" // encodedColumnSpecs 2gaps+2cols: gap,col,gap,col
+                // 5 rows (+ gaps):
+                , "c:d:n" // baseSeparator
+                + ", t:4dlu:n, c:d:n" // gap, interpolation: label+comboBox
+                + ", t:4dlu:n, c:d:n" // gap, filter
+                + ", t:4dlu:n, c:d:n" // gap, visibleBox
+                + ", t:4dlu:n, c:d:n" // gap, antialiasBox
+                );
+        PanelBuilder builder = new PanelBuilder(formLayout, pane);
         builder.setBorder(Borders.DLU4_BORDER);
         CellConstraints cl = new CellConstraints();
         CellConstraints cc = new CellConstraints();
@@ -1177,7 +1217,7 @@ public class PainterDemo extends JPanel {
         int labelColumn = 2;
         int widgetColumn = labelColumn + 2;
         int currentRow = 3;
-        interpolationBox = new JComboBox();
+        interpolationBox = new JComboBox<Object>(); // TODO why not JXComboBox?
         interpolationBox.setName("interpolationBox");
         
         JLabel interpolationLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
@@ -1186,7 +1226,8 @@ public class PainterDemo extends JPanel {
         interpolationLabel.setName("interpolationLabel");
         LabelHandler.bindLabelFor(interpolationLabel, interpolationBox);
         
-        filterBox = new JComboBox();
+        filterBox = new JComboBox<DisplayInfo<BufferedImageOp>>(); // TODO why not JXComboBox?
+//        filterBox = new JComboBox<Object>(); // TODO raus, so nicht 
         filterBox.setName("filterBox");
         
         JLabel filterLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
@@ -1207,17 +1248,17 @@ public class PainterDemo extends JPanel {
         builder.add(antialiasBox, cc.xywh(widgetColumn, currentRow, 1, 1));
         currentRow +=2;
         
-        return painterControl;
+        return pane;
     }
 
     /**
-     * @return
+     * @return control collapsiblePane
      */
     private JXCollapsiblePane createLayoutPainterControl() {
-        JXCollapsiblePane painterControl = new JXCollapsiblePane();//new JXPanel();
-
+        JXCollapsiblePane pane = new JXCollapsiblePane();//new JXPanel();
+        // jgoodies layout and builder:
         FormLayout formLayout = new FormLayout(
-                "5dlu, r:d:n, l:4dlu:n, f:d:n, l:4dlu:n, f:d:n", // columns
+                "5dlu, r:d:n, l:4dlu:n, f:d:n, l:4dlu:n, f:d:n", // encodedColumnSpecs 3gaps+3cols: gap,col,gap,col,gap,col
                 "c:d:n " +
                 ", t:4dlu:n, c:d:n " +
                 ", t:4dlu:n, c:d:n " +
@@ -1225,7 +1266,7 @@ public class PainterDemo extends JPanel {
                 ", t:4dlu:n, c:d:n" +
                 ", t:4dlu:n, c:d:n"
                 ); // rows
-        PanelBuilder builder = new PanelBuilder(formLayout, painterControl);
+        PanelBuilder builder = new PanelBuilder(formLayout, pane);
         builder.setBorder(Borders.DLU4_BORDER);
         CellConstraints cl = new CellConstraints();
         CellConstraints cc = new CellConstraints();
@@ -1239,8 +1280,10 @@ public class PainterDemo extends JPanel {
         int widgetColumn = labelColumn + 2;
         int currentRow = 3;
         
-        horizontalAlignmentBox = new JComboBox();
-        verticalAlignmentBox = new JComboBox();
+//        horizontalAlignmentBox = new JComboBox();
+//        horizontalAlignmentBox = new JComboBox<Object>(); // TODO oder so:
+        horizontalAlignmentBox = new JComboBox<HorizontalAlignment>();     
+        verticalAlignmentBox = new JComboBox<VerticalAlignment>();
 
         insetSlider = new JSlider(0, 100, 0);
         insetSlider.setPaintLabels(true);
@@ -1277,7 +1320,70 @@ public class PainterDemo extends JPanel {
         LabelHandler.bindLabelFor(fillLabel, fillHorizontal);
         builder.add(fillVertical, cc.xywh(widgetColumn + 2, currentRow, 1, 1));
         currentRow += 2;
-        return painterControl;
+        return pane;
+    }
+
+    /**
+     * @return control collapsiblePane
+     */
+    private JXCollapsiblePane createAreaPainterControlPanel() {
+        JXCollapsiblePane pane = new JXCollapsiblePane();
+        // jgoodies layout and builder:
+        FormLayout formLayout = new FormLayout(
+                "5dlu, r:d:n, l:4dlu:n, f:d:n", // encodedColumnSpecs 2gap+2cols: gap,col,gap,col 
+                "c:d:n " +
+                ", t:4dlu:n, c:d:n " +
+                ", t:4dlu:n, c:d:n" +
+                ", t:4dlu:n, c:d:n" +
+                ", t:4dlu:n, c:d:n"	// encodedRowSpecs 5rows+4gaps
+        );
+        PanelBuilder builder = new PanelBuilder(formLayout, pane);
+        builder.setBorder(Borders.DLU4_BORDER);
+        CellConstraints cl = new CellConstraints();
+        CellConstraints cc = new CellConstraints();
+        
+        areaSeparator = new JXTitledSeparator();
+        areaSeparator.setName("areaPainterSeparator");
+        builder.add(areaSeparator, cc.xywh(1, 1, 4, 1));
+        
+        int labelColumn = 2;
+        int widgetColumn = labelColumn + 2;
+        int currentRow = 3;
+        styleBox = new JComboBox<Style>();
+        styleBox.setName("styleBox");
+        
+        JLabel styleBoxLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
+                styleBox, cc.xywh(widgetColumn, currentRow, 1, 1));
+        currentRow += 2;
+        styleBoxLabel.setName("styleBoxLabel");
+        LabelHandler.bindLabelFor(styleBoxLabel, styleBox);
+        
+        effectBox = new JComboBox<DisplayInfo<AreaEffect>>();
+        effectBox.setName("areaEffectBox");
+        
+        JLabel effectLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
+                effectBox, cc.xywh(widgetColumn, currentRow, 1, 1));
+        currentRow += 2;
+        effectLabel.setName("effectLabel");
+        LabelHandler.bindLabelFor(effectLabel, effectBox);
+        
+        borderWidthSlider = new JSlider(0, 100, 0);
+        borderWidthSlider.setPaintLabels(true);
+        borderWidthSlider.setPaintTicks(true);
+        borderWidthSlider.setMajorTickSpacing(50);
+        
+        JLabel insets = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1), borderWidthSlider,
+                cc.xywh(widgetColumn, currentRow, 1, 1));
+        insets.setName("borderWidthLabel");
+        LabelHandler.bindLabelFor(insets, borderWidthSlider);
+        currentRow += 2;
+        
+        paintStretchedBox = new JCheckBox();
+        paintStretchedBox.setName("paintStretchedBox");
+        builder.add(paintStretchedBox, cc.xywh(widgetColumn, currentRow, 1, 1));
+        currentRow += 2;
+        
+        return pane;
     }
 
     /**
