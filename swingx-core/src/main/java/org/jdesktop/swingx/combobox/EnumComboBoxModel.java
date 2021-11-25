@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -94,6 +92,7 @@ import java.util.Map;
  * @author Karl Schaefer
  */
 public class EnumComboBoxModel<E extends Enum<E>> extends ListComboBoxModel<E> {
+	
     private static final long serialVersionUID = 2176566393195371004L;
     
     private final Map<String, E> valueMap;

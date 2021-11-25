@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -46,9 +44,8 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  * @author Jeanette Winzenburg
  */
 public class SelectionIssues extends InteractiveTestCase {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(SelectionIssues.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(SelectionIssues.class.getName());
 
     public static void main(String[] args) {
         setSystemLF(true);
@@ -131,8 +128,9 @@ public class SelectionIssues extends InteractiveTestCase {
     public void interactiveAutoScrollOnSelectionList() {
         // add hoc model
         SortedSet<Date> dates = getDates();
-        
-        final JXList us = new JXList(new ListComboBoxModel<Date>(new ArrayList<Date>(dates)));
+        ArrayList<Date> list = new ArrayList<Date>(dates);
+        ListComboBoxModel<Date> model = new ListComboBoxModel<Date>(list);
+        final JXList us = new JXList(model);
         us.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JXFrame frame = wrapWithScrollingInFrame(us, "list - autoscroll on selection");
         Action next = new AbstractActionExt("select last + 1") {

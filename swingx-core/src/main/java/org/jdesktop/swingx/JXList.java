@@ -287,7 +287,7 @@ public class JXList extends JList<Object> {
      * @exception IllegalArgumentException   if <code>dataModel</code>
      *                                           is <code>null</code>
      */                                           
-    public JXList(ListModel<Object> dataModel) {
+    public JXList(ListModel<?> dataModel) {
         this(dataModel, false);
     }
 
@@ -338,7 +338,7 @@ public class JXList extends JList<Object> {
      * @throws IllegalArgumentException   if <code>dataModel</code>
      *                                          is <code>null</code>
      */
-    public JXList(ListModel<Object> dataModel, boolean autoCreateRowSorter) {
+    public JXList(ListModel<?> dataModel, boolean autoCreateRowSorter) {
         super((ListModel<Object>)dataModel);
         init(autoCreateRowSorter);
     }

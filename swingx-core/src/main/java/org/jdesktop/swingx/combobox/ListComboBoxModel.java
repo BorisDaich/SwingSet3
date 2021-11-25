@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,7 +33,9 @@ import javax.swing.ComboBoxModel;
  * @author jm158417
  * @author Karl George Schaefer
  */
-public class ListComboBoxModel<E> extends AbstractListModel implements ComboBoxModel, ActionListener {
+@SuppressWarnings("serial")
+public class ListComboBoxModel<E> extends AbstractListModel<E> implements ComboBoxModel<E>, ActionListener {
+	
     /**
      * A key used to notify the model that the backing {@code List} has changed.
      */
@@ -117,10 +117,11 @@ public class ListComboBoxModel<E> extends AbstractListModel implements ComboBoxM
     /**
      * {@inheritDoc}
      */
-    @Override
+    @Override // implements interface ActionListener
     public void actionPerformed(ActionEvent evt) {
         if(evt.getActionCommand().equals(UPDATE)) {
             this.fireContentsChanged(this, 0, getSize() - 1);
         }
     }
+
 }
