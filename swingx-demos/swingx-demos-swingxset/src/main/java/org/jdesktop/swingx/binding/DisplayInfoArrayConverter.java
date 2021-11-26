@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,6 +30,7 @@ import org.jdesktop.swingx.util.Contract;
  * @author Karl George Schaefer
  */
 public class DisplayInfoArrayConverter<T> extends Converter<DisplayInfo<T>, T[]> {
+	
     private Class<T> type;
     private T[] empty;
     

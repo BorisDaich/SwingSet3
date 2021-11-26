@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import static org.jdesktop.swingx.util.GraphicsUtilities.createCompatibleTranslucentImage;
@@ -100,8 +97,12 @@ import org.jdesktop.swingx.util.JVM;
  * @see Painter
  */
 @JavaBean
-@SuppressWarnings("nls")
-public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable, Scrollable {
+@SuppressWarnings("serial") // super Same-version serialization only
+public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable<Object>, Scrollable {
+	
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(JXPanel.class.getName());
+
 //    private boolean scrollableTracksViewportHeight = true;
 //    private boolean scrollableTracksViewportWidth = true;
     
@@ -127,15 +128,19 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      * Indicates whether this component should inherit its parent alpha value
      */
     private boolean inheritAlpha = true;
+    
     /**
      * Specifies the Painter to use for painting the background of this panel.
-     * If no painter is specified, the normal painting routine for JPanel
-     * is called. Old behavior is also honored for the time being if no
-     * backgroundPainter is specified
+     * If no painter is specified, the normal painting routine for JPanel is called. 
+     * Old behavior is also honored for the time being if no backgroundPainter is specified
      */
-    @SuppressWarnings("rawtypes")
-    private Painter backgroundPainter;
-    
+    private Painter<?> backgroundPainter;
+
+    /**
+     * The backgroundPainter of this component paints the background underneath the border.
+     * 
+     * @see #isPaintBorderInsets()
+     */
     private boolean paintBorderInsets = true;
 
     /**
@@ -488,26 +493,6 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
     }
     
     /**
-     * Sets a Painter to use to paint the background of this JXPanel.
-     * 
-     * @param p the new painter
-     * @see #getBackgroundPainter()
-     */
-    @Override
-    public void setBackgroundPainter(Painter p) {
-        Painter old = getBackgroundPainter();
-        if (old instanceof AbstractPainter) {
-            ((AbstractPainter<?>) old).removePropertyChangeListener(painterChangeListener);
-        }
-        backgroundPainter = p;
-        if (backgroundPainter instanceof AbstractPainter) {
-            ((AbstractPainter<?>) backgroundPainter).addPropertyChangeListener(getPainterChangeListener());
-        }
-        firePropertyChange("backgroundPainter", old, getBackgroundPainter());
-        repaint();
-    }
-    
-    /**
      * @return a listener for painter change events
      */
     protected PropertyChangeListener getPainterChangeListener() {
@@ -524,15 +509,42 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
     }
 
     /**
+     * Sets a Painter to use to paint the background of this JXPanel.
+     * 
+     * @param p the new painter
+     * @see #getBackgroundPainter()
+     */
+    @Override
+	// implements interface BackgroundPaintable<T> method void setBackgroundPainter(Painter<T> painter)
+    public void setBackgroundPainter(Painter<Object> p) {
+        Painter<?> old = getBackgroundPainter();
+        if (old instanceof AbstractPainter) {
+            ((AbstractPainter<?>) old).removePropertyChangeListener(painterChangeListener);
+        }
+        backgroundPainter = p;
+        if (backgroundPainter instanceof AbstractPainter) {
+            ((AbstractPainter<?>) backgroundPainter).addPropertyChangeListener(getPainterChangeListener());
+        }
+        firePropertyChange("backgroundPainter", old, getBackgroundPainter());
+        repaint();
+    }
+    
+    /**
      * Returns the current background painter. The default value of this property 
      * is a painter which draws the normal JPanel background according to the current look and feel.
+     * 
      * @return the current painter
      * @see #setBackgroundPainter(Painter)
      * @see #isPaintBorderInsets()
      */
-    @Override
-    public Painter getBackgroundPainter() {
-        return backgroundPainter;
+	@Override
+	// implements interface BackgroundPaintable<T> method Painter<T> getBackgroundPainter()
+    public Painter<Object> getBackgroundPainter() {
+		// private Painter<?> backgroundPainter
+		// TODO EUG LOG raus, liefert z.B. org.jdesktop.swingx.plaf.PainterUIResource
+		// oder org.jdesktop.swingx.painter.MattePainter
+//		LOG.info("backgroundPainter type:"+(backgroundPainter==null ? "null" : backgroundPainter.getClass()));
+		return (Painter<Object>) backgroundPainter;
     }
     
     /**
@@ -542,6 +554,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      * and initial transform passed to the background painter.
      */
     @Override
+	// implements interface BackgroundPaintable<T> method boolean isPaintBorderInsets()
     public boolean isPaintBorderInsets() {
         return paintBorderInsets;
     }
@@ -556,6 +569,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      * This is a bound property.
      */
     @Override
+	// implements interface BackgroundPaintable<T> method void setPaintBorderInsets(boolean paintBorderInsets)
     public void setPaintBorderInsets(boolean paintBorderInsets) {
         boolean old = this.isPaintBorderInsets();
         this.paintBorderInsets = paintBorderInsets;
@@ -670,7 +684,8 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
                 g2.fillRect(0, 0, getWidth(), getHeight());
             }
             if (getBackgroundPainter() != null) {
-                getBackgroundPainter().paint(g2, this, getWidth(), getHeight());
+            	Painter<Object> p = getBackgroundPainter();
+                p.paint(g2, this, getWidth(), getHeight());
             }
             fakeTransparent = true;
             getUI().update(g2, this);
@@ -721,6 +736,4 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
         return super.isOpaque();
     }
     
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXPanel.class.getName());
 }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -19,9 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package org.jdesktop.swingx.demos.monthviewext;
-
-import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ;
-import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -50,6 +45,7 @@ import javax.swing.UIManager;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.beans.AbstractBean;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
@@ -107,8 +103,7 @@ import com.sun.swingset3.DemoProperties;
 public class MonthViewExtDemo extends JPanel {
     
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(MonthViewExtDemo.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(MonthViewExtDemo.class.getName());
     
     private JXMonthView monthView;
 
@@ -164,8 +159,8 @@ public class MonthViewExtDemo extends JPanel {
         calendarFrame.addWindowListener(l);
         JXPanel calendar = new JXPanel();
         calendar.setBackground(Color.WHITE);
-        Painter<?> painter = createBackgroundPainter();
-        calendar.setBackgroundPainter(painter);
+        Painter<Object> painter = createBackgroundPainter();
+        calendar.setBackgroundPainter(painter); // EUG JXPanel: public void setBackgroundPainter(Painter<Object> p)
 
         JXMonthView monthView = new JXMonthView();
         Calendar cal = monthView.getCalendar();
@@ -199,13 +194,23 @@ public class MonthViewExtDemo extends JPanel {
 
 
     /**
-     * @return
+     * creates an ImagePainter aka BackgroundPainter which implements Painter<T>
+     * 
+     * @return ImagePainter object that implements Painter<T>
      */
-    private Painter<?> createBackgroundPainter() {
+    private Painter<Object> createBackgroundPainter() {
         ImagePainter painter = null;
         try {
-            BufferedImage img = ImageIO.read(getClass().
-                    getResourceAsStream("resources/images/demo_duke.png"));
+            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("resources/images/demo_duke.png"));
+            /*             abstract class AbstractBean
+             *             abstract class AbstractPainter<T> extends AbstractBean implements Painter<T>
+             *             abstract class AbstractLayoutPainter<T> extends AbstractPainter<T>
+             *                                  |
+             *                                  +------------------------------|
+             *             abstract class AbstractAreaPainter<T> extends AbstractLayoutPainter<T>
+             *                                  |
+             * class ImagePainter extends AbstractAreaPainter<Object>
+             */
             painter = new ImagePainter(img);
             painter.setFilters(new OpacityFilter(10));
             painter.setHorizontalRepeat(true);
@@ -219,8 +224,7 @@ public class MonthViewExtDemo extends JPanel {
 
     
     /**
-     * Creates and returns a RenderingHandler which supports adding
-     * Highlighters.
+     * Creates and returns a RenderingHandler which supports adding Highlighters.
      *  
      * @return
      */
@@ -295,21 +299,21 @@ public class MonthViewExtDemo extends JPanel {
             
             BindingGroup group = new BindingGroup();
             
-            group.addBinding(Bindings.createAutoBinding(READ_WRITE, 
+            group.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE, 
                     calendarBox, BeanProperty.create("selected"),
                     this, BeanProperty.create("calendarVisible")));
             
-            group.addBinding(Bindings.createAutoBinding(READ, 
+            group.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                     zoomableBox, BeanProperty.create("selected"),
                     monthView, BeanProperty.create("zoomable")));
             
             // <snip> Custom CalendarHeaderHandler
             // bind the combo box
-            group.addBinding(Bindings.createAutoBinding(READ, 
+            group.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                     monthView, BeanProperty.create("zoomable"),
                     customHeaderBox, BeanProperty.create("enabled")
                     ));
-            Binding handlerBinding = Bindings.createAutoBinding(READ,
+            Binding handlerBinding = Bindings.createAutoBinding(UpdateStrategy.READ,
                     customHeaderBox, BeanProperty.create("selectedItem"),
                     this, BeanProperty.create("calendarHeaderHandler"));
             handlerBinding.setConverter(new DisplayInfoConverter<CalendarHeaderHandler>());
