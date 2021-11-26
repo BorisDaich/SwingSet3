@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  * 
@@ -68,7 +66,7 @@ import org.jdesktop.swingx.util.Contract;
  * @author Karl Schaefer
  * @author Jeanette Winzenburg
  */
-@SuppressWarnings({"nls", "serial"})
+@SuppressWarnings("serial")
 public class JXComboBox extends JComboBox {
     /**
      * A decorator for the original ListCellRenderer. Needed to hook highlighters

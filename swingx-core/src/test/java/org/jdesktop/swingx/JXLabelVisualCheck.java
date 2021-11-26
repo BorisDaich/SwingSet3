@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -48,7 +46,6 @@ import com.jhlabs.image.BlurFilter;
  * 
  * @author rah003
  */
-@SuppressWarnings("nls")
 public class JXLabelVisualCheck extends InteractiveTestCase {
     
     static Logger log = Logger.getAnonymousLogger();
@@ -56,7 +53,13 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) {
         JXLabelVisualCheck test = new JXLabelVisualCheck();
         try {
-            test.runInteractiveTests("interactiveUnderlinedFontWithWrapping");
+            test.runInteractiveTests(); // all
+//            test.runInteractiveTests("interactiveFancyFilter");
+//            test.runInteractiveTests("interactiveRestoreDefaultForegroundPainter");
+//            test.runInteractiveTests("interactiveUnderlinedFontWithWrapping");
+//            test.runInteractiveTests("interactiveBackgroundColorSetting");
+//            test.runInteractiveTests("interactiveBackgroundPainter");
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,7 +68,6 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
     /**
      * Example of how-to apply filters to the label's foreground.
      */
-    @SuppressWarnings("unchecked")
     public void interactiveFancyFilter() {
         JXLabel label = new JXLabel("that's the real text");
         label.setFont(new Font("SansSerif", Font.BOLD, 80));
@@ -87,14 +89,12 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
      */
     public void interactiveRestoreDefaultForegroundPainter() {
         JComponent box = Box.createVerticalBox();
-        final JXLabel foreground = new JXLabel(
-                "setup: compound - default and overlay ");
+        final JXLabel foreground = new JXLabel("setup: compound - default and overlay ");
         ShapePainter shapePainter = new ShapePainter();
         final AlphaPainter<?> alpha = new AlphaPainter<Object>();
         alpha.setAlpha(0.2f);
         alpha.setPainters(shapePainter);
-        CompoundPainter<?> compound = new CompoundPainter<Object>(foreground
-                .getForegroundPainter(), alpha);
+        CompoundPainter<?> compound = new CompoundPainter<Object>(foreground.getForegroundPainter(), alpha);
         foreground.setForegroundPainter(compound);
         box.add(foreground);
         Action action = new AbstractActionExt("reset default foreground") {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -55,13 +53,12 @@ import org.jdesktop.swingx.test.XTestUtils;
 public class JXHeaderVisualCheck extends InteractiveTestCase {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXHeaderVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXHeaderVisualCheck.class.getName());
 
     public static void main(String args[]) {
         JXHeaderVisualCheck test = new JXHeaderVisualCheck();
         try {
-            test.runInteractiveTests();
+            test.runInteractiveTests(); // all
 //          test.runInteractiveTests("interactiveHTMLTextWrapLong");
 //          test.runInteractiveTests("interactive.*Label.*");
 //          test.runInteractiveTests("interactive.*Font.*");

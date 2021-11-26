@@ -72,6 +72,7 @@ import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.ShapePainter;
+import org.jdesktop.swingx.painter.effects.GlowPathEffect;
 import org.jdesktop.swingx.painter.effects.InnerGlowPathEffect;
 import org.jdesktop.swingx.renderer.RelativePainterHighlighter.NumberRelativizer;
 import org.jdesktop.swingx.renderer.RelativePainterHighlighter.RelativePainter;
@@ -102,13 +103,13 @@ public class PainterVisualCheck extends InteractiveTestCase {
 //      setSystemLF(true);
       PainterVisualCheck test = new PainterVisualCheck();
       try {
-//          test.runInteractiveTests("interactiveTriangleRenderer");  
-//        test.runInteractiveTests();
-         test.runInteractiveTests("interactive.*ValueBased.*"); 
-//         test.runInteractiveTests("interactive.*Icon.*");
+        test.runInteractiveTests();
+//        test.runInteractiveTests("interactiveTriangleRenderer");  
+//        test.runInteractiveTests("interactive.*ValueBased.*"); 
+//        test.runInteractiveTests("interactive.*Icon.*");
 //        test.runInteractiveTests("interactive.*Busy.*");
 //        test.runInteractiveTests("interactive.*Animated.*");
-//          test.runInteractiveTests("interactiveValueBasedRelativePainterHighlight");
+//        test.runInteractiveTests("interactiveValueBasedRelativePainterHighlight");
       } catch (Exception e) {
           System.err.println("exception when executing interactive tests:");
           e.printStackTrace();
@@ -306,7 +307,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
         
         final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
-        imagePainter.setAreaEffects(new InnerGlowPathEffect());
+//        imagePainter.setAreaEffects(new InnerGlowPathEffect());
+        imagePainter.setAreaEffects(new GlowPathEffect());
         
         final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
         painter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
@@ -564,8 +566,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
         table.getColumnExt(1).addHighlighter(columnHighlighter); // add to 2nd Column
 
         RelativePainterHighlighter gradientHighlighter = createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
-        RelativePainter rp = gradientHighlighter.getPainter();
-        
+//       RelativePainter rp = gradientHighlighter.getPainter();
+
         TableColumnExt tableColumnExt3 = table.getColumnExt(AncientSwingTeam.INTEGER_COLUMN);
         LOG.info("tableColumnExt3.Title:"+tableColumnExt3.getTitle());
 //        gradientHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_CELL); // OK
@@ -597,15 +599,14 @@ public class PainterVisualCheck extends InteractiveTestCase {
      * background color.
      */
     public void interactiveValueBasedGradientHighlight() {
+    	String title = "transparent value relative highlighting (with RelativePH)"; 
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
         table.setBackground(HighlighterFactory.LEDGER);
-        ComponentProvider<JLabel> controller = new LabelProvider(
-                JLabel.RIGHT);
+        ComponentProvider<JLabel> controller = new LabelProvider(JLabel.RIGHT);
 //        table.setDefaultRenderer(Number.class, new DefaultTableRenderer(
 //                controller));
-        RelativePainterHighlighter gradientHighlighter = 
-            createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
+        RelativePainterHighlighter gradientHighlighter = createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
         table.addHighlighter(gradientHighlighter);
         
         // re-use component controller and highlighter in a JXList
@@ -614,8 +615,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         list.setCellRenderer(new DefaultListRenderer(controller));
         list.addHighlighter(gradientHighlighter);
         list.toggleSortOrder();
-        JXFrame frame = wrapWithScrollingInFrame(table, list,
-            "transparent value relative highlighting (with RelativePH)");
+        JXFrame frame = wrapWithScrollingInFrame(table, list, title);
 //        addStatusMessage(frame,
 //        "uses the default painter-aware label in renderer");
         // crude binding to play with options - the factory is incomplete...
@@ -680,21 +680,18 @@ public class PainterVisualCheck extends InteractiveTestCase {
 
             @Override
             protected void addVisibilityActionItems() {
-                actions.addAll(Collections
-                        .unmodifiableList(getColumnVisibilityActions()));
+                actions.addAll(Collections.unmodifiableList(getColumnVisibilityActions()));
             }
 
         };
         list.setModel(createListeningListModel(actions));
         // action toggling selected state of selected list item
-        final Action toggleSelected = new AbstractActionExt(
-                "toggle column visibility") {
+        final Action toggleSelected = new AbstractActionExt("toggle column visibility") {
 
             public void actionPerformed(ActionEvent e) {
-                if (list.isSelectionEmpty())
-                    return;
-                AbstractActionExt selectedItem = (AbstractActionExt) list
-                        .getSelectedValue();
+                if (list.isSelectionEmpty()) return;
+                
+                AbstractActionExt selectedItem = (AbstractActionExt) list.getSelectedValue();
                 selectedItem.setSelected(!selectedItem.isSelected());
             }
 

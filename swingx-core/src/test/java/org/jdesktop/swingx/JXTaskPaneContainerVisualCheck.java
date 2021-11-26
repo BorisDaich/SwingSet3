@@ -47,6 +47,7 @@ import org.jdesktop.swingx.painter.Painter;
  * @author rah003
  */
 public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
+	
     public JXTaskPaneContainerVisualCheck() {
         super("JXLoginPane Test");
     }
@@ -157,7 +158,7 @@ public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
     public void interactiveContainerColor() {
         JXTaskPaneContainer container = new JXTaskPaneContainer();
         container.setOpaque(false);
-        Painter<?> nullPainter = new Painter<Object>() {
+        Painter<Object> nullPainter = new Painter<Object>() {
             @Override
             public void paint(Graphics2D g, Object object, int width, int height) {
             }

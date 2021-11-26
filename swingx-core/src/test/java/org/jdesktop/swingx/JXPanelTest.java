@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.plaf.ColorUIResource;
 
 import org.hamcrest.CoreMatchers;
+import org.jdesktop.swingx.painter.AbstractAreaPainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.PainterUIResource;
@@ -48,11 +49,11 @@ import junit.framework.TestCase;
  * @author Karl Schaefer
  */
 @RunWith(EDTRunner.class)
-@SuppressWarnings({"rawtypes", "nls"})
+@SuppressWarnings("rawtypes")
 public class JXPanelTest extends TestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXPanelTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXPanelTest.class.getName());
     
     /**
      * Issue #1199-swingx: must listen to change on painter
@@ -164,8 +165,10 @@ public class JXPanelTest extends TestCase {
     public void testSetColorOverridesUIResourceBackgroundPainter() {
         JXPanel panel = new JXPanel();
         
-        //assure painter is null
-        panel.setBackgroundPainter(new PainterUIResource<JXPanel>(new MattePainter(Color.RED)));
+        //assure painter is not null
+        // MattePainter extends AbstractAreaPainter<T> extends ... implements Painter<T>
+        Painter<Object> mp = new MattePainter(Color.RED);
+        panel.setBackgroundPainter(mp);
         
         panel.setBackground(Color.BLACK);
         

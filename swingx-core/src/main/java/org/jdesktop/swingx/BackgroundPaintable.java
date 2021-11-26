@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -27,8 +25,8 @@ import org.jdesktop.swingx.painter.Painter;
  * 
  * @author kschaefer
  */
-@SuppressWarnings("rawtypes")
-interface BackgroundPaintable {
+interface BackgroundPaintable<T> {
+	
     /**
      * Returns the current background painter.
      * 
@@ -36,14 +34,14 @@ interface BackgroundPaintable {
      * @see #setBackgroundPainter(Painter)
      * @see #isPaintBorderInsets()
      */
-    Painter getBackgroundPainter();
+    Painter<T> getBackgroundPainter();
     
     /**
      * Sets the new background painter.
      * 
      * @param painter the new background painter; may be {@code null}
      */
-    void setBackgroundPainter(Painter painter);
+    void setBackgroundPainter(Painter<T> painter);
     
     /**
      * Determines whether this component paints its background paint underneath the border.
@@ -57,4 +55,5 @@ interface BackgroundPaintable {
      * @param paintBorderInsets
      */
     void setPaintBorderInsets(boolean paintBorderInsets);
+    
 }

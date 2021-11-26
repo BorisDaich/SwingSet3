@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -165,6 +163,7 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  * @author Karl George Schaefer
  */
 @JavaBean
+@SuppressWarnings("serial") // super Same-version serialization only
 public class JXCollapsiblePane extends JXPanel {
     /**
      * The direction defines how the collapsible pane will collapse. The
