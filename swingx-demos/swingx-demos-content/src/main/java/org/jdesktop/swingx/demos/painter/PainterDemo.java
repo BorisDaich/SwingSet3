@@ -18,8 +18,6 @@
  */
 package org.jdesktop.swingx.demos.painter;
 
-import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,9 +34,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -235,10 +230,9 @@ public class PainterDemo extends JPanel {
      * Base Properties / basePainterControlPanel: createBasePainterControlPanel()
      */
     private JXTitledSeparator baseSeparator;
-    // TODO JComboBox -> JXComboBox
-    private JComboBox<?> interpolationBox;
+    // TODO JComboBox -> JXComboBox is not generic, use EnumComboBoxModel
+    private JComboBox<Interpolation> interpolationBox;
     private JComboBox<DisplayInfo<BufferedImageOp>> filterBox;
-//    private JComboBox<?> filterBox; // TODO raus: so geht es nicht
     private JCheckBox visibleBox;
     private JCheckBox antialiasBox;
 
@@ -787,28 +781,9 @@ public class PainterDemo extends JPanel {
 //    @SuppressWarnings("unchecked")
     private void bindSelection(Object... components) {
         painterDemos.setCellRenderer(new DefaultTreeRenderer(DisplayValues.DISPLAY_INFO_DESCRIPTION));
-/*
-//        public abstract class Converter<S, T> // <S> the source type
-// public class DisplayInfoConverter<T> extends Converter<DisplayInfo<T>, T>  TODO EUG 
-//                                      source: DisplayInfo<T> , target T
- * Converter<DisplayInfo<Painter<Object>>, Painter<Object>>
-//        public T convertForward(DisplayInfo<T> info) {
-//        public DisplayInfo<T> convertReverse(T item) {
-
-for:
-BeanProperty.create // Creates an instance of BeanProperty for the given path.
-Bindings.createAutoBinding // Creates an instance of AutoBinding that binds a property of a source object to a property of a target object.
- @param strategy READ: keep the target in sync with the source
- @param sourceObject the source object
- @param sourceProperty the source property
-     * @param targetObject the target object
-     * @param targetProperty the target property
-Type safety: Unchecked invocation createAutoBinding(AutoBinding.UpdateStrategy, 
-JXTree, BeanProperty<JXTree,Object>, Object, BeanProperty) 
-of the generic method createAutoBinding(AutoBinding.UpdateStrategy, SS, Property<SS,SV>, TS, Property<TS,TV>) of type Bindings
- */
-        //Converter<DisplayInfo<Painter<Object>>, Painter<Object>> painterConverter = new DisplayInfoConverter<Painter<Object>>();
+//        Converter<DisplayInfo<Painter<Object>>, Painter<Object>> painterConverter = new DisplayInfoConverter<Painter<Object>>();
         Converter<?, ?> painterConverter = new DisplayInfoConverter<Painter<Object>>();
+//        Converter<DisplayInfo<Painter<?>>, Painter<?>> painterConverter = new DisplayInfoConverter<Painter<?>>();
         BindingGroup group = new BindingGroup();
         for (int i = 0; i < components.length; i++) {
         	//@SuppressWarnings("rawtypes") // sourceProperty generic type BeanProperty<S,V>
@@ -819,8 +794,9 @@ of the generic method createAutoBinding(AutoBinding.UpdateStrategy, SS, Property
 				BeanProperty.create(i == 0 ? "backgroundPainter" : "painter");
             @SuppressWarnings("rawtypes") // generic type Binding<SS,SV,TS,TV>
 			Binding b = 
+//			Binding<?,?, ?,?> b = 
 //			Binding<JXTree, String, Object, String> b = 
-            	Bindings.createAutoBinding(READ, // strategy: keep the target in sync with the source
+            	Bindings.createAutoBinding(UpdateStrategy.READ, // strategy: keep the target in sync with the source
                     painterDemos, sv, // SS:JXTree, Property<SS,SV>
                     components[i], tv // TS, Property<TS,TV>
             		);
@@ -837,7 +813,7 @@ of the generic method createAutoBinding(AutoBinding.UpdateStrategy, SS, Property
         BindingGroup group = new BindingGroup();
         for (JComponent comp : components) {
         	LOG.info(property+":comp:"+comp);
-            group.addBinding(Bindings.createAutoBinding(READ,
+            group.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ,
                     painterControl, ELProperty.create("${!" + property + "}"),
                     comp, BeanProperty.create("collapsed")));
         }
@@ -863,7 +839,7 @@ of the generic method createAutoBinding(AutoBinding.UpdateStrategy, SS, Property
         BindingGroup group = new BindingGroup();
         for (JComponent comp : components) {
         	LOG.info(property+":comp:"+comp);
-            group.addBinding(Bindings.createAutoBinding(READ,
+            group.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ,
                     painterControl, BeanProperty.create(property),
                     comp, BeanProperty.create("enabled")));       
         }
@@ -888,70 +864,17 @@ of the generic method createAutoBinding(AutoBinding.UpdateStrategy, SS, Property
             // effects
             effectBox.setRenderer(new DefaultListRenderer(effectInfo));
             effectBox.setModel(createAreaEffectsList());
-//            styleBox.setModel(new EnumComboBoxModel<Style>(Style.class));
-            styleBox.setModel(createStyleList());
+            styleBox.setModel(new EnumComboBoxModel<Style>(Style.class));
             
             // base
-            interpolationBox.setModel(
-                    new EnumComboBoxModel<Interpolation>(Interpolation.class));
+            interpolationBox.setModel(new EnumComboBoxModel<Interpolation>(Interpolation.class));
             ComboBoxModel<DisplayInfo<BufferedImageOp>> comboBoxModel = createFilterList();
             filterBox.setModel(comboBoxModel);
             filterBox.setRenderer(new DefaultListRenderer(effectInfo));
             
             // layout data
-//            horizontalAlignmentBox.setModel(new EnumComboBoxModel<HorizontalAlignment>(HorizontalAlignment.class));
-//            // TODO: createHorizontalAlignmentList() wie createFilterList();
-//            ComboBoxModel<HorizontalAlignment> comboBoxModel_HA = createHorizontalAlignmentList();
-            horizontalAlignmentBox.setModel(createHorizontalAlignmentList());
-            
-            //verticalAlignmentBox.setModel(new EnumComboBoxModel<VerticalAlignment>(VerticalAlignment.class));
-//            ComboBoxModel<VerticalAlignment> comboBoxModel_VA = createVerticalAlignmentList();
-            verticalAlignmentBox.setModel(createVerticalAlignmentList(HorizontalAlignment.class));
-        }
-
-        private ComboBoxModel<Style> createStyleList() {
-        	// Enum class E -to-> Collection
-        	ArrayList<Style> al = new ArrayList<Style>(EnumSet.allOf(AbstractAreaPainter.Style.class));
-        	// ComboBoxModel via DefaultComboBoxModel ctor with Vector
-            return new DefaultComboBoxModel<Style>(new Vector<Style>(al));
-        }
-
-/*
-        Type safety: The expression of type EnumComboBoxModel<AbstractLayoutPainter.HorizontalAlignment> 
-        needs unchecked conversion to conform to ComboBoxModel<AbstractLayoutPainter.HorizontalAlignment>
-
-statt
-            horizontalAlignmentBox.setModel(new EnumComboBoxModel<HorizontalAlignment>(HorizontalAlignment.class));
-versuche
-            ComboBoxModel<HorizontalAlignment> comboBoxModel = createHorizontalAlignmentList();     
-            horizontalAlignmentBox.setModel(comboBoxModel);
-
- */
-        private ComboBoxModel<HorizontalAlignment> createHorizontalAlignmentList() {
-        	// Enum class E -to-> Collection
-//        	EnumSet<HorizontalAlignment> es = EnumSet.allOf(HorizontalAlignment.class);
-        	ArrayList<HorizontalAlignment> al = new ArrayList<HorizontalAlignment>(EnumSet.allOf(HorizontalAlignment.class));
-        	// ComboBoxModel via DefaultComboBoxModel ctor with Vector
-//        	Vector<HorizontalAlignment> v = new Vector<HorizontalAlignment>(al);
-//        	DefaultComboBoxModel<HorizontalAlignment> model = new DefaultComboBoxModel<HorizontalAlignment>(v);
-            return new DefaultComboBoxModel<HorizontalAlignment>(new Vector<HorizontalAlignment>(al));
-        }
-
-        private ComboBoxModel<VerticalAlignment> createVerticalAlignmentList(Class<?> elementType) {
-        	if(elementType!=AbstractLayoutPainter.VerticalAlignment.class) {
-        		LOG.severe("NICHT fuer "+elementType);
-        	}
-        	// Enum class E -to-> EnumSet<E>
-        	// public static <E extends Enum<E>> EnumSet<E> allOf(Class<E> elementType) 
-        	EnumSet<VerticalAlignment> es = EnumSet.allOf(AbstractLayoutPainter.VerticalAlignment.class);
-        	// EnumSet<E> -to-> Collection
-        	ArrayList<VerticalAlignment> al = new ArrayList<VerticalAlignment>(es);
-        	// Collection -to-> Vector<E>
-        	// public Vector(Collection<? extends E> c) 
-        	Vector<VerticalAlignment> v = new Vector<VerticalAlignment>(al);
-        	
-        	DefaultComboBoxModel<VerticalAlignment> model = new DefaultComboBoxModel<VerticalAlignment>(v);
-            return model;
+            horizontalAlignmentBox.setModel(new EnumComboBoxModel<HorizontalAlignment>(HorizontalAlignment.class));            
+            verticalAlignmentBox.setModel(new EnumComboBoxModel<VerticalAlignment>(VerticalAlignment.class));
         }
 
         /**
@@ -999,28 +922,30 @@ versuche
         private void updateAreaBindings() {
             if (areaEnabled) {
                 areaGroup = new BindingGroup();
-                areaGroup.addBinding(Bindings.createAutoBinding(READ, 
+                areaGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         paintStretchedBox, BeanProperty.create("selected"),
                         painter, BeanProperty.create("paintStretched")));
                 areaGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         styleBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("style")));
-                Binding effectsBinding = (Bindings.createAutoBinding(READ, 
+                
+                Binding effectsBinding = (Bindings.createAutoBinding(UpdateStrategy.READ, 
                         effectBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("areaEffects")));
+                // Converter<SV, TV> converter
                 effectsBinding.setConverter(new DisplayInfoArrayConverter<AreaEffect>(AreaEffect.class));
                 areaGroup.addBinding(effectsBinding);
-                Binding borderWidthBinding = (Bindings.createAutoBinding(READ, 
+                
+                Binding borderWidthBinding = (Bindings.createAutoBinding(UpdateStrategy.READ, 
                         borderWidthSlider, BeanProperty.create("value"),
                         painter, BeanProperty.create("borderWidth")));
                 borderWidthBinding.setConverter(PainterDemoUtils.SLIDER_TO_FLOAT);
                 areaGroup.addBinding(borderWidthBinding);
+                
                 areaGroup.bind();
             }
         }
-        /**
-         * 
-         */
+
         @SuppressWarnings("unchecked")
         private void updateBaseBindings() {
             if (baseEnabled) {
@@ -1028,25 +953,23 @@ versuche
                 baseGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         interpolationBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("interpolation")));
-                baseGroup.addBinding(Bindings.createAutoBinding(READ, 
+                baseGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         visibleBox, BeanProperty.create("selected"),
                         painter, BeanProperty.create("visible")));
-                baseGroup.addBinding(Bindings.createAutoBinding(READ, 
+                baseGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         antialiasBox, BeanProperty.create("selected"),
                         painter, BeanProperty.create("antialiasing")));
-                Binding filterBinding = (Bindings.createAutoBinding(READ, 
+                
+                Binding filterBinding = (Bindings.createAutoBinding(UpdateStrategy.READ, 
                         filterBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("filters")));
                 filterBinding.setConverter(new DisplayInfoArrayConverter<BufferedImageOp>(BufferedImageOp.class));
                 baseGroup.addBinding(filterBinding);
-                baseGroup.bind();
                 
+                baseGroup.bind();             
             }
         }
         
-        /**
-         * 
-         */
         @SuppressWarnings("unchecked")
         private void updateAlignBindings() {
             if (alignEnabled) {
@@ -1054,16 +977,17 @@ versuche
                 alignGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         horizontalAlignmentBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("horizontalAlignment")));
-                alignGroup.addBinding(Bindings.createAutoBinding(READ, 
+                alignGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         verticalAlignmentBox, BeanProperty.create("selectedItem"),
                         painter, BeanProperty.create("verticalAlignment")));
-                alignGroup.addBinding(Bindings.createAutoBinding(READ, 
+                alignGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         fillHorizontal, BeanProperty.create("selected"),
                         painter, BeanProperty.create("fillHorizontal")));
-                alignGroup.addBinding(Bindings.createAutoBinding(READ, 
+                alignGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ, 
                         fillVertical, BeanProperty.create("selected"),
                         painter, BeanProperty.create("fillVertical")));
-                Binding insetBinding = (Bindings.createAutoBinding(READ, 
+                
+                Binding insetBinding = (Bindings.createAutoBinding(UpdateStrategy.READ, 
                         insetSlider, BeanProperty.create("value"),
                         painter, BeanProperty.create("insets")));
                 insetBinding.setConverter(PainterDemoUtils.SLIDER_TO_INSETS);
@@ -1087,9 +1011,6 @@ versuche
             setAreaEnabled(painter instanceof AbstractAreaPainter<?>);
         }
 
-        /**
-         * 
-         */
         private void releaseAreaBindings() {
             if (areaGroup !=  null) {
                 areaGroup.unbind();
@@ -1099,9 +1020,6 @@ versuche
             paintStretchedBox.setSelected(false);
         }
 
-        /**
-         * 
-         */
         private void releaseBaseBindings() {
             if (baseGroup != null) {
                 baseGroup.unbind();
@@ -1112,9 +1030,6 @@ versuche
             antialiasBox.setSelected(true);
         }
 
-        /**
-         * 
-         */
         private void releaseAlignBindings() {
             if (alignGroup != null) {
                 alignGroup.unbind();
@@ -1126,9 +1041,7 @@ versuche
             fillHorizontal.setSelected(false);
             fillHorizontal.setSelected(false);
         }
-
-        
-        
+      
     }
     
 //------------------------------ Create UI
@@ -1217,7 +1130,7 @@ versuche
         int labelColumn = 2;
         int widgetColumn = labelColumn + 2;
         int currentRow = 3;
-        interpolationBox = new JComboBox<Object>(); // TODO why not JXComboBox?
+        interpolationBox = new JComboBox<Interpolation>(); // TODO why not JXComboBox?
         interpolationBox.setName("interpolationBox");
         
         JLabel interpolationLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
@@ -1227,7 +1140,6 @@ versuche
         LabelHandler.bindLabelFor(interpolationLabel, interpolationBox);
         
         filterBox = new JComboBox<DisplayInfo<BufferedImageOp>>(); // TODO why not JXComboBox?
-//        filterBox = new JComboBox<Object>(); // TODO raus, so nicht 
         filterBox.setName("filterBox");
         
         JLabel filterLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
