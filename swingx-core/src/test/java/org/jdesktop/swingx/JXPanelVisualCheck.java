@@ -19,7 +19,6 @@
  */
 package org.jdesktop.swingx;
 
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -55,23 +54,26 @@ import org.jdesktop.swingx.util.PaintUtils;
  */
 public class JXPanelVisualCheck extends InteractiveTestCase {
 
-    public static void main(String args[]) {
-        final JXPanelVisualCheck test = new JXPanelVisualCheck();
-        setLAF("Nimbus");
-//        UIManager.put("JXPanel.patch", Boolean.TRUE);
-        try {
+    @SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(JXPanelVisualCheck.class.getName());
 
-//             test.runInteractiveTests();
-            test.runInteractiveTests("interactiveBackgroundAlphaToggleOpaque");
-//            test.runInteractive("PanelPainter");
-//             test.runInteractive("BackgroundAndAlphaCheck");
-            // test.runInteractive("FrameArtefacts");
+	public static void main(String args[]) {
+		final JXPanelVisualCheck test = new JXPanelVisualCheck();
+		setLAF("Nimbus");
+		UIManager.put("JXPanel.patch", Boolean.TRUE);
+		try {
 
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
-    }
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactiveBackgroundAlphaToggleOpaque");
+//			test.runInteractive("PanelPainter");
+//			test.runInteractive("BackgroundAndAlphaCheck");
+//			test.runInteractive("FrameArtefacts");
+
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
 
     /**
      * Issue #1515-swingx: painting artefacts in a JXFrame (which uses JXPanel
@@ -420,7 +422,4 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
 
     }
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXPanelVisualCheck.class
-            .getName());
 }

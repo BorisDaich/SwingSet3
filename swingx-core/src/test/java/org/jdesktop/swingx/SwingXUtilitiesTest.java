@@ -61,7 +61,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Contains tests for SwingXUtilities.
  * 
@@ -70,22 +69,22 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class SwingXUtilitiesTest extends InteractiveTestCase {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(SwingXUtilitiesTest.class.getName());
     
-    public static void main(String args[]) {
-        setSystemLF(true);
+	public static void main(String args[]) {
+		setSystemLF(true);
 //        Locale.setDefault(new Locale("es"));
-        SwingXUtilitiesTest test = new SwingXUtilitiesTest();
-        try {
-          test.runInteractiveTests();
+		SwingXUtilitiesTest test = new SwingXUtilitiesTest();
+		try {
+			LOG.info("probable no interactive tests!");
+			test.runInteractiveTests();
 //            test.runInteractiveTests("interactive.*Compare.*");
 //            test.runInteractiveTests("interactive.*Tree.*");
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
-    }
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
     
     /**
      * Test doc'ed contract of isUIInstallable.

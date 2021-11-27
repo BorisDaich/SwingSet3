@@ -1,6 +1,4 @@
 /*
- * $Id: JXComboBoxVisualCheck.java 3876 2010-11-03 10:53:27Z kleopatra $
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,8 +41,7 @@ import org.jdesktop.swingx.test.XTestUtils;
 public class JXComboBoxIssues extends InteractiveTestCase {
     
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXComboBoxIssues.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXComboBoxIssues.class.getName());
     
     private ComboBoxModel model;
     

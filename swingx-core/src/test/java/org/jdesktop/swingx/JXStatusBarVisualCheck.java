@@ -22,9 +22,9 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.test.AncientSwingTeam;
 
 public class JXStatusBarVisualCheck extends InteractiveTestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXStatusBarVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXStatusBarVisualCheck.class.getName());
     
     public static void main(String[] args) {
         JXStatusBarVisualCheck test = new JXStatusBarVisualCheck();

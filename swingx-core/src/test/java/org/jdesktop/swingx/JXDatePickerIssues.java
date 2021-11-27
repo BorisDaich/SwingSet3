@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -66,30 +64,30 @@ import org.jdesktop.swingx.table.DatePickerCellEditor;
 import org.junit.Test;
 
 /**
- * Known issues of <code>JXDatePicker</code> and picker related 
- * formats.
+ * Known issues of <code>JXDatePicker</code> and picker related formats.
  * 
  * @author Jeanette Winzenburg
  */
 public class JXDatePickerIssues extends InteractiveTestCase {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(JXDatePickerIssues.class
-            .getName());
-    public static void main(String[] args) {
-//        setSystemLF(true);
-//        Trace14.keyboardFocusManager(false);
-        JXDatePickerIssues  test = new JXDatePickerIssues();
-        try {
-//            test.runInteractiveTests();
-//          test.runInteractiveTests("interactive.*UpdateUI.*");
-//          test.runInteractiveTests("interactive.*Symbols.*");
-          test.runInteractiveTests("interactive.*AsEditor.*");
-          
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
-    }
+    private static final Logger LOG = Logger.getLogger(JXDatePickerIssues.class.getName());
+    
+	public static void main(String[] args) {
+//		setSystemLF(true);
+//		Trace14.keyboardFocusManager(false);
+		JXDatePickerIssues test = new JXDatePickerIssues();
+		try {
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactive.*UpdateUI.*");
+//			test.runInteractiveTests("interactive.*Symbols.*");
+//			test.runInteractiveTests("interactive.*AsEditor.*");
+
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
 
     /**
      * Issue #1372-swingx: DatePickerCellEditor on 2 different tables with clickCountToStart = 1 

@@ -100,7 +100,6 @@ import org.jdesktop.swingx.util.JVM;
 @SuppressWarnings("serial") // super Same-version serialization only
 public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable<Object>, Scrollable {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXPanel.class.getName());
 
 //    private boolean scrollableTracksViewportHeight = true;
@@ -540,10 +539,6 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
 	@Override
 	// implements interface BackgroundPaintable<T> method Painter<T> getBackgroundPainter()
     public Painter<Object> getBackgroundPainter() {
-		// private Painter<?> backgroundPainter
-		// TODO EUG LOG raus, liefert z.B. org.jdesktop.swingx.plaf.PainterUIResource
-		// oder org.jdesktop.swingx.painter.MattePainter
-//		LOG.info("backgroundPainter type:"+(backgroundPainter==null ? "null" : backgroundPainter.getClass()));
 		return (Painter<Object>) backgroundPainter;
     }
     
@@ -627,7 +622,6 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      *            the <code>Graphics</code> context in which to paint
      */
     @Override
-    @SuppressWarnings("unchecked")
     protected void paintComponent(Graphics g) {
         if (isPatch()) {
             paintComponentPatch(g);
@@ -648,12 +642,15 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
             }
             
             if (getBackgroundPainter() != null) {
+            	Painter<Object> bp = getBackgroundPainter();
+        		LOG.fine("backgroundPainter bp type:"+bp.getClass());
+
                 if (isPaintBorderInsets()) {
-                    getBackgroundPainter().paint(g2, this, getWidth(), getHeight());
+                    bp.paint(g2, this, getWidth(), getHeight());
                 } else {
                     Insets insets = getInsets();
                     g.translate(insets.left, insets.top);
-                    getBackgroundPainter().paint(g2, this, getWidth() - insets.left - insets.right,
+                    bp.paint(g2, this, getWidth() - insets.left - insets.right,
                             getHeight() - insets.top - insets.bottom);
                     g.translate(-insets.left, -insets.top);
                 }
@@ -684,8 +681,9 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
                 g2.fillRect(0, 0, getWidth(), getHeight());
             }
             if (getBackgroundPainter() != null) {
-            	Painter<Object> p = getBackgroundPainter();
-                p.paint(g2, this, getWidth(), getHeight());
+            	Painter<Object> bp = getBackgroundPainter();
+        		LOG.fine("backgroundPainter bp type:"+bp.getClass());
+                bp.paint(g2, this, getWidth(), getHeight());
             }
             fakeTransparent = true;
             getUI().update(g2, this);

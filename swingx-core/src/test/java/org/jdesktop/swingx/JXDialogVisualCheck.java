@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,9 +39,9 @@ import org.jdesktop.swingx.action.AbstractActionExt;
  * @author Jeanette Winzenburg
  */
 public class JXDialogVisualCheck extends InteractiveTestCase {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXDialogVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXDialogVisualCheck.class.getName());
     
     public static void main(String[] args) {
 //      setSystemLF(true);

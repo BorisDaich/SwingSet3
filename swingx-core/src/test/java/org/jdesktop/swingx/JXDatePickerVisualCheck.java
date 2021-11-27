@@ -88,9 +88,10 @@ import org.jdesktop.test.VerticalLayoutPref;
  * @author Karl Schaefer
  */
 public class JXDatePickerVisualCheck extends InteractiveTestCase {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger
-            .getLogger(JXDatePickerVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXDatePickerVisualCheck.class.getName());
+    
     @SuppressWarnings("unused")
     private Calendar calendar;
     /** flag to decide if the menubar should be created */
@@ -100,26 +101,26 @@ public class JXDatePickerVisualCheck extends InteractiveTestCase {
         super("JXDatePicker Test");
     }
 
-    public static void main(String[] args) throws Exception {
-       UIManager.put("JXDatePicker.forceZoomable", Boolean.TRUE);
-//         setSystemLF(true);
-        JXDatePickerVisualCheck test = new JXDatePickerVisualCheck();
-        setLAF("Win");
-        try {
-//            test.runInteractiveTests();
-//            test.runInteractiveTests("interactive.*PrefSize.*");
-//            test.runInteractiveTests("interactive.*Keep.*");
-//          test.runInteractiveTests("interactive.*Multiple.*");
-//            test.runInteractiveTests("interactive.*Editable.*");
-//            test.runInteractiveTests("interactive.*Enable.*");
-//            test.runInteractiveTests("interactive.*Popup.*");
-            test.runInteractiveTests("interactive.*NullDate.*");
-//            test.runInteractiveTests("interactive.*Event.*");
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
-    }
+	public static void main(String[] args) throws Exception {
+		UIManager.put("JXDatePicker.forceZoomable", Boolean.TRUE);
+//		setSystemLF(true);
+		JXDatePickerVisualCheck test = new JXDatePickerVisualCheck();
+		setLAF("Win");
+		try {
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactive.*PrefSize.*");
+//			test.runInteractiveTests("interactive.*Keep.*");
+//			test.runInteractiveTests("interactive.*Multiple.*");
+//			test.runInteractiveTests("interactive.*Editable.*");
+//			test.runInteractiveTests("interactive.*Enable.*");
+//			test.runInteractiveTests("interactive.*Popup.*");
+//			test.runInteractiveTests("interactive.*NullDate.*");
+//			test.runInteractiveTests("interactive.*Event.*");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
 
     /**
      * Quick check if DatePicker behaves correctly in vertical max
