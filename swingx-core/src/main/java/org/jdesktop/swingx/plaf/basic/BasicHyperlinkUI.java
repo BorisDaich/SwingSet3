@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,7 +31,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -75,9 +72,7 @@ import org.jdesktop.swingx.SwingXUtilities;
  */
 public class BasicHyperlinkUI extends BasicButtonUI {
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(BasicHyperlinkUI.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(BasicHyperlinkUI.class.getName());
     
     public static ComponentUI createUI(JComponent c) {
         return new BasicHyperlinkUI();
@@ -88,8 +83,6 @@ public class BasicHyperlinkUI extends BasicButtonUI {
     private static Rectangle textRect = new Rectangle();
 
     private static Rectangle iconRect = new Rectangle();
-
-//    private static MouseListener handCursorListener = new HandCursor();
 
     protected int dashedRectGapX;
 
@@ -148,14 +141,12 @@ public class BasicHyperlinkUI extends BasicButtonUI {
     @Override
     protected void installListeners(AbstractButton b) {
         super.installListeners(b);
-//        b.addMouseListener(handCursorListener);
         b.addPropertyChangeListener(pcListener);
     }
 
     @Override
     protected void uninstallListeners(AbstractButton b) {
         super.uninstallListeners(b);
-//        b.removeMouseListener(handCursorListener);
         b.removePropertyChangeListener(pcListener);
     }
 
@@ -202,13 +193,6 @@ public class BasicHyperlinkUI extends BasicButtonUI {
             paintIcon(g, c, iconRect);
         }
 
-//        Composite oldComposite = ((Graphics2D) g).getComposite();
-//
-//        if (model.isRollover()) {
-//            ((Graphics2D) g).setComposite(AlphaComposite.getInstance(
-//                    AlphaComposite.SRC_OVER, 0.5f));
-//        }
-
         if (text != null && !text.equals("")) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
             if (v != null) {
@@ -223,7 +207,6 @@ public class BasicHyperlinkUI extends BasicButtonUI {
             paintFocus(g, b, viewRect, textRect, iconRect);
         }
 
-//        ((Graphics2D) g).setComposite(oldComposite);
     }
 
     /**
@@ -235,13 +218,12 @@ public class BasicHyperlinkUI extends BasicButtonUI {
      * @param text String to render
      * @param v the View to use.
      */
-    protected void paintHTMLText(Graphics g, AbstractButton b, 
-            Rectangle textRect, String text, View v) {
+    protected void paintHTMLText(Graphics g, AbstractButton b, Rectangle textRect, String text, View v) {
         textRect.x += getTextShiftOffset();
         textRect.y += getTextShiftOffset();
         // fix #441-swingx - underline not painted for html
-        if (b.getModel().isRollover()) {
-            //paintUnderline(g, b, textRect, text);
+        if (b.getModel().isRollover()) { // the mouse is over the button.
+            LOG.fine("the mouse is over the button b:"+b);
             if (ulv == null) {
                 ulv = ULHtml.createHTMLView(b, text);
             }
@@ -258,8 +240,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
      * Overridden to paint the underline on rollover.
      */
     @Override
-    protected void paintText(Graphics g, AbstractButton b, Rectangle textRect,
-            String text) {
+    protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         //kgs -- SwingX #415: pixel-shift when disabled
         //BasicButtonUI shifts disabled text to the left by 1 pixel
         //we compensate for that here, so that all Hyperlinks paint
@@ -274,8 +255,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
         }
     }
 
-    private void paintUnderline(Graphics g, AbstractButton b, Rectangle rect,
-            String text) {
+    private void paintUnderline(Graphics g, AbstractButton b, Rectangle rect, String text) {
         // JW: copied from JXTable.LinkRenderer
         FontMetrics fm = g.getFontMetrics();
         int descent = fm.getDescent();
@@ -289,8 +269,8 @@ public class BasicHyperlinkUI extends BasicButtonUI {
     }
 
     @Override
-    protected void paintFocus(Graphics g, AbstractButton b, Rectangle viewRect,
-            Rectangle textRect, Rectangle iconRect) {
+    protected void paintFocus(Graphics g, AbstractButton b
+    		, Rectangle viewRect, Rectangle textRect, Rectangle iconRect) {
         if (b.getParent() instanceof JToolBar) {
             // Windows doesn't draw the focus rect for buttons in a toolbar.
             return;
@@ -368,9 +348,11 @@ public class BasicHyperlinkUI extends BasicButtonUI {
         Rectangle viewR = new Rectangle(b.getSize());
 
         SwingUtilities.layoutCompoundLabel(b, fm, text, icon,
-                b.getVerticalAlignment(), b.getHorizontalAlignment(), b
-                        .getVerticalTextPosition(), b
-                        .getHorizontalTextPosition(), viewR, iconR, textR,
+                b.getVerticalAlignment(), 
+                b.getHorizontalAlignment(), 
+                b.getVerticalTextPosition(), 
+                b.getHorizontalTextPosition(), 
+                viewR, iconR, textR, 
                 (text == null ? 0 : b.getIconTextGap()));
 
         /*
@@ -408,9 +390,8 @@ public class BasicHyperlinkUI extends BasicButtonUI {
         public void stateChanged(ChangeEvent e) {
             AbstractButton button = (AbstractButton) e.getSource();
             if (button.isRolloverEnabled()) {
-                button.setCursor(button.getModel().isRollover() ? 
-                        // PENDING JW: support customizable cursor
-                        Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : null);
+            	// change cursor when mouse is over the button
+                button.setCursor(button.getModel().isRollover() ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : null);
             }
             super.stateChanged(e);
         }
@@ -423,8 +404,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
          */
         public static View createHTMLView(JComponent c, String html) {
             BasicEditorKit kit = getFactory();
-            Document doc = kit.createDefaultDocument(c.getFont(),
-                                                     c.getForeground());
+            Document doc = kit.createDefaultDocument(c.getFont(), c.getForeground());
             Object base = c.getClientProperty(documentBaseKey);
             if (base instanceof URL) {
                 ((HTMLDocument)doc).setBase((URL)base);
@@ -440,13 +420,13 @@ public class BasicHyperlinkUI extends BasicButtonUI {
             return v;
         }
 
-        static BasicEditorKit getFactory() {
-            if (basicHTMLFactory == null) {
-                    basicHTMLViewFactory = new BasicHTMLViewFactory();
-                basicHTMLFactory = new BasicEditorKit();
-            }
-            return basicHTMLFactory;
-        }
+		static BasicEditorKit getFactory() {
+			if (basicHTMLFactory == null) {
+				basicHTMLViewFactory = new BasicHTMLViewFactory();
+				basicHTMLFactory = new BasicEditorKit();
+			}
+			return basicHTMLFactory;
+		}
 
         /**
          * The source of the html renderers
@@ -540,48 +520,87 @@ public class BasicHyperlinkUI extends BasicButtonUI {
          * was created for.
          */
         static class BasicDocument extends HTMLDocument {
-        private static Class<?> clz;
-        private static Method displayPropertiesToCSS;
+//        private static Class<?> clz;
+//        private static Method displayPropertiesToCSS;
+//
+//        // --------- 1.5 x 1.6 incompatibility handling ....
+//        static {
+//            String j5 = "com.sun.java.swing.SwingUtilities2";
+//            String j6 = "sun.swing.SwingUtilities2";
+//            try {
+//                // assume 1.6
+//                clz = Class.forName(j6);
+//            } catch (ClassNotFoundException e) {
+//                // or maybe not ..
+//                try {
+//                    clz = Class.forName(j5);
+//                } catch (ClassNotFoundException e1) {
+//                    throw new RuntimeException("Failed to find SwingUtilities2. Check the classpath.");
+//                }
+//            }
+//        	LOG.info("clz:"+clz);
+//            try {
+//                displayPropertiesToCSS = clz.getMethod("displayPropertiesToCSS", new Class[] { Font.class, Color.class});
+//            } catch (Exception e) {
+//            	// NoSuchMethodException or SecurityException
+//                throw new RuntimeException("Failed to use SwingUtilities2. Check the permissions and class version.");
+//            }
+//        }
 
-        /** The host, that is where we are rendering. */
-        // private JComponent host;
-        // --------- 1.5 x 1.6 incompatibility handling ....
-        static {
-            String j5 = "com.sun.java.swing.SwingUtilities2";
-            String j6 = "sun.swing.SwingUtilities2";
-            try {
-                // assume 1.6
-                clz = Class.forName(j6);
-            } catch (ClassNotFoundException e) {
-                // or maybe not ..
-                try {
-                    clz = Class.forName(j5);
-                } catch (ClassNotFoundException e1) {
-                    throw new RuntimeException("Failed to find SwingUtilities2. Check the classpath.");
+        // copied from sun.swing.SwingUtilities2
+        private static String displayPropertiesToCSS(Font font, Color fg) {
+//            try {
+//            	// public static String displayPropertiesToCSS(Font font, Color fg)
+//            	LOG.info("displayPropertiesToCSS:"+displayPropertiesToCSS);
+//            	LOG.info("displayPropertiesToCSS.canAccess(null):"+displayPropertiesToCSS.canAccess(null));
+//                return (String) displayPropertiesToCSS.invoke(null, new Object[] { font, fg });
+//            } catch (IllegalAccessException e) {
+//            	LOG.warning(e.getMessage());
+                StringBuilder rule = new StringBuilder("body {");
+                if (font != null) {
+                    rule.append(" font-family: ");
+                    rule.append(font.getFamily());
+                    rule.append(" ; ");
+                    rule.append(" font-size: ");
+                    rule.append(font.getSize());
+                    rule.append("pt ;");
+                    if (font.isBold()) {
+                        rule.append(" font-weight: 700 ; ");
+                    }
+                    if (font.isItalic()) {
+                        rule.append(" font-style: italic ; ");
+                    }
                 }
-            }
-            try {
-                displayPropertiesToCSS = clz.getMethod("displayPropertiesToCSS", new Class[] { Font.class, Color.class});
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to use SwingUtilities2. Check the permissions and class version.");
-            }
-        }
-
-        private static String displayPropertiesToCSS(Font f, Color c) {
-            try {
-                return (String) displayPropertiesToCSS.invoke(null, new Object[] { f, c });
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+                if (fg != null) {
+                    rule.append(" color: #");
+                    if (fg.getRed() < 16) {
+                        rule.append('0');
+                    }
+                    rule.append(Integer.toHexString(fg.getRed()));
+                    if (fg.getGreen() < 16) {
+                        rule.append('0');
+                    }
+                    rule.append(Integer.toHexString(fg.getGreen()));
+                    if (fg.getBlue() < 16) {
+                        rule.append('0');
+                    }
+                    rule.append(Integer.toHexString(fg.getBlue()));
+                    rule.append(" ; ");
+                }
+                rule.append(" }");
+                return rule.toString();           	
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
         }
 
         // --------- EO 1.5 x 1.6 incompatibility handling ....
 
-        BasicDocument(StyleSheet s, Font defaultFont, Color foreground) {
-            super(s);
-            setPreservesUnknownTags(false);
-                setFontAndColor(defaultFont, foreground);
-        }
+		BasicDocument(StyleSheet s, Font defaultFont, Color foreground) {
+			super(s);
+			setPreservesUnknownTags(false);
+			setFontAndColor(defaultFont, foreground);
+		}
 
         /**
          * Sets the default font and default color. These are set by
@@ -589,9 +608,9 @@ public class BasicHyperlinkUI extends BasicButtonUI {
          * This allows the html to override these should it wish to have
          * a custom font or color.
          */
-        private void setFontAndColor(Font font, Color fg) {
-                getStyleSheet().addRule(displayPropertiesToCSS(font,fg));
-        }
+		private void setFontAndColor(Font font, Color fg) {
+			getStyleSheet().addRule(displayPropertiesToCSS(font, fg));
+		}
     }
 
 
@@ -600,25 +619,25 @@ public class BasicHyperlinkUI extends BasicButtonUI {
      */
     static class Renderer extends View {
 
-        Renderer(JComponent c, ViewFactory f, View v) {
-                super(null);
-            host = c;
-            factory = f;
-            view = v;
-            view.setParent(this);
-            // initially layout to the preferred size
-            setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
-        }
+		Renderer(JComponent c, ViewFactory f, View v) {
+			super(null);
+			host = c;
+			factory = f;
+			view = v;
+			view.setParent(this);
+			// initially layout to the preferred size
+			setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
+		}
 
         /**
          * Fetches the attributes to use when rendering.  At the root
          * level there are no attributes.  If an attribute is resolved
          * up the view hierarchy this is the end of the line.
          */
-            @Override
-            public AttributeSet getAttributes() {
-            return null;
-        }
+		@Override
+		public AttributeSet getAttributes() {
+			return null;
+		}
 
         /**
          * Determines the preferred span for this view along an axis.

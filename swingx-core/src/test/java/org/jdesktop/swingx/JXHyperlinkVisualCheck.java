@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
@@ -49,28 +46,27 @@ import org.jdesktop.swingx.treetable.FileSystemModel;
  * @author Jeanette Winzenburg
  */
 public class JXHyperlinkVisualCheck extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(JXHyperlinkVisualCheck.class
-            .getName());
-    
+	
+    private static final Logger LOG = Logger.getLogger(JXHyperlinkVisualCheck.class.getName());
 
     public JXHyperlinkVisualCheck() {
         super("JXHyperlinkLabel Test");
     }
 
-    public static void main(String[] args) throws Exception {
-      JXHyperlinkVisualCheck test = new JXHyperlinkVisualCheck();
-      try {
-//          test.runInteractiveTests();
-//          test.runInteractiveTests("interactive.*Table.*");
-//          test.runInteractiveTests("interactive.*List.*");
-//          test.runInteractiveTests("interactive.*Tree.*");
-//          test.runInteractiveTests("interactive.*Underline.*");
-          test.runInteractive("Block");
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        } 
-  }
+	public static void main(String[] args) throws Exception {
+		JXHyperlinkVisualCheck test = new JXHyperlinkVisualCheck();
+		try {
+//			test.runInteractiveTests();
+//			test.runInteractiveTests("interactive.*Table.*");
+//			test.runInteractiveTests("interactive.*List.*");
+//			test.runInteractiveTests("interactive.*Tree.*");
+			test.runInteractiveTests("interactive.*Underline.*");
+//			test.runInteractive("Block");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
     
     /**
      * Issue #1530-swingx:
@@ -105,9 +101,111 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
     public void interactiveHtmlUnderlineWrapping() {
         Action action = new AbstractAction("<html><b><i>Bold Italic Link and another loong way way out part of the text</i></b></html>") {
 
+/* BUG: when cursor over text
+Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: java.lang.IllegalAccessException: 
+class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 
+(in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
+
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:574)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.setFontAndColor(BasicHyperlinkUI.java:593)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.<init>(BasicHyperlinkUI.java:583)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicEditorKit.createDefaultDocument(BasicHyperlinkUI.java:503)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml.createHTMLView(BasicHyperlinkUI.java:426)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paintHTMLText(BasicHyperlinkUI.java:246)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paint(BasicHyperlinkUI.java:215)
+	at java.desktop/javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at java.desktop/javax.swing.JComponent.paintComponent(JComponent.java:842)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1119)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:952)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1128)
+	at org.jdesktop.swingx.JXPanel.paint(JXPanel.java:590)
+	at java.desktop/javax.swing.JComponent.paintToOffscreen(JComponent.java:5311)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBufferedFPScales(RepaintManager.java:1721)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(RepaintManager.java:1630)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paint(RepaintManager.java:1570)
+	at java.desktop/javax.swing.RepaintManager.paint(RepaintManager.java:1337)
+	at java.desktop/javax.swing.JComponent._paintImmediately(JComponent.java:5259)
+	at java.desktop/javax.swing.JComponent.paintImmediately(JComponent.java:5069)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:879)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:862)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:862)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:835)
+	at java.desktop/javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:784)
+	at java.desktop/javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1898)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 (in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
+	at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:392)
+	at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:674)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:560)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:572)
+	... 40 more
+Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 (in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:574)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.setFontAndColor(BasicHyperlinkUI.java:593)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.<init>(BasicHyperlinkUI.java:583)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicEditorKit.createDefaultDocument(BasicHyperlinkUI.java:503)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml.createHTMLView(BasicHyperlinkUI.java:426)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paintHTMLText(BasicHyperlinkUI.java:246)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paint(BasicHyperlinkUI.java:215)
+	at java.desktop/javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at java.desktop/javax.swing.JComponent.paintComponent(JComponent.java:842)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1119)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:952)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1128)
+	at org.jdesktop.swingx.JXPanel.paint(JXPanel.java:590)
+	at java.desktop/javax.swing.JComponent.paintToOffscreen(JComponent.java:5311)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBufferedFPScales(RepaintManager.java:1721)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(RepaintManager.java:1630)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paint(RepaintManager.java:1570)
+	at java.desktop/javax.swing.RepaintManager.paint(RepaintManager.java:1337)
+	at java.desktop/javax.swing.JComponent._paintImmediately(JComponent.java:5259)
+	at java.desktop/javax.swing.JComponent.paintImmediately(JComponent.java:5069)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:879)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:862)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:862)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:835)
+	at java.desktop/javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:784)
+	at java.desktop/javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1898)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 (in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
+	at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:392)
+	at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:674)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:560)
+	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:572)
+	... 40 more
+
+ */
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                
+                LOG.info("interactiveHtmlUnderlineWrapping TODO");
             }
             
         };
@@ -116,8 +214,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
         hyperlink.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JFrame frame = wrapInFrame(hyperlink, "show html underline ");
         frame.setSize(200, 200);
-        frame.setVisible(true);
-        
+        frame.setVisible(true);     
     }
     
 
@@ -130,7 +227,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
 
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                
+                LOG.info("interactiveHtmlUnderlineButton TODO");
             }
             
         };
@@ -169,8 +266,7 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
         Action action = new AbstractAction("LinkModel@somewhere") {
 
             public void actionPerformed(ActionEvent e) {
-                LOG.info("gotcha!");
-                
+                LOG.info("gotcha!");            
             }
             
         };
@@ -185,7 +281,6 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
         JFrame frame = wrapInFrame(panel, "show underline - no link action");
         frame.setSize(200, 200);
         frame.setVisible(true);
-        
     }
     
  
