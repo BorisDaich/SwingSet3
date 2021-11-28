@@ -11,7 +11,7 @@
   <artifactId>swingx-project</artifactId>
   <packaging>pom</packaging>
   <name>SwingX</name>
-  <version>1.6.7</version>
+  <version>1.6.8-SNAPSHOT</version>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
