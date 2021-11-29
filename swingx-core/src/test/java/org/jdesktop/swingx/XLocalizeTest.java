@@ -40,7 +40,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Test to expose known issues around <code>Locale</code> setting.
  * 
@@ -52,9 +51,10 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class XLocalizeTest extends InteractiveTestCase {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(XLocalizeTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(XLocalizeTest.class.getName());
+    
     private static final Locale A_LOCALE = Locale.FRENCH;
     private static final Locale OTHER_LOCALE = Locale.GERMAN;
 
@@ -83,8 +83,6 @@ public class XLocalizeTest extends InteractiveTestCase {
         originalLocale = Locale.getDefault();
         super.setUp();
     }
-    
-    
 
     @Override
     protected void tearDown() throws Exception {
@@ -181,8 +179,7 @@ public class XLocalizeTest extends InteractiveTestCase {
         // of AbstractPatternPanel subclasses ...
         findPanel.addNotify();
         String name = dialog.getTitle();
-        String uiValue = UIManagerExt.getString(prefix + titleKey, findPanel
-                .getLocale());
+        String uiValue = UIManagerExt.getString(prefix + titleKey, findPanel.getLocale());
         // sanity
         assertNotNull(uiValue);
         assertEquals(name, uiValue);
@@ -195,13 +192,9 @@ public class XLocalizeTest extends InteractiveTestCase {
                 // wrong assumption: find widgets name is changed as well
 //                assertTrue("locale property changed, instead: " + evt.getPropertyName(), "locale".equals(evt.getPropertyName()));
                 if (!"locale".equals(evt.getPropertyName())) return;
-                String altUIValue = UIManagerExt.getString(prefix + titleKey,
-                        alternative);
+                String altUIValue = UIManagerExt.getString(prefix + titleKey, alternative);
                 String altName = dialog.getTitle();
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
-
-                
+                assertEquals("name must be updated before fire propertyChange", altUIValue, altName);               
             }};
         dialog.addPropertyChangeListener(report);
         PropertyChangeReport r = new PropertyChangeReport();
@@ -243,13 +236,9 @@ public class XLocalizeTest extends InteractiveTestCase {
                 // sanity
 //                assertTrue("locale property changed", "locale".equals(evt.getPropertyName()));
                 if (!"locale".equals(evt.getPropertyName())) return;
-                String altUIValue = UIManagerExt.getString(prefix + actionCommand,
-                        alternative);
+                String altUIValue = UIManagerExt.getString(prefix + actionCommand, alternative);
                 String altName = (String) action.getValue(Action.NAME);
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
-
-                
+                assertEquals("name must be updated before fire propertyChange", altUIValue, altName);
             }};
             PropertyChangeReport r = new PropertyChangeReport();
             findPanel.addPropertyChangeListener(r);
@@ -289,13 +278,9 @@ public class XLocalizeTest extends InteractiveTestCase {
                 // wrong assumption: find widgets name is changed as well
 //                assertTrue("locale property changed, instead: " + evt.getPropertyName(), "locale".equals(evt.getPropertyName()));
                 if (!"locale".equals(evt.getPropertyName())) return;
-                String altUIValue = UIManagerExt.getString(prefix + actionCommand,
-                        alternative);
+                String altUIValue = UIManagerExt.getString(prefix + actionCommand, alternative);
                 String altName = (String) action.getValue(Action.NAME);
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
-
-                
+                assertEquals("name must be updated before fire propertyChange", altUIValue, altName);
             }};
         findPanel.addPropertyChangeListener(report);
         PropertyChangeReport r = new PropertyChangeReport();
@@ -355,13 +340,9 @@ public class XLocalizeTest extends InteractiveTestCase {
             public void propertyChange(PropertyChangeEvent evt) {
                 // sanity
                 assertTrue("locale property changed", "locale".equals(evt.getPropertyName()));
-                String altUIValue = UIManagerExt.getString(prefix + actionCommand,
-                        alternative);
+                String altUIValue = UIManagerExt.getString(prefix + actionCommand, alternative);
                 String altName = (String) action.getValue(Action.NAME);
-                assertEquals("name must be updated before fire propertyChange", 
-                        altUIValue, altName);
-
-                
+                assertEquals("name must be updated before fire propertyChange", altUIValue, altName);
             }};
         table.addPropertyChangeListener(report);
         table.setLocale(alternative);
@@ -480,8 +461,7 @@ public class XLocalizeTest extends InteractiveTestCase {
             public void actionPerformed(ActionEvent e) {
                 Locale old = table.getLocale();
                 table.setLocale(old == A_LOCALE ? OTHER_LOCALE : A_LOCALE);
-                table.getColumnExt(0).setTitle(table.getLocale().getLanguage());
-                
+                table.getColumnExt(0).setTitle(table.getLocale().getLanguage());               
             }
             
         };

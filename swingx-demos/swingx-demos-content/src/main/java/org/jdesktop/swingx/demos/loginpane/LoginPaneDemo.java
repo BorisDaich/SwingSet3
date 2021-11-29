@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,6 +24,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -61,6 +63,9 @@ import com.sun.swingset3.DemoProperties;
 )
 @SuppressWarnings("serial")
 public class LoginPaneDemo extends JPanel {
+	
+    private static final Logger LOG = Logger.getLogger(LoginPaneDemo.class.getName());
+
     private DemoLoginService service;
     private JXLoginPane loginPane;
     private JButton loginLauncher;
@@ -97,6 +102,12 @@ public class LoginPaneDemo extends JPanel {
     private void createLoginPaneDemo() {
         service = new DemoLoginService();
         loginPane = new JXLoginPane(service);
+        loginPane.setLocale(Locale.ITALIAN);
+        LOG.info("banner:"+loginPane.getBanner());
+        List<String> servers = new ArrayList<String>();
+        servers.add("A");
+        servers.add("B");
+        loginPane.setServers(servers);
         
         loginLauncher = new JButton();
         loginLauncher.setName("launcher");

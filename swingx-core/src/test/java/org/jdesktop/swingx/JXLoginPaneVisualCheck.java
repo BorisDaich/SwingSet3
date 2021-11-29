@@ -52,12 +52,12 @@ import org.jdesktop.swingx.plaf.basic.CapsLockSupport;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
 /**
- * Simple tests to ensure that the {@code JXLoginPane} can be instantiated and
- * displayed.
+ * Simple tests to ensure that the {@code JXLoginPane} can be instantiated and displayed.
  *
  * @author Karl Schaefer
  */
 public class JXLoginPaneVisualCheck extends InteractiveTestCase {
+	
     public JXLoginPaneVisualCheck() {
         super("JXLoginPane Test");
     }
@@ -67,8 +67,8 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         JXLoginPaneVisualCheck test = new JXLoginPaneVisualCheck();
 
         try {
-//            test.runInteractiveTests();
-            test.runInteractiveTests("interactiveDisplay");
+            test.runInteractiveTests();
+//            test.runInteractiveTests("interactiveDisplay");
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
@@ -348,6 +348,6 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
      *  
      */
     public void testDummy() {
-
     }
+    
 }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -46,6 +44,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -92,6 +91,7 @@ import org.jdesktop.swingx.auth.LoginService;
 import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.plaf.LoginPaneAddon;
 import org.jdesktop.swingx.plaf.LoginPaneUI;
@@ -138,14 +138,13 @@ import org.jdesktop.swingx.util.WindowUtils;
 @JavaBean
 public class JXLoginPane extends JXPanel {
 
-    /**
-     * The Logger
-     */
-    private static final Logger LOG = Logger.getLogger(JXLoginPane.class.getName());
-    /**
-     * Comment for <code>serialVersionUID</code>
-     */
     private static final long serialVersionUID = 3544949969896288564L;
+    private static final Logger LOG = Logger.getLogger(JXLoginPane.class.getName());
+
+    /**
+     * Used as a prefix when pulling data out of UIManager for i18n
+     */
+    private static String CLASS_NAME = JXLoginPane.class.getSimpleName();
     /**
      * UI Class ID
      */
@@ -170,23 +169,25 @@ public class JXLoginPane extends JXPanel {
      * Returns the status of the login process
      */
     public enum Status {NOT_STARTED, IN_PROGRESS, FAILED, CANCELLED, SUCCEEDED}
-    /**
-     * Used as a prefix when pulling data out of UIManager for i18n
-     */
-    private static String CLASS_NAME = JXLoginPane.class.getSimpleName();
 
     /**
      * The current login status for this panel
      */
     private Status status = Status.NOT_STARTED;
+    
     /**
      * An optional banner at the top of the panel
      */
-    private JXImagePanel banner;
+//    private JXImagePanel ipBanner; // deprecated (pre-1.6.2) use a JXPanel with an ImagePainter
+    private JXPanel banner;
+    private ImagePainter imgPainter; 
+    // ==> AbstractPainter
+//    private AbstractPainter imgPainter;
     /**
      * Text that should appear on the banner
      */
     private String bannerText;
+    
     /**
      * Custom label allowing the developer to display some message to the user
      */
@@ -314,8 +315,12 @@ public class JXLoginPane extends JXPanel {
     private void reinitLocales(Locale l) {
         // PENDING: JW - use the locale given as parameter
         // as this probably (?) should be called before super.setLocale
-        setBannerText(UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale()));
-        banner.setImage(createLoginBanner());
+        String sBanner = UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale());
+        LOG.info("bannerString="+sBanner);
+        setBannerText(sBanner);
+        banner.setBackgroundPainter(imgPainter);
+//        ipBanner.setImage(createLoginBanner());
+
         if (!isErrorMessageSet) {
             errorMessageLabel.setText(UIManager.getString(CLASS_NAME + ".errorMessage", getLocale()));
         }
@@ -488,17 +493,26 @@ public class JXLoginPane extends JXPanel {
      * @param ui the LoginPaneUI L&F object
      * @see javax.swing.UIDefaults#getUI
      */
-    public void setUI(LoginPaneUI ui) {
-        // initialized here due to implicit updateUI call from JPanel
-        if (banner == null) {
-            banner = new JXImagePanel();
-        }
-        if (errorMessageLabel == null) {
-            errorMessageLabel = new JXLabel(UIManagerExt.getString(CLASS_NAME + ".errorMessage", getLocale()));
-        }
-        super.setUI(ui);
-        banner.setImage(createLoginBanner());
-    }
+	public void setUI(LoginPaneUI ui) {
+		// initialized here due to implicit updateUI call from JPanel
+//		if (ipBanner == null) {
+//			ipBanner = new JXImagePanel();
+//		}
+		if (banner == null) {
+			banner = new JXPanel();
+		}
+		if (errorMessageLabel == null) {
+			errorMessageLabel = new JXLabel(UIManagerExt.getString(CLASS_NAME + ".errorMessage", getLocale()));
+		}
+		super.setUI(ui);
+		Image img = createLoginBanner();
+//		ipBanner.setImage(img);
+		imgPainter = new ImagePainter((BufferedImage)img);
+		LOG.info("imgPainter:"+imgPainter.getClass());
+		banner.setBackgroundPainter(imgPainter);
+		BufferedImage bi = (BufferedImage)img;
+		banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
+	}
 
     /**
      * Notification from the <code>UIManager</code> that the L&F has changed.
@@ -699,7 +713,9 @@ public class JXLoginPane extends JXPanel {
         // this if is used to avoid needless creations of the image
         if(orient != super.getComponentOrientation()) {
             super.setComponentOrientation(orient);
-            banner.setImage(createLoginBanner());
+//            ipBanner.setImage(createLoginBanner());
+            imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
+            banner.setBackgroundPainter(imgPainter);
             progressPanel.applyComponentOrientation(orient);
         }
     }
@@ -709,7 +725,10 @@ public class JXLoginPane extends JXPanel {
      */
     private void initComponents() {
         //create the default banner
-        banner.setImage(createLoginBanner());
+//        ipBanner.setImage(createLoginBanner());
+//        imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
+        LOG.info(">>>>>> imgPainter:"+imgPainter);
+//        banner.setBackgroundPainter(imgPainter);
 
         //create the default label
         messageLabel = new JLabel(" ");
@@ -751,47 +770,47 @@ public class JXLoginPane extends JXPanel {
         progressPanel.add(pb, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 24, 11, 7), 0, 0));
         progressPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 11, 11), 0, 0));
 
-        //layout the panel
+        LOG.info("layout the panel ... zum Test in SOUTH banner:"+banner);
         setLayout(new BorderLayout());
+//        add(ipBanner, BorderLayout.NORTH);
         add(banner, BorderLayout.NORTH);
         contentCardPane = new JPanel(new CardLayout());
         contentCardPane.setOpaque(false);
         contentCardPane.add(contentPanel, "0");
         contentCardPane.add(progressPanel, "1");
         add(contentCardPane, BorderLayout.CENTER);
-
     }
 
     private final class LoginPaneLayout extends VerticalLayout implements LayoutManager {
-        @Override
-	public Dimension preferredLayoutSize(Container parent) {
-            Insets insets = parent.getInsets();
-            Dimension pref = new Dimension(0, 0);
-            int gap = getGap();
-            for (int i = 0, c = parent.getComponentCount(); i < c; i++) {
-              Component m = parent.getComponent(i);
-              if (m.isVisible()) {
-                Dimension componentPreferredSize = m.getPreferredSize();
-                // swingx-917 - don't let jlabel to force width due to long text
-                if (m instanceof JLabel) {
-                    View view = (View) ((JLabel)m).getClientProperty(BasicHTML.propertyKey);
-                    if (view != null) {
-                        view.setSize(pref.width, m.getHeight());
-                        // get fresh preferred size since we have forced new size on label
-                        componentPreferredSize = m.getPreferredSize();
-                    }
-                } else {
-                    pref.width = Math.max(pref.width, componentPreferredSize.width);
-                }
-                pref.height += componentPreferredSize.height + gap;
-              }
-            }
+		@Override
+		public Dimension preferredLayoutSize(Container parent) {
+			Insets insets = parent.getInsets();
+			Dimension pref = new Dimension(0, 0);
+			int gap = getGap();
+			for (int i = 0, c = parent.getComponentCount(); i < c; i++) {
+				Component m = parent.getComponent(i);
+				if (m.isVisible()) {
+					Dimension componentPreferredSize = m.getPreferredSize();
+					// swingx-917 - don't let jlabel to force width due to long text
+					if (m instanceof JLabel) {
+						View view = (View) ((JLabel) m).getClientProperty(BasicHTML.propertyKey);
+						if (view != null) {
+							view.setSize(pref.width, m.getHeight());
+							// get fresh preferred size since we have forced new size on label
+							componentPreferredSize = m.getPreferredSize();
+						}
+					} else {
+						pref.width = Math.max(pref.width, componentPreferredSize.width);
+					}
+					pref.height += componentPreferredSize.height + gap;
+				}
+			}
 
-            pref.width += insets.left + insets.right;
-            pref.height += insets.top + insets.bottom;
+			pref.width += insets.left + insets.right;
+			pref.height += insets.top + insets.bottom;
 
-            return pref;
-          }
+			return pref;
+		}
     }
 
     /**
@@ -1026,7 +1045,9 @@ public class JXLoginPane extends JXPanel {
      * Return the image used as the banner
      */
     public Image getBanner() {
-        return banner.getImage();
+//        return ipBanner.getImage();
+    	return imgPainter.getImage();
+//    	return ((ImagePainter)imgPainter).getImage();
     }
 
     /**
@@ -1041,8 +1062,13 @@ public class JXLoginPane extends JXPanel {
         // events here
         Image oldImage = getBanner();
 
+//        if (oldImage != img) {
+//            ipBanner.setImage(img);
+//            firePropertyChange("banner", oldImage, getBanner());
+//        }
         if (oldImage != img) {
-            banner.setImage(img);
+        	imgPainter = new ImagePainter((BufferedImage) img);
+            banner.setBackgroundPainter(imgPainter);
             firePropertyChange("banner", oldImage, getBanner());
         }
     }
@@ -1062,9 +1088,13 @@ public class JXLoginPane extends JXPanel {
 
         if (!text.equals(this.bannerText)) {
             String oldText = this.bannerText;
+        	LOG.info("bannerText old="+oldText + " new="+bannerText);
             this.bannerText = text;
             //fix the login banner
-            this.banner.setImage(createLoginBanner());
+//            this.ipBanner.setImage(createLoginBanner());
+//            setBanner(createLoginBanner());
+            imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
+            banner.setBackgroundPainter(imgPainter);
             firePropertyChange("bannerText", oldText, text);
         }
     }
