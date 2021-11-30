@@ -67,8 +67,9 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         JXLoginPaneVisualCheck test = new JXLoginPaneVisualCheck();
 
         try {
-            test.runInteractiveTests();
-//            test.runInteractiveTests("interactiveDisplay");
+//            test.runInteractiveTests();
+//            test.runInteractiveTests("interactiveDisplay"); 
+            test.runInteractiveTests("interactiveCustomBannerDisplay");
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
@@ -260,17 +261,20 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
             super(dlg);
         }
 
+        /**
+         * the original (super) default 400x60 banner is been resized to a (0, 0, 200, 100)-rectangle
+         */
         @Override
         public Image getBanner() {
             Image banner = super.getBanner();
             BufferedImage im = GraphicsUtilities.createCompatibleTranslucentImage(banner.getWidth(null), banner.getHeight(null));
-            Graphics2D g = im.createGraphics();
+            Graphics2D g2 = im.createGraphics();
             
             try {
-                g.setComposite(AlphaComposite.Src);
-                g.drawImage(banner, 0, 0, 100, 100, null);
+                g2.setComposite(AlphaComposite.Src);
+                g2.drawImage(banner, 0, 0, 200, 100, null);
             } finally {
-                g.dispose();
+                g2.dispose();
             }
             
             return im;

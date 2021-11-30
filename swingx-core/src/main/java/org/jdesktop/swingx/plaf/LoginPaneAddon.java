@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import java.awt.Color;
@@ -45,23 +42,28 @@ public class LoginPaneAddon extends AbstractComponentAddon {
         super("JXLoginPane");
     }
 
+    private static final String KEY_BANNER_FONT = "JXLoginPane.bannerFont";
+    private static final String KEY_BANNER_FOREGROUND = "JXLoginPane.bannerForeground";
+    private static final String KEY_BANNER_DARK_BG = "JXLoginPane.bannerDarkBackground";
+    private static final String KEY_BANNER_LIGHT_BG = "JXLoginPane.bannerLightBackground";
+
   @Override
   protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
     super.addBasicDefaults(addon, defaults);
     Color errorBG = new Color(255, 215, 215);
 
     defaults.add(JXLoginPane.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI");
-    defaults.add("JXLoginPane.errorIcon",
-            LookAndFeel.makeIcon(LoginPaneAddon.class, "basic/resources/error16.png"));
-    defaults.add("JXLoginPane.bannerFont", new FontUIResource("Arial Bold", Font.PLAIN, 36));
+    defaults.add("JXLoginPane.errorIcon", LookAndFeel.makeIcon(LoginPaneAddon.class, "basic/resources/error16.png"));
     //#911 Not every LAF has Label.font defined ...
     Font labelFont = UIManager.getFont("Label.font");
     Font boldLabel = labelFont != null ? labelFont.deriveFont(Font.BOLD) : new Font("SansSerif", Font.BOLD, 12);
-    defaults.add("JXLoginPane.pleaseWaitFont",
-            new FontUIResource(boldLabel));
-    defaults.add("JXLoginPane.bannerForeground", new ColorUIResource(Color.WHITE));
-    defaults.add("JXLoginPane.bannerDarkBackground", new ColorUIResource(Color.GRAY));
-    defaults.add("JXLoginPane.bannerLightBackground", new ColorUIResource(Color.LIGHT_GRAY));
+    defaults.add("JXLoginPane.pleaseWaitFont", new FontUIResource(boldLabel));
+    
+    defaults.add(KEY_BANNER_FONT, new FontUIResource("Arial Bold", Font.PLAIN, 36));
+    defaults.add(KEY_BANNER_FOREGROUND, new ColorUIResource(Color.WHITE));
+    defaults.add(KEY_BANNER_DARK_BG, new ColorUIResource(Color.GRAY));
+    defaults.add(KEY_BANNER_LIGHT_BG, new ColorUIResource(Color.LIGHT_GRAY));
+    
     defaults.add("JXLoginPane.errorBackground", new ColorUIResource(errorBG));
     defaults.add("JXLoginPane.errorBorder",
             new BorderUIResource(BorderFactory.createCompoundBorder(
@@ -70,8 +72,7 @@ public class LoginPaneAddon extends AbstractComponentAddon {
                             BorderFactory.createLineBorder(Color.GRAY.darker()),
                             BorderFactory.createMatteBorder(5, 7, 5, 5, errorBG)))));
 
-    UIManagerExt.addResourceBundle(
-        "org.jdesktop.swingx.plaf.basic.resources.LoginPane");
+    UIManagerExt.addResourceBundle("org.jdesktop.swingx.plaf.basic.resources.LoginPane");
   }
 
   @Override
@@ -79,15 +80,13 @@ public class LoginPaneAddon extends AbstractComponentAddon {
     super.addMetalDefaults(addon, defaults);
 
     if (isPlastic()) {
-      defaults.add("JXLoginPane.bannerForeground", new ColorUIResource(Color.WHITE));
-      defaults.add("JXLoginPane.bannerDarkBackground", new ColorUIResource(Color.GRAY));
-      defaults.add("JXLoginPane.bannerLightBackground", new ColorUIResource(Color.LIGHT_GRAY));
+      defaults.add(KEY_BANNER_FOREGROUND, new ColorUIResource(Color.WHITE));
+      defaults.add(KEY_BANNER_DARK_BG, new ColorUIResource(Color.GRAY));
+      defaults.add(KEY_BANNER_LIGHT_BG, new ColorUIResource(Color.LIGHT_GRAY));
     } else {
-        defaults.add("JXLoginPane.bannerForeground", new ColorUIResource(Color.WHITE));
-        defaults.add("JXLoginPane.bannerDarkBackground",
-                MetalLookAndFeel.getCurrentTheme().getPrimaryControlDarkShadow());
-        defaults.add("JXLoginPane.bannerLightBackground",
-                MetalLookAndFeel.getCurrentTheme().getPrimaryControl());
+        defaults.add(KEY_BANNER_FOREGROUND, new ColorUIResource(Color.WHITE));
+        defaults.add(KEY_BANNER_DARK_BG, MetalLookAndFeel.getCurrentTheme().getPrimaryControlDarkShadow());
+        defaults.add(KEY_BANNER_LIGHT_BG, MetalLookAndFeel.getCurrentTheme().getPrimaryControl());
     }
   }
 
@@ -95,8 +94,8 @@ public class LoginPaneAddon extends AbstractComponentAddon {
   protected void addWindowsDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
     super.addWindowsDefaults(addon, defaults);
 
-    defaults.add("JXLoginPane.bannerForeground", new ColorUIResource(Color.WHITE));
-    defaults.add("JXLoginPane.bannerDarkBackground", new ColorUIResource(49, 121, 242));
-    defaults.add("JXLoginPane.bannerLightBackground", new ColorUIResource(198, 211, 247));
+    defaults.add(KEY_BANNER_FOREGROUND, new ColorUIResource(Color.WHITE));
+    defaults.add(KEY_BANNER_DARK_BG, new ColorUIResource(49, 121, 242));
+    defaults.add(KEY_BANNER_LIGHT_BG, new ColorUIResource(198, 211, 247));
   }
 }

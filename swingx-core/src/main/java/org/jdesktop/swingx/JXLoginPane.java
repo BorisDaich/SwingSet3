@@ -174,15 +174,12 @@ public class JXLoginPane extends JXPanel {
      * The current login status for this panel
      */
     private Status status = Status.NOT_STARTED;
-    
+
     /**
      * An optional banner at the top of the panel
      */
-//    private JXImagePanel ipBanner; // deprecated (pre-1.6.2) use a JXPanel with an ImagePainter
     private JXPanel banner;
     private ImagePainter imgPainter; 
-    // ==> AbstractPainter
-//    private AbstractPainter imgPainter;
     /**
      * Text that should appear on the banner
      */
@@ -308,57 +305,6 @@ public class JXLoginPane extends JXPanel {
         LookAndFeelAddons.contribute(new LoginPaneAddon());
     }
 
-    /**
-     * Populates UIDefaults with the localizable Strings we will use
-     * in the Login panel.
-     */
-    private void reinitLocales(Locale l) {
-        // PENDING: JW - use the locale given as parameter
-        // as this probably (?) should be called before super.setLocale
-        String sBanner = UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale());
-        LOG.info("bannerString="+sBanner);
-        setBannerText(sBanner);
-        banner.setBackgroundPainter(imgPainter);
-//        ipBanner.setImage(createLoginBanner());
-
-        if (!isErrorMessageSet) {
-            errorMessageLabel.setText(UIManager.getString(CLASS_NAME + ".errorMessage", getLocale()));
-        }
-        progressMessageLabel.setText(UIManagerExt.getString(CLASS_NAME + ".pleaseWait", getLocale()));
-        recreateLoginPanel();
-        Window w = SwingUtilities.getWindowAncestor(this);
-        if (w instanceof JXLoginFrame) {
-            JXLoginFrame f = (JXLoginFrame) w;
-            f.setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
-            if (buttonPanel != null) {
-                buttonPanel.getOk().setText(UIManagerExt.getString(CLASS_NAME + ".loginString", getLocale()));
-                buttonPanel.getCancel().setText(UIManagerExt.getString(CLASS_NAME + ".cancelString", getLocale()));
-            }
-        }
-        JLabel lbl = (JLabel) passwordField.getClientProperty("labeledBy");
-        if (lbl != null) {
-            lbl.setText(UIManagerExt.getString(CLASS_NAME + ".passwordString", getLocale()));
-        }
-        lbl = (JLabel) namePanel.getComponent().getClientProperty("labeledBy");
-        if (lbl != null) {
-            lbl.setText(UIManagerExt.getString(CLASS_NAME + ".nameString", getLocale()));
-        }
-        if (serverCombo != null) {
-            lbl = (JLabel) serverCombo.getClientProperty("labeledBy");
-            if (lbl != null) {
-                lbl.setText(UIManagerExt.getString(CLASS_NAME + ".serverString", getLocale()));
-            }
-        }
-        saveCB.setText(UIManagerExt.getString(CLASS_NAME + ".rememberPasswordString", getLocale()));
-        // by default, caps is initialized in off state - i.e. without warning. Setting to
-        // whitespace preserves formatting of the panel.
-        capsOn.setText(isCapsLockOn() ? UIManagerExt.getString(CLASS_NAME + ".capsOnWarning", getLocale()) : " ");
-
-        getActionMap().get(LOGIN_ACTION_COMMAND).putValue(Action.NAME, UIManagerExt.getString(CLASS_NAME + ".loginString", getLocale()));
-        getActionMap().get(CANCEL_LOGIN_ACTION_COMMAND).putValue(Action.NAME, UIManagerExt.getString(CLASS_NAME + ".cancelString", getLocale()));
-
-    }
-
     //--------------------------------------------------------- Constructors
     /**
      * Create a {@code JXLoginPane} that always accepts the user, never stores
@@ -465,6 +411,119 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
+     * Create all of the UI components for the login panel
+     */
+    private void initComponents() {
+        //create the default banner
+//        ipBanner.setImage(createLoginBanner());
+//        imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
+        LOG.info(">>>>>> imgPainter:"+imgPainter);
+//        banner.setBackgroundPainter(imgPainter);
+
+        //create the default label
+        messageLabel = new JLabel(" ");
+        messageLabel.setOpaque(false);
+        messageLabel.setFont(messageLabel.getFont().deriveFont(Font.BOLD));
+
+        //create the main components
+        loginPanel = createLoginPanel();
+
+        //create the message and hyperlink and hide them
+        errorMessageLabel.setIcon(UIManager.getIcon(CLASS_NAME + ".errorIcon", getLocale()));
+        errorMessageLabel.setVerticalTextPosition(SwingConstants.TOP);
+        errorMessageLabel.setLineWrap(true);
+        errorMessageLabel.setPaintBorderInsets(false);
+        errorMessageLabel.setBackgroundPainter(new MattePainter(UIManager.getColor(CLASS_NAME + ".errorBackground", getLocale()), true));
+        errorMessageLabel.setMaxLineSpan(320);
+        errorMessageLabel.setVisible(false);
+
+        //aggregate the optional message label, content, and error label into
+        //the contentPanel
+        contentPanel = new JXPanel(new LoginPaneLayout());
+        contentPanel.setOpaque(false);
+        messageLabel.setBorder(BorderFactory.createEmptyBorder(12, 12, 7, 11));
+        contentPanel.add(messageLabel);
+        loginPanel.setBorder(BorderFactory.createEmptyBorder(0, 36, 7, 11));
+        contentPanel.add(loginPanel);
+        errorMessageLabel.setBorder(UIManager.getBorder(CLASS_NAME + ".errorBorder", getLocale()));
+        contentPanel.add(errorMessageLabel);
+
+        //create the progress panel
+        progressPanel = new JXPanel(new GridBagLayout());
+        progressPanel.setOpaque(false);
+        progressMessageLabel = new JLabel(UIManagerExt.getString(CLASS_NAME + ".pleaseWait", getLocale()));
+        progressMessageLabel.setFont(UIManager.getFont(CLASS_NAME +".pleaseWaitFont", getLocale()));
+        JProgressBar pb = new JProgressBar();
+        pb.setIndeterminate(true);
+        JButton cancelButton = new JButton(getActionMap().get(CANCEL_LOGIN_ACTION_COMMAND));
+        progressPanel.add(progressMessageLabel, new GridBagConstraints(0, 0, 2, 1, 1.0, 0.0, GridBagConstraints.LINE_START, GridBagConstraints.HORIZONTAL, new Insets(12, 12, 11, 11), 0, 0));
+        progressPanel.add(pb, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 24, 11, 7), 0, 0));
+        progressPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 11, 11), 0, 0));
+
+        LOG.info("layout the panel ... zum Test in SOUTH banner:"+banner);
+        setLayout(new BorderLayout());
+        add(banner, BorderLayout.NORTH);
+        contentCardPane = new JPanel(new CardLayout());
+        contentCardPane.setOpaque(false);
+        contentCardPane.add(contentPanel, "0");
+        contentCardPane.add(progressPanel, "1");
+        add(contentCardPane, BorderLayout.CENTER);
+    }
+
+    /**
+     * Populates UIDefaults with the localizable Strings we will use
+     * in the Login panel.
+     */
+    private void reinitLocales(Locale l) {
+        // PENDING: JW - use the locale given as parameter
+        // as this probably (?) should be called before super.setLocale
+        String sBanner = UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale());
+        LOG.info("bannerString="+sBanner);
+        setBannerText(sBanner);
+        banner.setBackgroundPainter(imgPainter);
+        
+        if (!isErrorMessageSet) {
+            errorMessageLabel.setText(UIManager.getString(CLASS_NAME + ".errorMessage", getLocale()));
+        }
+        progressMessageLabel.setText(UIManagerExt.getString(CLASS_NAME + ".pleaseWait", getLocale()));
+        recreateLoginPanel();
+        Window w = SwingUtilities.getWindowAncestor(this);
+        LOG.info("w type is "+w.getClass() + ", titleString="+UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
+        if (w instanceof JXLoginFrame) {
+            JXLoginFrame f = (JXLoginFrame) w;
+            // TODO : Title steht noch Anmeldung statt Identificativo Utente
+            LOG.info("TODO titleString="+UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
+            f.setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
+            if (buttonPanel != null) {
+                buttonPanel.getOk().setText(UIManagerExt.getString(CLASS_NAME + ".loginString", getLocale()));
+                buttonPanel.getCancel().setText(UIManagerExt.getString(CLASS_NAME + ".cancelString", getLocale()));
+            }
+        }
+        JLabel lbl = (JLabel) passwordField.getClientProperty("labeledBy");
+        if (lbl != null) {
+            lbl.setText(UIManagerExt.getString(CLASS_NAME + ".passwordString", getLocale()));
+        }
+        lbl = (JLabel) namePanel.getComponent().getClientProperty("labeledBy");
+        if (lbl != null) {
+            lbl.setText(UIManagerExt.getString(CLASS_NAME + ".nameString", getLocale()));
+        }
+        if (serverCombo != null) {
+            lbl = (JLabel) serverCombo.getClientProperty("labeledBy");
+            if (lbl != null) {
+                lbl.setText(UIManagerExt.getString(CLASS_NAME + ".serverString", getLocale()));
+            }
+        }
+        saveCB.setText(UIManagerExt.getString(CLASS_NAME + ".rememberPasswordString", getLocale()));
+        // by default, caps is initialized in off state - i.e. without warning. Setting to
+        // whitespace preserves formatting of the panel.
+        capsOn.setText(isCapsLockOn() ? UIManagerExt.getString(CLASS_NAME + ".capsOnWarning", getLocale()) : " ");
+
+        getActionMap().get(LOGIN_ACTION_COMMAND).putValue(Action.NAME, UIManagerExt.getString(CLASS_NAME + ".loginString", getLocale()));
+        getActionMap().get(CANCEL_LOGIN_ACTION_COMMAND).putValue(Action.NAME, UIManagerExt.getString(CLASS_NAME + ".cancelString", getLocale()));
+
+    }
+
+    /**
      * Gets current state of the caps lock as seen by the login panel. The state seen by the login
      * panel and therefore returned by this method can be delayed in comparison to the real caps
      * lock state and displayed by the keyboard light. This is usually the case when component or
@@ -495,9 +554,6 @@ public class JXLoginPane extends JXPanel {
      */
 	public void setUI(LoginPaneUI ui) {
 		// initialized here due to implicit updateUI call from JPanel
-//		if (ipBanner == null) {
-//			ipBanner = new JXImagePanel();
-//		}
 		if (banner == null) {
 			banner = new JXPanel();
 		}
@@ -506,12 +562,15 @@ public class JXLoginPane extends JXPanel {
 		}
 		super.setUI(ui);
 		Image img = createLoginBanner();
-//		ipBanner.setImage(img);
-		imgPainter = new ImagePainter((BufferedImage)img);
-		LOG.info("imgPainter:"+imgPainter.getClass());
-		banner.setBackgroundPainter(imgPainter);
-		BufferedImage bi = (BufferedImage)img;
-		banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
+		if(img instanceof BufferedImage) {
+			BufferedImage bi = (BufferedImage)img;
+			imgPainter = new ImagePainter(bi);
+			LOG.info("banner image:"+bi);
+			banner.setBackgroundPainter(imgPainter);
+			banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
+		} else {
+			LOG.warning("(expected BufferedImage) the banner for the JXLoginPane class:"+img.getClass());
+		}
 	}
 
     /**
@@ -718,67 +777,6 @@ public class JXLoginPane extends JXPanel {
             banner.setBackgroundPainter(imgPainter);
             progressPanel.applyComponentOrientation(orient);
         }
-    }
-
-    /**
-     * Create all of the UI components for the login panel
-     */
-    private void initComponents() {
-        //create the default banner
-//        ipBanner.setImage(createLoginBanner());
-//        imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
-        LOG.info(">>>>>> imgPainter:"+imgPainter);
-//        banner.setBackgroundPainter(imgPainter);
-
-        //create the default label
-        messageLabel = new JLabel(" ");
-        messageLabel.setOpaque(false);
-        messageLabel.setFont(messageLabel.getFont().deriveFont(Font.BOLD));
-
-        //create the main components
-        loginPanel = createLoginPanel();
-
-        //create the message and hyperlink and hide them
-        errorMessageLabel.setIcon(UIManager.getIcon(CLASS_NAME + ".errorIcon", getLocale()));
-        errorMessageLabel.setVerticalTextPosition(SwingConstants.TOP);
-        errorMessageLabel.setLineWrap(true);
-        errorMessageLabel.setPaintBorderInsets(false);
-        errorMessageLabel.setBackgroundPainter(new MattePainter(UIManager.getColor(CLASS_NAME + ".errorBackground", getLocale()), true));
-        errorMessageLabel.setMaxLineSpan(320);
-        errorMessageLabel.setVisible(false);
-
-        //aggregate the optional message label, content, and error label into
-        //the contentPanel
-        contentPanel = new JXPanel(new LoginPaneLayout());
-        contentPanel.setOpaque(false);
-        messageLabel.setBorder(BorderFactory.createEmptyBorder(12, 12, 7, 11));
-        contentPanel.add(messageLabel);
-        loginPanel.setBorder(BorderFactory.createEmptyBorder(0, 36, 7, 11));
-        contentPanel.add(loginPanel);
-        errorMessageLabel.setBorder(UIManager.getBorder(CLASS_NAME + ".errorBorder", getLocale()));
-        contentPanel.add(errorMessageLabel);
-
-        //create the progress panel
-        progressPanel = new JXPanel(new GridBagLayout());
-        progressPanel.setOpaque(false);
-        progressMessageLabel = new JLabel(UIManagerExt.getString(CLASS_NAME + ".pleaseWait", getLocale()));
-        progressMessageLabel.setFont(UIManager.getFont(CLASS_NAME +".pleaseWaitFont", getLocale()));
-        JProgressBar pb = new JProgressBar();
-        pb.setIndeterminate(true);
-        JButton cancelButton = new JButton(getActionMap().get(CANCEL_LOGIN_ACTION_COMMAND));
-        progressPanel.add(progressMessageLabel, new GridBagConstraints(0, 0, 2, 1, 1.0, 0.0, GridBagConstraints.LINE_START, GridBagConstraints.HORIZONTAL, new Insets(12, 12, 11, 11), 0, 0));
-        progressPanel.add(pb, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 24, 11, 7), 0, 0));
-        progressPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 11, 11), 0, 0));
-
-        LOG.info("layout the panel ... zum Test in SOUTH banner:"+banner);
-        setLayout(new BorderLayout());
-//        add(ipBanner, BorderLayout.NORTH);
-        add(banner, BorderLayout.NORTH);
-        contentCardPane = new JPanel(new CardLayout());
-        contentCardPane.setOpaque(false);
-        contentCardPane.add(contentPanel, "0");
-        contentCardPane.add(progressPanel, "1");
-        add(contentCardPane, BorderLayout.CENTER);
     }
 
     private final class LoginPaneLayout extends VerticalLayout implements LayoutManager {
@@ -1074,9 +1072,9 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
-     * Set the text to use when creating the banner. If a custom banner image is
-     * specified, then this is ignored. If {@code text} is {@code null}, then
-     * no text is displayed.
+     * Set the text to use when creating the banner. 
+     * If a custom banner image is specified, then this is ignored. TODO 
+     * If {@code text} is {@code null}, then no text is displayed.
      *
      * @param text
      *            the text to display
@@ -1088,10 +1086,8 @@ public class JXLoginPane extends JXPanel {
 
         if (!text.equals(this.bannerText)) {
             String oldText = this.bannerText;
-        	LOG.info("bannerText old="+oldText + " new="+bannerText);
+        	LOG.info("bannerText old="+oldText + " new="+text);
             this.bannerText = text;
-            //fix the login banner
-//            this.ipBanner.setImage(createLoginBanner());
 //            setBanner(createLoginBanner());
             imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
             banner.setBackgroundPainter(imgPainter);

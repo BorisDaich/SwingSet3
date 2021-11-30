@@ -36,12 +36,18 @@ import org.jdesktop.swingx.plaf.windows.WindowsLookAndFeelAddons;
 @SuppressWarnings("nls")
 public abstract class AbstractComponentAddon implements ComponentAddon {
 
+  /**
+   * the name of this addon
+   */
     private String name;
 
     protected AbstractComponentAddon(String name) {
         this.name = name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String getName() {
         return name;
