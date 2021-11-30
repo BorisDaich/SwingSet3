@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -40,6 +41,8 @@ import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.swingx.JXLoginPane;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.JXLoginPane.SaveMode;
+import org.jdesktop.swingx.JXLoginPane.Status;
 
 import com.sun.swingset3.DemoProperties;
 
@@ -102,7 +105,7 @@ public class LoginPaneDemo extends JPanel {
     private void createLoginPaneDemo() {
         service = new DemoLoginService();
         loginPane = new JXLoginPane(service);
-        loginPane.setLocale(Locale.ITALIAN);
+        loginPane.setLocale(Locale.ITALIAN); // fixed im Title steht noch Anmeldung
         LOG.info("banner:"+loginPane.getBanner());
         List<String> servers = new ArrayList<String>();
         servers.add("A");
@@ -122,11 +125,17 @@ public class LoginPaneDemo extends JPanel {
     }
     
     private void bind() {
-        loginLauncher.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane);
-            }
-        });
+    	loginLauncher.addActionListener(event -> {
+    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane); // returns status
+    		LOG.info("status:"+status);
+    		// or per Frame:
+//    		JFrame frame = JXLoginPane.showLoginFrame(loginPane);
+//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+////            frame.setJMenuBar(createAndFillMenuBar(panel));
+////            loginPane.setSaveMode(SaveMode.BOTH);
+//            frame.pack();
+//            frame.setVisible(true);
+    	});
         Bindings.createAutoBinding(READ,
                 allowLogin, BeanProperty.create("selected"),
                 service, BeanProperty.create("validLogin")).bind();

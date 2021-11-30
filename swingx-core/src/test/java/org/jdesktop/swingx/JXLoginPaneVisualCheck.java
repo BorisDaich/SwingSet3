@@ -70,6 +70,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 //            test.runInteractiveTests();
 //            test.runInteractiveTests("interactiveDisplay"); 
             test.runInteractiveTests("interactiveCustomBannerDisplay");
+//            test.runInteractiveTests("interactiveBackground");         
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
@@ -141,6 +142,9 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         frame.setJMenuBar(createAndFillMenuBar(panel));
 
         panel.setSaveMode(SaveMode.BOTH);
+        
+        panel.setBanner(null); // remove Banner, custom no Banner
+        panel.setBannerText("String text"); // BUG, expected : this is ignored
 
         frame.pack();
         frame.setVisible(true);

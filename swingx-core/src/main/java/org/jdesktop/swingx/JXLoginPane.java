@@ -414,10 +414,9 @@ public class JXLoginPane extends JXPanel {
      * Create all of the UI components for the login panel
      */
     private void initComponents() {
-        //create the default banner
-//        ipBanner.setImage(createLoginBanner());
+        //create the default banner TODO hier oder in setUI?
 //        imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
-        LOG.info(">>>>>> imgPainter:"+imgPainter);
+        LOG.fine(">>>>>> imgPainter:"+imgPainter);
 //        banner.setBackgroundPainter(imgPainter);
 
         //create the default label
@@ -460,7 +459,6 @@ public class JXLoginPane extends JXPanel {
         progressPanel.add(pb, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 24, 11, 7), 0, 0));
         progressPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 11, 11), 0, 0));
 
-        LOG.info("layout the panel ... zum Test in SOUTH banner:"+banner);
         setLayout(new BorderLayout());
         add(banner, BorderLayout.NORTH);
         contentCardPane = new JPanel(new CardLayout());
@@ -478,7 +476,7 @@ public class JXLoginPane extends JXPanel {
         // PENDING: JW - use the locale given as parameter
         // as this probably (?) should be called before super.setLocale
         String sBanner = UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale());
-        LOG.info("bannerString="+sBanner);
+        LOG.info("locale "+l+" bannerString="+sBanner);
         setBannerText(sBanner);
         banner.setBackgroundPainter(imgPainter);
         
@@ -488,11 +486,18 @@ public class JXLoginPane extends JXPanel {
         progressMessageLabel.setText(UIManagerExt.getString(CLASS_NAME + ".pleaseWait", getLocale()));
         recreateLoginPanel();
         Window w = SwingUtilities.getWindowAncestor(this);
-        LOG.info("w type is "+w.getClass() + ", titleString="+UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
+        /*
+         * Window w can be null @see LoginPaneDemo.createLoginPaneDemo(),
+         * in this case titleString cannot be set here
+         */
+//        // 
+//        LOG.info("w:"+w + ", titleString="+UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
+//        if(w==null) {
+//        	titleString = UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale());
+//        	titleLocale = getLocale();
+//        } else 
         if (w instanceof JXLoginFrame) {
             JXLoginFrame f = (JXLoginFrame) w;
-            // TODO : Title steht noch Anmeldung statt Identificativo Utente
-            LOG.info("TODO titleString="+UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
             f.setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
             if (buttonPanel != null) {
                 buttonPanel.getOk().setText(UIManagerExt.getString(CLASS_NAME + ".loginString", getLocale()));
@@ -547,11 +552,25 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
+     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Replaces the current UI object with the latest version from the
+     * <code>UIManager</code>.
+     *
+     * @see javax.swing.JComponent#updateUI
+     */
+    @Override
+    public void updateUI() {
+        setUI((LoginPaneUI) LookAndFeelAddons.getUI(this, LoginPaneUI.class));
+    }
+
+    /**
      * Sets the look and feel (L&F) object that renders this component.
      *
      * @param ui the LoginPaneUI L&F object
      * @see javax.swing.UIDefaults#getUI
+     * @see #updateUI
      */
+    // public wg. test
 	public void setUI(LoginPaneUI ui) {
 		// initialized here due to implicit updateUI call from JPanel
 		if (banner == null) {
@@ -565,25 +584,13 @@ public class JXLoginPane extends JXPanel {
 		if(img instanceof BufferedImage) {
 			BufferedImage bi = (BufferedImage)img;
 			imgPainter = new ImagePainter(bi);
-			LOG.info("banner image:"+bi);
+			LOG.config("banner image:"+bi);
 			banner.setBackgroundPainter(imgPainter);
 			banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
 		} else {
 			LOG.warning("(expected BufferedImage) the banner for the JXLoginPane class:"+img.getClass());
 		}
 	}
-
-    /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
-     * Replaces the current UI object with the latest version from the
-     * <code>UIManager</code>.
-     *
-     * @see javax.swing.JComponent#updateUI
-     */
-    @Override
-    public void updateUI() {
-        setUI((LoginPaneUI) LookAndFeelAddons.getUI(this, LoginPaneUI.class));
-    }
 
     /**
      * Returns the name of the L&F class that renders this component.
@@ -1006,7 +1013,9 @@ public class JXLoginPane extends JXPanel {
     }
     
     /**
-     * Gets current state of the user name field. Field can be either disabled (false) for editing or enabled (true).
+     * Gets current state of the user name field. 
+     * Field can be either disabled (false) for editing or enabled (true).
+     * 
      * @return True when user name field is enabled and editable, false otherwise.
      */
     public boolean isUserNameEnabled() {
@@ -1043,9 +1052,7 @@ public class JXLoginPane extends JXPanel {
      * Return the image used as the banner
      */
     public Image getBanner() {
-//        return ipBanner.getImage();
     	return imgPainter.getImage();
-//    	return ((ImagePainter)imgPainter).getImage();
     }
 
     /**
@@ -1056,14 +1063,9 @@ public class JXLoginPane extends JXPanel {
      *            the image to display
      */
     public void setBanner(Image img) {
-        // we do not expose the ImagePanel, so we will produce property change
-        // events here
+        // we do not expose the ImagePanel, so we will produce property change events here
         Image oldImage = getBanner();
 
-//        if (oldImage != img) {
-//            ipBanner.setImage(img);
-//            firePropertyChange("banner", oldImage, getBanner());
-//        }
         if (oldImage != img) {
         	imgPainter = new ImagePainter((BufferedImage) img);
             banner.setBackgroundPainter(imgPainter);
@@ -1073,7 +1075,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Set the text to use when creating the banner. 
-     * If a custom banner image is specified, then this is ignored. TODO 
+     * If a custom banner image is specified, then this is ignored. TODO BUG 
      * If {@code text} is {@code null}, then no text is displayed.
      *
      * @param text
@@ -1088,7 +1090,6 @@ public class JXLoginPane extends JXPanel {
             String oldText = this.bannerText;
         	LOG.info("bannerText old="+oldText + " new="+text);
             this.bannerText = text;
-//            setBanner(createLoginBanner());
             imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
             banner.setBackgroundPainter(imgPainter);
             firePropertyChange("bannerText", oldText, text);
@@ -1253,7 +1254,7 @@ public class JXLoginPane extends JXPanel {
      */
     protected class LoginListenerImpl extends LoginAdapter {
         @Override
-	public void loginSucceeded(LoginEvent source) {
+        public void loginSucceeded(LoginEvent source) {
             //save the user names and passwords
             String userName = namePanel.getUserName();
             if ((getSaveMode() == SaveMode.USER_NAME || getSaveMode() == SaveMode.BOTH)
@@ -1278,7 +1279,7 @@ public class JXLoginPane extends JXPanel {
         }
 
         @Override
-	public void loginStarted(LoginEvent source) {
+        public void loginStarted(LoginEvent source) {
             assert EventQueue.isDispatchThread();
             getActionMap().get(LOGIN_ACTION_COMMAND).setEnabled(false);
             getActionMap().get(CANCEL_LOGIN_ACTION_COMMAND).setEnabled(true);
@@ -1291,7 +1292,7 @@ public class JXLoginPane extends JXPanel {
         }
 
         @Override
-	public void loginFailed(LoginEvent source) {
+        public void loginFailed(LoginEvent source) {
             assert EventQueue.isDispatchThread();
 //            remove(progressPanel);
 //            add(contentPanel, BorderLayout.CENTER);
@@ -1304,7 +1305,7 @@ public class JXLoginPane extends JXPanel {
         }
 
         @Override
-	public void loginCanceled(LoginEvent source) {
+        public void loginCanceled(LoginEvent source) {
             assert EventQueue.isDispatchThread();
 //            remove(progressPanel);
 //            add(contentPanel, BorderLayout.CENTER);
@@ -1321,20 +1322,24 @@ public class JXLoginPane extends JXPanel {
     /**
      * Action that initiates a login procedure. Delegates to JXLoginPane.startLogin
      */
-    private static final class LoginAction extends AbstractActionExt {
-        private static final long serialVersionUID = 7256761187925982485L;
-        private JXLoginPane panel;
-        public LoginAction(JXLoginPane p) {
-            super(UIManagerExt.getString(CLASS_NAME + ".loginString", p.getLocale()), LOGIN_ACTION_COMMAND);
-            this.panel = p;
-        }
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            panel.startLogin();
-        }
-        @Override
-	public void itemStateChanged(ItemEvent e) {}
-    }
+	private static final class LoginAction extends AbstractActionExt {
+		private static final long serialVersionUID = 7256761187925982485L;
+		private JXLoginPane panel;
+
+		public LoginAction(JXLoginPane p) {
+			super(UIManagerExt.getString(CLASS_NAME + ".loginString", p.getLocale()), LOGIN_ACTION_COMMAND);
+			this.panel = p;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			panel.startLogin();
+		}
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+		}
+	}
 
     /**
      * Action that cancels the login procedure.
@@ -1583,8 +1588,10 @@ public class JXLoginPane extends JXPanel {
      */
     public static Status showLoginDialog(Component parent, JXLoginPane panel) {
         Window w = WindowUtils.findWindow(parent);
+        LOG.info("parent:"+parent + ", w:"+w);
         JXLoginDialog dlg =  null;
         if (w == null) {
+//        	LOG.info("new JXLoginDialog((Frame)null, panel)");
             dlg = new JXLoginDialog((Frame)null, panel);
         } else if (w instanceof Dialog) {
             dlg = new JXLoginDialog((Dialog)w, panel);
@@ -1638,7 +1645,8 @@ public class JXLoginPane extends JXPanel {
         }
 
         protected void init(JXLoginPane p) {
-            setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
+        	LOG.info("set titleString to Locale "+p.getLocale());
+            setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", p.getLocale()));
             this.panel = p;
             initWindow(this, panel);
         }
@@ -1648,32 +1656,32 @@ public class JXLoginPane extends JXPanel {
         }
     }
 
-    public static final class JXLoginFrame extends JXFrame {
-        private static final long serialVersionUID = -9016407314342050807L;
-        private JXLoginPane panel;
+	public static final class JXLoginFrame extends JXFrame {
+		private static final long serialVersionUID = -9016407314342050807L;
+		private JXLoginPane panel;
 
-        public JXLoginFrame(JXLoginPane p) {
-            super(UIManagerExt.getString(CLASS_NAME + ".titleString", p.getLocale()));
-            JXPanel cp = new JXPanel();
-            cp.setOpaque(true);
-            setContentPane(cp);
-            this.panel = p;
-            initWindow(this, panel);
-        }
+		public JXLoginFrame(JXLoginPane p) {
+			super(UIManagerExt.getString(CLASS_NAME + ".titleString", p.getLocale()));
+			JXPanel cp = new JXPanel();
+			cp.setOpaque(true);
+			setContentPane(cp);
+			this.panel = p;
+			initWindow(this, panel);
+		}
 
-        @Override
-	public JXPanel getContentPane() {
-            return (JXPanel) super.getContentPane();
-        }
+		@Override
+		public JXPanel getContentPane() {
+			return (JXPanel) super.getContentPane();
+		}
 
-        public JXLoginPane.Status getStatus() {
-            return panel.getStatus();
-        }
+		public JXLoginPane.Status getStatus() {
+			return panel.getStatus();
+		}
 
-        public JXLoginPane getPanel() {
-            return panel;
-        }
-    }
+		public JXLoginPane getPanel() {
+			return panel;
+		}
+	}
 
     /**
      * Utility method for initializing a Window for displaying a LoginDialog.
