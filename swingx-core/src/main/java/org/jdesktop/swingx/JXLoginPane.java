@@ -414,10 +414,8 @@ public class JXLoginPane extends JXPanel {
      * Create all of the UI components for the login panel
      */
     private void initComponents() {
-        //create the default banner TODO hier oder in setUI?
-//        imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
-        LOG.fine(">>>>>> imgPainter:"+imgPainter);
-//        banner.setBackgroundPainter(imgPainter);
+        //create the default banner (done in setUT)
+        LOG.fine("\n banner:"+banner + "\n imgPainter:"+imgPainter);
 
         //create the default label
         messageLabel = new JLabel(" ");
@@ -488,14 +486,8 @@ public class JXLoginPane extends JXPanel {
         Window w = SwingUtilities.getWindowAncestor(this);
         /*
          * Window w can be null @see LoginPaneDemo.createLoginPaneDemo(),
-         * in this case titleString cannot be set here
+         * in this case titleString cannot be set here, done in JXLoginDialog.init
          */
-//        // 
-//        LOG.info("w:"+w + ", titleString="+UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
-//        if(w==null) {
-//        	titleString = UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale());
-//        	titleLocale = getLocale();
-//        } else 
         if (w instanceof JXLoginFrame) {
             JXLoginFrame f = (JXLoginFrame) w;
             f.setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", getLocale()));
@@ -581,14 +573,22 @@ public class JXLoginPane extends JXPanel {
 		}
 		super.setUI(ui);
 		Image img = createLoginBanner();
+		makeBanner(img);
+	}
+
+	private void makeBanner(Image img) {
 		if(img instanceof BufferedImage) {
-			BufferedImage bi = (BufferedImage)img;
+			BufferedImage bi = (BufferedImage) img;
+			LOG.config("banner image:" + bi);
 			imgPainter = new ImagePainter(bi);
-			LOG.config("banner image:"+bi);
 			banner.setBackgroundPainter(imgPainter);
 			banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
+		} else if(img==null) {
+			BufferedImage bi = (BufferedImage) img;
+			imgPainter = new ImagePainter(bi);
+			banner.setBackgroundPainter(imgPainter);
 		} else {
-			LOG.warning("(expected BufferedImage) the banner for the JXLoginPane class:"+img.getClass());
+			LOG.warning("(expected BufferedImage) the banner for the JXLoginPane class:" + img.getClass());
 		}
 	}
 
@@ -779,8 +779,7 @@ public class JXLoginPane extends JXPanel {
         // this if is used to avoid needless creations of the image
         if(orient != super.getComponentOrientation()) {
             super.setComponentOrientation(orient);
-//            ipBanner.setImage(createLoginBanner());
-            imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
+            imgPainter = new ImagePainter((BufferedImage) createLoginBanner()); // TODO
             banner.setBackgroundPainter(imgPainter);
             progressPanel.applyComponentOrientation(orient);
         }
@@ -819,8 +818,8 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
-     * Create and return an image to use for the Banner. This may be overridden
-     * to return any image you like
+     * Create and return an image to use for the Banner. 
+     * This may be overridden to return any image you like
      */
     protected Image createLoginBanner() {
         return getUI() == null ? null : getUI().getBanner();
@@ -1067,20 +1066,20 @@ public class JXLoginPane extends JXPanel {
         Image oldImage = getBanner();
 
         if (oldImage != img) {
-        	imgPainter = new ImagePainter((BufferedImage) img);
-            banner.setBackgroundPainter(imgPainter);
+        	makeBanner(img);
             firePropertyChange("banner", oldImage, getBanner());
         }
     }
 
     /**
      * Set the text to use when creating the banner. 
-     * If a custom banner image is specified, then this is ignored. TODO BUG 
+     * If a custom banner image is specified, then this is ignored.
      * If {@code text} is {@code null}, then no text is displayed.
      *
      * @param text
      *            the text to display
      */
+    // 1st call in: BasicLoginPaneUI.installDefaults()
     public void setBannerText(String text) {
         if (text == null) {
             text = "";
@@ -1088,10 +1087,8 @@ public class JXLoginPane extends JXPanel {
 
         if (!text.equals(this.bannerText)) {
             String oldText = this.bannerText;
-        	LOG.info("bannerText old="+oldText + " new="+text);
+        	LOG.config("bannerText old="+oldText + " new="+text);
             this.bannerText = text;
-            imgPainter = new ImagePainter((BufferedImage) createLoginBanner());
-            banner.setBackgroundPainter(imgPainter);
             firePropertyChange("bannerText", oldText, text);
         }
     }
@@ -1451,8 +1448,7 @@ public class JXLoginPane extends JXPanel {
 	    // auto-complete based on the users input
 	    // AutoCompleteDecorator.decorate(this, Arrays.asList(userNameStore.getUserNames()), false);
 
-	    // listen to text input, and offer password suggestion based on current
-	    // text
+	    // listen to text input, and offer password suggestion based on current text
 	    if (passwordStore != null && passwordField!=null) {
 		addKeyListener(new KeyAdapter() {
 		    @Override
@@ -1588,10 +1584,8 @@ public class JXLoginPane extends JXPanel {
      */
     public static Status showLoginDialog(Component parent, JXLoginPane panel) {
         Window w = WindowUtils.findWindow(parent);
-        LOG.info("parent:"+parent + ", w:"+w);
         JXLoginDialog dlg =  null;
         if (w == null) {
-//        	LOG.info("new JXLoginDialog((Frame)null, panel)");
             dlg = new JXLoginDialog((Frame)null, panel);
         } else if (w instanceof Dialog) {
             dlg = new JXLoginDialog((Dialog)w, panel);

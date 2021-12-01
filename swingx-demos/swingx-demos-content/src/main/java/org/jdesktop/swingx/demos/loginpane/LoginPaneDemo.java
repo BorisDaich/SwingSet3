@@ -20,17 +20,18 @@ package org.jdesktop.swingx.demos.loginpane;
 
 import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -40,9 +41,10 @@ import org.jdesktop.application.Application;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.swingx.JXLoginPane;
-import org.jdesktop.swingx.VerticalLayout;
-import org.jdesktop.swingx.JXLoginPane.SaveMode;
 import org.jdesktop.swingx.JXLoginPane.Status;
+import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
+import org.jdesktop.swingx.util.GraphicsUtilities;
 
 import com.sun.swingset3.DemoProperties;
 
@@ -105,12 +107,16 @@ public class LoginPaneDemo extends JPanel {
     private void createLoginPaneDemo() {
         service = new DemoLoginService();
         loginPane = new JXLoginPane(service);
-        loginPane.setLocale(Locale.ITALIAN); // fixed im Title steht noch Anmeldung
         LOG.info("banner:"+loginPane.getBanner());
         List<String> servers = new ArrayList<String>();
         servers.add("A");
         servers.add("B");
         loginPane.setServers(servers);
+        
+//        loginPane.setBanner(null); // No banner (customizition)
+        loginPane.setBanner(new DummyLoginPaneUI(loginPane).getBanner());
+        loginPane.setLocale(Locale.ITALIAN);
+        loginPane.setBannerText("BannerText"); // BUG: L&F change resets initial settings!
         
         loginLauncher = new JButton();
         loginLauncher.setName("launcher");
@@ -140,4 +146,31 @@ public class LoginPaneDemo extends JPanel {
                 allowLogin, BeanProperty.create("selected"),
                 service, BeanProperty.create("validLogin")).bind();
     }
+    
+    public class DummyLoginPaneUI extends BasicLoginPaneUI {
+
+        public DummyLoginPaneUI(JXLoginPane dlg) {
+            super(dlg);
+        }
+
+        /**
+         * the original (super) default 400x60 banner is been resized to a (0, 0, 200, 100)-rectangle
+         */
+        @Override
+        public Image getBanner() {
+            Image banner = super.getBanner();
+            BufferedImage im = GraphicsUtilities.createCompatibleTranslucentImage(banner.getWidth(null), banner.getHeight(null));
+            Graphics2D g2 = im.createGraphics();
+            
+            try {
+                g2.setComposite(AlphaComposite.Src);
+                g2.drawImage(banner, 0, 0, 200, 100, null);
+            } finally {
+                g2.dispose();
+            }
+            
+            return im;
+        }
+    }
+
 }

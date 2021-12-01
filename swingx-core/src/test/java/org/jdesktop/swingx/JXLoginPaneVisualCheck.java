@@ -68,7 +68,8 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 
         try {
 //            test.runInteractiveTests();
-//            test.runInteractiveTests("interactiveDisplay"); 
+        	// TODO : L&F change resets initial settings!
+            test.runInteractiveTests("interactiveDisplay"); 
             test.runInteractiveTests("interactiveCustomBannerDisplay");
 //            test.runInteractiveTests("interactiveBackground");         
         } catch (Exception e) {
@@ -90,6 +91,9 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         frame.setJMenuBar(createAndFillMenuBar(panel));
 
         panel.setSaveMode(SaveMode.BOTH);
+
+        panel.setBanner(null); // remove Banner, custom no Banner
+        panel.setBannerText("String text"); // BUG, expected : this is ignored
 
         frame.pack();
         frame.setVisible(true);
@@ -143,7 +147,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 
         panel.setSaveMode(SaveMode.BOTH);
         
-        panel.setBanner(null); // remove Banner, custom no Banner
+//        panel.setBanner(null); // remove Banner, custom no Banner
         panel.setBannerText("String text"); // BUG, expected : this is ignored
 
         frame.pack();
