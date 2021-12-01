@@ -1969,8 +1969,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
     }
 
     /**
-     * Issue #618-swingx: JXMonthView displays problems with non-default
-     * timezones.
+     * Issue #618-swingx: JXMonthView displays problems with non-default timezones.
      * 
      * Here: test anchor invariant to time zone change
      */
@@ -2039,6 +2038,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
                 + "\n monthView anchor " + anchor
                 + "\n monthView firstDisplayed " + monthView.getFirstDisplayedDay();
 
+        LOG.info("\n "+server + "\n "+timeZones + "\n "+monthViewProps);
         assertEquals(
                 "first displayed must be offset by real offset "
                         + "\n ********** spurious failure - so try extensiv debug output:"
@@ -2047,6 +2047,56 @@ public class JXMonthViewTest extends InteractiveTestCase {
                         + "\n " + monthViewProps, 
                 (realOffset) / (1000 * 60),
                 (monthView.getFirstDisplayedDay().getTime() - firstDisplayed.getTime()) / (1000 * 60));
+/*
+junit.framework.AssertionFailedError: first displayed must be offset by real offset 
+ ********** spurious failure - so try extensiv debug output:
+ server locale: de_DE
+ server timezone: sun.util.calendar.ZoneInfo[id="Europe/Berlin",offset=3600000,dstSavings=3600000,useDaylight=true,transitions=143,lastRule=java.util.SimpleTimeZone[id=Europe/Berlin,offset=3600000,dstSavings=3600000,useDaylight=true,startYear=0,startMode=2,startMonth=2,startDay=-1,startDayOfWeek=1,startTime=3600000,startTimeMode=2,endMode=2,endMonth=9,endDay=-1,endDayOfWeek=1,endTime=3600000,endTimeMode=2]]
+ server local time: Tue Nov 30 20:42:59 CET 2021
+ first timeZone sun.util.calendar.ZoneInfo[id="GMT+04:00",offset=14400000,dstSavings=0,useDaylight=false,transitions=0,lastRule=null]
+ first timezone offset / min 240
+ second timezone sun.util.calendar.ZoneInfo[id="GMT+07:00",offset=25200000,dstSavings=0,useDaylight=false,transitions=0,lastRule=null]
+ second timezone offset / min 420
+ monthView locale: de_DE
+ monthView anchor Tue Nov 30 20:42:59 CET 2021 !!!!!!! EUG exp: monthView anchor Tue Nov 30 20:52:25 CET 2021
+ monthView firstDisplayed Tue Nov 30 18:00:00 CET 2021 expected:<-180> but was:<43020>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:159)
+	at junit.framework.TestCase.assertEquals(TestCase.java:302)
+	at org.jdesktop.swingx.JXMonthViewTest.testTimeZoneChangeToday(JXMonthViewTest.java:2042)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
+
+
+ */
 /*
  * The output of failure:
  * 
@@ -2082,11 +2132,9 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
     }   
 
     /**
-     * Issue #618-swingx: JXMonthView displays problems with non-default
-     * timezones.
+     * Issue #618-swingx: JXMonthView displays problems with non-default timezones.
      * 
-     * Here: test that the first displayed date is offset by offset diff of 
-     * timezones.
+     * Here: test that the first displayed date is offset by offset diff of timezones.
      * Configure the monthView with a fixed timezone to clear up the mist ...
      * 
      * failed along with previous test, (Tue Sep 30 10:12:31 PDT 2008, en_US locale)
@@ -2107,6 +2155,8 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         Date anchor = monthView.getAnchorDate();
         assertEquals(today, anchor);
         Date firstDisplayed = monthView.getFirstDisplayedDay();
+        LOG.info("         today:"+today);
+        LOG.info("firstDisplayed:"+firstDisplayed + ", time="+firstDisplayed.getTime());
         calendar.setTime(firstDisplayed);
         assertTrue(CalendarUtils.isStartOfMonth(calendar));
         
@@ -2117,14 +2167,60 @@ lastRule=java.util.SimpleTimeZone[id=US/Pacific,offset=-28800000,dstSavings=3600
         int newOffset = tzOther.getOffset(anchor.getTime());
         int realOffset = oldOffset - newOffset;
         monthView.setTimeZone(tzOther);
+        LOG.info("other TimeZone:"+monthView.getFirstDisplayedDay() + ", time="+monthView.getFirstDisplayedDay().getTime());
+        
         Calendar otherCalendar = Calendar.getInstance(tzOther);
         otherCalendar.setTime(monthView.getFirstDisplayedDay());
         assertTrue(CalendarUtils.isStartOfMonth(otherCalendar));
         // PENDING JW: sure this is the correct direction of the shift?
         // yeah, think so: the anchor is fixed, moving the timezone results
         // in a shift into the opposite direction of the offset
+        LOG.info("expected:"+realOffset + ", is="+(monthView.getFirstDisplayedDay().getTime() - firstDisplayed.getTime())
+        		+" == " + monthView.getFirstDisplayedDay().getTime() + "-" + firstDisplayed.getTime()
+        		+"\n"
+        		);
         assertEquals("first displayed must be offset by real offset", 
                 realOffset,  monthView.getFirstDisplayedDay().getTime() - firstDisplayed.getTime());
+/*
+-----------------
+junit.framework.AssertionFailedError: first displayed must be offset by real offset expected:<-10800000> but was:<2581200000>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:159)
+	at junit.framework.TestCase.assertEquals(TestCase.java:302)
+	at org.jdesktop.swingx.JXMonthViewTest.testTimeZoneChangeOffsetFirstDisplayedDate(JXMonthViewTest.java:2126)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
+
+
+ */
     }
     
     /**

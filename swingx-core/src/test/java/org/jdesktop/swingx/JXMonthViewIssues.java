@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -61,24 +59,27 @@ import org.junit.Test;
  * @author Jeanette Winzenburg
  */
 public class JXMonthViewIssues extends InteractiveTestCase {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(JXMonthViewIssues.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXMonthViewIssues.class.getName());
 
 
-    public static void main(String[] args) {
-      setSystemLF(true);
-      InteractiveTestCase  test = new JXMonthViewIssues();
-      try {
-//          test.runInteractiveTests();
-//        test.runInteractiveTests("interactive.*Locale.*");
-//          test.runInteractiveTests("interactive.*AutoScroll.*");
-        test.runInteractiveTests("interactive.*PaintNPE.*");
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-  }
+	public static void main(String[] args) {
+		setSystemLF(true);
+		InteractiveTestCase test = new JXMonthViewIssues();
+		try {
+//			test.runInteractiveTests();
+//			test.runInteractiveTests("interactive.*Locale.*");
+//			test.runInteractiveTests("interactive.*AutoScroll.*");
+//			test.runInteractiveTests("interactive.*PaintNPE.*");
+			test.runInteractiveTests("testTimeZoneChangeOffsetFirstDisplayedDate");
+			test.runInteractiveTests("testTimeZoneChangeToday");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
+
     // pre-defined dates - initialized in setUpCalendar
     protected Date today;
     protected Date tomorrow;
@@ -318,15 +319,14 @@ public class JXMonthViewIssues extends InteractiveTestCase {
 //----------------------
 
     /**
-     * Issue #618-swingx: JXMonthView displays problems with non-default
-     * timezones.
+     * Issue #618-swingx: JXMonthView displays problems with non-default timezones.
      * 
-     * Here: test that the first displayed date is offset by offset diff of 
-     * timezones.
+     * Here: test that the first displayed date is offset by offset diff of timezones.
      * Configure the monthView with a fixed timezone to clear up the mist ...
      * 
      */
     public void testTimeZoneChangeToday() {
+    	LOG.info("\n");
         Locale componentDefault = JComponent.getDefaultLocale();
         try {
         FixedLocaleSelectionModel model = new FixedLocaleSelectionModel();
@@ -408,15 +408,14 @@ public class JXMonthViewIssues extends InteractiveTestCase {
     }
 
     /**
-     * Issue #618-swingx: JXMonthView displays problems with non-default
-     * timezones.
+     * Issue #618-swingx: JXMonthView displays problems with non-default timezones.
      * 
-     * Here: test that the first displayed date is offset by offset diff of 
-     * timezones.
+     * Here: test that the first displayed date is offset by offset diff of timezones.
      * Configure the monthView with a fixed timezone to clear up the mist ...
      * 
      */
     public void testTimeZoneChangeOffsetFirstDisplayedDate() {
+    	LOG.info("\n");
         JXMonthView monthView = new JXMonthView();
         // config with a known timezone and date
         TimeZone tz = TimeZone.getTimeZone("GMT+4");
