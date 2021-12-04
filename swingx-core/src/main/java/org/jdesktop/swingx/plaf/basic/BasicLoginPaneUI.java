@@ -79,6 +79,15 @@ public class BasicLoginPaneUI extends LoginPaneUI {
      */
     @Override
     public Image getBanner() {
+    	return getXBanner(dlg.getBannerText());
+    }
+    private Image eBanner = null;
+    @Override
+    public Image getEBanner() {
+    	if(eBanner==null) eBanner = getXBanner(null);
+    	return eBanner;
+    }
+    public Image getXBanner(String bannerText) {
         int w = 400;
         int h = 60;
         float loginStringX = w * .05f;
@@ -86,6 +95,7 @@ public class BasicLoginPaneUI extends LoginPaneUI {
 
         BufferedImage img = GraphicsUtilities.createCompatibleImage(w, h);
         Graphics2D g2 = img.createGraphics();
+//        String bannerText = dlg.getBannerText();
         try {
             Font font = UIManager.getFont("JXLoginPane.bannerFont");
             g2.setFont(font);
@@ -97,7 +107,7 @@ public class BasicLoginPaneUI extends LoginPaneUI {
                     g2.scale(-1, 1);
                     g2.translate(-w, 0);
                     loginStringX = w
-                    	- (((float) font.getStringBounds(dlg.getBannerText(), originalGraphics.getFontRenderContext())
+                    	- (((float) font.getStringBounds(bannerText, originalGraphics.getFontRenderContext())
                                     .getWidth()) + w * .05f);
                 }
 
@@ -127,7 +137,9 @@ public class BasicLoginPaneUI extends LoginPaneUI {
                 g2.fill(curveShape);
 
                 originalGraphics.setColor(UIManager.getColor("JXLoginPane.bannerForeground"));
-                originalGraphics.drawString(dlg.getBannerText(), loginStringX, loginStringY);
+                if(bannerText!=null) {
+                    originalGraphics.drawString(bannerText, loginStringX, loginStringY);
+                }
             } finally {
                 originalGraphics.dispose();
             }

@@ -32,6 +32,7 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -58,6 +59,8 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  */
 public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 	
+    private static final Logger LOG = Logger.getLogger(JXLoginPaneVisualCheck.class.getName());
+
     public JXLoginPaneVisualCheck() {
         super("JXLoginPane Test");
     }
@@ -68,7 +71,6 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 
         try {
 //            test.runInteractiveTests();
-        	// TODO : L&F change resets initial settings!
             test.runInteractiveTests("interactiveDisplay"); 
             test.runInteractiveTests("interactiveCustomBannerDisplay");
 //            test.runInteractiveTests("interactiveBackground");         
@@ -86,14 +88,23 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
     public void interactiveDisplay() {
         JComponent.setDefaultLocale(Locale.FRANCE);
         JXLoginPane panel = new JXLoginPane();
-        JFrame frame = JXLoginPane.showLoginFrame(panel);
+        JXLoginFrame frame = JXLoginPane.showLoginFrame(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setJMenuBar(createAndFillMenuBar(panel));
-
+        JMenuBar manubar = createAndFillMenuBar(panel); // menu bar mit L&F, Locales
+        frame.setJMenuBar(manubar);
+        
+        JXRootPane rootPane = frame.getRootPaneExt();
+        LOG.info("---------------------------------rootPane:"+rootPane);
+//        if(rootPane!=null) {
+//        	LOG.info("\n rootPane.ToolBar:"+rootPane.getToolBar()
+//        		+ "\n rootPane.StatusBar:"+rootPane.getStatusBar());
+//        }
+// TODO test addComponentOrientationToggle
+        
         panel.setSaveMode(SaveMode.BOTH);
 
-        panel.setBanner(null); // remove Banner, custom no Banner
-        panel.setBannerText("String text"); // BUG, expected : this is ignored
+//        panel.setBanner(null); // remove Banner, custom no Banner
+        panel.setBannerText("String text"); // expected : this is ignored for customed banner
 
         frame.pack();
         frame.setVisible(true);
@@ -141,14 +152,15 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
      */
     public void interactiveCustomBannerDisplay() {
         JXLoginPane panel = new JXLoginPane();
-        panel.setUI(new DummyLoginPaneUI(panel));
+//        panel.setUI(new DummyLoginPaneUI(panel)); // setUI not public
         JFrame frame = JXLoginPane.showLoginFrame(panel);
         frame.setJMenuBar(createAndFillMenuBar(panel));
 
         panel.setSaveMode(SaveMode.BOTH);
         
 //        panel.setBanner(null); // remove Banner, custom no Banner
-        panel.setBannerText("String text"); // BUG, expected : this is ignored
+        panel.setBanner(new DummyLoginPaneUI(panel).getBanner()); // custom Banner
+        panel.setBannerText("CustomBanner"); // BUG, expected : this is ignored
 
         frame.pack();
         frame.setVisible(true);

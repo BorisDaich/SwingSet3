@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -344,16 +342,10 @@ public final class SwingXUtilities {
      * 
      */
     public static void updateAllComponentTreeUIs() {
-//        for (Frame frame : Frame.getFrames()) {
-//            updateAllComponentTreeUIs(frame);
-//        }
-        // JW: updated to new 1.6 api - returns all windows, owned and ownerless
         for (Window window: Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }
-
-
 
     /**
      * Updates the componentTreeUI of the given window and all its

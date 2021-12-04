@@ -91,8 +91,10 @@ import org.jdesktop.swingx.auth.LoginService;
 import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
+import org.jdesktop.swingx.painter.TextPainter;
 import org.jdesktop.swingx.plaf.LoginPaneAddon;
 import org.jdesktop.swingx.plaf.LoginPaneUI;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
@@ -179,7 +181,8 @@ public class JXLoginPane extends JXPanel {
      * An optional banner at the top of the panel
      */
     private JXPanel banner;
-    private ImagePainter imgPainter; 
+    private ImagePainter imgPainter;
+    private TextPainter tp;
     /**
      * Text that should appear on the banner
      */
@@ -415,7 +418,7 @@ public class JXLoginPane extends JXPanel {
      */
     private void initComponents() {
         //create the default banner (done in setUT)
-        LOG.fine("\n banner:"+banner + "\n imgPainter:"+imgPainter);
+        LOG.info("\n banner:"+banner + "\n imgPainter:"+imgPainter + "\n textPainter:"+tp);
 
         //create the default label
         messageLabel = new JLabel(" ");
@@ -474,9 +477,10 @@ public class JXLoginPane extends JXPanel {
         // PENDING: JW - use the locale given as parameter
         // as this probably (?) should be called before super.setLocale
         String sBanner = UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale());
-        LOG.info("locale "+l+" bannerString="+sBanner);
+        LOG.info("locale "+l+": bannerString="+sBanner + (tp==null ? " tp==null" : " tp.Text="+tp.getText()));
+        bannerText = tp==null ? "" : tp.getText();
         setBannerText(sBanner);
-        banner.setBackgroundPainter(imgPainter);
+//        banner.setBackgroundPainter(imgPainter);
         
         if (!isErrorMessageSet) {
             errorMessageLabel.setText(UIManager.getString(CLASS_NAME + ".errorMessage", getLocale()));
@@ -533,6 +537,16 @@ public class JXLoginPane extends JXPanel {
         return CapsLockSupport.getInstance().isCapsLockEnabled();
     }
 
+    public boolean isCustomizedBanner() {
+//    	LOG.info("Banner"+getBanner() + ", imgPainter:"+imgPainter + ", banner"+banner);
+//    	return banner!=null && createLoginBanner() != getBanner();
+    	if(banner!=null && tp!=null && createLoginBanner() != getBanner()) {
+    		LOG.info("CustomizedBanner!!!, ("+tp+") weil Banner:"+getBanner() + ", imgPainter:"+imgPainter + ", banner:"+banner);
+    		return true;
+    	}
+    	return false;
+    }
+
     //------------------------------------------------------------- UI Logic
 
     /**
@@ -552,7 +566,15 @@ public class JXLoginPane extends JXPanel {
      */
     @Override
     public void updateUI() {
-        setUI((LoginPaneUI) LookAndFeelAddons.getUI(this, LoginPaneUI.class));
+    	Image img = getBanner();
+    	// bei UI wechsel und custom banner neuer Text nicht leer!
+    	String oldBannerText = //getBannerText();
+    	        isCustomizedBanner() ? null : bannerText;
+
+        LOG.info("getBannerText="+oldBannerText + (tp==null ? " tp==null" : " tp.Text="+tp.getText()));
+        //bannerText = tp==null ? "" : tp.getText();
+        setUI((LoginPaneUI)LookAndFeelAddons.getUI(this, LoginPaneUI.class), img);
+        if(oldBannerText!=null) setBannerText(oldBannerText);
     }
 
     /**
@@ -563,7 +585,7 @@ public class JXLoginPane extends JXPanel {
      * @see #updateUI
      */
     // public wg. test
-	public void setUI(LoginPaneUI ui) {
+	void setUI(LoginPaneUI ui, Image bi) {
 		// initialized here due to implicit updateUI call from JPanel
 		if (banner == null) {
 			banner = new JXPanel();
@@ -571,21 +593,33 @@ public class JXLoginPane extends JXPanel {
 		if (errorMessageLabel == null) {
 			errorMessageLabel = new JXLabel(UIManagerExt.getString(CLASS_NAME + ".errorMessage", getLocale()));
 		}
-		super.setUI(ui);
-		Image img = createLoginBanner();
+		// protected transient ComponentUI ui;
+//		LOG.info("protected transient ComponentUI ui:"+super.ui);
+		super.setUI(ui); // in JComponent:727 ui.installUI(this); ... isCustomizedBanner
+		Image img = status==null ? createLoginBanner() : bi;
+//		Image img = createLoginBanner();
 		makeBanner(img);
 	}
 
 	private void makeBanner(Image img) {
 		if(img instanceof BufferedImage) {
 			BufferedImage bi = (BufferedImage) img;
-			LOG.config("banner image:" + bi);
+			LOG.info("banner image:" + bi);
 			imgPainter = new ImagePainter(bi);
 			banner.setBackgroundPainter(imgPainter);
 			banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
+//			JXLabel label = new JXLabel(getBannerText(), SwingConstants.LEFT);
+//			label.setTextAlignment(TextAlignment.RIGHT);
+//			banner.setLayout(new GridBagLayout());
+//			banner.add(label);
+	        String textToPaint = "Neon";
+	        Font font = new Font("SansSerif", Font.BOLD, 60*3/4);        
+	        tp = new TextPainter(getBannerText(), font, UIManager.getColor("JXLoginPane.bannerForeground"));
+//	        tp = new TextPainter("", font, UIManager.getColor("JXLoginPane.bannerForeground"));
+	        CompoundPainter<Object> cp = new CompoundPainter<Object>(imgPainter, tp);
+	        banner.setBackgroundPainter(cp);
 		} else if(img==null) {
-			BufferedImage bi = (BufferedImage) img;
-			imgPainter = new ImagePainter(bi);
+			imgPainter = new ImagePainter(null);
 			banner.setBackgroundPainter(imgPainter);
 		} else {
 			LOG.warning("(expected BufferedImage) the banner for the JXLoginPane class:" + img.getClass());
@@ -610,6 +644,7 @@ public class JXLoginPane extends JXPanel {
     protected void recreateLoginPanel() {
         JXPanel old = loginPanel;
         loginPanel = createLoginPanel();
+//        LOG.info("\n old:"+old + "\n new:"+loginPanel);
         loginPanel.setBorder(BorderFactory.createEmptyBorder(0, 36, 7, 11));
         contentPanel.remove(old);
         contentPanel.add(loginPanel, 1);
@@ -822,7 +857,9 @@ public class JXLoginPane extends JXPanel {
      * This may be overridden to return any image you like
      */
     protected Image createLoginBanner() {
-        return getUI() == null ? null : getUI().getBanner();
+    	if(getUI() == null) return null;
+//    	ei = (BufferedImage) getUI().getEBanner();
+        return getUI().getEBanner();
     }
 
     /**
@@ -1051,7 +1088,7 @@ public class JXLoginPane extends JXPanel {
      * Return the image used as the banner
      */
     public Image getBanner() {
-    	return imgPainter.getImage();
+    	return imgPainter==null ? null : imgPainter.getImage();
     }
 
     /**
@@ -1066,6 +1103,11 @@ public class JXLoginPane extends JXPanel {
         Image oldImage = getBanner();
 
         if (oldImage != img) {
+//        	LOG.info("banner image:\n old="+oldImage 
+//        		+ "\n new="+img
+//        		+ (oldImage==null ? "\n ???" : "\n>>>custom banner (daher bannerText=null)")
+//        		);
+        	bannerText = "";
         	makeBanner(img);
             firePropertyChange("banner", oldImage, getBanner());
         }
@@ -1087,8 +1129,14 @@ public class JXLoginPane extends JXPanel {
 
         if (!text.equals(this.bannerText)) {
             String oldText = this.bannerText;
-        	LOG.config("bannerText old="+oldText + " new="+text);
+        	LOG.info("bannerText old="+oldText + " new="+text +(isCustomizedBanner() ? ", CustomizedBanner" : ", default")+ "\n tp:"+tp);
+        	if(isCustomizedBanner()) {
+        		text = "";
+        	}
             this.bannerText = text;
+            if(tp!=null) {
+            	if(oldText.length()>0) tp.setText(text);
+            }
             firePropertyChange("bannerText", oldText, text);
         }
     }
@@ -1639,7 +1687,7 @@ public class JXLoginPane extends JXPanel {
         }
 
         protected void init(JXLoginPane p) {
-        	LOG.info("set titleString to Locale "+p.getLocale());
+        	LOG.config("set titleString to Locale "+p.getLocale());
             setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", p.getLocale()));
             this.panel = p;
             initWindow(this, panel);

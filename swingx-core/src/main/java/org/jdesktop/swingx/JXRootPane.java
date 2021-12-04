@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
@@ -54,9 +51,9 @@ import org.jdesktop.beans.JavaBean;
  */
 @JavaBean
 public class JXRootPane extends JRootPane {
+
     /**
-     * An extended {@code RootLayout} offering support for managing the status
-     * bar.
+     * An extended {@code RootLayout} offering support for managing the status bar.
      * 
      * @author Karl George Schaefer
      * @author Jeanette Winzenberg
@@ -119,7 +116,6 @@ public class JXRootPane extends JRootPane {
 
         private Dimension delegateMaximumLayoutSize(Container parent) {
             if (delegate == null)
-
                 return super.maximumLayoutSize(parent);
             return delegate.maximumLayoutSize(parent);
         }

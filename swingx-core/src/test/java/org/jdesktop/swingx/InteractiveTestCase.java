@@ -472,6 +472,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
         JMenu menu = new JMenu("Set L&F");
         
         for (LookAndFeelInfo info : plafs) {
+//            LOG.info(info.getName()+" "+info.getClassName()+" "+target);
             menu.add(new SetPlafAction(info.getName(), info.getClassName(), target));
         }
         return menu;
@@ -582,6 +583,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
+//        	LOG.info("plaf:"+plaf +", ActionEvent "+e);
             try {
                 UIManager.setLookAndFeel(plaf);
                 if (toplevel != null) {

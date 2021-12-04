@@ -114,9 +114,9 @@ public class LoginPaneDemo extends JPanel {
         loginPane.setServers(servers);
         
 //        loginPane.setBanner(null); // No banner (customizition)
-        loginPane.setBanner(new DummyLoginPaneUI(loginPane).getBanner());
+//        loginPane.setBanner(new DummyLoginPaneUI(loginPane).getBanner());
         loginPane.setLocale(Locale.ITALIAN);
-        loginPane.setBannerText("BannerText"); // BUG: L&F change resets initial settings!
+//        loginPane.setBannerText("BannerText");
         
         loginLauncher = new JButton();
         loginLauncher.setName("launcher");
@@ -132,15 +132,15 @@ public class LoginPaneDemo extends JPanel {
     
     private void bind() {
     	loginLauncher.addActionListener(event -> {
-    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane); // returns status
-    		LOG.info("status:"+status);
+//    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane); // returns status
+//    		LOG.info("status:"+status);
     		// or per Frame:
-//    		JFrame frame = JXLoginPane.showLoginFrame(loginPane);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-////            frame.setJMenuBar(createAndFillMenuBar(panel));
-////            loginPane.setSaveMode(SaveMode.BOTH);
-//            frame.pack();
-//            frame.setVisible(true);
+    		JFrame frame = JXLoginPane.showLoginFrame(loginPane);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            frame.setJMenuBar(createAndFillMenuBar(panel));
+//            loginPane.setSaveMode(SaveMode.BOTH);
+            frame.pack();
+            frame.setVisible(true);
     	});
         Bindings.createAutoBinding(READ,
                 allowLogin, BeanProperty.create("selected"),
