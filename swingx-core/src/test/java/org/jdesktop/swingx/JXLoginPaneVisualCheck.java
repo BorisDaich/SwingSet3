@@ -24,11 +24,13 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -45,18 +47,23 @@ import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXLoginPane.JXLoginFrame;
 import org.jdesktop.swingx.JXLoginPane.SaveMode;
+import org.jdesktop.swingx.JXLoginPane.Status;
 import org.jdesktop.swingx.auth.LoginService;
 import org.jdesktop.swingx.auth.SimpleLoginService;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
 import org.jdesktop.swingx.plaf.basic.CapsLockSupport;
 import org.jdesktop.swingx.util.GraphicsUtilities;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * Simple tests to ensure that the {@code JXLoginPane} can be instantiated and displayed.
  *
  * @author Karl Schaefer
  */
+@RunWith(JUnit4.class)
 public class JXLoginPaneVisualCheck extends InteractiveTestCase {
 	
     private static final Logger LOG = Logger.getLogger(JXLoginPaneVisualCheck.class.getName());
@@ -70,31 +77,60 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         JXLoginPaneVisualCheck test = new JXLoginPaneVisualCheck();
 
         try {
-//            test.runInteractiveTests();
-            test.runInteractiveTests("interactiveDisplay"); 
-            test.runInteractiveTests("interactiveCustomBannerDisplay");
-//            test.runInteractiveTests("interactiveBackground");         
+            test.runInteractiveTests();
+//            test.runInteractiveTests("xinteractive.*"); // ???
+//            test.runInteractiveTests("interactiveDefaultBannerDisplay"); 
+//            test.runInteractiveTests("interactiveCustomBannerDisplay");
+//            test.runInteractiveTests("interactiveNullBannerDisplay");         
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
         }
     }
 
-
+//    private JXFrame frame; // JXLoginFrame
+//    private JMenuBar manubar; // menu bar with L&F, Locales
+//    private JXLoginPane loginPane;
+    
+    private static final String FRAME_TITLE_ENGLISH = "Login";
+    private static final String FRAME_TITLE_FRANCE = "Identifiant";
+    
+//    @Override
+//    @Before
+//       public void setUp() {
+//        JComponent.setDefaultLocale(Locale.FRANCE);
+//        loginPane = new JXLoginPane();
+////        LOG.info("-------------------------------");
+//        manubar = createAndFillMenuBar(loginPane); // menu bar with L&F, Locales
+//        frame = JXLoginPane.showLoginFrame(loginPane);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setJMenuBar(manubar);
+//    }
+    
     /**
      * Issue #538-swingx Failure to set locale at runtime
-     *
+     * Issue https://github.com/homebeaver/SwingSet/issues/16
+     * 
+     * @throws InterruptedException 
+     * @throws InvocationTargetException 
      */
-    public void interactiveDisplay() {
+    @Test
+    public void interactiveDefaultBannerDisplay() throws InvocationTargetException, InterruptedException {
+        // This test will not work in a headless configuration.
+        if (GraphicsEnvironment.isHeadless()) {
+            LOG.fine("cannot run ui test - headless environment");
+            return;
+        }
         JComponent.setDefaultLocale(Locale.FRANCE);
         JXLoginPane panel = new JXLoginPane();
-        JXLoginFrame frame = JXLoginPane.showLoginFrame(panel);
+        JMenuBar manubar = createAndFillMenuBar(panel); // menu bar with L&F, Locales
+        JXFrame frame = JXLoginPane.showLoginFrame(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JMenuBar manubar = createAndFillMenuBar(panel); // menu bar mit L&F, Locales
         frame.setJMenuBar(manubar);
+//        JXLoginPane panel = loginPane;
         
         JXRootPane rootPane = frame.getRootPaneExt();
-        LOG.info("---------------------------------rootPane:"+rootPane);
+        LOG.info("rootPane:"+rootPane);
 //        if(rootPane!=null) {
 //        	LOG.info("\n rootPane.ToolBar:"+rootPane.getToolBar()
 //        		+ "\n rootPane.StatusBar:"+rootPane.getStatusBar());
@@ -103,11 +139,121 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         
         panel.setSaveMode(SaveMode.BOTH);
 
-//        panel.setBanner(null); // remove Banner, custom no Banner
-        panel.setBannerText("String text"); // expected : this is ignored for customed banner
+        String customBannerText = "String text";
+        panel.setBannerText(customBannerText); // expected : this is ignored for customized banner
+        assertEquals(customBannerText, panel.getBannerText());
 
         frame.pack();
         frame.setVisible(true);
+        LOG.info("locale(exp:"+FRAME_TITLE_FRANCE+") frame title="+frame.getTitle());
+        assertEquals("locale frame title", FRAME_TITLE_FRANCE, frame.getTitle());
+        
+        SwingUtilities.invokeLater(new Runnable() {
+//        SwingUtilities.invokeAndWait(new Runnable() {
+            public void run() {
+                LOG.info("locale(exp:"+FRAME_TITLE_FRANCE+") frame title="+frame.getTitle());
+                assertEquals("locale frame title", FRAME_TITLE_FRANCE, frame.getTitle());
+                
+                LOG.info("(expected "+customBannerText+") customBannerText="+panel.getBannerText());
+                assertEquals("customBannerText", customBannerText, panel.getBannerText());
+            }
+        });
+        
+    }
+
+    /**
+     * Issue https://github.com/homebeaver/SwingSet/issues/16
+     * Custom banner (null) : setBannerText is ignored
+     * 
+     * @throws InterruptedException 
+     * @throws InvocationTargetException 
+     */
+    @Test
+    public void interactiveNullBannerDisplay() throws InvocationTargetException, InterruptedException {
+        // This test will not work in a headless configuration.
+        if (GraphicsEnvironment.isHeadless()) {
+            LOG.fine("cannot run ui test - headless environment");
+            return;
+        }
+        JComponent.setDefaultLocale(Locale.FRANCE);
+        JXLoginPane panel = new JXLoginPane();
+        JMenuBar manubar = createAndFillMenuBar(panel); // menu bar with L&F, Locales
+        JXFrame frame = JXLoginPane.showLoginFrame(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setJMenuBar(manubar);
+//        JXLoginPane panel = loginPane;
+        panel.setSaveMode(SaveMode.BOTH);
+
+        panel.setBanner(null); // remove Banner, custom no (null) Banner
+        String customBannerText = "CustomNullBanner";
+        panel.setBannerText(customBannerText); // expected : this is ignored for customized banner
+        assertEquals("", panel.getBannerText());
+
+        frame.pack();
+        frame.setVisible(true);
+        LOG.info("locale(exp:"+FRAME_TITLE_FRANCE+") frame title="+frame.getTitle());
+        assertEquals("locale frame title", FRAME_TITLE_FRANCE, frame.getTitle());
+        
+        SwingUtilities.invokeLater(new Runnable() {
+//        SwingUtilities.invokeAndWait(new Runnable() {
+            public void run() {
+                LOG.info("locale(exp:"+FRAME_TITLE_FRANCE+") frame title="+frame.getTitle());
+                assertEquals("locale frame title", FRAME_TITLE_FRANCE, frame.getTitle());
+                
+                LOG.info("(expected empty) customBannerText="+panel.getBannerText());
+                assertEquals("customBannerText", "", panel.getBannerText());
+            }
+        });
+        
+    }
+
+    /**
+     * Issue https://github.com/homebeaver/SwingSet/issues/16
+     * Custom banner : setBannerText is ignored
+     * 
+     * @throws InterruptedException 
+     * @throws InvocationTargetException 
+     */
+    @Test
+    public void interactiveCustomBannerDisplay() throws InvocationTargetException, InterruptedException {
+        // This test will not work in a headless configuration.
+        if (GraphicsEnvironment.isHeadless()) {
+            LOG.fine("cannot run ui test - headless environment");
+            return;
+        }
+        JComponent.setDefaultLocale(Locale.FRANCE);
+        JXLoginPane panel = new JXLoginPane();
+        JMenuBar manubar = createAndFillMenuBar(panel); // menu bar with L&F, Locales
+        JXFrame frame = JXLoginPane.showLoginFrame(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setJMenuBar(manubar);
+//        JXLoginPane panel = loginPane;
+        panel.setSaveMode(SaveMode.BOTH);
+
+        panel.setBanner(new DummyLoginPaneUI(panel).getBanner()); // custom Banner
+        String customBannerText = "CustomBanner";
+        panel.setBannerText(customBannerText); // expected : this is ignored
+        assertEquals("", panel.getBannerText());
+
+        frame.pack();
+        frame.setVisible(true);
+        LOG.info("locale(exp:"+FRAME_TITLE_FRANCE+") frame title="+frame.getTitle());
+        assertEquals("locale frame title", FRAME_TITLE_FRANCE, frame.getTitle());
+        
+        SwingUtilities.invokeLater(new Runnable() {
+//		SwingUtilities.invokeAndWait(new Runnable() {
+			public void run() {
+                LOG.info("locale(exp:"+FRAME_TITLE_FRANCE+") frame title="+frame.getTitle());
+                assertEquals("locale frame title", FRAME_TITLE_FRANCE, frame.getTitle());
+                
+                panel.setLocale(Locale.ENGLISH);
+                LOG.info("locale en (exp:"+FRAME_TITLE_ENGLISH+") frame title="+frame.getTitle());
+                assertEquals("english frame title", FRAME_TITLE_ENGLISH, frame.getTitle());
+
+                LOG.info("(expected empty) customBannerText="+panel.getBannerText());
+                assertEquals("customBannerText", "", panel.getBannerText());
+			}
+		});
     }
 
     /**
@@ -147,31 +293,11 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
     }
 
     /**
-     * Issue #777-swingx Custom banner not picked up due to double updateUI() call
-     *
-     */
-    public void interactiveCustomBannerDisplay() {
-        JXLoginPane panel = new JXLoginPane();
-//        panel.setUI(new DummyLoginPaneUI(panel)); // setUI not public
-        JFrame frame = JXLoginPane.showLoginFrame(panel);
-        frame.setJMenuBar(createAndFillMenuBar(panel));
-
-        panel.setSaveMode(SaveMode.BOTH);
-        
-//        panel.setBanner(null); // remove Banner, custom no Banner
-        panel.setBanner(new DummyLoginPaneUI(panel).getBanner()); // custom Banner
-        panel.setBannerText("CustomBanner"); // BUG, expected : this is ignored
-
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    /**
      * Issue #636-swingx Unexpected resize on long exception message.
      *
      */
     public void interactiveError() {
-        JComponent.setDefaultLocale(Locale.FRANCE);
+        JComponent.setDefaultLocale(Locale.ITALIAN);
         final JXLoginPane panel = new JXLoginPane(new LoginService() {
 
                         @Override
@@ -237,8 +363,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         panel.setLoginService(new LoginService() {
 
 			@Override
-            public boolean authenticate(String name, char[] password,
-					String server) throws Exception {
+            public boolean authenticate(String name, char[] password, String server) throws Exception {
 				panel.startLogin();
 				Thread.sleep(5000);
 				return true;
@@ -286,7 +411,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
          */
         @Override
         public Image getBanner() {
-            Image banner = super.getBanner();
+            Image banner = super.getBasicBanner("dummy");
             BufferedImage im = GraphicsUtilities.createCompatibleTranslucentImage(banner.getWidth(null), banner.getHeight(null));
             Graphics2D g2 = im.createGraphics();
             
@@ -300,7 +425,6 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
             return im;
         }
     }
-
 
     @Override
     protected void createAndAddMenus(JMenuBar menuBar, final JComponent component) {
@@ -346,11 +470,15 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
         frame.setVisible(true);
     }
 
-    public void interactiveComparativeDialogs() {
+    // what it is for?
+    public void xinteractiveComparativeDialogs() {
         JXDialog dialog = new JXDialog(new JXLoginPane());
         dialog.pack();
         dialog.setVisible(true);
-        JXLoginPane.showLoginDialog(null, new JXLoginPane());
+        LOG.info("JXDialog "+dialog);
+        
+        Status status = JXLoginPane.showLoginDialog(null, new JXLoginPane()); // block until login or cancel
+        LOG.info("LoginDialog status="+status);
     }
 
     public void interactiveCapsLockTest() {
@@ -371,7 +499,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
      * (would output a warning without a test fixture).
      *  
      */
-    public void testDummy() {
-    }
+//    public void testDummy() {
+//    }
     
 }

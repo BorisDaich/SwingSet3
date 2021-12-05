@@ -136,6 +136,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  * @author Karl Schaefer
  * @author rah003
  * @author Jonathan Giles
+ * @author Eugen Hanussek https://github.com/homebeaver (banner as CompoundPainter: ImagePainter + TextPainter)
  */
 @JavaBean
 public class JXLoginPane extends JXPanel {
@@ -182,7 +183,7 @@ public class JXLoginPane extends JXPanel {
      */
     private JXPanel banner;
     private ImagePainter imgPainter;
-    private TextPainter tp;
+    private TextPainter txtPainter;
     /**
      * Text that should appear on the banner
      */
@@ -418,7 +419,7 @@ public class JXLoginPane extends JXPanel {
      */
     private void initComponents() {
         //create the default banner (done in setUT)
-        LOG.info("\n banner:"+banner + "\n imgPainter:"+imgPainter + "\n textPainter:"+tp);
+        LOG.config("\n banner:"+banner + "\n imgPainter:"+imgPainter + "\n textPainter:"+txtPainter);
 
         //create the default label
         messageLabel = new JLabel(" ");
@@ -477,10 +478,9 @@ public class JXLoginPane extends JXPanel {
         // PENDING: JW - use the locale given as parameter
         // as this probably (?) should be called before super.setLocale
         String sBanner = UIManagerExt.getString(CLASS_NAME + ".bannerString", getLocale());
-        LOG.info("locale "+l+": bannerString="+sBanner + (tp==null ? " tp==null" : " tp.Text="+tp.getText()));
-        bannerText = tp==null ? "" : tp.getText();
+        LOG.config("locale "+l+": bannerString="+sBanner + (txtPainter==null ? " tp==null" : " tp.Text="+txtPainter.getText()));
+        bannerText = txtPainter==null ? "" : txtPainter.getText();
         setBannerText(sBanner);
-//        banner.setBackgroundPainter(imgPainter);
         
         if (!isErrorMessageSet) {
             errorMessageLabel.setText(UIManager.getString(CLASS_NAME + ".errorMessage", getLocale()));
@@ -537,11 +537,11 @@ public class JXLoginPane extends JXPanel {
         return CapsLockSupport.getInstance().isCapsLockEnabled();
     }
 
+    /**
+     * indicator for customized Banner
+     */
     public boolean isCustomizedBanner() {
-//    	LOG.info("Banner"+getBanner() + ", imgPainter:"+imgPainter + ", banner"+banner);
-//    	return banner!=null && createLoginBanner() != getBanner();
-    	if(banner!=null && tp!=null && createLoginBanner() != getBanner()) {
-    		LOG.info("CustomizedBanner!!!, ("+tp+") weil Banner:"+getBanner() + ", imgPainter:"+imgPainter + ", banner:"+banner);
+    	if(banner!=null && txtPainter!=null && createLoginBanner() != getBanner()) {
     		return true;
     	}
     	return false;
@@ -567,12 +567,11 @@ public class JXLoginPane extends JXPanel {
     @Override
     public void updateUI() {
     	Image img = getBanner();
-    	// bei UI wechsel und custom banner neuer Text nicht leer!
-    	String oldBannerText = //getBannerText();
-    	        isCustomizedBanner() ? null : bannerText;
-
-        LOG.info("getBannerText="+oldBannerText + (tp==null ? " tp==null" : " tp.Text="+tp.getText()));
-        //bannerText = tp==null ? "" : tp.getText();
+    	// to restore bannerText:
+    	String oldBannerText = isCustomizedBanner() ? null : bannerText;
+//
+//        LOG.info("getBannerText="+oldBannerText + (tp==null ? " tp==null" : " tp.Text="+tp.getText()));
+//        //bannerText = tp==null ? "" : tp.getText();
         setUI((LoginPaneUI)LookAndFeelAddons.getUI(this, LoginPaneUI.class), img);
         if(oldBannerText!=null) setBannerText(oldBannerText);
     }
@@ -584,8 +583,7 @@ public class JXLoginPane extends JXPanel {
      * @see javax.swing.UIDefaults#getUI
      * @see #updateUI
      */
-    // public wg. test
-	void setUI(LoginPaneUI ui, Image bi) {
+	private void setUI(LoginPaneUI ui, Image bi) {
 		// initialized here due to implicit updateUI call from JPanel
 		if (banner == null) {
 			banner = new JXPanel();
@@ -604,19 +602,15 @@ public class JXLoginPane extends JXPanel {
 	private void makeBanner(Image img) {
 		if(img instanceof BufferedImage) {
 			BufferedImage bi = (BufferedImage) img;
-			LOG.info("banner image:" + bi);
+			LOG.config("banner image:" + bi);
 			imgPainter = new ImagePainter(bi);
 			banner.setBackgroundPainter(imgPainter);
 			banner.setPreferredSize(new Dimension(bi.getWidth(), bi.getHeight()));
-//			JXLabel label = new JXLabel(getBannerText(), SwingConstants.LEFT);
-//			label.setTextAlignment(TextAlignment.RIGHT);
-//			banner.setLayout(new GridBagLayout());
-//			banner.add(label);
-	        String textToPaint = "Neon";
-	        Font font = new Font("SansSerif", Font.BOLD, 60*3/4);        
-	        tp = new TextPainter(getBannerText(), font, UIManager.getColor("JXLoginPane.bannerForeground"));
-//	        tp = new TextPainter("", font, UIManager.getColor("JXLoginPane.bannerForeground"));
-	        CompoundPainter<Object> cp = new CompoundPainter<Object>(imgPainter, tp);
+
+	        txtPainter = new TextPainter(getBannerText()
+	        		, UIManager.getFont(CLASS_NAME + ".bannerFont")
+	        		, UIManager.getColor(CLASS_NAME + ".bannerForeground"));
+	        CompoundPainter<Object> cp = new CompoundPainter<Object>(imgPainter, txtPainter);
 	        banner.setBackgroundPainter(cp);
 		} else if(img==null) {
 			imgPainter = new ImagePainter(null);
@@ -858,8 +852,7 @@ public class JXLoginPane extends JXPanel {
      */
     protected Image createLoginBanner() {
     	if(getUI() == null) return null;
-//    	ei = (BufferedImage) getUI().getEBanner();
-        return getUI().getEBanner();
+        return getUI().getBanner();
     }
 
     /**
@@ -1103,10 +1096,6 @@ public class JXLoginPane extends JXPanel {
         Image oldImage = getBanner();
 
         if (oldImage != img) {
-//        	LOG.info("banner image:\n old="+oldImage 
-//        		+ "\n new="+img
-//        		+ (oldImage==null ? "\n ???" : "\n>>>custom banner (daher bannerText=null)")
-//        		);
         	bannerText = "";
         	makeBanner(img);
             firePropertyChange("banner", oldImage, getBanner());
@@ -1129,20 +1118,20 @@ public class JXLoginPane extends JXPanel {
 
         if (!text.equals(this.bannerText)) {
             String oldText = this.bannerText;
-        	LOG.info("bannerText old="+oldText + " new="+text +(isCustomizedBanner() ? ", CustomizedBanner" : ", default")+ "\n tp:"+tp);
+//        	LOG.info("bannerText old="+oldText + " new="+text +(isCustomizedBanner() ? ", CustomizedBanner" : ", default")+ "\n tp:"+tp);
         	if(isCustomizedBanner()) {
         		text = "";
         	}
             this.bannerText = text;
-            if(tp!=null) {
-            	if(oldText.length()>0) tp.setText(text);
+            if(txtPainter!=null) {
+            	if(oldText.length()>0) txtPainter.setText(text);
             }
             firePropertyChange("bannerText", oldText, text);
         }
     }
 
     /**
-     * Returns text used when creating the banner
+     * Returns text shown in the banner
      */
     public String getBannerText() {
         return bannerText;

@@ -32,5 +32,4 @@ public abstract class LoginPaneUI extends PanelUI {
      * this method returns null, then no banner will be shown.
      */
     public abstract Image getBanner();
-    public abstract Image getEBanner();
 }

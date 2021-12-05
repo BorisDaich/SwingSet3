@@ -39,10 +39,12 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  * Base implementation of the <code>JXLoginPane</code> UI.
  *
  * @author rbair
+ * @author hb https://github.com/homebeaver (banner as CompoundPainter: ImagePainter + TextPainter)
  */
 public class BasicLoginPaneUI extends LoginPaneUI {
     
     private JXLoginPane dlg;
+    private Image banner = null;
     
     /** Creates a new instance of BasicLoginDialogUI */
     public BasicLoginPaneUI(JXLoginPane dlg) {
@@ -79,15 +81,11 @@ public class BasicLoginPaneUI extends LoginPaneUI {
      */
     @Override
     public Image getBanner() {
-    	return getXBanner(dlg.getBannerText());
+    	if(banner==null) banner = getBasicBanner(null);
+    	return banner;
     }
-    private Image eBanner = null;
-    @Override
-    public Image getEBanner() {
-    	if(eBanner==null) eBanner = getXBanner(null);
-    	return eBanner;
-    }
-    public Image getXBanner(String bannerText) {
+    
+    protected Image getBasicBanner(String bannerText) {
         int w = 400;
         int h = 60;
         float loginStringX = w * .05f;
@@ -95,7 +93,6 @@ public class BasicLoginPaneUI extends LoginPaneUI {
 
         BufferedImage img = GraphicsUtilities.createCompatibleImage(w, h);
         Graphics2D g2 = img.createGraphics();
-//        String bannerText = dlg.getBannerText();
         try {
             Font font = UIManager.getFont("JXLoginPane.bannerFont");
             g2.setFont(font);
