@@ -32,18 +32,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
-    
 /**
  * @author  Jeanette Winzenburg
  */
 @RunWith(JUnit4.class)
 public class JXRootPaneTest extends InteractiveTestCase {
  
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXRootPaneTest.class.getName());
     
-    
+    public static void main(String args[]) {
+        setSystemLF(true);
+        JXRootPaneTest test = new JXRootPaneTest();
+        try {
+        	test.runInteractiveTests();
+//            test.runInteractiveTests("interactive.*Cancel.*");
+        } catch (Exception e) {
+            System.err.println("exception when executing interactive tests:");
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Issue #936-swingx: JXRootPane cannot cope with default laf decoration. 
      * 
@@ -299,16 +307,4 @@ public class JXRootPaneTest extends InteractiveTestCase {
         frame.setVisible(true);
     }
     
-    public static void main(String args[]) {
-        setSystemLF(true);
-        JXRootPaneTest test = new JXRootPaneTest();
-        try {
-//          test.runInteractiveTests();
-            test.runInteractiveTests("interactive.*Cancel.*");
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
-    }
-
 }
