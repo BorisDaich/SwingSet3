@@ -66,10 +66,11 @@ import javax.swing.ListCellRenderer;
  * @see MappedValue
  * 
  */
-//@SuppressWarnings("serial")
-public class DefaultListRenderer extends AbstractRenderer implements ListCellRenderer<Object> {
+public class DefaultListRenderer<E> extends AbstractRenderer implements ListCellRenderer<E> {
 
-    protected ListCellContext cellContext;
+	private static final long serialVersionUID = -6697507974102370474L;
+	
+	protected ListCellContext cellContext;
 
     /**
      * Instantiates a default list renderer with the default component
@@ -150,8 +151,7 @@ public class DefaultListRenderer extends AbstractRenderer implements ListCellRen
      * @param iconValue the converter to use for the icon representation
      * @param alignment the rendering component's horizontal alignment
      */
-    public DefaultListRenderer(StringValue stringValue, IconValue iconValue,
-            int alignment) {
+    public DefaultListRenderer(StringValue stringValue, IconValue iconValue, int alignment) {
         this(new MappedValue(stringValue, iconValue), alignment);
     }
 
@@ -172,7 +172,7 @@ public class DefaultListRenderer extends AbstractRenderer implements ListCellRen
      * @return a component to render the given list cell.
      */
     @Override
-    public Component getListCellRendererComponent(JList<? extends Object> list, Object value,
+    public Component getListCellRendererComponent(JList<? extends E> list, E value,
             int index, boolean isSelected, boolean cellHasFocus) {
         cellContext.installContext(list, value, index, 0, isSelected, cellHasFocus, true, true);
         Component comp = componentController.getRendererComponent(cellContext);

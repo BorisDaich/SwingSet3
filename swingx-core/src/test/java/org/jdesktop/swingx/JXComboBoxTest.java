@@ -32,6 +32,7 @@ import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.JXComboBox.DelegatingRenderer;
 import org.jdesktop.swingx.JXListTest.CustomDefaultRenderer;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.renderer.AbstractRenderer;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
@@ -55,7 +56,7 @@ public class JXComboBoxTest {
      */
     @Test
     public void testConfiguredComponentAdapter() {
-        JXComboBox combo = new JXComboBox(new Object[] {1, 2, 3});
+        JXComboBox<Object> combo = new JXComboBox<Object>(new Object[] {1, 2, 3});
         ComponentAdapter adapter = combo.getComponentAdapter();
         
         assertThat(adapter.column, CoreMatchers.is(0));
@@ -76,9 +77,9 @@ public class JXComboBoxTest {
      */
     @Test
     public void testDefaultListRenderer() {
-        JXComboBox combo = new JXComboBox();
+        JXComboBox<Object> combo = new JXComboBox<Object>();
         
-        ListCellRenderer renderer = ((DelegatingRenderer) combo.getRenderer()).getDelegateRenderer();
+        ListCellRenderer<? super Object> renderer = ((DelegatingRenderer) combo.getRenderer()).getDelegateRenderer();
         assertThat(renderer, CoreMatchers.is(instanceOf(DefaultListRenderer.class)));
     }
 
@@ -89,9 +90,9 @@ public class JXComboBoxTest {
      */
     @Test
     public void testDelegatingRendererUseDefault() {
-        JXComboBox combo = new JXComboBox();
+        JXComboBox<?> combo = new JXComboBox<Object>();
         
-        ListCellRenderer defaultRenderer = combo.createDefaultCellRenderer();
+        ListCellRenderer<?> defaultRenderer = combo.createDefaultCellRenderer();
         assertThat(defaultRenderer, CoreMatchers.is(instanceOf(DefaultListRenderer.class)));
         
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
@@ -105,17 +106,17 @@ public class JXComboBoxTest {
      */
     @Test
     public void testDelegatingRendererUseCustomDefault() {
-        JXComboBox combo = new JXComboBox() {
+        JXComboBox<?> combo = new JXComboBox<Object>() {
             @Override
-            protected ListCellRenderer createDefaultCellRenderer() {
+            protected ListCellRenderer<Object> createDefaultCellRenderer() {
                 return new CustomDefaultRenderer();
             }
         };
         
-        ListCellRenderer defaultRenderer = combo.createDefaultCellRenderer();
+        ListCellRenderer<?> defaultRenderer = combo.createDefaultCellRenderer();
         assertThat(defaultRenderer, CoreMatchers.is(instanceOf(CustomDefaultRenderer.class)));
         
-        ListCellRenderer renderer = ((DelegatingRenderer) combo.getRenderer()).getDelegateRenderer();
+        ListCellRenderer<?> renderer = ((DelegatingRenderer) combo.getRenderer()).getDelegateRenderer();
         assertThat(renderer, CoreMatchers.is(instanceOf(CustomDefaultRenderer.class)));
     }
     
@@ -126,9 +127,9 @@ public class JXComboBoxTest {
      */
     @Test
     public void testDelegatingRendererUseDefaultSetNull() {
-        JXComboBox combo = new JXComboBox();
+        JXComboBox<?> combo = new JXComboBox<Object>();
         
-        ListCellRenderer defaultRenderer = combo.createDefaultCellRenderer();
+        ListCellRenderer<?> defaultRenderer = combo.createDefaultCellRenderer();
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
         combo.setRenderer(null);
         
@@ -142,14 +143,14 @@ public class JXComboBoxTest {
      */
     @Test
     public void testDelegatingRendererUseCustomDefaultSetNull() {
-        JXComboBox combo = new JXComboBox() {
+        JXComboBox<?> combo = new JXComboBox<Object>() {
             @Override
-            protected ListCellRenderer createDefaultCellRenderer() {
+            protected ListCellRenderer<Object> createDefaultCellRenderer() {
                 return new CustomDefaultRenderer();
             }
         };
         
-        ListCellRenderer defaultRenderer = combo.createDefaultCellRenderer();
+        ListCellRenderer<?> defaultRenderer = combo.createDefaultCellRenderer();
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
         combo.setRenderer(null);
         
@@ -161,14 +162,14 @@ public class JXComboBoxTest {
      */
     @Test
     public void testRendererNotification() {
-        JXComboBox combo = new JXComboBox();
+        JXComboBox<?> combo = new JXComboBox<Object>();
         
         assertThat(combo.getRenderer(), CoreMatchers.is(notNullValue()));
 
         PropertyChangeReport report = new PropertyChangeReport(combo);
         
         // very first setting: fires twice ... a bit annoying but ... waiting for complaints ;-)
-        combo.setRenderer(new DefaultListRenderer());
+        combo.setRenderer(new DefaultListRenderer<Object>());
         TestUtils.assertPropertyChangeEvent(report, "renderer", null, combo.getRenderer());
     }
     
@@ -179,7 +180,7 @@ public class JXComboBoxTest {
      */
     @Test
     public void testWrappedRendererDefault() {
-        JXComboBox combo = new JXComboBox();
+        JXComboBox<?> combo = new JXComboBox<Object>();
         
         DelegatingRenderer renderer = (DelegatingRenderer) combo.getRenderer();
         assertThat(renderer.getDelegateRenderer(), CoreMatchers.is(sameInstance(combo.getWrappedRenderer())));
@@ -192,9 +193,9 @@ public class JXComboBoxTest {
      */
     @Test
     public void testWrappedRendererCustom() {
-        JXComboBox combo = new JXComboBox();
+        JXComboBox<?> combo = new JXComboBox<Object>();
         
-        ListCellRenderer custom = new DefaultListRenderer();
+        ListCellRenderer<Object> custom = new DefaultListRenderer<Object>();
         combo.setRenderer(custom);
         
         assertThat(custom, CoreMatchers.is(sameInstance(combo.getWrappedRenderer())));
@@ -222,9 +223,9 @@ public class JXComboBoxTest {
      */
     @Test
     public void testStringValueRegistryFromRendererChange() {
-        JXComboBox combo = new JXComboBox(AncientSwingTeam.createNamedColorComboBoxModel());
+        JXComboBox<?> combo = new JXComboBox<Object>(AncientSwingTeam.createNamedColorComboBoxModel());
         StringValueRegistry provider = combo.getStringValueRegistry();
-        combo.setRenderer(new DefaultListRenderer(createColorStringValue()));
+        combo.setRenderer(new DefaultListRenderer<Object>(createColorStringValue()));
         assertEquals(combo.getWrappedRenderer(), provider.getStringValue(0, 0));
     }
 
@@ -236,13 +237,13 @@ public class JXComboBoxTest {
      */
     @Test
     public void testStringAtUseProvider() {
-        JXComboBox combo = new JXComboBox(AncientSwingTeam.createNamedColorComboBoxModel());
-        combo.setRenderer(new DefaultListRenderer(createColorStringValue()));
+        JXComboBox<?> combo = new JXComboBox<Object>(AncientSwingTeam.createNamedColorComboBoxModel());
+        combo.setRenderer(new DefaultListRenderer<Object>(createColorStringValue()));
         combo.getStringValueRegistry().setStringValue(StringValues.TO_STRING, 0);
         assertEquals(StringValues.TO_STRING.getString(combo.getItemAt(0)),
-                combo.getStringAt(0));
-        
+                combo.getStringAt(0));     
     }
+    
     /**
      * Issue #1382-swingx: use StringValueRegistry and supply getStringAt.
      * 
@@ -251,12 +252,11 @@ public class JXComboBoxTest {
      */
     @Test
     public void testStringAtComponentAdapterUseProvider() {
-        JXComboBox combo = new JXComboBox(AncientSwingTeam.createNamedColorComboBoxModel());
-        combo.setRenderer(new DefaultListRenderer(createColorStringValue()));
+        JXComboBox<?> combo = new JXComboBox<Object>(AncientSwingTeam.createNamedColorComboBoxModel());
+        combo.setRenderer(new DefaultListRenderer<Object>(createColorStringValue()));
         combo.getStringValueRegistry().setStringValue(StringValues.TO_STRING, 0);
         ComponentAdapter adapter = combo.getComponentAdapter();
         assertEquals(StringValues.TO_STRING.getString(combo.getItemAt(0)),
-                adapter.getStringAt(0, 0));
-        
+                adapter.getStringAt(0, 0));      
     }
 }

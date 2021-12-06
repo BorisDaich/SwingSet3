@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -38,17 +36,16 @@ import org.jdesktop.swingx.renderer.StringValues;
 public class JXComboBoxVisualCheck extends InteractiveTestCase {
     
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXComboBoxVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXComboBoxVisualCheck.class.getName());
     
-    private ComboBoxModel model;
+    private ComboBoxModel<Object> model;
     
     /**
      * {@inheritDoc}
      */
     @Override
     public void setUp() {
-        model = new DefaultComboBoxModel(new JComboBox().getActionMap().allKeys());
+        model = new DefaultComboBoxModel<Object>(new JComboBox<Object>().getActionMap().allKeys());
     }
     
     public static void main(String[] args) {
@@ -56,20 +53,21 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
         
         JXComboBoxVisualCheck test = new JXComboBoxVisualCheck();
         
-        try {
-          test.runInteractiveTests();
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
+		try {
+			test.runInteractiveTests();
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
     }
 
     /**
      * Issue #1438-swingx: key selection doesn't respect StringValue 
      */
     public void interactiveSelectWithKey() {
-        JXComboBox box = new JXComboBox(new Object[] {"alice", "berta", "carola"});
-        StringValue sv = new StringValue() {
+        JXComboBox<?> box = new JXComboBox<Object>(new Object[] {"alice", "berta", "carola"});
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             @Override
             public String getString(Object value) {
@@ -82,14 +80,14 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
             
         };
         
-        box.setRenderer(new DefaultListRenderer(sv));
+        box.setRenderer(new DefaultListRenderer<Object>(sv));
         showInFrame(box, "navigation");
     }
     
     public void testDummy() { }
 
     public void interactiveTestComboBoxAlternateHighlighter1() {
-        JXComboBox combo = new JXComboBox(model);
+        JXComboBox<Object> combo = new JXComboBox<Object>(model);
         combo.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER));
 
         showInFrame(combo, "AlternateRowHighlighter - lineprinter");

@@ -43,8 +43,21 @@ public class JXComboBoxIssues extends InteractiveTestCase {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXComboBoxIssues.class.getName());
     
-    private ComboBoxModel model;
+    private ComboBoxModel<Object> model;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUp() {
+        model = createComboBoxModel();
+    }
     
+    private DefaultComboBoxModel<Object> createComboBoxModel() {
+        return new DefaultComboBoxModel<Object>(new JComboBox<Object>().getActionMap().allKeys());
+    }
+    
+
     public static void main(String[] args) {
         JXComboBoxIssues test = new JXComboBoxIssues();
         
@@ -57,28 +70,26 @@ public class JXComboBoxIssues extends InteractiveTestCase {
     }
 
 
-    
-    
     public void interactiveHighlightSelectedItemNotInList() {
-        final JXComboBox combo = new JXComboBox(createComboBoxModel());
+        final JXComboBox<Object> combo = new JXComboBox<Object>(createComboBoxModel());
         combo.getModel().setSelectedItem("not-in-list");
         PainterHighlighter hl = new PainterHighlighter(new ImagePainter(XTestUtils.loadDefaultImage()));
         combo.addHighlighter(hl);
         JComponent panel = new JXPanel();
         panel.add(new JButton("something to focus"));
         panel.add(combo);
-        panel.add(new JComboBox(combo.getModel()));
+        panel.add(new JComboBox<Object>(combo.getModel()));
         showInFrame(panel, "Painter");
     }
     
     public void interactiveComboBoxHighlighterNotEditable() {
-        final JXComboBox combo = new JXComboBox(createComboBoxModel());
+        final JXComboBox<Object> combo = new JXComboBox<Object>(createComboBoxModel());
         combo.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER));
         
         JComponent panel = new JXPanel();
         panel.add(new JButton("something to focus"));
         panel.add(combo);
-        panel.add(new JComboBox(combo.getModel()));
+        panel.add(new JComboBox<Object>(combo.getModel()));
         JXFrame frame = wrapInFrame(panel, "Highlighter - not editable");
         Action action = new AbstractAction("toggle useHighlighterOnCurrent") {
             
@@ -93,32 +104,20 @@ public class JXComboBoxIssues extends InteractiveTestCase {
     }
     
     public void interactiveComboBoxHighlighterEditable() {
-        JXComboBox combo = new JXComboBox(createComboBoxModel());
+        JXComboBox<Object> combo = new JXComboBox<Object>(createComboBoxModel());
         combo.setEditable(true);
         combo.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER));
 
         JComponent panel = new JXPanel();
         panel.add(new JButton("something to focus"));
         panel.add(combo);
-        JComboBox plain = new JComboBox(createComboBoxModel());
+        JComboBox<Object> plain = new JComboBox<Object>(createComboBoxModel());
         plain.setEditable(true);
         panel.add(plain);
         JXFrame frame = showInFrame(panel, "Highlighter - editable");
         addStatusMessage(frame, "editable xcombo appearance looks okay in Win/Nimbus");
     }
     
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setUp() {
-        model = createComboBoxModel();
-    }
-    
-    private DefaultComboBoxModel createComboBoxModel() {
-        return new DefaultComboBoxModel(new JComboBox().getActionMap().allKeys());
-    }
     
     public void testDummy() { }
 }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.decorator;
 
 import java.awt.Rectangle;
@@ -83,9 +80,9 @@ import org.jdesktop.swingx.renderer.StringValues;
  * <li> the mapping method {@link #convertRowIndexToModel(int)} in view coordinates
  * <li> the getter for the filtered value {@link #getFilteredValueAt(int, int)}
  * takes the row in view coordinates.
-  * <li> the getter for the filtered string representation {@link #getFilteredStringAt(int, int)}
+ * <li> the getter for the filtered string representation {@link #getFilteredStringAt(int, int)}
  * takes the row in view coordinates.
-* </ul>
+ * </ul>
  * 
  * 
  * PENDING JW: anything to gain by generics here?<p>
