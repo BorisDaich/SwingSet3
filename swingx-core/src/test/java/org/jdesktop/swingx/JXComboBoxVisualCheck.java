@@ -73,7 +73,7 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
             public String getString(Object value) {
                 String temp = StringValues.TO_STRING.getString(value);
                 if (temp.length() > 1) {
-                    temp = temp.charAt(1) + temp;
+                    temp = temp.charAt(1) + "-" + temp; // shows 2nd letter + value, i.e. l-alice
                 }
                 return temp;
             }

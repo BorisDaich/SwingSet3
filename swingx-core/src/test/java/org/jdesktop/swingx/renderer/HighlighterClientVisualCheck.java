@@ -99,19 +99,20 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
 //        UIManager.put("Nimbus.keepAlternateRowColor", Boolean.TRUE);
 //      setSystemLF(true);
       HighlighterClientVisualCheck test = new HighlighterClientVisualCheck();
-      try {
-//          setLookAndFeel("Nimbus");
-//         test.runInteractiveTests();
-          test.runInteractive("JP"); //interactiveTablePatternHighlighterJP
-//          test.runInteractiveTests(".*Striping.*");
-//         test.runInteractiveTests(".*ToolTip.*");
-//         test.runInteractiveTests("interactive.*Search.*");
-//         test.runInteractiveTests("interactive.*BorderHighlighter.*"); 
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-  }
+		try {
+//			setLookAndFeel("Nimbus");
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactiveColumnShading");
+//			test.runInteractive("JP"); // interactiveTablePatternHighlighterJP
+//			test.runInteractiveTests(".*Striping.*");
+//			test.runInteractiveTests(".*ToolTip.*");
+//			test.runInteractiveTests("interactive.*Search.*");
+//			test.runInteractiveTests("interactive.*BorderHighlighter.*");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	  }
 
     /**
      * Issue #1295-swingx: JXTable rolloverController repaint incomplete.
@@ -539,7 +540,6 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase {
         }
         treeTable.addHighlighter(new ShadingColorHighlighter(new ColumnHighlightPredicate(hierarchicalColumn)));
         showWithScrollingInFrame(treeTable, "hierarchical column");
-        
     }
     
     /**
