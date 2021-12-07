@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,6 +28,7 @@ import javax.swing.SwingConstants;
 
 /**
  * A Highlighter which sets the horizontal alignment.
+ * Useful for Label, Button and TextField components.
  * 
  * @author Jeanette Winzenburg (slight cleanup)
  * @author original contributed by swingx member martinm1000

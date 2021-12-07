@@ -50,8 +50,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class HighlighterTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(HighlighterTest.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(HighlighterTest.class.getName());
     
     protected JLabel backgroundNull ;
     protected JLabel foregroundNull;

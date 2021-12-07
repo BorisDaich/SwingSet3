@@ -29,9 +29,21 @@ import org.jdesktop.test.AncientSwingTeam;
 
 
 public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(HighlighterIssues.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(HighlighterIssues.class.getName());
     
+	public static void main(String args[]) {
+//      setSystemLF(true);
+		HighlighterIssues test = new HighlighterIssues();
+		try {
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactive.*Predicate.*");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
+
     protected Color ledger = new Color(0xF5, 0xFF, 0xF5);
     protected Color background = Color.RED;
     protected Color foreground = Color.BLUE;
@@ -111,18 +123,6 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
 
     //---------------
  
-    public static void main(String args[]) {
-//      setSystemLF(true);
-      HighlighterIssues test = new HighlighterIssues();
-      try {
-//         test.runInteractiveTests();
-         test.runInteractiveTests("interactive.*Predicate.*");
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-  }
-
     /**
      * Issue #258-swingx: Background LegacyHighlighter must not change custom
      * foreground.

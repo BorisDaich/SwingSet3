@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,6 +37,7 @@ import java.util.regex.Pattern;
  * @author Jeanette Winzenburg
  */
 public class PatternPredicate implements HighlightPredicate {
+	
     public static final int ALL = -1;
     
     private int highlightColumn;
@@ -113,7 +112,6 @@ public class PatternPredicate implements HighlightPredicate {
     public PatternPredicate(String regex, int testColumn) {
         this(regex, testColumn, ALL);
     }
-
 
     /**
      * Instantiates a Predicate with the given regex and test-/decorate

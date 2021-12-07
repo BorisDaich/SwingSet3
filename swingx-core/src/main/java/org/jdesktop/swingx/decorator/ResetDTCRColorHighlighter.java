@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,7 +24,6 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
 /**
  * This is a hack around DefaultTableCellRenderer color "memory", 
  * see Issue #258-swingx.<p>
@@ -48,7 +45,6 @@ import javax.swing.table.DefaultTableCellRenderer;
  * 
  * PENDING: extend ColorHighlighter
  */
-
 public class ResetDTCRColorHighlighter extends ColorHighlighter {
 
     public ResetDTCRColorHighlighter() {
@@ -107,7 +103,5 @@ public class ResetDTCRColorHighlighter extends ColorHighlighter {
 
         Color color;
     }
-
-
     
 }

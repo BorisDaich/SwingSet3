@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,8 +38,8 @@ import org.jdesktop.swingx.util.Contract;
  * @author Jeanette Winzenburg
  * 
  */
-public class CompoundHighlighter extends AbstractHighlighter 
-    implements UIDependent {
+public class CompoundHighlighter extends AbstractHighlighter implements UIDependent {
+	
     public static final Highlighter[] EMPTY_HIGHLIGHTERS = new Highlighter[0];
 
     protected List<Highlighter> highlighters;
@@ -181,6 +179,17 @@ public class CompoundHighlighter extends AbstractHighlighter
         }
     }   
 
+	/**
+	 * Updates the ui-dependent state of the given Highlighter.
+	 * 
+	 * @param hl the highlighter to update.
+	 */
+	private void updateUI(Highlighter hl) {
+		if (hl instanceof UIDependent) {
+			((UIDependent) hl).updateUI();
+		}
+	}
+
     /**
      * Returns the <code>ChangeListner</code> to contained
      * <code>Highlighter</code>s. The listener is lazily created.
@@ -214,17 +223,6 @@ public class CompoundHighlighter extends AbstractHighlighter
         };
     }
 
-   /**
-    *  Updates the ui-dependent state of the given Highlighter.
-    *  
-     * @param hl the highlighter to update.
-     */
-    private void updateUI(Highlighter hl) {
-        if (hl instanceof UIDependent) {
-            ((UIDependent) hl).updateUI();
-        } 
-    }
-
 
 //------------------- implement Highlighter    
 
@@ -238,7 +236,5 @@ public class CompoundHighlighter extends AbstractHighlighter
         }
         return stamp;
     }
-    
-    
 
 }

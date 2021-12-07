@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -27,7 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.border.Border;
 
 /**
- * A Highlighter that applies a border the the renderer component.
+ * A Highlighter that applies a border to the renderer component.
  * 
  * The resulting border can be configured to 
  * - ignore the component's border, set this highlighter's border

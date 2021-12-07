@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,7 +37,6 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.test.XTestUtils;
-import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.test.AncientSwingTeam;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -166,4 +163,10 @@ public class HighlighterClientVisualCheck extends InteractiveTestCase  {
         JXFrame frame = showWithScrollingInFrame(table, "ToolTip on truncated text");
         addComponentOrientationToggle(frame);
     }
+    
+    /**
+     * to make the test runner happy.
+     */
+//    public void testDummy() { }
+
 }

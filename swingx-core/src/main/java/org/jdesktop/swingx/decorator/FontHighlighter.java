@@ -1,6 +1,4 @@
 /*
- * $Id: FontHighlighter.java 1164 2009-11-03 04:22:00Z kschaefe $
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,6 +29,7 @@ import java.awt.Font;
  *
  */
 public class FontHighlighter extends AbstractHighlighter {
+	
     private Font font;
     
     /**

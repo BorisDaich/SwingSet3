@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -42,6 +40,7 @@ import org.jdesktop.swingx.util.PaintUtils;
  * @author Jeanette Winzenburg
  */
 public final class HighlighterFactory {
+	
     private static Highlighter COMPUTED_FOREGROUND_HIGHLIGHTER = new AbstractHighlighter() {
         @Override
         protected Component doHighlight(Component component, ComponentAdapter adapter) {
@@ -188,8 +187,7 @@ public final class HighlighterFactory {
      *   which provide striping on the UI-Delegate level?
      * 
      */
-    public static class UIColorHighlighter extends ColorHighlighter 
-        implements UIDependent {
+    public static class UIColorHighlighter extends ColorHighlighter implements UIDependent {
 
         static {
             LookAndFeelAddons.contribute(new UIColorHighlighterAddon());
