@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -58,8 +56,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Bino George
  */
 public class KeyChain {
-    private static final Logger LOG = Logger
-            .getLogger(KeyChain.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeyChain.class.getName());
     
     private KeyStore store;
 
@@ -73,8 +70,7 @@ public class KeyChain {
      * @param inputStream
      * @throws IOException
      */
-    public KeyChain(char[] masterPassword, InputStream inputStream)
-            throws IOException {
+    public KeyChain(char[] masterPassword, InputStream inputStream) throws IOException {
         this.masterPassword = masterPassword;
 
         try {

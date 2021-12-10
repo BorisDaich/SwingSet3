@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,8 +33,8 @@ import org.jdesktop.beans.JavaBean;
  */
 @JavaBean
 public class JDBCLoginService extends LoginService {
-    private static final Logger LOG = Logger.getLogger(JDBCLoginService.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JDBCLoginService.class.getName());
     
     /**
      * The connection to the database
@@ -196,7 +194,6 @@ public class JDBCLoginService extends LoginService {
                                 "Tryint to connect without.", e);
                 //try to connect without using the userName and password
                 conn = DriverManager.getConnection(getUrl());
-
             }
         }
     }

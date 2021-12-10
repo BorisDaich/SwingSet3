@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -82,8 +80,7 @@ public abstract class LoginService extends AbstractBean {
      * @return <code>true</code> on authentication success
      * @throws Exception
      */
-    public abstract boolean authenticate(String name, char[] password,
-            String server) throws Exception;
+    public abstract boolean authenticate(String name, char[] password, String server) throws Exception;
 
     /**
      * Called immediately after a successful authentication. This method should
@@ -120,8 +117,7 @@ public abstract class LoginService extends AbstractBean {
      *            server
      * @throws Exception
      */
-    public void startAuthentication(final String user, final char[] password,
-            final String server) throws Exception {
+    public void startAuthentication(final String user, final char[] password, final String server) throws Exception {
         if (getSynchronous()) {
             try {
                 if (authenticate(user, password, server)) {
@@ -137,8 +133,7 @@ public abstract class LoginService extends AbstractBean {
                 @Override
                 protected Boolean doInBackground() throws Exception {
                     try {
-                        final boolean result = authenticate(user, password,
-                                server);
+                        final boolean result = authenticate(user, password, server);
                         if (isCancelled()) {
                             EventQueue.invokeLater(new Runnable() {
                                 public void run() {
@@ -150,11 +145,9 @@ public abstract class LoginService extends AbstractBean {
                         EventQueue.invokeLater(new Runnable() {
                             public void run() {
                                 if (result) {
-                                    fireLoginSucceeded(new LoginEvent(
-                                            LoginService.this));
+                                    fireLoginSucceeded(new LoginEvent(LoginService.this));
                                 } else {
-                                    fireLoginFailed(new LoginEvent(
-                                            LoginService.this));
+                                    fireLoginFailed(new LoginEvent(LoginService.this));
                                 }
                             }
                         });
@@ -163,8 +156,7 @@ public abstract class LoginService extends AbstractBean {
                         if (!isCancelled()) {
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {
-                                    fireLoginFailed(new LoginEvent(
-                                            LoginService.this, failed));
+                                    fireLoginFailed(new LoginEvent(LoginService.this, failed));
                                 }
                             });
                         } else {
