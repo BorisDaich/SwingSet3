@@ -17,8 +17,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package org.jdesktop.swingx.auth;
+
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +29,7 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 
 import org.jdesktop.beans.JavaBean;
+
 /**
  * A login service for connecting to SQL based databases via JDBC
  *
@@ -59,13 +63,7 @@ public class JDBCLoginService extends LoginService {
      */
     public JDBCLoginService(String driver, String url) {
         super(url);
-        try {
-            Class.forName(driver);
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "The driver passed to the " +
-                    "JDBCLoginService constructor could not be loaded. " +
-                    "This may be due to the driver not being on the classpath", e);
-        }
+        loadDriver(driver);
         this.setUrl(url);
     }
     
@@ -78,17 +76,47 @@ public class JDBCLoginService extends LoginService {
      */
     public JDBCLoginService(String driver, String url, Properties props) {
         super(url);
+        loadDriver(driver);
+        this.setUrl(url);
+        this.setProperties(props);
+    }
+    
+    /*
+    
+interface java.sql.Driver:
+    Connection connect(String url, java.util.Properties info) throws SQLException;
+    boolean acceptsURL(String url) throws SQLException;
+    DriverPropertyInfo[] getPropertyInfo(String url, java.util.Properties info) throws SQLException;
+    int getMajorVersion();
+    int getMinorVersion();
+    boolean jdbcCompliant();
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException;
+
+Example implementation
+org.postgresql.Driver: is NOT jdbcCompliant
+  @Override
+  public @Nullable Connection connect(String url, @Nullable Properties info) throws SQLException {
+  @Override
+  public boolean acceptsURL(String url) {
+  @Override
+  public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) {
+
+     */
+    private void loadDriver(String driverName) {
         try {
-            Class.forName(driver);
+			Class<?> driverType = Class.forName(driverName);
+			Driver driver = (Driver)driverType.getDeclaredConstructor().newInstance();
+			LOG.info(driverName + " Version "+driver.getMajorVersion()+"."+driver.getMinorVersion()
+				+ (driver.jdbcCompliant() ? " - jdbcCompliant" : "")
+				);
+			DriverManager.registerDriver(driver); // Throws:SQLException - if a database access error occurs
         } catch (Exception e) {
             LOG.log(Level.WARNING, "The driver passed to the " +
                     "JDBCLoginService constructor could not be loaded. " +
                     "This may be due to the driver not being on the classpath", e);
         }
-        this.setUrl(url);
-        this.setProperties(props);
     }
-    
+
     /**
      * Create a new JDBCLoginService and initializes it to connect to a
      * database using the given params.
@@ -173,27 +201,40 @@ public class JDBCLoginService extends LoginService {
      * @throws Exception
      */
     private void connectByDriverManager(String userName, char[] password) throws Exception {
+    	String url = getUrl();
         if (getProperties() != null) {
             try {
-                conn = DriverManager.getConnection(getUrl(), getProperties());
+            	Driver driver = DriverManager.getDriver(url);
+            	LOG.info("driver.acceptsURL("+url+"):"+driver.acceptsURL(url) + " NOT used: userName="+userName);
+                conn = DriverManager.getConnection(url, getProperties());
                 conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             } catch (Exception e) {
                 try {
-                    conn = DriverManager.getConnection(getUrl(), userName, new String(password));
+                    conn = DriverManager.getConnection(url, userName, new String(password));
                     conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 } catch (Exception ex) {
-                    conn = DriverManager.getConnection(getUrl());
+                    conn = DriverManager.getConnection(url);
                     conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 }
             }
         } else {
             try {
-                conn = DriverManager.getConnection(getUrl(), userName, new String(password));
+            	Driver driver = DriverManager.getDriver(url);
+            	LOG.info("driver.acceptsURL("+url+"):"+driver.acceptsURL(url));
+                conn = DriverManager.getConnection(url, userName, new String(password));
+            } catch (SQLException e) {
+            	String msg = e.getMessage();
+            	int code = e.getErrorCode();
+            	String state = e.getSQLState();
+            	String lmsg = e.getLocalizedMessage();
+                LOG.warning("code="+code + ",state=" + state + ", "+msg);
+                LOG.log(Level.WARNING, "Connection with properties failed. " + lmsg);
+                throw e;
             } catch (Exception e) {
                 LOG.log(Level.WARNING, "Connection with properties failed. " +
-                                "Tryint to connect without.", e);
+                                "Trying to connect without.", e);
                 //try to connect without using the userName and password
-                conn = DriverManager.getConnection(getUrl());
+                conn = DriverManager.getConnection(url);
             }
         }
     }
