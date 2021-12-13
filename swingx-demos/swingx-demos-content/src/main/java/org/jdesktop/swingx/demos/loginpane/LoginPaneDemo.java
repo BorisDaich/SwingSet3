@@ -22,6 +22,7 @@ import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -34,8 +35,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
@@ -44,12 +45,15 @@ import javax.swing.SwingUtilities;
 import org.jdesktop.application.Application;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXLoginPane;
 import org.jdesktop.swingx.JXLoginPane.Status;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.demos.painter.PainterDemo;
 import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
+import org.jdesktop.swingxset.SwingXSet;
 
 import com.sun.swingset3.DemoProperties;
 
@@ -81,24 +85,32 @@ public class LoginPaneDemo extends JPanel {
     private JXLoginPane loginPane;
     private JButton loginLauncher;
     private JToggleButton allowLogin;
-    private JComboBox<Locale> localeBox; // TODO  JXComboBox is not generic
+    private JXComboBox<DisplayLocale> localeBox; // DisplayLocale is a wrapper for Locale
     
     /**
      * main method allows us to run as a standalone demo.
      */
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                JFrame frame = new JFrame(LoginPaneDemo.class.getAnnotation(DemoProperties.class).value());
+//                
+//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                frame.getContentPane().add(new LoginPaneDemo());
+//                frame.setPreferredSize(new Dimension(800, 600));
+//                frame.pack();
+//                frame.setLocationRelativeTo(null);
+//                frame.setVisible(true);
+//            }
+//        });
+//    }
+    /*
+     * damit diese Klasse als einzige im SwingXSet gestartet werden kann (Application.launch),
+     * muss sie in einem file stehen (==>onlyXButtonDemo).
+     * Dieses file wird dann vom DemoCreator eingelesen, "-a"/"-augment" erweitert den demo-Vorrat.
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame(LoginPaneDemo.class.getAnnotation(DemoProperties.class).value());
-                
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new LoginPaneDemo());
-                frame.setPreferredSize(new Dimension(800, 600));
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
+    	Application.launch(SwingXSet.class, new String[] {"META-INF/onlyLoginDemo"});
     }
     
     public LoginPaneDemo() {
@@ -115,14 +127,14 @@ public class LoginPaneDemo extends JPanel {
         service = new DemoLoginService();
         loginPane = new JXLoginPane(service);
         LOG.info("banner:"+loginPane.getBanner());
-        List<String> servers = new ArrayList<String>();
-        servers.add("A");
-        servers.add("B");
-        loginPane.setServers(servers);
+//        List<String> servers = new ArrayList<String>();
+//        servers.add("A");
+//        servers.add("B");
+//        loginPane.setServers(servers);
         
         // customization:
 //        loginPane.setBanner(null); // No banner (customization)
-//        loginPane.setBanner(new MoonLoginPaneUI(loginPane).getBanner());
+        loginPane.setBanner(new MoonLoginPaneUI(loginPane).getBanner());
 //        loginPane.setBannerText("BannerText");
         
         loginLauncher = new JButton();
@@ -136,30 +148,62 @@ public class LoginPaneDemo extends JPanel {
         allowLogin.setName("allowLogin");
         p.add(allowLogin);
         
-        p.add(new JXLabel("select language for Login Screen:", SwingConstants.CENTER));
-        localeBox = new JComboBox<Locale>();
-        localeBox.setModel(createLocaleList());
+        JLabel langLabel = new JXLabel("select language for Login Screen:", SwingConstants.CENTER);
+        
+        localeBox = new JXComboBox<DisplayLocale>();
+        localeBox.setModel(createDisplayLocaleList());
+        Font font = new Font("SansSerif", Font.PLAIN, 16);
+        
+        langLabel.setFont(font);
+        p.add(langLabel);
+        
+        localeBox.setFont(font);
+        localeBox.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER));
         localeBox.addActionListener(event -> {
-        	Locale selected = (Locale)localeBox.getSelectedItem();
+        	Locale selected = ((DisplayLocale)localeBox.getSelectedItem()).getLocale();
         	loginPane.setLocale(selected);
         });
         p.add(localeBox);
     }
     
-    private ComboBoxModel<Locale> createLocaleList() {
-        DefaultComboBoxModel<Locale> model = new DefaultComboBoxModel<Locale>();
-//    private ComboBoxModel<E> createFilterList() {
-//        DefaultComboBoxModel<E> model = new DefaultComboBoxModel<E>();
-        model.addElement(Locale.ENGLISH);
-        model.addElement(new Locale("cs"));
-        model.addElement(new Locale("es"));
-        model.addElement(Locale.FRENCH);
-        model.addElement(Locale.GERMAN);
-        model.addElement(Locale.ITALIAN);
-        model.addElement(new Locale("nl"));
-        model.addElement(new Locale("pl"));
-        model.addElement(new Locale("pt", "BR"));
-        model.addElement(new Locale("sv"));
+//    class LocaleLang extends Locale { // cannot subclass : final class Locale
+//    }
+    public class DisplayLocale { // wrapper, wie org.jdesktop.swingx.binding.DisplayInfo<T>
+        private final Locale locale;
+        
+        public DisplayLocale(String lang) {
+            this.locale = new Locale(lang);
+        }
+        public DisplayLocale(Locale item) {
+            this.locale = item;
+        }
+        
+        public Locale getLocale() {
+            return locale;
+        }
+
+        // used in JXComboBox
+        public String toString() {
+			return locale.toString() + " " + locale.getDisplayLanguage(locale) + "/" +locale.getDisplayLanguage();  	
+        }
+    }
+    
+    private ComboBoxModel<DisplayLocale> createDisplayLocaleList() {
+        DefaultComboBoxModel<DisplayLocale> model = new DefaultComboBoxModel<DisplayLocale>();
+        model.addElement(new DisplayLocale(Locale.ENGLISH));
+        model.addElement(new DisplayLocale("cs"));
+        model.addElement(new DisplayLocale("es"));
+        model.addElement(new DisplayLocale(Locale.FRENCH));
+        model.addElement(new DisplayLocale(Locale.GERMAN));
+//        model.addElement(new DisplayLocale(new Locale("de", "CH")));
+//        model.addElement(new DisplayLocale(new Locale("fr", "CH")));
+//        model.addElement(new DisplayLocale(new Locale("it", "CH")));
+//        model.addElement(new DisplayLocale(new Locale("rm", "CH")));
+        model.addElement(new DisplayLocale(Locale.ITALIAN));
+        model.addElement(new DisplayLocale("nl"));
+        model.addElement(new DisplayLocale("pl"));
+        model.addElement(new DisplayLocale(new Locale("pt", "BR")));
+        model.addElement(new DisplayLocale("sv"));
 		return model;
     }
     
