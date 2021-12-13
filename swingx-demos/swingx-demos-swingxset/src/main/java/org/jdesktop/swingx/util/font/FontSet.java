@@ -37,8 +37,6 @@ package org.jdesktop.swingx.util.font;
 
 import java.awt.Font;
 
-import javax.swing.plaf.FontUIResource;
-
 /**
  * Returns the Fonts used by a Look&amp;Feel or theme.
  * These Fonts must implement the UIResource marker interface.
@@ -48,6 +46,7 @@ import javax.swing.plaf.FontUIResource;
  * 
  * @since 2.0
  */
+// woher stammt es? - nicht aus forms! -> com.jgoodies.looks
 public interface FontSet {
 
     /**

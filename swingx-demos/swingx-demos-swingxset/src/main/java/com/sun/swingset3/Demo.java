@@ -114,6 +114,10 @@ public class Demo {
 
         initializeProperties();
     }
+    
+    public String toString() {
+    	return "(Demo) "+demoClass;
+    }
             
     protected void initializeProperties() {
         
@@ -166,12 +170,12 @@ public class Demo {
 
     protected String getIconImagePath(String extension) {
         // by default look for an image with the same name as the demo class
-        return "resources/images/" + 
-                demoClass.getSimpleName() + extension;
+        return "resources/images/" + demoClass.getSimpleName() + extension;
     }
     
     private Icon getIconFromPath(String path) {
         Icon icon = null;
+        SwingXSet.LOG.log(Level.INFO, "IconFromPath:" +path );
         URL imageURL = demoClass.getResource(path);
         if (imageURL != null) {
             icon = new ImageIcon(imageURL);
@@ -185,8 +189,7 @@ public class Demo {
     
     public URL getHTMLDescription() {
         // by default look for an html file with the same name as the demo class
-        return demoClass.getResource("resources/" + 
-                demoClass.getSimpleName() + ".html");    
+        return demoClass.getResource("resources/" + demoClass.getSimpleName() + ".html");    
     }
 
     public URL[] getSourceFiles() {      
@@ -201,7 +204,7 @@ public class Demo {
                 for (String path : sourceFilePaths) {
                     URL url = getClass().getClassLoader().getResource(path);
                     if (url == null) {
-                        SwingXSet.logger.log(Level.WARNING, "unable to load source file '" + path + "'");
+                        SwingXSet.LOG.log(Level.WARNING, "unable to load source file '" + path + "'");
                     } else {
                         pathURLs.add(url);
                     }
@@ -264,7 +267,7 @@ public class Demo {
     protected void setState(State state) {
         State oldState = this.state;
         this.state = state;
-        SwingXSet.logger.log(Level.FINE, "***>" +getName() + ":setState="+state);
+        SwingXSet.LOG.log(Level.FINE, "***>" +getName() + ":setState="+state);
         pcs.firePropertyChange("state", oldState, state);
     }
     
@@ -284,15 +287,15 @@ public class Demo {
         } catch (NoSuchMethodException nsme) {
             // okay, no init method exists
         } catch (IllegalAccessException iae) {
-            SwingXSet.logger.log(Level.SEVERE, "unable to init demo: "+demoClass.getName(), iae);
+            SwingXSet.LOG.log(Level.SEVERE, "unable to init demo: "+demoClass.getName(), iae);
             failException = iae;
             setState(State.FAILED);
         } catch (java.lang.reflect.InvocationTargetException ite) {
-            SwingXSet.logger.log(Level.SEVERE, "init method failed for demo: "+demoClass.getName(), ite);
+            SwingXSet.LOG.log(Level.SEVERE, "init method failed for demo: "+demoClass.getName(), ite);
             failException = ite;
             setState(State.FAILED);
         } catch (NullPointerException npe) {
-            SwingXSet.logger.log(Level.SEVERE, "init method called before demo was instantiated: "+demoClass.getName(), npe);
+            SwingXSet.LOG.log(Level.SEVERE, "init method called before demo was instantiated: "+demoClass.getName(), npe);
             failException = npe;
             setState(State.FAILED);
         }
@@ -308,15 +311,15 @@ public class Demo {
             setState(State.RUNNING);
             // okay, no start method exists
         } catch (IllegalAccessException iae) {
-            SwingXSet.logger.log(Level.SEVERE, "unable to start demo: "+demoClass.getName(), iae);
+            SwingXSet.LOG.log(Level.SEVERE, "unable to start demo: "+demoClass.getName(), iae);
             failException = iae;
             setState(State.FAILED);
         } catch (java.lang.reflect.InvocationTargetException ite) {
-            SwingXSet.logger.log(Level.SEVERE, "start method failed for demo: "+demoClass.getName(), ite);
+            SwingXSet.LOG.log(Level.SEVERE, "start method failed for demo: "+demoClass.getName(), ite);
             failException = ite;
             setState(State.FAILED);
         } catch (NullPointerException npe) {
-            SwingXSet.logger.log(Level.SEVERE, "start method called before demo was instantiated: "+demoClass.getName(), npe);
+            SwingXSet.LOG.log(Level.SEVERE, "start method called before demo was instantiated: "+demoClass.getName(), npe);
             failException = npe;
             setState(State.FAILED);
         }
@@ -332,15 +335,15 @@ public class Demo {
             // okay, no stop method exists
 
         } catch (IllegalAccessException iae) {
-            SwingXSet.logger.log(Level.SEVERE, "unable to stop demo: "+demoClass.getName(), iae);
+            SwingXSet.LOG.log(Level.SEVERE, "unable to stop demo: "+demoClass.getName(), iae);
             failException = iae;
             setState(State.FAILED);
         } catch (java.lang.reflect.InvocationTargetException ite) {
-            SwingXSet.logger.log(Level.SEVERE, "stop method failed for demo: "+demoClass.getName(), ite);
+            SwingXSet.LOG.log(Level.SEVERE, "stop method failed for demo: "+demoClass.getName(), ite);
             failException = ite;
             setState(State.FAILED);
         } catch (NullPointerException npe) {
-            SwingXSet.logger.log(Level.SEVERE, "stop method called before demo was instantiated: "
+            SwingXSet.LOG.log(Level.SEVERE, "stop method called before demo was instantiated: "
                     +demoClass.getName(), npe);
         }
     }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -42,10 +40,17 @@ import com.sun.swingset3.Demo;
  */
 public class DemoCreator {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(DemoCreator.class.getName());
     private static final DemoCreator INSTANCE = new DemoCreator();
-    
+
+    /**
+     * @return the singleton
+     */
+    public static DemoCreator getInstance() {
+        return INSTANCE;
+    }
+
+
     public List<Demo> createDemos(String[] args, String metaSource) {
         List<String> demoNames = getDemoClassNames(args, metaSource);
         return createDemoList(demoNames);
@@ -139,8 +144,6 @@ public class DemoCreator {
         return demoList;
     }
     
-    /**
-     */
     private Demo createDemo(String demoClassName) {        
         Class<?> demoClass = null;
         Demo demo = null;
@@ -151,13 +154,6 @@ public class DemoCreator {
             LOG.log(Level.WARNING, "demo class not found:"+ demoClassName);
         }        
         return demo;
-    }
-
-    /**
-     * @return
-     */
-    public static DemoCreator getInstance() {
-        return INSTANCE;
     }
 
 }

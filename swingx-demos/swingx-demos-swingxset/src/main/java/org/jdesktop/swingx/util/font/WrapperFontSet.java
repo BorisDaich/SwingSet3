@@ -8,10 +8,9 @@ import java.awt.Font;
 
 import javax.swing.plaf.FontUIResource;
 
-
 public class WrapperFontSet implements FontSet {
-    private int extra;
-
+	
+    private int extra; // extra size in points
     private FontSet delegate;
 
     public WrapperFontSet(FontSet delegate, int extra) {
@@ -21,8 +20,7 @@ public class WrapperFontSet implements FontSet {
     }
 
     private Font getWrappedFont(Font systemFont) {
-        return new FontUIResource(systemFont.getFontName(), systemFont
-                .getStyle(), systemFont.getSize() + extra);
+        return new FontUIResource(systemFont.getFontName(), systemFont.getStyle(), systemFont.getSize() + extra);
     }
 
     public Font getControlFont() {

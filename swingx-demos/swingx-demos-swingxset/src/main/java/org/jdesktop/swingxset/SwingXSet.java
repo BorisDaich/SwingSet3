@@ -107,7 +107,7 @@ import com.sun.swingset3.utilities.Utilities;
  * @author Jeanette Winzenburg (SwingX adaption)
  */
 public class SwingXSet extends SingleXFrameApplication  {
-    public static final Logger logger = Logger.getLogger(SwingXSet.class.getName());
+    public static final Logger LOG = Logger.getLogger(SwingXSet.class.getName());
     
     private static final ServiceLoader<LookAndFeel> LOOK_AND_FEEL_LOADER = ServiceLoader.load(LookAndFeel.class); 
 
@@ -220,6 +220,7 @@ public class SwingXSet extends SingleXFrameApplication  {
      */
     @Action(selectedProperty = "bigFontSet", enabledProperty = "windowsOS")
     public void toggleFontSet() {
+    	LOG.info("hasBig="+hasBig);
     }
 
     public boolean isWindowsOS() {
@@ -234,9 +235,8 @@ public class SwingXSet extends SingleXFrameApplication  {
         } else {
 //            <snip> Install sscaled font
             FontPolicy windowsPolicy = FontPolicies.getDefaultWindowsPolicy();
-            FontSet fontSet = windowsPolicy.getFontSet(null, UIManager
-                    .getLookAndFeelDefaults());
-            WrapperFontSet scaled = new WrapperFontSet(fontSet, 5);
+            FontSet fontSet = windowsPolicy.getFontSet(null, UIManager.getLookAndFeelDefaults());
+            WrapperFontSet scaled = new WrapperFontSet(fontSet, 5); // add extra 5 to size)
             UIFontUtils.initFontDefaults(UIManager.getDefaults(), scaled);
 //            </snip>
         }
@@ -488,7 +488,7 @@ public class SwingXSet extends SingleXFrameApplication  {
             if (snippetKey != null) {
                 codeViewer.highlightSnippetSet(snippetKey);
             } else {
-                logger.log(Level.WARNING, "can't find source code snippet for:" + snippetKey);
+                LOG.log(Level.WARNING, "can't find source code snippet for:" + snippetKey);
             }                                    
         }
     }
@@ -666,7 +666,12 @@ public class SwingXSet extends SingleXFrameApplication  {
         viewMenu.add(createLookAndFeelMenu());
         menubar.add(viewMenu);
 
+        // View -> toggleFontSet
+        // TODO EUG: getAction == getContext().getActionMap().get(actionName)
+        // Action extends ActionListener mit actionPerformed(ActionEvent e)
+        javax.swing.Action toggleFontSet = getAction("toggleFontSet");
         viewMenu.add(new JCheckBoxMenuItem(getAction("toggleFontSet")));
+        
         JMenuItem toggleSelectorVisible = new JCheckBoxMenuItem(getAction("toggleSelectorVisible"));
         // PENDING JW: Action binding to selected - force initial state
         toggleSelectorVisible.setSelected(isSelectorVisible());

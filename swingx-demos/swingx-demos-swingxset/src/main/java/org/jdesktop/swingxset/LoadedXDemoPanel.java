@@ -100,7 +100,9 @@ public class LoadedXDemoPanel extends JXTitledPanel {
     private void initComponents(Demo demo) throws Exception {
         URL description = demo.getHTMLDescription();
         LOG.info("URL description:"+description);
-        if (description != null) {
+        if(description == null) {
+        	LOG.warning("no HTML Description for "+demo);
+        } else {
             descriptionArea = createDescriptionArea(description);
         }
         demoPanel = new JXPanel(new BorderLayout());
