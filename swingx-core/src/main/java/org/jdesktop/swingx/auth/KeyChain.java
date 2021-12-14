@@ -56,6 +56,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Bino George
  */
 public class KeyChain {
+	
     private static final Logger LOG = Logger.getLogger(KeyChain.class.getName());
     
     private KeyStore store;
@@ -99,11 +100,9 @@ public class KeyChain {
     public String getPassword(String user, String server) {
 
         try {
-
-            KeyStore.SecretKeyEntry entry2 = (KeyStore.SecretKeyEntry) store
-                    .getEntry(user + "@" + server,
-                            new KeyStore.PasswordProtection(masterPassword));
-            return new String(entry2.getSecretKey().getEncoded());
+            KeyStore.SecretKeyEntry entry2 
+            = (KeyStore.SecretKeyEntry) store.getEntry(user + "@" + server, new KeyStore.PasswordProtection(masterPassword));
+            return entry2==null ? null : new String(entry2.getSecretKey().getEncoded());
         } catch (KeyStoreException ex) {
             LOG.log(Level.WARNING, "", ex);
         } catch (UnrecoverableEntryException ex) {
@@ -122,14 +121,12 @@ public class KeyChain {
      * @param server
      * @param password
      */
-    public void addPassword(String user, String server, char[] password)
-            {
+    public void addPassword(String user, String server, char[] password) {
         String pass = new String(password);
         SecretKeySpec passwordKey = new SecretKeySpec(pass.getBytes(), "JCEKS");
         KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(passwordKey);
         try {
-            store.setEntry(user + "@" + server, entry,
-                    new KeyStore.PasswordProtection(masterPassword));
+            store.setEntry(user + "@" + server, entry, new KeyStore.PasswordProtection(masterPassword));
         } catch (KeyStoreException e) {
             LOG.log(Level.WARNING, "", e);
         }
@@ -168,34 +165,6 @@ public class KeyChain {
         }
     }
 
+// EUG: move the tests to test class org.jdesktop.swingx.auth.KeyChainIssues
 
-    public static void main(String[] args) {
-        try {
-            File file = new File("c:\\test.txt");
-            FileInputStream fis;
-            if (!file.exists()) {
-                file.createNewFile();
-                fis = null;
-            } else {
-                fis = new FileInputStream(file);
-            }
-            KeyChain kc = new KeyChain("test".toCharArray(), fis);
-            kc.addPassword("bino", "sun-ds.sfbay", "test123".toCharArray());
-            LOG.fine("pass = "
-                    + kc.getPassword("bino", "sun-ds.sfbay"));
-
-            LOG.fine("More testing :");
-            for (int i = 0; i < 100; i++) {
-                kc.addPassword("" + i, "sun-ds.sfbay", ("" + i).toCharArray());
-            }
-            for (int i = 0; i < 100; i++) {
-                LOG.fine("key =" + i + " pass ="
-                        + kc.getPassword("" + i, "sun-ds.sfbay"));
-            }
-            kc.store(new FileOutputStream(file));
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "", e);
-        }
-    }
-    
 }

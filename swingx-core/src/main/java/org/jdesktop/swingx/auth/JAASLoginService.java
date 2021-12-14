@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,10 +41,14 @@ import org.jdesktop.beans.JavaBean;
  * 
  * @author Bino George
  */
+/*
+ * zu JAAS siehe https://github.com/dekellum/jetty/tree/master/jetty-plus/src/main/java/org/eclipse/jetty/plus/jaas
+ * benötigt JDBCLoginService
+ */
 @JavaBean
 public class JAASLoginService extends LoginService {
-    private static final Logger LOG = Logger.getLogger(JAASLoginService.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JAASLoginService.class.getName());
 
 	protected LoginContext loginContext;
 
