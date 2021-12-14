@@ -21,38 +21,48 @@ package org.jdesktop.swingx.demos.loginpane;
 import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXLoginPane;
+import org.jdesktop.swingx.JXLoginPane.SaveMode;
 import org.jdesktop.swingx.JXLoginPane.Status;
+import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.auth.PasswordStore;
+import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.demos.painter.PainterDemo;
+import org.jdesktop.swingx.painter.MattePainter;
+import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
+import org.jdesktop.swingx.util.PaintUtils;
+import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.SwingXSet;
 
 import com.sun.swingset3.DemoProperties;
@@ -77,33 +87,23 @@ import com.sun.swingset3.DemoProperties;
     }
 )
 @SuppressWarnings("serial")
-public class LoginPaneDemo extends JPanel {
+//abstract class DefaultDemoPanel extends JXPanel
+public class LoginPaneDemo extends DefaultDemoPanel {
 	
     private static final Logger LOG = Logger.getLogger(LoginPaneDemo.class.getName());
 
+    private PasswordStore ps;
+    private UserNameStore us = null; // not used ==> DefaultUserNameStore
     private DemoLoginService service;
     private JXLoginPane loginPane;
-    private JButton loginLauncher;
+    private JXButton loginLauncher;
     private JToggleButton allowLogin;
     private JXComboBox<DisplayLocale> localeBox; // DisplayLocale is a wrapper for Locale
+    private JXLabel statusLabel;
     
     /**
      * main method allows us to run as a standalone demo.
      */
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                JFrame frame = new JFrame(LoginPaneDemo.class.getAnnotation(DemoProperties.class).value());
-//                
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                frame.getContentPane().add(new LoginPaneDemo());
-//                frame.setPreferredSize(new Dimension(800, 600));
-//                frame.pack();
-//                frame.setLocationRelativeTo(null);
-//                frame.setVisible(true);
-//            }
-//        });
-//    }
     /*
      * damit diese Klasse als einzige im SwingXSet gestartet werden kann (Application.launch),
      * muss sie in einem file stehen (==>onlyXButtonDemo).
@@ -112,47 +112,133 @@ public class LoginPaneDemo extends JPanel {
     public static void main(String[] args) {
     	Application.launch(SwingXSet.class, new String[] {"META-INF/onlyLoginDemo"});
     }
-    
+
     public LoginPaneDemo() {
-        super(new BorderLayout());
-        
-        createLoginPaneDemo();
-        
-        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
-        
-        bind();
+        super();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    // implements abstract void DefaultDemoPanel.createDemo() called in super ctor
+	@Override
+	protected void createDemo() {
+		LOG.config("ctor");
+        setLayout(new BorderLayout());
+	}
+
+	@Override
+    protected void injectResources() {
+        createLoginPaneDemo();
+        super.injectResources();
+    }
+
+	@Override
+    protected void bind() {
+    	loginLauncher.addActionListener(event -> {
+    		if(statusLabel.getText().equals(Status.SUCCEEDED.toString())) {
+    			LOG.info("status:SUCCEEDED!!!!");
+    			return;
+    		}
+    		
+    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane);
+    		statusLabel.setText(status.toString());
+    		
+    		if(status==Status.SUCCEEDED) {
+    			LOG.fine("isRememberPassword? : "+loginPane.isRememberPassword());
+    			if(loginPane.isRememberPassword()) {
+    				ps.set(loginPane.getUserName(), null, loginPane.getPassword());
+    			}
+				((FilePasswordStore)ps).store(); // make ps persistent
+				
+    			loginPane.setVisible(false);
+    			loginLauncher.setText("login "+Status.SUCCEEDED.toString());
+    			loginLauncher.setEnabled(false);
+    		}
+    	});
+    	
+        Bindings.createAutoBinding(READ,
+                allowLogin, BeanProperty.create("selected"),
+                service, BeanProperty.create("validLogin")).bind();
+    }
+    
     private void createLoginPaneDemo() {
         service = new DemoLoginService();
-        loginPane = new JXLoginPane(service);
+    	ps = new FilePasswordStore();
+    	us = null; //new DefaultUserNameStore();
+        loginPane = new JXLoginPane(service, ps, us);
         LOG.info("banner:"+loginPane.getBanner());
-//        List<String> servers = new ArrayList<String>();
-//        servers.add("A");
-//        servers.add("B");
-//        loginPane.setServers(servers);
+        loginPane.addPropertyChangeListener("status", new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				JXLoginPane.Status status = (JXLoginPane.Status)evt.getNewValue();
+				JXLoginPane.Status old = (JXLoginPane.Status)evt.getOldValue();
+				LOG.info("new status is "+status + " old:"+old);
+				statusLabel.setText(status.toString());
+				LoginPaneDemo.this.validate();
+			}
+        	
+        });
         
         // customization:
 //        loginPane.setBanner(null); // No banner (customization)
         loginPane.setBanner(new MoonLoginPaneUI(loginPane).getBanner());
 //        loginPane.setBannerText("BannerText");
+        loginPane.setSaveMode(SaveMode.BOTH);
         
-        loginLauncher = new JButton();
-        loginLauncher.setName("launcher");
-        add(loginLauncher, BorderLayout.NORTH);
+        Font font = new Font("SansSerif", Font.PLAIN, 16);
+
+        loginLauncher = new JXButton();
+        loginLauncher.setName("launcher"); // den text aus prop "launcher.text" holen
+        loginLauncher.setFont(font);
+        final Painter<?> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
+        loginLauncher.setBackgroundPainter(orangeBgPainter);
+        loginLauncher.addMouseListener(new MouseAdapter() { // disable BG painter
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	loginLauncher.setBackgroundPainter(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	loginLauncher.setBackgroundPainter(orangeBgPainter);
+            }          
+        });
         
-        JPanel p = new JPanel(new VerticalLayout());
+        JXPanel n = new JXPanel(new HorizontalLayout());
+        JXLabel status = new JXLabel("Status:");
+        status.setFont(font);
+        status.setHorizontalAlignment(SwingConstants.RIGHT);
+        n.add(status);
+        statusLabel = new JXLabel(loginPane.getStatus().name());
+        statusLabel.setFont(font);
+        statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        n.add(statusLabel);
+        add(n, BorderLayout.NORTH);
+        add(loginLauncher, BorderLayout.SOUTH);
+        
+        JXPanel p = new JXPanel(new VerticalLayout());
         add(p);
         
-        allowLogin = new JToggleButton();
+        allowLogin = new JRadioButton(); // JRadioButton extends JToggleButton
+        allowLogin.setFont(font);
         allowLogin.setName("allowLogin");
-        p.add(allowLogin);
+        JRadioButton disallowLogin = new JRadioButton("disallow"); // JRadioButton extends JToggleButton
+        disallowLogin.setFont(font);
+      //Group the radio buttons.
+        ButtonGroup group = new ButtonGroup();
+        group.add(allowLogin);
+        group.add(disallowLogin);
+        JPanel radioPanel = new JPanel(new java.awt.GridLayout( 1, 2 ));
+        radioPanel.add(allowLogin);
+        radioPanel.add(disallowLogin);
+        p.add(radioPanel);
         
-        JLabel langLabel = new JXLabel("select language for Login Screen:", SwingConstants.CENTER);
+        JLabel langLabel = new JXLabel("select language for Login Screen:", SwingConstants.LEFT);
         
         localeBox = new JXComboBox<DisplayLocale>();
         localeBox.setModel(createDisplayLocaleList());
-        Font font = new Font("SansSerif", Font.PLAIN, 16);
         
         langLabel.setFont(font);
         p.add(langLabel);
@@ -166,9 +252,13 @@ public class LoginPaneDemo extends JPanel {
         p.add(localeBox);
     }
     
-//    class LocaleLang extends Locale { // cannot subclass : final class Locale
-//    }
-    public class DisplayLocale { // wrapper, wie org.jdesktop.swingx.binding.DisplayInfo<T>
+    /**
+     * wrapper for class Locale
+     * <p>
+     * class Locale is final, so cannot subclass it
+     *
+     */
+    public class DisplayLocale {
         private final Locale locale;
         
         public DisplayLocale(String lang) {
@@ -205,23 +295,6 @@ public class LoginPaneDemo extends JPanel {
         model.addElement(new DisplayLocale(new Locale("pt", "BR")));
         model.addElement(new DisplayLocale("sv"));
 		return model;
-    }
-    
-    private void bind() {
-    	loginLauncher.addActionListener(event -> {
-    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane); // returns status
-    		LOG.info("status:"+status);
-    		// or per Frame:
-//    		JFrame frame = JXLoginPane.showLoginFrame(loginPane);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-////            frame.setJMenuBar(createAndFillMenuBar(panel));
-////            loginPane.setSaveMode(SaveMode.BOTH);
-//            frame.pack();
-//            frame.setVisible(true);
-    	});
-        Bindings.createAutoBinding(READ,
-                allowLogin, BeanProperty.create("selected"),
-                service, BeanProperty.create("validLogin")).bind();
     }
     
     public class MoonLoginPaneUI extends BasicLoginPaneUI {
