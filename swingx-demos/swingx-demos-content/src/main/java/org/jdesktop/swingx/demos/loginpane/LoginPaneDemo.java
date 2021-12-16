@@ -50,7 +50,6 @@ import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXLoginPane;
-import org.jdesktop.swingx.JXLoginPane.SaveMode;
 import org.jdesktop.swingx.JXLoginPane.Status;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.VerticalLayout;
@@ -96,10 +95,12 @@ public class LoginPaneDemo extends DefaultDemoPanel {
     private UserNameStore us = null; // not used ==> DefaultUserNameStore
     private DemoLoginService service;
     private JXLoginPane loginPane;
-    private JXButton loginLauncher;
+    // controler:
+    private JXLabel statusLabel;
     private JToggleButton allowLogin;
     private JXComboBox<DisplayLocale> localeBox; // DisplayLocale is a wrapper for Locale
-    private JXLabel statusLabel;
+    private Locale selectedLocale;
+    private JXButton loginLauncher;
     
     /**
      * main method allows us to run as a standalone demo.
@@ -145,9 +146,14 @@ public class LoginPaneDemo extends DefaultDemoPanel {
     	                service, BeanProperty.create("validLogin")
     	                ).bind();
     		}
+    		if(selectedLocale!=null) loginPane.setLocale(this.selectedLocale);
     		
     		if(statusLabel.getText().equals(Status.SUCCEEDED.toString())) {
-    			LOG.info("status:SUCCEEDED!!!!");
+    			LOG.info("status:SUCCEEDED!!!! - do reset ...");
+    			loginPane = null;
+    			statusLabel.setText(Status.NOT_STARTED.toString());
+    			localeBox.setSelectedItem(localeBox.getModel().getElementAt(0)); // Locale.0 is en
+    			loginLauncher.setText("reset done, launch again.");
     			return;
     		}
     		
@@ -163,7 +169,8 @@ public class LoginPaneDemo extends DefaultDemoPanel {
 				
     			loginPane.setVisible(false);
     			loginLauncher.setText("login "+Status.SUCCEEDED.toString());
-    			loginLauncher.setEnabled(false);
+    			// kein disable -> launch kann beliebig of wiederholt werden -> reset
+    			//loginLauncher.setEnabled(false);
     		}
     	});   	
     }
@@ -192,7 +199,9 @@ public class LoginPaneDemo extends DefaultDemoPanel {
 //        loginPane.setBanner(null); // No banner (customization)
         loginPane.setBanner(new MoonLoginPaneUI(loginPane).getBanner());
 //        loginPane.setBannerText("BannerText");
-        loginPane.setSaveMode(SaveMode.BOTH);    	
+        
+        // nicht notwendig: wird anhand ps+us gesetzt:
+//        loginPane.setSaveMode(SaveMode.PASSWORD);
     }
     
     private void createLoginPaneControler() {
@@ -256,7 +265,10 @@ public class LoginPaneDemo extends DefaultDemoPanel {
         localeBox.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER));
         localeBox.addActionListener(event -> {
         	Locale selected = ((DisplayLocale)localeBox.getSelectedItem()).getLocale();
-        	loginPane.setLocale(selected);
+        	LOG.info("Locale selected:"+selected + ", loginPane:"+loginPane);
+            // an dieser Stelle ist loginPane immer null, daher macht der Observer so wenig Sinn
+        	//if(loginPane!=null) loginPane.setLocale(selected);
+        	selectedLocale = selected;
         });
         p.add(localeBox);
     }
