@@ -129,13 +129,23 @@ public class LoginPaneDemo extends DefaultDemoPanel {
 
 	@Override
     protected void injectResources() {
-        createLoginPaneDemo();
+        createLoginPaneControler();
         super.injectResources();
     }
 
 	@Override
     protected void bind() {
+        // bind source allowLogin button to target service.validLogin erst nach createLoginPaneDemo()!
+		// d.h. bind() registriert nur den event Observer aka Listener
     	loginLauncher.addActionListener(event -> {
+    		if(loginPane==null) {
+    			createLoginPaneDemo();
+    	        Bindings.createAutoBinding(READ, 
+    	        		allowLogin, BeanProperty.create("selected"),
+    	                service, BeanProperty.create("validLogin")
+    	                ).bind();
+    		}
+    		
     		if(statusLabel.getText().equals(Status.SUCCEEDED.toString())) {
     			LOG.info("status:SUCCEEDED!!!!");
     			return;
@@ -155,17 +165,14 @@ public class LoginPaneDemo extends DefaultDemoPanel {
     			loginLauncher.setText("login "+Status.SUCCEEDED.toString());
     			loginLauncher.setEnabled(false);
     		}
-    	});
-    	
-        Bindings.createAutoBinding(READ,
-                allowLogin, BeanProperty.create("selected"),
-                service, BeanProperty.create("validLogin")).bind();
+    	});   	
     }
     
     private void createLoginPaneDemo() {
         service = new DemoLoginService();
     	ps = new FilePasswordStore();
     	us = null; //new DefaultUserNameStore();
+        
         loginPane = new JXLoginPane(service, ps, us);
         LOG.info("banner:"+loginPane.getBanner());
         loginPane.addPropertyChangeListener("status", new PropertyChangeListener() {
@@ -185,8 +192,10 @@ public class LoginPaneDemo extends DefaultDemoPanel {
 //        loginPane.setBanner(null); // No banner (customization)
         loginPane.setBanner(new MoonLoginPaneUI(loginPane).getBanner());
 //        loginPane.setBannerText("BannerText");
-        loginPane.setSaveMode(SaveMode.BOTH);
-        
+        loginPane.setSaveMode(SaveMode.BOTH);    	
+    }
+    
+    private void createLoginPaneControler() {
         Font font = new Font("SansSerif", Font.PLAIN, 16);
 
         loginLauncher = new JXButton();
@@ -211,7 +220,7 @@ public class LoginPaneDemo extends DefaultDemoPanel {
         status.setFont(font);
         status.setHorizontalAlignment(SwingConstants.RIGHT);
         n.add(status);
-        statusLabel = new JXLabel(loginPane.getStatus().name());
+        statusLabel = new JXLabel(loginPane==null ? Status.NOT_STARTED.toString() : loginPane.getStatus().name());
         statusLabel.setFont(font);
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         n.add(statusLabel);
