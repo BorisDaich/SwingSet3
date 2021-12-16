@@ -43,6 +43,7 @@ public class FilePasswordStore extends PasswordStore {
 		
         try {
 			kc = new KeyChain("test".toCharArray(), fis);
+			store(); // store the empty DS
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,4 +105,15 @@ public class FilePasswordStore extends PasswordStore {
 		// TODO ? server
 	}
 
+	public static void main(String[] args) {
+		FilePasswordStore fps = new FilePasswordStore();
+		char[] aPW = fps.get("a", null);
+		LOG.info("a, null:"+(aPW==null ? "null" : String.valueOf(aPW)));
+		
+		char[] adempierePW = fps.get("adempiere", null);
+		LOG.info("adempiere, null:"+(adempierePW==null ? "null" : String.valueOf(adempierePW)));
+		
+		char[] adempierePWad393 = fps.get("adempiere", "jdbc:postgresql://localhost/ad393");
+		LOG.info("adempiere, jdbc:postgresql://localhost/ad393:"+(adempierePWad393==null ? "null" : String.valueOf(adempierePWad393)));
+	}
 }
