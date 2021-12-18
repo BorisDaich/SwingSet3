@@ -136,7 +136,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  * @author Karl Schaefer
  * @author rah003
  * @author Jonathan Giles
- * @author Eugen Hanussek https://github.com/homebeaver (banner as CompoundPainter: ImagePainter + TextPainter)
+ * @author EUG https://github.com/homebeaver (banner as CompoundPainter: ImagePainter + TextPainter)
  */
 @JavaBean
 public class JXLoginPane extends JXPanel {
@@ -655,7 +655,7 @@ public class JXLoginPane extends JXPanel {
         JXPanel loginPanel = new JXPanel();
         
         JPasswordField oldPwd = passwordField;
-        //create the password component
+        //create the password component:
         passwordField = new JPasswordField("", 15);
         JLabel passwordLabel = new JLabel(UIManagerExt.getString(CLASS_NAME + ".passwordString", getLocale()));
         passwordLabel.setLabelFor(passwordField);
@@ -664,11 +664,11 @@ public class JXLoginPane extends JXPanel {
         }
 
         NameComponent oldPanel = namePanel;
-        //create the NameComponent
+        //create the NameComponent:
         if (saveMode == SaveMode.NONE) {
             namePanel = new SimpleNamePanel();
         } else {
-            namePanel = new ComboNamePanel();
+            namePanel = new ComboNamePanel(userNameStore); // EUG: userNameStore is passed to NameComboBoxModel
         }
         if (oldPanel != null) {
             // need to reset here otherwise value will get lost during LAF change as panel gets recreated.
@@ -893,9 +893,9 @@ public class JXLoginPane extends JXPanel {
         }
     }
     
-    public boolean isRememberPassword() {
-	return saveCB.isVisible() && saveCB.isSelected();
-    }
+	public boolean isRememberPassword() {
+		return saveCB.isVisible() && saveCB.isSelected();
+	}
 
     /**
      * @return the List of servers
@@ -1237,14 +1237,15 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
-     * Puts the password into the password store. If password store is not set, method will do
-     * nothing.
+     * Puts the password into the password store. 
+     * If password store is not set, method will do nothing.
      */
     protected void savePassword() {
         if (saveCB.isSelected()
             && (saveMode == SaveMode.BOTH || saveMode == SaveMode.PASSWORD)
             && passwordStore != null) {
-            passwordStore.set(getUserName(),getLoginService().getServer(),getPassword());
+            boolean saved = passwordStore.set(getUserName(), getLoginService().getServer(), getPassword());
+            LOG.config("saveMode:"+saveMode + ", saved="+saved);
         }
     }
 
@@ -1295,18 +1296,21 @@ public class JXLoginPane extends JXPanel {
                     && userName != null && !userName.trim().equals("")) {
                 userNameStore.addUserName(userName);
                 userNameStore.saveUserNames();
+                if(namePanel instanceof ComboNamePanel) {
+                	((ComboNamePanel)namePanel).setUserNames(userNameStore);
+                }
             }
             
             // if the user and/or password store knows of this user, 
             // and the checkbox is unchecked, we remove them, otherwise
             // we save the password
             if (saveCB.isSelected()) {
-        	savePassword();
+            	savePassword();
             } else {
-        	// remove the password from the password store
-        	if (passwordStore != null) {
-        	    passwordStore.removeUserPassword(userName);
-        	}
+	        	// remove the password from the password store
+	        	if (passwordStore != null) {
+	        	    passwordStore.removeUserPassword(userName);
+	        	}
             }
             
             setStatus(Status.SUCCEEDED);
@@ -1460,12 +1464,21 @@ public class JXLoginPane extends JXPanel {
     private void updatePassword(final String username) {
         String password = "";
         if (username != null) {
-    		char[] pw = passwordStore.get(username, null);
+        	// EUG: get pw from passwordStore for the selected server
+        	// assert passwordStore != null, when called! 
+//    		String s = this.servers.get(0);
+//    		LOG.info("username="+username+",------------> server:" + (serverCombo == null ? "serverCombo==null/"+s : (String)serverCombo.getSelectedItem()));
+//    		char[] pw = passwordStore.get(username, serverCombo == null ? s : (String)serverCombo.getSelectedItem());
+        	char[] pw = null;
+    		if(serverCombo == null) {
+    			pw = passwordStore.get(username, servers==null||servers.isEmpty() ? null : servers.get(0));
+    		} else {
+        		pw = passwordStore.get(username, (String)serverCombo.getSelectedItem());
+    		}
     		password = pw == null ? "" : new String(pw);
     		
-    		// if the userstore has this username, we should change the 
-    		// 'remember me' checkbox to be selected. Unselecting this will
-    		// result in the user being 'forgotten'.
+    		// if the userstore has this username, we should change the 'remember me' checkbox to be selected. 
+    		// Unselecting this will result in the user being 'forgotten'.
     		saveCB.setSelected(userNameStore.containsUserName(username));
         }
         
@@ -1479,22 +1492,22 @@ public class JXLoginPane extends JXPanel {
     private final class SimpleNamePanel extends JTextField implements NameComponent {
         private static final long serialVersionUID = 6513437813612641002L;
 
-	public SimpleNamePanel() {
-	    super("", 15);
-	    
-	    // auto-complete based on the users input
-	    // AutoCompleteDecorator.decorate(this, Arrays.asList(userNameStore.getUserNames()), false);
-
-	    // listen to text input, and offer password suggestion based on current text
-	    if (passwordStore != null && passwordField!=null) {
-		addKeyListener(new KeyAdapter() {
-		    @Override
-		    public void keyReleased(KeyEvent e) {
-			updatePassword(getText());
+		public SimpleNamePanel() {
+		    super("", 15);
+		    
+		    // auto-complete based on the users input
+		    // AutoCompleteDecorator.decorate(this, Arrays.asList(userNameStore.getUserNames()), false);
+	
+		    // listen to text input, and offer password suggestion based on current text
+		    if (passwordStore != null && passwordField!=null) {
+				addKeyListener(new KeyAdapter() {
+				    @Override
+				    public void keyReleased(KeyEvent e) {
+					updatePassword(getText());
+				    }
+				});
 		    }
-		});
-	    }
-	}
+		}
         
         @Override
         public String getUserName() {
@@ -1516,30 +1529,36 @@ public class JXLoginPane extends JXPanel {
      */
     private final class ComboNamePanel extends JComboBox implements NameComponent {
         private static final long serialVersionUID = 2511649075486103959L;
-
-        public ComboNamePanel() {
+        private UserNameStore userNameStore; // intentionally overwrite member of the outer class
+        
+        @SuppressWarnings("unused")
+		private ComboNamePanel() {
+        	LOG.severe("do not use this ctor");
+        }
+        // EUG: need param UserNameStore to pass it to NameComboBoxModel
+        public ComboNamePanel(UserNameStore uns) {
             super();
-            setModel(new NameComboBoxModel());
+            userNameStore = uns;
+            setModel(new NameComboBoxModel(uns)); // EUG: pass UserNameStore uns to model
             setEditable(true);
             
             // auto-complete based on the users input
             AutoCompleteDecorator.decorate(this);
 
-            // listen to selection or text input, and offer password suggestion based on current
-            // text
+            // listen to selection or text input, and offer password suggestion based on current text
             if (passwordStore != null && passwordField!=null) {
         	final JTextField textfield = (JTextField) getEditor().getEditorComponent();
         	textfield.addKeyListener(new KeyAdapter() {
         	    @Override
         	    public void keyReleased(KeyEvent e) {
-        		updatePassword(textfield.getText());
+        	    	updatePassword(textfield.getText());
         	    }
         	});
         	
         	super.addItemListener(new ItemListener() {
         	    @Override
                 public void itemStateChanged(ItemEvent e) {
-        		updatePassword((String)getSelectedItem());
+        	    	updatePassword((String)getSelectedItem());
         	    }
         	});
             }
@@ -1554,8 +1573,13 @@ public class JXLoginPane extends JXPanel {
         public void setUserName(String userName) {
             getModel().setSelectedItem(userName);
         }
-        public void setUserNames(String[] names) {
-            setModel(new DefaultComboBoxModel(names));
+        // EUG: used in LoginListenerImpl
+        public void setUserNames(UserNameStore uns) {
+        	userNameStore = uns;
+        	ComboBoxModel model = getModel();
+        	if(model instanceof NameComboBoxModel) {
+        		((NameComboBoxModel)model).setUserNames(userNameStore.getUserNames());
+        	}
         }
         @Override
         public JComponent getComponent() {
@@ -1565,26 +1589,36 @@ public class JXLoginPane extends JXPanel {
         private final class NameComboBoxModel extends AbstractListModel implements ComboBoxModel {
             private static final long serialVersionUID = 7097674687536018633L;
             private Object selectedItem;
-            @Override
+            @SuppressWarnings("unused")  // intentionally overwrite userNameStore member of the outer class
+			private UserNameStore userNameStore;
+            private String[] userNames; // update this (setUserNames) in LoginListenerImpl
+            		      
+            public NameComboBoxModel(UserNameStore uns) {
+            	super();
+            	setUserNames(uns.getUserNames());
+            }
+            public void setUserNames(String[] names) {
+            	userNames = names;
+            }
+            @Override // implements interface ComboBoxModel
             public void setSelectedItem(Object anItem) {
                 selectedItem = anItem;
                 fireContentsChanged(this, -1, -1);
             }
-            @Override
+            @Override // implements interface ComboBoxModel
             public Object getSelectedItem() {
                 return selectedItem;
             }
-            @Override
+            @Override // implements interface ListModel<E> , not in AbstractListModel
             public Object getElementAt(int index) {
                 if (index == -1) {
                     return null;
                 }
-                
-                return userNameStore.getUserNames()[index];
+                return userNames[index];
             }
-            @Override
+            @Override // implements interface ListModel<E> , not in AbstractListModel
             public int getSize() {
-                return userNameStore.getUserNames().length;
+                return userNames.length;
             }
         }
     }
