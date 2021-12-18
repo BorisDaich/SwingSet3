@@ -84,6 +84,13 @@ public class KeyChainIssues extends TestCase {
     }
 
     @Test
+    public void testNull() {
+    	kc.addPassword(null, null, PASSWORD.toCharArray());
+    	String pw = kc.getPassword(null, null);
+        assertEquals(PASSWORD, pw);
+    }
+
+    @Test
     public void testRemovePassword() {
     	kc.removePassword(USERNAME, null);
     	String pw = kc.getPassword(USERNAME, null);
