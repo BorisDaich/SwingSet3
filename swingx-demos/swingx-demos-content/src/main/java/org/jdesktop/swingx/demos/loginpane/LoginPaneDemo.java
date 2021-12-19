@@ -28,7 +28,14 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -53,6 +60,8 @@ import org.jdesktop.swingx.JXLoginPane;
 import org.jdesktop.swingx.JXLoginPane.Status;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.auth.DefaultUserNameStore;
+import org.jdesktop.swingx.auth.KeyChain;
 import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
@@ -157,15 +166,21 @@ public class LoginPaneDemo extends DefaultDemoPanel {
     			return;
     		}
     		
-    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane);
+    		Status status = JXLoginPane.showLoginDialog(LoginPaneDemo.this, loginPane); // 1623
     		statusLabel.setText(status.toString());
     		
     		if(status==Status.SUCCEEDED) {
-    			LOG.fine("isRememberPassword? : "+loginPane.isRememberPassword());
+    			String[] userNames = loginPane.getUserNameStore().getUserNames();
+    			String allNames = Arrays.toString(userNames);
+    			LOG.info("User:"+loginPane.getUserName() + " of "+userNames.length + allNames
+    				+ ", Server:"+service.getServer() + ", LoginService:"+loginPane.getLoginService().getServer()
+					+ ", isRememberPassword? : "+loginPane.isRememberPassword());  			
+    			ps.set("USER#allNames", null, allNames.toCharArray()); // userNames persistent ablegen
     			if(loginPane.isRememberPassword()) {
-    				ps.set(loginPane.getUserName(), null, loginPane.getPassword());
+    				// wurde schon in loginPane gemacht:
+    				//ps.set(loginPane.getUserName(), null, loginPane.getPassword());
     			}
-				((FilePasswordStore)ps).store(); // make ps persistent
+				((InnerFilePasswordStore)ps).store(); // make ps persistent
 				
     			loginPane.setVisible(false);
     			loginLauncher.setText("login "+Status.SUCCEEDED.toString());
@@ -176,12 +191,38 @@ public class LoginPaneDemo extends DefaultDemoPanel {
     }
     
     private void createLoginPaneDemo() {
-        service = new DemoLoginService();
-    	ps = new FilePasswordStore();
-    	us = null; //new DefaultUserNameStore();
+        final String[] serverArray = { null
+//        		, "sun-ds.sfbay" 
+//            	, "jdbc:postgresql://localhost/demo", "jdbc:postgresql://localhost/ad393"
+        		, "jdbc:h2:~/data/H2/demodata" };
+        
+        service = new DemoLoginService(serverArray);
+    	ps = new InnerFilePasswordStore();
+    	char[] allNames = ps.get("USER#allNames", null);
+    	/*
+    	   allNames==null => ps ist leer
+    	   allNames=[a]   => ein user
+    	   allNames=[a, b, beta] => mehrere user
+    	 */
+//    	us = new LoggingUserNameStore(); // uncomment to be verbose 
+    	us = new DefaultUserNameStore();
+    	LOG.info("-------------------> us:"+us + ", allNames="+(allNames==null?"null":String.valueOf(allNames)));
+    	if(allNames!=null) {
+    		String allNamesasString = String.valueOf(allNames);
+    		String[] names = allNamesasString.substring(1, allNamesasString.length()-1).split(", ");
+        	int l = names.length;
+        	for(int i=0;i<names.length;i++) {
+            	LOG.info("-------------------> #allNames="+l + " "+i+":"+names[i]);
+        		us.addUserName(names[i]);
+        	}
+        	us.saveUserNames();
+    	}
         
         loginPane = new JXLoginPane(service, ps, us);
         LOG.info("banner:"+loginPane.getBanner());
+        List<String> servers = new ArrayList<String>(Arrays.asList(serverArray));
+        loginPane.setServers(servers);
+
         loginPane.addPropertyChangeListener("status", new PropertyChangeListener() {
 
 			@Override
@@ -339,4 +380,155 @@ public class LoginPaneDemo extends DefaultDemoPanel {
         }
     }
 
+    public class LoggingUserNameStore extends DefaultUserNameStore {
+    	
+    	LoggingUserNameStore() {
+    		super();
+        	LOG.info(">>>>>>>>>>> ctor");
+    	}
+    	
+        @Override
+        public void addUserName(String name) {
+        	LOG.info(">>>>>>>>>>> name="+name);
+        	super.addUserName(name);
+        }
+
+        @Override
+        public void removeUserName(String name) {
+        	LOG.info(">>>>>>>>>>> name="+name);
+        	super.removeUserName(name);
+        }
+        
+        @Override
+        public String[] getUserNames() {
+        	String[] res = super.getUserNames();
+        	LOG.info(">>>>>>>>>>> " + " results to array length="+(res==null ? "nix" : res.length));
+        	return res;
+        }
+        @Override
+        public boolean containsUserName(String name) {
+        	boolean res = super.containsUserName(name);
+        	LOG.info(">>>>>>>>>>> name="+name + " results to "+res);
+        	return res;
+        }
+        
+        public void loadUserNames() {
+        	super.loadUserNames();
+        	LOG.info(">>>>>>>>>>> done.");
+        }
+        public void saveUserNames() {
+        	super.saveUserNames();
+        	LOG.info(">>>>>>>>>>> done.");
+        }
+    }
+
+    /*
+     * Alternative
+     * https://github.com/xafero/java-keyring
+     * 
+     * wg. static class see
+     * https://stackoverflow.com/questions/70324/java-inner-class-and-static-nested-class
+     * https://stackoverflow.com/questions/253492/static-nested-class-in-java-why
+     * https://stackoverflow.com/questions/16524373/why-and-when-to-use-static-inner-class-or-instance-inner-class
+     */
+    private static final class InnerFilePasswordStore extends PasswordStore {
+    	
+    	private static final String FILENAME = "KeyChainInnerStore.txt";
+    	
+    	KeyChain kc;
+    	
+    	public InnerFilePasswordStore() {
+            FileInputStream fis = null;
+    		try {
+    	        File file = new File(FILENAME); // in eclipse ws : swingset\SwingSet3\swingx-demos
+    	        if (!file.exists()) {
+    	            file.createNewFile(); // throws IOException
+    	            LOG.info("created "+FILENAME);
+    	            fis = null;
+    	        } else {
+    	            fis = new FileInputStream(file); // throws FileNotFoundException
+    	            LOG.info("use existing "+FILENAME);
+    	        }
+    		} catch (FileNotFoundException e) {
+                LOG.warning("new FileInputStream throws"+e);
+    		} catch (IOException e) {
+                LOG.warning("file.createNewFile throws"+e);
+    		}
+    		
+            try {
+    			kc = new KeyChain("test".toCharArray(), fis);
+    			store(); // store the empty DS
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		
+    	}
+
+    	// equals und hashCode sind in JXLoginPane.NullPasswordStore definiert. Wozu?
+//    	@Override // overwrites Object.equals
+//        public boolean equals(Object obj) {
+//            return obj instanceof InnerFilePasswordStore;
+//        }
+//    	@Override // overwrites Object.hashCode
+//        public int hashCode() {
+//            return 17;
+//        }
+
+    	/**
+    	 *  Persist the KeyChain and reflect any changes, <b>store</b> with an OutputStream.
+    	 */
+        public void store() {
+            FileOutputStream fos = null;
+            File file = new File(FILENAME);
+            try {
+                fos = new FileOutputStream(file); // throws FileNotFoundException
+    			kc.store(fos); // throws IOException
+                LOG.info("PasswordStore stored to "+FILENAME);
+    		} catch (FileNotFoundException e) {
+                LOG.warning("new FileOutputStream throws"+e);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+
+        /**
+         * Adds a password to the store for a given account/user and server.
+         * 
+         * {@inheritDoc}
+         *
+         *  @param username account/user
+         *  @param server server used for authentication, can be null
+         *  @param password password to save. 
+         *  	Password can't be null. Use empty array for empty password.
+         *  @return <code>true</code> if stored, <code>false</code> if password is null
+         */
+    	@Override
+    	public boolean set(String username, String server, char[] password) {
+    		if(password==null) return false;
+    		LOG.info("username="+username + ", server="+server);
+    		kc.addPassword(username, server, password);
+    		return true;
+    	}
+
+        /**
+         * {@inheritDoc}
+         */
+    	@Override
+    	public char[] get(String username, String server) {
+    		String pw = kc.getPassword(username, server);
+    		return pw==null ? null : pw.toCharArray();
+    	}
+
+        /**
+         * {@inheritDoc}
+         */
+    	@Override
+    	public void removeUserPassword(String username) {
+            LOG.info("TODO username="+username);
+    		// TODO ? server
+    	}
+
+    }
 }
