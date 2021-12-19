@@ -75,7 +75,7 @@ public class Contributor implements Comparable<Contributor> {
         Calendar sinceBase = Calendar.getInstance();
         sinceBase.add(Calendar.YEAR, -5);
         long max = new Date().getTime() - sinceBase.getTimeInMillis();
-        Date entry = new Date(sinceBase.getTimeInMillis() + new Double(Math.random() * max).longValue());
+        Date entry = new Date(sinceBase.getTimeInMillis() + Double.valueOf(Math.random() * max).longValue());
         return entry;
     }
 
@@ -83,7 +83,7 @@ public class Contributor implements Comparable<Contributor> {
      * @return
      */
     private int createRandomMerits() {
-        return new Double(Math.random() * 100).intValue();
+    	return Double.valueOf(Math.random() * 100).intValue();
     }
 
 
