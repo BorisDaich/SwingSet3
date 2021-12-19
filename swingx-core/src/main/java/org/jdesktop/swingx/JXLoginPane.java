@@ -60,10 +60,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -224,12 +222,11 @@ public class JXLoginPane extends JXPanel {
      */
     private JPasswordField passwordField;
     /**
-     * A combo box presenting the user with a list of servers to which they
-     * may log in. This is an optional feature, which is only enabled if
-     * the List of servers supplied to the JXLoginPane has a length greater
-     * than 1.
+     * A combo box presenting the user with a list of servers to which they may log in. 
+     * This is an optional feature, which is only enabled if the List of servers 
+     * supplied to the JXLoginPane has a length greater than 1.
      */
-    private JComboBox serverCombo;
+    private JXComboBox<Object> serverCombo;
     /**
      * Check box presented if a PasswordStore is used, allowing the user to decide whether to
      * save their password
@@ -438,8 +435,7 @@ public class JXLoginPane extends JXPanel {
         errorMessageLabel.setMaxLineSpan(320);
         errorMessageLabel.setVisible(false);
 
-        //aggregate the optional message label, content, and error label into
-        //the contentPanel
+        //aggregate the optional message label, content, and error label into the contentPanel
         contentPanel = new JXPanel(new LoginPaneLayout());
         contentPanel.setOpaque(false);
         messageLabel.setBorder(BorderFactory.createEmptyBorder(12, 12, 7, 11));
@@ -685,7 +681,7 @@ public class JXLoginPane extends JXPanel {
         //create the server combo box if necessary
         JLabel serverLabel = new JLabel(UIManagerExt.getString(CLASS_NAME + ".serverString", getLocale()));
         if (servers.size() > 1) {
-            serverCombo = new JComboBox(servers.toArray());
+            serverCombo = new JXComboBox<Object>(servers.toArray());
             serverLabel.setLabelFor(serverCombo);
         } else {
             serverCombo = null;
@@ -808,13 +804,14 @@ public class JXLoginPane extends JXPanel {
         // this if is used to avoid needless creations of the image
         if(orient != super.getComponentOrientation()) {
             super.setComponentOrientation(orient);
-            imgPainter = new ImagePainter((BufferedImage) createLoginBanner()); // TODO
+            imgPainter = new ImagePainter((BufferedImage) createLoginBanner()); // TODO test orient-ation
             banner.setBackgroundPainter(imgPainter);
             progressPanel.applyComponentOrientation(orient);
         }
     }
 
-    private final class LoginPaneLayout extends VerticalLayout implements LayoutManager {
+//    @SuppressWarnings("serial")
+	private final class LoginPaneLayout extends VerticalLayout implements LayoutManager {
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
 			Insets insets = parent.getInsets();
@@ -1466,9 +1463,6 @@ public class JXLoginPane extends JXPanel {
         if (username != null) {
         	// EUG: get pw from passwordStore for the selected server
         	// assert passwordStore != null, when called! 
-//    		String s = this.servers.get(0);
-//    		LOG.info("username="+username+",------------> server:" + (serverCombo == null ? "serverCombo==null/"+s : (String)serverCombo.getSelectedItem()));
-//    		char[] pw = passwordStore.get(username, serverCombo == null ? s : (String)serverCombo.getSelectedItem());
         	char[] pw = null;
     		if(serverCombo == null) {
     			pw = passwordStore.get(username, servers==null||servers.isEmpty() ? null : servers.get(0));
@@ -1527,7 +1521,7 @@ public class JXLoginPane extends JXPanel {
      * If a UserNameStore is used, then this combo box is presented allowing the user
      * to select a previous login name, or type in a new login name
      */
-    private final class ComboNamePanel extends JComboBox implements NameComponent {
+    private final class ComboNamePanel extends JXComboBox<Object> implements NameComponent {
         private static final long serialVersionUID = 2511649075486103959L;
         private UserNameStore userNameStore; // intentionally overwrite member of the outer class
         
@@ -1539,7 +1533,7 @@ public class JXLoginPane extends JXPanel {
         public ComboNamePanel(UserNameStore uns) {
             super();
             userNameStore = uns;
-            setModel(new NameComboBoxModel(uns)); // EUG: pass UserNameStore uns to model
+            setModel(new NameComboBoxModel<String>(uns)); // EUG: pass UserNameStore uns to model
             setEditable(true);
             
             // auto-complete based on the users input
@@ -1564,29 +1558,30 @@ public class JXLoginPane extends JXPanel {
             }
         }
         
-        @Override
+        @Override // implements interface method NameComponent
         public String getUserName() {
             Object item = getModel().getSelectedItem();
             return item == null ? null : item.toString();
         }
-        @Override
+        @Override // implements interface method NameComponent
         public void setUserName(String userName) {
             getModel().setSelectedItem(userName);
         }
         // EUG: used in LoginListenerImpl
         public void setUserNames(UserNameStore uns) {
         	userNameStore = uns;
-        	ComboBoxModel model = getModel();
+        	ComboBoxModel<?> model = getModel();
         	if(model instanceof NameComboBoxModel) {
-        		((NameComboBoxModel)model).setUserNames(userNameStore.getUserNames());
+        		((NameComboBoxModel<?>)model).setUserNames(userNameStore.getUserNames());
         	}
         }
-        @Override
+        @Override // implements interface method NameComponent
         public JComponent getComponent() {
             return this;
         }
         
-        private final class NameComboBoxModel extends AbstractListModel implements ComboBoxModel {
+        // N aka Name is String
+        private final class NameComboBoxModel<N> extends AbstractListModel<Object> implements ComboBoxModel<Object> {
             private static final long serialVersionUID = 7097674687536018633L;
             private Object selectedItem;
             @SuppressWarnings("unused")  // intentionally overwrite userNameStore member of the outer class
@@ -1610,7 +1605,7 @@ public class JXLoginPane extends JXPanel {
                 return selectedItem;
             }
             @Override // implements interface ListModel<E> , not in AbstractListModel
-            public Object getElementAt(int index) {
+            public String getElementAt(int index) {
                 if (index == -1) {
                     return null;
                 }
