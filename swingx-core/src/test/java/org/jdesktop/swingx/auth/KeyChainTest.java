@@ -13,9 +13,9 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
-public class KeyChainIssues extends TestCase {
+public class KeyChainTest extends TestCase {
 
-    private static final Logger LOG = Logger.getLogger(KeyChainIssues.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeyChainTest.class.getName());
 	private static final String FILENAME = "KeyChainStore.txt";
 
     KeyChain kc;
