@@ -22,10 +22,8 @@ import static org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -39,7 +37,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -65,10 +62,8 @@ import org.jdesktop.swingx.auth.KeyChain;
 import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.demos.painter.PainterDemo;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
-import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.SwingXSet;
@@ -359,27 +354,6 @@ public class LoginPaneDemo extends DefaultDemoPanel {
 		return model;
     }
     
-    public class MoonLoginPaneUI extends BasicLoginPaneUI {
-
-        public MoonLoginPaneUI(JXLoginPane dlg) {
-            super(dlg);
-        }
-
-        /**
-         * the original (super) default 400x60 banner is replaced by part of the moon
-         */
-        @Override
-        public Image getBanner() {
-        	try {
-        		BufferedImage im = ImageIO.read(PainterDemo.class.getResourceAsStream("moon.jpg"));
-        		return im.getSubimage(100, 300, 400, 60);
-        	} catch (IOException e) {
-        		LOG.warning("cannot read resource moon.jpg");
-        	}
-        	return super.getBanner();
-        }
-    }
-
     public class LoggingUserNameStore extends DefaultUserNameStore {
     	
     	LoggingUserNameStore() {
