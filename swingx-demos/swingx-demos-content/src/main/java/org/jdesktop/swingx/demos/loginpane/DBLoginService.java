@@ -15,8 +15,22 @@ import org.jdesktop.swingx.auth.JDBCLoginService;
 public class DBLoginService extends JDBCLoginService {
 	
     private Logger LOG = Logger.getLogger(DBLoginService.class.getName());
-    public static final String DRIVER = "org.postgresql.Driver";
 
+    /* db-URL 
+    
+    jdbc:subprotocol:subname 				// url Aufbau Allgemein
+    subprotocol ::= postgresql				// example
+    subname ::= //localhost:5432/ad393		// example
+    subname ::= //[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
+    subname ::= //{host}[:{port}]/[{database}]
+
+     */
+    static String getDriverName(String url) {
+    	if(url.startsWith("jdbc:postgresql:")) return "org.postgresql.Driver";
+    	if(url.startsWith("jdbc:h2:")) return "org.h2.Driver";
+    	return "";
+    }
+    
     /**
      * Constructs the default service.
      */
@@ -26,8 +40,8 @@ public class DBLoginService extends JDBCLoginService {
     public JDBCLoginService(String driver, String url, Properties props) 
     public JDBCLoginService(String driver, String url) {
      */
-    public DBLoginService(String driver, String url) {
-        super(driver, url);
+    public DBLoginService(String url) {
+        super(getDriverName(url), url);
     }
     
     /**

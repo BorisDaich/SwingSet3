@@ -20,21 +20,19 @@ package org.jdesktop.swingx.demos.loginpane;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
@@ -44,21 +42,17 @@ import javax.swing.SwingConstants;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.ResourceMap;
-import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
-import org.jdesktop.beansbinding.BeanProperty;
-import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXLoginPane;
-import org.jdesktop.swingx.JXLoginPane.SaveMode;
 import org.jdesktop.swingx.JXLoginPane.Status;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.auth.PasswordStore;
+import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.demos.painter.PainterDemo;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
-import org.jdesktop.swingx.plaf.basic.BasicLoginPaneUI;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.SwingXSet;
@@ -88,11 +82,15 @@ public class LoginToDBPaneDemo extends DefaultDemoPanel implements ActionListene
 	
     private static final Logger LOG = Logger.getLogger(LoginToDBPaneDemo.class.getName());
 
+    private PasswordStore ps = null;
+    private UserNameStore us = null; // not used ==> DefaultUserNameStore
     private DBLoginService service;
     private JXLoginPane loginPane;
-    private JXButton loginLauncher;
-    private JXComboBox<DisplayLocale> localeBox; // DisplayLocale is a wrapper for Locale
+    // controler:
     private JXLabel statusLabel;
+    private JXComboBox<DisplayLocale> localeBox; // DisplayLocale is a wrapper for Locale
+    private Locale selectedLocale;
+    private JXButton loginLauncher;
     
     /**
      * main method allows us to run as a standalone demo.
@@ -106,6 +104,11 @@ public class LoginToDBPaneDemo extends DefaultDemoPanel implements ActionListene
     	Application.launch(SwingXSet.class, new String[] {"META-INF/onlyLoginDemo"});
     }
     
+    public LoginToDBPaneDemo() {
+    	super();
+//    	logResourceMap(); // for information only
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -116,23 +119,96 @@ public class LoginToDBPaneDemo extends DefaultDemoPanel implements ActionListene
         setLayout(new BorderLayout());
 	}
 
-    public LoginToDBPaneDemo() {
-    	super();
-/* super:
-        createDemo();
-        injectResources(); 
-        if (!injectRan) {
-            throw new IllegalStateException("must call super.injectReources");
-        }     
-        map = Application.getInstance().getContext().getActionMap(this);
-        bind();
- */
-        
-//        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+    protected void injectResources() {
+        createLoginPaneControler();
+        super.injectResources();
+    }
+
+	JFrame frame;
+	
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+    protected void bind() {
+    	loginLauncher.addActionListener(this);
+//    	loginLauncher.addActionListener(event -> {
+//    		LOG.info("event.Source:"+event.getSource());
+//    		// per Frame:
+//    		if(frame==null) { // start loginPane in a frame
+//        		frame = JXLoginPane.showLoginFrame(loginPane);
+//        		LOG.info("nach frame:"+frame);
+//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+////                frame.setJMenuBar(createAndFillMenuBar(panel));
+////                loginPane.setSaveMode(SaveMode.BOTH);
+//                frame.pack();
+//                frame.setVisible(true); 
+//    		} else {
+//    			LOG.info("***kein zweites mal! *** frame:"+frame);
+//    			statusLabel.setText(loginPane.getStatus().name());
+//    		}
+//    	});
+
+    	// ???:
+    	// Status {NOT_STARTED, IN_PROGRESS, FAILED, CANCELLED, SUCCEEDED}
+//        Bindings.createAutoBinding(UpdateStrategy.READ,
+//        		loginPane, BeanProperty.create("status"),
+//                this.statusLabel, BeanProperty.create("text"));
+    }
+    
+    /**
+     * implements event listener
+     */
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if(loginPane==null) {
+			createLoginPaneDemo();
+		}
+		if(selectedLocale!=null) loginPane.setLocale(this.selectedLocale);
+		
+		if(statusLabel.getText().equals(Status.SUCCEEDED.toString())) {
+			LOG.info("status:SUCCEEDED!!!!");
+			return;
+		}
+		
+		if(statusLabel.getText().equals(Status.SUCCEEDED.toString())) {
+			LOG.info("status:SUCCEEDED!!!!");
+			loginPane = null;
+			statusLabel.setText(Status.NOT_STARTED.toString());
+			localeBox.setSelectedItem(localeBox.getModel().getElementAt(0)); // Locale.0 is en
+//			loginLauncher.setText("reset done, launch again.");
+			return;
+		}
+		
+		LOG.info("event.Source:"+event.getSource());
+		Status status = JXLoginPane.showLoginDialog(LoginToDBPaneDemo.this, loginPane);
+		statusLabel.setText(status.toString());
+		
+		if(status==Status.SUCCEEDED) {
+			LOG.info("User:"+loginPane.getUserName() + ", Server:"+service.getServer() 
+				+ ", isRememberPassword? : "+loginPane.isRememberPassword());			
+			if(loginPane.isRememberPassword()) {
+				if(ps!=null) ps.set(loginPane.getUserName(), PS_AD393, loginPane.getPassword());
+			}
+			if(ps instanceof FilePasswordStore) {
+				((FilePasswordStore)ps).store(); // make ps persistent
+			}
+			
+			loginPane.setVisible(false);
+			loginLauncher.setText("login "+Status.SUCCEEDED.toString());
+			loginLauncher.setEnabled(false);
+		}
+	}
+	
+    void logResourceMap() {
         ResourceMap rm = Application.getInstance().getContext().getResourceMap(getClass());
         rm.keySet().forEach(key -> {
         	try {
-//                LOG.info("key:"+key + " : " + rm.getObject(key, String.class));
+                LOG.info("key:"+key + " : " + rm.getObject(key, String.class));
 /*
 INFORMATION: key:Application.description : A demo showcase application for the SwingX GUI toolkit
 INFORMATION: key:Application.description.short : [Application.description.short not specified]
@@ -182,24 +258,47 @@ INFORMATION: key:view.text : View
         	} catch (Throwable e) {	
         	}
         });
-        
-//        bind();
-    }
-    protected void injectResources() {
-        createLoginPaneDemo();
-        super.injectResources();
     }
 
-    private static final String demoUrl = "jdbc:postgresql://localhost/demo";
-    private static final String ad393Url = "jdbc:postgresql://localhost/ad393";
+    /* db-URL 
     
+    jdbc:subprotocol:subname 				// url Aufbau Allgemein
+    subprotocol ::= postgresql				// example
+    subname ::= //localhost:5432/ad393		// example
+    subname ::= //[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
+    subname ::= //{host}[:{port}]/[{database}]
+
+     */
+	public static final String JDBC = "jdbc:";
+	public static final String H2_SUBPROTOCOL = "h2:";
+    private static final String PS_DEMO = "jdbc:postgresql://localhost/demo";
+    private static final String PS_AD393 = "jdbc:postgresql://localhost/ad393";
+    private static final String H2_DATASTORE = JDBC+H2_SUBPROTOCOL+"~/data/H2/bankdata";
+
+	private static Map<String, String> dsToDriver = Stream.of(new String[][] 
+			{ { PS_DEMO, DBLoginService.getDriverName(PS_DEMO) }
+			, { PS_AD393, DBLoginService.getDriverName(PS_AD393) }
+			, { H2_DATASTORE, DBLoginService.getDriverName(H2_DATASTORE) }
+			, }
+		).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
     private void createLoginPaneDemo() {
-        service = new DBLoginService(DBLoginService.DRIVER, ad393Url);
-        loginPane = new JXLoginPane(service);
+//    	ps = new FilePasswordStore();
+//    	us = new LoggingUserNameStore();
+    	
+        loginPane = new JXLoginPane(null, ps, us);
+        List<String> servers = dsToDriver.keySet().stream().collect(Collectors.toList());
+        try {
+        	String driverName = DBLoginService.getDriverName(H2_DATASTORE);
+            Class<?> driverType = Class.forName(driverName); // throws ClassNotFoundException
+            service = new DBLoginService(H2_DATASTORE);
+        } catch(ClassNotFoundException ex) {
+            LOG.warning("Driver lib not in path for "+H2_DATASTORE);
+            servers.remove(H2_DATASTORE);
+            service = new DBLoginService(PS_AD393);
+        }
+        loginPane.setLoginService(service);
         LOG.info("banner:"+loginPane.getBanner());
-        List<String> servers = new ArrayList<String>();
-        servers.add(ad393Url);
-        servers.add(demoUrl);
         loginPane.setServers(servers);
         
         loginPane.addPropertyChangeListener("status", new PropertyChangeListener() {
@@ -218,7 +317,14 @@ INFORMATION: key:view.text : View
         // customization:
 //        loginPane.setBanner(null); // No banner (customization)
 //        loginPane.setBanner(new MoonLoginPaneUI(loginPane).getBanner());
+        LOG.info("BannerText:"+loginPane.getBannerText());
+        
+        // nicht notwendig: wird anhand ps+us gesetzt:
+//        loginPane.setSaveMode(SaveMode.PASSWORD);
+    }
 
+    // TODO hier bnd
+    private void createLoginPaneControler() {
         Font font = new Font("SansSerif", Font.PLAIN, 16);
 
         loginLauncher = new JXButton();
@@ -238,7 +344,7 @@ INFORMATION: key:view.text : View
             }          
         });
         
-        statusLabel = new JXLabel(loginPane.getStatus().name());
+        statusLabel = new JXLabel(loginPane==null ? Status.NOT_STARTED.toString() : loginPane.getStatus().name());
         statusLabel.setFont(font);
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(statusLabel, BorderLayout.NORTH);
@@ -262,19 +368,19 @@ INFORMATION: key:view.text : View
         localeBox.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER));
         localeBox.addActionListener(event -> {
         	Locale selected = ((DisplayLocale)localeBox.getSelectedItem()).getLocale();
-        	loginPane.setLocale(selected);
+        	LOG.config("Locale selected:"+selected + ", loginPane:"+loginPane);
+        	selectedLocale = selected;
         });
         p.add(localeBox);
-        loginPane.setSaveMode(SaveMode.BOTH);
     }
-    
+
     /**
      * wrapper for class Locale
      * <p>
      * class Locale is final, so cannot subclass it
      *
      */
-    public class DisplayLocale { // wrapper, wie org.jdesktop.swingx.binding.DisplayInfo<T>
+    public class DisplayLocale {
         private final Locale locale;
         
         public DisplayLocale(String lang) {
@@ -311,72 +417,6 @@ INFORMATION: key:view.text : View
         model.addElement(new DisplayLocale(new Locale("pt", "BR")));
         model.addElement(new DisplayLocale("sv"));
 		return model;
-    }
-    
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		if(statusLabel.getText().equals(Status.SUCCEEDED.toString())) {
-			LOG.info("status:SUCCEEDED!!!!");
-			return;
-		}
-		LOG.info("event.Source:"+event.getSource().getClass() + " : "+event.getSource());
-		Status status = JXLoginPane.showLoginDialog(LoginToDBPaneDemo.this, loginPane); // returns status
-		LOG.info("event:"+event + "\n , status:"+status);
-		statusLabel.setText(status.toString()); // statt status.name() // in PropertyChangeListener
-		// TODO status:SUCCEEDED - ABER progressPanel ist noch aktiv
-		if(status==Status.SUCCEEDED) {
-			loginPane.setVisible(false);
-			loginLauncher.setText("login "+Status.SUCCEEDED.toString());
-			loginLauncher.setEnabled(false);
-		}
-	}
-	
-	JFrame frame;
-    protected void bind() {
-    	loginLauncher.addActionListener(this);
-//    	loginLauncher.addActionListener(event -> {
-//    		LOG.info("event.Source:"+event.getSource());
-//    		// per Frame:
-//    		if(frame==null) { // start loginPane in a frame
-//        		frame = JXLoginPane.showLoginFrame(loginPane);
-//        		LOG.info("nach frame:"+frame);
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-////                frame.setJMenuBar(createAndFillMenuBar(panel));
-////                loginPane.setSaveMode(SaveMode.BOTH);
-//                frame.pack();
-//                frame.setVisible(true); 
-//    		} else {
-//    			LOG.info("***kein zweites mal! *** frame:"+frame);
-//    			statusLabel.setText(loginPane.getStatus().name());
-//    		}
-//    	});
-
-    	// ???:
-    	// Status {NOT_STARTED, IN_PROGRESS, FAILED, CANCELLED, SUCCEEDED}
-        Bindings.createAutoBinding(UpdateStrategy.READ,
-        		loginPane, BeanProperty.create("status"),
-                this.statusLabel, BeanProperty.create("text"));
-    }
-    
-    public class MoonLoginPaneUI extends BasicLoginPaneUI {
-
-        public MoonLoginPaneUI(JXLoginPane dlg) {
-            super(dlg);
-        }
-
-        /**
-         * the original (super) default 400x60 banner is replaced by part of the moon
-         */
-        @Override
-        public Image getBanner() {
-        	try {
-        		BufferedImage im = ImageIO.read(PainterDemo.class.getResourceAsStream("moon.jpg"));
-        		return im.getSubimage(100, 300, 400, 60);
-        	} catch (IOException e) {
-        		LOG.warning("cannot read resource moon.jpg");
-        	}
-        	return super.getBanner();
-        }
     }
 
 }

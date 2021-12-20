@@ -34,6 +34,7 @@ org.jdesktop.swingx.demos.titledpanel.TitledPanelDemo
 #Controls
 org.jdesktop.swingx.demos.errorpane.ErrorPaneDemo
 org.jdesktop.swingx.demos.loginpane.LoginPaneDemo
+org.jdesktop.swingx.demos.loginpane.LoginToDBPaneDemo
 org.jdesktop.swingx.demos.hyperlink.HyperlinkDemo
 org.jdesktop.swingx.demos.datepicker.DatePickerDemo
 org.jdesktop.swingx.demos.monthview.MonthViewDemo
