@@ -147,7 +147,14 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
     @Override
 	protected void shutdown() {
 		List<Window> windows = new ArrayList<Window>();
+		// aus bsaf: super.getMainFrame() == getMainView().getFrame() / FrameView extends View
 		windows.add(getMainFrame());
+		LOG.info("-------------------------------------------------------------------\n"
+			+ "\n user.home="+System.getProperty("user.home")
+			+ "\n user.dir="+System.getProperty("user.dir")
+			+ "\n user.name="+System.getProperty("user.name")
+			+ "\n APPDATA="+System.getProperty("APPDATA")
+			+ "\n getMainFrame().getOwnedWindows().length=" + getMainFrame().getOwnedWindows().length);
 		for (int i = 0; i < getMainFrame().getOwnedWindows().length; i++) {
 			windows.add(getMainFrame().getOwnedWindows()[i]);
 		}
@@ -173,6 +180,8 @@ public abstract class SingleXFrameApplication extends SingleFrameApplication {
             ApplicationContext appContext = getContext();
         	SessionStorage ss = appContext.getSessionStorage();
             try {
+            	// ${user.home}\AppData\Roaming\SwingLabs\SwingLabsDemos
+            	LOG.info("SessionStorage ss.save(window ... into "+filename +" (in ${user.home}\\AppData\\Roaming\\SwingLabs\\SwingLabsDemos)");
                 ss.save(window, filename);
             }
             catch (IOException e) {
