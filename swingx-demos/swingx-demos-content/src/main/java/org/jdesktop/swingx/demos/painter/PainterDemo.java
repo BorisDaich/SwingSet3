@@ -45,7 +45,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
@@ -56,7 +55,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeModel;
 
-import org.jdesktop.application.Application;
 import org.jdesktop.beans.AbstractBean;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -65,6 +63,7 @@ import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledSeparator;
@@ -104,6 +103,7 @@ import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.swingx.util.ShapeUtils;
+import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.util.DisplayValues;
 
 import com.jgoodies.forms.builder.PanelBuilder;
@@ -176,7 +176,7 @@ import com.sun.swingset3.DemoProperties;
  *
  * @author Karl George Schaefer
  * @author joshy (original PainterDemoSet)
- * @author Eugen Hanussek https://github.com/homebeaver (BusyPainterDemos+CheckerboardPainterDemos)
+ * @author EUG (BusyPainterDemos+CheckerboardPainterDemos, subclass DefaultDemoPanel)
  */
 @DemoProperties(
     value = "Painter Demo",
@@ -191,7 +191,9 @@ import com.sun.swingset3.DemoProperties;
     }
 )
 @SuppressWarnings("serial")
-public class PainterDemo extends JPanel {
+// as a standalone demo : tut nicht
+//abstract class DefaultDemoPanel extends JXPanel
+public class PainterDemo extends DefaultDemoPanel {
     
     private static final Logger LOG = Logger.getLogger(PainterDemo.class.getName());
 
@@ -213,7 +215,8 @@ public class PainterDemo extends JPanel {
         });
     }
 
-    private JXTree painterDemos;
+    private JXTree painterDemos; // a list of painter launchers
+    
     private JXPanel painterDisplay;
     private PainterControl painterControl; // implements AbstractBean, instance created on bind()
 
@@ -256,12 +259,25 @@ public class PainterDemo extends JPanel {
     private JCheckBox paintStretchedBox;
    
     public PainterDemo() {
-        super(new BorderLayout());
-        createPainterDemo();
-        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
-        bind();
+        super();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    // implements abstract void DefaultDemoPanel.createDemo() called in super ctor
+	@Override
+	protected void createDemo() {
+		LOG.config("ctor");
+        setLayout(new BorderLayout());
+	}
+
+	@Override
+    protected void injectResources() {
+        createControler();
+        super.injectResources();
+    }
+
 //---------------------------- Painters
 
     /**
@@ -754,9 +770,10 @@ public class PainterDemo extends JPanel {
     }
     
 //------------------------------- Binding
-    
-    private void bind() {
-        // fill and configure painter tree
+
+	@Override
+    protected void bind() {
+        // fill and configure painter tree model
         painterDemos.setModel(createPainters());
         // create the painter property controller
         painterControl = new PainterControl();
@@ -1046,12 +1063,21 @@ public class PainterDemo extends JPanel {
     
 //------------------------------ Create UI
     
-    private void createPainterDemo() {
+    private void createControler() {
         painterDisplay = createPainterDisplay();
         
         JComponent painterControlPanel =new JXPanel(new BorderLayout());
         painterControlPanel.add(painterDisplay);
         painterControlPanel.add(createPainterPropertiesPanel(), BorderLayout.SOUTH);
+        
+        JXButton hint = new JXButton("<html>select and start a painter from list tree on the left</html>");
+        Font font = new Font("SansSerif", Font.PLAIN, 16);
+        hint.setFont(font);
+        painterControlPanel.add(hint, BorderLayout.NORTH);
+		hint.addActionListener(event -> {
+			hint.setVisible(false); 
+			hint.validate();
+		});
         
         painterDemos = new JXTree();
         painterDemos.setRootVisible(false);
