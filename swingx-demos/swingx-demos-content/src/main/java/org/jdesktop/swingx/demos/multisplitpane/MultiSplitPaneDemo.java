@@ -19,17 +19,16 @@
 package org.jdesktop.swingx.demos.multisplitpane;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
+import org.jdesktop.application.Application;
 import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.jdesktop.swingxset.DefaultDemoPanel;
+import org.jdesktop.swingxset.SwingXSet;
 
 import com.sun.swingset3.DemoProperties;
 
@@ -58,28 +57,14 @@ public class MultiSplitPaneDemo extends DefaultDemoPanel {
     /**
      * main method allows us to run as a standalone demo.
      */
+    /*
+     * damit diese Klasse/die Klassen der Kategorie im SwingXSet gestartet werden kann (Application.launch),
+     * muss sie in einem file stehen (==>onlyContainers).
+     * Dieses file wird dann vom DemoCreator eingelesen, "-a"/"-augment" erweitert den demo-Vorrat.
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame(MultiSplitPaneDemo.class.getAnnotation(DemoProperties.class).value());
-                
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new MultiSplitPaneDemo());
-                frame.setPreferredSize(new Dimension(800, 600));
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
+    	Application.launch(SwingXSet.class, new String[] {"META-INF/onlyContainers"});
     }
-    
-//    public MultiSplitPaneDemo() {
-//        createMultiSplitPaneDemo();
-//        
-//        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
-//        
-//        bind();
-//    }
     public MultiSplitPaneDemo() {
         super();
     }
