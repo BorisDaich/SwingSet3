@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,19 +18,18 @@
  */
 package org.jdesktop.swingx.demos.multisplitpane;
 
-import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.util.logging.Logger;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
-
-import org.jdesktop.application.Application;
+import org.jdesktop.swingxset.DefaultDemoPanel;
 
 import com.sun.swingset3.DemoProperties;
 
@@ -53,8 +50,11 @@ import com.sun.swingset3.DemoProperties;
     }
 )
 @SuppressWarnings("serial")
-public class MultiSplitPaneDemo extends JPanel {
+//abstract class DefaultDemoPanel extends JXPanel
+public class MultiSplitPaneDemo extends DefaultDemoPanel {
     
+    private static final Logger LOG = Logger.getLogger(MultiSplitPaneDemo.class.getName());
+
     /**
      * main method allows us to run as a standalone demo.
      */
@@ -73,24 +73,59 @@ public class MultiSplitPaneDemo extends JPanel {
         });
     }
     
+//    public MultiSplitPaneDemo() {
+//        createMultiSplitPaneDemo();
+//        
+//        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
+//        
+//        bind();
+//    }
     public MultiSplitPaneDemo() {
-        createMultiSplitPaneDemo();
-        
-        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
-        
-        bind();
+        super();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // implements abstract void DefaultDemoPanel.createDemo() called in super ctor
+	@Override
+	protected void createDemo() {
+		LOG.config("ctor");
+        setLayout(new BorderLayout());
+	}
+
+	@Override
+    protected void injectResources() {
+        createControler();
+        super.injectResources();
+    }
+
+	@Override
+    protected void bind() {
+        //no bindings
+		createMultiSplitPaneDemo();
+    }
+
+    private void createControler() {
+    	
     }
 
     //TODO enable resource injection for the components in this demo
     private void createMultiSplitPaneDemo() {
-      setLayout( new BorderLayout());
+//      setLayout( new BorderLayout());
 
       JXMultiSplitPane msp = new JXMultiSplitPane();
 
-      String layoutDef = "(COLUMN (ROW weight=0.8 (COLUMN weight=0.25 " +
-          "(LEAF name=left.top weight=0.5) (LEAF name=left.middle weight=0.5))" +
-          "(LEAF name=editor weight=0.75)) (LEAF name=bottom weight=0.2))";
-
+      String layoutDef 
+      = "(COLUMN " 
+      +		"(ROW weight=0.8 " 
+      + 		"(COLUMN weight=0.25 "
+      + 			"(LEAF name=left.top weight=0.5) (LEAF name=left.middle weight=0.5) "
+      + 		") "
+      + 		"(LEAF name=editor weight=0.75) "
+      +		") " 
+      +		"(LEAF name=bottom weight=0.2) " 
+      +	")" ;
       MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel( layoutDef );
       msp.getMultiSplitLayout().setModel( modelRoot );
 
@@ -105,7 +140,4 @@ public class MultiSplitPaneDemo extends JPanel {
       add( msp, BorderLayout.CENTER );
     }
     
-    private void bind() {
-        //no bindings
-    }
 }

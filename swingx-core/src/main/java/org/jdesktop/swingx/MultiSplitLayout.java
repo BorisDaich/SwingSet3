@@ -77,23 +77,25 @@ import javax.swing.UIManager;
  * Changes by Luan O'Carroll 
  * 1 Support for visibility added.
  */
-public class MultiSplitLayout implements LayoutManager, Serializable
-{
-  public static final int DEFAULT_LAYOUT = 0;
-  public static final int NO_MIN_SIZE_LAYOUT = 1;
-  public static final int USER_MIN_SIZE_LAYOUT = 2;
+public class MultiSplitLayout implements LayoutManager, Serializable {
+	
+	private static final long serialVersionUID = 7902034895717853938L;
 
-  private final Map<String, Component> childMap = new HashMap<String, Component>();
-  private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-  private Node model;
-  private int dividerSize;
-  private boolean floatingDividers = true;
+	public static final int DEFAULT_LAYOUT = 0;
+	public static final int NO_MIN_SIZE_LAYOUT = 1;
+	public static final int USER_MIN_SIZE_LAYOUT = 2;
 
-  private boolean removeDividers = true;
-  private boolean layoutByWeight = false;
+	private final Map<String, Component> childMap = new HashMap<String, Component>();
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private Node model;
+	private int dividerSize;
+	private boolean floatingDividers = true;
 
-  private int layoutMode;
-  private int userMinSize = 20;
+	private boolean removeDividers = true;
+	private boolean layoutByWeight = false;
+
+	private int layoutMode;
+	private int userMinSize = 20;
 
   /**
    * Create a MultiSplitLayout with a default model with a single
@@ -1327,25 +1329,28 @@ public Dimension minimumLayoutSize(Container parent) {
     layoutByWeight = state;
   }
   
-  /**
-   * The specified Node is either the wrong type or was configured
-   * incorrectly.
-   */
-  public static class InvalidLayoutException extends RuntimeException {
-    private final Node node;
-    public InvalidLayoutException(String msg, Node node) {
-      super(msg);
-      this.node = node;
-    }
-    /**
-     * @return the invalid Node.
-     */
-    public Node getNode() { return node; }
-  }
-  
-  private void throwInvalidLayout(String msg, Node node) {
-    throw new InvalidLayoutException(msg, node);
-  }
+	/**
+	 * The specified Node is either the wrong type or was configured incorrectly.
+	 */
+	public static class InvalidLayoutException extends RuntimeException {
+		private final Node node;
+
+		public InvalidLayoutException(String msg, Node node) {
+			super(msg);
+			this.node = node;
+		}
+
+		/**
+		 * @return the invalid Node.
+		 */
+		public Node getNode() {
+			return node;
+		}
+	}
+
+	private void throwInvalidLayout(String msg, Node node) {
+		throw new InvalidLayoutException(msg, node);
+	}
   
   private void checkLayout(Node root) {
     if (root instanceof Split) {
@@ -1476,561 +1481,582 @@ public void layoutContainer(Container parent)
   }
   
   
-  /**
-   * Base class for the nodes that model a MultiSplitLayout.
-   */
-  public static abstract class Node implements Serializable {
-    private Split parent = null;
-    private Rectangle bounds = new Rectangle();
-    private double weight = 0.0;
-    private boolean isVisible = true;
-    public void setVisible( boolean b ) {
-      isVisible = b;
-    }
+	/**
+	 * Base class for the nodes that model a MultiSplitLayout.
+	 */
+	public static abstract class Node implements Serializable {
+		private static final long serialVersionUID = -4725121951569355555L;
+		private Split parent = null;
+		private Rectangle bounds = new Rectangle();
+		private double weight = 0.0;
+		private boolean isVisible = true;
+
+		public void setVisible(boolean b) {
+			isVisible = b;
+		}
         
-    /**
-     * Determines whether this node should be visible when its
-     * parent is visible. Nodes are 
-     * initially visible
-     * @return <code>true</code> if the node is visible,
-     * <code>false</code> otherwise
-     */
-    public boolean isVisible() {
-      return isVisible;
-    }
-    
-    /**
-     * Returns the Split parent of this Node, or null.
-     *
-     * @return the value of the parent property.
-     * @see #setParent
-     */
-    public Split getParent() { return parent; }
-    
-    /**
-     * Set the value of this Node's parent property.  The default
-     * value of this property is null.
-     *
-     * @param parent a Split or null
-     * @see #getParent
-     */
-    public void setParent(Split parent) {
-      this.parent = parent;
-    }
-    
-    /**
-     * Returns the bounding Rectangle for this Node.
-     *
-     * @return the value of the bounds property.
-     * @see #setBounds
-     */
-    public Rectangle getBounds() {
-      return new Rectangle(this.bounds);
-    }
-    
-    /**
-     * Set the bounding Rectangle for this node.  The value of
-     * bounds may not be null.  The default value of bounds
-     * is equal to <code>new Rectangle(0,0,0,0)</code>.
-     *
-     * @param bounds the new value of the bounds property
-     * @throws IllegalArgumentException if bounds is null
-     * @see #getBounds
-     */
-    public void setBounds(Rectangle bounds) {
-      if (bounds == null) {
-        throw new IllegalArgumentException("null bounds");
-      }
-     this.bounds = new Rectangle(bounds);
-    }
-    
-    /**
-     * Value between 0.0 and 1.0 used to compute how much space
-     * to add to this sibling when the layout grows or how
-     * much to reduce when the layout shrinks.
-     *
-     * @return the value of the weight property
-     * @see #setWeight
-     */
-    public double getWeight() { return weight; }
-    
-    /**
-     * The weight property is a between 0.0 and 1.0 used to
-     * compute how much space to add to this sibling when the
-     * layout grows or how much to reduce when the layout shrinks.
-     * If rowLayout is true then this node's width grows
-     * or shrinks by (extraSpace * weight).  If rowLayout is false,
-     * then the node's height is changed.  The default value
-     * of weight is 0.0.
-     *
-     * @param weight a double between 0.0 and 1.0
-     * @see #getWeight
-     * @see MultiSplitLayout#layoutContainer
-     * @throws IllegalArgumentException if weight is not between 0.0 and 1.0
-     */
-    public void setWeight(double weight) {
-      if ((weight < 0.0)|| (weight > 1.0)) {
-        throw new IllegalArgumentException("invalid weight");
-      }
-      this.weight = weight;
-    }
-    
-    private Node siblingAtOffset(int offset) {
-      Split p = getParent();
-      if (p == null) { return null; }
-      List<Node> siblings = p.getChildren();
-      int index = siblings.indexOf(this);
-      if (index == -1) { return null; }
-      index += offset;
-      return ((index > -1) && (index < siblings.size())) ? siblings.get(index) : null;
-    }
-    
-    /**
-     * Return the Node that comes after this one in the parent's
-     * list of children, or null.  If this node's parent is null,
-     * or if it's the last child, then return null.
-     *
-     * @return the Node that comes after this one in the parent's list of children.
-     * @see #previousSibling
-     * @see #getParent
-     */
-    public Node nextSibling() {
-      return siblingAtOffset(+1);
-    }
-    
-    /**
-     * Return the Node that comes before this one in the parent's
-     * list of children, or null.  If this node's parent is null,
-     * or if it's the last child, then return null.
-     *
-     * @return the Node that comes before this one in the parent's list of children.
-     * @see #nextSibling
-     * @see #getParent
-     */
-    public Node previousSibling() {
-      return siblingAtOffset(-1);
-    }
-  }
+		/**
+		 * Determines whether this node should be visible when its parent is visible.
+		 * Nodes are initially visible
+		 * 
+		 * @return <code>true</code> if the node is visible, <code>false</code>
+		 *         otherwise
+		 */
+		public boolean isVisible() {
+			return isVisible;
+		}
 
-  public static class RowSplit extends Split {
-    public RowSplit() {
-    }
+		/**
+		 * Returns the Split parent of this Node, or null.
+		 *
+		 * @return the value of the parent property.
+		 * @see #setParent
+		 */
+		public Split getParent() {
+			return parent;
+		}
 
-    public RowSplit(Node... children) {
-        setChildren(children);
-    }
-    
-    /**
-     * Returns true if the this Split's children are to be 
-     * laid out in a row: all the same height, left edge
-     * equal to the previous Node's right edge.  If false,
-     * children are laid on in a column.
-     * 
-     * @return the value of the rowLayout property.
-     * @see #setRowLayout
-     */
-    @Override
-    public final boolean isRowLayout() { return true; }
-  }
-    
-  public static class ColSplit extends Split {
-    public ColSplit() {
-    }
+		/**
+		 * Set the value of this Node's parent property. The default value of this
+		 * property is null.
+		 *
+		 * @param parent a Split or null
+		 * @see #getParent
+		 */
+		public void setParent(Split parent) {
+			this.parent = parent;
+		}
 
-    public ColSplit(Node... children) {
-        setChildren(children);
-    }
-    
-    /**
-     * Returns true if the this Split's children are to be 
-     * laid out in a row: all the same height, left edge
-     * equal to the previous Node's right edge.  If false,
-     * children are laid on in a column.
-     * 
-     * @return the value of the rowLayout property.
-     * @see #setRowLayout
-     */
-    @Override
-    public final boolean isRowLayout() { return false; }
-  }
+		/**
+		 * Returns the bounding Rectangle for this Node.
+		 *
+		 * @return the value of the bounds property.
+		 * @see #setBounds
+		 */
+		public Rectangle getBounds() {
+			return new Rectangle(this.bounds);
+		}
 
-  /**
-   * Defines a vertical or horizontal subdivision into two or more
-   * tiles.
-   */
-  public static class Split extends Node {
-    private List<Node> children = Collections.emptyList();
-    private boolean rowLayout = true;
-    private String name;
+		/**
+		 * Set the bounding Rectangle for this node. The value of bounds may not be
+		 * null. The default value of bounds is equal to
+		 * <code>new Rectangle(0,0,0,0)</code>.
+		 *
+		 * @param bounds the new value of the bounds property
+		 * @throws IllegalArgumentException if bounds is null
+		 * @see #getBounds
+		 */
+		public void setBounds(Rectangle bounds) {
+			if (bounds == null) {
+				throw new IllegalArgumentException("null bounds");
+			}
+			this.bounds = new Rectangle(bounds);
+		}
 
-    public Split(Node... children) {
-      setChildren(children);
-    }
-    
-    /**
-     * Default constructor to support xml (de)serialization and other bean spec dependent ops.
-     * Resulting instance of Split is invalid until setChildren() is called.
-     */
-    public Split() {
-    }
+		/**
+		 * Value between 0.0 and 1.0 used to compute how much space to add to this
+		 * sibling when the layout grows or how much to reduce when the layout shrinks.
+		 *
+		 * @return the value of the weight property
+		 * @see #setWeight
+		 */
+		public double getWeight() {
+			return weight;
+		}
 
-    /**
-     * Determines whether this node should be visible when its
-     * parent is visible. Nodes are 
-     * initially visible
-     * @return <code>true</code> if the node is visible,
-     * <code>false</code> otherwise
-     */
-    @Override
-    public boolean isVisible() {
-        for(Node child : children) {
-        if ( child.isVisible() && !( child instanceof Divider ))
-          return true;
-      }
-      return false;
-    }
-    
-    /**
-     * Returns true if the this Split's children are to be
-     * laid out in a row: all the same height, left edge
-     * equal to the previous Node's right edge.  If false,
-     * children are laid on in a column.
-     *
-     * @return the value of the rowLayout property.
-     * @see #setRowLayout
-     */
-    public boolean isRowLayout() { return rowLayout; }
-    
-    /**
-     * Set the rowLayout property.  If true, all of this Split's
-     * children are to be laid out in a row: all the same height,
-     * each node's left edge equal to the previous Node's right
-     * edge.  If false, children are laid on in a column.  Default
-     * value is true.
-     *
-     * @param rowLayout true for horizontal row layout, false for column
-     * @see #isRowLayout
-     */
-    public void setRowLayout(boolean rowLayout) {
-      this.rowLayout = rowLayout;
-    }
-    
-    /**
-     * Returns this Split node's children.  The returned value
-     * is not a reference to the Split's internal list of children
-     *
-     * @return the value of the children property.
-     * @see #setChildren
-     */
-    public List<Node> getChildren() {
-      return new ArrayList<Node>(children);
-    }
-    
-    
-    /**
-     * Remove a node from the layout. Any sibling dividers will also be removed
-     * @param n the node to be removed
-     */
-    public void remove( Node n ) { 
-      if ( n.nextSibling() instanceof Divider )
-        children.remove( n.nextSibling() );
-      else if ( n.previousSibling() instanceof Divider )
-        children.remove( n.previousSibling() );
-      children.remove( n );
-    }
-    
-    /**
-     * Replace one node with another. This method is used when a child is removed 
-     * from a split and the split is no longer required, in which case the 
-     * remaining node in the child split can replace the split in the parent 
-     * node
-     * @param target the node being replaced
-     * @param replacement the replacement node
-     */
-    public void replace( Node target, Node replacement ) { 
-      int idx = children.indexOf( target );
-      children.remove( target );
-      children.add( idx, replacement );
+		/**
+		 * The weight property is a between 0.0 and 1.0 used to compute how much space
+		 * to add to this sibling when the layout grows or how much to reduce when the
+		 * layout shrinks. If rowLayout is true then this node's width grows or shrinks
+		 * by (extraSpace * weight). If rowLayout is false, then the node's height is
+		 * changed. The default value of weight is 0.0.
+		 *
+		 * @param weight a double between 0.0 and 1.0
+		 * @see #getWeight
+		 * @see MultiSplitLayout#layoutContainer
+		 * @throws IllegalArgumentException if weight is not between 0.0 and 1.0
+		 */
+		public void setWeight(double weight) {
+			if ((weight < 0.0) || (weight > 1.0)) {
+				throw new IllegalArgumentException("invalid weight");
+			}
+			this.weight = weight;
+		}
 
-      replacement.setParent ( this );
-      target.setParent( this );
-    }
-    
-    /**
-     * Change a node to being hidden. Any associated divider nodes are also hidden
-     * @param target the node to hide
-     */
-    public void hide( Node target ){ 
-      Node next = target.nextSibling();
-      if ( next instanceof Divider )
-        next.setVisible( false );
-      else {
-        Node prev = target.previousSibling();
-        if ( prev instanceof Divider )
-          prev.setVisible( false );
-      }
-      target.setVisible( false );
-    }
-    
-    /**
-     * Check the dividers to ensure that redundant dividers are hidden and do
-     * not interfere in the layout, for example when all the children of a split 
-     * are hidden (the split is then invisible), so two dividers may otherwise
-     * appear next to one another.
-     * @param split the split to check
-     */
-    public void checkDividers( Split split ) { 
-      ListIterator<Node> splitChildren = split.getChildren().listIterator();
-      while( splitChildren.hasNext()) {
-        Node splitChild = splitChildren.next();
-        if ( !splitChild.isVisible()) {
-          continue;
-        }
-        else if ( splitChildren.hasNext()) {
-          Node dividerChild = splitChildren.next();
-          if ( dividerChild instanceof Divider ) {
-            if ( splitChildren.hasNext()) {
-              Node rightChild = splitChildren.next();
-              while ( !rightChild.isVisible()) {
-                rightChild = rightChild.nextSibling();
-                if ( rightChild == null ) {
-                  // No visible right sibling found, so hide the divider
-                  dividerChild.setVisible( false );
-                  break;
-                }
-              }
+		private Node siblingAtOffset(int offset) {
+			Split p = getParent();
+			if (p == null) {
+				return null;
+			}
+			List<Node> siblings = p.getChildren();
+			int index = siblings.indexOf(this);
+			if (index == -1) {
+				return null;
+			}
+			index += offset;
+			return ((index > -1) && (index < siblings.size())) ? siblings.get(index) : null;
+		}
 
-              // A visible child is found but it's a divider and therefore 
-              // we have to visible and adjacent dividers - so we hide one
-              if (( rightChild != null ) && ( rightChild instanceof Divider ))
-                dividerChild.setVisible( false );
-            }
-          }
-          else if (( splitChild instanceof Divider ) && ( dividerChild instanceof Divider )) {
-            splitChild.setVisible( false );
-          }
-        }
-      }
-    }
+		/**
+		 * Return the Node that comes after this one in the parent's list of children,
+		 * or null. If this node's parent is null, or if it's the last child, then
+		 * return null.
+		 *
+		 * @return the Node that comes after this one in the parent's list of children.
+		 * @see #previousSibling
+		 * @see #getParent
+		 */
+		public Node nextSibling() {
+			return siblingAtOffset(+1);
+		}
+
+		/**
+		 * Return the Node that comes before this one in the parent's list of children,
+		 * or null. If this node's parent is null, or if it's the last child, then
+		 * return null.
+		 *
+		 * @return the Node that comes before this one in the parent's list of children.
+		 * @see #nextSibling
+		 * @see #getParent
+		 */
+		public Node previousSibling() {
+			return siblingAtOffset(-1);
+		}
+	}
+
+	public static class RowSplit extends Split {
+
+		private static final long serialVersionUID = 3940898637332213535L;
+
+		public RowSplit() {
+		}
+
+		public RowSplit(Node... children) {
+			setChildren(children);
+		}
+
+		/**
+		 * Returns true if the this Split's children are to be laid out in a row: all
+		 * the same height, left edge equal to the previous Node's right edge. If false,
+		 * children are laid on in a column.
+		 * 
+		 * @return the value of the rowLayout property.
+		 * @see #setRowLayout
+		 */
+		@Override
+		public final boolean isRowLayout() {
+			return true;
+		}
+	}
     
-    /**
-     * Restore any of the hidden dividers that are required to separate visible nodes
-     * @param split the node to check
-     */
-    public void restoreDividers( Split split ) { 
+	public static class ColSplit extends Split {
+
+		private static final long serialVersionUID = -7824158441978952200L;
+
+		public ColSplit() {
+		}
+
+		public ColSplit(Node... children) {
+			setChildren(children);
+		}
+
+		/**
+		 * Returns true if the this Split's children are to be laid out in a row: all
+		 * the same height, left edge equal to the previous Node's right edge. If false,
+		 * children are laid on in a column.
+		 * 
+		 * @return the value of the rowLayout property.
+		 * @see #setRowLayout
+		 */
+		@Override
+		public final boolean isRowLayout() {
+			return false;
+		}
+	}
+
+	/**
+	 * Defines a vertical or horizontal subdivision into two or more tiles.
+	 */
+	public static class Split extends Node {
+		private static final long serialVersionUID = 7048476448696865336L;
+		private List<Node> children = Collections.emptyList();
+		private boolean rowLayout = true;
+		private String name;
+
+		public Split(Node... children) {
+			setChildren(children);
+		}
+
+		/**
+		 * Default constructor to support xml (de)serialization and other bean spec
+		 * dependent ops. Resulting instance of Split is invalid until setChildren() is
+		 * called.
+		 */
+		public Split() {
+		}
+
+		/**
+		 * Determines whether this node should be visible when its parent is visible.
+		 * Nodes are initially visible
+		 * 
+		 * @return <code>true</code> if the node is visible, <code>false</code>
+		 *         otherwise
+		 */
+		@Override
+		public boolean isVisible() {
+			for (Node child : children) {
+				if (child.isVisible() && !(child instanceof Divider))
+					return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Returns true if the this Split's children are to be laid out in a row: all
+		 * the same height, left edge equal to the previous Node's right edge. If false,
+		 * children are laid on in a column.
+		 *
+		 * @return the value of the rowLayout property.
+		 * @see #setRowLayout
+		 */
+		public boolean isRowLayout() {
+			return rowLayout;
+		}
+
+		/**
+		 * Set the rowLayout property. If true, all of this Split's children are to be
+		 * laid out in a row: all the same height, each node's left edge equal to the
+		 * previous Node's right edge. If false, children are laid on in a column.
+		 * Default value is true.
+		 *
+		 * @param rowLayout true for horizontal row layout, false for column
+		 * @see #isRowLayout
+		 */
+		public void setRowLayout(boolean rowLayout) {
+			this.rowLayout = rowLayout;
+		}
+
+		/**
+		 * Returns this Split node's children. The returned value is not a reference to
+		 * the Split's internal list of children
+		 *
+		 * @return the value of the children property.
+		 * @see #setChildren
+		 */
+		public List<Node> getChildren() {
+			return new ArrayList<Node>(children);
+		}
+
+		/**
+		 * Remove a node from the layout. Any sibling dividers will also be removed
+		 * 
+		 * @param n the node to be removed
+		 */
+		public void remove(Node n) {
+			if (n.nextSibling() instanceof Divider)
+				children.remove(n.nextSibling());
+			else if (n.previousSibling() instanceof Divider)
+				children.remove(n.previousSibling());
+			children.remove(n);
+		}
+
+		/**
+		 * Replace one node with another. This method is used when a child is removed
+		 * from a split and the split is no longer required, in which case the remaining
+		 * node in the child split can replace the split in the parent node
+		 * 
+		 * @param target      the node being replaced
+		 * @param replacement the replacement node
+		 */
+		public void replace(Node target, Node replacement) {
+			int idx = children.indexOf(target);
+			children.remove(target);
+			children.add(idx, replacement);
+
+			replacement.setParent(this);
+			target.setParent(this);
+		}
+
+		/**
+		 * Change a node to being hidden. Any associated divider nodes are also hidden
+		 * 
+		 * @param target the node to hide
+		 */
+		public void hide(Node target) {
+			Node next = target.nextSibling();
+			if (next instanceof Divider)
+				next.setVisible(false);
+			else {
+				Node prev = target.previousSibling();
+				if (prev instanceof Divider)
+					prev.setVisible(false);
+			}
+			target.setVisible(false);
+		}
+
+		/**
+		 * Check the dividers to ensure that redundant dividers are hidden and do not
+		 * interfere in the layout, for example when all the children of a split are
+		 * hidden (the split is then invisible), so two dividers may otherwise appear
+		 * next to one another.
+		 * 
+		 * @param split the split to check
+		 */
+		public void checkDividers(Split split) {
+			ListIterator<Node> splitChildren = split.getChildren().listIterator();
+			while (splitChildren.hasNext()) {
+				Node splitChild = splitChildren.next();
+				if (!splitChild.isVisible()) {
+					continue;
+				} else if (splitChildren.hasNext()) {
+					Node dividerChild = splitChildren.next();
+					if (dividerChild instanceof Divider) {
+						if (splitChildren.hasNext()) {
+							Node rightChild = splitChildren.next();
+							while (!rightChild.isVisible()) {
+								rightChild = rightChild.nextSibling();
+								if (rightChild == null) {
+									// No visible right sibling found, so hide the divider
+									dividerChild.setVisible(false);
+									break;
+								}
+							}
+
+							// A visible child is found but it's a divider and therefore
+							// we have to visible and adjacent dividers - so we hide one
+							if ((rightChild != null) && (rightChild instanceof Divider))
+								dividerChild.setVisible(false);
+						}
+					} else if ((splitChild instanceof Divider) && (dividerChild instanceof Divider)) {
+						splitChild.setVisible(false);
+					}
+				}
+			}
+		}
+
+		/**
+		 * Restore any of the hidden dividers that are required to separate visible
+		 * nodes
+		 * 
+		 * @param split the node to check
+		 */
+		public void restoreDividers(Split split) {
 //      boolean nextDividerVisible = false;
-      ListIterator<Node> splitChildren = split.getChildren().listIterator();
-      while( splitChildren.hasNext()) {
-        Node splitChild = splitChildren.next();
-        if ( splitChild instanceof Divider ) {
-          Node prev = splitChild.previousSibling();
-          if ( prev.isVisible()) { 
-            Node next = splitChild.nextSibling();
-            while ( next != null ) {
-              if ( next.isVisible()) {
-                splitChild.setVisible( true );
-                break;
-              }
-              next = next.nextSibling();
-            }
-          }
-        }
-      }
-      if ( split.getParent() != null )
-        restoreDividers( split.getParent());
-    }
-    
-    /**
-     * Set's the children property of this Split node.  The parent
-     * of each new child is set to this Split node, and the parent
-     * of each old child (if any) is set to null.  This method
-     * defensively copies the incoming List.  Default value is
-     * an empty List.
-     *
-     * @param children List of children
-     * @see #getChildren
-     * @throws IllegalArgumentException if children is null
-     */
-    public void setChildren(List<Node> children) {
-      if (children == null) {
-        throw new IllegalArgumentException("children must be a non-null List");
-      }
-        for(Node child : this.children) {
-        child.setParent(null);
-      }
+			ListIterator<Node> splitChildren = split.getChildren().listIterator();
+			while (splitChildren.hasNext()) {
+				Node splitChild = splitChildren.next();
+				if (splitChild instanceof Divider) {
+					Node prev = splitChild.previousSibling();
+					if (prev.isVisible()) {
+						Node next = splitChild.nextSibling();
+						while (next != null) {
+							if (next.isVisible()) {
+								splitChild.setVisible(true);
+								break;
+							}
+							next = next.nextSibling();
+						}
+					}
+				}
+			}
+			if (split.getParent() != null)
+				restoreDividers(split.getParent());
+		}
 
-      this.children = new ArrayList<Node>(children);
-        for(Node child : this.children) {
-        child.setParent(this);
-      }
-    }
-       
-    /**
-     * Convenience method for setting the children of this Split node.  The parent
-     * of each new child is set to this Split node, and the parent
-     * of each old child (if any) is set to null.  This method
-     * defensively copies the incoming array.
-     * 
-     * @param children array of children
-     * @see #getChildren
-     * @throws IllegalArgumentException if children is null
-     */
-    public void setChildren(Node... children) {
-        setChildren(children == null ? null : Arrays.asList(children));
-    }
-        
-    /**
-     * Convenience method that returns the last child whose weight
-     * is > 0.0.
-     *
-     * @return the last child whose weight is > 0.0.
-     * @see #getChildren
-     * @see Node#getWeight
-     */
-    public final Node lastWeightedChild() {
-      List<Node> kids = getChildren();
-      Node weightedChild = null;
-        for(Node child : kids) {
-        if ( !child.isVisible())
-          continue;
-        if (child.getWeight() > 0.0) {
-          weightedChild = child;
-        }
-      }
-      return weightedChild;
-    }
-    
-    /**
-     * Return the Leaf's name.
-     *
-     * @return the value of the name property.
-     * @see #setName
-     */
-    public String getName() { return name; }
-    
-    /**
-     * Set the value of the name property.  Name may not be null.
-     *
-     * @param name value of the name property
-     * @throws IllegalArgumentException if name is null
-     */
-    public void setName(String name) {
-      if (name == null) {
-        throw new IllegalArgumentException("name is null");
-      }
-      this.name = name;
-    }
-        
-    @Override
-    public String toString() {
-      int nChildren = getChildren().size();
-      StringBuffer sb = new StringBuffer("MultiSplitLayout.Split");
-      sb.append(" \"");
-      sb.append(getName());
-      sb.append("\"");
-      sb.append(isRowLayout() ? " ROW [" : " COLUMN [");
-      sb.append(nChildren + ((nChildren == 1) ? " child" : " children"));
-      sb.append("] ");
-      sb.append(getBounds());
-      return sb.toString();
-    }
-  }
+		/**
+		 * Set's the children property of this Split node. The parent of each new child
+		 * is set to this Split node, and the parent of each old child (if any) is set
+		 * to null. This method defensively copies the incoming List. Default value is
+		 * an empty List.
+		 *
+		 * @param children List of children
+		 * @see #getChildren
+		 * @throws IllegalArgumentException if children is null
+		 */
+		public void setChildren(List<Node> children) {
+			if (children == null) {
+				throw new IllegalArgumentException("children must be a non-null List");
+			}
+			for (Node child : this.children) {
+				child.setParent(null);
+			}
+
+			this.children = new ArrayList<Node>(children);
+			for (Node child : this.children) {
+				child.setParent(this);
+			}
+		}
+
+		/**
+		 * Convenience method for setting the children of this Split node. The parent of
+		 * each new child is set to this Split node, and the parent of each old child
+		 * (if any) is set to null. This method defensively copies the incoming array.
+		 * 
+		 * @param children array of children
+		 * @see #getChildren
+		 * @throws IllegalArgumentException if children is null
+		 */
+		public void setChildren(Node... children) {
+			setChildren(children == null ? null : Arrays.asList(children));
+		}
+
+		/**
+		 * Convenience method that returns the last child whose weight is > 0.0.
+		 *
+		 * @return the last child whose weight is > 0.0.
+		 * @see #getChildren
+		 * @see Node#getWeight
+		 */
+		public final Node lastWeightedChild() {
+			List<Node> kids = getChildren();
+			Node weightedChild = null;
+			for (Node child : kids) {
+				if (!child.isVisible())
+					continue;
+				if (child.getWeight() > 0.0) {
+					weightedChild = child;
+				}
+			}
+			return weightedChild;
+		}
+
+		/**
+		 * Return the Leaf's name.
+		 *
+		 * @return the value of the name property.
+		 * @see #setName
+		 */
+		public String getName() {
+			return name;
+		}
+
+		/**
+		 * Set the value of the name property. Name may not be null.
+		 *
+		 * @param name value of the name property
+		 * @throws IllegalArgumentException if name is null
+		 */
+		public void setName(String name) {
+			if (name == null) {
+				throw new IllegalArgumentException("name is null");
+			}
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			int nChildren = getChildren().size();
+			StringBuffer sb = new StringBuffer("MultiSplitLayout.Split");
+			sb.append(" \"");
+			sb.append(getName());
+			sb.append("\"");
+			sb.append(isRowLayout() ? " ROW [" : " COLUMN [");
+			sb.append(nChildren + ((nChildren == 1) ? " child" : " children"));
+			sb.append("] ");
+			sb.append(getBounds());
+			return sb.toString();
+		}
+	}  
   
+	/**
+	 * Models a java.awt Component child.
+	 */
+	public static class Leaf extends Node {
+
+		private static final long serialVersionUID = -6797045019177503260L;
+
+		private String name = "";
+
+		/**
+		 * Create a Leaf node. The default value of name is "".
+		 */
+		public Leaf() {
+		}
+
+		/**
+		 * Create a Leaf node with the specified name. Name can not be null.
+		 *
+		 * @param name value of the Leaf's name property
+		 * @throws IllegalArgumentException if name is null
+		 */
+		public Leaf(String name) {
+			if (name == null) {
+				throw new IllegalArgumentException("name is null");
+			}
+			this.name = name;
+		}
+
+		/**
+		 * Return the Leaf's name.
+		 *
+		 * @return the value of the name property.
+		 * @see #setName
+		 */
+		public String getName() {
+			return name;
+		}
+
+		/**
+		 * Set the value of the name property. Name may not be null.
+		 *
+		 * @param name value of the name property
+		 * @throws IllegalArgumentException if name is null
+		 */
+		public void setName(String name) {
+			if (name == null) {
+				throw new IllegalArgumentException("name is null");
+			}
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			StringBuffer sb = new StringBuffer("MultiSplitLayout.Leaf");
+			sb.append(" \"");
+			sb.append(getName());
+			sb.append("\"");
+			sb.append(" weight=");
+			sb.append(getWeight());
+			sb.append(" ");
+			sb.append(getBounds());
+			return sb.toString();
+		}
+	}  
   
-  /**
-   * Models a java.awt Component child.
-   */
-  public static class Leaf extends Node {
-    private String name = "";
-    
-    /**
-     * Create a Leaf node.  The default value of name is "".
-     */
-    public Leaf() { }
-    
-  
-    /**
-     * Create a Leaf node with the specified name.  Name can not
-     * be null.
-     *
-     * @param name value of the Leaf's name property
-     * @throws IllegalArgumentException if name is null
-     */
-    public Leaf(String name) {
-      if (name == null) {
-        throw new IllegalArgumentException("name is null");
-      }
-      this.name = name;
-    }
-    
-    /**
-     * Return the Leaf's name.
-     *
-     * @return the value of the name property.
-     * @see #setName
-     */
-    public String getName() { return name; }
-    
-    /**
-     * Set the value of the name property.  Name may not be null.
-     *
-     * @param name value of the name property
-     * @throws IllegalArgumentException if name is null
-     */
-    public void setName(String name) {
-      if (name == null) {
-        throw new IllegalArgumentException("name is null");
-      }
-      this.name = name;
-    }
-    
-    @Override
-    public String toString() {
-      StringBuffer sb = new StringBuffer("MultiSplitLayout.Leaf");
-      sb.append(" \"");
-      sb.append(getName());
-      sb.append("\"");
-      sb.append(" weight=");
-      sb.append(getWeight());
-      sb.append(" ");
-      sb.append(getBounds());
-      return sb.toString();
-    }
-  }
-  
-  
-  /**
-   * Models a single vertical/horiztonal divider.
-   */
-  public static class Divider extends Node {   
-    /**
-     * Convenience method, returns true if the Divider's parent
-     * is a Split row (a Split with isRowLayout() true), false
-     * otherwise. In other words if this Divider's major axis
-     * is vertical, return true.
-     *
-     * @return true if this Divider is part of a Split row.
-     */
-    public final boolean isVertical() {
-      Split parent = getParent();
-      return (parent != null) ? parent.isRowLayout() : false;
-    }
-    
-    /**
-     * Dividers can't have a weight, they don't grow or shrink.
-     * @throws UnsupportedOperationException
-     */
-    @Override
-    public void setWeight(double weight) {
-      throw new UnsupportedOperationException();
-    }
-    
-    @Override
-    public String toString() {
-      return "MultiSplitLayout.Divider " + getBounds().toString();
-    }
-  }
-  
+	/**
+	 * Models a single vertical/horiztonal divider.
+	 */
+	public static class Divider extends Node {
+
+		private static final long serialVersionUID = 8366036792604673073L;
+
+		/**
+		 * Convenience method, returns true if the Divider's parent is a Split row (a
+		 * Split with isRowLayout() true), false otherwise. In other words if this
+		 * Divider's major axis is vertical, return true.
+		 *
+		 * @return true if this Divider is part of a Split row.
+		 */
+		public final boolean isVertical() {
+			Split parent = getParent();
+			return (parent != null) ? parent.isRowLayout() : false;
+		}
+
+		/**
+		 * Dividers can't have a weight, they don't grow or shrink.
+		 * 
+		 * @throws UnsupportedOperationException
+		 */
+		@Override
+		public void setWeight(double weight) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String toString() {
+			return "MultiSplitLayout.Divider " + getBounds().toString();
+		}
+	}  
   
   private static void throwParseException(StreamTokenizer st, String msg) throws Exception {
     throw new Exception("MultiSplitLayout.parseModel Error: " + msg);
