@@ -34,6 +34,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -41,7 +46,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -65,6 +69,7 @@ import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledSeparator;
 import org.jdesktop.swingx.JXTree;
@@ -215,6 +220,8 @@ public class PainterDemo extends DefaultDemoPanel {
         });
     }
 
+    private JSplitPane contents; // LeftComponent with painter launcher
+    private JXButton hintButton; // ... on start this Button covers painterDemos 
     private JXTree painterDemos; // a list of painter launchers
     
     private JXPanel painterDisplay;
@@ -233,9 +240,8 @@ public class PainterDemo extends DefaultDemoPanel {
      * Base Properties / basePainterControlPanel: createBasePainterControlPanel()
      */
     private JXTitledSeparator baseSeparator;
-    // TODO JComboBox -> JXComboBox is not generic, use EnumComboBoxModel
-    private JComboBox<Interpolation> interpolationBox;
-    private JComboBox<DisplayInfo<BufferedImageOp>> filterBox;
+    private JXComboBox<Interpolation> interpolationBox;
+    private JXComboBox<DisplayInfo<BufferedImageOp>> filterBox;
     private JCheckBox visibleBox;
     private JCheckBox antialiasBox;
 
@@ -243,8 +249,8 @@ public class PainterDemo extends DefaultDemoPanel {
      * Layout Properties / layoutPainterControlPanel: createLayoutPainterControl()
      */
     private JXTitledSeparator layoutSeparator;
-    private JComboBox<HorizontalAlignment> horizontalAlignmentBox;
-    private JComboBox<VerticalAlignment> verticalAlignmentBox;
+    private JXComboBox<HorizontalAlignment> horizontalAlignmentBox;
+    private JXComboBox<VerticalAlignment> verticalAlignmentBox;
     private JSlider insetSlider;
     private JCheckBox fillHorizontal;
     private JCheckBox fillVertical;
@@ -253,8 +259,8 @@ public class PainterDemo extends DefaultDemoPanel {
      * Area Properties / areaPainterControlPanel: createAreaPainterControlPanel()
      */
     private JComponent areaSeparator;
-    private JComboBox<Style> styleBox;
-    private JComboBox<DisplayInfo<AreaEffect>> effectBox;
+    private JXComboBox<Style> styleBox;
+    private JXComboBox<DisplayInfo<AreaEffect>> effectBox;
     private JSlider borderWidthSlider;
     private JCheckBox paintStretchedBox;
    
@@ -306,26 +312,57 @@ public class PainterDemo extends DefaultDemoPanel {
         return new DefaultMutableTreeNode(new DisplayInfo<Painter<Object>>(desc, painter));
     }
     
-    //TODO all this ImageIO stuff should be off EDT
+	private InputStream getFileInputStream(String resourceName) {
+        FileInputStream fis = null;
+		try {
+	        File file = new File(resourceName);
+	        if (!file.exists()) {
+	    		LOG.log(Level.WARNING, "cannot find resource "+file);
+        		String pkg = this.getClass().getPackageName().replace('.', '/')+'/';
+        		file = new File(pkg+resourceName);
+        		if (!file.exists()) {
+            		LOG.info(" >>> try default eclipse output folder ...");
+            		// this is default eclipse output folder
+            		file = new File("bin/"+pkg+resourceName);
+            		if(!file.exists()) {
+            			// m2e output folder        			
+//                		file = new File("target/classes/"+pkg+FILENAME);
+// demos besteht aus zwei projekten: content und swingxset
+                		file = new File("content/target/classes/"+pkg+resourceName);
+            		}
+        		}
+	            fis = new FileInputStream(file);
+	        }
+            fis = new FileInputStream(file); // throws FileNotFoundException
+            LOG.info("AbsolutePath:"+file.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+            LOG.warning("new FileInputStream throws"+e);
+		}
+		return fis;
+	}
+
     private MutableTreeNode createImagePainterDemos() {
         DefaultMutableTreeNode node = createInfoNode("Image Painter Demos", null);
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("border.gif"));
+        	InputStream fis = getFileInputStream("resources/images/border.gif");
+            BufferedImage img = ImageIO.read(fis);
             node.add(createInfoNode("small image", new ImagePainter(img)));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("moon.jpg"));
+        	InputStream fis = getFileInputStream("resources/images/moon.jpg");
+            BufferedImage img = ImageIO.read(fis);
             node.add(createInfoNode("big image", new ImagePainter(img)));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("border.gif"));
+        	InputStream fis = getFileInputStream("resources/images/border.gif");
+            BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setHorizontalRepeat(true);
             node.add(createInfoNode("horizontal repeat", ip));
@@ -334,7 +371,8 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("border.gif"));
+        	InputStream fis = getFileInputStream("resources/images/border.gif");
+            BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setVerticalRepeat(true);
             node.add(createInfoNode("vertical repeat", ip));
@@ -343,7 +381,8 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("border.gif"));
+        	InputStream fis = getFileInputStream("resources/images/border.gif");
+            BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setBorderPaint(Color.BLACK);
             node.add(createInfoNode("image with black border", ip));
@@ -352,14 +391,16 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("a-glyph.png"));
+        	InputStream fis = getFileInputStream("resources/images/a-glyph.png");
+            BufferedImage img = ImageIO.read(fis);
             node.add(createInfoNode("An image of 'A' with transparent parts", new ImagePainter(img)));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         
         try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("a-glyph.png"));
+        	InputStream fis = getFileInputStream("resources/images/a-glyph.png");
+            BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setFillPaint(Color.RED);
             node.add(createInfoNode("red background visible through transparent parts", ip));
@@ -773,8 +814,6 @@ public class PainterDemo extends DefaultDemoPanel {
 
 	@Override
     protected void bind() {
-        // fill and configure painter tree model
-        painterDemos.setModel(createPainters());
         // create the painter property controller
         painterControl = new PainterControl();
         
@@ -1062,7 +1101,6 @@ public class PainterDemo extends DefaultDemoPanel {
     }
     
 //------------------------------ Create UI
-    
     private void createControler() {
         painterDisplay = createPainterDisplay();
         
@@ -1070,23 +1108,28 @@ public class PainterDemo extends DefaultDemoPanel {
         painterControlPanel.add(painterDisplay);
         painterControlPanel.add(createPainterPropertiesPanel(), BorderLayout.SOUTH);
         
-        JXButton hint = new JXButton("<html>select and start a painter from list tree on the left</html>");
+        hintButton = new JXButton("<html>push here to select and start a painter from a list</html>");
         Font font = new Font("SansSerif", Font.PLAIN, 16);
-        hint.setFont(font);
-        painterControlPanel.add(hint, BorderLayout.NORTH);
-		hint.addActionListener(event -> {
-			hint.setVisible(false); 
-			hint.validate();
+        hintButton.setFont(font);
+//        painterControlPanel.add(hint, BorderLayout.NORTH);
+		hintButton.addActionListener(event -> {
+			Dimension size = ((JComponent)contents.getLeftComponent()).getSize();
+			contents.setLeftComponent(new JScrollPane(painterDemos));
+			((JComponent)contents.getLeftComponent()).setMinimumSize(size);
 		});
         
+        // fill and configure painter tree model
         painterDemos = new JXTree();
         painterDemos.setRootVisible(false);
+        painterDemos.setModel(createPainters());
+        
         // PENDING JW: weird sizing in splitpane
-        JSplitPane contents = new JSplitPane();
+        contents = new JSplitPane();
         contents.setDividerLocation(240);
         contents.setContinuousLayout(true);
         contents.setRightComponent(painterControlPanel);
-        contents.setLeftComponent(new JScrollPane(painterDemos));
+//        contents.setLeftComponent(new JScrollPane(painterDemos));
+        contents.setLeftComponent(hintButton);
         add(contents);
     }
 
@@ -1156,7 +1199,7 @@ public class PainterDemo extends DefaultDemoPanel {
         int labelColumn = 2;
         int widgetColumn = labelColumn + 2;
         int currentRow = 3;
-        interpolationBox = new JComboBox<Interpolation>(); // TODO why not JXComboBox?
+        interpolationBox = new JXComboBox<Interpolation>();
         interpolationBox.setName("interpolationBox");
         
         JLabel interpolationLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
@@ -1165,7 +1208,7 @@ public class PainterDemo extends DefaultDemoPanel {
         interpolationLabel.setName("interpolationLabel");
         LabelHandler.bindLabelFor(interpolationLabel, interpolationBox);
         
-        filterBox = new JComboBox<DisplayInfo<BufferedImageOp>>(); // TODO why not JXComboBox?
+        filterBox = new JXComboBox<DisplayInfo<BufferedImageOp>>();
         filterBox.setName("filterBox");
         
         JLabel filterLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
@@ -1218,10 +1261,8 @@ public class PainterDemo extends DefaultDemoPanel {
         int widgetColumn = labelColumn + 2;
         int currentRow = 3;
         
-//        horizontalAlignmentBox = new JComboBox();
-//        horizontalAlignmentBox = new JComboBox<Object>(); // TODO oder so:
-        horizontalAlignmentBox = new JComboBox<HorizontalAlignment>();     
-        verticalAlignmentBox = new JComboBox<VerticalAlignment>();
+        horizontalAlignmentBox = new JXComboBox<HorizontalAlignment>();     
+        verticalAlignmentBox = new JXComboBox<VerticalAlignment>();
 
         insetSlider = new JSlider(0, 100, 0);
         insetSlider.setPaintLabels(true);
@@ -1287,7 +1328,7 @@ public class PainterDemo extends DefaultDemoPanel {
         int labelColumn = 2;
         int widgetColumn = labelColumn + 2;
         int currentRow = 3;
-        styleBox = new JComboBox<Style>();
+        styleBox = new JXComboBox<Style>();
         styleBox.setName("styleBox");
         
         JLabel styleBoxLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
@@ -1296,7 +1337,7 @@ public class PainterDemo extends DefaultDemoPanel {
         styleBoxLabel.setName("styleBoxLabel");
         LabelHandler.bindLabelFor(styleBoxLabel, styleBox);
         
-        effectBox = new JComboBox<DisplayInfo<AreaEffect>>();
+        effectBox = new JXComboBox<DisplayInfo<AreaEffect>>();
         effectBox.setName("areaEffectBox");
         
         JLabel effectLabel = builder.addLabel("", cl.xywh(labelColumn, currentRow, 1, 1),
