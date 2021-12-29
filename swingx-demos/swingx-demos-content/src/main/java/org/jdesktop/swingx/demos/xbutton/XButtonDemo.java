@@ -221,7 +221,7 @@ public class XButtonDemo extends DefaultDemoPanel {
 
         add(panel);
         
-        // some iconized demos
+        // some iconized buttons:
         JPanel iconPanel = new JXPanel(new GridLayout(1, 4, 1, 1));
         add(iconPanel, BorderLayout.SOUTH);
         
@@ -240,7 +240,7 @@ public class XButtonDemo extends DefaultDemoPanel {
         PainterIcon pi = new PainterIcon(new Dimension(ccIcon.getIconWidth(), ccIcon.getIconHeight()));
         pi.setPainter(orangeBgPainter);
         JXButton piButton = new JXButton("PainterIcon", pi);
-        iconPanel.add(piButton);
+        iconPanel.add(piButton);        
     }
 
     /**
