@@ -20,6 +20,7 @@ package org.jdesktop.swingx.demos.xbutton;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -35,6 +36,9 @@ import javax.swing.SwingConstants;
 import org.jdesktop.application.Application;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXLabel;
+import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.icon.ColumnControlIcon;
+import org.jdesktop.swingx.icon.PainterIcon;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
@@ -199,7 +203,7 @@ public class XButtonDemo extends DefaultDemoPanel {
             }          
         });
 
-        JPanel panel = new JPanel(new GridLayout(7, 2, 1, 1));
+        JPanel panel = new JXPanel(new GridLayout(7, 2, 1, 1));
         panel.add(new JXLabel(JButton.class.getSimpleName(), SwingConstants.CENTER));
         panel.add(new JXLabel(JXButton.class.getSimpleName(), SwingConstants.CENTER));
         panel.add(button1);
@@ -216,6 +220,26 @@ public class XButtonDemo extends DefaultDemoPanel {
         panel.add(xbutton6);
 
         add(panel);
+        
+        JPanel iconPanel = new JXPanel(new GridLayout(1, 4, 1, 1));
+        add(iconPanel, BorderLayout.SOUTH);
+        
+        CircleIcon red = new CircleIcon(SizingConstants.ACTION_ICON, Color.RED);
+        JButton rButton = new JButton("M red Circle", red);
+        LOG.info("cButton.getForeground() ="+rButton.getForeground());
+        iconPanel.add(rButton);
+        CircleIcon green = new CircleIcon(SizingConstants.S, Color.GREEN);
+        JButton gButton = new JButton("S green Circle", green);
+        iconPanel.add(gButton);
+        
+        ColumnControlIcon ccIcon = new ColumnControlIcon();
+        JButton ccButton = new JButton("XS ColumnControl", ccIcon);
+        iconPanel.add(ccButton);
+        
+        PainterIcon pi = new PainterIcon(new Dimension(ccIcon.getIconWidth(), ccIcon.getIconHeight()));
+        pi.setPainter(orangeBgPainter);
+        JXButton piButton = new JXButton("PainterIcon", pi);
+        iconPanel.add(piButton);
     }
 
     /**
