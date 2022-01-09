@@ -1586,14 +1586,32 @@ public class JXDatePickerTest extends InteractiveTestCase {
         LOG.info("text:"+text);
         if(text.indexOf('0')>=0) {
             changed = text.replace('0', '1');
-        	// 01/9/22 => 11/9/22
             picker.getEditor().setText(changed);
         } else {
         	// expl.: no 0 in "11/1/21" (locale: en) @see https://github.com/homebeaver/SwingSet/issues/11
-        	// (locale: de) 01.11.2021 
-        	// 1/9/22 => 1/9/21
-        	if(text.startsWith("11") || text.startsWith("12"))
-            changed = text.replaceFirst("1", "0");
+        	//        no 0 in "1/9/22"
+        	// (locale: de) 01.11.2021 / 09.01.2022
+        	if(text.startsWith("11") || text.startsWith("12")) {
+        		changed = text.replaceFirst("1", "0");
+        	} else if(text.startsWith("3/")) {
+        		changed = text.replaceFirst("3", "1"); 
+        	} else if(text.startsWith("4/")) {
+        		changed = text.replaceFirst("4", "1"); 
+        	} else if(text.startsWith("5/")) {
+        		changed = text.replaceFirst("5", "1"); 
+        	} else if(text.startsWith("6/")) {
+        		changed = text.replaceFirst("6", "1"); 
+        	} else if(text.startsWith("7/")) {
+        		changed = text.replaceFirst("7", "1"); 
+        	} else if(text.startsWith("8/")) {
+        		changed = text.replaceFirst("8", "1"); 
+        	} else if(text.startsWith("9/")) {
+        		changed = text.replaceFirst("9", "1"); 
+        	} else if(text.startsWith("1/31")) {
+        		changed = text.replaceFirst("1", "3"); 
+        	} else { // Jan => Nov or Feb => Dez
+        		changed = 1+text;
+        	}
             picker.getEditor().setText(changed);
         }
 
