@@ -32,23 +32,12 @@ public class MetalButtonPainterIssues extends Panel {
 
 	private static final Logger LOG = Logger.getLogger(MetalButtonPainterIssues.class.getName());
 
-//    JTabbedPane tab;
     JPanel buttonPanel = new JPanel();
-//    JPanel checkboxPanel = new JPanel();
-//    JPanel radioButtonPanel = new JPanel();
 
     Vector<AbstractButton> buttons = new Vector<AbstractButton>();
-//    Vector<AbstractButton> checkboxes = new Vector<AbstractButton>();
-//    Vector<AbstractButton> radiobuttons = new Vector<AbstractButton>();
-//    private Vector<AbstractButton> togglebuttons = new Vector<AbstractButton>(); // not used
-
-    // radiobuttons
     Vector<AbstractButton> currentControls = buttons;
 
     JButton button;
-//    JCheckBox check;
-//    JRadioButton radio;
-//    private JToggleButton toggle;
 
     EmptyBorder border5 = new EmptyBorder(5,5,5,5);
     EmptyBorder border10 = new EmptyBorder(10,10,10,10);
@@ -57,52 +46,28 @@ public class MetalButtonPainterIssues extends Panel {
     Insets insets10 = new Insets(10,10,10,10);
 
 	// The preferred size of the demo
-    static private int PREFERRED_WIDTH = 680;
-    static private int PREFERRED_HEIGHT = 600;
+//    static private int PREFERRED_WIDTH = 680;
+//    static private int PREFERRED_HEIGHT = 600;
 
     // Premade convenience dimensions, for use wherever you need 'em.
-    static Dimension HGAP2 = new Dimension(2,1);
-    static Dimension VGAP2 = new Dimension(1,2);
 
-    static Dimension HGAP5 = new Dimension(5,1);
-    static Dimension VGAP5 = new Dimension(1,5);
+    static private Dimension HGAP10 = new Dimension(10,1);
+    static private Dimension VGAP10 = new Dimension(1,10);
 
-    static Dimension HGAP10 = new Dimension(10,1);
-    static Dimension VGAP10 = new Dimension(1,10);
-
-    static Dimension HGAP15 = new Dimension(15,1);
-    static Dimension VGAP15 = new Dimension(1,15);
-
-    static Dimension HGAP20 = new Dimension(20,1);
-    static Dimension VGAP20 = new Dimension(1,20);
-
-    static Dimension HGAP25 = new Dimension(25,1);
-    static Dimension VGAP25 = new Dimension(1,25);
-
-    static Dimension HGAP30 = new Dimension(30,1);
-    static Dimension VGAP30 = new Dimension(1,30);
+    static private Dimension HGAP20 = new Dimension(20,1);
+    static private Dimension VGAP20 = new Dimension(1,20);
 
     /**
      * main method allows us to run as a standalone demo.
      */
     public static void main(String[] args) {
     	GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-//    	OceanButtonBorderIssues demo = new OceanButtonBorderIssues(new SwingSet2(null, gc, false));
     	MetalButtonPainterIssues demo = new MetalButtonPainterIssues(createFrame(gc));
-/*        demo.mainImpl();
-    public void mainImpl() {
-        JFrame frame = new JFrame(getName());
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(getDemoPanel(), BorderLayout.CENTER);
-        getDemoPanel().setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));
-        frame.pack();
-        frame.setVisible(true);
-    }
- */
+
         JFrame frame = new JFrame("Metal Button (woBorder) Painter Issue");
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(demo.getDemoPanel(), BorderLayout.CENTER);
-        //demo.getDemoPanel().setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));
+//      demo.getDemoPanel().setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));
         frame.pack();
         frame.setVisible(true); 	
     }
@@ -113,28 +78,6 @@ public class MetalButtonPainterIssues extends Panel {
     	return frame;
     }
 
-/*
-new SwingSet2(null, gc, false) :
-	frame = createFrame(gc);
-    public static JFrame createFrame(GraphicsConfiguration gc) {
-        JFrame frame = new JFrame(gc);
-        if (numSSs == 0) {
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        } else {
-            WindowListener l = new WindowAdapter() {
-            	@Override
-                public void windowClosing(WindowEvent e) {
-                    numSSs--;
-                    swingSets.remove(this);
-                }
-            };
-            frame.addWindowListener(l);
-        }
-        return frame;
-    }
-
- */
-    // Used only if swingset is an application
     private JFrame frame = null;
     private JPanel panel = null;
     public JPanel getDemoPanel() {
@@ -142,50 +85,18 @@ new SwingSet2(null, gc, false) :
     }
     // ctor
     public MetalButtonPainterIssues(JFrame frame) {
-        // Set the title for this demo, and an icon used to represent this demo inside SwingSet2.
-/*        super(swingset, "ButtonDemo", ICON_PATH); 
-        public DemoModule(SwingSet2 swingset, String resourceName, String iconPath) {
-            UIManager.put("swing.boldMetal", Boolean.FALSE);
-            panel = new JPanel();
-            panel.setLayout(new BorderLayout());
-
-            this.resourceName = resourceName;
-            this.iconPath = iconPath;
-            this.swingset = swingset;
-
-            loadSourceCode();
-        }
-*/
     	UIManager.put("swing.boldMetal", Boolean.FALSE);
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         
-//        tab = new JTabbedPane();
-//        tab.getModel().addChangeListener(e -> {
-//            SingleSelectionModel model = (SingleSelectionModel) e.getSource();
-//            if(model.getSelectedIndex() == 0) {
-//                currentControls = buttons;
-//            } else if(model.getSelectedIndex() == 1) {
-//                currentControls = radiobuttons;
-//            } else if(model.getSelectedIndex() == 2) {
-//                currentControls = checkboxes;
-//            } else {
-//                currentControls = togglebuttons;
-//            }
-//        });
-
         JPanel demo = getDemoPanel();
         demo.setLayout(new BoxLayout(demo, BoxLayout.Y_AXIS));
-//        demo.add(tab);
         demo.add(buttonPanel);
         addButtons();
-//        addRadioButtons();
-//        addCheckBoxes();
         currentControls = buttons;
     }
 
-    Border loweredBorder = new CompoundBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED),
-            new EmptyBorder(5,5,5,5));
+    Border loweredBorder = new CompoundBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED), new EmptyBorder(5,5,5,5));
     public JPanel createVerticalPanel(boolean threeD) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -209,7 +120,6 @@ new SwingSet2(null, gc, false) :
     }
 
     public void addButtons() {
-//        tab.addTab("buttons", buttonPanel);
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.setBorder(border5);
 
@@ -252,40 +162,13 @@ new SwingSet2(null, gc, false) :
         p2.add(button);
         buttons.add(button);
 
-//        // Image Buttons
-//        verticalPane.add(Box.createRigidArea(VGAP30));
-//        JPanel p3 = createHorizontalPanel(false); // true == loweredBorder from super
-//        verticalPane.add(p3);
-//        createImageButtons(p3);
-//        
-//        // traffic lights buttons
-//        verticalPane.add(Box.createRigidArea(VGAP30));
-//        JPanel p4 = createHorizontalPanel(true);
-//        verticalPane.add(p4);
-//        createTrafficLightButtons(p4);
-//
-//        verticalPane.add(Box.createVerticalGlue());
-        
         buttonPanel.add(Box.createHorizontalGlue());
         currentControls = buttons; // currentControls is global para for createControls!
         buttonPanel.add(createControls());       
     }
 
-    /*
-     * JPanel controls aka Controler ist im rechten Teil der Panel buttonPanel, radioButtonPanel, checkboxPanel positioniert.
-     * Es beinhaltet Controler für
-     * - JCheckBox'es : Display Options
-     * - JRadioButton's : Pad Amount
-     * - LayoutControlPanel+DirectionPanel mit 
-     * - - Text Position
-     * - - Content Alignment
-     */
     /**
      * creates controler panel with checkBoxes for Display Options and radioButtons for Pad Amount
-     * and LayoutControlPanel for Text Position and Content Alignment
-     * 
-     * @see LayoutControlPanel
-     * @see DirectionPanel
      */
     public JPanel createControls() {
         @SuppressWarnings("serial")
@@ -306,12 +189,8 @@ new SwingSet2(null, gc, false) :
         leftColumn.setAlignmentX(Component.LEFT_ALIGNMENT);
         leftColumn.setAlignmentY(Component.TOP_ALIGNMENT);
 
-//        JPanel rightColumn = new LayoutControlPanel(this);
-
         buttonControls.add(leftColumn);
         buttonControls.add(Box.createRigidArea(HGAP20));
-//        buttonControls.add(rightColumn);
-//        buttonControls.add(Box.createRigidArea(HGAP20));
 
         controls.add(buttonControls);
 
@@ -321,8 +200,6 @@ new SwingSet2(null, gc, false) :
 
         JCheckBox bordered = new JCheckBox("paintborder");
         bordered.setActionCommand("PaintBorder");
-//        bordered.setMnemonic(getMnemonic("ButtonDemo.paintborder_mnemonic"));
-//        bordered.setToolTipText(getString("ButtonDemo.paintborder_tooltip"));
         if (currentControls == buttons) {
                 bordered.setSelected(true); // initial
         }
@@ -342,8 +219,6 @@ new SwingSet2(null, gc, false) :
 
         JCheckBox focused = new JCheckBox("paintfocus");
         focused.setActionCommand("PaintFocus");
-//        focused.setToolTipText(getString("ButtonDemo.paintfocus_tooltip"));
-//        focused.setMnemonic(getMnemonic("ButtonDemo.paintfocus_mnemonic"));
         focused.setSelected(true);
 
         focused.addItemListener(e -> {
@@ -361,8 +236,6 @@ new SwingSet2(null, gc, false) :
 
         JCheckBox enabled = new JCheckBox("enabled");
         enabled.setActionCommand("Enabled");
-//        enabled.setMnemonic(getMnemonic("ButtonDemo.enabled_mnemonic"));
-//        enabled.setToolTipText(getString("ButtonDemo.enabled_tooltip"));
         enabled.setSelected(true);
 
         enabled.addItemListener(e -> {
@@ -373,15 +246,7 @@ new SwingSet2(null, gc, false) :
                 c = (Component) currentControls.elementAt(i);
                 if(c instanceof JButton) {
                 	JButton b = (JButton)c;
-//                	if("green".equals(b.getName())) { // set the green light out of order
-//                		b.setIcon(enable ? green : outoforder);
-//                	} else if("flipflop".equals(b.getName())) { // set the flipflop light out of order
-//                		b.setIcon(enable ? green : outoforder);
-//                	} else if("red".equals(b.getName())) { 
-//                		// red light remains red!
-//                	} else {
-                		c.setEnabled(enable);
-//                	}
+                	c.setEnabled(enable);
                 }
                 c.invalidate();
             }
@@ -390,8 +255,6 @@ new SwingSet2(null, gc, false) :
 
         JCheckBox filled = new JCheckBox("contentfilled");
         filled.setActionCommand("ContentFilled");
-//        filled.setMnemonic(getMnemonic("ButtonDemo.contentfilled_mnemonic"));
-//        filled.setToolTipText(getString("ButtonDemo.contentfilled_tooltip"));
         filled.setSelected(true);
 
         filled.addItemListener(e -> {
@@ -413,15 +276,12 @@ new SwingSet2(null, gc, false) :
         ButtonGroup group = new ButtonGroup();
         
         JRadioButton defaultPad = new JRadioButton("default");
-//        defaultPad.setMnemonic(getMnemonic("ButtonDemo.default_mnemonic"));
-//        defaultPad.setToolTipText(getString("ButtonDemo.default_tooltip"));
         defaultPad.addItemListener(e -> {
         	JRadioButton rb = (JRadioButton) e.getSource(); // rb == e.getSource() == defaultPad
         	if(rb.isSelected()) {
                 AbstractButton b;
                 LOG.config("defaultPad currentControls.size()="+currentControls.size());
                 for(int i = 0; i < currentControls.size(); i++) {
-//                    LOG.info("i="+i + "currentControl:"+currentControls.elementAt(i));
                     b = (AbstractButton) currentControls.elementAt(i);
                     b.setMargin(null);
                     b.invalidate();
@@ -434,8 +294,6 @@ new SwingSet2(null, gc, false) :
 
         JRadioButton zeroPad = new JRadioButton("zero");
         zeroPad.setActionCommand("ZeroPad");
-//        zeroPad.setMnemonic(getMnemonic("ButtonDemo.zero_mnemonic"));
-//        zeroPad.setToolTipText(getString("ButtonDemo.zero_tooltip"));
         zeroPad.addItemListener(e -> {
         	JRadioButton rb = (JRadioButton) e.getSource(); // rb == e.getSource() == zeroPad
         	if(rb.isSelected()) {
@@ -453,8 +311,6 @@ new SwingSet2(null, gc, false) :
 
         JRadioButton tenPad = new JRadioButton("ten");
         tenPad.setActionCommand("TenPad");
-//        tenPad.setMnemonic(getMnemonic("ButtonDemo.ten_mnemonic"));
-//        tenPad.setToolTipText(getString("ButtonDemo.ten_tooltip"));
 
         tenPad.addItemListener(e -> {
         	JRadioButton rb = (JRadioButton) e.getSource(); // rb == e.getSource() == tenPad

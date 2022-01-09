@@ -1583,7 +1583,7 @@ public class JXDatePickerTest extends InteractiveTestCase {
         assertEquals(picker.getDate(), formats[0].parseObject(text));
 
         String changed = null;
-        LOG.info("text:"+text);
+//        LOG.info("text:"+text);
         if(text.indexOf('0')>=0) {
             changed = text.replace('0', '1');
             picker.getEditor().setText(changed);
@@ -1617,15 +1617,14 @@ public class JXDatePickerTest extends InteractiveTestCase {
 
         Date date = null;
         try {
-            LOG.info("changed:"+changed);
+//          LOG.info("changed:"+changed);
             date = (Date) formats[0].parseObject(changed);   	
         } catch (ParseException e) {
             LOG.info("cannot run DatePropertyThroughCommit - parseException in manipulated text");
             return;
-        } catch (RuntimeException e) {
         }
         // sanity ...
-        LOG.info("calendar:"+calendar
+        LOG.fine("calendar:"+calendar
         		+"\n>>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
         assertFalse("", date.equals(picker.getDate()));
         PropertyChangeReport report = new PropertyChangeReport();
@@ -1652,12 +1651,31 @@ public class JXDatePickerTest extends InteractiveTestCase {
             picker.getEditor().setText(changed);
         } else {
         	// expl.: no 0 in "11/1/21" (locale: en) @see https://github.com/homebeaver/SwingSet/issues/11
-        	// (locale: de) 01.11.2021 
-        	if(text.startsWith("11") || text.startsWith("12"))
-            changed = text.replaceFirst("1", "0");
+        	//        no 0 in "1/9/22"
+        	// (locale: de) 01.11.2021 / 09.01.2022
+        	if(text.startsWith("11") || text.startsWith("12")) {
+        		changed = text.replaceFirst("1", "0");
+        	} else if(text.startsWith("3/")) {
+        		changed = text.replaceFirst("3", "1"); 
+        	} else if(text.startsWith("4/")) {
+        		changed = text.replaceFirst("4", "1"); 
+        	} else if(text.startsWith("5/")) {
+        		changed = text.replaceFirst("5", "1"); 
+        	} else if(text.startsWith("6/")) {
+        		changed = text.replaceFirst("6", "1"); 
+        	} else if(text.startsWith("7/")) {
+        		changed = text.replaceFirst("7", "1"); 
+        	} else if(text.startsWith("8/")) {
+        		changed = text.replaceFirst("8", "1"); 
+        	} else if(text.startsWith("9/")) {
+        		changed = text.replaceFirst("9", "1"); 
+        	} else if(text.startsWith("1/31")) {
+        		changed = text.replaceFirst("1", "3"); 
+        	} else { // Jan => Nov or Feb => Dez
+        		changed = 1+text;
+        	}
             picker.getEditor().setText(changed);
         }
-        
         Date date;
         try {
             date = (Date) formats[0].parseObject(changed);
