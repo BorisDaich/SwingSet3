@@ -1583,26 +1583,31 @@ public class JXDatePickerTest extends InteractiveTestCase {
         assertEquals(picker.getDate(), formats[0].parseObject(text));
 
         String changed = null;
+        LOG.info("text:"+text);
         if(text.indexOf('0')>=0) {
             changed = text.replace('0', '1');
+        	// 01/9/22 => 11/9/22
             picker.getEditor().setText(changed);
         } else {
         	// expl.: no 0 in "11/1/21" (locale: en) @see https://github.com/homebeaver/SwingSet/issues/11
         	// (locale: de) 01.11.2021 
+        	// 1/9/22 => 1/9/21
         	if(text.startsWith("11") || text.startsWith("12"))
             changed = text.replaceFirst("1", "0");
             picker.getEditor().setText(changed);
         }
 
-        Date date;
+        Date date = null;
         try {
-            date = (Date) formats[0].parseObject(changed);
+            LOG.info("changed:"+changed);
+            date = (Date) formats[0].parseObject(changed);   	
         } catch (ParseException e) {
             LOG.info("cannot run DatePropertyThroughCommit - parseException in manipulated text");
             return;
+        } catch (RuntimeException e) {
         }
         // sanity ...
-        LOG.fine("calendar:"+calendar
+        LOG.info("calendar:"+calendar
         		+"\n>>>>>>>>>>>>>> date="+date + " ---expected not equal to---"+picker.getDate());
         assertFalse("", date.equals(picker.getDate()));
         PropertyChangeReport report = new PropertyChangeReport();
