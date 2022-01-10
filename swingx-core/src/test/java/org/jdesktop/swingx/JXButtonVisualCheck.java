@@ -24,7 +24,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -50,7 +49,7 @@ import org.jdesktop.swingx.util.PaintUtils;
  * @author rah003
  *
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class JXButtonVisualCheck extends InteractiveTestCase {
 
     private static final String[] buttonText = new String[] {"Hello", "Goodbye", "SwingLabs", "Turkey Bowl"};
@@ -74,7 +73,8 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
      * Test for issue 849
      */
     public void interactiveActionButton() {
-        AbstractAction action = new AbstractAction() {
+        @SuppressWarnings("serial")
+		AbstractAction action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //do nothing
@@ -187,7 +187,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     public void interactiveFontAndBackgroundCheck() {
         Font font = Font.decode("Arial-BOLDITALIC-14");
         Color background = Color.LIGHT_GRAY;
-        Painter<?> backgroundPainter = new MattePainter(background);
+        Painter<Object> backgroundPainter = new MattePainter(background);
 
         JButton button1 = new JButton("Default");
         JButton button2 = new JButton("Font changed");

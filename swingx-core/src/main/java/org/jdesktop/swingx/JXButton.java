@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Color;
@@ -30,6 +27,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -70,8 +68,11 @@ import org.jdesktop.swingx.util.PaintUtils;
  * @author Karl George Schaefer
  */
 @JavaBean
-@SuppressWarnings({ "nls", "serial" })
-public class JXButton extends JButton implements BackgroundPaintable {
+@SuppressWarnings("serial")
+public class JXButton extends JButton implements BackgroundPaintable<Object> {
+
+	private static final Logger LOG = Logger.getLogger(JXButton.class.getName());
+
     private class BackgroundButton extends JButton {
 
         /**
@@ -472,13 +473,10 @@ public class JXButton extends JButton implements BackgroundPaintable {
     }
     
     private ForegroundButton fgStamp;
-    @SuppressWarnings("rawtypes")
-    private Painter fgPainter;
-    @SuppressWarnings("rawtypes")
-    private PainterPaint fgPaint;
+    private Painter<Object> fgPainter;
+    private PainterPaint<Object> fgPaint;
     private BackgroundButton bgStamp;
-    @SuppressWarnings("rawtypes")
-    private Painter bgPainter;
+    private Painter<Object> bgPainter;
     
     private boolean paintBorderInsets = true;
 
@@ -541,14 +539,14 @@ public class JXButton extends JButton implements BackgroundPaintable {
     
     private void init() {
         fgStamp = new ForegroundButton();
+        LOG.fine("fgStamp:"+fgStamp);
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("rawtypes")
-    public Painter getBackgroundPainter() {
+    public Painter<Object> getBackgroundPainter() {
         return bgPainter;
     }
 
@@ -556,9 +554,8 @@ public class JXButton extends JButton implements BackgroundPaintable {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("rawtypes")
-    public void setBackgroundPainter(Painter p) {
-        Painter old = getBackgroundPainter();
+    public void setBackgroundPainter(Painter<Object> p) {
+        Painter<?> old = getBackgroundPainter();
         this.bgPainter = p;
         firePropertyChange("backgroundPainter", old, getBackgroundPainter());
         repaint();
@@ -567,20 +564,18 @@ public class JXButton extends JButton implements BackgroundPaintable {
     /**
      * @return the foreground painter for this button
      */
-    @SuppressWarnings("rawtypes")
-    public Painter getForegroundPainter() {
+    public Painter<Object> getForegroundPainter() {
         return fgPainter;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void setForegroundPainter(Painter p) {
-        Painter old = getForegroundPainter();
+    public void setForegroundPainter(Painter<Object> p) {
+        Painter<?> old = getForegroundPainter();
         this.fgPainter = p;
         
         if (fgPainter == null) {
             fgPaint = null;
         } else {
-            fgPaint = new PainterPaint(fgPainter, this);
+            fgPaint = new PainterPaint<Object>(fgPainter, this);
             
             if (bgStamp == null) {
                 bgStamp = new BackgroundButton();
