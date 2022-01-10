@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
-import java.awt.Panel;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -14,9 +13,7 @@ import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -26,9 +23,16 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.basic.BasicBorders;
+import javax.swing.plaf.metal.MetalBorders;
+
+import org.jdesktop.swingx.InteractiveTestCase;
+import org.jdesktop.swingx.JXButton;
+import org.jdesktop.swingx.JXFrame;
 
 // wg. https://github.com/homebeaver/SwingSet/issues/18
-public class MetalButtonPainterIssues extends Panel {
+public class MetalButtonPainterIssues extends InteractiveTestCase {
 
 	private static final Logger LOG = Logger.getLogger(MetalButtonPainterIssues.class.getName());
 
@@ -37,7 +41,7 @@ public class MetalButtonPainterIssues extends Panel {
     Vector<AbstractButton> buttons = new Vector<AbstractButton>();
     Vector<AbstractButton> currentControls = buttons;
 
-    JButton button;
+    JXButton button;
 
     EmptyBorder border5 = new EmptyBorder(5,5,5,5);
     EmptyBorder border10 = new EmptyBorder(10,10,10,10);
@@ -46,8 +50,8 @@ public class MetalButtonPainterIssues extends Panel {
     Insets insets10 = new Insets(10,10,10,10);
 
 	// The preferred size of the demo
-//    static private int PREFERRED_WIDTH = 680;
-//    static private int PREFERRED_HEIGHT = 600;
+    static private int PREFERRED_WIDTH = 680;
+    static private int PREFERRED_HEIGHT = 600;
 
     // Premade convenience dimensions, for use wherever you need 'em.
 
@@ -57,41 +61,41 @@ public class MetalButtonPainterIssues extends Panel {
     static private Dimension HGAP20 = new Dimension(20,1);
     static private Dimension VGAP20 = new Dimension(1,20);
 
-    /**
-     * main method allows us to run as a standalone demo.
-     */
-    public static void main(String[] args) {
-    	GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-    	MetalButtonPainterIssues demo = new MetalButtonPainterIssues(createFrame(gc));
+	public static void main(String[] args) throws Exception {
+		GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+		MetalButtonPainterIssues test = new MetalButtonPainterIssues(createFrame(gc));
+		test.show(test.getFrame());
+        
+		try {
+			test.runInteractiveTests();
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
 
-        JFrame frame = new JFrame("Metal Button (woBorder) Painter Issue");
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(demo.getDemoPanel(), BorderLayout.CENTER);
-//      demo.getDemoPanel().setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));
-        frame.pack();
-        frame.setVisible(true); 	
-    }
-    
-    public static JFrame createFrame(GraphicsConfiguration gc) {
-    	JFrame frame = new JFrame(gc);
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	return frame;
+    public static JXFrame createFrame(GraphicsConfiguration gc) {
+    	return new JXFrame("Metal Button (woBorder) Painter Issue", gc, true); // true == exitOnClose
     }
 
-    private JFrame frame = null;
+    private JXFrame frame = null;
+    public JXFrame getFrame() {
+        return frame;
+    }
     private JPanel panel = null;
     public JPanel getDemoPanel() {
         return panel;
     }
+
     // ctor
-    public MetalButtonPainterIssues(JFrame frame) {
+    public MetalButtonPainterIssues(JXFrame xframe) {
     	UIManager.put("swing.boldMetal", Boolean.FALSE);
+    	frame = xframe;
+    	
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        
-        JPanel demo = getDemoPanel();
-        demo.setLayout(new BoxLayout(demo, BoxLayout.Y_AXIS));
-        demo.add(buttonPanel);
+        frame.add(panel, BorderLayout.CENTER);
+        panel.add(buttonPanel);
         addButtons();
         currentControls = buttons;
     }
@@ -119,6 +123,24 @@ public class MetalButtonPainterIssues extends Panel {
         return p;
     }
 
+    private Border patchedBorder(JXButton button) {
+    	Border buttonBorder = button.getBorder();
+        if(buttonBorder instanceof BorderUIResource.CompoundBorderUIResource) {
+        	CompoundBorder cb = (CompoundBorder) buttonBorder; // cast OK, denn CompoundBorderUIResource subclass von CompoundBorder
+        	Border ob = cb.getOutsideBorder();
+        	Border ib = cb.getInsideBorder();
+        	LOG.info("plaf.metal CompoundBorder Button.border : "+cb + " "+ob + " "+ib);
+        	if(ob instanceof MetalBorders.ButtonBorder && ib instanceof BasicBorders.MarginBorder) {
+        		ob = new MetalButtonBorder();
+        		ib = new BasicMarginBorder();
+        		((MetalButtonBorder)ob).setInsideBorder(ib);
+            	return new BorderUIResource.CompoundBorderUIResource(ob, ib);
+        	}
+        	return cb;
+        }
+        return buttonBorder;
+    }
+    
     public void addButtons() {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.setBorder(border5);
@@ -133,32 +155,56 @@ public class MetalButtonPainterIssues extends Panel {
         p2.setBorder(new CompoundBorder(new TitledBorder(null, "ButtonDemo.textbuttons",
                                                           TitledBorder.LEFT, TitledBorder.TOP), border5));
 
-        String buttonText1 = "button1";
-        button = new JButton(buttonText1);
+        String buttonText1 = "<html>First<p>button</p></html>";
+        button = new JXButton(buttonText1);
         // wg. https://github.com/homebeaver/SwingSet/issues/18 :
-//        if(button.getBorder() instanceof BorderUIResource.CompoundBorderUIResource) {
-//        	BasicMarginBorder bmb = new BasicMarginBorder();
-//        	button.setBorder(new CompoundBorder(new MetalButtonBorder(bmb), bmb));
-//        }
+/*
+public Border JComponent.getBorder() ist als LazyValue "Button.border" definiert in uiDefaultsTable:
+- die uiDefaultsTable hat ca 660 Einträge, uiDefaultsTable bekommt man mit 
+	UIDefaults uiDefaultsTable = UIManager.getDefaults();
+
+- LazyValue heißt, dass das value Objekt zum key="Button.border" beim ersten Aufruf von get(key) gebildet wird.
+In javax.swing.plaf.metal.MetalLookAndFeel steht
+
+        LazyValue buttonBorder =
+            t -> MetalBorders.getButtonBorder();
+
+Also wird beim bei get("Button.border") die static Methode MetalBorders.getButtonBorder() ausgeführt. 
+Einmal, dannach ist die Tabelle an der Stelle initialisiert.
+
+javax.swing.plaf.metal.MetalBorders.getButtonBorder() ist ein Singleton für die Factory:
+
+    private static Border buttonBorder;
+    public static Border getButtonBorder() {
+        if (buttonBorder == null) {
+            buttonBorder = new BorderUIResource.CompoundBorderUIResource(
+                                                   new MetalBorders.ButtonBorder(),
+                                                   new BasicBorders.MarginBorder());
+        }
+        return buttonBorder;
+    }
+
+public Border JComponent.getBorder() ruft bei "plaf.metal" also die lazy Factory der inner Class 
+javax.swing.plaf.BorderUIResource$CompoundBorderUIResource
+
+Daher wissen wir bei if(button.getBorder() instanceof javax.swing.plaf.BorderUIResource.CompoundBorderUIResource) 
+dass es sich um "plaf.metal" handelt, den wir evtl korrigieren: patchedBorder(button)
+
+ */
+        button.setBorder(patchedBorder(button));
         p2.add(button);
         buttons.add(button);
         p2.add(Box.createRigidArea(HGAP10));
 
-        button = new JButton("button2");
-//        if(button.getBorder() instanceof BorderUIResource.CompoundBorderUIResource) {
-//        	BasicMarginBorder bmb = new BasicMarginBorder();
-//        	button.setBorder(new CompoundBorder(new MetalButtonBorder(bmb), bmb));
-//        }
+        button = new JXButton("button2");
+        button.setBorder(patchedBorder(button));
         p2.add(button);
         buttons.add(button);
         p2.add(Box.createRigidArea(HGAP10));
         
         String buttonText3 = "<html><font size=2 color=red><bold>Three!</font></html>";
-        button = new JButton(buttonText3);
-//        if(button.getBorder() instanceof BorderUIResource.CompoundBorderUIResource) {
-//        	BasicMarginBorder bmb = new BasicMarginBorder();
-//        	button.setBorder(new CompoundBorder(new MetalButtonBorder(bmb), bmb));
-//        }
+        button = new JXButton(buttonText3);
+        button.setBorder(patchedBorder(button));
         p2.add(button);
         buttons.add(button);
 
@@ -212,7 +258,8 @@ public class MetalButtonPainterIssues extends Panel {
 			for (int i = 0; i < currentControls.size(); i++) {
 				b = (AbstractButton) currentControls.elementAt(i);
 				b.setBorderPainted(borderPainted);
-				b.invalidate();
+//				LOG.info("LayoutManager:"+b.getParent().getLayout());
+				b.getParent().invalidate();
 			}
         });
         leftColumn.add(bordered);
@@ -244,9 +291,9 @@ public class MetalButtonPainterIssues extends Panel {
             Component c;
             for(int i = 0; i < currentControls.size(); i++) {
                 c = (Component) currentControls.elementAt(i);
-                if(c instanceof JButton) {
-                	JButton b = (JButton)c;
-                	c.setEnabled(enable);
+                if(c instanceof JXButton) {
+                	JXButton b = (JXButton)c;
+                	b.setEnabled(enable);
                 }
                 c.invalidate();
             }
@@ -276,6 +323,7 @@ public class MetalButtonPainterIssues extends Panel {
         ButtonGroup group = new ButtonGroup();
         
         JRadioButton defaultPad = new JRadioButton("default");
+        defaultPad.setSelected(true);
         defaultPad.addItemListener(e -> {
         	JRadioButton rb = (JRadioButton) e.getSource(); // rb == e.getSource() == defaultPad
         	if(rb.isSelected()) {
@@ -289,7 +337,6 @@ public class MetalButtonPainterIssues extends Panel {
         	}
         });
         group.add(defaultPad);
-        defaultPad.setSelected(true);
         leftColumn.add(defaultPad);
 
         JRadioButton zeroPad = new JRadioButton("zero");
@@ -319,14 +366,14 @@ public class MetalButtonPainterIssues extends Panel {
                 for(int i = 0; i < currentControls.size(); i++) {
                     b = (AbstractButton) currentControls.elementAt(i);
                     b.setMargin(insets10);
-                    b.invalidate();
+                    b.getParent().invalidate();
                 }
         	}
         });
         group.add(tenPad);
         leftColumn.add(tenPad);
 
-        leftColumn.add(Box.createRigidArea(VGAP20));
+//        leftColumn.add(Box.createRigidArea(VGAP20));
         return controls;
     }
 
