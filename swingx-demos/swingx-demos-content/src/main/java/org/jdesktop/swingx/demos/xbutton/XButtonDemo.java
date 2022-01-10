@@ -113,8 +113,8 @@ public class XButtonDemo extends DefaultDemoPanel {
 //        Color background = Color.LIGHT_GRAY;
         Color background = new Color(168, 204, 241); // LIGHT_BLUE
         Color orangeBG = Color.ORANGE; // new Color(255, 200, 0);
-        final Painter<?> aerithBgPainter = new MattePainter(PaintUtils.AERITH, true);
-        final Painter<?> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
+        final Painter<Object> aerithBgPainter = new MattePainter(PaintUtils.AERITH, true);
+        final Painter<Object> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
  
         JButton button1 = new JButton("Default");
         JButton button2 = new JButton("Font changed");

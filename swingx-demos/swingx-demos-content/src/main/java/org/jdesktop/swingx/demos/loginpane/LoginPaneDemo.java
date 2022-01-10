@@ -246,7 +246,7 @@ public class LoginPaneDemo extends DefaultDemoPanel {
         loginLauncher = new JXButton();
         loginLauncher.setName("launcher"); // den text aus prop "launcher.text" holen
         loginLauncher.setFont(font);
-        final Painter<?> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
+        final Painter<Object> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
         loginLauncher.setBackgroundPainter(orangeBgPainter);
         loginLauncher.addMouseListener(new MouseAdapter() { // disable BG painter
             @Override
