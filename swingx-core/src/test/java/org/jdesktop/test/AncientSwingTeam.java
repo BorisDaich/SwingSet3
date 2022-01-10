@@ -19,8 +19,7 @@ import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
- * Standard Table with class-Infos. Taken from some old
- * SwingSet... 
+ * Standard Table with class-Infos. Taken from some old SwingSet2 TableDemo ... 
  * Can remove/add rows.
  */
 @SuppressWarnings("serial")
