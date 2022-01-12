@@ -42,7 +42,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * @author Jeanette Winzenburg
  */
@@ -212,6 +211,7 @@ public class ColumnControlButtonTest extends InteractiveTestCase {
             LOG.info("cannot run layoutOnLFChange - equal LF" + lf);
             return;
         }
+        LOG.fine("ColumnControlButton control:" + icon);
         SwingUtilities.updateComponentTreeUI(control);
         assertSame("icon must not be updated on LF change if not UIResource: ", 
                 icon, control.getIcon());
