@@ -19,6 +19,7 @@
 package org.jdesktop.swingx.icon;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.Serializable;
 
@@ -30,7 +31,6 @@ import javax.swing.Icon;
 public final class EmptyIcon implements Icon, Serializable {
 
     private int width;
-
     private int height;
 
     public EmptyIcon() {
@@ -42,18 +42,33 @@ public final class EmptyIcon implements Icon, Serializable {
         this.height = height;
     }
 
+    public EmptyIcon(Dimension size) {
+    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
+    }
+
+    // implements interface Icon:
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getIconHeight() {
         return height;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getIconWidth() {
         return width;
-    }
-
-    @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
     }
 
 }

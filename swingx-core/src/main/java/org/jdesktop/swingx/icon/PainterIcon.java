@@ -29,24 +29,34 @@ import org.jdesktop.swingx.painter.Painter;
 
 public class PainterIcon implements Icon {
 	
-    Dimension size;
-    private Painter painter;
+    private int width;
+    private int height;
+    
+    private Painter<Component> painter;
+    
+    public PainterIcon(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
     
     public PainterIcon(Dimension size) {
-        this.size = size;
+    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
     }
-    
-    @Override
-    public int getIconHeight() {
-        return size.height;
+
+    public Painter<Component> getPainter() {
+        return painter;
     }
-    
-    @Override
-    public int getIconWidth() {
-        return size.width;
+
+    public void setPainter(Painter<Component> painter) {
+        this.painter = painter;
     }
+
     
+    // implements interface Icon:
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (getPainter() != null && g instanceof Graphics2D) {
@@ -54,7 +64,7 @@ public class PainterIcon implements Icon {
             
             try {
                 g.translate(x, y);
-                getPainter().paint((Graphics2D) g, c, size.width, size.height);
+                getPainter().paint((Graphics2D) g, c, width, height);
                 g.translate(-x, -y);
             } finally {
                 g.dispose();
@@ -62,11 +72,20 @@ public class PainterIcon implements Icon {
         }
     }
 
-    public Painter getPainter() {
-        return painter;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getIconHeight() {
+        return height;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getIconWidth() {
+        return width;
+    }    
 
-    public void setPainter(Painter painter) {
-        this.painter = painter;
-    }
 }

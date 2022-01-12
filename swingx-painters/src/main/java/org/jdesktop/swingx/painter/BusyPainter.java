@@ -19,14 +19,15 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D.Float;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +41,13 @@ import org.jdesktop.swingx.util.PaintUtils;
  */
 @JavaBean
 //@SuppressWarnings("nls")
-public class BusyPainter extends AbstractPainter<Object> {
+public class BusyPainter extends AbstractPainter<Component> {
 
     /**
      * @inheritDoc
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object t, int width, int height) {
+    protected void doPaint(Graphics2D g, Component t, int width, int height) {
         Rectangle r = getTrajectory().getBounds();
         int tw = width - r.width - 2*r.x;
         int th = height - r.height - 2*r.y;
