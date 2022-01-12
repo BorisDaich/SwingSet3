@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.table;
 
 import java.awt.ComponentOrientation;
@@ -710,6 +707,7 @@ public class ColumnControlButton extends JButton {
      * additional actions.
      */
     protected void populatePopup() {
+    	if(!canControl()) return; // EUG: unnecessary to do the following
         clearAll();
         if (canControl()) {
             createVisibilityActions();
@@ -895,8 +893,7 @@ public class ColumnControlButton extends JButton {
     private void init() {
         setFocusPainted(false);
         setFocusable(false);
-        // this is a trick to get hold of the client prop which
-        // prevents closing of the popup
+        // this is a trick to get hold of the client prop which prevents closing of the popup
         JComboBox box = new JComboBox();
         Object preventHide = box.getClientProperty("doNotCancelPopup");
         putClientProperty("doNotCancelPopup", preventHide);
@@ -977,16 +974,15 @@ public class ColumnControlButton extends JButton {
     }
     
     /**
-     * Creates the listener to columnModel. Subclasses are free to roll their
-     * own.
+     * Creates the listener to columnModel. Subclasses are free to roll their own.
      * <p>
      * Implementation note: this listener reacts to "real" columnRemoved/-Added by
      * populating the popups content from scratch.
      * 
-     * @return the <code>TableColumnModelListener</code> for use with the
-     *         table's columnModel.
+     * @return the <code>TableColumnModelListener</code> for use with the table's columnModel.
      */
     protected TableColumnModelListener createColumnModelListener() {
+    	
         return new TableColumnModelListener() {
             /** Tells listeners that a column was added to the model. */
             @Override
@@ -1017,13 +1013,11 @@ public class ColumnControlButton extends JButton {
              * @return boolean indicating whether the removed/added is a side-effect
              *    of hiding/showing the column.
              */
-            private boolean isVisibilityChange(TableColumnModelEvent e,
-                    boolean added) {
+            private boolean isVisibilityChange(TableColumnModelEvent e, boolean added) {
                 // can't tell
                 if (!(e.getSource() instanceof DefaultTableColumnModelExt))
                     return false;
-                DefaultTableColumnModelExt model = (DefaultTableColumnModelExt) e
-                        .getSource();
+                DefaultTableColumnModelExt model = (DefaultTableColumnModelExt) e.getSource();
                 if (added) {
                     return model.isAddedFromInvisibleEvent(e.getToIndex());
                 } else {

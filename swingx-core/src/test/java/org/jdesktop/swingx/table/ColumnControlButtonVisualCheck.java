@@ -26,6 +26,8 @@ import org.jdesktop.test.AncientSwingTeam;
 
 public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
 
+	private static final Logger LOG = Logger.getLogger(ColumnControlButtonVisualCheck.class.getName());
+
     public static void main(String[] args) {
         ColumnControlButtonVisualCheck test = new ColumnControlButtonVisualCheck();
         try {
@@ -144,52 +146,69 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
 
     }
     /**
-     * test if subclasses are allowed to not create a visibility action. This
-     * might happen, if they want to exempt certain columns from user
-     * interaction.
-     * 
+     * test if subclasses are allowed to not create a visibility action. 
+     * This might happen, if they want to exempt certain columns from user interaction.
+     * EUG : first column is not shown in columnControlButton menu
      */
     public void interactiveNullVisibilityActionWithHideable() {
         JXTable table = new JXTable();
-        ColumnControlButton columnControl = new ColumnControlButton(table) {
+        @SuppressWarnings("serial")
+		ColumnControlButton columnControlButton = new ColumnControlButton(table) {
             
+        	/*
+             * EUG: in der Oberklasse gibt es protected void createVisibilityActions() 
+             * wo createColumnVisibilityAction für alle cols aufgerufen wird via protected void populatePopup() 
+             * Das wind unnötigerweise zu of gemacht
+        	 */
             @Override
-            protected ColumnVisibilityAction createColumnVisibilityAction(
-                    TableColumn column) {
-                if (column instanceof TableColumnExt
-                        && !((TableColumnExt) column).isHideable())
+            protected void createVisibilityActions() {
+            	// wg.log
+            	LOG.info("");
+            	super.createVisibilityActions();
+            }
+
+            /**
+             * return null for not hideable columns:
+             * The return ... null: the column should not be allowed to be toggled.
+             */
+            @Override
+            protected ColumnVisibilityAction createColumnVisibilityAction(TableColumn column) {
+                if (column instanceof TableColumnExt && !((TableColumnExt) column).isHideable()) {
+                	TableColumnExt col = (TableColumnExt) column;
+                	
+                	LOG.info("column("+col.getTitle()+"):"+"Visible="+col.isVisible()+" isNotHideable ==> do not create any ColumnVisibilityAction");
                     return null;
+                }
                 return super.createColumnVisibilityAction(column);
             }
             
         };
-        table.setColumnControl(columnControl);
+        table.setColumnControl(columnControlButton);
         table.setColumnControlVisible(true);
         ColumnFactory factory = new ColumnFactory() {
             
             /**
-             * @inherited <p>
+             * {@inheritDoc}
              */
             @Override
-            public void configureTableColumn(TableModel model,
-                    TableColumnExt columnExt) {
+            public void configureTableColumn(TableModel model, TableColumnExt columnExt) {
                 super.configureTableColumn(model, columnExt);
                 if (columnExt.getModelIndex() == 0) {
-                    columnExt.setHideable(false);
+                    columnExt.setHideable(false); // set the first Column (First Name) NOT hideable
                 }
+            	LOG.info("column #"+columnExt.getModelIndex()+"("+columnExt.getTitle()+"): isHideable="+columnExt.isHideable());
             }
             
         };
         table.setColumnFactory(factory);
         table.setModel(new AncientSwingTeam());
-        JXFrame frame = wrapWithScrollingInFrame(table,
-                "first model column not togglable");
+        JXFrame frame = wrapWithScrollingInFrame(table, "first model column not togglable");
         frame.setVisible(true);
     }
     
     /**
      * Issue #1573-swingx: !hideable column action must be disabled
-     * Problem was missing initial synch. 
+     * Problem was missing initial synch. EUG: OK 
      */
     public void interactiveNullVisibilityAction() {
         JXTable table = new JXTable(new AncientSwingTeam());
@@ -379,9 +398,5 @@ public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
         table.getColumnExt(0).setVisible(false);
         frame.setVisible(true);
     }
-
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(ColumnControlButtonVisualCheck.class.getName());
 
 }
