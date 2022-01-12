@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.icon;
 
 import java.awt.BorderLayout;
@@ -32,8 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.plaf.UIResource;
 
 /**
- * Icon class for rendering icon which indicates user control of
- * column visibility.
+ * Icon class for rendering icon which indicates user control of column visibility.
  * @author Amy Fowler
  * @version 1.0
  */

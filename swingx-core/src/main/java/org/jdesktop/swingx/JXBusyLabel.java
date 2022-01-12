@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Dimension;
@@ -168,8 +165,7 @@ public class JXBusyLabel extends JLabel {
 
         // headw01
         // TODO: Should we force the busyPainter to NOT be cached?
-        //       I think we probably should, otherwise the UI will never
-        //       be updated after the first paint.
+        // I think we probably should, otherwise the UI will never be updated after the first paint.
         if (null != busyPainter) {
             busyPainter.setCacheable(false);
         }
@@ -178,10 +174,11 @@ public class JXBusyLabel extends JLabel {
         icon.setPainter(busyPainter);
         this.setIcon(icon);
     }
+    
     /**
      * Create and return a BusyPpainter to use for the Label. This may 
      * be overridden to return any painter you like.  By default, this 
-     * method uses the UI (BusyLabelUI)to create a BusyPainter.
+     * method uses the UI (BusyLabelUI) to create a BusyPainter.
      * @param dim Painter size.
      *
      * @see #getUI()
@@ -191,8 +188,7 @@ public class JXBusyLabel extends JLabel {
         
         BusyLabelUI ui = (BusyLabelUI)getUI();
         if (ui != null) {
-            busyPainter = ui.getBusyPainter(dim);
-            
+            busyPainter = ui.getBusyPainter(dim);   
         }
         
         return busyPainter;
@@ -245,10 +241,7 @@ public class JXBusyLabel extends JLabel {
         });
         busy.start();
     }
-    
-    
-    
-    
+
     private void stopAnimation() {
         if (busy != null) {
             busy.stop();
@@ -367,6 +360,4 @@ public class JXBusyLabel extends JLabel {
         return uiClassID;
     }
 
-
 }
-

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.icon;
 
 import java.awt.Component;
@@ -31,8 +28,10 @@ import javax.swing.Icon;
 import org.jdesktop.swingx.painter.Painter;
 
 public class PainterIcon implements Icon {
+	
     Dimension size;
     private Painter painter;
+    
     public PainterIcon(Dimension size) {
         this.size = size;
     }

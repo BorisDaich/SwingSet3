@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,7 +27,7 @@
 <h2>Related Documentation</h2>
 
 <ul>
-  <li><a href="">hyperlink</a>
+  <li><a href="">https://github.com/homebeaver/SwingSet/wiki/de-bsaf</a>
 </ul>
 
 */
