@@ -1,4 +1,4 @@
-package org.jdesktop.swingx.demos.xbutton;
+package org.jdesktop.swingx.icon;
 
 import javax.swing.SwingConstants;
 

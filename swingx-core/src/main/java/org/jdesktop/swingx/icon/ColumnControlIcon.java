@@ -21,6 +21,7 @@ package org.jdesktop.swingx.icon;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.Icon;
@@ -32,13 +33,63 @@ import javax.swing.plaf.UIResource;
  * Icon class for rendering icon which indicates user control of column visibility.
  * @author Amy Fowler
  * @version 1.0
+ * @author EUG (support sizes and color)
  */
-public class ColumnControlIcon implements Icon, UIResource {
-    private int width = 10;
-    private int height = 10;
+public class ColumnControlIcon implements Icon, UIResource, SizingConstants {
+	
+    private int width = SizingConstants.XS;
+    private int height = SizingConstants.XS;
+    private Color color;
 
-    /** TODO: need to support small, medium, large */
     public ColumnControlIcon() {
+    }
+
+    public ColumnControlIcon(int size, Color color) {
+    	width = size;
+    	height = size;
+    	this.color = color;
+    }
+
+    public ColumnControlIcon(int size) {
+    	this(size, null);
+    }
+
+    protected ColumnControlIcon(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    protected ColumnControlIcon(Dimension size) {
+    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
+    }
+
+    // implements interface Icon:
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        g.setColor(color==null ? c.getForeground() : color);
+
+        // draw horizontal lines
+        g.drawLine(x, y, x+(int)(width*0.8), y);
+        g.drawLine(x, y+(int)(height*0.2), x+(int)(width*0.8), y+(int)(height*0.2));
+        g.drawLine(x, y+(int)(height*0.8), x+(int)(width*0.2), y+(int)(height*0.8));
+
+        // draw vertical lines
+        g.drawLine(x, y+(int)(height*0.1), x, y+(int)(width*0.7));
+        g.drawLine(x+(int)(width*0.4), y+(int)(height*0.1), x+(int)(width*0.4), y+(int)(height*0.4));
+        g.drawLine(x+(int)(width*0.8), y+(int)(height*0.1), x+(int)(width*0.8), y+(int)(height*0.4));
+
+//        // draw arrow
+        g.drawLine(x+(int)(width*0.3), y+(int)(height*0.6), x+(int)(width*0.9), y+(int)(height*0.6));
+        g.drawLine(x+(int)(width*0.4), y+(int)(height*0.7), x+(int)(width*0.8), y+(int)(height*0.7));
+        g.drawLine(x+(int)(width*0.5), y+(int)(height*0.8), x+(int)(width*0.7), y+(int)(height*0.8));
+        g.drawLine(x+(int)(width*0.6), y+(int)(height*0.9), x+(int)(width*0.6), y+(int)(height*0.9));
+
+		g.dispose();
+
     }
 
     @Override
@@ -51,34 +102,14 @@ public class ColumnControlIcon implements Icon, UIResource {
         return height;
     }
 
-    @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        Color color = c.getForeground();
-        g.setColor(color);
-
-        // draw horizontal lines
-        g.drawLine(x, y, x+8, y);
-        g.drawLine(x, y+2, x+8, y+2);
-        g.drawLine(x, y+8, x+2, y+8);
-
-        // draw vertical lines
-        g.drawLine(x, y+1, x, y+7);
-        g.drawLine(x+4, y+1, x+4, y+4);
-        g.drawLine(x+8, y+1, x+8, y+4);
-
-        // draw arrow
-        g.drawLine(x+3, y+6, x+9, y+6);
-        g.drawLine(x+4, y+7, x+8, y+7);
-        g.drawLine(x+5, y+8, x+7, y+8);
-        g.drawLine(x+6, y+9, x+6, y+9);
-
-    }
 
     public static void main(String args[]) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel label = new JLabel(new ColumnControlIcon());
-        frame.getContentPane().add(BorderLayout.CENTER, label);
+        frame.getContentPane().add(BorderLayout.NORTH, label);
+        JLabel biglabel = new JLabel(new ColumnControlIcon(XXL, Color.RED));
+        frame.getContentPane().add(BorderLayout.CENTER, biglabel);
         frame.pack();
         frame.setVisible(true);  
     }
