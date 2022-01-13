@@ -1,6 +1,7 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import org.jdesktop.swingx.InteractiveTestCase;
@@ -36,7 +37,7 @@ public class AlphaPainterVisualCheck extends InteractiveTestCase {
         JXPanel panel = new JXPanel();
         panel.setPreferredSize(new Dimension(200, 200));
         // AlphaPainter<T> extends CompoundPainter<T>
-        AlphaPainter<Object> alpha = new AlphaPainter<Object>();
+        AlphaPainter<Component> alpha = new AlphaPainter<Component>();
         alpha.setAlpha(0.7f);
 
         BusyPainter bp = new BusyPainter(96);

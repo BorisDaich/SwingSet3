@@ -159,8 +159,8 @@ public class MonthViewExtDemo extends JPanel {
         calendarFrame.addWindowListener(l);
         JXPanel calendar = new JXPanel();
         calendar.setBackground(Color.WHITE);
-        Painter<Object> painter = createBackgroundPainter();
-        calendar.setBackgroundPainter(painter); // EUG JXPanel: public void setBackgroundPainter(Painter<Object> p)
+        Painter<Component> painter = createBackgroundPainter();
+        calendar.setBackgroundPainter(painter);
 
         JXMonthView monthView = new JXMonthView();
         Calendar cal = monthView.getCalendar();
@@ -198,7 +198,7 @@ public class MonthViewExtDemo extends JPanel {
      * 
      * @return ImagePainter object that implements Painter<T>
      */
-    private Painter<Object> createBackgroundPainter() {
+    private Painter<Component> createBackgroundPainter() {
         ImagePainter painter = null;
         try {
             BufferedImage img = ImageIO.read(getClass().getResourceAsStream("resources/images/demo_duke.png"));
@@ -209,7 +209,7 @@ public class MonthViewExtDemo extends JPanel {
              *                                  +------------------------------|
              *             abstract class AbstractAreaPainter<T> extends AbstractLayoutPainter<T>
              *                                  |
-             * class ImagePainter extends AbstractAreaPainter<Object>
+             * class ImagePainter extends AbstractAreaPainter<Component>
              */
             painter = new ImagePainter(img);
             painter.setFilters(new OpacityFilter(10));

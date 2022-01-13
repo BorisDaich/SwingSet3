@@ -606,7 +606,7 @@ public class JXLoginPane extends JXPanel {
 	        txtPainter = new TextPainter(getBannerText()
 	        		, UIManager.getFont(CLASS_NAME + ".bannerFont")
 	        		, UIManager.getColor(CLASS_NAME + ".bannerForeground"));
-	        CompoundPainter<Object> cp = new CompoundPainter<Object>(imgPainter, txtPainter);
+	        CompoundPainter<Component> cp = new CompoundPainter<Component>(imgPainter, txtPainter);
 	        banner.setBackgroundPainter(cp);
 		} else if(img==null) {
 			imgPainter = new ImagePainter(null);

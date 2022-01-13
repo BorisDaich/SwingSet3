@@ -30,6 +30,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.awt.Button;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImageOp;
 
@@ -42,7 +43,7 @@ import org.mockito.InOrder;
 /**
  * Test for AbstractPainter
  */
-@SuppressWarnings({"nls", "unchecked", "rawtypes"})
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class AbstractPainterTest {
 	
     protected AbstractPainter p;
@@ -94,27 +95,35 @@ public class AbstractPainterTest {
         }
     }
     
+    @SuppressWarnings("serial")
+	class AnyComponent extends java.awt.Component {
+    	
+    }
     /**
      * {@link AbstractPainter} will pass any object to
      * {@link AbstractPainter#doPaint(Graphics2D, Object, int, int) doPaint}.
+     * EUG: really any object? : or of type java.awt.Component
      */
     @Test
     public void testPaintWithAnyObject() {
-        p.paint(g, "yo", 10, 10);
+    	AnyComponent any = new AnyComponent();
+        p.paint(g, any, 10, 10);
         
         if (p.isCacheable()) {
-            verify(p).doPaint(any(Graphics2D.class), eq("yo"), eq(10), eq(10));
+            verify(p).doPaint(any(Graphics2D.class), eq(any), eq(10), eq(10));
         } else {
-            verify(p).doPaint(g, "yo", 10, 10);
+            verify(p).doPaint(g, any, 10, 10);
         }
         
+        java.awt.Button aButton = new Button();
+
         p.clearCache();
-        p.paint(g, 1f, 10, 10);
+        p.paint(g, aButton, 10, 10);
         
         if (p.isCacheable()) {
-            verify(p).doPaint(any(Graphics2D.class), eq(1f), eq(10), eq(10));
+            verify(p).doPaint(any(Graphics2D.class), eq(aButton), eq(10), eq(10));
         } else {
-            verify(p).doPaint(g, 1f, 10, 10);
+            verify(p).doPaint(g, aButton, 10, 10);
         }
     }
     

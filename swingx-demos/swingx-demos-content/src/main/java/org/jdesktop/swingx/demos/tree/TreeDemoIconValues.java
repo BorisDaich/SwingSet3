@@ -4,6 +4,7 @@
  */
 package org.jdesktop.swingx.demos.tree;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,7 +17,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.jdesktop.swingx.icon.PainterIcon;
+import org.jdesktop.swingx.painter.AbstractAreaPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
+import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.util.GraphicsUtilities;
@@ -129,12 +132,15 @@ public class TreeDemoIconValues {
         // <snip> JXTree rollover
         // wraps the given icon into an ImagePainter with a filter effect
         private Icon manipulatedIcon(Icon icon) {
-            PainterIcon painterIcon = new PainterIcon(new Dimension(icon
-                    .getIconWidth(), icon.getIconHeight()));
+            PainterIcon painterIcon = new PainterIcon(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
             BufferedImage image = (BufferedImage) ((ImageIcon) icon).getImage();
-            ImagePainter delegate = new ImagePainter(image);
+            // ImagePainter extends AbstractAreaPainter<Component>
+            //                      AbstractAreaPainter<T> extends AbstractLayoutPainter<T>
+            //                                                     AbstractPainter<T> implements Painter<T>
+            // ergo delegate can be casted to Painter<Component>
+            AbstractAreaPainter<Component> delegate = new ImagePainter(image);
             delegate.setFilters(new InvertFilter());
-            painterIcon.setPainter(delegate);
+            painterIcon.setPainter((Painter<Component>)delegate);
             return painterIcon;
         }
         // </snip>

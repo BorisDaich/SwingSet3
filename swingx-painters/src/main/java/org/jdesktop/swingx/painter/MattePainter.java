@@ -18,6 +18,7 @@
  */
 package org.jdesktop.swingx.painter;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Paint;
@@ -48,7 +49,7 @@ import org.jdesktop.beans.JavaBean;
  * @author rbair
  */
 @JavaBean
-public class MattePainter extends AbstractAreaPainter<Object> {
+public class MattePainter extends AbstractAreaPainter<Component> {
     
     /**
      * Creates a new MattePainter with "null" as the paint used
@@ -86,7 +87,7 @@ public class MattePainter extends AbstractAreaPainter<Object> {
      * {@inheritDoc}
      */
     @Override
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+    protected void doPaint(Graphics2D g, Component component, int width, int height) {
         Paint p = getFillPaint();
         
         if (p != null) {
@@ -108,7 +109,7 @@ public class MattePainter extends AbstractAreaPainter<Object> {
      * {@inheritDoc}
      */
     @Override
-    protected Shape provideShape(Graphics2D g, Object comp, int width, int height) {
+    protected Shape provideShape(Graphics2D g, Component comp, int width, int height) {
         return new Rectangle(0,0,width,height);
     }
     

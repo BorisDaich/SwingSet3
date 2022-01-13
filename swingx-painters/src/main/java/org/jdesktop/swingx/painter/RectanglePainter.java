@@ -20,6 +20,7 @@ package org.jdesktop.swingx.painter;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Paint;
@@ -42,13 +43,13 @@ import org.jdesktop.swingx.util.ShapeUtils;
  */
 @JavaBean
 //@SuppressWarnings("nls")
-public class RectanglePainter extends AbstractAreaPainter<Object> {
+public class RectanglePainter extends AbstractAreaPainter<Component> {
 
     /**
      * {@inheritDoc}
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+    protected void doPaint(Graphics2D g, Component component, int width, int height) {
         Shape shape = provideShape(g, component, width, height);
         switch (getStyle()) {
         case BOTH:
@@ -269,7 +270,7 @@ public class RectanglePainter extends AbstractAreaPainter<Object> {
     }
 
     @Override
-    protected Shape provideShape(Graphics2D g, Object comp, int width, int height) {
+    protected Shape provideShape(Graphics2D g, Component comp, int width, int height) {
         return calculateShape(width,height);
     }
 }

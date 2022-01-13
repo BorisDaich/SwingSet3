@@ -19,6 +19,7 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
@@ -47,7 +48,7 @@ import org.jdesktop.beans.JavaBean;
  */
 //see org.jdesktop.swingx.demos.painter.PainterDemo
 @JavaBean
-public class GlossPainter extends AbstractPainter<Object> {
+public class GlossPainter extends AbstractPainter<Component> {
 	
     /**
      * draws an ellipse in the gloss area
@@ -55,7 +56,7 @@ public class GlossPainter extends AbstractPainter<Object> {
      * @inheritDoc
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+    protected void doPaint(Graphics2D g, Component component, int width, int height) {
         if (getPaint() != null) {
             Ellipse2D ellipse = new Ellipse2D.Double(-width / 2.0,
                 height / 2.7, width * 2.0,

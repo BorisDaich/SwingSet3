@@ -19,6 +19,7 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 
@@ -54,13 +55,13 @@ import org.jdesktop.swingx.util.PaintUtils;
  */
 @JavaBean
 //@SuppressWarnings("nls")
-public class CheckerboardPainter extends AbstractPainter<Object> {
+public class CheckerboardPainter extends AbstractPainter<Component> {
 	
     /**
      * {@inheritDoc}
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object t, int width, int height) {
+    protected void doPaint(Graphics2D g, Component t, int width, int height) {
         g.setPaint(getCheckerPaint(t));
         g.fillRect(0, 0, width, height);
     }

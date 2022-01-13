@@ -20,6 +20,7 @@ package org.jdesktop.swingx.demos.painter;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -307,9 +308,29 @@ public class PainterDemo extends DefaultDemoPanel {
         return new DefaultTreeModel(root);
     }
 
-    
-    private DefaultMutableTreeNode createInfoNode(String desc, Painter<Object> painter) {
-        return new DefaultMutableTreeNode(new DisplayInfo<Painter<Object>>(desc, painter));
+    private DefaultMutableTreeNode createInfoNode(String desc, MattePainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<MattePainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, ImagePainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<ImagePainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, ShapePainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<ShapePainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, TextPainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<TextPainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, RectanglePainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<RectanglePainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, PinstripePainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<PinstripePainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, CheckerboardPainter painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<CheckerboardPainter>(desc, painter));
+    }
+    private DefaultMutableTreeNode createInfoNode(String desc, CompoundPainter<Component> painter) {   	
+        return new DefaultMutableTreeNode(new DisplayInfo<CompoundPainter<Component>>(desc, painter));
     }
     
 	private InputStream getFileInputStream(String resourceName) {
@@ -342,7 +363,7 @@ public class PainterDemo extends DefaultDemoPanel {
 	}
 
     private MutableTreeNode createImagePainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Image Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Image Painter Demos", (ImagePainter)null);
         
         try {
         	InputStream fis = getFileInputStream("resources/images/border.gif");
@@ -423,7 +444,7 @@ public class PainterDemo extends DefaultDemoPanel {
     }
     
     private MutableTreeNode createShapePainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Shape Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Shape Painter Demos", (ShapePainter)null);
         
         // build a star shape with 5 points and 30 degree angles
         Shape starShape = ShapeUtils.generatePolygon(5,30,15,true);
@@ -434,7 +455,7 @@ public class PainterDemo extends DefaultDemoPanel {
     }
     
     private MutableTreeNode createTextPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Text Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Text Painter Demos", (TextPainter)null);
         String textToPaint = "Neon";
         Font font = new Font("SansSerif", Font.BOLD, 80);
         
@@ -449,10 +470,9 @@ public class PainterDemo extends DefaultDemoPanel {
     }
     
     private MutableTreeNode createRectanglePainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Rectangle Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Rectangle Painter Demos", (RectanglePainter)null);
         
-        RectanglePainter rp = new RectanglePainter(20, 20, 20, 20, 30, 30, true,
-                Color.GREEN, 3, Color.GREEN.darker());
+        RectanglePainter rp = new RectanglePainter(20, 20, 20, 20, 30, 30, true, Color.GREEN, 3, Color.GREEN.darker());
         node.add(createInfoNode("Rectangle, green on gray", rp));
         
         rp = new RectanglePainter(50, 50, 30, Color.GREEN);
@@ -473,32 +493,31 @@ public class PainterDemo extends DefaultDemoPanel {
     
     //TODO some transforms moving painter outside of visible region
     private MutableTreeNode createTransformPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Compound Painter Transform Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Compound Painter Transform Demos", (CompoundPainter<Component>)null);
         Font font = new Font("SansSerif", Font.BOLD, 80);
         
         TextPainter tp = new TextPainter("Text", font);
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(tp);
+        CompoundPainter<Component> cp = new CompoundPainter<Component>(tp);
         node.add(createInfoNode("Normal Text", cp));
         
         tp = new TextPainter("Text", font);
-        cp = new CompoundPainter<Object>(tp);
+        cp = new CompoundPainter<Component>(tp);
         cp.setTransform(AffineTransform.getRotateInstance(-Math.PI * 2 / 8, 100, 100));
         node.add(createInfoNode("Rotated Text", cp));
         
         tp = new TextPainter("Text", font);
-        cp = new CompoundPainter<Object>(tp);
+        cp = new CompoundPainter<Component>(tp);
         cp.setTransform(AffineTransform.getShearInstance(-0.2, 0));
         node.add(createInfoNode("Sheared Text", cp));
         
         tp = new TextPainter("Text", font);
-        cp = new CompoundPainter<Object>(tp);
+        cp = new CompoundPainter<Component>(tp);
         cp.setTransform(AffineTransform.getScaleInstance(2, 2));
         node.add(createInfoNode("Scaled Text", cp));
         
-        RectanglePainter rp = new RectanglePainter(30, 30, 30, 30, 30, 30,
-                true, Color.RED, 4f, Color.RED.darker());
+        RectanglePainter rp = new RectanglePainter(30, 30, 30, 30, 30, 30, true, Color.RED, 4f, Color.RED.darker());
         tp = new TextPainter("Text", font);
-        cp = new CompoundPainter<Object>(rp, tp);
+        cp = new CompoundPainter<Component>(rp, tp);
         cp.setTransform(AffineTransform.getRotateInstance(-Math.PI * 2 / 8, 100, 100));
         node.add(createInfoNode("Rotated Text w/ effects on rect", cp));
         
@@ -506,7 +525,7 @@ public class PainterDemo extends DefaultDemoPanel {
     }
     
     private MutableTreeNode createGlossPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Gloss Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Gloss Painter Demos", (RectanglePainter)null);
 
         RectanglePainter rp = new RectanglePainter(20, 20, 20, 20, 20, 20);
         rp.setFillPaint(Color.RED);
@@ -514,58 +533,57 @@ public class PainterDemo extends DefaultDemoPanel {
         rp.setStyle(RectanglePainter.Style.BOTH);
         rp.setBorderWidth(5);
         rp.setAntialiasing(true);
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(rp, new GlossPainter());
+        CompoundPainter<Component> cp = new CompoundPainter<Component>(rp, new GlossPainter());
         node.add(createInfoNode("Gloss on top of rectangle", cp));
 
-        rp = new RectanglePainter(20, 20, 20, 20, 20, 20, true,
-                Color.RED, 5f, Color.RED.darker());
+        rp = new RectanglePainter(20, 20, 20, 20, 20, 20, true, Color.RED, 5f, Color.RED.darker());
         rp.setAntialiasing(true);
-        cp = new CompoundPainter<Object>(rp, new GlossPainter(GlossPosition.BOTTOM));
+        cp = new CompoundPainter<Component>(rp, new GlossPainter(GlossPosition.BOTTOM));
         node.add(createInfoNode("Gloss on bottom of rectangle", cp));
 
         return node;
     }
     
     private MutableTreeNode createPinstripePainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Pinstripe Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Pinstripe Painter Demos", (PinstripePainter)null);
         MattePainter black = new MattePainter(Color.BLACK);
         
         PinstripePainter pp = new PinstripePainter(Color.WHITE, 45, 1, 10);
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, pp);
+        CompoundPainter<Component> cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("45deg white pinstripe on black", cp));
         
         pp = new PinstripePainter(Color.WHITE, 0, 1, 10);
         pp.setAntialiasing(true);
-        cp = new CompoundPainter<Object>(black, pp);
+        cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("vertical white pinstripe on black", cp));
         
         pp = new PinstripePainter(Color.WHITE, 90, 1, 10);
         pp.setAntialiasing(true);
-        cp = new CompoundPainter<Object>(black, pp);
+        cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("horizontal white pinstripe on black", cp));
         
         pp = new PinstripePainter(Color.WHITE, 45, 3, 10);
         pp.setAntialiasing(true);
-        cp = new CompoundPainter<Object>(black, pp);
+        cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("3px wide white pinstripe on black", cp));
         
         pp = new PinstripePainter(Color.WHITE, 45, 10, 2);
         pp.setAntialiasing(true);
-        cp = new CompoundPainter<Object>(black, pp);
+        cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("10px wide pinstripe w/ 2px spacing on black", cp));
         
         pp = new PinstripePainter(Color.WHITE, 45, 3, 15);
         pp.setAntialiasing(true);
         pp.setPaint(
                 new GradientPaint(new Point(0, 0), Color.WHITE, new Point(10, 10), Color.BLACK));
-        cp = new CompoundPainter<Object>(black, pp);
+        cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("pinstripe w/ 10px gradient", cp));
         
         pp = new PinstripePainter(Color.WHITE, 45, 3, 15);
         pp.setAntialiasing(true);
         pp.setPaint(
                 new GradientPaint(new Point(0, 0), Color.WHITE, new Point(200, 200), Color.BLACK));
-        cp = new CompoundPainter<Object>(black, pp);
+        cp = new CompoundPainter<Component>(black, pp);
         node.add(createInfoNode("pinstripe w/ 200px gradient", cp));
         
         return node;
@@ -596,14 +614,14 @@ public class PainterDemo extends DefaultDemoPanel {
     }
     
     private MutableTreeNode createBusyPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Busy Painter Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Busy Painter Demos", (ImagePainter)null);
         MattePainter black = new MattePainter(Color.BLACK);
         
         final BusyPainter bp1 = new BusyPainter(); // final wg. int frame =
         LOG.info("BusyPainter bp"+bp1);
         BusyPainterAction bpa1 = new BusyPainterAction(bp1);
         bpa1.startTimer(100);        
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, bp1);
+        CompoundPainter<Component> cp = new CompoundPainter<Component>(black, bp1);
         node.add(createInfoNode("(default)shape of circle and bounds size 26x26 points", cp));
         
         final BusyPainter bp = new BusyPainter(52); // final wg. int frame =
@@ -614,87 +632,89 @@ public class PainterDemo extends DefaultDemoPanel {
         LOG.info("BusyPainter bp"+bp);
         BusyPainterAction bpa = new BusyPainterAction(bp);
         bpa.startTimer(100);
-        cp = new CompoundPainter<Object>(black, bp);
+        cp = new CompoundPainter<Component>(black, bp);
         node.add(createInfoNode("Centers red shape in the area, height is 52.", cp));
                 
         return node;
     }
     
     private MutableTreeNode createCheckerboardPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Checkerboard Painter Demo", null);
+        DefaultMutableTreeNode node = createInfoNode("Checkerboard Painter Demo", (CheckerboardPainter)null);
         MattePainter black = new MattePainter(Color.BLACK);
         
         CheckerboardPainter bp = new CheckerboardPainter();
         LOG.info("CheckerboardPainter bp"+bp);
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(black, bp);
+        CompoundPainter<Component> cp = new CompoundPainter<Component>(black, bp);
         node.add(createInfoNode("(default) Checkerboard white+light gray, square size 8x8", cp));
         
         GradientPaint gp = new GradientPaint(
         		new Point2D.Double(0, 0), Color.BLACK, 
-        		new Point2D.Double(0, 32), Color.GRAY	);
+        		new Point2D.Double(0, 32), Color.GRAY	
+        	);
         bp = new CheckerboardPainter();
         bp.setDarkPaint(gp);
         bp.setLightPaint(Color.WHITE);
         bp.setSquareSize(32);
         LOG.info("CheckerboardPainter bp"+bp);
-        cp = new CompoundPainter<Object>(black, bp);
+        cp = new CompoundPainter<Component>(black, bp);
         node.add(createInfoNode("Checkerboard white+GradientPaint for the dark, square size 32", cp));
                 
         return node;
     }
     
     private MutableTreeNode createMattePainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Matte Painter Gradient Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Matte Painter Gradient Demos", (MattePainter)null);
         
-        Paint gradient = new GradientPaint(new Point(30, 30), Color.RED,
-                new Point(80, 30),  Color.GREEN);
+        Paint gradient = new GradientPaint(new Point(30, 30), Color.RED, new Point(80, 30),  Color.GREEN);
         MattePainter mp = new MattePainter(gradient);
         node.add(createInfoNode("single stop, horiz", mp));
         
-        gradient = new GradientPaint(new Point(30, 30), Color.RED, 
-                new Point(30, 80), Color.GREEN);
+        gradient = new GradientPaint(new Point(30, 30), Color.RED, new Point(30, 80), Color.GREEN);
         node.add(createInfoNode("single stop, vert", new MattePainter(gradient)));
         
-        gradient = new GradientPaint(new Point(30, 30), Color.RED, 
-                new Point(80, 80), Color.GREEN);
+        gradient = new GradientPaint(new Point(30, 30), Color.RED, new Point(80, 80), Color.GREEN);
         node.add(createInfoNode("single stop, diag", new MattePainter(gradient)));
         
         gradient = new LinearGradientPaint(new Point(30,30), new Point(80,30), 
                 new float[] {0f, 0.5f, 1f},
-                new Color[] {Color.RED, Color.GREEN, Color.BLUE} );
+                new Color[] {Color.RED, Color.GREEN, Color.BLUE} 
+        	);
         node.add(createInfoNode("multi stop horiz", new MattePainter(gradient)));
         
         gradient = new LinearGradientPaint(new Point(30,30), new Point(30,80), 
                 new float[] {0f, 0.5f, 1f},
-                new Color[] {Color.RED, Color.GREEN, Color.BLUE} );
+                new Color[] {Color.RED, Color.GREEN, Color.BLUE} 
+        	);
         node.add(createInfoNode("multi stop vert", new MattePainter(gradient)));
         
         gradient = new LinearGradientPaint(new Point(30,30), new Point(30,80), 
                 new float[] {0f, 0.5f, 1f},
-                new Color[] {Color.RED, Color.GREEN, Color.BLUE} );
+                new Color[] {Color.RED, Color.GREEN, Color.BLUE} 
+        	);
         node.add(createInfoNode("multi stop diag", new MattePainter(gradient)));
         
         return node;
     }
     
     private MutableTreeNode createCompoundPainterDemos() {
-        DefaultMutableTreeNode node = createInfoNode("Compound Painter Gradient Demos", null);
+        DefaultMutableTreeNode node = createInfoNode("Compound Painter Gradient Demos", (MattePainter)null);
         
         MattePainter mp = new MattePainter(Color.GREEN);
         PinstripePainter pp = new PinstripePainter(Color.BLUE);
-        CompoundPainter<Object> cp = new CompoundPainter<Object>(mp, pp);
+        CompoundPainter<Component> cp = new CompoundPainter<Component>(mp, pp);
         node.add(createInfoNode("panel w/ blue pinstripe fg, green matte bg", cp));
         
         mp = new MattePainter(Color.GREEN);
-        RectanglePainter rp = new RectanglePainter(new Insets(20, 20, 20, 20), 50,
-                50, 10, 10, true, Color.RED, 5, Color.RED.darker());
+        RectanglePainter rp = new RectanglePainter(new Insets(20, 20, 20, 20), 
+        		50, 50, 10, 10, true, Color.RED, 5, Color.RED.darker()
+        	);
         pp = new PinstripePainter(Color.BLUE);
-        cp = new CompoundPainter<Object>(mp, rp, pp);
+        cp = new CompoundPainter<Component>(mp, rp, pp);
         node.add(createInfoNode("panel, blue stripe fg, green bg, red rect comp", cp));
                 
         rp = new RectanglePainter(20, 20, 5, Color.BLUE);
         TextPainter tp = new TextPainter("Some Text");
-        cp = new CompoundPainter<Object>(rp, tp);
+        cp = new CompoundPainter<Component>(rp, tp);
         node.add(createInfoNode("text on blue", cp));
         
         mp = new MattePainter(Color.BLACK);
@@ -704,7 +724,7 @@ public class PainterDemo extends DefaultDemoPanel {
         NeonBorderEffect effect = new NeonBorderEffect(Color.BLACK, Color.RED.brighter(), 10);
         effect.setBorderPosition(NeonBorderEffect.BorderPosition.Centered);
         tp.setAreaEffects(effect);
-        cp = new CompoundPainter<Object>(mp, tp);
+        cp = new CompoundPainter<Component>(mp, tp);
         node.add(createInfoNode("A Cool Logo", cp));
         
         mp = new MattePainter(Color.GRAY);
@@ -716,7 +736,7 @@ public class PainterDemo extends DefaultDemoPanel {
         starShadow.setEffectWidth(5);
         sp.setAreaEffects(starShadow);
         tp = new TextPainter("Coming Soon!", new Font("SansSerif", Font.PLAIN, 12), Color.WHITE);
-        cp = new CompoundPainter<Object>(mp, sp, tp);
+        cp = new CompoundPainter<Component>(mp, sp, tp);
         node.add(createInfoNode("Coming Soon badge", cp));
 
         return node;

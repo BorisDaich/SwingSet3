@@ -98,7 +98,7 @@ import org.jdesktop.swingx.util.JVM;
  */
 @JavaBean
 @SuppressWarnings("serial") // super Same-version serialization only
-public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable<Object>, Scrollable {
+public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable<Component>, Scrollable {
 	
     private static final Logger LOG = Logger.getLogger(JXPanel.class.getName());
 
@@ -515,7 +515,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      */
     @Override
 	// implements interface BackgroundPaintable<T> method void setBackgroundPainter(Painter<T> painter)
-    public void setBackgroundPainter(Painter<Object> p) {
+    public void setBackgroundPainter(Painter<Component> p) {
         Painter<?> old = getBackgroundPainter();
         if (old instanceof AbstractPainter) {
             ((AbstractPainter<?>) old).removePropertyChangeListener(painterChangeListener);
@@ -538,8 +538,8 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      */
 	@Override
 	// implements interface BackgroundPaintable<T> method Painter<T> getBackgroundPainter()
-    public Painter<Object> getBackgroundPainter() {
-		return (Painter<Object>) backgroundPainter;
+    public Painter<Component> getBackgroundPainter() {
+		return (Painter<Component>) backgroundPainter;
     }
     
     /**
@@ -642,7 +642,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
             }
             
             if (getBackgroundPainter() != null) {
-            	Painter<Object> bp = getBackgroundPainter();
+            	Painter<Component> bp = getBackgroundPainter();
         		LOG.fine("backgroundPainter bp type:"+bp.getClass());
 
                 if (isPaintBorderInsets()) {
@@ -681,7 +681,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
                 g2.fillRect(0, 0, getWidth(), getHeight());
             }
             if (getBackgroundPainter() != null) {
-            	Painter<Object> bp = getBackgroundPainter();
+            	Painter<Component> bp = getBackgroundPainter();
         		LOG.fine("backgroundPainter bp type:"+bp.getClass());
                 bp.paint(g2, this, getWidth(), getHeight());
             }

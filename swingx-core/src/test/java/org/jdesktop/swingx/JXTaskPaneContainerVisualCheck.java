@@ -158,9 +158,9 @@ public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
     public void interactiveContainerColor() {
         JXTaskPaneContainer container = new JXTaskPaneContainer();
         container.setOpaque(false);
-        Painter<Object> nullPainter = new Painter<Object>() {
+        Painter<Component> nullPainter = new Painter<Component>() {
             @Override
-            public void paint(Graphics2D g, Object object, int width, int height) {
+            public void paint(Graphics2D g, Component object, int width, int height) {
             }
         };
         container.setBackgroundPainter(nullPainter);

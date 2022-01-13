@@ -26,12 +26,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.util.logging.Logger;
 
 import javax.swing.plaf.ColorUIResource;
 
 import org.hamcrest.CoreMatchers;
-import org.jdesktop.swingx.painter.AbstractAreaPainter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.PainterUIResource;
@@ -167,7 +167,7 @@ public class JXPanelTest extends TestCase {
         
         //assure painter is not null
         // MattePainter extends AbstractAreaPainter<T> extends ... implements Painter<T>
-        Painter<Object> mp = new MattePainter(Color.RED);
+        Painter<Component> mp = new MattePainter(Color.RED);
         panel.setBackgroundPainter(mp);
         
         panel.setBackground(Color.BLACK);

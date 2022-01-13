@@ -24,6 +24,7 @@ import static java.lang.Math.toRadians;
 import static org.jdesktop.swingx.painter.PainterUtils.getForegroundPaint;
 
 import java.awt.BasicStroke;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
@@ -61,7 +62,7 @@ import org.jdesktop.beans.JavaBean;
  */
 // see org.jdesktop.swingx.demos.painter.PainterDemo
 @JavaBean
-public class PinstripePainter extends AbstractPainter<Object> {
+public class PinstripePainter extends AbstractPainter<Component> {
 	
     /**
      * draws pinstripes at the angle specified in this class and at the given distance apart
@@ -69,7 +70,7 @@ public class PinstripePainter extends AbstractPainter<Object> {
      * @inheritDoc
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+    protected void doPaint(Graphics2D g, Component component, int width, int height) {
 
         Shape oldClip = g.getClip();
         Shape newClip;

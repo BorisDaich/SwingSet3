@@ -28,9 +28,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingxset;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -97,7 +97,7 @@ public class IntroPanelDemo extends JXPanel {
         textImagePainter.setHorizontalAlignment(HorizontalAlignment.LEFT);
         textImagePainter.setVerticalAlignment(VerticalAlignment.TOP);
         
-        setBackgroundPainter(new CompoundPainter<Object>(introImagePainter, textImagePainter));
+        setBackgroundPainter(new CompoundPainter<Component>(introImagePainter, textImagePainter));
         // </snip>
         
 

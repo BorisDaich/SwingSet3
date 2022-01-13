@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,17 +19,18 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.Graphics2D;
+import java.awt.Component;
 
 /**
  * A useful Painter implementation for Testing purposes
  * @author rbair
  */
-class DummyPainter extends AbstractPainter<Object> {
+class DummyPainter extends AbstractPainter<Component> {
     public DummyPainter() {
         super();
     }
 
     @Override
-    protected void doPaint(Graphics2D g, Object obj, int width, int height) {
+    protected void doPaint(Graphics2D g, Component obj, int width, int height) {
     }
 }

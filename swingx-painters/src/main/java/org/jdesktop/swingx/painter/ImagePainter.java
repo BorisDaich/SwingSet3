@@ -19,6 +19,7 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.BasicStroke;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
@@ -72,13 +73,13 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
     	abstract Shape provideShape(Graphics2D g, T comp, int width, int height);
 
  */
-public class ImagePainter extends AbstractAreaPainter<Object> {
+public class ImagePainter extends AbstractAreaPainter<Component> {
 	
     /**
      * {@inheritDoc}
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+    protected void doPaint(Graphics2D g, Component component, int width, int height) {
         Shape shape = provideShape(g, component,width,height);
         
         switch (getStyle()) {
@@ -103,7 +104,7 @@ public class ImagePainter extends AbstractAreaPainter<Object> {
      * {@inheritDoc}
      */
 	@Override
-	protected Shape provideShape(Graphics2D g, Object comp, int width, int height) {
+	protected Shape provideShape(Graphics2D g, Component comp, int width, int height) {
 		if (getImage() != null) {
 			BufferedImage bi = getImage();
 			int imgWidth = bi.getWidth();

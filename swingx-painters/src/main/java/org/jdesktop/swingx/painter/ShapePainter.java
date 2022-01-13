@@ -23,6 +23,7 @@ import static org.jdesktop.swingx.painter.PainterUtils.getForegroundPaint;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
@@ -62,13 +63,13 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
  */
 @JavaBean
 //@SuppressWarnings("nls")
-public class ShapePainter extends AbstractAreaPainter<Object> {
+public class ShapePainter extends AbstractAreaPainter<Component> {
 
     /**
      * {@inheritDoc}
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-	protected void doPaint(Graphics2D g, Object component, int w, int h) {
+	protected void doPaint(Graphics2D g, Component component, int w, int h) {
 		g.setStroke(new BasicStroke(this.getBorderWidth()));
 
 		if (getShape() != null) {
@@ -197,7 +198,7 @@ public class ShapePainter extends AbstractAreaPainter<Object> {
     
     // shape effect stuff
     @Override
-    protected Shape provideShape(Graphics2D g, Object comp, int width, int height) {
+    protected Shape provideShape(Graphics2D g, Component comp, int width, int height) {
         return getShape();
     }
     

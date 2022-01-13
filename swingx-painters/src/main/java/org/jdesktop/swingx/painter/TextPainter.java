@@ -22,6 +22,7 @@ package org.jdesktop.swingx.painter;
 import static org.jdesktop.swingx.painter.PainterUtils.getComponentFont;
 import static org.jdesktop.swingx.painter.PainterUtils.getForegroundPaint;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -53,13 +54,13 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
  */
 @JavaBean
 //@SuppressWarnings("nls")
-public class TextPainter extends AbstractAreaPainter<Object> {
+public class TextPainter extends AbstractAreaPainter<Component> {
 	
     /**
      * {@inheritDoc}
      */
     @Override // implements the abstract method AbstractPainter.doPaint
-    protected void doPaint(Graphics2D g, Object component, int width, int height) {
+    protected void doPaint(Graphics2D g, Component component, int width, int height) {
         Font f = calculateFont(component);
         if (f != null) {
             g.setFont(f);
@@ -212,7 +213,7 @@ public class TextPainter extends AbstractAreaPainter<Object> {
      * {@inheritDoc}
      */
     @Override
-    protected Shape provideShape(Graphics2D g2, Object comp, int width, int height) {
+    protected Shape provideShape(Graphics2D g2, Component comp, int width, int height) {
         Font f = calculateFont(comp);
         String t = calculateText(comp);
         FontMetrics metrics = g2.getFontMetrics(f);

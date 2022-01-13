@@ -22,6 +22,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,6 +41,7 @@ import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.icon.ColumnControlIcon;
 import org.jdesktop.swingx.icon.PainterIcon;
+import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
@@ -113,8 +116,8 @@ public class XButtonDemo extends DefaultDemoPanel {
 //        Color background = Color.LIGHT_GRAY;
         Color background = new Color(168, 204, 241); // LIGHT_BLUE
         Color orangeBG = Color.ORANGE; // new Color(255, 200, 0);
-        final Painter<Object> aerithBgPainter = new MattePainter(PaintUtils.AERITH, true);
-        final Painter<Object> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
+        final Painter<Component> aerithBgPainter = new MattePainter(PaintUtils.AERITH, true);
+        final Painter<Component> orangeBgPainter = new MattePainter(PaintUtils.ORANGE_DELIGHT, true);
  
         JButton button1 = new JButton("Default");
         JButton button2 = new JButton("Font changed");
@@ -237,7 +240,7 @@ public class XButtonDemo extends DefaultDemoPanel {
         JButton ccButton = new JButton("XS ColumnControl", ccIcon);
         iconPanel.add(ccButton);
         
-        PainterIcon pi = new PainterIcon(new Dimension(ccIcon.getIconWidth(), ccIcon.getIconHeight()));
+        PainterIcon pi = new PainterIcon(ccIcon.getIconWidth(), ccIcon.getIconHeight());
         pi.setPainter(orangeBgPainter);
         JXButton piButton = new JXButton("PainterIcon", pi);
         iconPanel.add(piButton);        

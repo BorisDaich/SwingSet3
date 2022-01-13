@@ -20,6 +20,7 @@ package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -187,7 +188,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     public void interactiveFontAndBackgroundCheck() {
         Font font = Font.decode("Arial-BOLDITALIC-14");
         Color background = Color.LIGHT_GRAY;
-        Painter<Object> backgroundPainter = new MattePainter(background);
+        Painter<Component> backgroundPainter = new MattePainter(background);
 
         JButton button1 = new JButton("Default");
         JButton button2 = new JButton("Font changed");

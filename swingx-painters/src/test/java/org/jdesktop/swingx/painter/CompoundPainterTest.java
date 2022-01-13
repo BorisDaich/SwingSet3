@@ -26,6 +26,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -129,7 +130,7 @@ public class CompoundPainterTest extends AbstractPainterTest {
      *    changed.
      */
     public void testDirtyNotification() {
-        AbstractPainter<Object> child = spy(new DummyPainter());
+        AbstractPainter<Component> child = spy(new DummyPainter());
         ((CompoundPainter<?>) p).setPainters(child);
         
         assertThat(p.isDirty(), CoreMatchers.is(true));
