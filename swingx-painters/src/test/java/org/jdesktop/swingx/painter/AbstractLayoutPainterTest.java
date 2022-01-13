@@ -25,7 +25,6 @@ import java.awt.Insets;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-
 /**
  * Test for AbstractLayoutPainter.
  */

@@ -26,7 +26,6 @@ import java.awt.Paint;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-
 /**
  * Test for CheckerboardPainter.
  */

@@ -27,7 +27,6 @@ import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.effects.AreaEffect;
 import org.junit.Test;
 
-
 /**
  * Test for ImagePainter.
  */
