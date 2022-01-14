@@ -35,11 +35,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -109,6 +105,7 @@ import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.swingx.util.ShapeUtils;
+import org.jdesktop.swingx.util.Utilities;
 import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.util.DisplayValues;
 
@@ -333,40 +330,14 @@ public class PainterDemo extends DefaultDemoPanel {
         return new DefaultMutableTreeNode(new DisplayInfo<CompoundPainter<Component>>(desc, painter));
     }
     
-	private InputStream getFileInputStream(String resourceName) {
-        FileInputStream fis = null;
-		try {
-	        File file = new File(resourceName);
-	        if (!file.exists()) {
-	    		LOG.log(Level.WARNING, "cannot find resource "+file);
-        		String pkg = this.getClass().getPackageName().replace('.', '/')+'/';
-        		file = new File(pkg+resourceName);
-        		if (!file.exists()) {
-            		LOG.info(" >>> try default eclipse output folder ...");
-            		// this is default eclipse output folder
-            		file = new File("bin/"+pkg+resourceName);
-            		if(!file.exists()) {
-            			// m2e output folder        			
-//                		file = new File("target/classes/"+pkg+FILENAME);
-// demos besteht aus zwei projekten: content und swingxset
-                		file = new File("content/target/classes/"+pkg+resourceName);
-            		}
-        		}
-	            fis = new FileInputStream(file);
-	        }
-            fis = new FileInputStream(file); // throws FileNotFoundException
-            LOG.info("AbsolutePath:"+file.getAbsolutePath());
-		} catch (FileNotFoundException e) {
-            LOG.warning("new FileInputStream throws"+e);
-		}
-		return fis;
-	}
-
     private MutableTreeNode createImagePainterDemos() {
         DefaultMutableTreeNode node = createInfoNode("Image Painter Demos", (ImagePainter)null);
         
+        final String imgdir = "images/";
+        Class<?> thisClass = PainterDemo.class;
+        LOG.info("getResources for "+ thisClass + " imagedir:"+imgdir);
         try {
-        	InputStream fis = getFileInputStream("resources/images/border.gif");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"border.gif");
             BufferedImage img = ImageIO.read(fis);
             node.add(createInfoNode("small image", new ImagePainter(img)));
         } catch (Exception ex) {
@@ -374,7 +345,7 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-        	InputStream fis = getFileInputStream("resources/images/moon.jpg");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"moon.jpg");
             BufferedImage img = ImageIO.read(fis);
             node.add(createInfoNode("big image", new ImagePainter(img)));
         } catch (Exception ex) {
@@ -382,7 +353,7 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-        	InputStream fis = getFileInputStream("resources/images/border.gif");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"border.gif");
             BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setHorizontalRepeat(true);
@@ -392,7 +363,7 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-        	InputStream fis = getFileInputStream("resources/images/border.gif");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"border.gif");
             BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setVerticalRepeat(true);
@@ -402,7 +373,7 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-        	InputStream fis = getFileInputStream("resources/images/border.gif");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"border.gif");
             BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setBorderPaint(Color.BLACK);
@@ -412,7 +383,7 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-        	InputStream fis = getFileInputStream("resources/images/a-glyph.png");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"a-glyph.png");
             BufferedImage img = ImageIO.read(fis);
             node.add(createInfoNode("An image of 'A' with transparent parts", new ImagePainter(img)));
         } catch (Exception ex) {
@@ -420,7 +391,7 @@ public class PainterDemo extends DefaultDemoPanel {
         }
         
         try {
-        	InputStream fis = getFileInputStream("resources/images/a-glyph.png");
+        	InputStream fis = Utilities.getResourceAsStream(this.getClass(), imgdir+"a-glyph.png");
             BufferedImage img = ImageIO.read(fis);
             ImagePainter ip = new ImagePainter(img);
             ip.setFillPaint(Color.RED);

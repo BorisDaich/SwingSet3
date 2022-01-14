@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.jdesktop.swingx.TestUtilities;
+import org.jdesktop.swingx.util.Utilities;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -73,14 +73,14 @@ public class MatteBorderExtUnitTest extends junit.framework.TestCase {
 					ArrayList<Icon> iconList = new ArrayList<Icon>();
 					String dir = "resources/images/";
 					try {
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellTopLeft.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellTop.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellTopRight.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellRight.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellBottomRight.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellBottom.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellBottomLeft.gif").readAllBytes()));
-						iconList.add(new ImageIcon(TestUtilities.getResourceAsStream(klass, dir+"wellLeft.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellTopLeft.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellTop.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellTopRight.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellRight.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellBottomRight.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellBottom.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellBottomLeft.gif").readAllBytes()));
+						iconList.add(new ImageIcon(Utilities.getResourceAsStream(klass, dir+"wellLeft.gif").readAllBytes()));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
