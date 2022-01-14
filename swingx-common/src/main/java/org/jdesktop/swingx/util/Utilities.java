@@ -18,7 +18,6 @@
  */
 package org.jdesktop.swingx.util;
 
-
 import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -28,6 +27,10 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
@@ -53,6 +56,9 @@ import javax.swing.SwingUtilities;
  * @author apple
  */
 public class Utilities {
+	
+	private static final Logger LOG = Logger.getLogger(Utilities.class.getName());
+
     private Utilities() {
     }
     
@@ -512,13 +518,23 @@ public class Utilities {
      * need to guard against headlessExceptions when testing.
      * @return the acceletor mask for shortcuts.
      */
+    /*
+     *  deprecated(since = "9") It is recommended that CTRL_DOWN_MASK and
+     *             {@link #getModifiersEx()} be used instead
+     *             ===> META_DOWN_MASK
+     */
     private static int getMenuShortCutKeyMask() {
         if (GraphicsEnvironment.isHeadless()) {
             return ((getOperatingSystem() & OS_MAC) != 0) ? 
                     KeyEvent.META_MASK : KeyEvent.CTRL_MASK;
         }
- 
-        return Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+/*
+Deprecated(since = "10") :
+     * It is recommended that extended modifier keys and
+     *             {@link #getMenuShortcutKeyMaskEx()} be used instead
+
+ */
+        return Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     }
 
     private static boolean usableKeyOnMac(int key, int mask) {
@@ -970,5 +986,95 @@ widthcheck:  {
         } while (((c == '\n') || (c == '\r')) && (idx >= 0));
 
         return s.substring(0, idx + 2);
-    }    
+    }
+    
+    public static final String MODULE_PACKAGE_DIR = "org/jdesktop/swingx/";
+	public static InputStream getResourceAsStream(Class<?> clazz, String resourceName) {
+		
+		if(clazz==null) return getFileAsStream(resourceName);
+		
+		InputStream is = clazz.getResourceAsStream(resourceName); // Throws NullPointerException
+		LOG.finer("InputStream is:"+is);
+		if(is==null) {
+			LOG.log(Level.WARNING, "cannot find resource "+clazz.getName() + '#' + resourceName + " try FileAsStream ...");
+			// try FileInputStream:
+			
+			// first PackageName as dir
+			String dir = clazz.getPackageName().replace('.', '/')+'/';
+			is = getFileAsStream(dir, resourceName);
+			if(is!=null) return is;
+
+//			// this package org.jdesktop.swingx.util as dir
+//			dir = Utilities.class.getPackageName().replace('.', '/')+'/';
+//			is = getFileAsStream(dir, resourceName);
+//			if(is!=null) return is;
+LOG.info(">>> cannot find file in "+dir + " resourceName " + resourceName + " <<< PackageName as dir");
+
+			if(dir.startsWith(MODULE_PACKAGE_DIR)) {
+				// MODULE_PACKAGE_DIR as dir
+				is = getFileAsStream(MODULE_PACKAGE_DIR, resourceName);
+				if(is!=null) return is;
+LOG.info(">>> cannot find file in "+MODULE_PACKAGE_DIR + " resourceName " + resourceName + " <<< MODULE_PACKAGE_DIR as dir");			
+			}
+			
+			// try default eclipse output folder ... (Java Nature/Builder) with extra resource folder (maven like)
+			String src = "bin/";
+			String rFolder = "resources/"; // resource folder dir
+			is = getFileAsStream(src+dir+rFolder, resourceName);
+			if(is!=null) return is;
+LOG.info(">>> cannot find file in "+src+dir+rFolder + " resourceName " + resourceName + " <<< default eclipse output folder with resource");			
+
+			// try default eclipse output folder ... (Java Nature/Builder) resource in src folder
+			rFolder = "";
+			is = getFileAsStream(src+dir+rFolder, resourceName);
+			if(is!=null) return is;
+LOG.info(">>> cannot find file in "+src+dir+rFolder + " resourceName " + resourceName + " <<< default eclipse output folder");			
+
+			// try default eclipse test folder ...
+			src = "src/test/resources/";
+			is = getFileAsStream(src+MODULE_PACKAGE_DIR, resourceName);
+			if(is!=null) return is;
+LOG.info(">>> cannot find file in "+src+MODULE_PACKAGE_DIR + " resourceName " + resourceName + " <<< default eclipse test folder ");			
+
+			if(is==null) return getFileAsStream(resourceName);
+		}
+		return is;
+	}
+
+	public static InputStream getFileAsStream(String dir, String resourceName) {
+		File path = new File(dir);
+		if (!path.exists()) {
+			LOG.fine("(package)/path not found:"+path);
+			return null;
+		}
+		return getFileAsStream(dir+resourceName);
+	}
+
+	/**
+	 * try to load a resource from file with log info
+	 * 
+	 * @param resourceName fileName
+	 * @return (File)InputStream
+	 * 
+	 * @throws  NullPointerException
+     *          If the {@code resourceName} argument is {@code null}
+	 */
+	public static InputStream getFileAsStream(String resourceName) {
+        FileInputStream fis = null;
+		try {
+	        File file = new File(resourceName); // Throws NullPointerException - If the pathname argument is null
+	        if (!file.exists()) {
+	        	LOG.log(Level.WARNING, "cannot find resource "+file);
+	        } else {
+				LOG.info("found:"+file);
+	        	fis = new FileInputStream(file);
+	        }
+		} catch (NullPointerException e) {
+			throw e;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return fis;
+	}
+
 }
