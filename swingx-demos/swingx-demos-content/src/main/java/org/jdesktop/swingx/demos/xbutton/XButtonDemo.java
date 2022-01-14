@@ -39,6 +39,7 @@ import org.jdesktop.application.Application;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.icon.CircleIcon;
 import org.jdesktop.swingx.icon.ColumnControlIcon;
 import org.jdesktop.swingx.icon.PainterIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
