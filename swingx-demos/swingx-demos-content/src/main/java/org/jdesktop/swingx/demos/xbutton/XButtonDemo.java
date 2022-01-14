@@ -20,8 +20,6 @@ package org.jdesktop.swingx.demos.xbutton;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -229,19 +227,20 @@ public class XButtonDemo extends DefaultDemoPanel {
         JPanel iconPanel = new JXPanel(new GridLayout(1, 4, 1, 1));
         add(iconPanel, BorderLayout.SOUTH);
         
-        CircleIcon red = new CircleIcon(SizingConstants.ACTION_ICON, Color.RED);
+        CircleIcon red = new CircleIcon(SizingConstants.ACTION_ICON, CircleIcon.RED);
         JButton rButton = new JButton("M red Circle", red);
         LOG.info("cButton.getForeground() ="+rButton.getForeground());
         iconPanel.add(rButton);
-        CircleIcon green = new CircleIcon(SizingConstants.S, Color.GREEN);
+        CircleIcon green = new CircleIcon(SizingConstants.S, CircleIcon.GREEN);
         JButton gButton = new JButton("S green Circle", green);
         iconPanel.add(gButton);
         
-        ColumnControlIcon ccIcon = new ColumnControlIcon();
-        JButton ccButton = new JButton("XS ColumnControl", ccIcon);
+        ColumnControlIcon ccIcon = new ColumnControlIcon(SizingConstants.LAUNCHER_ICON);
+        JButton ccButton = new JButton("big ColumnControl", ccIcon);
         iconPanel.add(ccButton);
         
-        PainterIcon pi = new PainterIcon(ccIcon.getIconWidth(), ccIcon.getIconHeight());
+        // size from green: XS 10 px
+        PainterIcon pi = new PainterIcon(SizingConstants.XS, SizingConstants.XS);
         pi.setPainter(orangeBgPainter);
         JXButton piButton = new JXButton("PainterIcon", pi);
         iconPanel.add(piButton);        
