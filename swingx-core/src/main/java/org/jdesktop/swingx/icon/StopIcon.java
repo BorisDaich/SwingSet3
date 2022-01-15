@@ -1,34 +1,44 @@
-package org.jdesktop.swingx.demos.xbutton;
+package org.jdesktop.swingx.icon;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.plaf.UIResource;
 
-public class PauseIcon implements Icon, UIResource, SizingConstants {
+public class StopIcon implements Icon, UIResource, SizingConstants {
 
-	// TODO Stopp Pause Play
-    private int width = SizingConstants.M;
-    private int height = SizingConstants.M;
+    private int width = SizingConstants.ACTION_ICON;
+    private int height = SizingConstants.ACTION_ICON;
     private Color color;
-    private BasicStroke stroke = new BasicStroke(2);
 
-    public PauseIcon() {
-    	this(SizingConstants.M, null);
+    public StopIcon() {
     }
-    public PauseIcon(int size, Color color) {
+
+    public StopIcon(int size, Color color) {
     	width = size;
     	height = size;
     	this.color = color;
     }
-    
+
+    public StopIcon(int size) {
+    	this(size, null);
+    }
+
+    protected StopIcon(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    protected StopIcon(Dimension size) {
+    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
+    }
+
     // implements interface Icon:
 
     /**
@@ -36,13 +46,9 @@ public class PauseIcon implements Icon, UIResource, SizingConstants {
      */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		Graphics2D g2d = (Graphics2D) g;
-		
-		g2d.setColor(color==null ? c.getForeground() : color);
-		g2d.setStroke(stroke);
-		g2d.fillRect(x + (2 * width / 9), y + 4, (2 * width / 9), height - 8);
-		g2d.fillRect(x + 5 * width / 9, y + 4, (2 * width / 9), height - 8);
-		g2d.dispose();		
+		g.setColor(color==null ? c.getForeground() : color);
+		g.fillRect(width/4, height/4, width/2, height/2);
+		g.dispose();
 	}
 
 	@Override
@@ -59,7 +65,7 @@ public class PauseIcon implements Icon, UIResource, SizingConstants {
     public static void main(String args[]) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel label = new JLabel(new PauseIcon(SizingConstants.XL, Color.RED));
+        JLabel label = new JLabel(new StopIcon(SizingConstants.XL, Color.RED));
         frame.getContentPane().setSize(300, 300);
         frame.getContentPane().add(BorderLayout.CENTER, label);
         frame.pack();
