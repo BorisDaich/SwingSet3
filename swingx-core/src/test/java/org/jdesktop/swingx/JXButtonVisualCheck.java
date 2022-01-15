@@ -90,7 +90,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         jContentPane.add(new JButton(action), BorderLayout.WEST); // Generated
         jContentPane.add(new JXButton(action), BorderLayout.EAST);
         f.setContentPane(jContentPane);
-        f.setTitle("JFrame");
+        f.setTitle("ActionButton");
         f.setVisible(true);
     }
     
@@ -110,13 +110,13 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         }
         button.setIcon(new ImageIcon(im));
         
-        JXFrame frame = wrapInFrame(button, "Painter testing");
+        JXFrame frame = wrapInFrame(button, "StatusBarCheck");
         frame.setStatusBar(new JXStatusBar());
         show(frame);
     }
     
     public void interactiveForegroundCheck() {
-        final JXButton button = new JXButton("Sample");
+        final JXButton button = new JXButton("Sample with ring text");
 //        MattePainter p = new MattePainter(PaintUtils.AERITH, true);
         final MattePainter p = new MattePainter(PaintUtils.BLUE_EXPERIENCE, true);
         p.setFilters(new FastBlurFilter());
@@ -156,11 +156,11 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
             
         });
         
-        showInFrame(button, "Painter testing");
+        showInFrame(button, "ForegroundCheck");
     }
 
     public void interactiveBackgroundCheck() {
-        final JXButton button = new JXButton("Sample");
+        final JXButton button = new JXButton("Sample with GradientPaint AERITH");
         MattePainter p = new MattePainter(PaintUtils.AERITH, true);
         button.setBackgroundPainter(p);
         
@@ -179,7 +179,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         }
         button.setIcon(new ImageIcon(im));
         
-        showInFrame(button, "Painter testing");
+        showInFrame(button, "BackgroundCheck");
     }
     
     /**
@@ -245,9 +245,10 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) {
         JXButtonVisualCheck test = new JXButtonVisualCheck();
         try {
+            test.runInteractiveTests();
 //            test.runInteractiveTests("interactiveActionButton");
 //            test.runInteractiveTests("interactiveFontAndBackgroundCheck");
-            test.runInteractiveTests("interactiveForegroundCheck");
+//            test.runInteractiveTests("interactiveForegroundCheck");
 //            test.runInteractiveTests("interactiveBackgroundCheck");
           } catch (Exception e) {
               System.err.println("exception when executing interactive tests:");
