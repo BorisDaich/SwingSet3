@@ -64,7 +64,7 @@ public class PauseIcon implements Icon, UIResource, SizingConstants {
 		g2d.setStroke(stroke);
 		g2d.fillRect(x + (2 * width / 9), y + 4, (2 * width / 9), height - 8);
 		g2d.fillRect(x + 5 * width / 9, y + 4, (2 * width / 9), height - 8);
-		g2d.dispose();		
+		g2d.dispose();
 	}
 
 	@Override
