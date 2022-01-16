@@ -21,7 +21,6 @@ package org.jdesktop.swingx;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -65,7 +64,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
      */
     public void interactiveButton() {
     	JPanel center = new JPanel();
-    	JButton pause = new JButton("ACTION_ICON size", new PauseIcon()); // TODO wo ist der Text?
+    	JButton pause = new JButton("ACTION_ICON size", new PauseIcon());
     	center.add(pause);
     	
     	JPanel control = new JPanel();
@@ -102,7 +101,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         
     	JButton pause = new JButton(action);
     	pause.setIcon(new PauseIcon());
-    	pause.setText("ACTION_ICON size"); // TODO wo ist der Text?
+    	pause.setText("ACTION_ICON size");
     	jContentPane.add(pause, BorderLayout.WEST);
         
     	JButton xl = new JButton(action);
@@ -190,7 +189,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     		button.setText(ringArray.get());
         });
     	
-        button.setIcon(new PlayIcon()); // Text wir nicht angeziegt
+        button.setIcon(new PlayIcon());
         
         showInFrame(button, "BackgroundCheck");
     }
