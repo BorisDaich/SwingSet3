@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -40,6 +41,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.jdesktop.swingx.icon.PauseIcon;
+import org.jdesktop.swingx.icon.PlayIcon;
+import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
@@ -53,21 +57,27 @@ import org.jdesktop.swingx.util.PaintUtils;
 //@SuppressWarnings("nls")
 public class JXButtonVisualCheck extends InteractiveTestCase {
 
+    private static final Logger LOG = Logger.getLogger(JXButtonVisualCheck.class.getName());
     private static final String[] buttonText = new String[] {"Hello", "Goodbye", "SwingLabs", "Turkey Bowl"};
 
     /**
      * Test for issue #761.
      */
     public void interactiveButton() {
-        final JFrame f = new JFrame();
+    	JPanel center = new JPanel();
+    	JButton pause = new JButton("ACTION_ICON size", new PauseIcon()); // TODO wo ist der Text?
+    	center.add(pause);
+    	
     	JPanel control = new JPanel();
         JButton b = new JButton("Start");
         control.add(b);
-        f.add(control, BorderLayout.SOUTH);
-        f.setPreferredSize(new Dimension(400, 400));
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.pack();
-        f.setVisible(true);
+        
+    	JPanel pane = new JPanel(new BorderLayout());
+    	pane.add(center, BorderLayout.CENTER);
+    	pane.add(control, BorderLayout.SOUTH);
+    	
+        JXFrame frame = wrapInFrame(pane, "Text Button (Start) at SOUTH");
+        show(frame);
     }
 
     /**
@@ -78,19 +88,28 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
 		AbstractAction action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //do nothing
+            	LOG.info("//do nothing "+e);          
             }
         };
         action.putValue(Action.NAME, "My Action");
+        action.putValue(Action.LARGE_ICON_KEY, new PauseIcon(SizingConstants.LAUNCHER_ICON, Color.MAGENTA));
         action.setEnabled(true);
+
         final JFrame f = new JFrame();
-        f.setSize(300, 200);
+        f.setSize(600, 200);
         JPanel jContentPane = new JPanel();
         jContentPane.setLayout(new BorderLayout());
-        jContentPane.add(new JButton(action), BorderLayout.WEST); // Generated
-        jContentPane.add(new JXButton(action), BorderLayout.EAST);
+        
+    	JButton pause = new JButton(action);
+    	pause.setIcon(new PauseIcon());
+    	pause.setText("ACTION_ICON size"); // TODO wo ist der Text?
+    	jContentPane.add(pause, BorderLayout.WEST);
+        
+    	JButton xl = new JButton(action);
+    	jContentPane.add(xl, BorderLayout.EAST);
+        
         f.setContentPane(jContentPane);
-        f.setTitle("ActionButton");
+        f.setTitle("ActionButtons");
         f.setVisible(true);
     }
     
@@ -160,24 +179,18 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     }
 
     public void interactiveBackgroundCheck() {
-        final JXButton button = new JXButton("Sample with GradientPaint AERITH");
+        final JXButton button = new JXButton("PlayIcon with GradientPaint AERITH and ring text");
         MattePainter p = new MattePainter(PaintUtils.AERITH, true);
         button.setBackgroundPainter(p);
         
         // Add action listener using Lambda expression
     	RingArray ringArray = new RingArray(buttonText);
     	button.addActionListener(event -> {
+    		LOG.info("button:"+button);
     		button.setText(ringArray.get());
         });
     	
-        BufferedImage im;
-        try {
-            im = ImageIO.read(JXButton.class.getResource("plaf/basic/resources/error16.png"));
-        } catch (IOException ignore) {
-            System.out.println(ignore);
-            im = null;
-        }
-        button.setIcon(new ImageIcon(im));
+        button.setIcon(new PlayIcon()); // Text wir nicht angeziegt
         
         showInFrame(button, "BackgroundCheck");
     }
