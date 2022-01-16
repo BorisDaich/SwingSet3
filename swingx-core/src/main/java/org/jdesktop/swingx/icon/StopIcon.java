@@ -1,16 +1,18 @@
 package org.jdesktop.swingx.icon;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.plaf.UIResource;
 
+/**
+ * Rendering a Stop icon (used for Players). Can be filled with any color, default is component foreground (black).
+ *
+ * @author EUG https://github.com/homebeaver/
+ */
 public class StopIcon implements Icon, UIResource, SizingConstants {
 
     private int width = SizingConstants.ACTION_ICON;
@@ -48,7 +50,7 @@ public class StopIcon implements Icon, UIResource, SizingConstants {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		g.setColor(color==null ? c.getForeground() : color);
 		g.fillRect(width/4, height/4, width/2, height/2);
-		g.dispose();
+//		g.dispose(); NO dispose! wg. https://github.com/homebeaver/SwingSet/issues/19
 	}
 
 	@Override
@@ -60,16 +62,5 @@ public class StopIcon implements Icon, UIResource, SizingConstants {
 	public int getIconHeight() {
 		return height;
 	}
-
-	// visual test:
-    public static void main(String args[]) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel label = new JLabel(new StopIcon(SizingConstants.XL, Color.RED));
-        frame.getContentPane().setSize(300, 300);
-        frame.getContentPane().add(BorderLayout.CENTER, label);
-        frame.pack();
-        frame.setVisible(true);  
-    }
 
 }
