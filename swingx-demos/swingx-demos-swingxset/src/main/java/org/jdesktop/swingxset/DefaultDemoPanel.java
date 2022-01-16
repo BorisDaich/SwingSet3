@@ -20,6 +20,7 @@ package org.jdesktop.swingxset;
 
 import java.awt.Dimension;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -40,6 +41,10 @@ import com.sun.swingset3.DemoProperties;
  * @author Karl George Schaefer
  */
 public abstract class DefaultDemoPanel extends JXPanel {
+
+	private static final long serialVersionUID = 5493645401942001962L;
+	private static final Logger LOG = Logger.getLogger(DefaultDemoPanel.class.getName());
+
     /**
      * The application action map for this demo.
      */
@@ -116,13 +121,15 @@ public abstract class DefaultDemoPanel extends JXPanel {
     protected abstract void createDemo();
     
     /**
-     * This method injects resource into the demo.  This method is called by the constructor.
+     * This method injects resource into the demo. This method is called by the constructor.
      * <p>
      * Overriding classes must call super, failure to do so will result in an error.
      */
     protected void injectResources() {
         injectRan = true;
-        Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
+        LOG.config("-----------");
+        Application.getInstance().getContext().getResourceMap(getClass())
+        	.injectComponents(this);
     }
     
     /**

@@ -263,6 +263,7 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
     }
     
     private class ForegroundButton extends JButton {
+    	
         @Override
         public Font getFont() {
             return JXButton.this.getFont();
@@ -276,7 +277,6 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
             if (fgPainter == null) {
                 return JXButton.this.getForeground();
             }
-            
             return PaintUtils.setAlpha(JXButton.this.getForeground(), 0);
         }
         
@@ -634,6 +634,7 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
         if (fgPainter == null && bgPainter == null) {
             super.paintComponent(g);
         } else {
+        	LOG.fine("fgPainter:"+fgPainter + " bgPainter:"+bgPainter);
             if (fgPainter == null) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 
@@ -645,6 +646,7 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
             } else if (fgPainter instanceof AbstractPainter && ((AbstractPainter<?>) fgPainter).getFilters().length > 0) {
                 paintWithForegroundPainterWithFilters(g);
             } else {
+            	// bgPainter <> null
                 Graphics2D g2d = (Graphics2D) g.create();
                 
                 try {
