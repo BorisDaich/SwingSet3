@@ -88,8 +88,7 @@ public class ColumnControlIcon implements Icon, UIResource, SizingConstants {
         g.drawLine(x+(int)(width*0.5), y+(int)(height*0.8), x+(int)(width*0.7), y+(int)(height*0.8));
         g.drawLine(x+(int)(width*0.6), y+(int)(height*0.9), x+(int)(width*0.6), y+(int)(height*0.9));
 
-		g.dispose();
-
+//		g.dispose(); NO dispose! wg. https://github.com/homebeaver/SwingSet/issues/19
     }
 
     @Override
@@ -100,18 +99,6 @@ public class ColumnControlIcon implements Icon, UIResource, SizingConstants {
     @Override
     public int getIconHeight() {
         return height;
-    }
-
-
-    public static void main(String args[]) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel label = new JLabel(new ColumnControlIcon());
-        frame.getContentPane().add(BorderLayout.NORTH, label);
-        JLabel biglabel = new JLabel(new ColumnControlIcon(XXL, Color.RED));
-        frame.getContentPane().add(BorderLayout.CENTER, biglabel);
-        frame.pack();
-        frame.setVisible(true);  
     }
 
 }

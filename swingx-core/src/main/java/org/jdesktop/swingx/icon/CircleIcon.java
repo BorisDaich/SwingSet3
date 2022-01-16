@@ -1,14 +1,11 @@
 package org.jdesktop.swingx.icon;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.plaf.UIResource;
 
 /**
@@ -75,7 +72,7 @@ Einen Kreis bzw. eine Ellipse um den Mittelpunkt x, y mit den Radien rx und ry z
 
         g.setColor(this.color==null ? c.getBackground() : this.color);
         g.fillOval(x+1, y+1, width-2, height-2);
-		g.dispose();
+//		g.dispose(); NO dispose! wg. https://github.com/homebeaver/SwingSet/issues/19
 	}
 
 	@Override
@@ -87,16 +84,5 @@ Einen Kreis bzw. eine Ellipse um den Mittelpunkt x, y mit den Radien rx und ry z
 	public int getIconHeight() {
 		return height;
 	}
-
-	// visual test: TODO: move to test
-    public static void main(String args[]) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel label = new JLabel(new CircleIcon(SizingConstants.XL, Color.RED));
-        frame.getContentPane().setSize(300, 300);
-        frame.getContentPane().add(BorderLayout.CENTER, label);
-        frame.pack();
-        frame.setVisible(true);  
-    }
 
 }
