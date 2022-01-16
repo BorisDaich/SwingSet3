@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.logging.Logger;
 
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -70,10 +71,12 @@ import org.jdesktop.swingx.painter.Painter;
  * @author Karl George Schaefer
  */
 public final class SwingXUtilities {
-    private SwingXUtilities() {
+	
+	private static final Logger LOG = Logger.getLogger(SwingXUtilities.class.getName());
+	
+    private SwingXUtilities() { // all Methods are static
         //does nothing
     }
-
 
     /**
      * A helper for creating and updating key bindings for components with
@@ -139,17 +142,14 @@ public final class SwingXUtilities {
         if (m != 0) {
             if (map == null) {
                 map = new ComponentInputMapUIResource(c);
-                SwingUtilities.replaceUIInputMap(c,
-                        JComponent.WHEN_IN_FOCUSED_WINDOW, map);
+                SwingUtilities.replaceUIInputMap(c, JComponent.WHEN_IN_FOCUSED_WINDOW, map);
             }
             
             map.clear();
             
-            //TODO is ALT_MASK right for all platforms?
-            map.put(KeyStroke.getKeyStroke(m,  InputEvent.ALT_MASK, false),
-                    pressed);
-            map.put(KeyStroke.getKeyStroke(m, InputEvent.ALT_MASK, true),
-                    released);
+            //TODO is ALT_MASK right for all platforms? Deprecated(since = "9")
+            map.put(KeyStroke.getKeyStroke(m,  InputEvent.ALT_DOWN_MASK, false), pressed);
+            map.put(KeyStroke.getKeyStroke(m, InputEvent.ALT_DOWN_MASK, true), released);
             map.put(KeyStroke.getKeyStroke(m, 0, true), released);
         } else {
             if (map != null) {
@@ -173,12 +173,15 @@ public final class SwingXUtilities {
         
         if (painter != null) {
             if (comp.isPaintBorderInsets()) {
+            	LOG.fine("isPaintBorderInsets");
                 painter.paint(g, comp, comp.getWidth(), comp.getHeight());
             } else {
                 Insets insets = comp.getInsets();
+            	LOG.fine("Insets:"+insets);
                 g.translate(insets.left, insets.top);
-                painter.paint(g, comp, comp.getWidth() - insets.left - insets.right,
-                        comp.getHeight() - insets.top - insets.bottom);
+                painter.paint(g, comp, 
+                		comp.getWidth() - insets.left - insets.right,
+                        comp.getHeight() - insets.top - insets.bottom );
                 g.translate(-insets.left, -insets.top);
             }
         }
@@ -437,8 +440,9 @@ public final class SwingXUtilities {
         Component parent = c.getParent();
 
         while (parent != null && !(clazz.isInstance(parent))) {
-            parent = parent instanceof JPopupMenu
-                    ? ((JPopupMenu) parent).getInvoker() : parent.getParent();
+            parent = parent instanceof JPopupMenu ? 
+            		((JPopupMenu) parent).getInvoker() 
+            	: 	parent.getParent();
         }
         
         return (T) parent;
@@ -549,8 +553,7 @@ public final class SwingXUtilities {
     public static int loc2IndexFileList(JList list, Point point) {
         int i = list.locationToIndex(point);
         if (i != -1) {
-            Object localObject = list
-                    .getClientProperty("List.isFileList");
+            Object localObject = list.getClientProperty("List.isFileList");
             if ((localObject instanceof Boolean)
                     && (((Boolean) localObject).booleanValue())
     // PENDING JW: this isn't aware of sorting/filtering - fix!
@@ -562,13 +565,11 @@ public final class SwingXUtilities {
     }
 
     // PENDING JW: this isn't aware of sorting/filtering - fix!
-    private static boolean pointIsInActualBounds(JList list, int index,
-            Point point) {
+    private static boolean pointIsInActualBounds(JList list, int index, Point point) {
         ListCellRenderer renderer = list.getCellRenderer();
         ListModel model = list.getModel();
         Object element = model.getElementAt(index);
-        Component comp = renderer.getListCellRendererComponent(list, element,
-                index, false, false);
+        Component comp = renderer.getListCellRendererComponent(list, element, index, false, false);
 
         Dimension prefSize = comp.getPreferredSize();
         Rectangle cellBounds = list.getCellBounds(index, index);
