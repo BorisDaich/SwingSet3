@@ -71,6 +71,10 @@ public class JXFrameTest extends InteractiveTestCase {
      * - to keep it simple all WindowFrame's including gossip contains same JXPanel in BorderLayout
      * 		two Buttons at WEST and EAST, and empty CENTER
      * 		the WEST button can be used to create new frames, the action is done by RootFrame's frame manager
+     * <p>
+     * closing behavior :
+     * - closing gossip RootFrame do EXIT_ON_CLOSE - closes all Windows
+     * - closing other WindowFrame closes only this window
      */
     public void interactiveMultipleFrames() {
         WindowFrame gossip = new RootFrame(); // RootFrame contains a simple frame manager
@@ -91,12 +95,9 @@ public class JXFrameTest extends InteractiveTestCase {
     	private int window_ID;
     	JXPanel jPanel = new JXPanel(new BorderLayout());
 
-/*    public JXFrame(String title, GraphicsConfiguration gc, boolean exitOnClose) 
-    GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-    LOG.info("GraphicsConfiguration gc:"+gc);
-    JXFrame frame = new JXFrame(gc);
-    frame.setSize(600, 200);
-*/
+    	/*
+    	 * window_ID==-1 is used for RootFrame
+    	 */
     	WindowFrame(String title, RootFrame rootFrame, int window_ID, Object object) {
     		super(title
     			, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration()
@@ -151,7 +152,7 @@ public class JXFrameTest extends InteractiveTestCase {
                 	//int frameNumber = rootFrame.frames.size();
                 	int frameNumber = windowCounter;
                 	LOG.info("makeFrame #"+frameNumber+" ... rootFrame:"+getRootFrame());
-                	WindowFrame frame = getRootFrame().makeFrame(frameNumber, getRootFrame(), -1, null);
+                	WindowFrame frame = getRootFrame().makeFrame(frameNumber, getRootFrame(), 1, null);
                 	frame.setVisible(true);
                 }
             };
