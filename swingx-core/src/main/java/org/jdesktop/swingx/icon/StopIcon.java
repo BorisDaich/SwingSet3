@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
@@ -48,9 +49,10 @@ public class StopIcon implements Icon, UIResource, SizingConstants {
      */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		g.setColor(color==null ? c.getForeground() : color);
-		g.fillRect(width/4, height/4, width/2, height/2);
-//		g.dispose(); NO dispose! wg. https://github.com/homebeaver/SwingSet/issues/19
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(color==null ? c.getForeground() : color);
+		g2d.fillRect(x + (width / 8), y + (height / 8), 3*width/4, 3*height/4);
+//		g2d.dispose(); NO dispose! wg. https://github.com/homebeaver/SwingSet/issues/19
 	}
 
 	@Override
