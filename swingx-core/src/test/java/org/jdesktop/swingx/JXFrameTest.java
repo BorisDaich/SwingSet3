@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
@@ -67,10 +67,12 @@ public class JXFrameTest extends InteractiveTestCase {
      * <p>
      * - the gossip RootFrame is a Subclass of WindowFrame;  
      * 		it has a JMenuBar at top to control the L&F and an empty JXStatusBar at bottom 
-     * 		and contains a simple frame manager to create new WindowFrame's
+     * 		and contains a very simple frame manager to create new WindowFrame's
      * - to keep it simple all WindowFrame's including gossip contains same JXPanel in BorderLayout
      * 		two Buttons at WEST and EAST, and empty CENTER
      * 		the WEST button can be used to create new frames, the action is done by RootFrame's frame manager
+     * <p>
+     * the pause button stops the frame manager to create new windows
      * <p>
      * closing behavior :
      * - closing gossip RootFrame do EXIT_ON_CLOSE - closes all Windows
@@ -80,6 +82,8 @@ public class JXFrameTest extends InteractiveTestCase {
         WindowFrame gossip = new RootFrame(); // RootFrame contains a simple frame manager
         @SuppressWarnings("unused")
 		JXStatusBar statusBar = gossip.getStatusBar(); // just to paint it
+//        gossip.pack(); // auto or fix:
+        gossip.setSize(600, 200);
     	gossip.setVisible(true);
     }
 
@@ -94,7 +98,7 @@ public class JXFrameTest extends InteractiveTestCase {
     	
     	private int window_ID;
     	JXPanel jPanel = new JXPanel(new BorderLayout());
-
+    	AbstractAction addFrameAction;
     	/*
     	 * window_ID==-1 is used for RootFrame
     	 */
@@ -109,33 +113,7 @@ public class JXFrameTest extends InteractiveTestCase {
     		this.rootFrame = rootFrame;
     		this.window_ID = window_ID;
     		
-    		super.setSize(600, 200);
-
-/* TODO
-//    		initMenuBar();
-//    		Container statusBar = createStatusBar();
-    		// ...
-     public JXFrame wrapInFrame(JComponent component, String title) {
-        JXFrame frame = new JXFrame(title, false);
-        JToolBar toolbar = new JToolBar();
-        frame.getRootPaneExt().setToolBar(toolbar);
-        frame.getContentPane().add(BorderLayout.CENTER, component);
-        frame.setLocation(frameLocation);
-        if (frameLocation.x == 0) {
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setTitle(title + "  [close me and all tests will close]");
-            frame.setJMenuBar(createAndFillMenuBar(component));
-        }
-        frameLocation.x += 30;
-        frameLocation.y += 30;
-        frame.pack();
-        return frame;
-    }   		 
- */
-    		JToolBar toolbar = new JToolBar();
-    		getRootPaneExt().setToolBar(toolbar);
-    		// bei RootFrame: setJMenuBar(createAndFillMenuBar(component));
-    		//LOG.info("\nthis:"+this + "\nrootFrame:"+this.rootFrame);
+    		// bei RootFrame: setJMenuBar:
     		if(this instanceof RootFrame) {
     			LOG.info("\nthis:"+this);
 //    			JMenu jMenu = createPlafMenu(); // aus InteractiveTestCase
@@ -143,37 +121,71 @@ public class JXFrameTest extends InteractiveTestCase {
     			setJMenuBar(createAndFillMenuBar(null));
     		}
     		
-    		getContentPane().add(jPanel);
-    		
-    		AbstractAction addFrameAction = new AbstractAction() {
+    		addFrameAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                	WindowFrame makeFrame(int frameNumber, RootFrame rootFrame, int window_ID, Object object) 
-                	//int frameNumber = rootFrame.frames.size();
+                	//int frameNumber = rootFrame.frames.size(); - nicht aus frames.size (!), 
+                	// denn frame n kann noch existeren, aber frames.size=n sein, wenn ein "ältere" geschlossen wurde
                 	int frameNumber = windowCounter;
                 	LOG.info("makeFrame #"+frameNumber+" ... rootFrame:"+getRootFrame());
                 	WindowFrame frame = getRootFrame().makeFrame(frameNumber, getRootFrame(), 1, null);
-                	frame.setVisible(true);
+                	if(frame!=null) {
+                    	frame.pack();
+                    	frame.setVisible(true);
+                	}
                 }
             };
             addFrameAction.putValue(Action.NAME, "addFrame");
-            addFrameAction.putValue(Action.LARGE_ICON_KEY, new PlayIcon(SizingConstants.LAUNCHER_ICON, Color.GREEN));
-//        	JButton play = new JButton(new PlayIcon(SizingConstants.LAUNCHER_ICON, Color.GREEN));
+            addFrameAction.putValue(Action.LARGE_ICON_KEY, new PlayIcon(SizingConstants.ACTION_ICON, Color.GREEN));
             JXButton addFrameBtn = new JXButton(addFrameAction);
+
+    		AbstractAction disableFrameMgrAction = new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                	LOG.info("disable FrameMgr");
+                	if(getRootFrame().enable) {
+                    	getRootFrame().enable = false;
+                    	// TODO for all frames:
+                        //addFrameAction.putValue(Action.LARGE_ICON_KEY, new StopIcon(SizingConstants.ACTION_ICON, Color.RED));
+                	}
+                }
+            };
+            disableFrameMgrAction.putValue(Action.NAME, "disableFrameMgr");
+            disableFrameMgrAction.putValue(Action.LARGE_ICON_KEY, new PauseIcon(SizingConstants.LAUNCHER_ICON, Color.MAGENTA));
+        	JXButton pause = new JXButton(disableFrameMgrAction);
+
+    		JToolBar toolbar = new JToolBar();
+    		getRootPaneExt().setToolBar(toolbar);
+            AbstractButton addFrameTbBtn = addActionToToolBar(this, addFrameAction);
+            LOG.info("Toolbat Button addFrameAction:"+addFrameTbBtn);
+            
+//    		super.setSize(600, 200); ==> pack()
+    		getContentPane().add(jPanel);
+    		
         	jPanel.add(addFrameBtn, BorderLayout.WEST);
 
         	jPanel.add(new JXLabel("empty", SwingConstants.CENTER), BorderLayout.CENTER);
         	
-        	JButton pause = new JButton(new PauseIcon(SizingConstants.LAUNCHER_ICON, Color.MAGENTA));
         	jPanel.add(pause, BorderLayout.EAST);
 
-//    		jPanel.add(statusBar, BorderLayout.PAGE_END);
+//    		jPanel.add(statusBar, BorderLayout.PAGE_END); // == SOUTH
 //    		
 //    		addWindowListener(this); // wg. - JFrame.DISPOSE_ON_CLOSE
     	}
     	WindowFrame(String title) { // für RootFrame
     		this(title, null, -1, null);
     	}
+
+    	// aus InteractiveTestCase.createAndFillMenuBar
+        public AbstractButton addActionToToolBar(JXFrame frame, Action action) {
+            JToolBar toolbar = frame.getRootPaneExt().getToolBar();
+            if (toolbar != null) {
+                AbstractButton button = toolbar.add(action);
+                button.setFocusable(false);
+                return button;
+            }
+            return null;
+        }
 
         /**
          * Creates, fills and returns a JMenuBar. 
@@ -211,11 +223,11 @@ public class JXFrameTest extends InteractiveTestCase {
         }
     }
     
+    @SuppressWarnings("serial")
     public class RootFrame extends WindowFrame {
     	private static final String TITLE = "Gossip";
     	public RootFrame() {
 			super(TITLE);
-//			this.getContentPane().getComponentCount()
 			super.rootFrame = this;
 			// TODO ...
 			frames = new ArrayList<JXFrame>();
@@ -225,14 +237,17 @@ public class JXFrameTest extends InteractiveTestCase {
 		}
 		// simple frame manager
     	List<JXFrame> frames;
+    	boolean enable = true;
     	boolean remove(JXFrame frame) {
     		return frames.remove(frame);
     	}
     	WindowFrame makeFrame(int frameNumber, RootFrame rootFrame, int window_ID, Object object) {
-    		WindowFrame frame = new WindowFrame("Frame number " + frameNumber, rootFrame, window_ID, object);
-//    		frame.setDefaultCloseOperation(frames.isEmpty() ? JFrame.EXIT_ON_CLOSE : JFrame.DISPOSE_ON_CLOSE);
-    		frames.add(frame);
-    		return frame;
+    		if(enable) {
+        		WindowFrame frame = new WindowFrame("Frame number " + frameNumber, rootFrame, window_ID, object);
+        		frames.add(frame);
+        		return frame;
+    		}
+    		return null;
     	}
     	// ...
     	// <<<
