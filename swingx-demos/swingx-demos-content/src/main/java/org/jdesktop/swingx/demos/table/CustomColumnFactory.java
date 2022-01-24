@@ -40,9 +40,10 @@ import org.jdesktop.swingxset.util.DemoUtils;
  */
 //</snip>
 public  class CustomColumnFactory extends ColumnFactory {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(CustomColumnFactory.class.getName());
+    private static final Logger LOG = Logger.getLogger(CustomColumnFactory.class.getName());
+    
     /** base class for resource lookup. */
     private Class<?> baseClass;
     
@@ -52,8 +53,7 @@ public  class CustomColumnFactory extends ColumnFactory {
      * listed in the excludes.
      */
     @Override
-    public TableColumnExt createAndConfigureTableColumn(TableModel model,
-            int modelIndex) {
+    public TableColumnExt createAndConfigureTableColumn(TableModel model, int modelIndex) {
         if (getExcludeNames().contains(model.getColumnName(modelIndex))) {
             return null;
         }
@@ -67,8 +67,7 @@ public  class CustomColumnFactory extends ColumnFactory {
      * Overridden to set the column's identifier, lookup the title 
      */
     @Override
-    public void configureTableColumn(TableModel model,
-            TableColumnExt columnExt) {
+    public void configureTableColumn(TableModel model, TableColumnExt columnExt) {
         super.configureTableColumn(model, columnExt);
         columnExt.setIdentifier(model.getColumnName(columnExt.getModelIndex()));
         configureTitle(columnExt);
@@ -99,8 +98,7 @@ public  class CustomColumnFactory extends ColumnFactory {
     @Override
     protected int getRowCount(JXTable table) {
         if (table.getClientProperty("ColumnFactory.maxRowCount") instanceof Integer) {
-            return Math.min(table.getRowCount(), 
-                    (Integer) table.getClientProperty("ColumnFactory.maxRowCount"));
+            return Math.min(table.getRowCount(), (Integer) table.getClientProperty("ColumnFactory.maxRowCount"));
         }
         return super.getRowCount(table);
     }
@@ -216,4 +214,3 @@ public  class CustomColumnFactory extends ColumnFactory {
     
 
 }
-

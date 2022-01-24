@@ -34,15 +34,14 @@ import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingxset.util.DemoUtils;
 
 public class OscarRendering {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(OscarRendering.class
-            .getName());
+
+	@SuppressWarnings("unused")
+    private static final Logger LOG = Logger.getLogger(OscarRendering.class.getName());
     
     //<snip> JXTable column properties
     // Note: the custom column factory is a feature enhanced factory
     // which allows column configuration based on column identifier
-    public static void configureColumnFactory(CustomColumnFactory factory, 
-            Class<?> resourceBase) {
+    public static void configureColumnFactory(CustomColumnFactory factory, Class<?> resourceBase) {
         // set location to load resources from
         factory.setBaseClass(resourceBase);
         // mark the isWinner column as hidden
@@ -121,8 +120,7 @@ public class OscarRendering {
         // the predicate to decide which to use
         HighlightPredicate winnerPredicate = new HighlightPredicate() {
             
-            public boolean isHighlighted(Component renderer,
-                    ComponentAdapter adapter) {
+            public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
                 int modelColumn = adapter.getColumnIndex("winnerColumn");
                 return ((Boolean) adapter.getValue(modelColumn)).booleanValue();
             }
@@ -155,22 +153,18 @@ public class OscarRendering {
      * target
      * </ul>
      */
-    public static class OscarCandidateLinkAction extends
-            AbstractHyperlinkAction<OscarCandidate> {
+    public static class OscarCandidateLinkAction extends AbstractHyperlinkAction<OscarCandidate> {
 
-        HyperlinkAction browse = HyperlinkAction.createHyperlinkAction(null,
-                java.awt.Desktop.Action.BROWSE);
+        HyperlinkAction browse = HyperlinkAction.createHyperlinkAction(null, java.awt.Desktop.Action.BROWSE);
 
         @Override
         protected void installTarget() {
             setName(target == null ? null : target.getMovieTitle());
-            setVisited(target != null ? target.getIMDBMovieURI() != null
-                    : false);
+            setVisited(target != null ? target.getIMDBMovieURI() != null : false);
         }
 
         public void actionPerformed(ActionEvent e) {
-            if (target == null)
-                return;
+            if (target == null) return;
             try {
                 URI imdbURI = target.getIMDBMovieURI();
                 if (imdbURI == null) {
@@ -193,8 +187,7 @@ public class OscarRendering {
         /**
          * Looks up the URI of the info page.
          */
-        private URI lookupURI(URI imdbURI) throws IOException,
-                URISyntaxException {
+        private URI lookupURI(URI imdbURI) throws IOException, URISyntaxException {
             // lookup uri if not yet set
             String imdbString = IMDBLink.getMovieURIString(target
                     .getMovieTitle(), target.getYear());

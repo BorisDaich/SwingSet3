@@ -192,8 +192,7 @@ public class TreeModelSupportTest extends TestCase {
     
     //copied from JTree and modified to use TTNs
     protected TreeTableModel getDefaultTreeTableModel() {
-        DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode(
-                "JXTreeTable");
+        DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode("JXTreeTable");
         DefaultMutableTreeTableNode parent;
 
         parent = new DefaultMutableTreeTableNode("colors");

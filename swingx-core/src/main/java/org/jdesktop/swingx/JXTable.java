@@ -214,7 +214,7 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
  *        return StringValues.FILE_NAME.getString(value) + &quot;, &quot; 
  *           + StringValues.DATE_TO_STRING.getString(((File) value).lastModified());
  * }};
- * table.setCellRenderer(File.class, new DefaultTableRenderer(sv));
+ * table.setDefaultRenderer(File.class, new DefaultTableRenderer(sv));
  * </code>
  * </pre>
  * 

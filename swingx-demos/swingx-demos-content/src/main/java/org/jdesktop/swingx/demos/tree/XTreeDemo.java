@@ -1,10 +1,4 @@
 /*
- * Created on 18.04.2008
- *
- */
-package org.jdesktop.swingx.demos.tree;
-
-/*
  * Copyright 2007-2008 Sun Microsystems, Inc.  All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +28,7 @@ package org.jdesktop.swingx.demos.tree;
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+package org.jdesktop.swingx.demos.tree;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -71,6 +65,10 @@ import org.jdesktop.swingxset.util.DemoUtils;
 
 import com.sun.swingset3.DemoProperties;
 
+/*
+ * Created on 18.04.2008
+ *
+ */
 /**
  * JXTree Demo
  * 
@@ -89,8 +87,7 @@ import com.sun.swingset3.DemoProperties;
 )
 public class XTreeDemo extends JPanel {
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(XTreeDemo.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(XTreeDemo.class.getName());
     private JXTree tree;
     private JButton refreshButton;
     private JButton expandButton;
