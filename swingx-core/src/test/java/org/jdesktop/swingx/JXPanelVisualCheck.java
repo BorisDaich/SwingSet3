@@ -146,8 +146,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
             public void actionPerformed(ActionEvent e) {
                 realOpaque = !realOpaque;
 
-                putValue(Action.NAME, realOpaque ? "toggle opaque (is on)"
-                        : "toggle opaque (is off)");
+                putValue(Action.NAME, realOpaque ? "toggle opaque (is on)" : "toggle opaque (is off)");
 
                 p.setOpaque(realOpaque);
                 xp1.setOpaque(realOpaque);
@@ -155,8 +154,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
 
                 coreLabel.setText("is-opaque: " + p.isOpaque());
                 xbackAlpha.setText("is-opaque: " + xbackAlpha.isOpaque());
-                xcontainerAlpha.setText("is-opaque: "
-                        + xcontainerAlpha.isOpaque());
+                xcontainerAlpha.setText("is-opaque: " + xcontainerAlpha.isOpaque());
                 p.repaint();
                 xp1.repaint();
                 xp2.repaint();
@@ -175,14 +173,12 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
         Color alpha = PaintUtils.setAlpha(Color.RED, 100);
 
         JXPanel opaque = new JXPanel();
-        opaque.setBorder(BorderFactory
-                .createTitledBorder("xpanel (alpha color, real opaque)"));
+        opaque.setBorder(BorderFactory.createTitledBorder("xpanel (alpha color, real opaque)"));
         opaque.setBackground(alpha);
 
         JXPanel nonOpaque = new JXPanel();
         nonOpaque.setOpaque(false);
-        nonOpaque.setBorder(BorderFactory
-                .createTitledBorder("xpanel (alpha color, real !opaque)"));
+        nonOpaque.setBorder(BorderFactory.createTitledBorder("xpanel (alpha color, real !opaque)"));
         nonOpaque.setBackground(alpha);
 
         container.add(opaque);
@@ -218,8 +214,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
         final Color background = Color.YELLOW;
         final Color backgroundTrans = PaintUtils.setAlpha(background, 100);
         panel.setBackground(background);
-        panel.setBackgroundPainter(new ImagePainter(XTestUtils
-                .loadDefaultImage("moon.jpg")));
+        panel.setBackgroundPainter(new ImagePainter(XTestUtils.loadDefaultImage("moon.jpg")));
         JLabel label = new JLabel(" seeing something");
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setFont(label.getFont().deriveFont(55f));
@@ -261,8 +256,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color back = panel.getBackground();
-                panel.setBackground(back.getAlpha() < 255 ? background
-                        : backgroundTrans);
+                panel.setBackground(back.getAlpha() < 255 ? background : backgroundTrans);
 
             }
         };
@@ -331,8 +325,7 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
             @Override
             public void actionPerformed(ActionEvent e) {
                 position++;
-                if (position >= tracks.length)
-                    position = 0;
+                if (position >= tracks.length) position = 0;
                 panel.setScrollableHeightHint(tracks[position]);
                 setName("track height: " + tracks[position]);
             }
@@ -375,8 +368,8 @@ public class JXPanelVisualCheck extends InteractiveTestCase {
      * @throws Exception
      */
     public void interactiveIconPainter() throws Exception {
-        ImagePainter imagePainter = new ImagePainter(ImageIO.read(JXPanel.class
-                .getResource("resources/images/kleopatra.jpg")));
+        ImagePainter imagePainter = 
+        	new ImagePainter(ImageIO.read(JXPanel.class.getResource("resources/images/kleopatra.jpg")));
         JXPanel panel = new JXPanel();
         panel.setBackgroundPainter(imagePainter);
         // uncomment to see the painting glitch. Move to before setting the

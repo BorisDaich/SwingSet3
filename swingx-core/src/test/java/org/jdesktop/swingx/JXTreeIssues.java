@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -53,33 +51,33 @@ import org.junit.Test;
  * specified or not yet decided upon features/behaviour.
  * <p>
  * 
- * If an issue is fixed and the corresponding methods are passing, they
- * should be moved over to the XXTest.
+ * If an issue is fixed and the corresponding methods are passing, 
+ * they should be moved over to the XXTest.
  * 
  * @author Jeanette Winzenburg
  */
 public class JXTreeIssues extends JXTreeUnitTest {
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXTreeIssues.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXTreeIssues.class.getName());
     
     public static void main(String[] args) {
       setSystemLF(true);
       JXTreeIssues test = new JXTreeIssues();
-      try {
-//          test.runInteractiveTests();
-          test.runInteractiveTests("interactive.*UpdateUI.*");
-//        test.runInteractiveTests("interactive.*Icons.*");
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-  }
+		try {
+			test.runInteractiveTests();
+//			test.runInteractiveTests("testRendererUsedInEditorAfterSet");
+//			test.runInteractiveTests("interactive.*UpdateUI.*");
+//			test.runInteractiveTests("interactive.*Icons.*");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	  }
     
     /**
      * Issue #1061-swingx: renderer/editor inconsistent on startup.
-     * Note: this test will fail once we use an enhanced cellEditor (which can cope with 
-     * SwingX default renderers).
+     * Note: this test will fail once we use an enhanced cellEditor 
+     * (which can cope with SwingX default renderers).
      */
     @Test
     public void testRendererUsedInEditorAfterSet() {
@@ -235,10 +233,8 @@ public class JXTreeIssues extends JXTreeUnitTest {
         tree.setLargeModel(true);
         final Font bold = tree.getFont().deriveFont(Font.BOLD, 20f);
         Highlighter hl = new AbstractHighlighter(HighlightPredicate.IS_LEAF) {
-
             @Override
-            protected Component doHighlight(Component component,
-                    ComponentAdapter adapter) {
+            protected Component doHighlight(Component component, ComponentAdapter adapter) {
                 component.setFont(bold);
                 return component;
             }
@@ -293,8 +289,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
         Highlighter hl = new AbstractHighlighter(HighlightPredicate.EVEN) {
 
             @Override
-            protected Component doHighlight(Component component,
-                    ComponentAdapter adapter) {
+            protected Component doHighlight(Component component, ComponentAdapter adapter) {
                 component.setFont(bold);
                 return component;
             }
@@ -345,8 +340,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
             
         };
         tree.setRowHeight(22);
-        JXFrame frame = wrapWithScrollingInFrame(tree,
-                "Toggle Tree icons ");
+        JXFrame frame = wrapWithScrollingInFrame(tree, "Toggle Tree icons ");
         addAction(frame, toggleClosedIcon);
         frame.setVisible(true);
     }
@@ -374,8 +368,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
         };
         tree.setCellRenderer(new DefaultTreeRenderer(iv, sv));
         tree.setRowHeight(22);
-        JXFrame frame = wrapWithScrollingInFrame(tree,
-                "IconValue on WrappingProvider");
+        JXFrame frame = wrapWithScrollingInFrame(tree, "IconValue on WrappingProvider");
 //        addAction(frame, toggleClosedIcon);
         frame.setVisible(true);
     }

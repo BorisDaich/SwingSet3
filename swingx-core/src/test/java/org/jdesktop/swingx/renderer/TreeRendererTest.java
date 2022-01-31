@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,6 +39,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.ListModel;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -67,7 +66,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Tests behaviour of SwingX <code>DefaultTreeRenderer</code>. 
  * Contains characterization to
@@ -77,9 +75,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class TreeRendererTest extends InteractiveTestCase {
-    @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(TreeRendererTest.class
-            .getName());
+
+	private static final Logger LOG = Logger.getLogger(TreeRendererTest.class .getName());
     
     private DefaultTreeCellRenderer coreTreeRenderer;
     private DefaultTreeRenderer xTreeRenderer;
@@ -88,7 +85,7 @@ public class TreeRendererTest extends InteractiveTestCase {
     @Override
     protected void setUp() throws Exception {
 //        setSystemLF(true);
-//        LOG.info("LF: " + UIManager.getLookAndFeel());
+        LOG.config("LF: " + UIManager.getLookAndFeel());
 //        LOG.info("Theme: " + ((MetalLookAndFeel) UIManager.getLookAndFeel()).getCurrentTheme());
 //        UIManager.put("Tree.drawsFocusBorderAroundIcon", Boolean.TRUE);
         coreTreeRenderer = new DefaultTreeCellRenderer();
@@ -99,6 +96,7 @@ public class TreeRendererTest extends InteractiveTestCase {
         TreeRendererTest test = new TreeRendererTest();
         try {
             test.runInteractiveTests();
+//            test.runInteractiveTests("interactiveXTreeLabelFormattingHighlighter");
 //            test.runInteractiveTests(".*Wrapper.*");
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -116,17 +114,15 @@ public class TreeRendererTest extends InteractiveTestCase {
         tree.setCellRenderer(new DefaultTreeRenderer());
         final Font bold = tree.getFont().deriveFont(Font.BOLD, 20f);
         Highlighter hl = new AbstractHighlighter() {
-
             @Override
-            protected Component doHighlight(Component component,
-                    ComponentAdapter adapter) {
+            protected Component doHighlight(Component component, ComponentAdapter adapter) {
                 component.setFont(bold);
                 return component;
             }
         };
         tree.addHighlighter(hl);
-        WrappingIconPanel component = (WrappingIconPanel) tree.getCellRenderer()
-            .getTreeCellRendererComponent(tree, "something", false, false, false, 0, false);
+        WrappingIconPanel component = 
+        	(WrappingIconPanel) tree.getCellRenderer().getTreeCellRendererComponent(tree, "something", false, false, false, 0, false);
         assertEquals(bold, component.getFont());
         assertEquals(bold, component.delegate.getFont());
     }
@@ -274,8 +270,7 @@ public class TreeRendererTest extends InteractiveTestCase {
         };
         tree.setCellRenderer(new DefaultTreeRenderer(converter));
         JXTree xtree = new JXTree(model);
-        xtree.setHighlighters(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, Color.RED,
-                Color.YELLOW));
+        xtree.setHighlighters(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, Color.RED, Color.YELLOW));
         xtree.setRolloverEnabled(true);
         // share renderer
         xtree.setCellRenderer(tree.getCellRenderer());
@@ -322,8 +317,7 @@ public class TreeRendererTest extends InteractiveTestCase {
         tree.setCellRenderer(xTreeRenderer);
         final JXFrame frame = wrapWithScrollingInFrame(xtree, tree,
                 "orientation - core vs. ext renderer");
-        Action toggleComponentOrientation = new AbstractAction(
-                "toggle orientation") {
+        Action toggleComponentOrientation = new AbstractAction("toggle orientation") {
 
             public void actionPerformed(ActionEvent e) {
                 ComponentOrientation current = frame.getComponentOrientation();
@@ -448,14 +442,13 @@ public class TreeRendererTest extends InteractiveTestCase {
     }
 
 
-    /**
- * @return
- */
-private TreeModel createComponentHierarchyModel() {
-    JXFrame frame = new JXFrame("dummy");
-    frame.add(new JScrollPane(new JXTree()));
-    return new ComponentTreeTableModel(frame);
-}
-
+	/**
+	 * @return
+	 */
+	private TreeModel createComponentHierarchyModel() {
+		JXFrame frame = new JXFrame("dummy");
+		frame.add(new JScrollPane(new JXTree()));
+		return new ComponentTreeTableModel(frame);
+	}
 
 }
