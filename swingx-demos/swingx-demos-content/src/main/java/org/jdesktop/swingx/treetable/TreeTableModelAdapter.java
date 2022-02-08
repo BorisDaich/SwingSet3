@@ -10,7 +10,6 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.tree.TreeModelSupport;
-import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
  * Adapts a TreeModel to a TreeTableModel. The per-node columnar data is
@@ -154,8 +153,7 @@ public class TreeTableModelAdapter implements TreeTableModel {
      * @param nodeModel  the NodelModel which decorates the columnar properties.
      * @param mediator the NodeChangedMediator responsible for nodeChanged notification.
      */
-    public TreeTableModelAdapter(TreeModel treeModel, NodeModel nodeModel,
-            NodeChangedMediator mediator) {
+    public TreeTableModelAdapter(TreeModel treeModel, NodeModel nodeModel, NodeChangedMediator mediator) {
         this.nodeModel = nodeModel;
         this.treeModel = treeModel;
         treeModelSupport = new TreeModelSupport(this);
@@ -263,8 +261,8 @@ public class TreeTableModelAdapter implements TreeTableModel {
      * is editable. Does nothing if the cell is not editable.
      */
     public void setValueAt(Object value, Object node, int column) {
-        if (!isCellEditable(node, column))
-            return;
+        if (!isCellEditable(node, column)) return;
+        
         nodeModel.setValueAt(value, node, column);
         mediator.nodeChanged(treeModel, node);
     }
@@ -355,8 +353,7 @@ public class TreeTableModelAdapter implements TreeTableModel {
          * 
          */
         public void treeNodesChanged(TreeModelEvent e) {
-            treeModelSupport.fireChildrenChanged(e.getTreePath(), e
-                    .getChildIndices(), e.getChildren());
+            treeModelSupport.fireChildrenChanged(e.getTreePath(), e.getChildIndices(), e.getChildren());
         }
 
         /**
@@ -364,8 +361,7 @@ public class TreeTableModelAdapter implements TreeTableModel {
          * 
          */
         public void treeNodesInserted(TreeModelEvent e) {
-            treeModelSupport.fireChildrenAdded(e.getTreePath(), e
-                    .getChildIndices(), e.getChildren());
+            treeModelSupport.fireChildrenAdded(e.getTreePath(), e.getChildIndices(), e.getChildren());
         }
 
         /**
@@ -373,8 +369,7 @@ public class TreeTableModelAdapter implements TreeTableModel {
          * 
          */
         public void treeNodesRemoved(TreeModelEvent e) {
-            treeModelSupport.fireChildrenRemoved(e.getTreePath(), e
-                    .getChildIndices(), e.getChildren());
+            treeModelSupport.fireChildrenRemoved(e.getTreePath(), e.getChildIndices(), e.getChildren());
         }
 
         /**
