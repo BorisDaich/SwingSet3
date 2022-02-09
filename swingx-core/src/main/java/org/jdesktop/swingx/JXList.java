@@ -207,7 +207,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 @JavaBean
 @SuppressWarnings("serial") // Superclass is not serializable across versions
-public class JXList extends JList<Object> {
+public class JXList<E> extends JList<E> {
 
     @SuppressWarnings("all")
     private static final Logger LOG = Logger.getLogger(JXList.class.getName());
@@ -248,7 +248,7 @@ public class JXList extends JList<Object> {
      * RolloverController: listens to cell over events and repaints
      * entered/exited rows.
      */
-    private ListRolloverController<JXList> linkController;
+    private ListRolloverController<JXList<E>> linkController;
 
     /** A wrapper around the default renderer enabling decoration. */
     private transient DelegatingRenderer delegatingRenderer;
@@ -259,7 +259,7 @@ public class JXList extends JList<Object> {
 
     private boolean autoCreateRowSorter;
 
-    private RowSorter<? extends ListModel<Object>> rowSorter;
+    private RowSorter<? extends ListModel<E>> rowSorter;
 
     private boolean sortable;
 
@@ -287,7 +287,7 @@ public class JXList extends JList<Object> {
      * @exception IllegalArgumentException   if <code>dataModel</code>
      *                                           is <code>null</code>
      */                                           
-    public JXList(ListModel<?> dataModel) {
+    public JXList(ListModel<E> dataModel) {
         this(dataModel, false);
     }
 
@@ -299,7 +299,7 @@ public class JXList extends JList<Object> {
      * @throws IllegalArgumentException   if <code>listData</code>
      *                                          is <code>null</code>
      */
-    public JXList(Object[] listData) {
+    public JXList(E[] listData) {
         this(listData, false);
     }
 
@@ -312,7 +312,7 @@ public class JXList extends JList<Object> {
      * @throws IllegalArgumentException   if <code>listData</code>
      *                                          is <code>null</code>
      */
-    public JXList(Vector<?> listData) {
+    public JXList(Vector<E> listData) {
         this(listData, false);
     }
 
@@ -338,8 +338,8 @@ public class JXList extends JList<Object> {
      * @throws IllegalArgumentException   if <code>dataModel</code>
      *                                          is <code>null</code>
      */
-    public JXList(ListModel<?> dataModel, boolean autoCreateRowSorter) {
-        super((ListModel<Object>)dataModel);
+    public JXList(ListModel<E> dataModel, boolean autoCreateRowSorter) {
+        super((ListModel<E>)dataModel);
         init(autoCreateRowSorter);
     }
 
@@ -353,7 +353,7 @@ public class JXList extends JList<Object> {
      * @throws IllegalArgumentException   if <code>listData</code>
      *                                          is <code>null</code>
      */
-    public JXList(Object[] listData, boolean autoCreateRowSorter) {
+    public JXList(E[] listData, boolean autoCreateRowSorter) {
         super(listData);
         if (listData == null) 
            throw new IllegalArgumentException("listData must not be null");
@@ -370,7 +370,7 @@ public class JXList extends JList<Object> {
      *  a RowSorter should be created automatically.
      * @throws IllegalArgumentException if <code>listData</code> is <code>null</code>
      */
-    public JXList(Vector<?> listData, boolean autoCreateRowSorter) {
+    public JXList(Vector<E> listData, boolean autoCreateRowSorter) {
         super(listData);
         if (listData == null) 
            throw new IllegalArgumentException("listData must not be null");
@@ -507,7 +507,7 @@ public class JXList extends JList<Object> {
      * @see #createLinkController()
      * @see org.jdesktop.swingx.rollover.RolloverController
      */
-    protected ListRolloverController<JXList> getLinkController() {
+    protected ListRolloverController<JXList<E>> getLinkController() {
         if (linkController == null) {
             linkController = createLinkController();
         }
@@ -522,8 +522,8 @@ public class JXList extends JList<Object> {
      * @see #getLinkController()
      * @see org.jdesktop.swingx.rollover.RolloverController
      */
-    protected ListRolloverController<JXList> createLinkController() {
-        return new ListRolloverController<JXList>();
+    protected ListRolloverController<JXList<E>> createLinkController() {
+        return new ListRolloverController<JXList<E>>();
     }
 
 
@@ -639,8 +639,8 @@ public class JXList extends JList<Object> {
      * 
      * @return the default RowSorter.
      */
-    protected RowSorter<? extends ListModel<Object>> createDefaultRowSorter() {
-        return new ListSortController<ListModel<Object>>(getModel());
+    protected RowSorter<? extends ListModel<E>> createDefaultRowSorter() {
+        return new ListSortController<ListModel<E>>(getModel());
     }
 
     /**
@@ -649,7 +649,7 @@ public class JXList extends JList<Object> {
      * @return the object responsible for sorting
      * @since 1.6
      */
-    public RowSorter<? extends ListModel<Object>> getRowSorter() {
+    public RowSorter<? extends ListModel<E>> getRowSorter() {
         return rowSorter;
     }
 
@@ -665,8 +665,8 @@ public class JXList extends JList<Object> {
      * @param sorter the <code>RowSorter</code>; <code>null</code> turns
      *        sorting off
      */
-    public void setRowSorter(RowSorter<? extends ListModel<Object>> sorter) {
-        RowSorter<? extends ListModel<Object>> oldRowSorter = getRowSorter();
+    public void setRowSorter(RowSorter<? extends ListModel<E>> sorter) {
+        RowSorter<? extends ListModel<E>> oldRowSorter = getRowSorter();
         this.rowSorter = sorter;
         configureSorterProperties();
         firePropertyChange("rowSorter", oldRowSorter, sorter);
@@ -963,7 +963,7 @@ public class JXList extends JList<Object> {
      * @throws IndexOutOfBoundsException if viewIndex < 0 or viewIndex >=
      *         getElementCount()
      */
-    public Object getElementAt(int viewIndex) {
+    public E getElementAt(int viewIndex) {
         return getModel().getElementAt(convertIndexToModel(viewIndex));
     }
 
@@ -982,7 +982,7 @@ public class JXList extends JList<Object> {
      * @see #addListSelectionListener
      */
     @Override
-    public Object getSelectedValue() {
+    public E getSelectedValue() {
         int i = getSelectedIndex();
         return (i == -1) ? null : getElementAt(i);
     }
@@ -1085,7 +1085,7 @@ public class JXList extends JList<Object> {
      * 
      */
     @Override
-    public void setModel(ListModel<Object> model) {
+    public void setModel(ListModel<E> model) {
         super.setModel(model);
         if (getAutoCreateRowSorter()) {
             setRowSorter(createDefaultRowSorter());
@@ -1123,7 +1123,7 @@ public class JXList extends JList<Object> {
      * A component adapter targeted at a JXList.
      */
     protected static class ListAdapter extends ComponentAdapter {
-        private final JXList list;
+        private final JXList<?> list;
 
         /**
          * Constructs a <code>ListAdapter</code> for the specified target
@@ -1131,7 +1131,7 @@ public class JXList extends JList<Object> {
          * 
          * @param component  the target list.
          */
-        public ListAdapter(JXList component) {
+        public ListAdapter(JXList<?> component) {
             super(component);
             list = component;
         }
@@ -1141,7 +1141,7 @@ public class JXList extends JList<Object> {
          * 
          * @return the target component as a {@link org.jdesktop.swingx.JXList}
          */
-        public JXList getList() {
+        public JXList<?> getList() {
             return list;
         }
 
@@ -1400,7 +1400,7 @@ public class JXList extends JList<Object> {
      * 
      * @return the default cell renderer to use with this list.
      */
-    protected ListCellRenderer<Object> createDefaultCellRenderer() {
+    protected ListCellRenderer<E> createDefaultCellRenderer() {
         return new DefaultListRenderer();
     }
 
@@ -1415,7 +1415,7 @@ public class JXList extends JList<Object> {
      * @see DelegatingRenderer
      */
     @Override
-    public ListCellRenderer<Object> getCellRenderer() {
+    public ListCellRenderer<E> getCellRenderer() {
         // DelegatingRenderer implements ListCellRenderer<Object>
         return getDelegatingRenderer();
     }
@@ -1427,7 +1427,7 @@ public class JXList extends JList<Object> {
      * @return the wrapped renderer.
      * @see #setCellRenderer(ListCellRenderer)
      */
-    public ListCellRenderer<Object> getWrappedCellRenderer() {
+    public ListCellRenderer<E> getWrappedCellRenderer() {
         return getDelegatingRenderer().getDelegateRenderer();
     }
     
@@ -1446,9 +1446,9 @@ public class JXList extends JList<Object> {
      * 
      */
     @Override // JList.setCellRenderer(ListCellRenderer<? super E> cellRenderer)
-    public void setCellRenderer(ListCellRenderer<? super Object> renderer) {
+    public void setCellRenderer(ListCellRenderer renderer) {
         // PENDING JW: super fires for very first setting
-        // as defaults are automagically set (by delegatingRenderer
+        // as defaults are automatically set (by delegatingRenderer
         // using this list's factory method) there is no
         // easy way to _not_ force, this isn't working
         // but then ... it's only the very first time around. 
@@ -1470,10 +1470,10 @@ public class JXList extends JList<Object> {
      * 
      * PENDING JW: formally implement UIDependent?
      */
-    public class DelegatingRenderer implements ListCellRenderer<Object>, RolloverRenderer {
+    public class DelegatingRenderer implements ListCellRenderer<E>, RolloverRenderer {
 
     	/** the delegate. */
-        private ListCellRenderer<Object> delegateRenderer;
+        private ListCellRenderer<E> delegateRenderer;
 
         /**
          * Instantiates a DelegatingRenderer with list's default renderer as delegate.
@@ -1489,7 +1489,7 @@ public class JXList extends JList<Object> {
          * @param delegate the delegate to use, if null the list's default is
          *   created and used.
          */
-        public DelegatingRenderer(ListCellRenderer<Object> delegate) {
+        public DelegatingRenderer(ListCellRenderer<E> delegate) {
             setDelegateRenderer(delegate);
         }
 
@@ -1500,7 +1500,7 @@ public class JXList extends JList<Object> {
          * @param delegate the delegate to use, if null the list's default is
          *   created and used.
          */
-        public void setDelegateRenderer(ListCellRenderer<Object> delegate) {
+        public void setDelegateRenderer(ListCellRenderer<E> delegate) {
             if (delegate == null) {
                 delegate = createDefaultCellRenderer();
             }
@@ -1513,7 +1513,7 @@ public class JXList extends JList<Object> {
          * @return the delegate renderer used by this renderer, guaranteed to
          *   not-null.
          */
-        public ListCellRenderer<Object> getDelegateRenderer() {
+        public ListCellRenderer<E> getDelegateRenderer() {
             return delegateRenderer;
         }
 
@@ -1528,7 +1528,7 @@ public class JXList extends JList<Object> {
           * 
           * @param renderer the renderer to update the ui of.
           */
-         private void updateRendererUI(ListCellRenderer<Object> renderer) {
+         private void updateRendererUI(ListCellRenderer<E> renderer) {
              if (renderer == null) return;
              
              Component comp = null;
@@ -1557,7 +1557,7 @@ public class JXList extends JList<Object> {
          * The decorators are not applied if the row is invalid.
          */
 		@Override
-		public Component getListCellRendererComponent(JList<? extends Object> list, Object value, 
+		public Component getListCellRendererComponent(JList<? extends E> list, E value, 
 				int index, boolean isSelected, boolean cellHasFocus) {
 			
 			Component comp = delegateRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -1635,7 +1635,7 @@ public class JXList extends JList<Object> {
         if (delegatingRenderer != null) {
             delegatingRenderer.updateUI();
         } else {
-            ListCellRenderer<Object> renderer = getCellRenderer();
+            ListCellRenderer<E> renderer = getCellRenderer();
             if (renderer instanceof Component) {
                 SwingUtilities.updateComponentTreeUI((Component) renderer);
             }
