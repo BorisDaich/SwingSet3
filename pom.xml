@@ -173,26 +173,23 @@
 Execution sign-artifacts of goal org.apache.maven.plugins:maven-gpg-plugin:3.0.1:sign failed: 
 Cannot invoke "org.apache.maven.plugins.gpg.GpgVersion.toString()" because "gpgVersion" is null -> [Help 1]
       
+Alternative: https://www.simplify4u.org/sign-maven-plugin/
+[INFO] Sign - key not found - skip execution
       
       -->
-	  <plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-gpg-plugin</artifactId>
-		  <version>3.0.1</version>
-		  <executions>
-		    <execution>
-		      <id>sign-artifacts</id>
-		      <phase>verify</phase>
-		      <goals>
-		        <goal>sign</goal>
-		      </goals>
-	          <configuration>
-	            <keyname>${gpg.keyname}</keyname> <!-- 9EB560F2 oder kleingeschrieben auf -->
-	            <passphraseServerId>${gpg.keyname}</passphraseServerId> <!-- keyserver.ubuntu.com -->
-	          </configuration>
-		    </execution>
-		  </executions>
-	  </plugin>
+      <plugin>
+        <groupId>org.simplify4u.plugins</groupId>
+        <artifactId>sign-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>sign</goal>
+                </goals>
+            </execution>
+        </executions>
+      </plugin>
+      
     </plugins>
   </build>
   
