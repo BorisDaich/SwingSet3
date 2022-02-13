@@ -166,6 +166,33 @@
           </gitFlowConfig>
         </configuration>
       </plugin>
+      
+      <!-- see https://central.sonatype.org/publish/publish-maven/#gpg-signed-components use v3.0.1 
+      
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-gpg-plugin:3.0.1:sign (sign-artifacts) on project swingset3: 
+Execution sign-artifacts of goal org.apache.maven.plugins:maven-gpg-plugin:3.0.1:sign failed: 
+Cannot invoke "org.apache.maven.plugins.gpg.GpgVersion.toString()" because "gpgVersion" is null -> [Help 1]
+      
+      
+      -->
+	  <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-gpg-plugin</artifactId>
+		  <version>3.0.1</version>
+		  <executions>
+		    <execution>
+		      <id>sign-artifacts</id>
+		      <phase>verify</phase>
+		      <goals>
+		        <goal>sign</goal>
+		      </goals>
+	          <configuration>
+	            <keyname>${gpg.keyname}</keyname> <!-- 9EB560F2 oder kleingeschrieben auf -->
+	            <passphraseServerId>${gpg.keyname}</passphraseServerId> <!-- keyserver.ubuntu.com -->
+	          </configuration>
+		    </execution>
+		  </executions>
+	  </plugin>
     </plugins>
   </build>
   
