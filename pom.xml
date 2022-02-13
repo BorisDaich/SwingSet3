@@ -6,9 +6,29 @@
   <groupId>io.github.homebeaver</groupId>
   <artifactId>swingset3</artifactId>
   <packaging>pom</packaging> <!-- multi-module project -->
+  <url>https://github.com/homebeaver/SwingSet3</url>
   
   <name>SwingX</name>
   <version>1.6.8-SNAPSHOT</version>
+  
+  <modules>
+    <module>swingx-mavensupport</module>
+    <module>swingx-testsupport</module>
+    <module>swingx-common</module>
+    <module>swingx-autocomplete</module>
+    <module>swingx-action</module>
+    <module>swingx-painters</module>
+    <module>swingx-graphics</module>
+    <module>swingx-plaf</module>
+    <module>swingx-core</module>
+    <module>swingx-all</module>
+    <module>swingx-beaninfo</module>
+  </modules>
+
+  <properties>
+    <project.generatedSourcesDirectory>${project.build.directory}/generated-sources</project.generatedSourcesDirectory>
+    <project.generatedAnnotations>${project.generatedSourcesDirectory}/annotations</project.generatedAnnotations>
+  </properties>
   
   <licenses>
     <license>
@@ -194,25 +214,4 @@
     </dependencies>
   </dependencyManagement>
   
-  <properties>
-    <project.generatedSourcesDirectory>${project.build.directory}/generated-sources</project.generatedSourcesDirectory>
-    <project.generatedAnnotations>${project.generatedSourcesDirectory}/annotations</project.generatedAnnotations>
-  </properties>
-  <modules>
-    <module>swingx-mavensupport</module>
-    <module>swingx-testsupport</module>
-    <module>swingx-common</module>
-    <module>swingx-autocomplete</module>
-    <module>swingx-action</module>
-    <module>swingx-painters</module>
-    <module>swingx-graphics</module>
-    <module>swingx-plaf</module>
-    <module>swingx-core</module>
-    <module>swingx-all</module>
-    <module>swingx-beaninfo</module>
-    <!-- module>swingx-maps</module -->
-    <!-- module>swingx-experimental</module -->
-    <!-- module>swingx-demos</module -->
-  </modules>
-  <url>https://github.com/homebeaver/SwingSet3</url>
 </project>
