@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="/SwingSet3/lib/forms-1.2.1.jar" sourcepath="/SwingSet3/lib/forms-1.2.1-sources.jar"/>
 	<classpathentry kind="lib" path="/SwingSet3/lib/timingframework-1.0.jar"/>
 	<classpathentry kind="lib" path="/SwingSet3/lib/trident-1.3.jar" sourcepath="/SwingSet3/lib/trident-1.3-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-all/1.6.8-SNAPSHOT/swingx-all-1.6.8-SNAPSHOT-complete.jar"/>
+	<classpathentry kind="var" path="M2_REPO/io/github/homebeaver/swingx-all/1.6.8-SNAPSHOT/swingx-all-1.6.8-SNAPSHOT-complete.jar"/>
 	<classpathentry kind="lib" path="/SwingSet3/lib/postgresql-42.3.1.jar" sourcepath="/SwingSet3/lib/postgresql-42.3.1-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
