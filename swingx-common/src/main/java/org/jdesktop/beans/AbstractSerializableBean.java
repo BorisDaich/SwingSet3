@@ -67,6 +67,12 @@ public abstract class AbstractSerializableBean extends AbstractBean implements S
         super(pcs, vcs);
     }
 
+    /**
+     * write Object to Stream
+     * 
+     * @param s OutputStream
+     * @throws IOException
+     */
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
 
@@ -85,6 +91,13 @@ public abstract class AbstractSerializableBean extends AbstractBean implements S
         s.writeObject(null);
     }
 
+    /**
+     * read Object from Stream
+     * 
+     * @param s InputStream
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
         s.defaultReadObject();
 

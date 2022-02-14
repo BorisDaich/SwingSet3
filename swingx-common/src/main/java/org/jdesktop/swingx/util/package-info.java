@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -25,19 +23,7 @@
  * This project has been replaced by the Swing Application Framework (JSR 296).
  * @see https://en.wikipedia.org/wiki/Swing_Application_Framework
  */
-/**Contains utility API required by JDNC's Swing Extensions.
-
-<h2>Package Specification</h2>
-
-<ul>
-  <li><a href="">hyperlink</a>
-</ul>
-
-<h2>Related Documentation</h2>
-
-<ul>
-  <li><a href="">hyperlink</a>
-</ul>
-
-*/
+/**
+ * Contains utility API required by JDNC's Swing Extensions.
+ */
 package org.jdesktop.swingx.util;

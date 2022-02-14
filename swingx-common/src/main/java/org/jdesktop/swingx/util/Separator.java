@@ -2,7 +2,7 @@ package org.jdesktop.swingx.util;
 
 /**
  * A simple separator for adding in between each element in a list.
- * <p>
+ * 
  * <pre>
  * for (String s : strings) {
  *   stringBuilder.append(separator.get().append(s);

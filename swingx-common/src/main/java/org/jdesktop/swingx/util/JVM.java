@@ -24,29 +24,93 @@ import javax.swing.UIManager.LookAndFeelInfo;
 /**
  * Deals with the different version of the Java Virtual Machine. <br>
  */
-@SuppressWarnings("nls")
 public class JVM {
 
-  public final static String JAVA_VERSION = "java.version"; // System Property
+  /**
+   * System Property
+   */
+  public final static String JAVA_VERSION = "java.version";
+  
+  // wg. Failed: Javadoc Validation auf nexus repo, maven-javadoc-plugin macht aus der warnung ein fehler :-(
+  /**
+   * JDK Version
+   */
   public final static int JDK1_0 = 1000;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_1 = 1100;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_2 = 1200;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_3 = 1300;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_4 = 1400;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_5 = 1500;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_6 = 1600;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_6N = 1610;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_7 = 1700;
+  /**
+   * JDK Version
+   */
   public final static int JDK1_8 = 1800;
+  /**
+   * JDK Version
+   */
   public final static int JDK_8  = 8000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_9  = 9000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_10 =10000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_11 =11000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_12 =12000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_13 =13000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_14 =14000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_15 =15000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_16 =16000;
+  /**
+   * JDK Version
+   */
   public final static int JDK_17 =17000;
 
   private static JVM current;
@@ -78,6 +142,8 @@ public class JVM {
 
   /**
    * Constructor for the OS object
+   * 
+   * @param p_JavaVersion String indicating version
    */
   public JVM(String p_JavaVersion) {
 		if (p_JavaVersion.startsWith("17")) {
@@ -131,44 +197,77 @@ public class JVM {
     }
   }
 
+  /**
+   * check JDK
+   * @param p_Version
+   * @return
+   */
   public boolean isOrLater(int p_Version) {
     return jdkVersion >= p_Version;
   }
 
+  /**
+   * check JDK
+   * @return true when jdk is 1.1
+   */
   public boolean isOneDotOne() {
     return jdkVersion == JDK1_1;
   }
 
+  /**
+   * check JDK
+   * @return true when jdk is 1.2
+   */
   public boolean isOneDotTwo() {
     return jdkVersion == JDK1_2;
   }
 
+  /**
+   * check JDK
+   * @return true when jdk is 1.3
+   */
   public boolean isOneDotThree() {
     return jdkVersion == JDK1_3;
   }
 
+  /**
+   * check JDK
+   * @return true when jdk is 1.4
+   */
   public boolean isOneDotFour() {
     return jdkVersion == JDK1_4;
   }
 
+  /**
+   * check JDK
+   * @return true when jdk is 1.5
+   */
   public boolean isOneDotFive() {
     return jdkVersion == JDK1_5;
   }
 
+  /**
+   * check JDK
+   * @return true when jdk is 1.6
+   */
   public boolean isOneDotSix() {
     return jdkVersion == JDK1_6 || isOneDotSixUpdateN();
   }
 
-    /**
-     * Determines if the version of JDK1_6 has Nimbus Look and Feel installed.
-     * 
-     * @return {@code true} if Nimbus is available and the version is 1.6;
-     *         {@code false} otherwise
-     */
-  public boolean isOneDotSixUpdateN() {
-      return jdkVersion == JDK1_6N;
-  }
+	/**
+	 * Determines if the version of JDK1_6 has Nimbus Look and Feel installed.
+	 * 
+	 * @return {@code true} if Nimbus is available and the version is 1.6;
+	 *         {@code false} otherwise
+	 */
+	public boolean isOneDotSixUpdateN() {
+		return jdkVersion == JDK1_6N;
+	}
   
+  /**
+   * check JDK
+   * @return true when jdk is 1.7
+   */
   public boolean isOneDotSeven() {
       return jdkVersion == JDK1_7;
   }

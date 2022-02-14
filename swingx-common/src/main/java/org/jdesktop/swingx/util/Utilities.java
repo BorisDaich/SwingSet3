@@ -518,7 +518,7 @@ public class Utilities {
      * need to guard against headlessExceptions when testing.
      * @return the acceletor mask for shortcuts.
      */
-    /*
+    /* TODO
      *  deprecated(since = "9") It is recommended that CTRL_DOWN_MASK and
      *             {@link #getModifiersEx()} be used instead
      *             ===> META_DOWN_MASK
@@ -532,7 +532,7 @@ public class Utilities {
 Deprecated(since = "10") :
      * It is recommended that extended modifier keys and
      *             {@link #getMenuShortcutKeyMaskEx()} be used instead
-
+TODO
  */
         return Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     }
@@ -988,7 +988,17 @@ widthcheck:  {
         return s.substring(0, idx + 2);
     }
     
+    /**
+     * package name as path
+     */
     public static final String MODULE_PACKAGE_DIR = "org/jdesktop/swingx/";
+    /**
+	 * Resource as InputStream
+     * 
+     * @param clazz
+     * @param resourceName
+     * @return
+     */
 	public static InputStream getResourceAsStream(Class<?> clazz, String resourceName) {
 		
 		if(clazz==null) return getFileAsStream(resourceName);
@@ -1004,10 +1014,7 @@ widthcheck:  {
 			is = getFileAsStream(dir, resourceName);
 			if(is!=null) return is;
 
-//			// this package org.jdesktop.swingx.util as dir
-//			dir = Utilities.class.getPackageName().replace('.', '/')+'/';
-//			is = getFileAsStream(dir, resourceName);
-//			if(is!=null) return is;
+// TODO LOG.info raus
 LOG.info(">>> cannot find file in "+dir + " resourceName " + resourceName + " <<< PackageName as dir");
 
 			if(dir.startsWith(MODULE_PACKAGE_DIR)) {
@@ -1041,6 +1048,13 @@ LOG.info(">>> cannot find file in "+src+MODULE_PACKAGE_DIR + " resourceName " + 
 		return is;
 	}
 
+	/**
+	 * File as InputStream
+	 * 
+	 * @param dir
+	 * @param resourceName
+	 * @return
+	 */
 	public static InputStream getFileAsStream(String dir, String resourceName) {
 		File path = new File(dir);
 		if (!path.exists()) {

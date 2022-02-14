@@ -102,11 +102,10 @@ public final class WindowUtils {
     }
     
     /**
-     * <p/>
      * Returns the <code>Point</code> at which a window should be placed to
      * center that window on the given desktop.
-     * </p>
-     * <p/>
+     * 
+     * <p>
      * Some thought was taken as to whether to implement a method such as this,
      * or to simply make a method that, given a window, will center it.  It was
      * decided that it is better to not alter an object within a method.
@@ -134,11 +133,9 @@ public final class WindowUtils {
     }
 
     /**
-     * <p/>
      * Returns the <code>Point</code> at which a window should be placed in
      * order to be staggered slightly from another &quot;origin&quot; window to
      * ensure that the title areas of both windows remain visible to the user.
-     * </p>
      *
      * @param originWindow Window from which the staggered location will be calculated
      *
@@ -153,6 +150,11 @@ public final class WindowUtils {
         return origin;
     }
 
+    /**
+     * find Window for component
+     * @param c Component
+     * @return
+     */
     public static Window findWindow(Component c) {
         if (c == null) {
             return JOptionPane.getRootFrame();
@@ -163,6 +165,12 @@ public final class WindowUtils {
         }
     }
 
+    /**
+     * get all Components inside Container
+     * 
+     * @param c Container
+     * @return
+     */
     public static List<Component> getAllComponents(final Container c) {
         Component[] comps = c.getComponents();
         List<Component> compList = new ArrayList<Component>();

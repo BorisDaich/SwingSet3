@@ -42,10 +42,27 @@ public final class ShapeUtils {
     private ShapeUtils() {
     }
 
+    /**
+     * Generates a polygon shape with insideRadius = 0
+     * 
+     * @param sides
+     * @param outsideRadius
+     * @param normalize
+     * @return
+     */
     public static Shape generatePolygon(int sides, int outsideRadius, boolean normalize) {
         return generatePolygon(sides, outsideRadius, 0, normalize);
     }
 
+    /**
+     * Generates a polygon shape
+     * 
+     * @param sides
+     * @param outsideRadius
+     * @param insideRadius
+     * @param normalize
+     * @return
+     */
     public static Shape generatePolygon(int sides, int outsideRadius, int insideRadius, boolean normalize) {
         Shape shape = generatePolygon(sides, outsideRadius, insideRadius);
         if (normalize) {
@@ -56,6 +73,14 @@ public final class ShapeUtils {
         return shape;
     }
 
+    /**
+     * Generates a polygon shape
+     * 
+     * @param sides
+     * @param outsideRadius
+     * @param insideRadius
+     * @return
+     */
     public static Shape generatePolygon(int sides, int outsideRadius, int insideRadius) {
         if (sides < 3) {
             return new Ellipse2D.Float(0, 0, 10, 10);
@@ -77,10 +102,24 @@ public final class ShapeUtils {
         return poly;
     }
 
+    /**
+     * Generates a shape from char
+     * 
+     * @param font Font
+     * @param ch char
+     * @return
+     */
     public static Shape generateShapeFromText(Font font, char ch) {
         return generateShapeFromText(font, String.valueOf(ch));
     }
 
+    /**
+     * Generates a shape from String
+     * 
+     * @param font
+     * @param string
+     * @return
+     */
     public static Shape generateShapeFromText(Font font, String string) {
         BufferedImage img = GraphicsUtilities.createCompatibleTranslucentImage(1, 1);
         Graphics2D g2 = img.createGraphics();

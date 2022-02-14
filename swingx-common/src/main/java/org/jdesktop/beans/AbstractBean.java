@@ -58,8 +58,6 @@ import java.beans.VetoableChangeSupport;
  * }
  * </code></pre>
  * 
- * </p>
- * 
  * <p>
  * You will notice that "getFoo()" is used in the setFoo method rather than
  * accessing "foo" directly for the gets. This is done intentionally so that if
@@ -117,24 +115,19 @@ import java.beans.VetoableChangeSupport;
  *  }
  * </code></pre>
  * 
- * </p>
  * <p>
- * {@code AbstractBean} is not {@link java.io.Serializable}. Special care must
- * be taken when creating {@code Serializable} subclasses, as the
- * {@code Serializable} listeners will not be saved.  Subclasses will need to 
- * manually save the serializable listeners.  The {@link AbstractSerializableBean}
- * is {@code Serializable} and already handles the listeners correctly.  If 
- * possible, it is recommended that {@code Serializable} beans should extend
- * {@code AbstractSerializableBean}.  If it is not possible, the
- * {@code AbstractSerializableBean} bean implementation provides details on
+ * AbstractBean is not Serializable. Special care must be taken when creating Serializable subclasses, 
+ * as the Serializable listeners will not be saved.  
+ * Subclasses will need to manually save the serializable listeners.  
+ * The AbstractSerializableBean is {@code Serializable} and already handles the listeners correctly.  
+ * If possible, it is recommended that {@code Serializable} beans should extend {@code AbstractSerializableBean}. 
+ * If it is not possible, the {@code AbstractSerializableBean} bean implementation provides details on
  * how to correctly serialize an {@code AbstractBean} subclass.
  * </p>
  * 
  * @see AbstractSerializableBean
- * @status REVIEWED
  * @author rbair
  */
-@SuppressWarnings("nls")
 public abstract class AbstractBean {
 	
     /**
@@ -156,9 +149,12 @@ public abstract class AbstractBean {
         vcs = new VetoableChangeSupport(this);
     }
     
-    /** 
+    /**
      * Creates a new instance of AbstractBean, using the supplied PropertyChangeSupport and
      * VetoableChangeSupport delegates. Neither of these may be null.
+     * 
+     * @param pcs PropertyChangeSupport
+     * @param vcs VetoableChangeSupport
      */
     protected AbstractBean(PropertyChangeSupport pcs, VetoableChangeSupport vcs) {
         if (pcs == null) {
@@ -215,7 +211,7 @@ public abstract class AbstractBean {
      * 
      * <pre>
      * PropertyChangeListener[] listeners = bean.getPropertyChangeListeners();
-     * for (int i = 0; i < listeners.length; i++) {
+     * for (int i = 0; i &lt; listeners.length; i++) {
      *     if (listeners[i] instanceof PropertyChangeListenerProxy) {
      *     PropertyChangeListenerProxy proxy = 
      *                    (PropertyChangeListenerProxy)listeners[i];
@@ -391,7 +387,7 @@ public abstract class AbstractBean {
     /**
      * Returns the list of VetoableChangeListeners. If named vetoable change listeners
      * were added, then VetoableChangeListenerProxy wrappers will returned
-     * <p>
+     * 
      * @return List of VetoableChangeListeners and VetoableChangeListenerProxys
      *         if named property change listeners were added.
      */
@@ -413,8 +409,7 @@ public abstract class AbstractBean {
      * @param listener  The VetoableChangeListener to be added
      */
 
-    public final void addVetoableChangeListener(String propertyName,
-                VetoableChangeListener listener) {
+    public final void addVetoableChangeListener(String propertyName, VetoableChangeListener listener) {
         vcs.addVetoableChangeListener(propertyName, listener);
     }
 

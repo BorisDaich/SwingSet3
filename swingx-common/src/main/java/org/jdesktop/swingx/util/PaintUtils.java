@@ -38,51 +38,76 @@ import java.lang.reflect.Method;
  * @author joshua.marinacci@sun.com
  * @author Karl George Schaefer
  */
-@SuppressWarnings("nls")
 public class PaintUtils {
+    /**
+     * BLUE_EXPERIENCE GradientPaint
+     */
     public static final GradientPaint BLUE_EXPERIENCE = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(168, 204, 241),
             new Point2D.Double(0, 1),
             new Color(44, 61, 146));
+    /**
+     * MAC_OSX_SELECTED GradientPaint
+     */
     public static final GradientPaint MAC_OSX_SELECTED = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(81, 141, 236),
             new Point2D.Double(0, 1),
             new Color(36, 96, 192));
+    /**
+     * MAC_OSX GradientPaint
+     */
     public static final GradientPaint MAC_OSX = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(167, 210, 250),
             new Point2D.Double(0, 1),
             new Color(99, 147, 206));
+    /**
+     * AERITH GradientPaint
+     */
     public static final GradientPaint AERITH = new GradientPaint(
             new Point2D.Double(0, 0),
             Color.WHITE,
             new Point2D.Double(0, 1),
             new Color(64, 110, 161));
+    /**
+     * GRAY GradientPaint
+     */
     public static final GradientPaint GRAY = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(226, 226, 226),
             new Point2D.Double(0, 1),
             new Color(250, 248, 248));
+    /**
+     * RED_XP GradientPaint
+     */
     public static final GradientPaint RED_XP = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(236, 81, 81),
             new Point2D.Double(0, 1),
             new Color(192, 36, 36));
+    /**
+     * NIGHT_GRAY GradientPaint
+     */
     public static final GradientPaint NIGHT_GRAY = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(102, 111, 127),
             new Point2D.Double(0, 1),
             new Color(38, 45, 61));
+    /**
+     * NIGHT_GRAY_LIGHT GradientPaint
+     */
     public static final GradientPaint NIGHT_GRAY_LIGHT = new GradientPaint(
             new Point2D.Double(0, 0),
             new Color(129, 138, 155),
             new Point2D.Double(0, 1),
             new Color(58, 66, 82));
-    
-    
-    //originally included in LinearGradientPainter
+      
+    /**
+     * ORANGE_DELIGHT GradientPaint
+     * originally included in LinearGradientPainter
+     */
     public static final Paint ORANGE_DELIGHT = new LinearGradientPaint(
             new Point2D.Double(0, 0),
             new Point2D.Double(1, 0),
@@ -93,7 +118,10 @@ public class PaintUtils {
                 new Color(243, 133, 0),
                 new Color(254, 124, 0)});
     
-    //originally included in LinearGradientPainter
+    /**
+     * BLACK_STAR GradientPaint
+     * originally included in LinearGradientPainter
+     */
     public static final Paint BLACK_STAR = new LinearGradientPaint(
             new Point2D.Double(0, 0),
             new Point2D.Double(1, 0),
@@ -107,7 +135,8 @@ public class PaintUtils {
     private PaintUtils() {
     }
     
-    /** Resizes a gradient to fill the width and height available. If the
+    /**
+     * Resizes a gradient to fill the width and height available. If the
      * gradient is left to right it will be resized to fill the entire width.
      * If the gradient is top to bottom it will be resized to fill the entire
      * height. If the gradient is on an angle it will be resized to go from
@@ -124,7 +153,11 @@ public class PaintUtils {
      * an exception. If the gradient cannot be resized due to other errors the
      * original paint will be returned unmodified. It will not throw an
      * exception.
-     *
+     * 
+     * @param p Paint
+     * @param width
+     * @param height
+     * @return
      */
     public static Paint resizeGradient(Paint p, int width, int height) {
         if(p == null) return p;
