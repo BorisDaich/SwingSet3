@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,7 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.security.AccessControlException;
+import java.security.AccessControlException; // Deprecated forRemoval since="17"
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,33 +41,40 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 
-//import org.jdesktop.swing.Application;
-
-
 /**
  * An action which will invoke an http POST operation.
  *
  * @author Mark Davidson
  */
 public class ServerAction extends AbstractAction {
+	
     // Server action support
-    private static final Logger LOG = Logger.getLogger(ServerAction.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(ServerAction.class.getName());
     private static final String PARAMS = "action-params";
     private static final String HEADERS = "action-headers";
     private static final String URL = "action-url";
 
     private static final String URL_CACHE = "_URL-CACHE__";
 
+    /**
+     * Creates an {@code Action} with a default name.
+     */
     public ServerAction() {
         this("action");
     }
 
+    /**
+     * Creates an {@code Action} with a specified name.
+     * 
+     * @param name
+     */
     public ServerAction(String name) {
         super(name);
     }
 
     /**
+     * Creates an {@code Action} with the specified name and command.
+     * 
      * @param name display name of the action
      * @param command the value of the action command key
      */
@@ -77,11 +82,19 @@ public class ServerAction extends AbstractAction {
         this(name, command, null);
     }
 
+    /**
+     * Creates an {@code Action} with the specified name and small icon.
+     * 
+     * @param name
+     * @param icon
+     */
     public ServerAction(String name, Icon icon) {
         super(name, icon);
     }
 
     /**
+     * Creates an {@code Action} with the specified name, command and small icon.
+     * 
      * @param name display name of the action
      * @param command the value of the action command key
      * @param icon icon to display
@@ -93,7 +106,7 @@ public class ServerAction extends AbstractAction {
 
     /**
      * Set the url for the action.
-     * <p>
+     *
      * @param url a string representation of the url
      */
     public void setURL(String url) {
@@ -115,8 +128,10 @@ public class ServerAction extends AbstractAction {
     }
 
     /**
-     * Adds a name value pair which represents a url parameter in an http
-     * POST request.
+     * Adds a name value pair which represents a url parameter in an http POST request.
+     * 
+     * @param name
+     * @param value
      */
     public void addParam(String name, String value) {
         Map<String, String> params = getParams();
@@ -129,6 +144,7 @@ public class ServerAction extends AbstractAction {
 
     /**
      * Return a parameter value corresponding to name or null if it doesn't exist.
+     * @return param value
      */
     public String getParamValue(String name) {
         Map<String, String> params = getParams();
@@ -137,6 +153,7 @@ public class ServerAction extends AbstractAction {
 
     /**
      * Return a set of parameter names or null if there are no params
+     * @return param key names
      */
     public Set<String> getParamNames() {
         Map<String, String> params = getParams();
@@ -156,6 +173,9 @@ public class ServerAction extends AbstractAction {
      * Adds a name value pair which represents a url connection request property.
      * For example, name could be "Content-Type" and the value could be
      * "application/x-www-form-urlencoded"
+     * 
+     * @param name key
+     * @param value
      */
     public void addHeader(String name, String value) {
         Map<String, String> map = getHeaders();
@@ -168,6 +188,9 @@ public class ServerAction extends AbstractAction {
 
     /**
      * Return a header value corresponding to name or null if it doesn't exist.
+     * 
+     * @param name
+     * @return header value
      */
     public String getHeaderValue(String name) {
         Map<String, String> headers = getHeaders();
@@ -176,6 +199,7 @@ public class ServerAction extends AbstractAction {
 
     /**
      * Return a set of parameter names or null if there are no params
+     * @return header keys
      */
     public Set<String> getHeaderNames() {
         Map<String, String> headers = getHeaders();

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -53,6 +51,9 @@ public class CompositeAction extends AbstractActionExt {
         this("CompositeAction");
     }
 
+    /**
+     * @param name display name of the action
+     */
     public CompositeAction(String name) {
         super(name);
     }
@@ -65,6 +66,10 @@ public class CompositeAction extends AbstractActionExt {
         super(name, command);
     }
 
+    /**
+     * @param name display name of the action
+     * @param icon icon to display
+     */
     public CompositeAction(String name, Icon icon) {
         super(name, icon);
     }
@@ -81,6 +86,8 @@ public class CompositeAction extends AbstractActionExt {
     /**
      * Add an action id to the action list. This action will be invoked 
      * when this composite action is invoked.
+     * 
+     * @param id
      */
     @SuppressWarnings("unchecked")
     public void addAction(String id) {

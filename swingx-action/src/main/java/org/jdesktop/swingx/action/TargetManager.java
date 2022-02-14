@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.action;
 
 import java.awt.Component;
@@ -33,8 +30,6 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JComponent;
-
-
 
 /**
  * The target manager dispatches commands to {@link Targetable} objects
@@ -100,6 +95,8 @@ public class TargetManager {
 
     /**
      * Return the singleton instance.
+     * 
+     * @return the TargetManager singleton
      */
     public static TargetManager getInstance() {
         if (INSTANCE == null) {
@@ -133,6 +130,7 @@ public class TargetManager {
 
     /**
      * Appends the target to the target list.
+     * 
      * @param target the targeted object to add
      */
     public void addTarget(Targetable target) {
@@ -141,6 +139,8 @@ public class TargetManager {
 
     /**
      * Remove the target from the list
+     * 
+     * @param target
      */
     public void removeTarget(Targetable target) {
         if (targetList != null) {
@@ -196,10 +196,20 @@ public class TargetManager {
         return target;
     }
 
+    /**
+     * register a PropertyChangeListener
+     * 
+     * @param listener
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
 
+    /**
+     * remove a PropertyChangeListener
+     * 
+     * @param listener
+     */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(listener);
     }

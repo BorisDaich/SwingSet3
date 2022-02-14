@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -60,7 +58,7 @@
  * Application instance which manages an application global set of actions.
  * <p>
  * These are the key classes or the actions architecture:
- * <p>
+ * 
  * <dl>
  * <dt> {@link org.jdesktop.swingx.action.ActionManager}</dt>
  * <dd> A repository of all shared actions in the application.

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.action;
 
 import javax.swing.AbstractAction;
@@ -35,20 +32,45 @@ import javax.swing.KeyStroke;
  */
 public class ActionFactory {
 
-    /**
+    /*
      * Factory Methods for creating BoundActions
      */
-    public static BoundAction createBoundAction(String id, String name,
-                                                String mnemonic) {
+	
+	/**
+     * constructs a BoundAction
+	 * 
+	 * @param id
+	 * @param name
+	 * @param mnemonic
+	 * @return BoundAction
+	 */
+    public static BoundAction createBoundAction(String id, String name, String mnemonic) {
         return createBoundAction(id, name, mnemonic, false);
     }
 
-    public static BoundAction createBoundAction(String id, String name,
-                                                String mnemonic, boolean toggle) {
+    /**
+     * constructs a BoundAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @param toggle
+     * @return BoundAction
+     */
+    public static BoundAction createBoundAction(String id, String name, String mnemonic, boolean toggle) {
         return createBoundAction(id, name, mnemonic, toggle, null);
     }
 
-
+    /**
+     * constructs a BoundAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @param toggle
+     * @param group
+     * @return BoundAction
+     */
     public static BoundAction createBoundAction(String id, String name,
                                                 String mnemonic, boolean toggle,
                                                 String group) {
@@ -56,20 +78,46 @@ public class ActionFactory {
                                             mnemonic, toggle, group);
     }
 
-    /**
+    /*
      * Factory Methods for creating <code>CompositeAction</code>
      * @see CompositeAction
      */
-    public static CompositeAction createCompositeAction(String id, String name,
-                                                        String mnemonic) {
+    
+    /**
+     * constructs a CompositeAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @return CompositeAction
+     */
+    public static CompositeAction createCompositeAction(String id, String name, String mnemonic) {
         return createCompositeAction(id, name, mnemonic, false);
     }
 
-    public static CompositeAction createCompositeAction(String id, String name,
-                                                        String mnemonic, boolean toggle) {
+    /**
+     * constructs a CompositeAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @param toggle
+     * @return CompositeAction
+     */
+    public static CompositeAction createCompositeAction(String id, String name, String mnemonic, boolean toggle) {
         return createCompositeAction(id, name, mnemonic, toggle, null);
     }
 
+    /**
+     * constructs a CompositeAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @param toggle
+     * @param group
+     * @return CompositeAction
+     */
     public static CompositeAction createCompositeAction(String id, String name,
                                                         String mnemonic, boolean toggle,
                                                         String group) {
@@ -77,9 +125,15 @@ public class ActionFactory {
                                                 mnemonic, toggle, group);
     }
 
-
-    public static ServerAction createServerAction(String id, String name,
-                                                  String mnemonic) {
+    /**
+     * constructs a ServerAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @return ServerAction
+     */
+    public static ServerAction createServerAction(String id, String name, String mnemonic) {
         ServerAction action = new ServerAction(name, id);
         if (mnemonic != null && !mnemonic.equals("")) {
             action.putValue(Action.MNEMONIC_KEY, (int) mnemonic.charAt(0));
@@ -88,28 +142,61 @@ public class ActionFactory {
     }
 
 
-    /**
+    /*
      * These methods are usefull for creating targetable actions
+     */
+    
+    /**
+     * constructs a TargetableAction
+     * 
+     * @param id
+     * @param name
+     * @return TargetableAction
      */
     public static TargetableAction createTargetableAction(String id, String name) {
         return createTargetableAction(id, name, null);
     }
 
-    public static TargetableAction createTargetableAction(String id, String name,
-                                                          String mnemonic) {
+    /**
+     * constructs a TargetableAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @return TargetableAction
+     */
+    public static TargetableAction createTargetableAction(String id, String name, String mnemonic) {
         return createTargetableAction(id, name, mnemonic, false);
     }
 
+    /**
+     * constructs a TargetableAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @param toggle
+     * @return TargetableAction
+     */
     public static TargetableAction createTargetableAction(String id, String name,
                                                           String mnemonic, boolean toggle) {
         return createTargetableAction(id, name, mnemonic, toggle, null);
     }
 
+    /**
+     * constructs a TargetableAction
+     * 
+     * @param id
+     * @param name
+     * @param mnemonic
+     * @param toggle
+     * @param group
+     * @return TargetableAction
+     */
     public static TargetableAction createTargetableAction(String id, String name,
                                                           String mnemonic, boolean toggle,
                                                           String group) {
-        return (TargetableAction)configureAction(new TargetableAction(name, id),
-                                                 mnemonic, toggle, group);
+        return (TargetableAction)configureAction(new TargetableAction(name, id), mnemonic, toggle, group);
     }
 
     private static Action configureAction(AbstractActionExt action,
@@ -133,9 +220,13 @@ public class ActionFactory {
      * Add additional attributes to the action. If any of these attributes
      * are null then they will still be set on the action. Many of these
      * attributes map to the set methods on <code>AbstractActionExt</code>
-     *
-     * @see AbstractActionExt
+     * 
      * @param action the action which will all the attributes will be applied
+     * @param shortDesc
+     * @param longDesc
+     * @param smallIcon
+     * @param largeIcon
+     * @param accel
      */
     public static void decorateAction(AbstractAction action,
                                       String shortDesc, String longDesc,

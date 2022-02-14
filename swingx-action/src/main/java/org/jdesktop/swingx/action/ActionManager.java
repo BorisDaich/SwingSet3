@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,7 +39,7 @@ import javax.swing.ActionMap;
  * on BoundActions.
  * <p>
  * A typical use case of the ActionManager is:
- * <p>
+ * 
  *  <pre>
  *   ActionManager manager = ActionManager.getInstance();
  *
@@ -57,7 +55,7 @@ import javax.swing.ActionMap;
  * JCheckBox or similar widget. For such actions the registered method is
  * invoked with an additional parameter indicating the selected state of
  * the widget. For example, for the callback handler:
- *<p>
+ *
  * <pre>
  *  public class Handler {
  *      public void stateChanged(boolean newState);
@@ -118,6 +116,7 @@ public class ActionManager extends ActionMap {
 
     /**
      * Sets the ActionManager instance.
+     * @param manager the ActionManager instance
      */
     public static void setInstance(ActionManager manager) {
         INSTANCE = manager;
@@ -143,6 +142,11 @@ public class ActionManager extends ActionMap {
         return new HashSet<Object>(Arrays.asList(keys));
     }
 
+    /**
+     * Adds an action to the ActionManager
+     * @param action Action to be managed
+     * @return the action that was added
+     */
     public Action addAction(Action action) {
         return addAction(action.getValue(Action.ACTION_COMMAND_KEY), action);
     }
@@ -358,6 +362,8 @@ public class ActionManager extends ActionMap {
 
     /**
      * Test to determine if the action is a <code>TargetableAction</code>
+     * @param id
+     * @return true if action is a <code>TargetableAction</code>
      */
     public boolean isTargetableAction(Object id) {
         return (getTargetableAction(id) != null);
@@ -365,13 +371,17 @@ public class ActionManager extends ActionMap {
 
     /**
      * Test to determine if the action is a <code>BoundAction</code>
+     * @param id
+     * @return true if action is a <code>BoundAction</code>
      */
     public boolean isBoundAction(Object id) {
         return (getBoundAction(id) != null);
     }
 
     /**
-     * Test to determine if the action is a <code>BoundAction</code>
+     * Test to determine if the action is a <code>CompositeAction</code>
+     * @param id
+     * @return true if action is a <code>CompositeAction</code>
      */
     public boolean isCompositeAction(Object id) {
         return (getCompositeAction(id) != null);
@@ -379,6 +389,9 @@ public class ActionManager extends ActionMap {
 
     /**
      * Test to determine if the action is a <code>ServerAction</code>
+     * 
+     * @param id action
+     * @return true if action is a <code>ServerAction</code>
      */
     public boolean isServerAction(Object id) {
         return (getServerAction(id) != null);

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -47,8 +45,8 @@ import javax.swing.JToolBar;
 /**
  * Creates user interface elements based on action ids and lists of action ids.
  * All action ids must represent actions managed by the ActionManager.
- * <p>
- * <h3>Action Lists</h3>
+ * 
+ * <h2>Action Lists</h2>
  * Use the createXXX(List) methods to construct containers of actions like menu 
  * bars, menus, popups and toolbars from actions represented as action ids in a 
  * <i>java.util.List</i>. Each element in the action-list can be one of 3 types:
@@ -58,12 +56,13 @@ import javax.swing.JToolBar;
  * <li>java.util.List: represents a submenu. See the note below which describes 
  * the configuration of menus. 
  * </li>
+ * </ul>
  * The order of elements in an action-list determines the arrangement of the ui 
  * components which are constructed from the action-list.
  * <p>
  * For a menu or submenu, the first element in the action-list represents a menu 
  * and subsequent elements represent menu items or separators (if null). 
- * <p>
+ * </p><p>
  * This class can be used as a general component factory which will construct
  * components from Actions if the <code>create&lt;comp&gt;(Action,...)</code>
  * methods are used.
@@ -113,8 +112,8 @@ public class ActionContainerFactory {
     }
 
     /**
-     * Sets the ActionManager instance that will be used by this
-     * ActionContainerFactory
+     * Sets the ActionManager instance that will be used by this ActionContainerFactory
+     * @param manager the ActionManager
      */
     public void setActionManager(ActionMap manager) {
         this.manager = manager;
@@ -479,10 +478,11 @@ public class ActionContainerFactory {
     }
 
     /**
+     * method to configure a button from the given AbstractActionExt.
      * 
      * @param button
-     * @param a
-     * @param group
+     * @param a action
+     * @param group the button should be added to.
      */
     public void configureButton(JToggleButton button, AbstractActionExt a, ButtonGroup group) {
        configureSelectableButton(button, a, group);
@@ -502,7 +502,7 @@ public class ActionContainerFactory {
      * PENDING: think about automated unconfig.
      * 
      * @param button where selected makes sense
-     * @param a
+     * @param a action
      * @param group the button should be added to.
      * @throws IllegalArgumentException if the given action doesn't have the state flag set. 
      * 

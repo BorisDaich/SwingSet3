@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,8 +37,12 @@ import javax.swing.AbstractAction;
  * @author joshy (original version)
  */
 public class OpenBrowserAction extends AbstractAction {
+	
     private static Logger log = Logger.getLogger(OpenBrowserAction.class.getName());
 
+    /**
+     * current URI
+     */
     private URI uri;
     
     /** Creates a new instance of OpenBrowserAction */

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.action;
 
 import java.awt.event.ActionEvent;
@@ -51,6 +48,7 @@ import javax.swing.event.EventListenerList;
  * @author Karl Schaefer (serialization support)
  */
 public class BoundAction extends AbstractActionExt {
+	
     private static final Logger LOG = Logger.getLogger(BoundAction.class .getName());
     
     // Holds the listeners
@@ -60,6 +58,9 @@ public class BoundAction extends AbstractActionExt {
         this("BoundAction");
     }
 
+    /**
+     * @param name display name of the action
+     */
     public BoundAction(String name) {
         super(name);
     }
@@ -72,6 +73,10 @@ public class BoundAction extends AbstractActionExt {
         super(name, command);
     }
 
+    /**
+     * @param name display name of the action
+     * @param icon icon to display
+     */
     public BoundAction(String name, Icon icon) {
         super(name, icon);
     }
@@ -199,30 +204,48 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * Add an action listener which will be invoked when this action is invoked.
+     * @param listener
      */
     public void addActionListener(ActionListener listener) {
         addListener(ActionListener.class, listener);
     }
 
+    /**
+     * Remove an action listener
+     * @param listener
+     */
     public void removeActionListener(ActionListener listener) {
         removeListener(ActionListener.class, listener);
     }
 
+    /**
+     * get all ActionListeners
+     * @return an array of listeners
+     */
     public ActionListener[] getActionListeners() {
         return (ActionListener[])getListeners(ActionListener.class);
     }
 
     /**
      * Add an item listener which will be invoked for toggle actions.
+     * @param listener
      */
     public void addItemListener(ItemListener listener) {
         addListener(ItemListener.class, listener);
     }
 
+    /**
+     * Remove an item listener
+     * @param listener
+     */
     public void removeItemListener(ItemListener listener) {
         removeListener(ItemListener.class, listener);
     }
 
+    /**
+     * get all ItemListeners
+     * @return an array of listeners
+     */
     public ItemListener[] getItemListeners() {
         return (ItemListener[])getListeners(ItemListener.class);
     }
@@ -231,6 +254,8 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * Callback for command actions.
+     * 
+     * @param evt the event to be processed
      */
     @Override
     public void actionPerformed(ActionEvent evt) {
@@ -244,6 +269,8 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * Callback for toggle actions.
+     * 
+     * @param evt the event to be processed
      */
     @Override
     public void itemStateChanged(ItemEvent evt) {
@@ -266,6 +293,11 @@ public class BoundAction extends AbstractActionExt {
         }
     }
 
+    /**
+     * write observed Objects to stream
+     * @param s
+     * @throws IOException
+     */
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
 
@@ -302,6 +334,11 @@ public class BoundAction extends AbstractActionExt {
         s.writeObject(null);
     }
 
+    /**
+     * read Objects from stream
+     * @param s
+     * @throws IOException
+     */
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream s) throws ClassNotFoundException,
             IOException {

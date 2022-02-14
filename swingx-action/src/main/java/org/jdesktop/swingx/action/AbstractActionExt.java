@@ -64,6 +64,7 @@ public abstract class AbstractActionExt extends AbstractAction implements ItemLi
     
     /**
      * Copy constructor copies the state.
+     * @param action
      */
     public AbstractActionExt(AbstractActionExt action) {
         Object[] keys = action.getKeys();
@@ -79,10 +80,21 @@ public abstract class AbstractActionExt extends AbstractAction implements ItemLi
         }
     }
 
+    /**
+     * Constructs an Action with the label
+     * 
+     * @param name
+     */
     public AbstractActionExt(String name) {
         super(name);
     }
 
+    /**
+     * Constructs an Action with the label and icon
+     * 
+     * @param name
+     * @param icon
+     */
     public AbstractActionExt(String name, Icon icon) {
         super(name, icon);
     }
@@ -230,6 +242,10 @@ public abstract class AbstractActionExt extends AbstractAction implements ItemLi
         return (String)getValue(Action.NAME);
     }
 
+    /**
+     * set mnemonic key
+     * @param mnemonic
+     */
     public void setMnemonic(String mnemonic) {
         if (mnemonic != null && mnemonic.length() > 0) {
             putValue(Action.MNEMONIC_KEY, (int) mnemonic.charAt(0));
@@ -320,11 +336,16 @@ public abstract class AbstractActionExt extends AbstractAction implements ItemLi
     /**
      * Sets the group identity of the state action. This is used to
      * identify the action as part of a button group.
+     * @param group the group identity
      */
     public void setGroup(Object group) {
         putValue(GROUP, group);
     }
 
+    /**
+     * Gets the group identity of the state action. 
+     * @return
+     */
     public Object getGroup() {
         return getValue(GROUP);
     }

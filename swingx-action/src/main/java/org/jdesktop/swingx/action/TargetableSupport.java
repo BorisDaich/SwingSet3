@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,8 +16,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.action;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
@@ -31,13 +29,23 @@ import javax.swing.JComponent;
  * @author rbair
  */
 public class TargetableSupport {
+	
     private JComponent component;
     
-    /** Creates a new instance of TargetableSupport */
+    /**
+     * Creates a new instance of TargetableSupport for a component
+     * @param component
+     */
     public TargetableSupport(JComponent component) {
         this.component = component;
     }
     
+    /**
+     * perform a given action <code>command</code>
+     * @param command
+     * @param value ActionEvent source
+     * @return false if <code>command</code> not found in the component ActionMap
+     */
     public boolean doCommand(Object command, Object value) {
         // Look at the internal component first.
         ActionMap map = component.getActionMap();
@@ -49,19 +57,27 @@ public class TargetableSupport {
             }
             else {
                 // XXX should the value represent the event source?
-                action.actionPerformed(new ActionEvent(value, 0,
-                    command.toString()));
+                action.actionPerformed(new ActionEvent(value, 0, command.toString()));
             }
             return true;
         }
         return false;
     }
 
+    /**
+     * get all Commands
+     * @return an array 
+     */
     public Object[] getCommands() {
         ActionMap map = component.getActionMap();
         return map.allKeys();
     }
 
+    /**
+     * find a given command <code>command</code>
+     * @param command
+     * @return true if found
+     */
     public boolean hasCommand(Object command) {
         Object[] commands = getCommands();
         for (int i = 0; i < commands.length; i++) {

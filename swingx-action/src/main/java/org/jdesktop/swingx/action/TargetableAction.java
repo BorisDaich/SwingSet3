@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.action;
 
 import java.awt.event.ActionEvent;
@@ -42,10 +39,18 @@ public class TargetableAction extends AbstractActionExt {
 
     private TargetManager targetManager;
 
+    /**
+     * Creates a TargetableAction with default name
+     */
     public TargetableAction() {
         this("action");
     }
 
+    /**
+     * Creates a TargetableAction
+     * 
+     * @param name
+     */
     public TargetableAction(String name) {
         super(name);
     }
@@ -59,6 +64,7 @@ public class TargetableAction extends AbstractActionExt {
     }
 
     /**
+     * Constructs an Action with a command and icon
      * @param name display name of the action
      * @param command the value of the action command key
      * @param icon icon to display
@@ -67,6 +73,11 @@ public class TargetableAction extends AbstractActionExt {
         super(name, command, icon);
     }
 
+    /**
+     * Constructs an Action with an icon
+     * @param name
+     * @param icon
+     */
     public TargetableAction(String name, Icon icon) {
         super(name, icon);
     }
