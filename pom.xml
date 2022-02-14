@@ -174,7 +174,8 @@ Execution sign-artifacts of goal org.apache.maven.plugins:maven-gpg-plugin:3.0.1
 Cannot invoke "org.apache.maven.plugins.gpg.GpgVersion.toString()" because "gpgVersion" is null -> [Help 1]
       
 Alternative: https://www.simplify4u.org/sign-maven-plugin/
-[INFO] Sign - key not found - skip execution
+[INFO] Sign - key not found - skip execution : 9EB560F2 hat nicht funktioniert
+Aber : 92806DD3 - wurde auf keys.openpgp.org registriert, keyId (16 stellig): 460F209C92806DD3
       
       -->
       <plugin>
@@ -186,6 +187,10 @@ Alternative: https://www.simplify4u.org/sign-maven-plugin/
                 <goals>
                     <goal>sign</goal>
                 </goals>
+                <configuration>
+                    <!-- the same id as in settings.xml -->
+                    <serverId>sign-key-id</serverId>
+                </configuration>
             </execution>
         </executions>
       </plugin>
