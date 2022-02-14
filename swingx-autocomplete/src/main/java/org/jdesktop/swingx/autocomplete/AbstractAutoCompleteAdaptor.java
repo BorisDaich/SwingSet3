@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -108,7 +106,7 @@ public abstract class AbstractAutoCompleteAdaptor {
     
     /**
      * Marks/selects the text that is displayed inside the text component starting from the
-     * character with index <tt>start</tt>.
+     * character with index <code>start</code>.
      * @param start index of the first character that should be marked
      */
     public void markText(int start) {

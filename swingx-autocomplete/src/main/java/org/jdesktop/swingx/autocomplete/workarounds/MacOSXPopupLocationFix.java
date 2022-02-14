@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -71,6 +69,9 @@ public final class MacOSXPopupLocationFix {
     
     /**
      * Install the fix for the specified combo box.
+     * 
+     * @param comboBox JComboBox
+     * @return an instance of MacOSXPopupLocationFix
      */
     public static MacOSXPopupLocationFix install(JComboBox comboBox) {
         if(comboBox == null) throw new IllegalArgumentException();

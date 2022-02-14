@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -162,6 +160,9 @@ public class AutoCompleteDocument implements Document {
      */
     protected boolean strictMatching;
 
+    /**
+     * the delegate doc
+     */
     protected final Document delegate;
 
     /** Flag to indicate if adaptor.setSelectedItem has been called.
@@ -211,6 +212,7 @@ public class AutoCompleteDocument implements Document {
 
     /**
      * Creates a new AutoCompleteDocument for the given AbstractAutoCompleteAdaptor.
+     * 
      * @param adaptor The adaptor that will be used to find and select matching
      * items.
      * @param strictMatching true, if only items from the adaptor's list should
@@ -241,10 +243,9 @@ public class AutoCompleteDocument implements Document {
 
     /**
      * Creates a new AutoCompleteDocument for the given AbstractAutoCompleteAdaptor.
-     * @param adaptor The adaptor that will be used to find and select matching
-     * items.
-     * @param strictMatching true, if only items from the adaptor's list should
-     * be allowed to be entered
+     * 
+     * @param adaptor The adaptor that will be used to find and select matching items.
+     * @param strictMatching true, if only items from the adaptor's list should be allowed to be entered
      * @param stringConverter the converter used to transform items to strings
      */
     public AutoCompleteDocument(AbstractAutoCompleteAdaptor adaptor, boolean strictMatching, ObjectToStringConverter stringConverter) {
@@ -253,10 +254,9 @@ public class AutoCompleteDocument implements Document {
 
     /**
      * Creates a new AutoCompleteDocument for the given AbstractAutoCompleteAdaptor.
-     * @param strictMatching true, if only items from the adaptor's list should
-     * be allowed to be entered
-     * @param adaptor The adaptor that will be used to find and select matching
-     * items.
+     * 
+     * @param strictMatching true, if only items from the adaptor's list should be allowed to be entered
+     * @param adaptor The adaptor that will be used to find and select matching items.
      */
     public AutoCompleteDocument(AbstractAutoCompleteAdaptor adaptor, boolean strictMatching) {
         this(adaptor, strictMatching, null);

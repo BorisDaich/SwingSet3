@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,7 +30,7 @@ import javax.swing.text.JTextComponent;
  */
 public class TextComponentAdaptor extends AbstractAutoCompleteAdaptor {
     
-    /** a <tt>List</tt> containing the strings to be used for automatic
+    /** a <code>List</code> containing the strings to be used for automatic
      * completion */
     List<?> items;
     /** the text component that is used for automatic completion*/
@@ -41,10 +39,10 @@ public class TextComponentAdaptor extends AbstractAutoCompleteAdaptor {
     Object selectedItem;
     
     /**
-     * Creates a new <tt>TextComponentAdaptor</tt> for the given list and text
+     * Creates a new <code>TextComponentAdaptor</code> for the given list and text
      * component.
      * 
-     * @param items a <tt>List</tt> that contains the items that are used for
+     * @param items a <code>List</code> that contains the items that are used for
      * automatic completion
      * @param textComponent the text component that will be used automatic
      * completion

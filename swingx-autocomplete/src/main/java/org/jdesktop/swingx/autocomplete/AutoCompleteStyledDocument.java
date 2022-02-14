@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -34,13 +32,15 @@ import javax.swing.text.StyledDocument;
  *
  * @author Karl George Schaefer
  */
-public class AutoCompleteStyledDocument extends AutoCompleteDocument implements
-        StyledDocument {
+public class AutoCompleteStyledDocument extends AutoCompleteDocument implements StyledDocument {
+	
     /**
-     * @param adaptor
+     * Creates a new AutoCompleteStyledDocument for the given AbstractAutoCompleteAdaptor.
+     * 
+     * @param adaptor AbstractAutoCompleteAdaptor
      * @param strictMatching
-     * @param stringConverter
-     * @param delegate
+     * @param stringConverter ObjectToStringConverter
+     * @param delegate StyledDocument
      */
     public AutoCompleteStyledDocument(AbstractAutoCompleteAdaptor adaptor,
             boolean strictMatching, ObjectToStringConverter stringConverter,
@@ -49,9 +49,11 @@ public class AutoCompleteStyledDocument extends AutoCompleteDocument implements
     }
 
     /**
-     * @param adaptor
-     * @param strictMatching
-     * @param stringConverter
+     * Creates a new AutoCompleteStyledDocument for the given AbstractAutoCompleteAdaptor.
+     * 
+     * @param adaptor The adaptor that will be used to find and select matching items.
+     * @param strictMatching true, if only items from the adaptor's list should be allowed to be entered
+     * @param stringConverter the converter used to transform items to strings
      */
     public AutoCompleteStyledDocument(AbstractAutoCompleteAdaptor adaptor,
             boolean strictMatching, ObjectToStringConverter stringConverter) {
@@ -59,11 +61,12 @@ public class AutoCompleteStyledDocument extends AutoCompleteDocument implements
     }
 
     /**
-     * @param adaptor
-     * @param strictMatching
+     * Creates a new AutoCompleteStyledDocument for the given AbstractAutoCompleteAdaptor.
+     * 
+     * @param adaptor The adaptor that will be used to find and select matching items.
+     * @param strictMatching true, if only items from the adaptor's list should be allowed to be entered
      */
-    public AutoCompleteStyledDocument(AbstractAutoCompleteAdaptor adaptor,
-            boolean strictMatching) {
+    public AutoCompleteStyledDocument(AbstractAutoCompleteAdaptor adaptor, boolean strictMatching) {
         super(adaptor, strictMatching);
     }
     

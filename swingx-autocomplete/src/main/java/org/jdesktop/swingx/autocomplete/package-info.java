@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,7 +27,7 @@
  * resulting user experience. Suppose the user types 'J','O','R' and 'G'...
  * </p>
  * <p>
- * <img src="doc-files/example.gif"/>
+ * <img src="doc-files/example.gif" alt="example" />
  * </p>
  * <p>
  * The easiest way to get automatic completion for a component is to use the

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,16 +27,16 @@ import javax.swing.JComboBox;
 import javax.swing.text.JTextComponent;
 
 /**
- * <p>This is a cell editor that can be used when a combo box (that has been set
+ * This is a cell editor that can be used when a combo box (that has been set
  * up for automatic completion) is to be used in a JTable. The
  * {@link javax.swing.DefaultCellEditor DefaultCellEditor} won't work in this
  * case, because each time an item gets selected it stops cell editing and hides
  * the combo box.
- * </p>
+ * 
  * <p>
  * Usage example:
  * </p>
- * <p>
+ *
  * <pre><code>
  * JTable table = ...;
  * JComboBox comboBox = ...;
@@ -46,7 +44,6 @@ import javax.swing.text.JTextComponent;
  * TableColumn column = table.getColumnModel().getColumn(0);
  * column.setCellEditor(new ComboBoxCellEditor(comboBox));
  * </code></pre>
- * </p>
  */
 public class ComboBoxCellEditor extends DefaultCellEditor {
     
