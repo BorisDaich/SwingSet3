@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,14 +29,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.image;
 
 import java.awt.image.BufferedImage;
 
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
+/**
+ * A Gaussian blur filter, also known as Gaussian smoothing
+ */
 public class GaussianBlurFilter extends AbstractFilter {
+	
     private final int radius;
 
     /**

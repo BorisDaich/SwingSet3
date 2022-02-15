@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.image;
 
 import java.awt.Color;
@@ -57,7 +54,7 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  *   <li><code>mixValue</code>: strength of the mix, a value between 0.0 and 1.0</li>
  * </ul>
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 
 public class ColorTintFilter extends AbstractFilter {

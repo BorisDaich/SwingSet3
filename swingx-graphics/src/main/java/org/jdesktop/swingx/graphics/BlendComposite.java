@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.graphics;
 
 import java.awt.Composite;
@@ -88,21 +85,21 @@ import java.awt.image.WritableRaster;
  * <ul>
  * <li>{@link BlendingMode#BLUE} and {@link BlendingMode#GREEN} have been swapped.</li>
  * </ul>
- * <p>
  * 
  * @see org.jdesktop.swingx.graphics.BlendComposite.BlendingMode
  * @see java.awt.Graphics2D
  * @see java.awt.Composite
  * @see java.awt.AlphaComposite
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  * @author Karl Schaefer (support and additional modes)
  */
 public final class BlendComposite implements Composite {
+	
     /**
      * A blending mode defines the compositing rule of a
      * {@link org.jdesktop.swingx.graphics.BlendComposite}.
      * 
-     * @author Romain Guy <romain.guy@mac.com>
+     * @author Romain Guy omain.guy@mac.com
      * @author Karl Schaefer (support and additional modes)
      */
     public enum BlendingMode {
@@ -195,6 +192,11 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * burning darkens an image
+         * <p>
+         * Dodging an image is the same as burning its negative (and vice versa).
+         */
         SOFT_BURN {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -294,6 +296,11 @@ public final class BlendComposite implements Composite {
             }
         },
 
+        /**
+         * Dodging lightens an image
+         * <p>
+         * Dodging an image is the same as burning its negative (and vice versa).
+         */
         SOFT_DODGE {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -412,6 +419,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * a linear light effect - try it out!
+         */
         LINEAR_LIGHT {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -425,6 +435,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * a pin-light effect - try it out!
+         */
         PIN_LIGHT {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -438,6 +451,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * a hard-mix effect - try it out!
+         */
         HARD_MIX {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -448,6 +464,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * REFLECT blend mode can be used for adding shiny objects or areas of light. 
+         */
         REFLECT {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -458,6 +477,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * a glowing effect
+         */
         GLOW {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -468,6 +490,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+        /**
+         * a freeze effect - try it out!
+         */
          FREEZE {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -481,6 +506,9 @@ public final class BlendComposite implements Composite {
             }
         },
         
+         /**
+          * a heat effect - try it out!
+          */
         HEAT {
             @Override
             void blend(int[] src, int[] dst, int[] result) {
@@ -675,40 +703,75 @@ public final class BlendComposite implements Composite {
         abstract void blend(int[] src, int[] dst, int[] result);
     }
 
+    /** factory for BlendingMode.AVERAGE */
     public static final BlendComposite Average = new BlendComposite(BlendingMode.AVERAGE);
+    /** factory for BlendingMode.MULTIPLY */
     public static final BlendComposite Multiply = new BlendComposite(BlendingMode.MULTIPLY);
+    /** factory for BlendingMode.SCREEN */
     public static final BlendComposite Screen = new BlendComposite(BlendingMode.SCREEN);
+    /** factory for BlendingMode.DARKEN */
     public static final BlendComposite Darken = new BlendComposite(BlendingMode.DARKEN);
+    /** factory for BlendingMode.LIGHTEN */
     public static final BlendComposite Lighten = new BlendComposite(BlendingMode.LIGHTEN);
+    /** factory for BlendingMode.OVERLAY */
     public static final BlendComposite Overlay = new BlendComposite(BlendingMode.OVERLAY);
+    /** factory for BlendingMode.HARD_LIGHT */
     public static final BlendComposite HardLight = new BlendComposite(BlendingMode.HARD_LIGHT);
+    /** factory for BlendingMode.SOFT_LIGHT */
     public static final BlendComposite SoftLight = new BlendComposite(BlendingMode.SOFT_LIGHT);
+    /** factory for BlendingMode.VIVID_LIGHT */
     public static final BlendComposite VividLight = new BlendComposite(BlendingMode.VIVID_LIGHT);
+    /** factory for BlendingMode.LINEAR_LIGHT */
     public static final BlendComposite LinearLight = new BlendComposite(BlendingMode.LINEAR_LIGHT);
+    /** factory for BlendingMode.PIN_LIGHT */
     public static final BlendComposite PinLight = new BlendComposite(BlendingMode.PIN_LIGHT);
+    /** factory for BlendingMode.HARD_MIX */
     public static final BlendComposite HardMix = new BlendComposite(BlendingMode.HARD_MIX);
+    /** factory for BlendingMode.DIFFERENCE */
     public static final BlendComposite Difference = new BlendComposite(BlendingMode.DIFFERENCE);
+    /** factory for BlendingMode.NEGATION */
     public static final BlendComposite Negation = new BlendComposite(BlendingMode.NEGATION);
+    /** factory for BlendingMode.EXCLUSION */
     public static final BlendComposite Exclusion = new BlendComposite(BlendingMode.EXCLUSION);
+    /** factory for BlendingMode.COLOR_DODGE */
     public static final BlendComposite ColorDodge = new BlendComposite(BlendingMode.COLOR_DODGE);
+    /** factory for BlendingMode.INVERSE_COLOR_DODGE */
     public static final BlendComposite InverseColorDodge = new BlendComposite(BlendingMode.INVERSE_COLOR_DODGE);
+    /** factory for BlendingMode.SOFT_DODGE */
     public static final BlendComposite SoftDodge = new BlendComposite(BlendingMode.SOFT_DODGE);
+    /** factory for BlendingMode.COLOR_BURN */
     public static final BlendComposite ColorBurn = new BlendComposite(BlendingMode.COLOR_BURN);
+    /** factory for BlendingMode.INVERSE_COLOR_BURN */
     public static final BlendComposite InverseColorBurn = new BlendComposite(BlendingMode.INVERSE_COLOR_BURN);
+    /** factory for BlendingMode.SOFT_BURN */
     public static final BlendComposite SoftBurn = new BlendComposite(BlendingMode.SOFT_BURN);
+    /** factory for BlendingMode.REFLECT */
     public static final BlendComposite Reflect = new BlendComposite(BlendingMode.REFLECT);
+    /** factory for BlendingMode.GLOW */
     public static final BlendComposite Glow = new BlendComposite(BlendingMode.GLOW);
+    /** factory for BlendingMode.FREEZE */
     public static final BlendComposite Freeze = new BlendComposite(BlendingMode.FREEZE);
+    /** factory for BlendingMode.HEAT */
     public static final BlendComposite Heat = new BlendComposite(BlendingMode.HEAT);
+    /** factory for BlendingMode.ADD */
     public static final BlendComposite Add = new BlendComposite(BlendingMode.ADD);
+    /** factory for BlendingMode.SUBTRACT */
     public static final BlendComposite Subtract = new BlendComposite(BlendingMode.SUBTRACT);
+    /** factory for BlendingMode.STAMP */
     public static final BlendComposite Stamp = new BlendComposite(BlendingMode.STAMP);
+    /** factory for BlendingMode.RED */
     public static final BlendComposite Red = new BlendComposite(BlendingMode.RED);
+    /** factory for BlendingMode.GREEN */
     public static final BlendComposite Green = new BlendComposite(BlendingMode.GREEN);
+    /** factory for BlendingMode.BLUE */
     public static final BlendComposite Blue = new BlendComposite(BlendingMode.BLUE);
+    /** factory for BlendingMode.HUE */
     public static final BlendComposite Hue = new BlendComposite(BlendingMode.HUE);
+    /** factory for BlendingMode.SATURATION */
     public static final BlendComposite Saturation = new BlendComposite(BlendingMode.SATURATION);
+    /** factory for BlendingMode.COLOR */
     public static final BlendComposite Color = new BlendComposite(BlendingMode.COLOR);
+    /** factory for BlendingMode.LUMINOSITY */
     public static final BlendComposite Luminosity = new BlendComposite(BlendingMode.LUMINOSITY);
 
     private final float alpha;

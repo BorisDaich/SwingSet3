@@ -34,8 +34,13 @@ import org.jdesktop.swingx.util.Contract;
  * @author kschaefer
  */
 public abstract class Graphics2DFacade extends Graphics2D {
+	
     private Graphics2D delegate;
 
+    /**
+     * creates the facade instance
+     * @param delegate the Graphics2D delegate
+     */
     public Graphics2DFacade(Graphics2D delegate) {
         this.delegate = Contract.asNotNull(delegate, "delegate cannot be null");
     }

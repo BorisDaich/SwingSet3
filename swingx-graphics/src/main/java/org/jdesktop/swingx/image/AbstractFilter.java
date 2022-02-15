@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.image;
 
 import java.awt.Rectangle;
@@ -49,10 +46,11 @@ import org.jdesktop.beans.AbstractBean;
  * interface. This class can be used to created new image filters based
  * on <code>BufferedImageOp</code>.</p>
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 
 public abstract class AbstractFilter extends AbstractBean implements BufferedImageOp {
+	
     @Override
     public abstract BufferedImage filter(BufferedImage src, BufferedImage dest);
 

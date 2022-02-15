@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.graphics;
 
 import java.awt.Color;
@@ -40,9 +37,10 @@ import java.awt.Color;
  * <p><code>ColorUtilities</code> contains a set of tools to perform
  * common color operations easily.</p>
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 public class ColorUtilities {
+	
     private ColorUtilities() {
     }
 

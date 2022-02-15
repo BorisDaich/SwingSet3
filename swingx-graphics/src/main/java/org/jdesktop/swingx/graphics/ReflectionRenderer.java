@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
@@ -58,9 +56,9 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  *   <li><i>blur enabled</i>: perfect reflections are hardly natural. You can
  *    blur the reflection to make it look a bit more natural.</li>
  * </ul>
- * You can set these properties using the provided mutators or the appropriate
+ * <p>You can set these properties using the provided mutators or the appropriate
  * constructor. Here are two ways of creating a blurred reflection, with an
- * opacity of 50% and a length of 30% the height of the original image:
+ * opacity of 50% and a length of 30% the height of the original image:</p>
  * <pre>
  * ReflectionRenderer renderer = new ReflectionRenderer(0.5f, 0.3f, true);
  * // ..
@@ -74,26 +72,26 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  *   <li><i>opacity</i>: 35%</li>
  *   <li><i>length</i>: 40%</li>
  *   <li><i>blur enabled</i>: false</li>
- * </ul></p>
+ * </ul>
  * <h2>Generating Reflections</h2>
  * <p>A reflection is generated as a <code>BufferedImage</code> from another
  * <code>BufferedImage</code>. Once the renderer is set up, you must call
  * {@link #createReflection(java.awt.image.BufferedImage)} to actually generate
- * the reflection:
+ * the reflection:</p>
  * <pre>
  * ReflectionRenderer renderer = new ReflectionRenderer();
  * // renderer setup
  * BufferedImage reflection = renderer.createReflection(bufferedImage);
- * </pre></p>
+ * </pre>
  * <p>The returned image contains only the reflection. You will have to append
  * it to the source image at painting time to get a realistic results. You can
  * also asks the rendered to return a picture composed of both the source image
- * and its reflection:
+ * and its reflection:</p>
  * <pre>
  * ReflectionRenderer renderer = new ReflectionRenderer();
  * // renderer setup
  * BufferedImage reflection = renderer.appendReflection(bufferedImage);
- * </pre></p>
+ * </pre>
  * <h2>Properties Changes</h2>
  * <p>This renderer allows to register property change listeners with
  * {@link #addPropertyChangeListener}. Listening to properties changes is very
@@ -103,7 +101,7 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  * <h2>Threading Issues</h2>
  * <p><code>ReflectionRenderer</code> is not guaranteed to be thread-safe.</p>
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 public class ReflectionRenderer {
     /**
@@ -136,12 +134,12 @@ public class ReflectionRenderer {
 
     /**
      * <p>Creates a default good looking reflections generator.
-     * The default reflection renderer provides the following default values:
+     * The default reflection renderer provides the following default values:</p>
      * <ul>
      *   <li><i>opacity</i>: 35%</li>
      *   <li><i>length</i>: 40%</li>
      *   <li><i>blurring</i>: disabled with a radius of 1 pixel</li>
-     * </ul></p>
+     * </ul>
      * <p>These properties provide a regular, good looking reflection.</p>
      *
      * @see #getOpacity()
@@ -160,11 +158,11 @@ public class ReflectionRenderer {
     /**
      * <p>Creates a default good looking reflections generator with the
      * specified opacity. The default reflection renderer provides the following
-     * default values:
+     * default values:</p>
      * <ul>
      *   <li><i>length</i>: 40%</li>
      *   <li><i>blurring</i>: disabled with a radius of 1 pixel</li>
-     * </ul></p>
+     * </ul>
      *
      * @param opacity the opacity of the reflection, between 0.0 and 1.0
      * @see #getOpacity()

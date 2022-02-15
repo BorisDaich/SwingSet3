@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -37,7 +35,7 @@ import java.awt.geom.Rectangle2D;
  * <p>Both shapes must have the same winding rule.</p>
  *
  * @author Jim Graham
- * @author Romain Guy <romain.guy@mac.com> (Maintainer)
+ * @author Romain Guy romain.guy@mac.com (Maintainer)
  */
 public class Morphing2D implements Shape {
     private double morph;

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
@@ -31,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.jdesktop.swingx.image;
 
 import java.awt.image.BufferedImage;
@@ -50,7 +47,7 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  * to avoid artifacts at the edges. The performance of this filter are
  * independent from the radius.</p>
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
 */
 public class StackBlurFilter extends AbstractFilter {
     private final int radius;
