@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import java.awt.Rectangle;
@@ -37,9 +34,13 @@ import javax.swing.plaf.UIResource;
  * @author rah003
  */
 public class ShapeUIResource implements Shape, UIResource {
+	
     private Shape s;
     
-    /** Creates a new instance of PainterUIResource */
+    /**
+     * Creates a new instance of PainterUIResource
+     * @param p the Shape
+     */
     public ShapeUIResource(Shape p) {
         this.s = p;
     }

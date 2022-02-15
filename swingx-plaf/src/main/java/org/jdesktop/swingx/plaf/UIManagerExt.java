@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -50,7 +48,7 @@ import org.jdesktop.swingx.util.Contract;
 
 /**
  * A utility class for obtaining configuration properties from the
- * {@code UIDefaults}. This class handles SwingX-specific L&F needs, such as
+ * {@code UIDefaults}. This class handles SwingX-specific LaF needs, such as
  * the installation of painters and shapes. There are several categories of
  * utility methods:
  * <ul>
@@ -61,7 +59,7 @@ import org.jdesktop.swingx.util.Contract;
  * <li>Support for returning non-{@code String} localizations from
  * {@code ResourceBundle}s.</li>
  * </ul>
- * <h3>Safe Methods</h3>
+ * <h2>Safe Methods</h2>
  * <p>
  * The {@code getSafeXXX} methods are designed for use with
  * {@code LookAndFeelAddon}s. Any addon that attempts to obtain a property

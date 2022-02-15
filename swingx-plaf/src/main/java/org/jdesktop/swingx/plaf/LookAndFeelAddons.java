@@ -134,7 +134,7 @@ public abstract class LookAndFeelAddons {
     }
 
     /**
-     * Initializes the look and feel addon. This method is
+     * Initializes the look and feel addon.
      * 
      * @see #uninitialize
      * @see UIManager#setLookAndFeel
@@ -146,6 +146,9 @@ public abstract class LookAndFeelAddons {
         }
     }
 
+    /**
+     * Uninitializes the look and feel addon.
+     */
     public void uninitialize() {
         for (Iterator<ComponentAddon> iter = contributedComponents.iterator(); iter.hasNext();) {
             ComponentAddon addon = iter.next();
@@ -163,7 +166,7 @@ public abstract class LookAndFeelAddons {
      * key/value with the highest position in the array gets precedence over the other key in the
      * array
      * 
-     * @param keysAndValues
+     * @param keysAndValues array of keys and values
      */
     public void loadDefaults(Object[] keysAndValues) {
         // Go in reverse order so the most recent keys get added first...
@@ -174,6 +177,11 @@ public abstract class LookAndFeelAddons {
         }
     }
 
+    /**
+     * unload Objects
+     * @param keysAndValues Objects to unload
+     */
+    @Deprecated
     public void unloadDefaults(Object[] keysAndValues) {
         // commented after Issue 446.
         /*
@@ -182,17 +190,43 @@ public abstract class LookAndFeelAddons {
          */
     }
 
+    /**
+     * load and install addon
+     * @param addonClassName the addon class name
+     * @throws ClassNotFoundException throws by forName
+     * @throws InstantiationException throws by newInstance()
+     * @throws IllegalAccessException throws by newInstance()
+     * @throws IllegalArgumentException throws by newInstance()
+     * @throws InvocationTargetException throws by newInstance()
+     * @throws NoSuchMethodException throws by getDeclaredConstructor()
+     * @throws SecurityException throws by getDeclaredConstructor()
+     */
     public static void setAddon(String addonClassName) throws ClassNotFoundException, InstantiationException, IllegalAccessException 
     	, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         setAddon(Class.forName(addonClassName, true, getClassLoader()));
     }
 
+    /**
+     * install addon 
+     * @param addonClass the addon class
+     * @throws InstantiationException throws by newInstance()
+     * @throws IllegalAccessException throws by newInstance()
+     * @throws IllegalArgumentException throws by newInstance()
+     * @throws InvocationTargetException throws by newInstance()
+     * @throws NoSuchMethodException throws by getDeclaredConstructor()
+     * @throws SecurityException throws by getDeclaredConstructor()
+     */
     public static void setAddon(Class<?> addonClass) throws InstantiationException, IllegalAccessException
     	, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    	
         LookAndFeelAddons addon = (LookAndFeelAddons) addonClass.getDeclaredConstructor().newInstance();
         setAddon(addon);
     }
 
+    /**
+     * install addon
+     * @param addon org.jdesktop.swingx.plaf.LookAndFeelAddons
+     */
     public static void setAddon(LookAndFeelAddons addon) {
         if (currentAddon != null) {
             currentAddon.uninitialize();
@@ -211,6 +245,10 @@ public abstract class LookAndFeelAddons {
         UIManager.getLookAndFeelDefaults().put(APPCONTEXT_INITIALIZED, Boolean.TRUE);
     }
 
+    /**
+     * get the current addons
+     * @return current LookAndFeelAddons
+     */
     public static LookAndFeelAddons getAddon() {
         return currentAddon;
     }
@@ -365,6 +403,9 @@ public abstract class LookAndFeelAddons {
         return className;
     }
 
+    /**
+     * a simple inner class that implements PrivilegedAction
+     */
     public static class IterableLAFAddonsPrivilegedAction implements PrivilegedAction<Iterable<LookAndFeelAddons>> {
 
     	ServiceLoader<LookAndFeelAddons> loader; // class ServiceLoader<S> implements Iterable<S>
@@ -408,10 +449,11 @@ public abstract class LookAndFeelAddons {
     }
 
     /**
-     * Each new component added by the library will contribute its default UI classes, colors and
-     * fonts to the LookAndFeelAddons. See {@link ComponentAddon}.
+     * Each new component added by the library will contribute its default UI classes, 
+     * colors and fonts to the LookAndFeelAddons. 
+     * See {@link ComponentAddon}.
      * 
-     * @param component
+     * @param component ComponentAddon that contribute
      */
     public static void contribute(ComponentAddon component) {
         contributedComponents.add(component);
@@ -426,7 +468,7 @@ public abstract class LookAndFeelAddons {
     /**
      * Removes the contribution of the given addon
      * 
-     * @param component
+     * @param component ComponentAddon
      */
     public static void uncontribute(ComponentAddon component) {
         contributedComponents.remove(component);
@@ -437,11 +479,11 @@ public abstract class LookAndFeelAddons {
     }
 
     /**
-     * Workaround for IDE mixing up with classloaders and Applets environments. Consider this method
-     * as API private. It must not be called directly.
+     * Workaround for IDE mixing up with classloaders and Applets environments. 
+     * Consider this method as API private. It must not be called directly!
      * 
-     * @param component
-     * @param expectedUIClass
+     * @param component javax.swing.JComponent
+     * @param expectedUIClass the UI Class
      * @return an instance of expectedUIClass
      */
     public static ComponentUI getUI(JComponent component, Class<?> expectedUIClass) {

@@ -26,6 +26,9 @@ import org.jdesktop.swingx.plaf.basic.BasicLookAndFeelAddons;
 import org.jdesktop.swingx.util.OS;
 import org.kohsuke.MetaInfServices;
 
+/**
+ * Install Linux pluggable UI. 
+ */
 @MetaInfServices(LookAndFeelAddons.class)
 public class LinuxLookAndFeelAddons extends BasicLookAndFeelAddons {
 	

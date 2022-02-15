@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import java.beans.PropertyChangeListener;
@@ -57,12 +54,21 @@ import javax.swing.Action;
  * @author Scott Violet
  */
 public abstract class UIAction implements Action {
+	
     private String name;
 
+    /**
+     * Creates an UIAction instance with name <code>name</code>
+     * @param name the name of the ui action
+     */
     public UIAction(String name) {
         this.name = name;
     }
 
+    /**
+     * get Action name
+     * @return the name
+     */
     public final String getName() {
         return name;
     }
@@ -95,6 +101,7 @@ public abstract class UIAction implements Action {
      * override this. Be aware that <code>sender</code> may be null.
      *
      * @param sender Widget enabled state is being asked for, may be null.
+     * @return always true
      */
     public boolean isEnabled(Object sender) {
         return true;

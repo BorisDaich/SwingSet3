@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,8 +33,10 @@ import javax.swing.plaf.UIResource;
 public class LookAndFeelUtils {
 
     /**
-     * Returns the ui that is of type <code>klass</code>, or null if
-     * one can not be found.
+     * Returns the ui that is of type <code>klass</code>, or null if one can not be found.
+     * @param ui javax.swing.plaf.ComponentUI
+     * @param klass the type 
+     * @return ui if ui instanceof klass, else null 
      */
     public static Object getUIOfType(ComponentUI ui, Class<?> klass) {
         if (klass.isInstance(ui)) {
