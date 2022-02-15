@@ -43,31 +43,31 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  * may override the appropriate protected methods to interpose its own behavior.</p>
  * 
  * <p>For example, here is the doPaint method of a simple <code>Painter</code> that
- * paints an opaque rectangle:
+ * paints an opaque rectangle:</p>
  * <pre><code>
  *  public void doPaint(Graphics2D g, T obj, int width, int height) {
  *      g.setPaint(Color.BLUE);
  *      g.fillRect(0, 0, width, height);
  *  }
- * </code></pre></p>
+ * </code></pre>
  *
  * @author rbair
  */
-//@SuppressWarnings("nls")
 public abstract class AbstractPainter<T> extends AbstractBean implements Painter<T> {
 	
     /**
      * Subclasses must implement this method and perform custom painting operations here.
      * 
-     * @param width 
-     * @param height 
      * @param g The Graphics2D object in which to paint
-     * @param object
+     * @param object i.E. Component
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
      */
     protected abstract void doPaint(Graphics2D g, T object, int width, int height);
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     * implements the interface method Painter.paint
      */
     @Override
     public final void paint(Graphics2D g, T obj, int width, int height) {
@@ -310,15 +310,15 @@ public abstract class AbstractPainter<T> extends AbstractBean implements Painter
     }
 
     /**
-     * <p>Sets whether this <code>AbstractPainter</code> can be cached as an image.
+     * Sets whether this <code>AbstractPainter</code> can be cached as an image.
      * If true, this is treated as a hint. That is, a cacheable may or may not be used.
      * The {@link #shouldUseCache} method actually determines whether the cacheable is used.
      * However, if false, then this is treated as an absolute value. That is, no
-     * cacheable will be used.</p>
+     * cacheable will be used.
      *
      * <p>If set to false, then #clearCache is called to free system resources.</p>
      *
-     * @param cacheable
+     * @param cacheable the value of boolean property "cacheable"
      */
     public void setCacheable(boolean cacheable) {
         boolean old = isCacheable();
@@ -358,12 +358,12 @@ public abstract class AbstractPainter<T> extends AbstractBean implements Painter
     }
 
     /**
-     * <p>Called to allow <code>Painter</code> subclasses a chance to see if any state
+     * Called to allow <code>Painter</code> subclasses a chance to see if any state
      * in the given object has changed from the last paint operation. If it has, then
      * the <code>Painter</code> has a chance to mark itself as dirty, thus causing a
-     * repaint, even if cached.</p>
+     * repaint, even if cached.
      *
-     * @param object
+     * @param object the object to be validated
      */
     protected void validate(T object) { }
 

@@ -68,7 +68,6 @@ import java.awt.Rectangle;
  * 
  * @author joshua@marinacci.org
  */
-//@SuppressWarnings("nls")
 public abstract class AbstractLayoutPainter<T> extends AbstractPainter<T> {
 	
 	// still abstract: void doPaint(Graphics2D g, T object, int width, int height)
@@ -92,12 +91,24 @@ public abstract class AbstractLayoutPainter<T> extends AbstractPainter<T> {
     /**
      * An enum which controls horizontalAlignment alignment
      */
-    public static enum HorizontalAlignment { LEFT, CENTER, RIGHT }
+    public static enum HorizontalAlignment { 
+    	/** aligns to left */
+    	LEFT, 
+    	/** horizontal alignment is center */
+    	CENTER, 
+    	/** aligns to right */
+    	RIGHT }
     
     /**
      * An enum which controls verticalAlignment alignment
      */
-    public static enum VerticalAlignment { TOP, CENTER, BOTTOM }
+    public static enum VerticalAlignment { 
+    	/** aligns to top */
+    	TOP, 
+    	/** vertical alignment is center */
+    	CENTER, 
+    	/** aligns to bottm */
+    	BOTTOM }
     
     /**
      * Gets the current horizontalAlignment alignment.

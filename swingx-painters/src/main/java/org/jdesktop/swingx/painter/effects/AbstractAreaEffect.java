@@ -43,10 +43,10 @@ import java.awt.image.BufferedImage;
 public class AbstractAreaEffect implements AreaEffect {
 	
     /**
-     * 
-     * @inheritDoc
+     * {@inheritDoc}
+     * implements the abstract method AreaEffect.apply
      */
-    @Override // implements the abstract method AreaEffect.apply
+    @Override
     public void apply(Graphics2D g, Shape clipShape, int width, int height) {
         // create a rect to hold the bounds
         width = (int)(clipShape.getBounds2D().getWidth() + clipShape.getBounds2D().getX());
@@ -165,13 +165,12 @@ public class AbstractAreaEffect implements AreaEffect {
      */
     /**
      * Paints the border glow
-     * @param g2
-     * @param clipShape
-     * @param width
-     * @param height
+     * @param g2 The Graphics2D object in which to paint
+     * @param clipShape the Shape
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
      */
-    protected void paintBorderGlow(Graphics2D g2,
-            Shape clipShape, int width, int height) {
+    protected void paintBorderGlow(Graphics2D g2, Shape clipShape, int width, int height) {
         
         int steps = getBrushSteps();
         float brushAlpha = 1f/steps;

@@ -115,7 +115,22 @@ public class ImagePainter extends AbstractAreaPainter<Component> {
 		return new Rectangle(0, 0, 0, 0);
 	}   
 
-    public enum ScaleType { InsideFit, OutsideFit, Distort }
+	/**
+	 * An enum to be used as "scaleType" property
+	 */
+    public enum ScaleType { 
+    	/**
+    	 * the default ScaleType
+    	 */
+    	InsideFit, 
+    	/**
+    	 * outside fitting ScaleType
+    	 */
+    	OutsideFit, 
+    	/**
+    	 * deform ScaleType
+    	 */
+    	Distort }
     
     /**
      * Logger to use
@@ -137,8 +152,7 @@ public class ImagePainter extends AbstractAreaPainter<Component> {
     private double imageScale = 1.0;
 
     /**
-     * Create a new ImagePainter. By default there is no image, and the alignment
-     * is centered.
+     * Create a new ImagePainter. By default there is no image, and the alignment is centered.
      */
     public ImagePainter() {
         this((BufferedImage)null);
@@ -326,10 +340,18 @@ public class ImagePainter extends AbstractAreaPainter<Component> {
         }
     }
     
+    /**
+     * returns the value of boolean "scaleToFit" property
+     * @return value of "scaleToFit" property
+     */
     public boolean isScaleToFit() {
         return scaleToFit;
     }
     
+    /**
+     * sets "scaleToFit" property
+     * @param scaleToFit boolean value of the property
+     */
     public void setScaleToFit(boolean scaleToFit) {
         boolean old = isScaleToFit(); 
         this.scaleToFit = scaleToFit;
@@ -337,10 +359,18 @@ public class ImagePainter extends AbstractAreaPainter<Component> {
         firePropertyChange("scaleToFit", old, isScaleToFit());
     }
     
+    /**
+     * returns the enum of "scaleType" property
+     * @return value of "scaleType" property
+     */
     public ScaleType getScaleType() {
         return scaleType;
     }
     
+    /**
+     * sets "scaleType" property
+     * @param scaleType enum ScaleType
+     */
     public void setScaleType(ScaleType scaleType) {
         ScaleType old = getScaleType();
         this.scaleType = scaleType;

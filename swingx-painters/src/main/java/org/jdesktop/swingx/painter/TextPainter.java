@@ -49,11 +49,9 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
  * </p>
  * 
  * @author rbair
- *  
- * @see PainterDemo#createTextPainterDemos()
  */
+//@see PainterDemo#createTextPainterDemos()
 @JavaBean
-//@SuppressWarnings("nls")
 public class TextPainter extends AbstractAreaPainter<Component> {
 	
     /**

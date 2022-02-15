@@ -67,9 +67,9 @@ public class PinstripePainter extends AbstractPainter<Component> {
     /**
      * draws pinstripes at the angle specified in this class and at the given distance apart
      * 
-     * @inheritDoc
+     * implements the abstract method AbstractPainter.doPaint
      */
-    @Override // implements the abstract method AbstractPainter.doPaint
+    @Override
     protected void doPaint(Graphics2D g, Component component, int width, int height) {
 
         Shape oldClip = g.getClip();
@@ -172,13 +172,12 @@ public class PinstripePainter extends AbstractPainter<Component> {
     }
 
     /**
-     * Create a new PinstripePainter with the specified paint, angle, stripe width, and stripe
-     * spacing.
+     * Create a new PinstripePainter with the specified paint, angle, stripe width, and stripe spacing.
      * 
-     * @param paint
-     * @param angle
-     * @param stripeWidth
-     * @param spacing
+     * @param paint the paint used when drawing the stripes
+     * @param angle the angle, in degrees, in which to paint the pinstripes
+     * @param stripeWidth the stroke width of the pinstripes
+     * @param spacing the spacing between pinstripes
      */
     public PinstripePainter(Paint paint, double angle, double stripeWidth, double spacing) {
         this.paint = paint;
@@ -218,9 +217,10 @@ public class PinstripePainter extends AbstractPainter<Component> {
     }
 
     /**
-     * Sets the angle, in degrees, at which to paint the pinstripes. If the given angle is < 0 or >
-     * 360, it will be appropriately constrained. For example, if a value of 365 is given, it will
-     * result in 5 degrees. The conversion is not perfect, but "a man on a galloping horse won't be
+     * Sets the angle, in degrees, at which to paint the pinstripes. 
+     * If the given angle is &lt; 0 or &gt; 360, it will be appropriately constrained. 
+     * For example, if a value of 365 is given, it will result in 5 degrees. 
+     * The conversion is not perfect, but "a man on a galloping horse won't be
      * able to tell the difference".
      * 
      * @param angle

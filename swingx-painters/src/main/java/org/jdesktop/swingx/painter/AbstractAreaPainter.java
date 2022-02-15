@@ -67,13 +67,22 @@ public abstract class AbstractAreaPainter<T> extends AbstractLayoutPainter<T> {
     
 
     /**
-     * Different available fill styles. BOTH indicates that both the outline,
-     * and the fill should be painted. This is the default. FILLED indicates that
-     * the shape should be filled, but no outline painted. OUTLINE specifies that
-     * the shape should be outlined, but not filled. NONE indicates that neither
-     * the fill area nor the outline should be painted.
+     * Different available fill styles. 
+     * NONE indicates that neither the fill area nor the outline should be painted.
      */
-    public enum Style {BOTH, FILLED, OUTLINE,
+    public enum Style {
+    	/**
+    	 * BOTH indicates that both the outline, and the fill should be painted. This is the default. 
+    	 */
+    	BOTH, 
+    	/**
+    	 * FILLED indicates that the shape should be filled, but no outline painted. 
+    	 */
+    	FILLED, 
+    	/**
+    	 * OUTLINE specifies that the shape should be outlined, but not filled. 
+    	 */
+    	OUTLINE,
         /**
          * {@code NONE} has different semantics that {@link AbstractAreaPainter#setVisible(boolean)
          * setVisible(false)}. With {@code setVisible(false)}, nothing is painted. With style

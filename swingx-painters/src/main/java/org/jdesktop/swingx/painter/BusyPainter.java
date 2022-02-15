@@ -44,9 +44,10 @@ import org.jdesktop.swingx.util.PaintUtils;
 public class BusyPainter extends AbstractPainter<Component> {
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     * implements the abstract method AbstractPainter.doPaint
      */
-    @Override // implements the abstract method AbstractPainter.doPaint
+    @Override
     protected void doPaint(Graphics2D g, Component t, int width, int height) {
         Rectangle r = getTrajectory().getBounds();
         int tw = width - r.width - 2*r.x;
@@ -179,6 +180,7 @@ public class BusyPainter extends AbstractPainter<Component> {
 
     /**
      * {@inheritDoc}
+     * string representation of the object.
      */
     @Override
     public String toString() {
@@ -214,11 +216,21 @@ public class BusyPainter extends AbstractPainter<Component> {
         init(point, trajectory, Color.LIGHT_GRAY, Color.BLACK);
     }
 
+    /**
+     * get an ellipse shape, the ScaledDefaultTrajectory
+     * @param height height of the area to paint.
+     * @return ellipse shape
+     */
     protected static Shape getScaledDefaultTrajectory(int height) {
         return new Ellipse2D.Float(((height * 8) / 26) / 2, ((height * 8) / 26) / 2, height
                 - ((height * 8) / 26), height - ((height * 8) / 26));
     }
 
+    /**
+     * get a rectangle with rounded corners, the ScaledDefaultPoint
+     * @param height height of the area to paint.
+     * @return Shape rectangle
+     */
     protected static Shape getScaledDefaultPoint(int height) {
         return new RoundRectangle2D.Float(0, 0, (height * 8) / 26, 4, 4, 4);
     }
@@ -227,6 +239,8 @@ public class BusyPainter extends AbstractPainter<Component> {
      * Initializes painter to provided shapes and default colors.
      * @param point Point shape.
      * @param trajectory Trajectory shape.
+     * @param baseColor a Color
+     * @param highlightColor a Color
      */
     protected void init(Shape point, Shape trajectory, Color baseColor, Color highlightColor) {
         this.baseColor = baseColor;
@@ -437,6 +451,7 @@ public class BusyPainter extends AbstractPainter<Component> {
     /**
      * Calculates relative position of the point on the quad curve in time t&lt;0,1&gt;.
      * @param t distance on the curve
+     * @param begin start point in rel coords
      * @param ctrl Control point in rel coords
      * @param end End point in rel coords
      * @return Solution of the quad equation for time T in non complex space in rel coords.
@@ -608,7 +623,7 @@ public class BusyPainter extends AbstractPainter<Component> {
     /**
      * calculates the height of the painter
      * 
-     * @return
+     * @return height of the painter
      */
     public final int getHeight() {
         Shape pshape = getPointShape();

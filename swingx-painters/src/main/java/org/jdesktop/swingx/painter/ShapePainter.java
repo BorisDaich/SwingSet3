@@ -59,10 +59,9 @@ import org.jdesktop.swingx.painter.effects.AreaEffect;
  * </code></pre>
  * 
  * @author rbair
- * @see PainterDemo#createCompoundPainterDemos()
  */
+//@see PainterDemo#createCompoundPainterDemos()
 @JavaBean
-//@SuppressWarnings("nls")
 public class ShapePainter extends AbstractAreaPainter<Component> {
 
     /**

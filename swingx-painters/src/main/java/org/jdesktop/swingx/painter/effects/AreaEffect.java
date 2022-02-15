@@ -32,10 +32,10 @@ public interface AreaEffect {
      */
     /**
      * Draws an effect on the specified graphics and path using the specified width and height.
-     * @param g 
-     * @param clipShape 
-     * @param width 
-     * @param height 
+     * @param g The Graphics2D object in which to paint
+     * @param clipShape the Shape 
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
      */
     public abstract void apply(Graphics2D g, Shape clipShape, int width, int height);
 }

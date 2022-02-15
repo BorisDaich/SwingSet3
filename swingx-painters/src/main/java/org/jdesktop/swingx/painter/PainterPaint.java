@@ -44,6 +44,11 @@ public class PainterPaint<T> implements Paint {
         private T object;
         private BufferedImage saved;
         
+        /**
+         * creates a PainterPaintContext for class T
+         * @param painter a Painter instance
+         * @param object of type T
+         */
         public PainterPaintContext(Painter<T> painter, T object) {
             painter.getClass(); // null check
             this.painter = painter;
@@ -98,6 +103,12 @@ public class PainterPaint<T> implements Paint {
     
     private final PainterPaintContext<T> context;
     
+    /**
+     * creates a PainterPaint for class T
+     * 
+     * @param painter a Painter instance
+     * @param object of type T
+     */
     public PainterPaint(Painter<T> painter, T object) {
         context = new PainterPaintContext<T>(painter, object);
     }

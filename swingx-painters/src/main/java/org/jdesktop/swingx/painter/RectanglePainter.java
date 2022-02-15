@@ -37,12 +37,10 @@ import org.jdesktop.swingx.util.ShapeUtils;
 /**
  * A painter which paints square and rounded rectangles
  * 
- * @see PainterDemo#createCompoundPainterDemos()
- * 
  * @author joshua.marinacci@sun.com
  */
+// @see PainterDemo#createCompoundPainterDemos()
 @JavaBean
-//@SuppressWarnings("nls")
 public class RectanglePainter extends AbstractAreaPainter<Component> {
 
     /**
@@ -91,35 +89,96 @@ public class RectanglePainter extends AbstractAreaPainter<Component> {
     public RectanglePainter() {
         this(0, 0, 0, 0);
     }
-    
+ 
+    /**
+     * constructs a RectanglePainter
+     * @param top param for the border Instets
+     * @param left param for the border Instets
+     * @param bottom param for the border Instets
+     * @param right param for the border Instets
+     */
     public RectanglePainter(int top, int left, int bottom, int right) {
         this(top, left, bottom, right, 0, 0);
     }
 
+    /**
+     * constructs a RectanglePainter
+     * @param top param for the border Instets
+     * @param left param for the border Instets
+     * @param bottom param for the border Instets
+     * @param right param for the border Instets
+     * @param roundWidth width of the rounded rectangle
+     * @param roundHeight height of the rounded rectangle
+     */
     public RectanglePainter(int top, int left, int bottom, int right,
             int roundWidth, int roundHeight) {
         this(top, left, bottom, right, roundWidth, roundHeight, roundWidth != 0 || roundHeight != 0, Color.RED, 1f, Color.BLACK);
     }
 
-    public RectanglePainter(int top, int left, int bottom, int right, int roundWidth,
-            int roundHeight, boolean rounded, Paint fillPaint, float strokeWidth, Paint borderPaint) {
+    /**
+     * constructs a RectanglePainter
+     * @param top param for the border Instets
+     * @param left param for the border Instets
+     * @param bottom param for the border Instets
+     * @param right param for the border Instets
+     * @param roundWidth width of the rounded rectangle
+     * @param roundHeight height of the rounded rectangle
+     * @param rounded Indicates if the rectangle is rounded
+     * @param fillPaint a Paint instance for fill paint
+     * @param strokeWidth
+     * @param borderPaint a Paint instance for border paint
+     */
+    public RectanglePainter(int top, int left, int bottom, int right, 
+    		int roundWidth, int roundHeight, boolean rounded, 
+    		Paint fillPaint, float strokeWidth, Paint borderPaint) {
         this(new Insets(top, left, bottom, right), -1, -1, roundWidth, roundHeight, rounded, fillPaint, strokeWidth, borderPaint);
     }
 
+    /**
+     * constructs a RectanglePainter
+     * @param fillPaint a Paint instance for fill paint
+     * @param borderPaint a Paint instance for border paint
+     */
     public RectanglePainter(Color fillPaint, Color borderPaint) {
         this(fillPaint, borderPaint, 1f, null);
     }
 
+    /**
+     * constructs a RectanglePainter
+     * @param fillPaint a Paint instance for fill paint
+     * @param borderPaint a Paint instance for border paint
+     * @param borderWidth
+     * @param style fill style
+     */
     public RectanglePainter(Paint fillPaint, Paint borderPaint, float borderWidth, Style style) {
         this(new Insets(0, 0, 0, 0), -1, -1, 0, 0, false, fillPaint, borderWidth, borderPaint);
         setStyle(style);
         setDirty(false);
     }
 
+    /**
+     * constructs a RectanglePainter
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
+     * @param cornerRadius
+     * @param fillPaint a Paint instance for fill paint
+     */
     public RectanglePainter(int width, int height, int cornerRadius, Paint fillPaint) {
         this(new Insets(0, 0, 0, 0), width, height, cornerRadius, cornerRadius, true, fillPaint, 1f, Color.BLACK);
     }
 
+    /**
+     * constructs a RectanglePainter
+     * @param insets the border Instets
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
+     * @param roundWidth width of the rounded rectangle
+     * @param roundHeight height of the rounded rectangle
+     * @param rounded Indicates if the rectangle is rounded
+     * @param fillPaint a Paint instance for fill paint
+     * @param strokeWidth for border width
+     * @param borderPaint a Paint instance for border paint
+     */
     public RectanglePainter(Insets insets, int width, int height, int roundWidth, int roundHeight,
             boolean rounded, Paint fillPaint, float strokeWidth, Paint borderPaint) {
         this.width = width;
@@ -195,6 +254,12 @@ public class RectanglePainter extends AbstractAreaPainter<Component> {
 
 
     /* ======== drawing code ============ */
+    /**
+     * calculating a RectangularShape
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
+     * @return RectangularShape
+     */
     protected RectangularShape calculateShape(int width, int height) {
         Insets insets = getInsets();
         int x = insets.left;

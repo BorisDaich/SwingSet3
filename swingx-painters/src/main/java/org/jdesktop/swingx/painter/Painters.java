@@ -28,6 +28,9 @@ import java.awt.Graphics2D;
  */
 public final class Painters {
 	
+	/**
+	 * an empty painter that does nothing
+	 */
     public static final Painter<Object> EMPTY_PAINTER = new Painter<Object>() {
         @Override
         public void paint(Graphics2D g, Object object, int width, int height) {

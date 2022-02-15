@@ -34,11 +34,10 @@ import org.jdesktop.beans.JavaBean;
  * be applied to them together as a whole. The entire set of painting operations
  * may be cached together.</p>
  *
- * <p></p>
- *
  * <p>For example, if I want to create a CompoundPainter that started with a blue
  * background, had pinstripes on it running at a 45 degree angle, and those
  * pinstripes appeared to "fade in" from left to right, I would write the following:
+ * </p>
  * <pre><code>
  *  Color blue = new Color(0x417DDD);
  *  Color translucent = new Color(blue.getRed(), blue.getGreen(), blue.getBlue(), 0);
@@ -55,7 +54,7 @@ import org.jdesktop.beans.JavaBean;
  *  Painter backgroundPainter = new RectanglePainter(this.getBackground(), null);
  *  Painter p = new CompoundPainter(backgroundPainter, pinstripes, veil);
  *  panel.setBackgroundPainter(p);
- * </code></pre></p>
+ * </code></pre>
  *
  * @author rbair
  */
@@ -262,23 +261,27 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
      * should be checked for their <code>dirty</code> flag as part of
      * processing.<br>
      * Default value is: <code>true</code><br>
-     * This should be set to </code>false</code> if the cacheable state
-     * of the child <code>Painter</code>s are different from each other.  This
-     * will allow the cacheable == <code>true</code> <code>Painter</code>s to
-     * keep their cached image during regular repaints.  In this case,
-     * client code should call {@link #clearCache()} manually when the cacheable
+     * This should be set to <code>false</code> if the cacheable state
+     * of the child <code>Painter</code>s are different from each other.  
+     * This will allow the cacheable == <code>true</code> <code>Painter</code>s to
+     * keep their cached image during regular repaints.  
+     * In this case, client code should call {@link #clearCache()} manually when the cacheable
      * <code>Painter</code>s should be updated.
      *
+     * @return <code>false</code> if the cacheable state of the child <code>Painter</code>s are different from each other
      *
      * @see #isDirty()
      */
     public boolean isCheckingDirtyChildPainters() {
         return checkForDirtyChildPainters;
     }
+
     /**
      * Set the flag used by {@link #isDirty()} to check if the 
      * child <code>Painter</code>s should be checked for their 
      * <code>dirty</code> flag as part of processing.
+     * 
+     * @param b checkForDirtyChildPainters
      *
      * @see #isCheckingDirtyChildPainters()
      * @see #isDirty()
@@ -292,7 +295,7 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
     /**
      * {@inheritDoc}
      * 
-     * @impl This <code>CompoundPainter</code> is dirty if it, or (optionally) any of its children,
+     * This <code>CompoundPainter</code> is dirty if it, or (optionally) any of its children,
      *       are dirty. If the super implementation returns <code>true</code>, we return
      *       <code>true</code>. Otherwise, if {@link #isCheckingDirtyChildPainters()} is
      *       <code>true</code>, we iterate over all child <code>Painter</code>s and query them to

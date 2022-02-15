@@ -39,7 +39,19 @@ public class NeonBorderEffect extends AbstractAreaEffect {
     /**
      * An enum representing the position of the border: inside, outside, or centered on the border.
      */
-    public enum BorderPosition { Inside, Centered, Outside }
+    public enum BorderPosition { 
+    	/**
+    	 * position of the border: inside
+    	 */
+    	Inside, 
+    	/**
+    	 * centered on the border
+    	 */
+    	Centered, 
+    	/**
+    	 * position of the border: outside
+    	 */
+    	Outside }
     
     
     /**
@@ -49,7 +61,12 @@ public class NeonBorderEffect extends AbstractAreaEffect {
         this(Color.GREEN, Color.WHITE, 10);
     }
     
-    /** Creates a new instance of NeonBorderEffect */
+    /**
+     * Creates a new instance of NeonBorderEffect
+     * @param edgeColor Color
+     * @param centerColor Color
+     * @param effectWidth width of the effect
+     */
     public NeonBorderEffect(Color edgeColor, Color centerColor, int effectWidth) {
         super();
         setEffectWidth(effectWidth);
@@ -114,6 +131,13 @@ public class NeonBorderEffect extends AbstractAreaEffect {
         
     }
     
+    /**
+     * interpolate the Color between start and end color
+     * @param t brushWidth for interpolating
+     * @param start colot
+     * @param end color
+     * @return the interpolated Color
+     */
     protected Color interpolateColor(float t, Color start, Color end) {
         float[] partsS = start.getRGBComponents(null);
         float[] partsE = end.getRGBComponents(null);
@@ -134,7 +158,7 @@ public class NeonBorderEffect extends AbstractAreaEffect {
     
     /**
      * Set the edge color
-     * @param edgeColor 
+     * @param edgeColor current edge color
      */
     public void setEdgeColor(Color edgeColor) {
         this.edgeColor = edgeColor;

@@ -44,7 +44,7 @@ import org.jdesktop.beans.JavaBean;
  * <p>The values shown in this examples are the values used by default if
  * they are not specified.</p>
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 //see org.jdesktop.swingx.demos.painter.PainterDemo
 @JavaBean
@@ -52,10 +52,14 @@ public class GlossPainter extends AbstractPainter<Component> {
 	
     /**
      * draws an ellipse in the gloss area
+     * implements the abstract method AbstractPainter.doPaint
      * 
-     * @inheritDoc
+     * @param g The Graphics2D object in which to paint
+     * @param component the painted object 
+     * @param width width of the area to paint.
+     * @param height height of the area to paint.
      */
-    @Override // implements the abstract method AbstractPainter.doPaint
+    @Override
     protected void doPaint(Graphics2D g, Component component, int width, int height) {
         if (getPaint() != null) {
             Ellipse2D ellipse = new Ellipse2D.Double(-width / 2.0,
@@ -79,10 +83,13 @@ public class GlossPainter extends AbstractPainter<Component> {
 
 
     /**
-     * <p>Used to define the position of the gloss on the painted area.</p>
+     * Used to define the position of the gloss on the painted area.
      */
     public enum GlossPosition {
-        TOP, BOTTOM
+    	/** at top of the area */
+        TOP, 
+    	/** at bottom of the area */
+        BOTTOM
     }
     
     private Paint paint;
