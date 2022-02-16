@@ -104,11 +104,9 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * formally define and implement, like in AbstractTestHighlighter), that is it
  * provides consistent api to add and remove Highlighters which can visually
  * decorate the rendering component.
- * <p>
  * 
  * <pre>
  * <code>
- * 
  * JXList list = new JXList(new Contributors());
  * // implement a custom string representation, concated from first-, lastName
  * StringValue sv = new StringValue() {
@@ -140,7 +138,6 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * the Highlighter after delegating the default configuration to the wrappee. As
  * a side-effect, getCellRenderer does return the wrapper instead of the custom
  * renderer. To access the latter, client code must call getWrappedCellRenderer.
- * <p>
  * 
  * <h2>Rollover</h2>
  * 
@@ -172,7 +169,6 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * The example below selects the cell that was clicked, event being the
  * <code>PopupMenuEvent</code> received in a 
  * <code>PopupMenuListener</code>.
- * <p>
  * 
  * <pre>
  * <code>

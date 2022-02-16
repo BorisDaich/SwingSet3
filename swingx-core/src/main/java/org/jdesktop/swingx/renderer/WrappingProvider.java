@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -46,7 +44,6 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
  * </code></pre>
  * 
  * PENDING: ui specific focus rect variation (draw rect around icon) missing
- * <p>
  */
 public class WrappingProvider extends 
     ComponentProvider<WrappingIconPanel>  implements RolloverRenderer {

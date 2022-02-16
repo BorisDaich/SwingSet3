@@ -31,7 +31,7 @@ import java.util.Map;
  * extra work, though the display can can be further customized.
  * </p>
  * 
- * <h4>Simple Usage</h4>
+ * <h2>Simple Usage</h2>
  * 
  * <p>
  * The simplest usage is to wrap an <code>enum</code> inside the

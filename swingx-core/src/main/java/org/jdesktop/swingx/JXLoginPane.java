@@ -118,7 +118,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  *  will be queried for the password using the <code>get</code> method.
  *
  *  Example:
- *  <code><pre>
+ *  <pre><code>
  *         final JXLoginPane panel = new JXLoginPane(new LoginService() {
  *                      public boolean authenticate(String name, char[] password,
  *                                      String server) throws Exception {
@@ -126,7 +126,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  *                              return false;
  *                      }});
  *      final JFrame frame = JXLoginPane.showLoginFrame(panel);
- * </pre></code>
+ * </code></pre>
  *
  * @author Bino George
  * @author Shai Almog

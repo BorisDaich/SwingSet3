@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -45,12 +43,10 @@ import org.jdesktop.swingx.plaf.TaskPaneContainerUI;
  * expanding its content.
  *  
  * <p>
- * <code>JXTaskPaneContainer<code> can be added to a JScrollPane.
- * 
+ * <code>JXTaskPaneContainer</code> can be added to a JScrollPane.
  * <p>
  * Example:
- * <pre>
- * <code>
+ * <code><pre>
  * JXFrame frame = new JXFrame();
  * 
  * // a container to put all JXTaskPane together
@@ -74,12 +70,11 @@ import org.jdesktop.swingx.plaf.TaskPaneContainerUI;
  * 
  * frame.pack().
  * frame.setVisible(true);
- * </code>
- * </pre>
+ * </pre></code>
  *
  * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
- * 
- * @javabean.attribute
+ */
+/* @javabean.attribute
  *          name="isContainer"
  *          value="Boolean.TRUE"
  *          rtexpr="true"

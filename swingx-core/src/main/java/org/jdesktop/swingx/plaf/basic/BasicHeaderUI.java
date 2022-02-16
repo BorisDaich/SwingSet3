@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -66,18 +64,21 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * the param (would break subclasses).<p>
  * 
  * PENDING JW: keys for uidefaults are inconsistent - most have prefix "JXHeader." while
- * defaultIcon has prefix "Header." <p>
+ * defaultIcon has prefix "Header."
  * 
  * @author rbair
  * @author rah003
  * @author Jeanette Winzenburg
  */
 public class BasicHeaderUI extends HeaderUI {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(BasicHeaderUI.class
-            .getName());
-    // Implementation detail. Neeeded to expose getMultiLineSupport() method to allow restoring view
-    // lost after LAF switch
+    private static final Logger LOG = Logger.getLogger(BasicHeaderUI.class.getName());
+    
+    /**
+     * Implementation detail. 
+     * Neeeded to expose getMultiLineSupport() method to allow restoring view lost after LAF switch
+     */
     protected class DescriptionPane extends JXLabel {
             @Override
             public void paint(Graphics g) {
@@ -99,9 +100,13 @@ public class BasicHeaderUI extends HeaderUI {
             }
     }
 
+    /** TODO doc */
     protected JLabel titleLabel;
+    /** TODO doc */
     protected DescriptionPane descriptionPane;
+    /** TODO doc */
     protected JLabel imagePanel;
+
     private PropertyChangeListener propListener;
     private HierarchyBoundsListener boundsListener;
     private Color gradientLightColor;
@@ -120,6 +125,8 @@ public class BasicHeaderUI extends HeaderUI {
      * stateful, then it should return a new instance per component.
      * The default implementation of this method throws an error, as it
      * should never be invoked.
+     * @param c not used
+     * @return BasicHeaderUI
      */
     public static ComponentUI createUI(JComponent c) {
         return new BasicHeaderUI();
@@ -367,7 +374,10 @@ public class BasicHeaderUI extends HeaderUI {
     protected void uninstallComponentDefaults(JXHeader header) {
     }
 
-
+    /**
+     * install listeners to JXHeader
+     * @param h JXHeader
+     */
     protected void installListeners(final JXHeader header) {
         propListener = new PropertyChangeListener() {
             @Override
@@ -407,11 +417,22 @@ public class BasicHeaderUI extends HeaderUI {
         header.addHierarchyBoundsListener(boundsListener);
     }
 
+    /**
+     * uninstall listeners from JXHeader
+     * @param h JXHeader
+     */
     protected void uninstallListeners(JXHeader h) {
         h.removePropertyChangeListener(propListener);
         h.removeHierarchyBoundsListener(boundsListener);
     }
 
+    /**
+     * perform property change on JXHeader
+     * @param h JXHeader
+     * @param propertyName the property
+     * @param oldValue
+     * @param newValue
+     */
     protected void onPropertyChange(JXHeader h, String propertyName, Object oldValue, final Object newValue) {
         if ("title".equals(propertyName)) {
             titleLabel.setText(h.getTitle());
@@ -451,9 +472,11 @@ public class BasicHeaderUI extends HeaderUI {
             h.add(imagePanel, new GridBagConstraints(0, 0, 1, 2, 0.0, 1.0, GridBagConstraints.FIRST_LINE_END, GridBagConstraints.NONE, new Insets(12, 11, 0, 11), 0, 0));
         }
     }
-    
-    
 
+    /**
+     * create BackgroundPainter
+     * @return the painter
+     */
     protected Painter createBackgroundPainter() {
         MattePainter p = new MattePainter(new GradientPaint(0, 0, gradientLightColor, 1, 0, gradientDarkColor));
         p.setPaintStretched(true);

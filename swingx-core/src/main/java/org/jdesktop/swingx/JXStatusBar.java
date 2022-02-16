@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,9 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
-
 
 import java.awt.Insets;
 
@@ -73,7 +69,7 @@ import org.jdesktop.swingx.plaf.StatusBarUI;
  *              JXStatusBar.Constraint.ResizeBehavior.FILL) // Fill with no inserts
  *      JProgressBar pbar = new JProgressBar();
  *      bar.add(pbar, c2);            // Fill with no inserts - will use remaining space
- * </code></pre></p>
+ * </code></pre>
  *
  * <p>Two common use cases for status bars include tracking application status and
  * progress. <code>JXStatusBar</code> does not manage these tasks, but instead special components
@@ -93,9 +89,7 @@ import org.jdesktop.swingx.plaf.StatusBarUI;
  *      sbar.add(new JSeparator(JSeparator.VERTICAL));
  *      sbar.add(comp2);
  *      sbar.add(comp3);
- *  </code></pre></p>
- *
- * @status REVIEWED
+ *  </code></pre>
  *
  * @author pdoubleya
  * @author rbair

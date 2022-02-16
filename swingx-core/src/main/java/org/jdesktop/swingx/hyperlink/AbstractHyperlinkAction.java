@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,7 +24,7 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 
 /**
  * Convenience implementation to simplify {@link org.jdesktop.swingx.JXHyperlink} configuration and
- * provide minimal api. <p>
+ * provide minimal api.
  * 
  * @author Jeanette Winzenburg
  */
@@ -63,7 +61,7 @@ public abstract class AbstractHyperlinkAction<T> extends AbstractActionExt {
     /**
      * Set the visited property.
      * 
-     * @param visited
+     * @param visited boolean value of the prop
      */
     public void setVisited(boolean visited) {
         putValue(VISITED_KEY, visited);
@@ -78,14 +76,18 @@ public abstract class AbstractHyperlinkAction<T> extends AbstractActionExt {
         return Boolean.TRUE.equals(visited);
     }
 
-    
+    /**
+     * get the object the actionPerformed acts on.
+     * @return target
+     */
     public T getTarget() {
         return target;
     }
 
     /**
+     * set the object the actionPerformed cam act on.
      * PRE: isTargetable(target)
-     * @param target
+     * @param target generic object
      */
     public void setTarget(T target) {
         T oldTarget = getTarget();

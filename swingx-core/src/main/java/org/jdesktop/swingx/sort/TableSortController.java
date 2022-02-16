@@ -25,7 +25,7 @@ import java.util.Comparator;
 import javax.swing.table.TableModel;
 
 /**
- * A SortController to use for a JXTable.<p>
+ * A SortController to use for a JXTable.
  * 
  * @author Jeanette Winzenburg
  */

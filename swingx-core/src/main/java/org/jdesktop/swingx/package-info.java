@@ -24,7 +24,6 @@
  * data-centric client applications. Many of these features will eventually
  * be incorporated into the Swing toolkit, although API compatibility will
  * not be guaranteed.
- * <p>
  * 
  * <h2>New or Enhanced Functionality</h2>
  * 

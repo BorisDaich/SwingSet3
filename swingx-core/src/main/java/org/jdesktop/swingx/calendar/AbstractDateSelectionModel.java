@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,18 +33,28 @@ import org.jdesktop.swingx.event.EventListenerMap;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
 
 /**
- * Abstract base implementation of DateSelectionModel. Implements
- * notification, Calendar related properties and lower/upper bounds.
+ * Abstract base implementation of DateSelectionModel. 
+ * Implements notification, Calendar related properties and lower/upper bounds.
  * 
  * @author Jeanette Winzenburg
  */
 public abstract class AbstractDateSelectionModel implements DateSelectionModel {
+	
+    /** empty dates */
     public static final SortedSet<Date> EMPTY_DATES = Collections.unmodifiableSortedSet(new TreeSet<Date>());
     
+    /**
+     * the Listeners collection
+     */
     protected EventListenerMap listenerMap;
+    
+    /** TODO doc */
     protected boolean adjusting;
+    /** java.util.Calendar */
     protected Calendar calendar;
+    /** upper bound for the model */
     protected Date upperBound;
+    /** lower bound for the model */
     protected Date lowerBound;
 
     /** 
@@ -315,10 +323,18 @@ public abstract class AbstractDateSelectionModel implements DateSelectionModel {
         listenerMap.remove(DateSelectionListener.class, l);
     }
 
+    /**
+     * get all registered listener to this model.
+     * @return a List of listeners
+     */
     public List<DateSelectionListener> getDateSelectionListeners() {
         return listenerMap.getListeners(DateSelectionListener.class);
     }
 
+    /**
+     * Notifies all listeners that have registered interest for notification on value change.
+     * @param eventType
+     */
     protected void fireValueChanged(DateSelectionEvent.EventType eventType) {
         List<DateSelectionListener> listeners = getDateSelectionListeners();
         DateSelectionEvent e = null;

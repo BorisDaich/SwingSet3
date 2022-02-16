@@ -51,7 +51,7 @@ import org.jdesktop.swingx.util.JVM;
  * <p>
  * An extended {@code JPanel} that provides additional features.
  * </p>
- * <h3>Scrollable</h3>
+ * <h2>Scrollable</h2>
  * <p>
  * {@code JXPanel} is {@link Scrollable} by default. It provides reasonable implementations of all
  * of the interface methods. In addition, it supports the setting of common scrolling approaches
@@ -77,7 +77,6 @@ import org.jdesktop.swingx.util.JVM;
  * container.add(panel);
  * </pre>
  * 
- * </p>
  * <h3>Painter Support</h3>
  * <p>
  * {@code JXPanel} has support for {@linkplain Painter}s.
@@ -89,8 +88,6 @@ import org.jdesktop.swingx.util.JVM;
  * JXPanel panel = new JXPanel();
  * panel.setBackgroundPainter(new PinstripePainter());
  * </pre>
- * 
- * </p>
  * 
  * @author rbair
  * @see Scrollable
@@ -706,10 +703,9 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
         super.setOpaque(opaque);
     }
     /**
-     * Returns whether or not the container hierarchy below is 
-     * transparent.
+     * Returns whether or not the container hierarchy below is transparent.
      * 
-     * @return
+     * @return true if getAlpha() in AlphaPaintable &lt; 1.0
      */
     protected boolean isAlpha() {
         // PENDING JW: use effective alpha?
@@ -719,7 +715,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
     /**
      * Returns whether or not the background is transparent.
      * 
-     * @return
+     * @return true if background'a Alpha &lt; 255
      */
     protected boolean isTransparentBackground() {
         return getBackground().getAlpha() < 255;
@@ -728,7 +724,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
     /**
      * Returns whether or not the background should be painted.
      * 
-     * @return
+     * @return true if panel is opaque
      */
     protected boolean isPaintingBackground() {
         return super.isOpaque();

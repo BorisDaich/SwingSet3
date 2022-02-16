@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,7 +41,6 @@ import org.jdesktop.swingx.painter.Painter;
  * 1.6.5-1). Further improvements (like f.i. the option to delegate to the ui's 
  * update - to allow LAF installed painters - instead of paint) are deferred
  * to a later normal release, more discussions needed.  
- * <p>
  * 
  * @author Jeanette Winzenburg
  * 
@@ -131,6 +128,7 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
      * painter. Otherwise, that is with SwingX painter:
      * <ol>
      * <li> if opaque  
+     * </ol>
      * <ol>
      * <li> set a flag which fakes transparency, that is both
      *      <code>contentAreaFilled</code> and 
@@ -141,10 +139,9 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
      * <li> reset the flag
      * </ol>
      * <li> else
-     * <ol> apply swingx painter
-     * <ol> call super
-     * <li> 
      * <ol> 
+     * <li> apply swingx painter
+     * <li> call super
      * </ol>
      * 
      * Note that Nimbus is special cased (mainly due to its bug of 

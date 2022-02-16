@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,21 +19,15 @@
  */
 package org.jdesktop.swingx.plaf.basic.core;
 
-/*
- * @(#)DragRecognitionSupport.java      1.2 05/11/17
- *
- * Copyright 2006 Sun Microsystems, Inc. All rights reserved.
- * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
-
-import java.awt.Toolkit;
-import java.awt.event.*;
 import java.awt.dnd.DragSource;
-import javax.swing.*;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 
 import org.jdesktop.swingx.SwingXUtilities;
-//import sun.awt.dnd.SunDragSourceContextPeer;
-//import sun.awt.AppContext;
 
 /**
  * Drag gesture recognition support for classes that have a
@@ -44,8 +36,8 @@ import org.jdesktop.swingx.SwingXUtilities;
  * pixels. An instance of this class is maintained per AppContext, and the
  * public static methods call into the appropriate instance. <p>
  * 
- * This is a c&p of core (package private) needed for BasicXListUI. It differs from
- * core in that references to sun packages have been replaced.
+ * This is a copy of core (package private) needed for BasicXListUI. 
+ * It differs from core in that references to sun packages have been replaced.
  * <ul>
  * <li> a static method of SunDragSourceContextPeer has been copied into SwingXUtilities
  *    and is used here

@@ -18,11 +18,12 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
  * 
  * @see PromptSupport
  * @see BuddySupport
- * @author Peter Weishapl <petw@gmx.net>
+ * @author Peter Weishapl petw@gmx.net
  * 
  */
 @JavaBean
 public class JXTextField extends JTextField {
+	
 	public JXTextField() {
 		this(null);
 	}

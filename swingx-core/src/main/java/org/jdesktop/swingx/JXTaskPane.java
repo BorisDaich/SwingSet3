@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -117,8 +115,8 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
  * @see org.jdesktop.swingx.JXCollapsiblePane
  * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
  * @author Karl George Schaefer
- * 
- * @javabean.attribute
+ */
+/* @javabean.attribute
  *          name="isContainer"
  *          value="Boolean.TRUE"
  *          rtexpr="true"
@@ -139,9 +137,7 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
  *          color32="JXTaskPane32.gif"
  */
 @JavaBean
-@SuppressWarnings("nls")
-public class JXTaskPane extends JPanel implements
-  JXCollapsiblePane.CollapsiblePaneContainer, Mnemonicable {
+public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsiblePaneContainer, Mnemonicable {
 
   /**
    * JXTaskPane pluggable UI key <i>swingx/TaskPaneUI</i> 
@@ -257,7 +253,7 @@ public class JXTaskPane extends JPanel implements
   }
   
   /**
-   * Notification from the <code>UIManager</code> that the L&F has changed.
+   * Notification from the <code>UIManager</code> that the LaF has changed.
    * Replaces the current UI object with the latest version from the <code>UIManager</code>.
    * 
    * @see javax.swing.JComponent#updateUI
@@ -275,10 +271,10 @@ public class JXTaskPane extends JPanel implements
   /**
    * Sets the L&F object that renders this component.
    * 
-   * @param ui the <code>TaskPaneUI</code> L&F object
+   * @param ui the <code>TaskPaneUI</code> LaF object
    * @see javax.swing.UIDefaults#getUI
-   * 
-   * @beaninfo bound: true hidden: true description: The UI object that
+   */ 
+  /* @beaninfo bound: true hidden: true description: The UI object that
    * implements the taskpane group's LookAndFeel.
    */
   public void setUI(TaskPaneUI ui) {
@@ -286,7 +282,7 @@ public class JXTaskPane extends JPanel implements
   }
 
   /**
-   * Returns the name of the L&F class that renders this component.
+   * Returns the name of the LaF class that renders this component.
    * 
    * @return the string {@link #uiClassID}
    * @see javax.swing.JComponent#getUIClassID
@@ -310,7 +306,8 @@ public class JXTaskPane extends JPanel implements
    * Sets the title to be displayed in the border of this pane.
    * 
    * @param title the title to be displayed in the border of this pane
-   * @javabean.property
+   */ 
+  /* @javabean.property
    *          bound="true"
    *          preferred="true"
    */
@@ -335,7 +332,8 @@ public class JXTaskPane extends JPanel implements
    * the recommended icon size.
    * 
    * @param icon the icon to be displayed in the border of this pane
-   * @javabean.property
+   */
+  /* @javabean.property
    *          bound="true"
    *          preferred="true"
    */
@@ -368,7 +366,8 @@ public class JXTaskPane extends JPanel implements
    * 
    * @param special
    *          true if this pane is "special", false otherwise
-   * @javabean.property bound="true" preferred="true"
+   */
+  /* @javabean.property bound="true" preferred="true"
    */
   public void setSpecial(boolean special) {
       boolean oldValue = isSpecial();
@@ -383,8 +382,8 @@ public class JXTaskPane extends JPanel implements
    * visible if this group is expanded.
    * 
    * @see #setCollapsed(boolean)
-   * 
-   * @javabean.property
+   */
+  /* @javabean.property
    *          bound="true"
    *          preferred="true"
    */
@@ -415,7 +414,8 @@ public class JXTaskPane extends JPanel implements
      * 
      * @param collapsed
      *                true to collapse the group, false to expand it
-     * @javabean.property
+     */
+    /* @javabean.property
      *          bound="true"
      *          preferred="false"
      */
@@ -437,7 +437,8 @@ public class JXTaskPane extends JPanel implements
    * Enables or disables animation during expand/collapse transition.
    * 
    * @param animated
-   * @javabean.property
+   */
+  /* @javabean.property
    *          bound="true"
    *          preferred="true"
    */

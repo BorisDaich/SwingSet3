@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * Note: this differs from PatternPredicate in that it is focused
  * on the current cell (highlight coordinates == test coordinates)
  * while the PatternPredicate can have separate test and highlight
- * coordinates. <p>
+ * coordinates.
  * 
  * 
  * @author Jeanette Winzenburg

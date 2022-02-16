@@ -33,7 +33,7 @@ import org.jdesktop.swingx.plaf.TextUIWrapper;
  * @see JXTextArea
  * @see PromptTextUI
  * 
- * @author Peter Weishapl <petw@gmx.net>
+ * @author Peter Weishapl petw@gmx.net
  * @author Karl Schaefer
  */
 public final class PromptSupport {
@@ -99,8 +99,7 @@ public final class PromptSupport {
 	 * </p>
 	 * <p>
 	 * If <code>stayOnUIChange</code> is true, The prompt support will stay
-	 * installed, even when the text components UI changes. See
-	 * {@link #install(JTextComponent, boolean)}.
+	 * installed, even when the text components UI changes. 
 	 * </p>
 	 * 
 	 * @param promptText
@@ -108,8 +107,7 @@ public final class PromptSupport {
 	 * @param promptBackground
 	 * @param textComponent
 	 */
-	public static void init(String promptText, Color promptForeground, Color promptBackground,
-			final JTextComponent textComponent) {
+	public static void init(String promptText, Color promptForeground, Color promptBackground, final JTextComponent textComponent) {
 		if (promptText != null && promptText.length() > 0) {
 			setPrompt(promptText, textComponent);
 		}
@@ -168,9 +166,8 @@ public final class PromptSupport {
 	 * prompt text.
 	 * </p>
 	 * <p>
-	 * Calls {@link #install(JTextComponent)} to ensure that the
-	 * <code>textComponent</code>s UI is wrapped by the appropriate
-	 * {@link PromptTextUI}.
+	 * Calls <code>install(JTextComponent)</code> to ensure that the
+	 * <code>textComponent</code>s UI is wrapped by the appropriate {@link PromptTextUI}.
 	 * </p>
 	 * 
 	 * @param promptText
@@ -239,9 +236,8 @@ public final class PromptSupport {
 	 * only be used when no text is present.
 	 * </p>
 	 * <p>
-	 * Calls {@link #install(JTextComponent)} to ensure that the
-	 * <code>textComponent</code>s UI is wrapped by the appropriate
-	 * {@link PromptTextUI}.
+	 * Calls <code>install(JTextComponent)</code> to ensure that the
+	 * <code>textComponent</code>s UI is wrapped by the appropriate {@link PromptTextUI}.
 	 * </p>
 	 * 
 	 * @param background
@@ -279,9 +275,8 @@ public final class PromptSupport {
 	 * only be used when no text is present.
 	 * </p>
 	 * <p>
-	 * Calls {@link #install(JTextComponent)} to ensure that the
-	 * <code>textComponent</code>s UI is wrapped by the appropriate
-	 * {@link PromptTextUI}.
+	 * Calls <code>install(JTextComponent)</code> to ensure that the
+	 * <code>textComponent</code>s UI is wrapped by the appropriate {@link PromptTextUI}.
 	 * </p>
 	 * 
 	 * @param background

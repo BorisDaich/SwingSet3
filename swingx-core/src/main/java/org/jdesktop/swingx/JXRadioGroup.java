@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -69,7 +67,6 @@ import org.jdesktop.beans.JavaBean;
  * </p>
  * <p>
  * TODO back with a model (possibly reuse of extend {@link ComboBoxModel}
- * </p>
  * 
  * @author Amy Fowler
  * @author Noel Grandin

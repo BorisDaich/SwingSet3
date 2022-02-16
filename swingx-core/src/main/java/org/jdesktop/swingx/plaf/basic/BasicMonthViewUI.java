@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -79,8 +77,6 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * the rendering components. Plus updating on property changes received from the 
  * monthView. <p>
  * 
- * 
- * <p>   
  * Painting: coordinate systems.
  * 
  * <ul>
@@ -806,7 +802,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * The bounds are in monthView coordinate system.<p>
      * 
      * PENDING JW: this most probably should be public as it is the logical
-     * reverse of getDayAtLocation <p>
+     * reverse of getDayAtLocation
      * 
      * @param date the Date to return the bounds for. Must not be null.
      * @return the bounds of the given date or null if not visible.
@@ -893,12 +889,9 @@ public class BasicMonthViewUI extends MonthViewUI {
      * Returns the bounds of the month header which contains the 
      * given location. The bounds are in monthView coordinate system.
      * 
-     * <p>
-     * 
      * @param x the x position of the location in pixel
      * @param y the y position of the location in pixel
-     * @return the bounds of the month which contains the location, 
-     *   or null if outside
+     * @return the bounds of the month which contains the location, or null if outside
      */
     protected Rectangle getMonthHeaderBoundsAtLocation(int x, int y) {
         Rectangle header = getMonthBoundsAtLocation(x, y);
@@ -1096,6 +1089,7 @@ public class BasicMonthViewUI extends MonthViewUI {
      * Mapping Date to pixel.
      * 
      * @param date the Date to return the bounds for. Must not be null.
+     * @param includeInsets unused
      * @return the bounds of the month that contains the given date or null if not visible.
      * 
      * @see #getMonthAtLocation(int, int)

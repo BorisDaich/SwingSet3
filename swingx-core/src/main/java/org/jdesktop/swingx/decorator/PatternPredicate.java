@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * The match logic can be configured to either test 
  * one specific column in the current row or all columns. In the latter case
  * the logic is the same as in RowFilters.GeneralFilter: the row is included
- * if any of the cell contents in the row are matches. <p>
+ * if any of the cell contents in the row are matches.
  * 
  * 
  * @author Jeanette Winzenburg

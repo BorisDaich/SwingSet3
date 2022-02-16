@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,8 +18,6 @@
  */
 package org.jdesktop.swingx.renderer;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -57,7 +53,6 @@ import org.jdesktop.swingx.painter.Painter;
  * no-ops and override the <code>isOpaque</code> method solely to improve
  * performance.  If you write your own renderer component,
  * please keep this performance consideration in mind.
- * <p>
  * 
  * @author Jeanette Winzenburg
  */

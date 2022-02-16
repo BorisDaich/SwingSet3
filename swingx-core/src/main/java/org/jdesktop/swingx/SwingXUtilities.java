@@ -62,13 +62,14 @@ import org.jdesktop.swingx.painter.Painter;
  * A collection of utility methods for Swing(X) classes.
  * 
  * <ul>
- * PENDING JW: think about location of this class and/or its methods, Options:
- * 
  *  <li> move this class to the swingx utils package which already has a bunch of xxUtils
  *  <li> move methods between xxUtils classes as appropriate (one window/comp related util)
  *  <li> keep here in swingx (consistent with swingutilities in core)
  * </ul>
  * @author Karl George Schaefer
+ */
+/*
+ * PENDING JW: think about location of this class and/or its methods, Options:
  */
 public final class SwingXUtilities {
 	

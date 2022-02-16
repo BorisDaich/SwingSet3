@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,9 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.multislider;
-
 
 import java.util.List;
 
@@ -30,9 +26,14 @@ import java.util.List;
  */
 public interface MultiThumbModel<E> extends Iterable<Thumb<E>> {
     
+    /** TODO doc */
     public float getMinimumValue();
+    /** TODO doc */
     public void setMinimumValue(float minimumValue);
+
+    /** TODO doc */
     public float getMaximumValue();
+    /** TODO doc */
     public void setMaximumValue(float maximumValue);
     
     public int addThumb(float value, E obj);
@@ -42,9 +43,26 @@ public interface MultiThumbModel<E> extends Iterable<Thumb<E>> {
     public Thumb<E> getThumbAt(int index);
     public int getThumbIndex(Thumb<E> thumb);
     public List<Thumb<E>> getSortedThumbs();
+    
+    /** TODO doc */
     public void thumbPositionChanged(Thumb<E> thumb);
+    
+    /** TODO doc */
     public void thumbValueChanged(Thumb<E> thumb);
     
+    /**
+     * Adds a listener for the <code>ThumbDataEvent</code>
+     * posted after the thumb data changes.
+     *
+     * @param   listener the listener to add
+     * @see     #removeThumbDataListener
+     */
     public void addThumbDataListener(ThumbDataListener listener);
+    /**
+     * Removes a listener previously added with <code>addThumbDataListener</code>.
+     *
+     * @see     #addThumbDataListener
+     * @param   listener the listener to remove
+     */
     public void removeThumbDataListener(ThumbDataListener listener);
 }

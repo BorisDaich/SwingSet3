@@ -24,7 +24,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * using {@link Preferences}. A recent searches popup menu can be installed on
  * a {@link JXSearchField} using {@link #install(JXSearchField)}.
  * 
- * @author Peter Weishapl <petw@gmx.net>
+ * @author Peter Weishapl petw@gmx.net
  * 
  */
 public class RecentSearches implements ActionListener {

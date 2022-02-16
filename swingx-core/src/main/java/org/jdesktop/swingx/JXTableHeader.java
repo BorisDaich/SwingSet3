@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -45,8 +43,7 @@ import org.jdesktop.swingx.sort.SortController;
 import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
- * TableHeader with extended functionality if associated Table is of
- * type JXTable.<p>
+ * TableHeader with extended functionality if associated Table is of type JXTable.
  * 
  * <h2> Extended user interaction </h2>
  * 
@@ -71,21 +68,18 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <li> Listens to TableColumn propertyChanges to update itself accordingly.
  * <li> Supports per-column header ToolTips. 
  * <li> Guarantees reasonable minimal height > 0 for header preferred height.
-* </ul>
+ * </ul>
  * 
  * 
  * @author Jeanette Winzenburg
  * 
  * @see JXTable#toggleSortOrder(int)
  * @see JXTable#resetSortOrder()
- * @see SortGestureRecognizer
  */
-public class JXTableHeader extends JTableHeader 
-    implements TableColumnModelExtListener {
+public class JXTableHeader extends JTableHeader implements TableColumnModelExtListener {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXTableHeader.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXTableHeader.class.getName());
     
     static {
         LookAndFeelAddons.contribute(new TableHeaderAddon());

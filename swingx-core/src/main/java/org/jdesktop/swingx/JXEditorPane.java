@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Component;
@@ -89,8 +88,8 @@ import org.jdesktop.swingx.search.Searchable;
  * JEditorPane#HONOR_DISPLAY_PROPERTIES honors display properties} by default.  
  * Users can revert to the behavior of {@code JEditorPane} by setting the 
  * property to {@code false}.
- * </p>
- * <h3>Additional Features</h3>
+ *
+ * <h2>Additional Features</h2>
  * <dl>
  * <dt>
  * Improved text editing</dt>
@@ -135,7 +134,6 @@ import org.jdesktop.swingx.search.Searchable;
  * toolBar.add(editorPane.getParagraphSelector());
  * setToolBar(toolBar);
  * </pre>
- * </p>
  * 
  * @author Mark Davidson
  */
@@ -529,7 +527,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
     }
 
     /**
-     * The paste method has been overloaded to strip off the <html><body> tags
+     * The paste method has been overloaded to strip off the html body tags
      * This doesn't really work.
      */
     @Override

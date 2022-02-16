@@ -51,11 +51,12 @@ import org.jdesktop.swingx.search.RecentSearches;
  * search should be cancelled, when the command text is empty or null.
  * 
  * @see RecentSearches
- * @author Peter Weishapl <petw@gmx.net>
+ * @author Peter Weishapl petw@gmx.net
  * 
  */
 @JavaBean
 public class JXSearchField extends JXTextField {
+	
 	/**
 	 * The default instant search delay.
 	 */

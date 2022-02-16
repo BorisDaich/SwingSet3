@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,7 +29,7 @@ import org.jdesktop.swingx.rollover.RolloverRenderer;
 /**
  * Renderer for hyperlinks". <p>
  * 
- * The renderer is configured with a LinkAction<T>. 
+ * The renderer is configured with a LinkAction&lt;T&gt;. 
  * It's mostly up to the developer to guarantee that the all
  * values which are passed into the getXXRendererComponent(...) are
  * compatible with T: she can provide a runtime class to check against.
@@ -48,7 +46,7 @@ import org.jdesktop.swingx.rollover.RolloverRenderer;
  * 
  * PENDING: make renderer respect selected cell state. <p>
  * 
- * PENDING: TreeCellRenderer has several issues <p>
+ * PENDING: TreeCellRenderer has several issues
  * <ol>
  *   <li> no icons
  *   <li> usual background highlighter issues

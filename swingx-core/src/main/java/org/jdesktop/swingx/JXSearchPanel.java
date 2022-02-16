@@ -137,7 +137,6 @@ public class JXSearchPanel extends AbstractPatternPanel {
 
     /**
      * returns the label of the search combo.
-     * 
      */
     public String getFieldName() {
         return searchLabel.getText();

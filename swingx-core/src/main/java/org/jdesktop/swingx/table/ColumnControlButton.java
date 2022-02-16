@@ -82,7 +82,7 @@ import org.jdesktop.swingx.table.ColumnControlPopup.ActionGroupable;
  * informal, driven by convention: 
  * <ul>
  * <li> the JXTable's actionMap is scanned for candidate actions, the default marker
- *   is a key of type String which starts with {@link ColumnControlButton.COLUMN_CONTROL_MARKER} 
+ *   is a key of type String which starts with <code>ColumnControlButton.COLUMN_CONTROL_MARKER</code>
  * <li> the actions are sorted by that key and then handed over to the ColumnControlPopup
  *   for binding and addition of appropriate menu items
  * <li> the addition as such is control by additionalActionsVisible property, its 
@@ -481,8 +481,8 @@ public class ColumnControlButton extends JButton {
         }
 
         /** 
-         * @inheritDoc
-         * 
+         * {@inheritDoc} <p>
+         * updateUI for component tree
          */
         @Override
         public void updateUI() {
@@ -490,8 +490,8 @@ public class ColumnControlButton extends JButton {
         }
 
         /** 
-         * @inheritDoc
-         * 
+         * {@inheritDoc} <p>
+         * toggleVisibility on popup menu
          */
         @Override
         public void toggleVisibility(JComponent owner) {
@@ -513,8 +513,8 @@ public class ColumnControlButton extends JButton {
         }
 
         /** 
-         * @inheritDoc
-         * 
+         * {@inheritDoc} <p>
+         * perform applyComponentOrientation on popup menu
          */
         @Override
         public void applyComponentOrientation(ComponentOrientation o) {
@@ -525,8 +525,8 @@ public class ColumnControlButton extends JButton {
         //-------------------- public methods to manipulate popup contents.
         
         /** 
-         * @inheritDoc
-         * 
+         * {@inheritDoc} <p>
+         * Removes all the components from the popup menu. 
          */
         @Override
         public void removeAll() {
@@ -535,20 +535,18 @@ public class ColumnControlButton extends JButton {
 
 
         /** 
-         * @inheritDoc
-         * 
+         * {@inheritDoc} <p>
+         * creates and adds a menuItem to the popup for every Action in the list.
          */
         @Override
-        public void addVisibilityActionItems(
-                List<? extends AbstractActionExt> actions) {
+        public void addVisibilityActionItems(List<? extends AbstractActionExt> actions) {
             addItems(new ArrayList<Action>(actions));
-
         }
 
-
-        /** 
-         * @inheritDoc
+        /**
+         * Adds additional actions to the popup. 
          * 
+         * @param actions List of <code>Action</code>s to add to the popup.
          */
         @Override
         public void addAdditionalActionItems(List<? extends Action> actions) {
@@ -578,9 +576,8 @@ public class ColumnControlButton extends JButton {
         //--------------------------- internal helpers to manipulate popups content
         
         /**
-         * Here: creates and adds a menuItem to the popup for every 
-         * Action in the list. Does nothing if 
-         * if the list is empty.
+         * Here: creates and adds a menuItem to the popup for every Action in the list. 
+         * Does nothing if if the list is empty.
          * 
          * PRE: actions != null.
          * 

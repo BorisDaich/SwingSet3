@@ -71,7 +71,7 @@ public class JXComboBox<E> extends JComboBox<E> {
 	
     /**
      * A decorator for the original ListCellRenderer. 
-     * Needed to hook highlighters after messaging the delegate.<p>
+     * Needed to hook highlighters after messaging the delegate.
      */
     public class DelegatingRenderer implements ListCellRenderer<E>, RolloverRenderer, UIDependent {
         /** the delegate. */

@@ -87,7 +87,7 @@ import org.jdesktop.swingx.renderer.StringValues;
  * 
  * PENDING JW: anything to gain by generics here?<p>
  * PENDING JW: formally document that row/column coordinates must be valid in all methods taking
- *  model coordinates, that is 0<= row < getRowCount().
+ *  model coordinates, that is 0 &le; row &lt; getRowCount().
  * 
  * @author Ramesh Gupta
  * @author Karl Schaefer
@@ -166,7 +166,7 @@ public abstract class ComponentAdapter {
      * 
      * @param columnIndex in model coordinates, must be valid.
      * @return the identifier of the column at columnIndex or null if it has none.
-     * @throws ArrayIndexOutOfBoundsException if columnIndex < 0 or columnIndex >= getColumnCount().
+     * @throws ArrayIndexOutOfBoundsException if columnIndex &lt; 0 or columnIndex &ge; getColumnCount().
      *  
      *  
      * @see #getColumnIndex(Object)  

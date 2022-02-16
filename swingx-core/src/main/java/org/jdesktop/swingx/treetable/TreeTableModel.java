@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,7 +18,6 @@
  */
 package org.jdesktop.swingx.treetable;
 
-
 import javax.swing.tree.TreeModel;
 
 /**
@@ -30,7 +27,6 @@ import javax.swing.tree.TreeModel;
  * {@link javax.swing.table.TableModel} for use with the tree table. It does not
  * actually extends {@code TableModel}, but instead copies method signature as 
  * appropriate and alters other to work with the underlying {@code TreeModel}.
- * <p>
  * 
  * @see TreeModel
  * @see javax.swing.table.TableModel

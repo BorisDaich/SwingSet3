@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,7 +31,7 @@ import org.jdesktop.swingx.util.Contract;
  * 
  * Temporary quick & dirty class to explore requirements as needed by
  * a DatePicker. Need to define the states more exactly. Currently 
- * 
+ * <ul>
  * <li> takes all Dates as-are (that is the normalized is the same as the given):
  * selected, unselectable, lower/upper bounds
  * <li> interprets any Date between the start/end of day of the selected as selected
@@ -41,7 +39,7 @@ import org.jdesktop.swingx.util.Contract;
  * <li> interprets the lower/upper bounds as being the start/end of the given
  * dates, that is any Date after the start of day of the lower and before the end of
  * day of the upper is selectable.
- * 
+ * </ul>
  * 
  * @author Jeanette Winzenburg
  */

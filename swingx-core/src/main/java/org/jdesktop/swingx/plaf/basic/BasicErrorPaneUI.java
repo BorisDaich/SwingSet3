@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -132,7 +130,13 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * details panel
      */
     protected JPanel detailsPanel;
+    /**
+     * details ScrollPane
+     */
     protected JScrollPane detailsScrollPane;
+    /**
+     * copyToClipboard Button
+     */
     protected JButton copyToClipboardButton;
 
     /**
@@ -388,6 +392,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     /**
      * @inheritDoc
+     * implements abstract method to create ErrorPane in the frame window
      */
     @Override
     public JFrame getErrorFrame(Component owner) {
@@ -401,6 +406,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     /**
      * @inheritDoc
+     * implements abstract method to create ErrorPane in the dialog window
      */
     @Override
     public JDialog getErrorDialog(Component owner) {
@@ -423,6 +429,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     /**
      * @inheritDoc
+     * implements abstract method to create ErrorPane
      */
     @Override
     public JInternalFrame getErrorInternalFrame(Component owner) {
@@ -436,11 +443,16 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     /**
      * Create and return the LayoutManager to use with the error pane.
+     * @return LayoutManager
      */
     protected LayoutManager createErrorPaneLayout() {
         return new ErrorPaneLayout();
     }
 
+    /**
+     * create DetailPanel Layout
+     * @return LayoutManager
+     */
     protected LayoutManager createDetailPanelLayout() {
         GridBagLayout layout = new GridBagLayout();
         layout.addLayoutComponent(detailsScrollPane, new GridBagConstraints(0,0,1,1,1.0,1.0,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(6,0,0,0),0,0));
@@ -464,10 +476,18 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         return new Dimension(iconLabel.getPreferredSize().width + errorMessage.getPreferredSize().width, 206);
     }
 
+    /**
+     * get Details Height
+     * @return constant 300
+     */
     protected int getDetailsHeight() {
         return 300;
     }
 
+    /**
+     * configure ReportAction
+     * @param reportAction
+     */
     protected void configureReportAction(AbstractActionExt reportAction) {
         reportAction.setName(UIManagerExt.getString(CLASS_NAME + ".report_button_text", pane.getLocale()));
     }
@@ -527,6 +547,10 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         }
     }
 
+    /**
+     * configure DetailsButton
+     * @param expanded
+     */
     protected void configureDetailsButton(boolean expanded) {
         if (expanded) {
             detailButton.setText(UIManagerExt.getString(
@@ -642,6 +666,9 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * Creates and returns HTML representing the details of this incident info. This
      * method is only called if the details needs to be generated: ie: the detailed
      * error message property of the incident info is null.
+     * 
+     * @param errorInfo
+     * @return HTML String
      */
     protected String getDetailsAsHTML(ErrorInfo errorInfo) {
         if(errorInfo.getErrorException() != null) {

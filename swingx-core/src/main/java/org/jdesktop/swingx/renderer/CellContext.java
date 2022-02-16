@@ -66,8 +66,6 @@ import javax.swing.border.EmptyBorder;
  * and the originating component is accessible as well. Note that they are not necessarily
  * valid for the "life" component. It's not recommended to actually use them. If needed,
  * that's probably a sign the api is lacking :-)
- * <p>
- * 
  * 
  * <ul>
  * 

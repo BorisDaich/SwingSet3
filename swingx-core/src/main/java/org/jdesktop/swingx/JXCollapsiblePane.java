@@ -144,7 +144,11 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  * calculating its layout (example {@link org.jdesktop.swingx.VerticalLayout},
  * {@link java.awt.BorderLayout}).
  *
- * @javabean.attribute
+ * @author rbair (from the JDNC project)
+ * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
+ * @author Karl George Schaefer
+ */
+/* @javabean.attribute
  *          name="isContainer"
  *          value="Boolean.TRUE"
  *          rtexpr="true"
@@ -158,9 +162,6 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
  *          shortDescription="A pane which hides its content with an animation."
  *          stopClass="java.awt.Component"
  *
- * @author rbair (from the JDNC project)
- * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
- * @author Karl George Schaefer
  */
 @JavaBean
 @SuppressWarnings("serial") // super Same-version serialization only
@@ -485,7 +486,8 @@ public class JXCollapsiblePane extends JXPanel {
      * (collapsing) or show (expanding) its content area.
      *
      * @param animated
-     * @javabean.property bound="true" preferred="true"
+     */
+    /* @javabean.property bound="true" preferred="true"
      */
     public void setAnimated(boolean animated) {
         if (animated != useAnimation) {
@@ -539,7 +541,8 @@ public class JXCollapsiblePane extends JXPanel {
      * @param direction the new {@link Direction} for this collapsible pane
      * @throws IllegalStateException when this method is called while a
      *                               collapsing/restore operation is running
-     * @javabean.property
+     */
+    /* @javabean.property
      *    bound="true"
      *    preferred="true"
      */
@@ -597,7 +600,8 @@ public class JXCollapsiblePane extends JXPanel {
      *
      * @see #isAnimated()
      * @see #setAnimated(boolean)
-     * @javabean.property
+     */
+    /* @javabean.property
      *    bound="true"
      *    preferred="true"
      */

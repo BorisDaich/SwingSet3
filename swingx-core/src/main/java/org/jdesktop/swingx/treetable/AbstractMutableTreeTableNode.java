@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,8 +31,8 @@ import javax.swing.tree.TreeNode;
  * 
  * @author Karl Schaefer
  */
-public abstract class AbstractMutableTreeTableNode implements
-        MutableTreeTableNode {
+public abstract class AbstractMutableTreeTableNode implements MutableTreeTableNode {
+	
     /** this node's parent, or null if this node has no parent */
     protected MutableTreeTableNode parent;
 
@@ -47,18 +45,30 @@ public abstract class AbstractMutableTreeTableNode implements
     /** optional user object */
     protected transient Object userObject;
 
+    /** allows children for this node **/
     protected boolean allowsChildren;
 
+    /**
+     * Creates an empty tree table node
+     */
     public AbstractMutableTreeTableNode() {
         this(null);
     }
 
+    /**
+     * Creates a tree table node for userObject
+     */
     public AbstractMutableTreeTableNode(Object userObject) {
         this(userObject, true);
     }
 
-    public AbstractMutableTreeTableNode(Object userObject,
-            boolean allowsChildren) {
+    /**
+     * Creates a tree table node for userObject
+     * 
+     * @param userObject
+     * @param allowsChildren
+     */
+    public AbstractMutableTreeTableNode(Object userObject, boolean allowsChildren) {
         this.userObject = userObject;
         this.allowsChildren = allowsChildren;
         children = createChildrenList();
@@ -75,6 +85,10 @@ public abstract class AbstractMutableTreeTableNode implements
         return new ArrayList<MutableTreeTableNode>();
     }
     
+    /**
+     * add a child note to the tree
+     * @param child tree table node
+     */
     public void add(MutableTreeTableNode child) {
         insert(child, getChildCount());
     }

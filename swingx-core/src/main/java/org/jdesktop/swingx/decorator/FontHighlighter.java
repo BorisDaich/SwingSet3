@@ -23,7 +23,7 @@ import java.awt.Component;
 import java.awt.Font;
 
 /**
- * A Highlighter which sets the Font of the component.<p>
+ * A Highlighter which sets the Font of the component.
  * 
  * @author Karl George Schaefer
  *

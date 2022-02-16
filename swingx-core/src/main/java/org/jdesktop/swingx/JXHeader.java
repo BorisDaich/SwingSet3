@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,7 +31,7 @@ import org.jdesktop.swingx.plaf.HeaderUI;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 
 /**
- * <p><code>JXHeader is a simple component consisting of a title, a description,
+ * <p><code>JXHeader</code> is a simple component consisting of a title, a description,
  * and an icon. An example of such a component can be seen on
  * <a href="http://jext.free.fr/header.png">Romain Guys ProgX website</a></p>
  *
@@ -53,7 +51,7 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  *          "Click the Copy Code button to generate the corresponding Java code.");
  *      Icon icon = new ImageIcon(getClass().getResource("tools.png"));
  *      header.setIcon(icon);
- * </code></pre></p>
+ * </code></pre>
  *
  * Note: The HTML support doesn't exist yet. The UI delegate needs to discover whether
  * the text supplied is HTML or not, and change the content type of the editor pane
@@ -66,9 +64,7 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  *  <ul>
  *      <li><b>Header.defaultIcon:</b> The default icon to use when creating a new JXHeader.</li>
  *  </ul>
- * </p>
  *
- * @status REVIEWED
  * @author rbair
  * @author rah003
  */

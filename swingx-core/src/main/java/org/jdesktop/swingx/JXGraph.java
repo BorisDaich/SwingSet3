@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BasicStroke;
@@ -290,7 +287,7 @@ import org.jdesktop.swingx.painter.Painter;
  * world of a mouse event.</p>
  *
  * @see JXGraph.Plot
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 @JavaBean
 public class JXGraph extends JXPanel {
@@ -373,12 +370,11 @@ public class JXGraph extends JXPanel {
     }
 
     /**
-     * <p>Creates a new graph display with the specified view. The following
-     * properties are automatically set:</p>
+     * <p>Creates a new graph display with the specified view. 
+     * The following properties are automatically set:</p>
      * <ul>
-     *   <li><i>origin</i>: Center of the specified view</code></li>
-     *   <li><i>grid</i>: Spacing of 0.2 between major lines; minor lines
-     *   count is 4</li>
+     *   <li><i>origin</i>: Center of the specified view</li>
+     *   <li><i>grid</i>: Spacing of 0.2 between major lines; minor lines count is 4</li>
      * </ul>
      * 
      * @param view the rectangle defining the view boundaries
@@ -399,9 +395,9 @@ public class JXGraph extends JXPanel {
      * @param majorY      the spacing between two major grid lines on the Y axis
      * @param minorCountY the number of minor grid lines between two major
      *                    grid lines on the Y axis
-     * @throws IllegalArgumentException if minX >= maxX or minY >= maxY or
-     *                                  minorCountX < 0 or minorCountY < 0 or
-     *                                  majorX <= 0.0 or majorY <= 0.0
+     * @throws IllegalArgumentException if minX &ge; maxX or minY &ge; maxY or
+     *                                  minorCountX &lt; 0 or minorCountY &lt; 0 or
+     *                                  majorX &le; 0.0 or majorY &le; 0.0
      */
     public JXGraph(Rectangle2D view,
                    double majorX, int minorCountX,

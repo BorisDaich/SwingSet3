@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,15 +29,14 @@ import java.net.URI;
 import java.util.logging.Logger;
 
 /**
- * A implementation wrapping <code>Desktop</code> actions BROWSE and MAIL, that is
- * URI-related. 
+ * A implementation wrapping <code>Desktop</code> actions BROWSE and MAIL, that is URI-related. 
  * 
  * @author Jeanette Winzenburg
  */
 public class HyperlinkAction extends AbstractHyperlinkAction<URI> {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(HyperlinkAction.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(HyperlinkAction.class.getName());
     
     private Action desktopAction;
     private URIVisitor visitor;

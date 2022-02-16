@@ -90,7 +90,6 @@ import org.jdesktop.swingx.renderer.AbstractRenderer;
  * Cell-/HeaderRenderer and CellEditor. <p>
  * 
  * TODO: explain prototype (sizing, collaborator-used-by ColumnFactory (?))
- * <p>
  * 
  * @author Ramesh Gupta
  * @author Amy Fowler

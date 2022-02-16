@@ -32,7 +32,6 @@ import org.jdesktop.swingx.plaf.UIDependent;
  * the component's content and default visuals depending on the renderee's state
  * as captured in a <code>CellContext</code>. It's basically re-usable across
  * all types of renderees (JTable, JList, JTree).
- * <p>
  * 
  * <h2> Content </h2>
  * 
@@ -86,10 +85,6 @@ import org.jdesktop.swingx.plaf.UIDependent;
  *       new DefaultTableRenderer(stringValue, JLabel.RIGHT);  
  * </code></pre>
  * 
- * 
- * <p>
- * 
- * 
  * <h2> Default Visuals </h2>
  * 
  * Guarantees to completely configure the visual properties listed below. As a
@@ -111,8 +106,6 @@ import org.jdesktop.swingx.plaf.UIDependent;
  * As this internally delegates default visual configuration to a
  * <code>DefaultVisuals</code> (which handles the first eight items)
  * subclasses have to guarantee the alignment only.
- * <p>
- * 
  * 
  * @see StringValue
  * @see FormatStringValue

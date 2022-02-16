@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -74,8 +72,6 @@ import org.jdesktop.swingx.JXTable;
  * </code>
  *  </pre>
  * 
- * <p>
- * 
  * @see org.jdesktop.swingx.JXTable#setColumnFactory(ColumnFactory)
  * 
  * @author Jeanette Winzenburg
@@ -120,7 +116,7 @@ public class ColumnFactory {
      * @param model the TableModel to read configuration properties from
      * @param modelIndex column index in model coordinates
      * @return a TableColumnExt to use for the modelIndex
-     * @throws NPE if model == null
+     * @throws NullPointerException if model == null
      * @throws IllegalStateException if the modelIndex is invalid
      *   (in coordinate space of the tablemodel)
      *  
@@ -182,17 +178,18 @@ public class ColumnFactory {
      * Configures column initial widths properties from <code>JXTable</code>.
      * This implementation sets the column's
      * <code>preferredWidth</code> with the strategy:
-     * <ol> if the column has a prototype, measure the rendering
+     * <ul>
+     * <li> if the column has a prototype, measure the rendering
      *    component with the prototype as value and use that as
      *    pref width
-     * <ol> if the column has no prototype, use the standard magic
+     * <li> if the column has no prototype, use the standard magic
      *   pref width (= 75) 
-     * <ol> try to measure the column's header and use it's preferred
+     * <li> try to measure the column's header and use it's preferred
      *   width if it exceeds the former.    
-     * </ol>
+     * </ul>
      * 
      * TODO JW - rename method to better convey what's happening, maybe
-     * initializeColumnWidths like the old method in JXTable. <p>
+     * initializeColumnWidths like the old method in JXTable.
      * 
      * TODO JW - how to handle default settings which are different from
      *   standard 75?
@@ -423,8 +420,7 @@ public class ColumnFactory {
      * 
      * Subclasses can override to reduce the number (for performance) or support
      * restrictions due to lazy loading, f.i. Implementors must guarantee that
-     * view row access with <code>0 <= row < getRowCount(JXTable)</code>
-     * succeeds.
+     * view row access with <code>0 &le; row &lt; getRowCount(JXTable)</code> succeeds.
      * 
      * @param table the table to access
      * @return valid rowCount

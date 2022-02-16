@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,7 +41,7 @@ import org.jdesktop.swingx.tips.TipOfTheDayModel.Tip;
  * {@link org.jdesktop.swingx.tips.TipOfTheDayModel.Tip#getTip()}) is just a
  * <code>String</code>. However, the return type of this method is actually
  * <code>Object</code>. Its interpretation depends on its type:
- * <dl compact>
+ * <dl>
  * <dt>Component
  * <dd>The <code>Component</code> is displayed in the dialog.
  * <dt>Icon

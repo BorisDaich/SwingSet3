@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -83,8 +81,6 @@ import org.jdesktop.swingx.plaf.DatePickerUI;
 
 /**
  * The basic implementation of a <code>DatePickerUI</code>.
- * <p>
- * 
  * 
  * @author Joshua Outwater
  * @author Jeanette Winzenburg

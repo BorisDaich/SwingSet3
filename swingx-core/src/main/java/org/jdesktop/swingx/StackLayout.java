@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -44,7 +42,7 @@ import java.util.List;
  * panel.add(new JLabel("At bottom"), StackLayout.BOTTOM);
  * </pre>
  * If you don't specify the constraint, the component will be added at the top
- * of the components stack.</p>
+ * of the components stack.
  * <p>All the components managed by this layout will be given the same size as
  * the container itself. The minimum, maximum and preferred size of the 
  * container are based upon the largest minimum, maximum and preferred size of
@@ -52,7 +50,7 @@ import java.util.List;
  * <p><code>StackLayout</code> works only with JSE 1.5 and Java SE 6 and
  * greater.</p>
  * 
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 
 public class StackLayout implements LayoutManager2 {

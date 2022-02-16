@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.applet.Applet;
@@ -82,7 +79,6 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
 /**
  * Enhanced Tree component with support for SwingX rendering, highlighting,
  * rollover and search functionality.
- * <p>
  * 
  * <h2>Rendering and Highlighting</h2>
  * 
@@ -90,7 +86,6 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
  * formally define and implement, like in AbstractTestHighlighter), that is it
  * provides consistent api to add and remove Highlighters which can visually
  * decorate the rendering component.
- * <p>
  * 
  * <pre>
  * <code>
@@ -104,7 +99,7 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
  *    public boolean isHighlighted(Component renderer,
  *                     ComponentAdapter adapter) {
  *       File file = getUserObject(adapter.getValue());
- *       return file != null ? lastWeek < file.lastModified : false;
+ *       return file != null ? lastWeek &lt; file.lastModified : false;
  *    }
  * };
  * // highlight with foreground color 
@@ -122,7 +117,7 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
  * the Highlighter after delegating the default configuration to the wrappee. As
  * a side-effect, getCellRenderer does return the wrapper instead of the custom
  * renderer. To access the latter, client code must call getWrappedCellRenderer.
- * <p>
+ *
  * <h2>Rollover</h2>
  * 
  * As all SwingX collection views, a JXTree supports per-cell rollover. If
@@ -152,7 +147,6 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
  * 
  * The example below selects the cell that was clicked, event being the
  * <code>PopupMenuEvent</code> received in a <code>PopupMenuListener</code>.
- * <p>
  * 
  * <pre>
  * <code>
@@ -1220,7 +1214,7 @@ public class JXTree extends JTree {
      * after messaging the delegate.<p>
      * 
      * PENDING JW: formally implement UIDependent? 
-     * PENDING JW: missing updateUI anyway (got lost when c&p from JXList ;-)
+     * PENDING JW: missing updateUI anyway (got lost when pasted from JXList ;-)
      * PENDING JW: missing override of updateUI in xtree ...
      */
     public class DelegatingRenderer implements TreeCellRenderer, RolloverRenderer {

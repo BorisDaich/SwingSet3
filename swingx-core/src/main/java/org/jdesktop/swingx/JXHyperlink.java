@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -52,9 +50,8 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  * from the action. JXHyperlink accepts any type of action - 
  * {@link AbstractHyperlinkAction} is a convenience implementation to
  * simplify clicked control.
- * <p>
  * 
- * <pre> <code>
+ * <code><pre> 
  *      LinkAction linkAction = new LinkAction("http://swinglabs.org") {
  *            public void actionPerformed(ActionEvent e) {
  *                doSomething(getTarget());
@@ -62,15 +59,15 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  *            }
  *      };
  *      JXHyperlink hyperlink = new JXHyperlink(linkAction);
- * <code> </pre>
+ * </pre><code> 
  * 
  * The hyperlink can be configured to always update its clicked 
  * property after firing the actionPerformed:
  * 
- * <pre> <code>
+ * <code><pre> 
  *      JXHyperlink hyperlink = new JXHyperlink(action);
  *      hyperlink.setOverrulesActionOnClick(true);
- * <code> </pre>
+ * </pre><code> 
  * 
  * By default, this property is false. The hyperlink will 
  * auto-click only if it has no action. Developers can change the

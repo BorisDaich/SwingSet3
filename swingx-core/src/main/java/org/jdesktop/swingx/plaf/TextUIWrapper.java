@@ -17,9 +17,9 @@ import org.jdesktop.swingx.prompt.BuddySupport;
 /**
  * TODO:
  * 
- * @author Peter Weishapl <petw@gmx.net>
+ * param UI
  * 
- * @param <UI>
+ * @author Peter Weishapl petw@gmx.net
  */
 public abstract class TextUIWrapper<UI extends TextUI> {
     private static final DefaultWrapper defaultWrapper = new DefaultWrapper();

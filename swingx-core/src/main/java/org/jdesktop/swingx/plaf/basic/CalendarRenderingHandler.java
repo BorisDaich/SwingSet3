@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,8 +27,7 @@ import org.jdesktop.swingx.JXMonthView;
 
 /**
  * The RenderingHandler responsible for text rendering. It provides 
- * and configures a rendering component for the given cell of
- * a JXMonthView. <p>
+ * and configures a rendering component for the given cell of a JXMonthView.
  * 
  * @author Jeanette Winzenburg
  */

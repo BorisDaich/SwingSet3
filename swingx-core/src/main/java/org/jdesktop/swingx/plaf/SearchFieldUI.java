@@ -29,7 +29,7 @@ import org.jdesktop.swingx.search.NativeSearchFieldSupport;
 /**
  * The default {@link JXSearchField} UI delegate.
  * 
- * @author Peter Weishapl <petw@gmx.net>
+ * @author Peter Weishapl petw@gmx.net
  * 
  */
 public class SearchFieldUI extends BuddyTextFieldUI {

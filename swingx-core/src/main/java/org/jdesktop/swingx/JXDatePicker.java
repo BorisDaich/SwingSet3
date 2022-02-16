@@ -76,7 +76,6 @@ import org.jdesktop.swingx.util.Contract;
  * The date selection is controlled by the JXMonthView's DateSelectionModel.
  * This allows the use of all its functionality in the JXDatePicker as well.
  * F.i. restrict the selection to a date in the current or next week:
- * <p>
  * 
  * <pre><code>
  * Appointment appointment = new Appointment(director,
@@ -220,7 +219,7 @@ public class JXDatePicker extends JComponent {
     /**
      * Intantiates a date picker with no selection and the default 
      * <code>DatePickerFormatter</code>.
-     * <p/>
+     * <p>
      * The date picker is configured with the default time zone and locale
      *
      * @see #setTimeZone
@@ -236,7 +235,7 @@ public class JXDatePicker extends JComponent {
      * Intantiates a date picker using the specified time as the initial
      * selection and the default 
      * <code>DatePickerFormatter</code>.
-     * <p/>
+     * <p>
      * The date picker is configured with the default time zone and locale
      *
      * @param selected the initially selected date

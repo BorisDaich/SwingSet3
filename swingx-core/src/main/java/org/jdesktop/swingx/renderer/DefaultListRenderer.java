@@ -55,9 +55,6 @@ import javax.swing.ListCellRenderer;
  * 
  * </code></pre>
  * 
- * <p>
- * 
- * 
  * @author Jeanette Winzenburg
  * 
  * @see ComponentProvider

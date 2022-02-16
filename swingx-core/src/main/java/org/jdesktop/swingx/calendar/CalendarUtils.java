@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,7 +24,7 @@ import java.util.Date;
 /**
  * Calendar manipulation.
  * 
- * PENDING: replace by something tested - as is c&p'ed dateUtils 
+ * PENDING: replace by something tested - as is pasted dateUtils 
  * to work on a calendar instead of using long
  * 
  * @author Jeanette Winzenburg
@@ -296,7 +294,6 @@ public class CalendarUtils {
      * Adjusts the calendar to the start of the current week.
      * That is, first day of the week with all time fields cleared.
      * @param calendar the calendar to adjust.
-     * @return the Date the calendar is set to
      */
     public static void startOfWeek(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
@@ -633,12 +630,9 @@ public class CalendarUtils {
      * Returns a boolean to indicate whether the given calendar is flushed. <p>
      * 
      * The only way to guarantee a flushed state is to let client code call
-     * getTime or getTimeInMillis. See
-     * 
-     * <a href=http://forums.java.net/jive/thread.jspa?threadID=74472&tstart=0>Despairing
-     * in Calendar</a>
+     * getTime or getTimeInMillis. 
      * <p>
-     * Note: this if for testing only and not entirely safe!
+     * Note: this is for testing only and not entirely safe!
      * 
      * @param calendar
      * @return

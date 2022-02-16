@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Color;
@@ -168,8 +167,6 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
  * default, each subsequent click on a header reverses the order of the sort,
  * and a sort arrow icon is automatically drawn on the header.
  * 
- * <p>
- * 
  * <h2>Rendering and Highlighting</h2>
  * 
  * As all SwingX collection views, a JXTable is a HighlighterClient (PENDING JW:
@@ -281,7 +278,7 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
  * 
  * The example below selects the cell that was clicked, event being the
  * <code>PopupMenuEvent</code> received in a  
- * <code>PopupMenuListener</code>.<p>
+ * <code>PopupMenuListener</code>.
  * 
  * <pre>
  * <code>
@@ -345,9 +342,6 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
  * normally not pick this up.
  * 
  * <p>
- * 
- * 
- * <p>
  * Keys/Actions registered with this component:
  * 
  * <ul>
@@ -360,7 +354,6 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
  * to fit the widest cell content
  * <li> {@link JXTable#PACKALL_ACTION_COMMAND} - resize all columns to fit the
  * widest cell content in each column
- * 
  * </ul>
  * 
  * <p>
@@ -2028,7 +2021,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * a sorted column's order is reversed.
      * <p>
      * 
-     * PRE: 0 <= columnIndex < getColumnCount()
+     * PRE: 0 &le; columnIndex &lt; getColumnCount()
      * 
      * @param columnIndex the columnIndex in view coordinates.
      * 
@@ -2043,7 +2036,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * Sorts the table by the given column using SortOrder.
      * Delegates to the SortController if available, or does nothing if not.<p>
      * 
-     * PRE: 0 <= columnIndex < getColumnCount()
+     * PRE: 0 &le; columnIndex &lt; getColumnCount()
      * <p>
      * 
      * 
@@ -2460,7 +2453,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      *         index
      * @throws ArrayIndexOutOfBoundsException if columnIndex out of allowed
      *         range, that is if
-     *         <code> (columnIndex < 0) || (columnIndex >= getColumnCount())</code>
+     *         <code> (columnIndex &lt; 0) || (columnIndex &ge; getColumnCount())</code>
      *         .
      * 
      * @see #getColumnExt(Object)
@@ -2484,8 +2477,8 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * 
      * @see #getColumnExt(Point)
      */
-    public TableColumn getColumn(Point p) {
-        int columnIndex = columnAtPoint(p);
+    public TableColumn getColumn(Point point) {
+        int columnIndex = columnAtPoint(point);
         return columnIndex < 0 ? null : getColumn(columnIndex);
     }
     
@@ -2500,8 +2493,8 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @see #getColumn(Point)
      * @see JXTableHeader#getColumnExt(Point)
      */
-    public TableColumnExt getColumnExt(Point p) {
-        TableColumn column = getColumn(p);
+    public TableColumnExt getColumnExt(Point point) {
+        TableColumn column = getColumn(point);
         return (TableColumnExt) (column instanceof TableColumnExt ? column : null);
     }
     // ---------------------- enhanced TableColumn/Model support: convenience
@@ -3674,8 +3667,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * Convenience method to get the rendering component for the given cell.
      * 
      * @param row the row of the cell to render, where 0 is the first row
-     * @param column the column of the cell to render, where 0 is the first
-     *        column
+     * @param col the column of the cell to render, where 0 is the first column
      * @return the decorated <code>Component</code> used as a stamp to render
      *         the specified cell
      */

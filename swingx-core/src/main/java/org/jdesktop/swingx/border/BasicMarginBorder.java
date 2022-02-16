@@ -8,7 +8,10 @@ import javax.swing.AbstractButton;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicBorders;
 
-// wg. https://github.com/homebeaver/SwingSet/issues/18
+/**
+ * tries to solve issue
+ * https://github.com/homebeaver/SwingSet/issues/18
+ */
 @SuppressWarnings("serial") // Superclass is not serializable across versions
 public class BasicMarginBorder extends BasicBorders.MarginBorder {
 
@@ -20,10 +23,17 @@ public class BasicMarginBorder extends BasicBorders.MarginBorder {
 	                                                 // bei push ist der Strich weg!
 
 	MetalButtonBorder outsideBorder = null;
+	/**
+	 * set MetalButtonBorder outsideBorder
+	 * @param border
+	 */
     public void setOutsideBorder(Border border) {
     	if(border instanceof MetalButtonBorder) outsideBorder = (MetalButtonBorder)border;
     }
 
+    /**
+     * ctor
+     */
 	public BasicMarginBorder() {
 		LOG.fine("ctor");
 	}

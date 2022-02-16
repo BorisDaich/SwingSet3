@@ -25,12 +25,8 @@ import javax.swing.tree.TreeCellRenderer;
 
 /**
  * Adapter to glue SwingX renderer support to core api.
- * <p>
- * 
  * 
  * @author Jeanette Winzenburg
- * 
- * 
  */
 public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRenderer {
 
@@ -39,9 +35,7 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
 	private TreeCellContext cellContext;
     
     /**
-     * Instantiates a default tree renderer with the default component
-     * provider. 
-     * 
+     * Instantiates a default tree renderer with the default component provider. 
      */
     public DefaultTreeRenderer() {
         this((ComponentProvider<?>)null);

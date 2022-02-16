@@ -74,6 +74,11 @@ public class BasicHyperlinkUI extends BasicButtonUI {
 
     private static final Logger LOG = Logger.getLogger(BasicHyperlinkUI.class.getName());
     
+    /**
+     * factory method
+     * @param c not used
+     * @return instance of BasicHyperlinkUI
+     */
     public static ComponentUI createUI(JComponent c) {
         return new BasicHyperlinkUI();
     }
@@ -84,12 +89,13 @@ public class BasicHyperlinkUI extends BasicButtonUI {
 
     private static Rectangle iconRect = new Rectangle();
 
+    /** TODO doc */
     protected int dashedRectGapX;
-
+    /** TODO doc */
     protected int dashedRectGapY;
-
+    /** TODO doc */
     protected int dashedRectGapWidth;
-
+    /** TODO doc */
     protected int dashedRectGapHeight;
 
     private Color focusColor;
@@ -150,6 +156,10 @@ public class BasicHyperlinkUI extends BasicButtonUI {
         b.removePropertyChangeListener(pcListener);
     }
 
+    /**
+     * get focus Color
+     * @return Color
+     */
     protected Color getFocusColor() {
         return focusColor;
     }
@@ -211,7 +221,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
 
     /**
      * Method which renders the text of the current button if html.
-     * <p>
+     *
      * @param g Graphics context
      * @param b Current button to render
      * @param textRect Bounding rectangle to render the text.
@@ -326,7 +336,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
     }
 
     /**
-     * C&p'ed from BasicGraphicsUtils (getPreferredButtonSize).
+     * pasted from BasicGraphicsUtils (getPreferredButtonSize).
      * 
      * @param b the button to analyse.
      * @return the union of the text and icon rectangle of the AbstractButton
@@ -379,7 +389,7 @@ public class BasicHyperlinkUI extends BasicButtonUI {
     public static class BasicHyperlinkListener extends BasicButtonListener {
 
         /**
-         * @param b
+         * @param b Button
          */
         public BasicHyperlinkListener(AbstractButton b) {
             super(b);

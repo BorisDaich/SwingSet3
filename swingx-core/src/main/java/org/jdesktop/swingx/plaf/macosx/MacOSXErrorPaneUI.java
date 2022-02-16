@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf.macosx;
 
 import java.awt.Component;
@@ -57,11 +54,11 @@ import org.jdesktop.swingx.plaf.basic.BasicErrorPaneUI;
  * in the client properties of the JXErrorPane for any "sub text". Ideally this
  * sub text would be part of the ErrorInfo. Maybe I should just add it there?
  * 
- * Finally come the buttons. If there is no report action and the error < fatal,
+ * Finally come the buttons. If there is no report action and the error &lt; fatal,
  * the shown ok button should say "close". Otherwise, if there is no report action
  * but the error >= fatal, it should say "Exit Application". If there is a report
  * action but error < fatal, it should say "Don't Send" for ok, "Send Report" for
- * the report button. If there is a report action and the error >= fatal, then
+ * the report button. If there is a report action and the error &ge; fatal, then
  * one button should say "Exit", and the report button should say
  * "Send Report and Exit".
  * 

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -265,7 +263,7 @@ public interface DateSelectionModel {
      *     assertEquals(getNormalized(date), getFirstSelectionDate();
      * }
      * </code></pre>
-     * 
+     * @param date date to normalize
      * 
      * @return the date as it would be normalized before used in the model, 
      *    must not be null.

@@ -109,7 +109,7 @@ public abstract class AbstractRenderer implements RolloverRenderer, StringValue,
 
 //-------------------- legacy: configure arbitrary visuals    
     /**
-     * @param background
+     * @param background Color for background
      */
     public void setBackground(Color background) {
         componentController.getDefaultVisuals().setBackground(background);
@@ -117,7 +117,7 @@ public abstract class AbstractRenderer implements RolloverRenderer, StringValue,
     }
 
     /**
-     * @param foreground
+     * @param foreground Color for foreground
      */
     public void setForeground(Color foreground) {
         componentController.getDefaultVisuals().setForeground(foreground);

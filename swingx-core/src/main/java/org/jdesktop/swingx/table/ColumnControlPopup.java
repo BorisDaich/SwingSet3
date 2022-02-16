@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -49,12 +47,11 @@ public interface ColumnControlPopup extends UIDependent {
 
     /**
      * Applies the specified component orientation to all internal widgets.
-     * This method must be called by the owner if its component orientation 
-     * changes. 
+     * This method must be called by the owner if its component orientation changes. 
      * 
      * @param o the componentOrientation to apply to all internal widgets.
-     * @see javax.swing.JComponent#applyComponentOrientation(ComponentOrientation).
      */
+    // @see javax.swing.JComponent#applyComponentOrientation(ComponentOrientation).
     void applyComponentOrientation(ComponentOrientation o);
 
     /**

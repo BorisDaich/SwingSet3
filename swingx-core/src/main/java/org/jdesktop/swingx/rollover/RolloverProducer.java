@@ -43,7 +43,7 @@ import javax.swing.JComponent;
  * 
  * Note: this class assumes that the target component is of type JComponent.<p>
  * Note: this implementation is stateful, it can't be shared across different 
- * instances of a target component.<p>
+ * instances of a target component.
  * 
  * 
  * @author Jeanette Winzenburg

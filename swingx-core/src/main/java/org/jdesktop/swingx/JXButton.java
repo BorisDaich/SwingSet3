@@ -726,7 +726,7 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
     }
     
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
      * Replaces the current UI object with the latest version from the <code>UIManager</code>.
      * 
      * @see javax.swing.JComponent#updateUI

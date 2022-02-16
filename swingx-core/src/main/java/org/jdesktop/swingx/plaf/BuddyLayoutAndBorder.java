@@ -253,9 +253,10 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	}
 
 	/**
-	 * @inherited
+	 * @inheritedDoc
+	 * implements PropertyChangeListener
 	 */
-	@Override // implements PropertyChangeListener
+	@Override
     public void propertyChange(PropertyChangeEvent evt) {
 		replaceBorderIfNecessary();
 	}

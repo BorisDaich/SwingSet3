@@ -50,7 +50,6 @@ import org.jdesktop.swingx.plaf.MonthViewAddon;
 import org.jdesktop.swingx.plaf.MonthViewUI;
 import org.jdesktop.swingx.util.Contract;
 
-
 /**
  * Component that displays a month calendar which can be used to select a day
  * or range of days.  By default the <code>JXMonthView</code> will display a
@@ -119,11 +118,10 @@ import org.jdesktop.swingx.util.Contract;
  * dates is moved completely into the model. The default model used is of type 
  * DaySelectionModel, which handles dates in the same way the JXMonthView did earlier
  * (that is, normalize all to the start of the day, which means zeroing all time
- * fields).<p>
+ * fields).
  * 
  * @author Joshua Outwater
  * @author Jeanette Winzenburg
- * @version  $Revision$
  */
 @JavaBean
 public class JXMonthView extends JComponent {
@@ -763,13 +761,14 @@ public class JXMonthView extends JComponent {
 //------------------- ui delegate    
     /**
      * @inheritDoc
+     * returns ui
      */
     public MonthViewUI getUI() {
         return (MonthViewUI)ui;
     }
 
     /**
-     * Sets the L&F object that renders this component.
+     * Sets the LaF object that renders this component.
      *
      * @param ui UI to use for this {@code JXMonthView}
      */
@@ -790,6 +789,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * @inheritDoc
+     * the uiClassID
      */
     @Override
     public String getUIClassID() {
@@ -1614,8 +1614,8 @@ public class JXMonthView extends JComponent {
     }
 
     /**
-     * Sets the preferred number of columns of calendars. Does nothing if cols
-     * <= 0. The default value is 1.
+     * Sets the preferred number of columns of calendars. 
+     * Does nothing if cols &lt;= 0. The default value is 1.
      * <p>
      * @param cols The number of columns of calendars.
      * 
@@ -1646,8 +1646,8 @@ public class JXMonthView extends JComponent {
     }
 
     /**
-     * Sets the preferred number of rows to paint calendars.Does nothing if rows
-     * <= 0. The default value is 1.
+     * Sets the preferred number of rows to paint calendars.
+     * Does nothing if rows &lt;= 0. The default value is 1.
      * <p>
      *
      * @param rows The number of rows of calendars.
@@ -1778,7 +1778,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Adds an ActionListener.
-     * <p/>
+     * <p>
      * The ActionListener will receive an ActionEvent with its actionCommand
      * set to COMMIT_KEY or CANCEL_KEY after the selection has been committed
      * or canceled, respectively.

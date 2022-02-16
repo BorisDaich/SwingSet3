@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,11 +27,14 @@ import java.util.List;
  * @author jm158417
  */
 public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
+	
     /** Creates a new instance of AbstractMultiThumbModel */
     public AbstractMultiThumbModel() {
     }
     
+    /** maximum Value of the thumb */
     protected float maximumValue = 1.0f;
+    /** minimum Value of the thumb */
     protected float minimumValue = 0.0f;
     
     public float getMaximumValue()    {
@@ -52,6 +53,9 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
         this.minimumValue = minimumValue;
     }
     
+    /**
+     * the Listeners collection
+     */
     protected List<ThumbDataListener> thumbDataListeners = new ArrayList<ThumbDataListener>();
     
     public void addThumbDataListener(ThumbDataListener listener) {
@@ -76,10 +80,19 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
             }
         }
     }
+    /**
+     * Notifies all listeners that have registered interest for notification on value change.
+     * Calls <code>fireThumbValueChanged</code>
+     * @param thumb
+     */
     public void thumbValueChanged(Thumb<E> thumb) {
         fireThumbValueChanged(thumb);
     }
     
+    /**
+     * Notifies all listeners that have registered interest for notification on value change.
+     * @param thumb
+     */
     protected void fireThumbValueChanged(Thumb<E> thumb) {
         ThumbDataEvent evt = new ThumbDataEvent(this,-1,getThumbIndex(thumb),thumb);
         for(ThumbDataListener l : thumbDataListeners) {

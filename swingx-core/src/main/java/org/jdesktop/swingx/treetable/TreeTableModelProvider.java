@@ -4,7 +4,6 @@
  */
 package org.jdesktop.swingx.treetable;
 
-
 /**
  * Interface which guarantees access to a TreeTableModel. It is implemented by
  * the internal TreeTableModelAdapter of JXTreeTable to allow direct access to
@@ -14,12 +13,10 @@ package org.jdesktop.swingx.treetable;
  * That's useful f.i. when trying to configure TableColumnExt in a
  * ColumnFactory, like in
  * 
- * <pre>
- * <code>
+ * <code><pre>
  * JXTreeTable table = new JXTreeTable();
  * ColumnFactory factory = new ColumnFactory() {
  * 
- *     @Override
  *     public void configureTableColumn(TableModel model,
  *             TableColumnExt columnExt) {
  *         super.configureTableColumn(model, columnExt);
@@ -34,8 +31,7 @@ package org.jdesktop.swingx.treetable;
  * table.setColumnFactory(factory);
  * table.setTreeTableModel(new FileSystemModel());
  * 
- * </code>
- * </pre>
+ * </pre></code>
  * 
  * @author Jeanette Winzenburg, Berlin
  */

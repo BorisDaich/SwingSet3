@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,7 +31,7 @@ import org.jdesktop.swingx.util.Contract;
  * Factory of additional <code>RowFilter</code>s. <p>
  * 
  * Trigger is the missing of Pattern/Regex+matchflags factory method in core.
- * Can't do much other than c&p core as both abstract base class GeneralFilter and
+ * Can't do much other than cut and paste core as both abstract base class GeneralFilter and
  * concrete RowFilter are private. Expose the base as public for custom subclasses
  * 
  * @author Jeanette Winzenburg
@@ -140,7 +138,7 @@ public class RowFilters {
     }
 
     /**
-     * C&P from core Swing to allow subclassing.
+     * pasted from core Swing to allow subclassing.
      */
     public static abstract class GeneralFilter extends RowFilter<Object,Object> {
         private int[] columns;

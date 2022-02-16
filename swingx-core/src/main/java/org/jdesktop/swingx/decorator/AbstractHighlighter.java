@@ -111,8 +111,7 @@ public abstract class AbstractHighlighter implements Highlighter {
     }
 
     /**
-     * Instantiates a Highlighter with the given 
-     * HighlightPredicate.<p>
+     * Instantiates a Highlighter with the given HighlightPredicate.
      * 
      * @param predicate the HighlightPredicate to use.
      * 
@@ -180,8 +179,8 @@ public abstract class AbstractHighlighter implements Highlighter {
      * 
      * This implementation returns true always.
      * 
-     * @param component
-     * @param adapter
+     * @param component the cell renderer component that is to be decorated
+     * @param adapter a Component Adapter
      * @return a boolean indication if the adapter can be highlighted based
      *   general state. This implementation returns true always.
      */
@@ -195,6 +194,7 @@ public abstract class AbstractHighlighter implements Highlighter {
      * 
      * @param component the cell renderer component that is to be decorated
      * @param adapter the ComponentAdapter for this decorate operation
+     * @return Component <code>component</code>
      * 
      * @see #highlight(Component, ComponentAdapter)
      */

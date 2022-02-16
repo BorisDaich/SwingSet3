@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.error;
 
 import java.util.logging.Level;
@@ -28,7 +25,6 @@ import java.util.logging.Level;
  * Fatal errors are those unrecoverable errors that must result in the termination
  * of the application.</p>
  *
- * @status REVIEWED
  * @author rbair
  */
 public class ErrorLevel extends Level {

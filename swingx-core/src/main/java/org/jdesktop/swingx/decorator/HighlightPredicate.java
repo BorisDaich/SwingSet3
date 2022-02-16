@@ -48,8 +48,7 @@ import org.jdesktop.swingx.util.Contract;
  * guarantee to notify listeners on any state change which might effect the highlight. 
  * They can't comply to that contract if predicate internal state changes under their 
  * feet. If dynamic predicate state is required, the safe alternative is to create 
- * and set a new predicate.<p>
- * 
+ * and set a new predicate.
  * 
  * @author Jeanette Winzenburg
  * 

@@ -322,7 +322,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      * Sets a new foregroundPainter on the label. This will replace the existing foreground painter. Existing painters
      * can be wrapped by using a CompoundPainter.
      *
-     * @param painter
+     * @param painter the foregroundPainter
      */
     public void setForegroundPainter(Painter painter) {
         Painter old = this.getForegroundPainter();
@@ -612,7 +612,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      * strongly discouraged to access any size related properties of the label from other threads then EDT when this
      * property is set.
      *
-     * @param textOrientation Value for text rotation in range <0,2PI>
+     * @param textOrientation Value for text rotation in range [0,2PI]
      * @see #getTextRotation()
      */
     public void setTextRotation(double textOrientation) {
@@ -673,7 +673,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
     /**
      * Sets style of wrapping the text.
      * @see TextAlignment for accepted values.
-     * @param alignment
+     * @param alignment property "textAlignment"
      */
     public void setTextAlignment(TextAlignment alignment) {
         TextAlignment old = getTextAlignment();
@@ -919,6 +919,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
         return retValue;
     }
 
+    /** TODO doc */
     protected MultiLineSupport getMultiLineSupport() {
         return new MultiLineSupport();
     }

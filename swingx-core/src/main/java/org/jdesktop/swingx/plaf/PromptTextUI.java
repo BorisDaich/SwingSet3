@@ -44,10 +44,11 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
  * the prompt text.
  * </p>
  * 
- * @author Peter Weishapl <petw@gmx.net>
+ * @author Peter Weishapl petw@gmx.net
  * 
  */
 public abstract class PromptTextUI extends TextUI {
+	
     protected class PainterHighlighter implements Highlighter {
         private final Painter painter;
 
@@ -432,7 +433,7 @@ public abstract class PromptTextUI extends TextUI {
     }
 
     /**
-     * Tries to call {@link ComponentUI#getBaseline(int, int)} on the delegate
+     * Tries to call <code>JComponent#getBaseline(int, int)</code> on the delegate
      * via Reflection. Workaround to maintain compatibility with Java 5. Ideally
      * we should also override {@link #getBaselineResizeBehavior(JComponent)},
      * but that's impossible since the {@link BaselineResizeBehavior} class,
@@ -444,8 +445,7 @@ public abstract class PromptTextUI extends TextUI {
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         try {
-            Method m = delegate.getClass().getMethod("getBaseline",
-                    JComponent.class, int.class, int.class);
+            Method m = delegate.getClass().getMethod("getBaseline", JComponent.class, int.class, int.class);
             Object o = m.invoke(delegate, new Object[] { c, width, height });
             return (Integer) o;
         } catch (Exception ex) {

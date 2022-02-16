@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.AWTEvent;
@@ -45,7 +44,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  * replace any {@code JFrame}, it has features that make it particularly useful
  * as the "main" frame for an application.
  * </p>
- * <h3>Additional Features</h3>
+ * <h2>Additional Features</h2>
  * <p>
  * Root pane: {@code JXFrame} uses {@link JXRootPane} as its default root pane.
  * The frame provide several convenience methods to provide easy access to the

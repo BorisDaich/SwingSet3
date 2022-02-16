@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -57,9 +55,13 @@ import org.jdesktop.swingx.search.PatternModel;
  */
 public abstract class AbstractPatternPanel extends JXPanel {
 
+	/** property name for nls label name */
     public static final String SEARCH_FIELD_LABEL = "searchFieldLabel";
+	/** property name for nls mnemonic */
     public static final String SEARCH_FIELD_MNEMONIC = SEARCH_FIELD_LABEL + ".mnemonic";
+	/** property name for nls title */
     public static final String SEARCH_TITLE = "searchTitle";
+	/** property name for nls command */
     public static final String MATCH_ACTION_COMMAND = "match";
 
     static {
@@ -67,11 +69,24 @@ public abstract class AbstractPatternPanel extends JXPanel {
         LookAndFeelAddons.getAddon();
     }
 
+    /**
+     * label of the search combo.
+     */
     protected JLabel searchLabel;
+    /**
+     * textFlield of the search combo.
+     */
     protected JTextField searchField;
+    /**
+     * checkBox of the search combo.
+     */
     protected JCheckBox matchCheck;
     
+    /**
+     * Presentation Pattern Model for the Widget
+     */
     protected PatternModel patternModel;
+    
     private ActionContainerFactory actionFactory;
 
 
@@ -208,6 +223,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
      * {@inheritDoc} <p>
      * Overridden to update locale-dependent properties. 
      * 
+     * @param locale
      * @see #updateLocaleState(Locale) 
      */
     @Override
@@ -225,6 +241,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
      * PENDING: Try better to find all column actions including custom
      * additions? Or move to columnControl?
      * 
+     * @param locale
      * @see #setLocale(Locale)
      */
     protected void updateLocaleState(Locale locale) {
@@ -403,6 +420,8 @@ public abstract class AbstractPatternPanel extends JXPanel {
      * Configures the searchLabel.
      * Here: sets text and mnenomic properties form ui values, 
      * configures as label for searchField.
+     * 
+     * @param locale
      */
     protected void bindSearchLabel(Locale locale) {
         searchLabel.setText(getUIString(SEARCH_FIELD_LABEL, locale));

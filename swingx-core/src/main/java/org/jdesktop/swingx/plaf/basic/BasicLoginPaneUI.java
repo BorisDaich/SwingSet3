@@ -46,11 +46,19 @@ public class BasicLoginPaneUI extends LoginPaneUI {
     private JXLoginPane dlg;
     private Image banner = null;
     
-    /** Creates a new instance of BasicLoginDialogUI */
+    /**
+     * Creates a new instance of BasicLoginDialogUI 
+     * @param dlg JXLoginPane
+     */
     public BasicLoginPaneUI(JXLoginPane dlg) {
         this.dlg = dlg;
     }
     
+    /**
+     * factory to create BasicLoginDialogUI 
+     * @param c JXLoginPane
+     * @return
+     */
 	public static ComponentUI createUI(JComponent c) {
 		return new BasicLoginPaneUI((JXLoginPane) c);
 	}
@@ -63,6 +71,9 @@ public class BasicLoginPaneUI extends LoginPaneUI {
         installDefaults();
     }
     
+    /**
+     * install localized component
+     */
     protected void installDefaults() {
         String s = dlg.getBannerText();
         if (s == null || s.equals("")) {
@@ -85,6 +96,11 @@ public class BasicLoginPaneUI extends LoginPaneUI {
     	return banner;
     }
     
+    /**
+     * get basic Banner
+     * @param bannerText text to display
+     * @return Image
+     */
     protected Image getBasicBanner(String bannerText) {
         int w = 400;
         int h = 60;
