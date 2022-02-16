@@ -5,12 +5,8 @@
   
   <groupId>io.github.homebeaver</groupId>
   <artifactId>swingset3</artifactId>
+  <version>1.6.8</version>
   <packaging>pom</packaging> <!-- multi-module project -->
-  <url>https://github.com/homebeaver/SwingSet3</url>
-  
-  <name>SwingX</name>
-  <version>1.6.8-SNAPSHOT</version>
-  
   <modules>
     <module>swingx-mavensupport</module>
     <module>swingx-testsupport</module>
@@ -25,6 +21,16 @@
     <module>swingx-beaninfo</module>
   </modules>
 
+  <url>https://github.com/homebeaver/SwingSet3</url>
+  <developers>
+	<developer>
+		<name>Eugen H</name>
+	</developer>
+  </developers>
+  
+  <name>SwingX</name>
+  <description>Contains extensions to the Swing GUI toolkit, including new and enhanced components that provide functionality commonly required by rich client applications.</description>
+  
   <properties>
     <project.generatedSourcesDirectory>${project.build.directory}/generated-sources</project.generatedSourcesDirectory>
     <project.generatedAnnotations>${project.generatedSourcesDirectory}/annotations</project.generatedAnnotations>
@@ -36,7 +42,6 @@
       <url>http://www.gnu.org/copyleft/lesser.html</url>
     </license>
   </licenses>
-  <description>Contains extensions to the Swing GUI toolkit, including new and enhanced components that provide functionality commonly required by rich client applications.</description>
 
 	<distributionManagement>
 	  <snapshotRepository>
@@ -55,7 +60,7 @@
 	  <plugin>
 	    <groupId>org.sonatype.plugins</groupId>
 	    <artifactId>nexus-staging-maven-plugin</artifactId>
-	    <version>1.6.8</version>
+	    <version>1.6.9</version>
 	    <extensions>true</extensions>
 	    <configuration>
 	      <serverId>ossrh</serverId>
@@ -81,23 +86,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version>
-        <configuration>
-          <tags>
-            <tag>
-              <!-- implementation tag for methods -->
-              <name>impl</name>
-              <placement>m</placement>
-              <head>This implementation:</head>
-            </tag>
-            <tag>
-              <!-- status tag for types -->
-              <name>status</name>
-              <placement>t</placement>
-              <head>API Status:</head>
-            </tag>
-          </tags>
-        </configuration>
+        <version>3.3.2</version>
+		<executions>
+			<execution>
+				<id>attach-javadocs</id>
+				<goals>
+					<goal>jar</goal>
+				</goals>
+			</execution>
+		</executions>
       </plugin>
       
       <plugin>
@@ -225,7 +222,7 @@ Aber : 92806DD3 - wurde auf keys.openpgp.org registriert, keyId (16 stellig): 46
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13</version>
+        <version>4.13.1</version>
         <type>jar</type>
         <scope>test</scope>
       </dependency>
