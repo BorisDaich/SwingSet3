@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -363,7 +361,8 @@ public class DropShadowBorder implements Border, Serializable {
     }
     
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * implements interface javax.swing.border.Border
      */
     @Override
     public Insets getBorderInsets(Component c) {

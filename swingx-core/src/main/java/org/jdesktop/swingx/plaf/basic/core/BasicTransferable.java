@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,9 +19,15 @@
  */
 package org.jdesktop.swingx.plaf.basic.core;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringBufferInputStream; // deprecated, use StringReader
+import java.io.StringReader;
 
-import java.io.*;
-import java.awt.datatransfer.*;
 import javax.swing.plaf.UIResource;
 
 /**
@@ -35,7 +39,9 @@ import javax.swing.plaf.UIResource;
  */
 public class BasicTransferable implements Transferable, UIResource {
     
+	/** TODO doc */
     protected String plainData;
+	/** TODO doc */
     protected String htmlData;
 
     private static DataFlavor[] htmlFlavors;
@@ -62,12 +68,16 @@ public class BasicTransferable implements Transferable, UIResource {
             System.err.println("error initializing javax.swing.plaf.basic.BasicTranserable");
         }
     }
-    
+
+    /**
+     * ctor
+     * @param plainData String
+     * @param htmlData String
+     */
     public BasicTransferable(String plainData, String htmlData) {
         this.plainData = plainData;
         this.htmlData = htmlData;
     }
-
 
     /**
      * Returns an array of DataFlavor objects indicating the flavors the data 
@@ -144,7 +154,7 @@ public class BasicTransferable implements Transferable, UIResource {
             } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                 return new StringReader(data);
             } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                return new StringBufferInputStream(data);
+                return new StringBufferInputStream(data); // TODO
             }
             // fall through to unsupported
         } else if (isPlainFlavor(flavor)) {
@@ -155,7 +165,7 @@ public class BasicTransferable implements Transferable, UIResource {
             } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                 return new StringReader(data);
             } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                return new StringBufferInputStream(data);
+                return new StringBufferInputStream(data); // TODO
             }
             // fall through to unsupported
 
@@ -169,6 +179,11 @@ public class BasicTransferable implements Transferable, UIResource {
 
     // --- richer subclass flavors ----------------------------------------------
 
+    /**
+     * TODO doc
+     * @param flavor DataFlavor
+     * @return true if isRicherFlavor
+     */
     protected boolean isRicherFlavor(DataFlavor flavor) {
         DataFlavor[] richerFlavors = getRicherFlavors();
         int nFlavors = (richerFlavors != null) ? richerFlavors.length : 0;
@@ -184,11 +199,18 @@ public class BasicTransferable implements Transferable, UIResource {
      * Some subclasses will have flavors that are more descriptive than HTML
      * or plain text.  If this method returns a non-null value, it will be
      * placed at the start of the array of supported flavors.
+     * @return null
      */
     protected DataFlavor[] getRicherFlavors() {
         return null;
     }
 
+    /**
+     * TODO
+     * @param flavor DataFlavor
+     * @return null
+     * @throws UnsupportedFlavorException TODO doc
+     */
     protected Object getRicherData(DataFlavor flavor) throws UnsupportedFlavorException {
         return null;
     }
@@ -214,6 +236,7 @@ public class BasicTransferable implements Transferable, UIResource {
     /**
      * Should the HTML flavors be offered?  If so, the method
      * getHTMLData should be implemented to provide something reasonable.
+     * @return there are plainData
      */
     protected boolean isHTMLSupported() {
         return htmlData != null;
@@ -221,6 +244,7 @@ public class BasicTransferable implements Transferable, UIResource {
 
     /**
      * Fetch the data in a text/html format
+     * @return htmlData
      */
     protected String getHTMLData() {
         return htmlData;
@@ -247,6 +271,7 @@ public class BasicTransferable implements Transferable, UIResource {
     /**
      * Should the plain text flavors be offered?  If so, the method
      * getPlainData should be implemented to provide something reasonable.
+     * @return there are plainData
      */
     protected boolean isPlainSupported() {
         return plainData != null;
@@ -254,6 +279,7 @@ public class BasicTransferable implements Transferable, UIResource {
 
     /**
      * Fetch the data in a text/plain format.
+     * @return plainData
      */
     protected String getPlainData() {
         return plainData;

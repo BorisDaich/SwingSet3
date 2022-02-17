@@ -134,7 +134,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
     
     /**
      * Instantiates a component provider with LEADING
-     * horizontal alignment and default to-String converter. <p> 
+     * horizontal alignment and default to-String converter.
      *
      */
     public ComponentProvider() {
@@ -143,7 +143,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
 
     /**
      * Instantiates a component provider with LEADING
-     * horizontal alignment and the given converter. <p> 
+     * horizontal alignment and the given converter.
      *
      * @param converter the converter to use for mapping the cell value to a
      *        String representation.
@@ -213,7 +213,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
 
     /**
      * Sets the StringValue to use. If the given StringValue is null,
-     * defaults to <code>StringValue.TO_STRING</code>. <p>
+     * defaults to <code>StringValue.TO_STRING</code>.
      * 
      * @param formatter the format to use.
      */
@@ -226,7 +226,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
 
     /**
      * Returns the StringValue to use for obtaining 
-     * the String representation. <p>
+     * the String representation.
      * 
      * @return the StringValue used by this provider, guaranteed to
      *   be not null.
@@ -258,7 +258,6 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
      * This is a second attempt - the driving force is the need for a consistent
      * string representation across all (new and old) themes: rendering,
      * (pattern) filtering/highlighting, searching, auto-complete ...
-     * <p>
      * 
      * @param value the object to represent as string.
      * @return a appropriate string representation of the cell's content.
@@ -270,9 +269,8 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
     /**
      * Returns a String representation of the content.<p>
      * 
-     * This method messages the 
-     * <code>StringValue</code> to get the String rep. Meant as 
-     * a convenience for subclasses.
+     * This method messages the <code>StringValue</code> to get the String rep. 
+     * Meant as a convenience for subclasses.
      * 
      * @param context the cell context, must not be null.
      * @return a appropriate string representation of the cell's content.
@@ -343,7 +341,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
     protected abstract void configureState(CellContext context); 
 
     /**
-     * Factory method to create and return the component to use for rendering.<p>
+     * Factory method to create and return the component to use for rendering.
      * 
      * @return the component to use for rendering.
      */

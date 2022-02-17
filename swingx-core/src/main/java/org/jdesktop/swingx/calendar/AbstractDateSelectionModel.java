@@ -333,7 +333,7 @@ public abstract class AbstractDateSelectionModel implements DateSelectionModel {
 
     /**
      * Notifies all listeners that have registered interest for notification on value change.
-     * @param eventType
+     * @param eventType DateSelectionEvent type
      */
     protected void fireValueChanged(DateSelectionEvent.EventType eventType) {
         List<DateSelectionListener> listeners = getDateSelectionListeners();

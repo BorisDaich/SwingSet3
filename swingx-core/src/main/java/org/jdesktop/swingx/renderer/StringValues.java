@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,7 +28,6 @@ import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.util.Contract;
 
-
 /**
  * A collection of common {@code StringValue} implementations.
  * 
@@ -38,6 +35,7 @@ import org.jdesktop.swingx.util.Contract;
  * @author Jeanette Winzenburg
  */
 public final class StringValues {
+	
     /**
      * A {@code StringValue} that always presents an empty string.
      */
@@ -63,7 +61,7 @@ public final class StringValues {
     };
 
     /**
-     * A {@code StringValue} that presents the current L&F display name for a
+     * A {@code StringValue} that presents the current LaF display name for a
      * given file. If the value passed to {@code FILE_NAME} is not a
      * {@link File}, this has the same effect as {@link StringValues#TO_STRING}.
      */
@@ -82,7 +80,7 @@ public final class StringValues {
     };
 
     /**
-     * A {@code StringValue} that presents the current L&F type name for a
+     * A {@code StringValue} that presents the current LaF type name for a
      * given file. If the value passed to {@code FILE_TYPE} is not a
      * {@link File}, this has the same effect as {@link StringValues#TO_STRING}.
      */

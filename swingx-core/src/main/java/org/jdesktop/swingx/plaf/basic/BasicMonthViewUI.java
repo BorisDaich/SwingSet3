@@ -123,15 +123,23 @@ public class BasicMonthViewUI extends MonthViewUI {
     public static final int MONTH_UP = 2;
 
     // constants for day columns
+    /** TODO doc */
     protected static final int WEEK_HEADER_COLUMN = 0;
+    /** TODO doc */
     protected static final int DAYS_IN_WEEK = 7;
+    /** TODO doc */
     protected static final int FIRST_DAY_COLUMN = WEEK_HEADER_COLUMN + 1;
+    /** TODO doc */
     protected static final int LAST_DAY_COLUMN = FIRST_DAY_COLUMN + DAYS_IN_WEEK -1;
 
     // constants for day rows (aka: weeks)
+    /** TODO doc */
     protected static final int DAY_HEADER_ROW = 0;
+    /** TODO doc */
     protected static final int WEEKS_IN_MONTH = 6;
+    /** TODO doc */
     protected static final int FIRST_WEEK_ROW = DAY_HEADER_ROW + 1;
+    /** TODO doc */
     protected static final int LAST_WEEK_ROW = FIRST_WEEK_ROW + WEEKS_IN_MONTH - 1;
 
 
@@ -149,8 +157,6 @@ public class BasicMonthViewUI extends MonthViewUI {
     /** 
     
     //---------- fields related to selection/navigation
-
-
     /** flag indicating keyboard navigation. */
     private boolean usingKeyboard = false;
     /** For interval selections we need to record the date we pivot around. */
@@ -162,10 +168,12 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     //------------------ visuals
 
+    /** TODO doc */
     protected boolean isLeftToRight;
+    /** TODO doc */
     protected Icon monthUpImage;
-    protected Icon monthDownImage;
-    
+    /** TODO doc */
+    protected Icon monthDownImage;   
 
     /**
      * The padding for month traversal icons.
@@ -226,8 +234,11 @@ public class BasicMonthViewUI extends MonthViewUI {
      */
     private CalendarHeaderHandler calendarHeaderHandler;
     
-
-    @SuppressWarnings({"UnusedDeclaration"})
+    /**
+     * factory method
+     * @param c not used
+     * @return instance of BasicMonthViewUI
+     */
     public static ComponentUI createUI(JComponent c) {
         return new BasicMonthViewUI();
     }
@@ -343,9 +354,10 @@ public class BasicMonthViewUI extends MonthViewUI {
         setFirstDisplayedDay(monthView.getFirstDisplayedDay());
     }
 
-    
+    /** empty */
     protected void uninstallDefaults() {}
 
+    /** TODO doc */
     protected void installKeyboardActions() {
         // Setup the keyboard handler.
         // JW: changed (0.9.6) to when-ancestor just to be on the safe side
@@ -428,8 +440,13 @@ public class BasicMonthViewUI extends MonthViewUI {
         inputMap.clear();
     }
 
+	/** TODO doc */
     protected void uninstallKeyboardActions() {}
 
+    /**
+     * install PropertyChangeListener, MouseListener, MouseMotionListener
+     * and DateSelectionListener
+     */
     protected void installListeners() {
         propertyChangeListener = createPropertyChangeListener();
         mouseListener = createMouseListener();
@@ -442,6 +459,9 @@ public class BasicMonthViewUI extends MonthViewUI {
         monthView.getSelectionModel().addDateSelectionListener(getHandler());
     }
 
+    /**
+     * uninstall all Listeners
+     */
     protected void uninstallListeners() {
         monthView.getSelectionModel().removeDateSelectionListener(getHandler());
         monthView.removeMouseMotionListener(mouseMotionListener);
@@ -568,19 +588,35 @@ public class BasicMonthViewUI extends MonthViewUI {
    }
    
 
-//---------------------- listener creation    
+//---------------------- listener creation
+   /**
+    * get PropertyChangeListener
+    * @return PropertyChangeListener
+    */
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
     }
 
+    /** 
+     * get LayoutManager
+     * @return LayoutManager
+     */
     protected LayoutManager createLayoutManager() {
         return getHandler();
     }
 
+    /**
+     * get MouseListener
+     * @return MouseListener
+     */
     protected MouseListener createMouseListener() {
         return getHandler();
     }
 
+    /**
+     * get MouseMotionListener
+     * @return MouseMotionListener
+     */
     protected MouseMotionListener createMouseMotionListener() {
         return getHandler();
     }
@@ -593,12 +629,19 @@ public class BasicMonthViewUI extends MonthViewUI {
         return handler;
     }
 
+    /**
+     * TODO doc
+     * @return true if usingKeyboard
+     */
     public boolean isUsingKeyboard() {
         return usingKeyboard;
     }
-
-    public void setUsingKeyboard(boolean val) {
-        usingKeyboard = val;
+    /**
+     * TODO doc
+     * @param uk usingKeyboard
+     */
+    public void setUsingKeyboard(boolean uk) {
+        usingKeyboard = uk;
     }
 
 
@@ -666,7 +709,6 @@ public class BasicMonthViewUI extends MonthViewUI {
         return monthBounds;
     }
     
-
     /**
      * Returns the logical coordinates of the day which contains the given
      * location. The p.x of the returned value represents the week header or the 
@@ -1529,7 +1571,6 @@ public class BasicMonthViewUI extends MonthViewUI {
 
 //--------------------------- displayed dates, calendar
 
-    
     /**
      * Returns the monthViews calendar configured to the firstDisplayedDate.
      * 
@@ -1557,8 +1598,6 @@ public class BasicMonthViewUI extends MonthViewUI {
         return calendar;
     }
 
-    
-
     /**
      * Updates the lastDisplayedDate property based on the given first and 
      * visible # of months.
@@ -1572,7 +1611,6 @@ public class BasicMonthViewUI extends MonthViewUI {
         lastDisplayedDate = cal.getTime();
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -1581,16 +1619,13 @@ public class BasicMonthViewUI extends MonthViewUI {
         return lastDisplayedDate;
     }
 
-    /*-------------- refactored: encapsulate aliased fields
-     */
+    //-------------- refactored: encapsulate aliased fields
 
     /**
      * Updates internal state that depends on the MonthView's firstDisplayedDay
      * property. <p>
      * 
      * Here: updates lastDisplayedDay.
-     * <p>
-     * 
      * 
      * @param firstDisplayedDay the firstDisplayedDate to set
      */

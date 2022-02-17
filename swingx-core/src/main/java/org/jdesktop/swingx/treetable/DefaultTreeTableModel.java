@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -48,6 +46,7 @@ import javax.swing.tree.TreePath;
  * @author Karl Schaefer
  */
 public class DefaultTreeTableModel extends AbstractTreeTableModel {
+	
     /** The <code>List</code> of column identifiers. */
     protected List<?> columnIdentifiers;
 
@@ -161,8 +160,8 @@ public class DefaultTreeTableModel extends AbstractTreeTableModel {
 
     /**
      * Gets the value for the {@code node} at {@code column}.
+     * Delegates to {@code TreeTableNode.getValueAt(int)}
      * 
-     * @impl delegates to {@code TreeTableNode.getValueAt(int)}
      * @param node
      *            the node whose value is to be queried
      * @param column

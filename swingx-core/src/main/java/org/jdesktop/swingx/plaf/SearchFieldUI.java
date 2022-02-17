@@ -33,6 +33,7 @@ import org.jdesktop.swingx.search.NativeSearchFieldSupport;
  * 
  */
 public class SearchFieldUI extends BuddyTextFieldUI {
+	
     /**
      * The search field that we're a UI delegate for. Initialized by the
      * <code>installUI</code> method, and reset to null by
@@ -193,13 +194,14 @@ public class SearchFieldUI extends BuddyTextFieldUI {
      * Initialize the search fields various properties based on the
      * corresponding "SearchField.*" properties from defaults table. The
      * {@link JXSearchField}s layout is set to the value returned by
-     * <code>createLayout</code>. Also calls {@link #replaceBorderIfNecessary()}
-     * and {@link #updateButtons()}. This method is called by
-     * {@link #installUI(JComponent)}.
+     * <code>createLayout</code>. 
      * 
      * @see #installUI
-     * @see #createLayout
      * @see JXSearchField#customSetUIProperty(String, Object)
+     */
+    /*
+     * Also calls {@link #replaceBorderIfNecessary()}  and {@link #updateButtons()}. 
+     * This method is called by {@link #installUI(JComponent)}.
      */
     protected void installDefaults() {
         if (isNativeSearchField()) {
@@ -207,21 +209,16 @@ public class SearchFieldUI extends BuddyTextFieldUI {
         }
 
         if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
-            searchField.customSetUIProperty("useSeperatePopupButton",
-                    Boolean.TRUE);
+            searchField.customSetUIProperty("useSeperatePopupButton", Boolean.TRUE);
         } else {
-            searchField.customSetUIProperty("useSeperatePopupButton",
-                    Boolean.FALSE);
+            searchField.customSetUIProperty("useSeperatePopupButton", Boolean.FALSE);
         }
 
-        searchField.customSetUIProperty("layoutStyle", UIManager
-                .get("SearchField.layoutStyle"));
-        searchField.customSetUIProperty("promptFontStyle", UIManager
-                .get("SearchField.promptFontStyle"));
+        searchField.customSetUIProperty("layoutStyle", UIManager.get("SearchField.layoutStyle"));
+        searchField.customSetUIProperty("promptFontStyle", UIManager.get("SearchField.promptFontStyle"));
 
         if (shouldReplaceResource(searchField.getOuterMargin())) {
-            searchField.setOuterMargin(UIManager
-                    .getInsets("SearchField.buttonMargin"));
+            searchField.setOuterMargin(UIManager.getInsets("SearchField.buttonMargin"));
         }
 
         updateButtons();

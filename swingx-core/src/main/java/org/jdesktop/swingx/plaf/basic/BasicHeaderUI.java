@@ -376,7 +376,7 @@ public class BasicHeaderUI extends HeaderUI {
 
     /**
      * install listeners to JXHeader
-     * @param h JXHeader
+     * @param header JXHeader
      */
     protected void installListeners(final JXHeader header) {
         propListener = new PropertyChangeListener() {
@@ -430,8 +430,8 @@ public class BasicHeaderUI extends HeaderUI {
      * perform property change on JXHeader
      * @param h JXHeader
      * @param propertyName the property
-     * @param oldValue
-     * @param newValue
+     * @param oldValue of prop
+     * @param newValue of prop
      */
     protected void onPropertyChange(JXHeader h, String propertyName, Object oldValue, final Object newValue) {
         if ("title".equals(propertyName)) {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,6 +30,7 @@ import javax.swing.filechooser.FileSystemView;
  * @author Jeanette Winzenburg
  */
 public final class IconValues {
+	
     /**
      * Always NULL_ICON. This is useful to indicate that we really want
      * no icon instead of f.i. a default provided by the CellContext. 
@@ -62,7 +61,7 @@ public final class IconValues {
     };
     
     /**
-     * An {@code IconValue} that presents the current L&F icon for a given file.
+     * An {@code IconValue} that presents the current LaF icon for a given file.
      * If the value passed to {@code FILE_ICON} is not a {@link File}, this has
      * the same effect as {@link IconValues#NONE}.
      */

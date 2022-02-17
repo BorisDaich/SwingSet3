@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Color;
@@ -146,9 +145,9 @@ public class JXHeader extends JXPanel {
     }
 
     /**
-     * Sets the look and feel (L&F) object that renders this component.
+     * Sets the look and feel (LaF) object that renders this component.
      *
-     * @param ui the HeaderUI L&F object
+     * @param ui the HeaderUI LaF object
      * @see javax.swing.UIDefaults#getUI
      */
     public void setUI(HeaderUI ui) {
@@ -156,7 +155,7 @@ public class JXHeader extends JXPanel {
     }
 
     /**
-     * Returns the name of the L&F class that renders this component.
+     * Returns the name of the LaF class that renders this component.
      *
      * @return the string {@link #uiClassID}
      * @see javax.swing.JComponent#getUIClassID
@@ -168,7 +167,7 @@ public class JXHeader extends JXPanel {
     }
 
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
      * Replaces the current UI object with the latest version from the
      * <code>UIManager</code>.
      *

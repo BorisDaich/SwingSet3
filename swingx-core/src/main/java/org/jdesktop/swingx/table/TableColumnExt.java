@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package org.jdesktop.swingx.table;
+
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -395,12 +396,11 @@ public class TableColumnExt extends TableColumn implements UIDependent {
      * <code>JXTable</code> sorting api respects this property by passing it on
      * to the <code>SortController</code>. 
      * 
-     * @param comparator a custom comparator to use in interactive
-     *    sorting.
+     * @param comparator a custom comparator to use in interactive sorting.
      * @see #getComparator
-     * @see org.jdesktop.swingx.sort.SortController
-     * @see org.jdesktop.swingx.decorator.SortKey
      */
+    // @see org.jdesktop.swingx.sort.SortController
+    // @see org.jdesktop.swingx.decorator.SortKey
     public void setComparator(Comparator<?> comparator) {
         Comparator<?> old = getComparator();
         this.comparator = comparator;

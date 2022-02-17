@@ -46,7 +46,7 @@ import org.jdesktop.swingx.plaf.TaskPaneContainerUI;
  * <code>JXTaskPaneContainer</code> can be added to a JScrollPane.
  * <p>
  * Example:
- * <code><pre>
+ * <pre><code>
  * JXFrame frame = new JXFrame();
  * 
  * // a container to put all JXTaskPane together
@@ -70,7 +70,7 @@ import org.jdesktop.swingx.plaf.TaskPaneContainerUI;
  * 
  * frame.pack().
  * frame.setVisible(true);
- * </pre></code>
+ * </code></pre>
  *
  * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
  */
@@ -125,25 +125,23 @@ public class JXTaskPaneContainer extends JXPanel {
     }
   
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
-     * Replaces the current UI object with the latest version from the
-     * <code>UIManager</code>.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
+     * Replaces the current UI object with the latest version from the <code>UIManager</code>.
      * 
      * @see javax.swing.JComponent#updateUI
      */
     @Override
     public void updateUI() {
-        setUI((TaskPaneContainerUI) LookAndFeelAddons.getUI(this,
-                TaskPaneContainerUI.class));
+        setUI((TaskPaneContainerUI) LookAndFeelAddons.getUI(this, TaskPaneContainerUI.class));
     }
 
     /**
-     * Sets the L&F object that renders this component.
+     * Sets the LaF object that renders this component.
      * 
-     * @param ui the <code>TaskPaneContainerUI</code> L&F object
+     * @param ui the <code>TaskPaneContainerUI</code> LaF object
      * @see javax.swing.UIDefaults#getUI
-     * 
-     * @beaninfo bound: true hidden: true description: The UI object that
+     */
+    /* @beaninfo bound: true hidden: true description: The UI object that
      *           implements the taskpane's LookAndFeel.
      */
     public void setUI(TaskPaneContainerUI ui) {
@@ -151,7 +149,7 @@ public class JXTaskPaneContainer extends JXPanel {
     }
 
     /**
-     * Returns the name of the L&F class that renders this component.
+     * Returns the name of the LaF class that renders this component.
      * 
      * @return the string {@link #uiClassID}
      * @see javax.swing.JComponent#getUIClassID

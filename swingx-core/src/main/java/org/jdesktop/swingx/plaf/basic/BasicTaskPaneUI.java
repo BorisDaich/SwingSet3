@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -75,18 +73,29 @@ public class BasicTaskPaneUI extends TaskPaneUI {
 
     private static FocusListener focusListener = new RepaintOnFocus();
 
+    /**
+     * factory
+     * @param c JComponent not used
+     * @return new instance of BasicTaskPaneUI
+     */
     public static ComponentUI createUI(JComponent c) {
         return new BasicTaskPaneUI();
     }
 
+	/** TODO doc */
     protected int titleHeight = 25;
+	/** TODO doc */
     protected int roundHeight = 5;
 
+	/** TODO doc */
     protected JXTaskPane group;
 
+	/** TODO doc */
     protected boolean mouseOver;
+	/** TODO doc */
     protected MouseInputListener mouseListener;
 
+	/** TODO doc */
     protected PropertyChangeListener propertyListener;
 
     /**
@@ -215,33 +224,36 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         return event.getY() < getTitleHeight(event.getComponent());
     }
  
-        /**
-         * Gets current title height. Default value is 25 if not specified otherwise. Method checks 
-         * provided component for user set font (!instanceof FontUIResource), if font is set, height 
-         * will be calculated from font metrics instead of using internal preset height.
-         * @return Current title height.
-         */
-        protected int getTitleHeight(Component c) {
-            if (c instanceof JXTaskPane) {
-                JXTaskPane taskPane = (JXTaskPane) c;
-                Font font = taskPane.getFont();
-                int height = titleHeight;
-                
-                if (font != null && !(font instanceof FontUIResource)) {
-                    height = Math.max(height, taskPane.getFontMetrics(font).getHeight());
-                }
-                
-                Icon icon = taskPane.getIcon();
-                
-                if (icon != null) {
-                    height = Math.max(height, icon.getIconHeight() + 4);
-                }
-                
-                return height;
-            }
-            
-            return titleHeight;
-        }
+	/**
+	 * Gets current title height. Default value is 25 if not specified otherwise.
+	 * Method checks provided component for user set font (!instanceof
+	 * FontUIResource), if font is set, height will be calculated from font metrics
+	 * instead of using internal preset height.
+	 * 
+	 * @param c Component
+	 * @return Current title height.
+	 */
+	protected int getTitleHeight(Component c) {
+		if (c instanceof JXTaskPane) {
+			JXTaskPane taskPane = (JXTaskPane) c;
+			Font font = taskPane.getFont();
+			int height = titleHeight;
+
+			if (font != null && !(font instanceof FontUIResource)) {
+				height = Math.max(height, taskPane.getFontMetrics(font).getHeight());
+			}
+
+			Icon icon = taskPane.getIcon();
+
+			if (icon != null) {
+				height = Math.max(height, icon.getIconHeight() + 4);
+			}
+
+			return height;
+		}
+
+		return titleHeight;
+	}
         
     /**
      * Creates new border for task pane.
@@ -455,6 +467,10 @@ public class BasicTaskPaneUI extends TaskPaneUI {
     protected static class ChevronIcon implements Icon {
         boolean up = true;
 
+        /**
+         * ctor 
+         * @param up TODO doc
+         */
         public ChevronIcon(boolean up) {
             this.up = up;
         }
@@ -485,9 +501,14 @@ public class BasicTaskPaneUI extends TaskPaneUI {
      * The border around the content pane
      */
     protected static class ContentPaneBorder implements Border, UIResource {
+    	
         Color color;
 
-        public ContentPaneBorder(Color color) {
+        /**
+         * ctor
+         * @param color Color
+         */
+       public ContentPaneBorder(Color color) {
             this.color = color;
         }
 
@@ -518,16 +539,24 @@ public class BasicTaskPaneUI extends TaskPaneUI {
      */
     protected class PaneBorder implements Border, UIResource {
 
+        /** TODO doc */
         protected Color borderColor;
+        /** TODO doc */
         protected Color titleForeground;
+        /** TODO doc */
         protected Color specialTitleBackground;
+        /** TODO doc */
         protected Color specialTitleForeground;
+        /** TODO doc */
         protected Color titleBackgroundGradientStart;
+        /** TODO doc */
         protected Color titleBackgroundGradientEnd;
-
+        /** TODO doc */
         protected Color titleOver;
+        /** TODO doc */
         protected Color specialTitleOver;
 
+        /** TODO doc */
         protected JLabel label;
 
         /**
@@ -580,11 +609,11 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         }
 
         /**
-         * Calculates the preferred border size, its size so all its content
-         * fits.
+         * Calculates the preferred border size, its size so all its content fits.
          * 
          * @param group
          *            Selected group.
+         * @return the border size
          */
         public Dimension getPreferredSize(JXTaskPane group) {
             // calculate the title width so it is fully visible
@@ -662,8 +691,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
             label.applyComponentOrientation(group.getComponentOrientation());
             label.setFont(group.getFont());
             label.setText(group.getTitle());
-            label.setIcon(group.getIcon() == null ? new EmptyIcon() : group
-                    .getIcon());
+            label.setIcon(group.getIcon() == null ? new EmptyIcon() : group.getIcon());
         }
 
         /**
@@ -777,10 +805,11 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          *            Width of the box.
          * @param height
          *            Height of the box.
+         * @param highColor Color
+         * @param lowColor Color
          */
         protected void paintRectAroundControls(JXTaskPane group, Graphics g,
-                int x, int y, int width, int height, Color highColor,
-                Color lowColor) {
+                int x, int y, int width, int height, Color highColor,  Color lowColor) {
             if (mouseOver) {
                 int x2 = x + width;
                 int y2 = y + height;

@@ -760,7 +760,7 @@ public class JXMonthView extends JComponent {
 
 //------------------- ui delegate    
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
      * returns ui
      */
     public MonthViewUI getUI() {
@@ -788,8 +788,8 @@ public class JXMonthView extends JComponent {
     }
 
     /**
-     * @inheritDoc
-     * the uiClassID
+     * {@inheritDoc} <p>
+     * overrides method javax.swing.getUIClassID()
      */
     @Override
     public String getUIClassID() {
@@ -950,8 +950,8 @@ public class JXMonthView extends JComponent {
     }
 
     /**
-     * Returns true if the specified date falls within the _startSelectedDate
-     * and _endSelectedDate range.  
+     * Returns true if the specified date falls within the 
+     * _startSelectedDate and _endSelectedDate range.  
      *
      * @param date The date to check
      * @return true if the date is selected, false otherwise
@@ -962,8 +962,7 @@ public class JXMonthView extends JComponent {
 
 
     /**
-     * Set the lower bound date that is allowed to be selected. <p>
-     * 
+     * Set the lower bound date that is allowed to be selected.
      * 
      * @param lowerBound the lower bound, null means none.
      */
@@ -972,7 +971,7 @@ public class JXMonthView extends JComponent {
     }
 
     /**
-     * Set the upper bound date that is allowed to be selected. <p>
+     * Set the upper bound date that is allowed to be selected.
      * 
      * @param upperBound the upper bound, null means none.
      */
@@ -982,8 +981,7 @@ public class JXMonthView extends JComponent {
 
 
     /**
-     * Return the lower bound date that is allowed to be selected for this
-     * model.
+     * Return the lower bound date that is allowed to be selected for this model.
      *
      * @return lower bound date or null if not set
      */
@@ -1003,7 +1001,6 @@ public class JXMonthView extends JComponent {
 
     /**
      * Identifies whether or not the date passed is an unselectable date.
-     * <p>
      * 
      * @param date date which to test for unselectable status
      * @return true if the date is unselectable, false otherwise
@@ -1316,7 +1313,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * 
-     * @param dayOfWeek
+     * @param dayOfWeek day no 1 to 7
      * @return String representation of day of week.
      */
     public String getDayOfTheWeek(int dayOfWeek) {
@@ -1604,7 +1601,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Returns the preferred number of columns to paint calendars in. 
-     * <p>
+     *
      * @return int preferred number of columns of calendars.
      * 
      * @see #setPreferredColumnCount(int)
@@ -1616,7 +1613,7 @@ public class JXMonthView extends JComponent {
     /**
      * Sets the preferred number of columns of calendars. 
      * Does nothing if cols &lt;= 0. The default value is 1.
-     * <p>
+     *
      * @param cols The number of columns of calendars.
      * 
      * @see #getPreferredColumnCount()
@@ -1636,7 +1633,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Returns the preferred number of rows to paint calendars in.
-     * <p>
+     *
      * @return int Rows of calendars.
      * 
      * @see #setPreferredRowCount(int)
@@ -1648,7 +1645,6 @@ public class JXMonthView extends JComponent {
     /**
      * Sets the preferred number of rows to paint calendars.
      * Does nothing if rows &lt;= 0. The default value is 1.
-     * <p>
      *
      * @param rows The number of rows of calendars.
      * 
@@ -1851,6 +1847,8 @@ public class JXMonthView extends JComponent {
      * @deprecated pre-0.9.5 - this is kept as a reminder only, <b>don't
      *             use</b>! we can make this private or comment it out after
      *             next version
+     * @param startDate Date
+     * @param endDate Date
      */
      @Deprecated
     protected void cleanupWeekSelectionDates(Date startDate, Date endDate) {

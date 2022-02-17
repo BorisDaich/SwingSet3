@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,11 +38,9 @@ import org.jdesktop.swingx.util.Contract;
  *
  * @author Joshua Outwater
  */
-public class DatePickerFormatter extends
-        JFormattedTextField.AbstractFormatter {
+public class DatePickerFormatter extends JFormattedTextField.AbstractFormatter {
     
-    private static final Logger LOG = Logger
-            .getLogger(DatePickerFormatter.class.getName());
+    private static final Logger LOG = Logger.getLogger(DatePickerFormatter.class.getName());
     private DateFormat _formats[] = null;
 
     
@@ -97,8 +93,8 @@ public class DatePickerFormatter extends
      * if the formats are null. So has same public behaviour as the constructor with
      * formats only ...
      * 
-     * @param formats
-     * @param locale
+     * @param formats DateFormat array
+     * @param locale Locale
      */
     public DatePickerFormatter(DateFormat formats[], Locale locale) {
 //        super();
@@ -173,6 +169,7 @@ public class DatePickerFormatter extends
      * there are no patterns, use the DateFormat's instance with style
      * DateFormat.SHORT.
      * 
+     * @param locale Locale
      * @return the localized default formats.
      */
     protected DateFormat[] createDefaultFormats(Locale locale) {
@@ -220,16 +217,14 @@ public class DatePickerFormatter extends
     }
 
     /**
-     * 
      * Same as DatePickerFormatter, but tagged as UIResource.
      * 
      * @author Jeanette Winzenburg
      */
-    public static class DatePickerFormatterUIResource extends DatePickerFormatter 
-        implements UIResource {
+    public static class DatePickerFormatterUIResource extends DatePickerFormatter implements UIResource {
 
         /**
-         * @param locale
+         * @param locale Locale
          */
         public DatePickerFormatterUIResource(Locale locale) {
             super(locale);

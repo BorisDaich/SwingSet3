@@ -158,25 +158,25 @@ public class JXTipOfTheDay extends JXPanel {
   }
 
   /**
-   * Notification from the <code>UIManager</code> that the L&F has changed.
+   * Notification from the <code>UIManager</code> that the LaF has changed.
    * Replaces the current UI object with the latest version from the
    * <code>UIManager</code>.
    * 
    * @see javax.swing.JComponent#updateUI
    */
   @Override
-public void updateUI() {
+  public void updateUI() {
     setUI((TipOfTheDayUI)LookAndFeelAddons.getUI(this, TipOfTheDayUI.class));
   }
 
   /**
-   * Sets the L&F object that renders this component.
+   * Sets the LaF object that renders this component.
    * 
    * @param ui
-   *          the <code>TipOfTheDayUI</code> L&F object
+   *          the <code>TipOfTheDayUI</code> LaF object
    * @see javax.swing.UIDefaults#getUI
-   * 
-   * @beaninfo bound: true hidden: true description: The UI object that
+   */
+  /* @beaninfo bound: true hidden: true description: The UI object that
    *           implements the taskpane group's LookAndFeel.
    */
   public void setUI(TipOfTheDayUI ui) {
@@ -184,9 +184,9 @@ public void updateUI() {
   }
 
   /**
-   * Gets the UI object which implements the L&F for this component.
+   * Gets the UI object which implements the LaF for this component.
    * 
-   * @return the TipOfTheDayUI object that implements the TipOfTheDayUI L&F
+   * @return the TipOfTheDayUI object that implements the TipOfTheDayUI LaF
    */
   @Override
   public TipOfTheDayUI getUI() {
@@ -194,7 +194,7 @@ public void updateUI() {
   }
 
   /**
-   * Returns the name of the L&F class that renders this component.
+   * Returns the name of the LaF class that renders this component.
    * 
    * @return the string {@link #uiClassID}
    * @see javax.swing.JComponent#getUIClassID

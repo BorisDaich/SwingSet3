@@ -262,11 +262,10 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Get the instant search delay in milliseconds. The default delay is 50
-	 * Milliseconds.
-	 * 
-	 * @see {@link #setInstantSearchDelay(int)}
+	 * Get the instant search delay in milliseconds. The default delay is 50 Milliseconds.
 	 * @return the instant search delay in milliseconds
+	 * 
+	 * @see #setInstantSearchDelay(int)
 	 */
 	public int getInstantSearchDelay() {
 		return instantSearchDelay;
@@ -424,8 +423,6 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * Sets the action that is invoked when the enter key is pressed or the find
 	 * button is clicked.
-	 * 
-	 * @return the find action
 	 */
 	public final void setFindAction(ActionListener findAction) {
 		NativeSearchFieldSupport.setFindAction(this, findAction);
@@ -455,7 +452,7 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Creates and returns the find button. The buttons action is set to the
-	 * action returned by {@link #getSearchAction()}.
+	 * action returned by <code>getSearchAction()</code>
 	 * 
 	 * Override to use a custom find button.
 	 * 

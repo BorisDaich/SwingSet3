@@ -26,28 +26,74 @@ import java.util.List;
  */
 public interface MultiThumbModel<E> extends Iterable<Thumb<E>> {
     
-    /** TODO doc */
+	/**
+	 * @return minimum Value
+	 */
     public float getMinimumValue();
-    /** TODO doc */
-    public void setMinimumValue(float minimumValue);
+    /**
+     * TODO doc
+     * @param min minimum Value
+     */
+    public void setMinimumValue(float min);
 
-    /** TODO doc */
+	/**
+	 * @return maximum Value
+	 */
     public float getMaximumValue();
-    /** TODO doc */
-    public void setMaximumValue(float maximumValue);
+    /**
+     * TODO doc
+     * @param max maximum Value
+     */
+    public void setMaximumValue(float max);
     
+    /**
+     * TODO doc
+     * @param value float
+     * @param obj generic
+     * @return int
+     */
     public int addThumb(float value, E obj);
+    /**
+     * TODO doc
+     * @param value float
+     * @param obj generic
+     * @param index of thumb
+     */
     public void insertThumb(float value, E obj, int index);
+    /**
+     * remover
+     * @param index of thumb
+     */
     public void removeThumb(int index);
+    /**
+     * Count
+     * @return no of thumbs
+     */
     public int getThumbCount();
+    /**
+     * getter
+     * @param index of thumb
+     * @return thumb
+     */
     public Thumb<E> getThumbAt(int index);
+    /**
+     * finder
+     * @param thumb
+     * @return index
+     */
     public int getThumbIndex(Thumb<E> thumb);
     public List<Thumb<E>> getSortedThumbs();
     
-    /** TODO doc */
+    /**
+     * TODO doc
+     * @param thumb TODO doc
+     */
     public void thumbPositionChanged(Thumb<E> thumb);
     
-    /** TODO doc */
+    /**
+     * TODO doc
+     * @param thumb TODO doc
+     */
     public void thumbValueChanged(Thumb<E> thumb);
     
     /**

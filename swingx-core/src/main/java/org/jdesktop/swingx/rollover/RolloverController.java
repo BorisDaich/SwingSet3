@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -49,11 +47,11 @@ import org.jdesktop.swingx.plaf.UIAction;
  * 
  * @author Jeanette Winzenburg, Berlin
  */
-public abstract class RolloverController<T extends JComponent> implements
-        PropertyChangeListener {
+public abstract class RolloverController<T extends JComponent> implements PropertyChangeListener {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(RolloverController.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(RolloverController.class.getName());
+    
     /**
      * the key of the rollover click action which is installed in the 
      * component's actionMap.
@@ -137,8 +135,7 @@ public abstract class RolloverController<T extends JComponent> implements
      * @param prepare 
      * @return <code>RolloverRenderer</code> at the given location
      */
-    protected abstract RolloverRenderer getRolloverRenderer(Point location,
-            boolean prepare);
+    protected abstract RolloverRenderer getRolloverRenderer(Point location, boolean prepare);
 
     /**
      * Returns a boolean indicating whether or not the cell at the given 
@@ -181,8 +178,7 @@ public abstract class RolloverController<T extends JComponent> implements
      * component.
      * 
      * p.x == focused column, p.y == focused row. 
-     * A null return value or any coordinate value of < 0  
-     * is interpreted as "outside".
+     * A null return value or any coordinate value of &lt; 0 is interpreted as "outside".
      * 
      * @return the location of the focused cell.
      */

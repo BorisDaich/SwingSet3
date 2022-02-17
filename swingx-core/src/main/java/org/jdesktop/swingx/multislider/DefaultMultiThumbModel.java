@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,9 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.multislider;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +30,7 @@ import java.util.List;
  */
 public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
     
+    /** TODO doc */
     protected List<Thumb<E>>thumbs = new ArrayList<Thumb<E>>();
     
     /** Creates a new instance of DefaultMultiThumbModel */
@@ -41,7 +38,11 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
         setMinimumValue(0.0f);
         setMaximumValue(1.0f);
     }
-    // returns the index of the newly added thumb
+
+    /**
+     * {@inheritDoc} <p>
+     * returns the index of the newly added thumb
+     */
     @Override
     public int addThumb(float value, E obj) {
         Thumb<E> thumb = new Thumb<E>(this);
@@ -56,6 +57,9 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
         return n-1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insertThumb(float value, E obj, int index) {
         Thumb<E> thumb = new Thumb<E>(this);
@@ -68,6 +72,9 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeThumb(int index) {
         Thumb<E> thumb = thumbs.remove(index);
@@ -77,16 +84,25 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getThumbCount() {
         return thumbs.size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Thumb<E> getThumbAt(int index) {
         return thumbs.get(index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Thumb<E>> getSortedThumbs() {
         List<Thumb<E>> list = new ArrayList<Thumb<E>>();
@@ -108,11 +124,17 @@ public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
         return list;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<Thumb<E>> iterator() {
         return thumbs.iterator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getThumbIndex(Thumb<E> thumb) {
         return thumbs.indexOf(thumb);

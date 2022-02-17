@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,7 +41,6 @@ import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 
-
 /**
  * Custom implementation of a CalendarHeaderHandler in preparation of a vista-style 
  * calendar. Does nothing yet.
@@ -51,8 +48,7 @@ import org.jdesktop.swingx.renderer.StringValues;
  * @author Jeanette Winzenburg
  */
 public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
-    
-    
+
     @Override
     public void install(JXMonthView monthView) {
         super.install(monthView);
@@ -62,8 +58,6 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
 
     }
 
-    
-    
     @Override
     protected void installNavigationActions() {
         // TODO Auto-generated method stub
@@ -73,14 +67,11 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
         monthView.getActionMap().put("zoomOut", zoomOutAction);
     }
 
-
-
     @Override
     public void uninstall(JXMonthView monthView) {
         getHeaderComponent().setActions(null, null, null);
         super.uninstall(monthView);
     }
-
 
     @Override
     public BasicCalendarHeader getHeaderComponent() {
@@ -105,6 +96,7 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
         private String[] monthNames;
         private StringValue tsv ;
 
+        /** TODO doc */
         public ZoomOutAction() {
             super();
             tsv = new StringValue() {
@@ -165,6 +157,7 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
             getTarget().removePropertyChangeListener(getTargetListener());
         }
 
+        /** TODO doc */
         protected void updateFromTarget() {
             // this happens on construction with null target
             if (tsv == null) return;

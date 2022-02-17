@@ -50,7 +50,7 @@ import java.util.Map;
  *  combo.setModel(new EnumComboBoxModel(MyEnum.class));
  * </code></pre>
  * 
- * <h4>Type safe access</h4>
+ * <h2>Type safe access</h2>
  * <p>
  * By using generics and co-variant types you can make accessing elements from
  * the model be completely typesafe. ex:
@@ -65,7 +65,7 @@ import java.util.Map;
  * MyEnum selected = enumModel.getSelectedItem();
  * </code></pre>
  * 
- * <h4>Advanced Usage</h4>
+ * <h2>Advanced Usage</h2>
  * <p>
  * Since the exact <code>toString()</code> value of each enum constant may not
  * be exactly what you want on screen (the values won't have spaces, for

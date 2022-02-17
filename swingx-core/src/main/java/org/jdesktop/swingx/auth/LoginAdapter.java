@@ -25,22 +25,26 @@ package org.jdesktop.swingx.auth;
 public abstract class LoginAdapter implements LoginListener {
 	
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * abstract implement interface method
      */
     public void loginSucceeded(LoginEvent source) {}
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * abstract implement interface method
      */
     public void loginStarted(LoginEvent source) {}
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * abstract implement interface method
      */
     public void loginFailed(LoginEvent source) {}
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * abstract implement interface method
      */
     public void loginCanceled(LoginEvent source) {}
 }

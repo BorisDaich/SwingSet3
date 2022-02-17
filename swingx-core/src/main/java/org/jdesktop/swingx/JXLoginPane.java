@@ -554,7 +554,7 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
      * Replaces the current UI object with the latest version from the
      * <code>UIManager</code>.
      *
@@ -617,7 +617,7 @@ public class JXLoginPane extends JXPanel {
 	}
 
     /**
-     * Returns the name of the L&F class that renders this component.
+     * Returns the name of the LaF class that renders this component.
      *
      * @return the string {@link #uiClassID}
      * @see javax.swing.JComponent#getUIClassID

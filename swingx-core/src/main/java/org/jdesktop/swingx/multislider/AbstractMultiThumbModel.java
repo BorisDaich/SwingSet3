@@ -62,16 +62,24 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
         thumbDataListeners.add(listener);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public void removeThumbDataListener(ThumbDataListener listener) {
         thumbDataListeners.remove(listener);
     }
-    
-    
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void thumbPositionChanged(Thumb<E> thumb) {
         fireThumbPositionChanged(thumb);
     }
     
+    /**
+     * TODO doc
+     * @param thumb TODO doc
+     */
     protected void fireThumbPositionChanged(Thumb<E> thumb) {
         if(getThumbIndex(thumb) >= 0) {
             ThumbDataEvent evt = new ThumbDataEvent(this,-1,getThumbIndex(thumb),thumb);
@@ -83,7 +91,7 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
     /**
      * Notifies all listeners that have registered interest for notification on value change.
      * Calls <code>fireThumbValueChanged</code>
-     * @param thumb
+     * @param thumb TODO doc
      */
     public void thumbValueChanged(Thumb<E> thumb) {
         fireThumbValueChanged(thumb);
@@ -91,7 +99,7 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
     
     /**
      * Notifies all listeners that have registered interest for notification on value change.
-     * @param thumb
+     * @param thumb TODO doc
      */
     protected void fireThumbValueChanged(Thumb<E> thumb) {
         ThumbDataEvent evt = new ThumbDataEvent(this,-1,getThumbIndex(thumb),thumb);

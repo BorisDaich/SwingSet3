@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -184,10 +182,11 @@ public class JXImageView extends JXPanel {
     }
     
     /**
-     * Gets the current image scale . When the scale is set to 1.0 
-     * then one image pixel = one screen pixel. When scale < 1.0 the draw image
-     * will be smaller than it's real size. When scale > 1.0 the drawn image will
-     * be larger than it's real size. 1.0 is the default value.
+     * Gets the current image scale. 
+     * When the scale is set to 1.0 then one image pixel = one screen pixel. 
+     * When scale &lt; 1.0 the draw image will be smaller than it's real size. 
+     * When scale &ge; 1.0 the drawn image will be larger than it's real size. 
+     * 1.0 is the default value.
      * @return the current image scale
      */
     public double getScale() {
@@ -195,10 +194,11 @@ public class JXImageView extends JXPanel {
     }
 
     /**
-     * Sets the current image scale . When the scale is set to 1.0 
-     * then one image pixel = one screen pixel. When scale < 1.0 the draw image
-     * will be smaller than it's real size. When scale > 1.0 the drawn image will
-     * be larger than it's real size. 1.0 is the default value.
+     * Sets the current image scale. 
+     * When the scale is set to 1.0 then one image pixel = one screen pixel. 
+     * When scale &lt; 1.0 the draw image will be smaller than it's real size. 
+     * When scale &ge; 1.0 the drawn image will be larger than it's real size. 
+     * 1.0 is the default value.
      * @param scale the new image scale
      */
     public void setScale(double scale) {

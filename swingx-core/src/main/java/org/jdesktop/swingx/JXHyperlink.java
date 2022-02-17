@@ -51,7 +51,7 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  * {@link AbstractHyperlinkAction} is a convenience implementation to
  * simplify clicked control.
  * 
- * <code><pre> 
+ * <pre><code> 
  *      LinkAction linkAction = new LinkAction("http://swinglabs.org") {
  *            public void actionPerformed(ActionEvent e) {
  *                doSomething(getTarget());
@@ -59,15 +59,15 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  *            }
  *      };
  *      JXHyperlink hyperlink = new JXHyperlink(linkAction);
- * </pre><code> 
+ * </code></pre>
  * 
  * The hyperlink can be configured to always update its clicked 
  * property after firing the actionPerformed:
  * 
- * <code><pre> 
+ * <pre><code> 
  *      JXHyperlink hyperlink = new JXHyperlink(action);
  *      hyperlink.setOverrulesActionOnClick(true);
- * </pre><code> 
+ * </code></pre>
  * 
  * By default, this property is false. The hyperlink will 
  * auto-click only if it has no action. Developers can change the
@@ -327,7 +327,7 @@ public class JXHyperlink extends JButton {
     }
 
     /**
-     * Returns a string that specifies the name of the L&F class
+     * Returns a string that specifies the name of the LaF class
      * that renders this component.
      */
     @Override
@@ -336,7 +336,7 @@ public class JXHyperlink extends JButton {
     }
     
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
      * Replaces the current UI object with the latest version from the <code>UIManager</code>.
      * 
      * @see javax.swing.JComponent#updateUI

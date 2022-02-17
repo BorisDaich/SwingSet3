@@ -518,8 +518,7 @@ public final class SwingXUtilities {
     /**
      * Updates lead and anchor selection index without changing the selection.
      * 
-     * Note: this is c&p'ed from SwingUtilities2 to not have any direct
-     * dependency.
+     * Note: this is pasted from SwingUtilities2 to not have any direct dependency.
      * 
      * @param selectionModel the selection model to change lead/anchor
      * @param lead the lead selection index

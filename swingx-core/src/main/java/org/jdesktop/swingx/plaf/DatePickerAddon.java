@@ -33,6 +33,7 @@ import org.jdesktop.swingx.util.OS;
  */
 public class DatePickerAddon extends AbstractComponentAddon {
 	
+	/** default ctor */
     public DatePickerAddon() {
         super("JXDatePicker");
     }

@@ -139,7 +139,7 @@ public class JXStatusBar extends JComponent {
     }
 
     /**
-     * Returns the look and feel (L&F) object that renders this component.
+     * Returns the look and feel (LaF) object that renders this component.
      * 
      * @return the StatusBarUI object that renders this component
      */
@@ -148,12 +148,13 @@ public class JXStatusBar extends JComponent {
     }
 
     /**
-     * Sets the look and feel (L&F) object that renders this component.
+     * Sets the look and feel (LaF) object that renders this component.
      * 
      * @param ui
-     *            the StatusBarUI L&F object
+     *            the StatusBarUI LaF object
      * @see javax.swing.UIDefaults#getUI
-     * @beaninfo
+     */
+    /* @beaninfo
      *        bound: true
      *       hidden: true
      *    attribute: visualUpdate true
@@ -164,14 +165,13 @@ public class JXStatusBar extends JComponent {
     }
 
     /**
-     * Returns a string that specifies the name of the L&F class that renders
-     * this component.
+     * Returns a string that specifies the name of the LaF class that renders this component.
      * 
      * @return "StatusBarUI"
      * @see javax.swing.JComponent#getUIClassID
      * @see javax.swing.UIDefaults#getUI
-     * @beaninfo expert: true description: A string that specifies the name of
-     *           the L&F class.
+     */
+    /* @beaninfo expert: true description: A string that specifies the name of the LaF class.
      */
     @Override
     public String getUIClassID() {
@@ -179,7 +179,7 @@ public class JXStatusBar extends JComponent {
     }
 
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
      * Replaces the current UI object with the latest version from the
      * <code>UIManager</code>.
      * 
@@ -187,8 +187,7 @@ public class JXStatusBar extends JComponent {
      */
     @Override
     public void updateUI() {
-        setUI((StatusBarUI) LookAndFeelAddons
-                .getUI(this, StatusBarUI.class));
+        setUI((StatusBarUI) LookAndFeelAddons.getUI(this, StatusBarUI.class));
     }
 
     /**

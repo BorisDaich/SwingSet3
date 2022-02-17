@@ -68,8 +68,12 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
 
     private StringValueProvider stringValueProvider;
 
+    /** TODO doc */
     protected int cachedModelRowCount;
     
+    /**
+     * ctor
+     */
     public DefaultSortController() {
         super();
         setSortable(true);
@@ -86,8 +90,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
     
     /**
-     * {@inheritDoc} <p>
-     * 
+     * {@inheritDoc}
      */
     @Override
     public boolean isSortable() {
@@ -95,8 +98,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
     
     /**
-     * {@inheritDoc} <p>
-     * 
+     * {@inheritDoc}
      */
     @Override
     public void setSortable(int column, boolean sortable) {
@@ -104,8 +106,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
     
     /**
-     * {@inheritDoc} <p>
-     * 
+     * {@inheritDoc}
      */
     @Override
     public boolean isSortable(int column) {
@@ -114,9 +115,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
     
     /**
-     * {@inheritDoc}
-     * <p>
-     * 
+     * {@inheritDoc} <p>
      * Overridden - that is completely new implementation - to get first/next SortOrder
      * from sort order cycle. Does nothing if the cycle is empty. 
      */
@@ -200,8 +199,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
     
     /**
-     * {@inheritDoc} <p>
-     * 
+     * {@inheritDoc}
      */
     @Override
     public SortOrder getSortOrder(int column) {
@@ -210,8 +208,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
 
     /**
-     * {@inheritDoc} <p>
-     * 
+     * {@inheritDoc}
      */
     @Override
     public void resetSortOrders() {
@@ -230,7 +227,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     
 
     /**
-     * {@inheritDoc} <p>
+     * {@inheritDoc}
      */
     @Override
     public SortOrder[] getSortOrderCycle() {
@@ -238,7 +235,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
     }
 
     /**
-     * {@inheritDoc} <p>
+     * {@inheritDoc}
      */
     @Override
     public void setSortOrderCycle(SortOrder... cycle) {

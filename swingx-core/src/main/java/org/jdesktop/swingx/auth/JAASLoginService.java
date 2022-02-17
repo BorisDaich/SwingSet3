@@ -69,8 +69,8 @@ public class JAASLoginService extends LoginService {
         
     
     /**
-     * @inheritDoc
-     *      
+     * {@inheritDoc} <p>
+     * implement abstract method defined in class LoginService
      */
     @Override
     public boolean authenticate(String name, char[] password, String server) throws Exception {

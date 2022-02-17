@@ -73,13 +73,11 @@ public class LocalizableStringValue implements StringValue {
     }
 
     /**
+     * {@inheritDoc} <p>
+     * Implemented to lookup the value's localized string representation, 
+     * if contained in the lookup map. 
      * 
-     * @inherited <p>
-     * 
-     * Implemented to lookup the value's localized string
-     * representation, if contained in the lookup map. Returns
-     * the fallback if not contained.
-     * 
+     * Returns the fallback if not contained.
      */
     @Override
     public String getString(Object value) {

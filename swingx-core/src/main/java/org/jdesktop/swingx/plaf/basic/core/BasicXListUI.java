@@ -138,21 +138,33 @@ public class BasicXListUI  extends BasicListUI
     private static final StringBuilder BASELINE_COMPONENT_KEY =
         new StringBuilder("List.baselineComponent");
 
+	/** TODO doc */
     protected JXList list = null;
+	/** TODO doc */
     protected CellRendererPane rendererPane;
 
     // Listeners that this UI attaches to the JList
+	/** TODO doc */
     protected FocusListener focusListener;
+	/** TODO doc */
     protected MouseInputListener mouseInputListener;
+	/** TODO doc */
     protected ListSelectionListener listSelectionListener;
+	/** TODO doc */
     protected ListDataListener listDataListener;
+	/** TODO doc */
     protected PropertyChangeListener propertyChangeListener;
     private Handler handler;
 
+	/** TODO doc */
     protected int[] cellHeights = null;
+	/** TODO doc */
     protected int cellHeight = -1;
+	/** TODO doc */
     protected int cellWidth = -1;
+	/** TODO doc */
     protected int updateLayoutStateNeeded = modelChanged;
+
     /**
      * Height of the list. When asked to paint, if the current size of
      * the list differs, this will update the layout state.
@@ -209,14 +221,21 @@ public class BasicXListUI  extends BasicListUI
      * maybeUpdateLayoutState.  Changes to the JLists model, e.g. the
      * models length changed, are handled similarly, see DataListener.
      */
-
+	/** TODO doc */
     protected final static int modelChanged = 1 << 0;
+	/** TODO doc */
     protected final static int selectionModelChanged = 1 << 1;
+	/** TODO doc */
     protected final static int fontChanged = 1 << 2;
+	/** TODO doc */
     protected final static int fixedCellWidthChanged = 1 << 3;
+	/** TODO doc */
     protected final static int fixedCellHeightChanged = 1 << 4;
+	/** TODO doc */
     protected final static int prototypeCellValueChanged = 1 << 5;
+	/** TODO doc */
     protected final static int cellRendererChanged = 1 << 6;
+
     private final static int layoutOrientationChanged = 1 << 7;
     private final static int heightChanged = 1 << 8;
     private final static int widthChanged = 1 << 9;
@@ -224,7 +243,10 @@ public class BasicXListUI  extends BasicListUI
 
     private static final int DROP_LINE_THICKNESS = 2;
 
-    // FIXME - JW LazyActionMap copy is in different package ... move here?
+    /**
+     * FIXME - JW LazyActionMap copy is in different package ... move here?
+     * @param map LazyActionMap
+     */
     public static void loadActionMap(LazyActionMap map) {
         map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN));
         map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_EXTEND));
@@ -272,7 +294,7 @@ public class BasicXListUI  extends BasicListUI
     private ListSortUI sortUI;
     /**
      * Compatibility Wrapper: a synthetic model which delegates to list api and throws
-     * @return
+     * @return ListModel
      */
     protected ListModel getViewModel() {
         if (modelX == null) {
@@ -304,12 +326,17 @@ public class BasicXListUI  extends BasicListUI
     }
 
     /**
-     * @return
+     * @return no of elements
      */
     protected int getElementCount() {
         return ((JXList) list).getElementCount();
     }
 
+    /**
+     * get Element At index <code>viewIndex</code>
+     * @param viewIndex the index
+     * @return Object
+     */
     protected Object getElementAt(int viewIndex) {
         return ((JXList) list).getElementAt(viewIndex);
     }
@@ -321,9 +348,9 @@ public class BasicXListUI  extends BasicListUI
      * parameters. As we by-pass super, need to do the check and throw
      * ouerselves.
      * 
-     * @param c
-     * @param width
-     * @param height
+     * @param c JComponent
+     * @param width expected &ge; 0
+     * @param height expected &ge; 0
      * 
      * @throws IllegalArgumentException if width or height &lt; 0
      * @throws NullPointerException if c == null
@@ -339,6 +366,10 @@ public class BasicXListUI  extends BasicListUI
 
 //--------------- api to support/control sorting/filtering
     
+    /**
+     * TODO doc
+     * @return ListSortUI
+     */
     protected ListSortUI getSortUI() {
         return sortUI;
     }
@@ -381,8 +412,8 @@ public class BasicXListUI  extends BasicListUI
     /**
      * Returns a boolean indicating whether or not the event has been processed
      * by the sortUI. 
-     * @param e
-     * @return
+     * @param e ListDataEvent
+     * @return event has been processed
      */
     protected boolean processedBySortUI(ListDataEvent e) {
         if (sortUI == null)
@@ -396,8 +427,8 @@ public class BasicXListUI  extends BasicListUI
     /**
      * Returns a boolean indicating whether or not the event has been processed
      * by the sortUI. 
-     * @param e
-     * @return
+     * @param e ListSelectionEvent
+     * @return event has been processed
      */
     protected boolean processedBySortUI(ListSelectionEvent e) {
         if (sortUI == null) return false;
@@ -406,7 +437,6 @@ public class BasicXListUI  extends BasicListUI
         return true;
     }
 
-    
 //--------------------- enhanced support
     /**
      * Invalidates the cell size cache and revalidates/-paints the list.
@@ -759,13 +789,11 @@ public class BasicXListUI  extends BasicListUI
         return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
     }
 
-    /**
-     * The preferredSize of the list depends upon the layout orientation. 
-     * The table describes the preferred size for each layout orientation:
+    /* TODO cannot build tabble with javadoc :
      * <table>
      * <tr><th>Layout Orientation</th><th>Preferred Size</th></tr>
      * <tr>
-     *   <td>JList.VERTICAL
+     *   <td>JList.VERTICAL</td>
      *   <td>The preferredSize of the list is total height of the rows
      *       and the maximum width of the cells.  If JList.fixedCellHeight
      *       is specified then the total height of the rows is just
@@ -774,8 +802,9 @@ public class BasicXListUI  extends BasicListUI
      *       the yellow focus outline.  Similarly if fixedCellWidth is
      *       specified then we just use that.
      *   </td>
+     * </tr>
      * <tr>
-     *   <td>JList.VERTICAL_WRAP
+     *   <td>JList.VERTICAL_WRAP</td>
      *   <td>If the visible row count is greater than zero, the preferredHeight
      *       is the maximum cell height * visibleRowCount. If the visible row
      *       count is &lt;= 0, the preferred height is either the current height
@@ -785,8 +814,10 @@ public class BasicXListUI  extends BasicListUI
      *       list.height / max cell height. Max cell height is either the fixed
      *       cell height, or is determined by iterating through all the cells
      *       to find the maximum height from the ListCellRenderer.
+     *   </td>
+     * </tr>
      * <tr>
-     *   <td>JList.HORIZONTAL_WRAP
+     *   <td>JList.HORIZONTAL_WRAP</td>
      *   <td>If the visible row count is greater than zero, the preferredHeight
      *       is the maximum cell height * adjustedRowCount.  Where
      *       visibleRowCount is used to determine the number of columns.
@@ -805,7 +836,16 @@ public class BasicXListUI  extends BasicListUI
      *       Max cell height is either the fixed
      *       cell height, or is determined by iterating through all the cells
      *       to find the maximum height from the ListCellRenderer.
+     *   </td>
+     * </tr>
      * </table>
+     */
+    /**
+     * The preferredSize of the list depends upon the layout orientation. 
+     * The table describes the preferred size for each layout orientation:
+     * <p>
+     * TODO missing table - see code
+     * <p>
      * The above specifies the raw preferred width and height. The resulting
      * preferred width is the above width + insets.left + insets.right and
      * the resulting preferred height is the above height + insets.top +
@@ -1158,9 +1198,10 @@ public class BasicXListUI  extends BasicListUI
 
 
     /**
-     * Returns a new instance of BasicXListUI.  BasicXListUI delegates are
-     * allocated one per JList.
+     * Returns a new instance of BasicXListUI.  
+     * BasicXListUI delegates are allocated one per JList.
      *
+     * @param list JComponent
      * @return A new ListUI implementation for the Windows look and feel.
      */
     public static ComponentUI createUI(JComponent list) {
@@ -1806,10 +1847,9 @@ public class BasicXListUI  extends BasicListUI
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTableUI.
      */
-    public class FocusHandler implements FocusListener
-    {
-        protected void repaintCellFocus()
-        {
+    public class FocusHandler implements FocusListener {
+    	/** TODO doc */
+        protected void repaintCellFocus() {
             getHandler().repaintCellFocus();
         }
 

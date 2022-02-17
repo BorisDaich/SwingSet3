@@ -41,8 +41,13 @@ public abstract class AbstractRenderer implements RolloverRenderer, StringValue,
 
 	private static final long serialVersionUID = 5800804087287351161L;
 	
+	/** TODO doc */
 	protected ComponentProvider<?> componentController;
 
+	/**
+	 * ctor
+	 * @param provider ComponentProvider the componentController
+	 */
     public AbstractRenderer(ComponentProvider<?> provider) {
         if (provider ==  null) {
             provider = createDefaultComponentProvider();

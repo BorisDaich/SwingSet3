@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,17 +28,32 @@ import org.jdesktop.swingx.calendar.DateSelectionModel;
  * @author Joshua Outwater
  */
 public class DateSelectionEvent extends EventObject {
+	
+    /** TODO doc */
     public static enum EventType {
+        /** TODO doc */
         DATES_ADDED,
+        /** TODO doc */
         DATES_REMOVED,
+        /** TODO doc */
         DATES_SET,
+        /** TODO doc */
         SELECTION_CLEARED,
+        /** TODO doc */
         SELECTABLE_DATES_CHANGED,
+        /** TODO doc */
         SELECTABLE_RANGE_CHANGED,
+        /** TODO doc */
         UNSELECTED_DATES_CHANGED,
+        /** TODO doc */
         LOWER_BOUND_CHANGED,
+        /** TODO doc */
         UPPER_BOUND_CHANGED, 
-        ADJUSTING_STARTED, ADJUSTING_STOPPED, 
+        /** TODO doc */
+        ADJUSTING_STARTED, 
+        /** TODO doc */
+        ADJUSTING_STOPPED, 
+        /** TODO doc */
         CALENDAR_CHANGED,
     }
 

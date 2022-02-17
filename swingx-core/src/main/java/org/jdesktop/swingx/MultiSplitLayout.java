@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Component;
@@ -42,7 +41,6 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import javax.swing.UIManager;
-
 
 /**
  * The MultiSplitLayout layout manager recursively arranges its
@@ -415,8 +413,10 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
    * is the same as for JSplitPane Dividers.
    *
    * @param dividerSize the size of dividers (pixels)
-   * @throws IllegalArgumentException if dividerSize < 0
    * @see #getDividerSize
+   */
+  /*
+   * @throws IllegalArgumentException if dividerSize < 0
    */
   public void setDividerSize(int dividerSize) {
     if (dividerSize < 0) {
@@ -1280,10 +1280,11 @@ public Dimension minimumLayoutSize(Container parent) {
    * sizes of the child components. To ignore the minimum size set the layout
    * mode to MultiSplitLayout.LAYOUT_NO_MIN_SIZE.
    * @param layoutMode the layout mode
+   * 
    * <ul>
    * <li>DEFAULT_LAYOUT - use the preferred and minimum sizes when sizing the children</li>
    * <li>LAYOUT_NO_MIN_SIZE - ignore the minimum size when sizing the children</li>
-   * </li>
+   * </ul>
    */
   public void setLayoutMode( int layoutMode )
   {

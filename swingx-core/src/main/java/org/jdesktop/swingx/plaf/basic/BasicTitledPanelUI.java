@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf.basic;
 
 import java.awt.BorderLayout;
@@ -52,7 +49,6 @@ import org.jdesktop.swingx.JXTitledPanel;
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.TitledPanelUI;
 
-
 /**
  * All TitledPanels contain a title section and a content section. The default
  * implementation for the title section relies on a Gradient background. All
@@ -80,7 +76,9 @@ public class BasicTitledPanelUI extends TitledPanelUI {
      */
     protected PropertyChangeListener titleChangeListener;
 
+	/** TODO doc */
     protected JComponent left;
+	/** TODO doc */
     protected JComponent right;
     
     /** Creates a new instance of BasicTitledPanelUI */
@@ -96,10 +94,14 @@ public class BasicTitledPanelUI extends TitledPanelUI {
      * stateful, then it should return a new instance per component.
      * The default implementation of this method throws an error, as it
      * should never be invoked.
+     * 
+     * @param c the component
+     * @return an instance of the UI delegate for the specified component
      */
     public static ComponentUI createUI(JComponent c) {
         return new BasicTitledPanelUI();
     }
+    
     /**
      * Configures the specified component appropriate for the look and feel.
      * This method is invoked when the <code>ComponentUI</code> instance is being installed
@@ -138,6 +140,10 @@ public class BasicTitledPanelUI extends TitledPanelUI {
         installListeners(titledPanel);
     }
 
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     */
     protected void installDefaults(JXTitledPanel titledPanel) {
         installProperty(titledPanel, "titlePainter", UIManager.get("JXTitledPanel.titlePainter"));
         installProperty(titledPanel, "titleForeground", UIManager.getColor("JXTitledPanel.titleForeground"));
@@ -145,9 +151,17 @@ public class BasicTitledPanelUI extends TitledPanelUI {
         LookAndFeel.installProperty(titledPanel, "opaque", false);
     }
 
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     */
     protected void uninstallDefaults(JXTitledPanel titledPanel) {
     }
 
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     */
     protected void installComponents(JXTitledPanel titledPanel) {
         topPanel.add(caption, new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.NORTHWEST, 
                 GridBagConstraints.HORIZONTAL, getCaptionInsets(), 0, 0));
@@ -170,14 +184,27 @@ public class BasicTitledPanelUI extends TitledPanelUI {
         }
     }
     
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     */
     protected void uninstallComponents(JXTitledPanel titledPanel) {
         titledPanel.remove(topPanel);
     }
 
+    /**
+     * TODO doc
+     * @return Insets
+     */
     protected Insets getCaptionInsets() {
       return UIManager.getInsets("JXTitledPanel.captionInsets"); 
     }
     
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     * @return JXPanel
+     */
     protected JXPanel createAndConfigureTopPanel(JXTitledPanel titledPanel) {
         JXPanel topPanel = new JXPanel();
         topPanel.setBackgroundPainter(titledPanel.getTitlePainter());
@@ -187,6 +214,11 @@ public class BasicTitledPanelUI extends TitledPanelUI {
         return topPanel;
     }
     
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     * @return JLabel
+     */
     protected JLabel createAndConfigureCaption(final JXTitledPanel titledPanel) {
         JLabel caption = new JLabel(titledPanel.getTitle()){
             //#501
@@ -245,6 +277,10 @@ public class BasicTitledPanelUI extends TitledPanelUI {
         right = null;
     }
     
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     */
     protected void installListeners(final JXTitledPanel titledPanel) {
         titleChangeListener = new PropertyChangeListener() {
             @Override
@@ -264,10 +300,20 @@ public class BasicTitledPanelUI extends TitledPanelUI {
         titledPanel.addPropertyChangeListener(titleChangeListener);
     }
     
+    /**
+     * TODO doc
+     * @param titledPanel JXTitledPanel
+     */
     protected void uninstallListeners(JXTitledPanel titledPanel) {
         titledPanel.removePropertyChangeListener(titleChangeListener);
     }
     
+    /**
+     * JXTitledPanel
+     * @param c JComponent
+     * @param propName String
+     * @param value Object
+     */
     protected void installProperty(JComponent c, String propName, Object value) {
         try {
             BeanInfo bi = Introspector.getBeanInfo(c.getClass());
@@ -310,15 +356,16 @@ public class BasicTitledPanelUI extends TitledPanelUI {
     
     /**
      * Adds the given JComponent as a decoration on the right of the title
-     * @param decoration
+     * @param decoration component
      */
     @Override
     public void setRightDecoration(JComponent decoration) {
         if (right != null) topPanel.remove(right);
         right = decoration;
         if (right != null) {
-            topPanel.add(decoration, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, UIManager.getInsets("JXTitledPanel.rightDecorationInsets"), 0, 0));
-            
+            topPanel.add(decoration, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, 
+            		GridBagConstraints.EAST, GridBagConstraints.NONE, 
+            		UIManager.getInsets("JXTitledPanel.rightDecorationInsets"), 0, 0));           
         }
     }
     
@@ -329,14 +376,16 @@ public class BasicTitledPanelUI extends TitledPanelUI {
     
     /**
      * Adds the given JComponent as a decoration on the left of the title
-     * @param decoration
+     * @param decoration component
      */
     @Override
     public void setLeftDecoration(JComponent decoration) {
         if (left != null) topPanel.remove(left);
         left = decoration;
         if (left != null) {
-            topPanel.add(left, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, UIManager.getInsets("JXTitledPanel.leftDecorationInsets"), 0, 0));
+            topPanel.add(left, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, 
+            		GridBagConstraints.WEST, GridBagConstraints.NONE, 
+            		UIManager.getInsets("JXTitledPanel.leftDecorationInsets"), 0, 0));
         }
     }
     

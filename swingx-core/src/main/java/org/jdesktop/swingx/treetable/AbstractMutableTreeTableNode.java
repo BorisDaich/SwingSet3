@@ -57,6 +57,7 @@ public abstract class AbstractMutableTreeTableNode implements MutableTreeTableNo
 
     /**
      * Creates a tree table node for userObject
+     * @param userObject optional user object 
      */
     public AbstractMutableTreeTableNode(Object userObject) {
         this(userObject, true);
@@ -65,8 +66,8 @@ public abstract class AbstractMutableTreeTableNode implements MutableTreeTableNo
     /**
      * Creates a tree table node for userObject
      * 
-     * @param userObject
-     * @param allowsChildren
+     * @param userObject optional user object 
+     * @param allowsChildren allows children for this node 
      */
     public AbstractMutableTreeTableNode(Object userObject, boolean allowsChildren) {
         this.userObject = userObject;
@@ -268,8 +269,8 @@ public abstract class AbstractMutableTreeTableNode implements MutableTreeTableNo
 
     /**
      * Sets the value for the given {@code column}.
-     * 
-     * @impl does nothing. It is provided for convenience.
+     * <p>
+     * impl does nothing. It is provided for convenience.
      * @param aValue
      *            the value to set
      * @param column

@@ -18,15 +18,12 @@
  */
 package org.jdesktop.swingx.icon;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.plaf.UIResource;
 
 /**
@@ -41,24 +38,45 @@ public class ColumnControlIcon implements Icon, UIResource, SizingConstants {
     private int height = SizingConstants.XS;
     private Color color;
 
+    /**
+     * ctor
+     */
     public ColumnControlIcon() {
     }
 
+    /**
+     * ctor
+     * @param size icon width and length
+     * @param color circle is filled with
+     */
     public ColumnControlIcon(int size, Color color) {
     	width = size;
     	height = size;
     	this.color = color;
     }
 
+    /**
+     * convienient ctor
+     * @param size icon width and length
+     */
     public ColumnControlIcon(int size) {
     	this(size, null);
     }
 
-    protected ColumnControlIcon(int width, int height) {
+    /**
+     * convienient ctor
+     * @param width of the icon
+     * @param height of the icon
+     */
+   protected ColumnControlIcon(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+   /**
+    * convienient ctor with Dimension
+    * @param size Dimension
+    */
     protected ColumnControlIcon(Dimension size) {
     	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
     }

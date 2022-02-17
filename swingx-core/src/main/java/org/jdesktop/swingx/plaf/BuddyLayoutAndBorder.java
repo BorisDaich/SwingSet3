@@ -19,6 +19,7 @@ import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 import org.jdesktop.swingx.prompt.BuddySupport;
 import org.jdesktop.swingx.prompt.BuddySupport.Position;
 
+/** TODO doc */
 public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChangeListener, UIResource {
 	
 //    private static final Logger LOG = Logger.getLogger(BuddyLayoutAndBorder.class.getName());
@@ -31,6 +32,8 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	 * Installs a {@link BuddyLayoutAndBorder} as a layout and border of the
 	 * given text field. Registers a {@link PropertyChangeListener} to wrap any
 	 * subsequently set border on the text field.
+	 * 
+	 * @param textField JTextField
 	 */
 	protected void install(JTextField textField) {
 		uninstall();
@@ -42,6 +45,10 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		textField.addPropertyChangeListener("border", this);
 	}
 
+	/**
+	 * 
+	 * @return Border
+	 */
 	public Border getBorderDelegate() {
 		return borderDelegate;
 	}
@@ -136,6 +143,12 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		}
 	}
 
+	/**
+	 * TODO doc
+	 * @param rect Rectangle
+	 * @param size Dimension
+	 * @return center of Rectangle
+	 */
 	protected int centerY(Rectangle rect, Dimension size) {
 		return (int) (rect.getCenterY() - (size.height / 2));
 	}
@@ -253,7 +266,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	}
 
 	/**
-	 * @inheritedDoc
+     * {@inheritDoc} <p>
 	 * implements PropertyChangeListener
 	 */
 	@Override
@@ -261,6 +274,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		replaceBorderIfNecessary();
 	}
 
+	/** TODO doc */
 	public void uninstall() {
 		if (textField != null) {
 			textField.removePropertyChangeListener("border", this);

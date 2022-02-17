@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -98,9 +96,8 @@ public class TableCellContext extends CellContext {
     }
 
     /** 
-     * @inherited <p>
+     * {@inheritDoc} <p>
      * Overridden to respect UI alternating row colors.
-     * 
      */
     @Override
     protected Color getBackground() {

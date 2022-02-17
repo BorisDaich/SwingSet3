@@ -29,6 +29,7 @@ package org.jdesktop.swingx.error;
  * @author rbair
  */
 public interface ErrorReporter {
+	
     /**
      * <p>Reports an error based on the given {@link ErrorInfo}. This
      * method may be a long running method, and so should not block the EDT in
@@ -39,7 +40,7 @@ public interface ErrorReporter {
      * should be transparent to the user.</p>
      *
      * @param info encapsulates all information to report using this facility. Must not be null.
-     * @exception thrown if the info param is null
+     * @throws NullPointerException if the info param is null
      */
     public void reportError(ErrorInfo info) throws NullPointerException;
 }

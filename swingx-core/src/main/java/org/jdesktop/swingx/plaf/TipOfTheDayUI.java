@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,11 +37,10 @@ public abstract class TipOfTheDayUI extends PanelUI {
    * <code>choice</code> is not null then the window will offer a way for the
    * end-user to not show the tip of the day dialog.
    * 
-   * @param parentComponent
-   * @param choice
+   * @param c parent Component
+   * @param choice JXTipOfTheDay.ShowOnStartupChoice
    * @return a new JDialog to display a JXTipOfTheDay panel
    */
-  public abstract JDialog createDialog(Component parentComponent,
-    JXTipOfTheDay.ShowOnStartupChoice choice);
+  public abstract JDialog createDialog(Component c, JXTipOfTheDay.ShowOnStartupChoice choice);
   
 }

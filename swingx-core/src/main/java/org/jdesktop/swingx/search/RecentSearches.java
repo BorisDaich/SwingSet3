@@ -28,6 +28,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * 
  */
 public class RecentSearches implements ActionListener {
+	
 	private Preferences prefsNode;
 
 	private int maxRecents = 5;
@@ -53,7 +54,7 @@ public class RecentSearches implements ActionListener {
 	 * persist this list under the <code>prefs</code> node. Existing entries
 	 * will be loaded automatically.
 	 * 
-	 * @param prefsNode
+	 * @param prefs
 	 *            the preferences node under which this list will be persisted.
 	 *            If prefsNode is <code>null</code> the preferences node will
 	 *            be set to the user root node

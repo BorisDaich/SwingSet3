@@ -138,8 +138,8 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
      * <li> hook into <code>ui.paint(...)</code> 
      * <li> reset the flag
      * </ol>
-     * <li> else
      * <ol> 
+     * <li> else
      * <li> apply swingx painter
      * <li> call super
      * </ol>

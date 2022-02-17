@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,13 +38,21 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  */
 public class BasicBusyLabelUI extends BasicLabelUI implements BusyLabelUI {
     
-    /** Creates a new instance of BasicBusyLabelUI */
-    public BasicBusyLabelUI(JXBusyLabel lbl) {
-    }
-    
-  public static ComponentUI createUI(JComponent c) {
-    return new BasicBusyLabelUI((JXBusyLabel)c);
-  }
+	/** 
+	 * Creates a new instance of BasicBusyLabelUI 
+	 * @param lbl JXBusyLabel
+	 */
+	public BasicBusyLabelUI(JXBusyLabel lbl) {
+	}
+
+	/**
+	 * factory
+	 * @param c JComponent not used
+	 * @return new instance of BasicBusyLabelUI
+	 */
+	public static ComponentUI createUI(JComponent c) {
+		return new BasicBusyLabelUI((JXBusyLabel) c);
+	}
 
     @Override
     public BusyPainter getBusyPainter(final Dimension dim) {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import java.awt.Dimension;
@@ -30,9 +27,11 @@ import org.jdesktop.swingx.painter.BusyPainter;
  * @author rah003
  */
 public interface BusyLabelUI {
+	
     /**
-     * @return The BusyPainter for the JXBusyLabel. If
-     * this method returns null, then no progress indication will be shown by busy label.
+	 * @param dim Dimension of the BusyPainter
+     * @return The BusyPainter for the JXBusyLabel. 
+     * If this method returns null, then no progress indication will be shown by busy label.
      */
     public BusyPainter getBusyPainter(Dimension dim);
     

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -34,6 +32,7 @@ import java.util.Map;
  * @see javax.swing.event.EventListenerList
  */
 public class EventListenerMap {
+	
     private final Map<Class<? extends EventListener>, List<? extends EventListener>> listenerList =
             new HashMap<Class<? extends EventListener>, List<? extends EventListener>>();
 
@@ -99,7 +98,7 @@ public class EventListenerMap {
      *            the type of the listener to be added
      * @param clazz
      *            the class type to add
-     * @param l
+     * @param listener
      *            the listener to be added
      */
     @SuppressWarnings("unchecked")
@@ -123,7 +122,7 @@ public class EventListenerMap {
      *            the type of the listener to remove
      * @param clazz
      *            the class type to remove
-     * @param l
+     * @param listener
      *            the listener to remove
      */
     @SuppressWarnings("unchecked")

@@ -433,9 +433,8 @@ public class JXGraph extends JXPanel {
      * @param majorY      the spacing between two major grid lines on the Y axis
      * @param minorCountY the number of minor grid lines between two major
      *                    grid lines on the Y axis
-     * @throws IllegalArgumentException if minX >= maxX or minY >= maxY or
-     *                                  minorCountX < 0 or minorCountY < 0 or
-     *                                  majorX <= 0.0 or majorY <= 0.0
+     * @throws IllegalArgumentException 
+     * if minX &ge; maxX or minY &ge; maxY or minorCountX &lt; 0 or minorCountY &lt; 0 or majorX &le; 0.0 or majorY &le; 0.0
      */
     public JXGraph(Point2D origin, Rectangle2D view,
                    double majorX, int minorCountX,
@@ -461,9 +460,8 @@ public class JXGraph extends JXPanel {
      * @param majorY      the spacing between two major grid lines on the Y axis
      * @param minorCountY the number of minor grid lines between two major
      *                    grid lines on the Y axis
-     * @throws IllegalArgumentException if minX >= maxX or minY >= maxY or
-     *                                  minorCountX < 0 or minorCountY < 0 or
-     *                                  majorX <= 0.0 or majorY <= 0.0
+     * @throws IllegalArgumentException 
+     * if minX &ge; maxX or minY &ge; maxY or minorCountX &lt; 0 or minorCountY &lt; 0 or majorX &le; 0.0 or majorY &le; 0.0
      */
     public JXGraph(double originX, double originY,
                    double minX,    double maxX,
@@ -818,12 +816,10 @@ public class JXGraph extends JXPanel {
     }
 
     /**
-     * <p>Sets the distance, in graph units, between two major grid lines on
-     * the X axis.</p>
+     * <p>Sets the distance, in graph units, between two major grid lines on the X axis.</p>
      *
-     * @param majorX the requested spacing between two major grid lines on the
-     *               X axis
-     * @throws IllegalArgumentException if majorX is <= 0.0d
+     * @param majorX the requested spacing between two major grid lines on the X axis
+     * @throws IllegalArgumentException if majorX is &le; 0.0d
      * @see #getMajorX()
      * @see #getMajorY()
      * @see #setMajorY(double)
@@ -858,12 +854,10 @@ public class JXGraph extends JXPanel {
     }
 
     /**
-     * <p>Sets the number of minor grid lines between two major grid lines on
-     * the X axis.</p>
+     * <p>Sets the number of minor grid lines between two major grid lines on the X axis.</p>
      *
-     * @param minorCountX the number of minor grid lines between two major grid
-     *                    lines on the X axis
-     * @throws IllegalArgumentException if minorCountX is < 0
+     * @param minorCountX the number of minor grid lines between two major grid lines on the X axis
+     * @throws IllegalArgumentException if minorCountX is &lt; 0
      * @see #getMinorCountX()
      * @see #getMinorCountY()
      * @see #setMinorCountY(int)
@@ -897,12 +891,10 @@ public class JXGraph extends JXPanel {
     }
 
     /**
-     * <p>Sets the distance, in graph units, between two major grid lines on
-     * the Y axis.</p>
+     * <p>Sets the distance, in graph units, between two major grid lines on the Y axis.</p>
      *
-     * @param majorY the requested spacing between two major grid lines on the
-     *               Y axis
-     * @throws IllegalArgumentException if majorY is <= 0.0d
+     * @param majorY the requested spacing between two major grid lines on the Y axis
+     * @throws IllegalArgumentException if majorY is &le; 0.0d
      * @see #getMajorY()
      * @see #getMajorX()
      * @see #setMajorX(double)
@@ -942,7 +934,7 @@ public class JXGraph extends JXPanel {
      *
      * @param minorCountY the number of minor grid lines between two major grid
      *                    lines on the Y axis
-     * @throws IllegalArgumentException if minorCountY is < 0
+     * @throws IllegalArgumentException if minorCountY is &lt; 0
      * @see #getMinorCountY()
      * @see #getMinorCountX()
      * @see #setMinorCountX(int)

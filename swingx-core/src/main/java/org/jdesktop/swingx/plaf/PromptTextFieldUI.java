@@ -21,10 +21,11 @@ import org.jdesktop.swingx.util.OS;
  * 
  */
 public class PromptTextFieldUI extends PromptTextUI {
+	
     /**
      * Creates a new {@link PromptTextFieldUI}.
      * 
-     * @param delegate
+     * @param delegate TextUI
      */
     public PromptTextFieldUI(TextUI delegate) {
         super(delegate);

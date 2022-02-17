@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,8 +37,14 @@ import org.jdesktop.swingx.plaf.MultiThumbSliderUI;
  */
 public class BasicMultiThumbSliderUI extends MultiThumbSliderUI {
     
+	/** TODO doc */
     protected JXMultiThumbSlider<?> slider;
     
+    /**
+     * factory
+     * @param c JComponent not used
+     * @return new instance of BasicMultiThumbSliderUI
+     */
     public static ComponentUI createUI(JComponent c) {
         return new BasicMultiThumbSliderUI();
     }

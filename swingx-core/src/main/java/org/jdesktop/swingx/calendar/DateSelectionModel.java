@@ -34,6 +34,7 @@ import org.jdesktop.swingx.event.DateSelectionListener;
  * @author Joshua Outwater
  */
 public interface DateSelectionModel {
+	
     public static enum SelectionMode {
         /**
          * Mode that allows for selection of a single day.
@@ -280,7 +281,7 @@ public interface DateSelectionModel {
 
 
     /**
-     * Returns a <code>SortedSet</code> of <code>Date</codes>s that are unselectable.
+     * Returns a <code>SortedSet</code> of <code>Date</code>s that are unselectable.
      *
      * @return sorted set of dates
      */

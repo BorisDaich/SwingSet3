@@ -13,7 +13,7 @@ package org.jdesktop.swingx.treetable;
  * That's useful f.i. when trying to configure TableColumnExt in a
  * ColumnFactory, like in
  * 
- * <code><pre>
+ * <pre><code>
  * JXTreeTable table = new JXTreeTable();
  * ColumnFactory factory = new ColumnFactory() {
  * 
@@ -31,7 +31,7 @@ package org.jdesktop.swingx.treetable;
  * table.setColumnFactory(factory);
  * table.setTreeTableModel(new FileSystemModel());
  * 
- * </pre></code>
+ * </code></pre>
  * 
  * @author Jeanette Winzenburg, Berlin
  */

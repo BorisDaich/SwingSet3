@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -19,20 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-/**Contains API for events added as part of JDNC's Swing extensions,
-such as message and progress events.
-
-<h2>Package Specification</h2>
-
-<ul>
-  <li><a href="">hyperlink</a>
-</ul>
-
-<h2>Related Documentation</h2>
-
-<ul>
-  <li><a href="">hyperlink</a>
-</ul>
-
-*/
+/**
+ * Contains API for events added as part of JDNC's Swing extensions, such as message and progress events.
+ */
 package org.jdesktop.swingx.event;

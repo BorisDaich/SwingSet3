@@ -223,7 +223,7 @@ public class BorderHighlighter extends AbstractHighlighter {
     
 
     /**
-     * Returns the border used for highlighing.<p>
+     * Returns the border used for highlighing.
      * 
      * @return the border used to highlight.
      */

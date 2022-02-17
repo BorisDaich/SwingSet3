@@ -151,7 +151,7 @@ public interface SortController<M> {
     /**
      * Returns the cycle of sort orders to cycle through.
      * 
-     * @return
+     * @return SortOrder array
      */
     SortOrder[] getSortOrderCycle();
     
@@ -225,7 +225,7 @@ public interface SortController<M> {
     /**
      * Returns the sort order of the specified column.
      * 
-     * 
+     * @param column the specified column
      * @return one of {@link SortOrder#ASCENDING},
      *     {@link SortOrder#DESCENDING} or {@link SortOrder#UNSORTED}.
      */

@@ -937,8 +937,8 @@ public class JXTreeTable extends JXTable {
 
 
         /**
+         * {@inheritDoc} <p>
          * Here: returns true.
-         * @inheritDoc
          */
         @Override
         protected boolean isHitDetectionFromProcessMouse() {
@@ -1075,9 +1075,9 @@ public class JXTreeTable extends JXTable {
          * cell content box is bidi-dependent. Plus (since 1.6), width of
          * renderer must be > 0.
          * 
-         * 
          * @param column the column index under the event, if any.
-         * @param e the event which might trigger a expand/collapse.
+         * @param me the event which might trigger a expand/collapse.
+         * 
          * @return the Point adjusted for bidi
          */
         protected Point getTreeMousePoint(int column, MouseEvent me) {
@@ -2401,9 +2401,7 @@ public class JXTreeTable extends JXTable {
         }
         
         /**
-         * 
-         * @inherited <p>
-         * 
+         * {@inheritDoc} <p>
          * Implemented to return the the underlying TreeTableModel. 
          */
         @Override

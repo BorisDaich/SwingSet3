@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,30 +39,31 @@ import org.jdesktop.swingx.util.Contract;
  * @author Joshua Outwater
  */
 public class DaySelectionModel extends AbstractDateSelectionModel {
+	
     private SelectionMode selectionMode;
     private SortedSet<Date> selectedDates;
     private SortedSet<Date> unselectableDates;
 
     /**
-     * 
+     * TODO
      */
     public DaySelectionModel() {
         this(null);
     }
 
     /**
-     * 
+     * @param locale Locale
      */
     public DaySelectionModel(Locale locale) {
         super(locale);
         this.listenerMap = new EventListenerMap();
         this.selectionMode = SelectionMode.SINGLE_SELECTION;
         this.selectedDates = new TreeSet<Date>();
-        this.unselectableDates = new TreeSet<Date>();
-        
+        this.unselectableDates = new TreeSet<Date>();       
     }
+    
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public SelectionMode getSelectionMode() {
@@ -72,7 +71,7 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public void setSelectionMode(final SelectionMode selectionMode) {

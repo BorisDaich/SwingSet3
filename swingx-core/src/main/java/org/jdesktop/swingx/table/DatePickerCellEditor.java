@@ -53,15 +53,15 @@ public class DatePickerCellEditor extends AbstractCellEditor implements TableCel
 
     private static Logger LOG = Logger.getLogger(DatePickerCellEditor.class.getName());
     private static final long serialVersionUID = -1L;
-    
+    /** TODO doc */
     protected JXDatePicker datePicker;
-
+    /** TODO doc */
     protected DateFormat dateFormat;
-
+    /** TODO doc */
     protected int clickCountToStart = 2;
 
     private ActionListener pickerActionListener;
-
+    /** TODO doc */
     protected boolean ignoreAction;
 
     /**
@@ -237,15 +237,19 @@ public class DatePickerCellEditor extends AbstractCellEditor implements TableCel
     }
 
     /**
-     * @param e
+     * @param e ParseException
      */
     protected void handleParseException(ParseException e) {
         LOG.log(Level.SEVERE, e.getMessage(), e.getMessage());
     }
 
+    /**
+     * empty check
+     * @param value
+     * @return value is empty
+     */
     protected boolean isEmpty(Object value) {
-        return value == null || value instanceof String
-                && ((String) value).length() == 0;
+        return value == null || value instanceof String && ((String) value).length() == 0;
     }
 
 //--------------- picker specifics    

@@ -216,7 +216,8 @@ public final class HighlighterFactory {
 
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * implements interface UIDependent: setBackground tu UIColoo
      */
     @Override
     public void updateUI() {

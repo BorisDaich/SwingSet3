@@ -35,15 +35,13 @@ import org.jdesktop.swingx.util.OS;
 
 /**
  * Addon for <code>JXTaskPaneContainer</code>. This addon defines the following properties:
- * <table>
- * <tbody>
- * <tr><td>TaskPaneContainer.background</td><td>background color</td></tr>
- * <tr><td>TaskPaneContainer.backgroundPainter</td><td>background painter</td></tr>
- * <tr><td>TaskPaneContainer.border</td><td>container border</td></tr>
- * <tr><td>TaskPaneContainer.font</td><td>font (currently unused)</td></tr>
- * <tr><td>TaskPaneContainer.foreground</td><td>foreground color (currently unused)</td></tr>
- * </tbody>
- * </table>
+ * <ul>
+ * <li>TaskPaneContainer.background - background color
+ * <li>TaskPaneContainer.backgroundPainter - background painter
+ * <li>TaskPaneContainer.border - container border
+ * <li>TaskPaneContainer.font - font (currently unused)
+ * <li>TaskPaneContainer.foreground - foreground color (currently unused)
+ * </ul>
  *  
  * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
  * @author Karl Schaefer

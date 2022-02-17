@@ -34,8 +34,11 @@ import org.jdesktop.swingx.MultiSplitLayout.Split;
  * @author rbair
  */
 public class DefaultSplitPaneModel extends Split {
+    /** TODO doc */
     public static final String LEFT = "left";
+    /** TODO doc */
     public static final String TOP = "top";
+    /** TODO doc */
     public static final String BOTTOM = "bottom";
     
     /** Creates a new instance of DefaultSplitPaneLayout */

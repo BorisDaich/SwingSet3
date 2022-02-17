@@ -156,7 +156,6 @@ public class ColumnFactory {
      * 
      * The factory's initial column configuration is passed through this method, so 
      * subclasses can override to customize.
-     * <p>
      * 
      * @param model the TableModel to read configuration properties from
      * @param columnExt the TableColumnExt to configure.
@@ -228,6 +227,7 @@ public class ColumnFactory {
      * width per column is added to the result. 
      * 
      * @param table the table containing the columns
+     * @return preferred scrollable viewport width
      */
     public int getPreferredScrollableViewportWidth(JXTable table) {
         int w = 0;
@@ -294,7 +294,7 @@ public class ColumnFactory {
     /**
      * Returns the cell renderer to use for measuring. Delegates to 
      * JXTable for visible columns, duplicates table logic for hidden
-     * columns. <p>
+     * columns.
      * 
      * @param table the table which provides the renderer
      * @param columnExt the TableColumn to configure
@@ -320,7 +320,7 @@ public class ColumnFactory {
     }
 
     /**
-     * Looks up and returns the renderer used for the column's header.<p>
+     * Looks up and returns the renderer used for the column's header.
      * 
      * @param table the table which contains the column
      * @param columnExt the column to lookup the header renderer for

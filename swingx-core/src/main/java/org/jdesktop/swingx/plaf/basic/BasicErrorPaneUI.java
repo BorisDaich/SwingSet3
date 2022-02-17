@@ -88,6 +88,7 @@ import org.jdesktop.swingx.util.WindowUtils;
  * @author rah003
  */
 public class BasicErrorPaneUI extends ErrorPaneUI {
+	
     /**
      * Used as a prefix when pulling data out of UIManager for i18n
      */
@@ -391,7 +392,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
     //    ===============================
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
      * implements abstract method to create ErrorPane in the frame window
      */
     @Override
@@ -405,7 +406,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
      * implements abstract method to create ErrorPane in the dialog window
      */
     @Override
@@ -428,7 +429,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
      * implements abstract method to create ErrorPane
      */
     @Override
@@ -486,7 +487,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     /**
      * configure ReportAction
-     * @param reportAction
+     * @param reportAction to configure
      */
     protected void configureReportAction(AbstractActionExt reportAction) {
         reportAction.setName(UIManagerExt.getString(CLASS_NAME + ".report_button_text", pane.getLocale()));
@@ -549,7 +550,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     /**
      * configure DetailsButton
-     * @param expanded
+     * @param expanded to use details_expand_text
      */
     protected void configureDetailsButton(boolean expanded) {
         if (expanded) {
@@ -667,7 +668,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * method is only called if the details needs to be generated: ie: the detailed
      * error message property of the incident info is null.
      * 
-     * @param errorInfo
+     * @param errorInfo encapsulates all info to report a problem
      * @return HTML String
      */
     protected String getDetailsAsHTML(ErrorInfo errorInfo) {

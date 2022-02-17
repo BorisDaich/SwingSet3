@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,6 +37,7 @@ import org.jdesktop.swingx.plaf.TaskPaneContainerUI;
  * @author Karl Schaefer
  */
 public class BasicTaskPaneContainerUI extends TaskPaneContainerUI {
+	
     /**
      * A {@code UIResource} implementation of {@code VerticalLayout}.
      * 
@@ -63,38 +62,37 @@ public class BasicTaskPaneContainerUI extends TaskPaneContainerUI {
         }
     }
     
-  /**
-   * Returns a new instance of BasicTaskPaneContainerUI.
-   * BasicTaskPaneContainerUI delegates are allocated one per
-   * JXTaskPaneContainer.
-   * 
-   * @return A new TaskPaneContainerUI implementation for the Basic look and
-   *         feel.
-   */
-  public static ComponentUI createUI(JComponent c) {
-    return new BasicTaskPaneContainerUI();
-  }
+	/**
+	 * Returns a new instance of BasicTaskPaneContainerUI. BasicTaskPaneContainerUI
+	 * delegates are allocated one per JXTaskPaneContainer.
+	 * 
+	 * @param c JComponent not used
+	 * @return A new TaskPaneContainerUI implementation for the Basic look and feel.
+	 */
+	public static ComponentUI createUI(JComponent c) {
+		return new BasicTaskPaneContainerUI();
+	}
 
-  /**
-   * The task pane container managed by this UI delegate.
-   */
-  protected JXTaskPaneContainer taskPane;
+	/**
+	 * The task pane container managed by this UI delegate.
+	 */
+	protected JXTaskPaneContainer taskPane;
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-public void installUI(JComponent c) {
-    super.installUI(c);
-    taskPane = (JXTaskPaneContainer)c;
-    installDefaults();
-    
-    LayoutManager manager = taskPane.getLayout();
-    
-    if (manager == null || manager instanceof UIResource) {
-        taskPane.setLayout(createDefaultLayout());
-    }
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void installUI(JComponent c) {
+		super.installUI(c);
+		taskPane = (JXTaskPaneContainer) c;
+		installDefaults();
+
+		LayoutManager manager = taskPane.getLayout();
+
+		if (manager == null || manager instanceof UIResource) {
+			taskPane.setLayout(createDefaultLayout());
+		}
+	}
 
     /**
      * Installs the default colors, border, and painter of the task pane

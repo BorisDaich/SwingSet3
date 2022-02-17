@@ -372,8 +372,7 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
      * if the first column has no text. 
      * 
      * @see #getPreferredSize(Dimension)
-     * @see #getMinimumHeight(int).
-     * 
+     * @see #getMinimumHeight(int)
      */
     @Override
     public Dimension getPreferredSize() {
@@ -436,8 +435,7 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
     
 
     /**
-     * @inherited <p>
-     * 
+     * {@inheritDoc} <p>
      * Overridden to fire a propertyChange for draggedColumn. 
      */
     @Override
@@ -450,8 +448,7 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
 
     
     /**
-     * @inherited <p>
-     * 
+     * {@inheritDoc} <p>
      * Overridden to fire a propertyChange for resizingColumn. 
      */
     @Override

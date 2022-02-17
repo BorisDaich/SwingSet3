@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
@@ -57,7 +54,7 @@ import org.jdesktop.swingx.plaf.TitledPanelUI;
 public class JXTitledPanel extends JXPanel {
 
     /**
-     * @see #getUIClassID // *
+     * @see #getUIClassID
      * @see #readObject
      */
     static public final String uiClassID = "TitledPanelUI";
@@ -130,7 +127,7 @@ public class JXTitledPanel extends JXPanel {
     }
 
     /**
-     * Returns the look and feel (L&F) object that renders this component.
+     * Returns the look and feel (LaF) object that renders this component.
      * 
      * @return the TitledPanelUI object that renders this component
      */
@@ -140,12 +137,13 @@ public class JXTitledPanel extends JXPanel {
     }
 
     /**
-     * Sets the look and feel (L&F) object that renders this component.
+     * Sets the look and feel (LaF) object that renders this component.
      * 
      * @param ui
-     *            the TitledPanelUI L&F object
+     *            the TitledPanelUI LaF object
      * @see javax.swing.UIDefaults#getUI
-     * @beaninfo bound: true
+     */
+    /* @beaninfo bound: true
      *          hidden: true attribute: visualUpdate true
      *     description: The UI object that implements the Component's LookAndFeel.
      */
@@ -154,14 +152,15 @@ public class JXTitledPanel extends JXPanel {
     }
 
     /**
-     * Returns a string that specifies the name of the L&F class that renders
+     * Returns a string that specifies the name of the LaF class that renders
      * this component.
      * 
      * @return "TitledPanelUI"
      * @see JComponent#getUIClassID
      * @see javax.swing.UIDefaults#getUI
-     * @beaninfo expert: true 
-     *      description: A string that specifies the name of the L&F class.
+     */
+    /* @beaninfo expert: true 
+     *      description: A string that specifies the name of the LaF class.
      */
     @Override
     public String getUIClassID() {
@@ -169,7 +168,7 @@ public class JXTitledPanel extends JXPanel {
     }
 
     /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
+     * Notification from the <code>UIManager</code> that the LaF has changed.
      * Replaces the current UI object with the latest version from the
      * <code>UIManager</code>.
      * 
@@ -177,8 +176,7 @@ public class JXTitledPanel extends JXPanel {
      */
     @Override
     public void updateUI() {
-        setUI((TitledPanelUI) LookAndFeelAddons
-                .getUI(this, TitledPanelUI.class));
+        setUI((TitledPanelUI) LookAndFeelAddons.getUI(this, TitledPanelUI.class));
     }
 
     /**

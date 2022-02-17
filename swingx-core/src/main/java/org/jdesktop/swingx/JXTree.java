@@ -642,7 +642,8 @@ public class JXTree extends JTree {
      * @see #setForeground
      * @see #setBackground
      * @see #setFont
-     * @beaninfo
+     */
+    /* @beaninfo
      *       bound: true
      *   attribute: visualUpdate true
      * description: The foreground color of selected cells.
@@ -670,7 +671,8 @@ public class JXTree extends JTree {
      * @see #setForeground
      * @see #setBackground
      * @see #setFont
-     * @beaninfo
+     */
+    /* @beaninfo
      *       bound: true
      *   attribute: visualUpdate true
      * description: The background color of selected cells.
@@ -681,8 +683,7 @@ public class JXTree extends JTree {
         firePropertyChange("selectionBackground", oldValue, getSelectionBackground());
         repaint();
     }
-
-    
+   
 //------------------------- update ui 
     
     /**

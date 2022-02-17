@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,10 +24,18 @@ package org.jdesktop.swingx.plaf.basic;
  * @author Jeanette Winzenburg
  */
 public enum CalendarState {
+	/** TODO doc */
     TODAY,
+	/** TODO doc */
     IN_MONTH,
+	/** TODO doc */
     LEADING,
+	/** TODO doc */
     TRAILING,
+	/** TODO doc */
     WEEK_OF_YEAR,
-    DAY_OF_WEEK, TITLE
+	/** TODO doc */
+    DAY_OF_WEEK, 
+	/** TODO doc */
+    TITLE
 }

@@ -233,7 +233,7 @@ public class ColumnControlButton extends JButton {
      * if the ColumnControlPopup doesn't implement Groupable. The default 
      * ColumnControlPopup supports Groupable, but is instantiated without a Grouper.
      * 
-     * @param grouper
+     * @param grouper ActionGrouper
      */
     public void setActionGrouper(ActionGrouper grouper) {
         if (!(getColumnControlPopup() instanceof ActionGroupable)) return;
@@ -373,7 +373,10 @@ public class ColumnControlButton extends JButton {
             fromColumn = false;
         }
 
-
+        /**
+         * TODO doc
+         * @param hideable boolean
+         */
         protected void updateFromColumnHideable(boolean hideable) {
             setEnabled(hideable);
         }
@@ -460,22 +463,26 @@ public class ColumnControlButton extends JButton {
 
     /**
      * A default implementation of ColumnControlPopup. 
-     * It uses a JPopupMenu with 
-     * MenuItems corresponding to the Actions as 
+     * It uses a JPopupMenu with MenuItems corresponding to the Actions as 
      * provided by the ColumnControlButton.
-     * 
-     * 
      */
     public class DefaultColumnControlPopup implements ColumnControlPopup, ActionGroupable {
         private JPopupMenu popupMenu;
         private ActionGrouper grouper;
 
+        /**
+         * ctor
+         */
         public DefaultColumnControlPopup() {
             this(null);
         }
         
         //------------------ public methods to control visibility status
         
+        /**
+         * ctor
+         * @param grouper ActionGrouper
+         */
         public DefaultColumnControlPopup(ActionGrouper grouper) {
             this.grouper = grouper;
         }
@@ -626,6 +633,10 @@ public class ColumnControlButton extends JButton {
             this.grouper = grouper;
         }
         
+        /**
+         * 
+         * @return ActionGrouper
+         */
         protected ActionGrouper getGrouper() {
             return grouper;
         }

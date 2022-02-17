@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import java.awt.Container;
@@ -31,19 +28,29 @@ import javax.swing.plaf.PanelUI;
  * @author rbair
  */
 public abstract class TitledPanelUI extends PanelUI {
+	
     /**
      * Adds the given JComponent as a decoration on the right of the title
-     * @param decoration
+     * @param decoration JComponent
      */
     public abstract void setRightDecoration(JComponent decoration);
+    /**
+     * TODO doc
+     * @return JComponent
+     */
     public abstract JComponent getRightDecoration();
     
     /**
      * Adds the given JComponent as a decoration on the left of the title
-     * @param decoration
+     * @param decoration JComponent
      */
     public abstract void setLeftDecoration(JComponent decoration);
+    /**
+     * TODO doc
+     * @return JComponent
+     */
     public abstract JComponent getLeftDecoration();
+    
     /**
      * @return the Container acting as the title bar for this component
      */

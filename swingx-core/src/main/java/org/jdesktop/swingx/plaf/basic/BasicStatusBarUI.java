@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf.basic;
 
 import java.awt.Color;
@@ -62,6 +59,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * @author Karl Schaefer
  */
 public class BasicStatusBarUI extends StatusBarUI {
+	
     private class Handler implements MouseListener, MouseMotionListener, PropertyChangeListener {
         private Window window = SwingUtilities.getWindowAncestor(statusBar);
         private int handleBoundary = getHandleBoundary();
@@ -216,20 +214,24 @@ public class BasicStatusBarUI extends StatusBarUI {
         }
     }
     
+	/** TODO doc */
     public static final String AUTO_ADD_SEPARATOR = new StringBuffer("auto-add-separator").toString();
+
     /**
      * Used to help reduce the amount of trash being generated
      */
     private static Insets TEMP_INSETS;
+
     /**
      * The one and only JXStatusBar for this UI delegate
      */
     protected JXStatusBar statusBar;
     
-    protected MouseListener mouseListener;
-    
-    protected MouseMotionListener mouseMotionListener;
-    
+	/** TODO doc */
+    protected MouseListener mouseListener; 
+	/** TODO doc */
+    protected MouseMotionListener mouseMotionListener;   
+	/** TODO doc */
     protected PropertyChangeListener propertyChangeListener;
     
     private Handler handler;
@@ -247,6 +249,8 @@ public class BasicStatusBarUI extends StatusBarUI {
      * stateful, then it should return a new instance per component.
      * The default implementation of this method throws an error, as it
      * should never be invoked.
+     * @param c JComponent not used
+     * @return instance of the UI delegate for the specified component
      */
     public static ComponentUI createUI(JComponent c) {
         return new BasicStatusBarUI();
@@ -271,16 +275,20 @@ public class BasicStatusBarUI extends StatusBarUI {
         }
     }
     
+    /**
+     * only set the border if it is an instanceof UIResource.
+     * <p>
+     * In other words, only replace the border if it has not been
+     * set by the developer. UIResource is the flag we use to indicate whether
+     * the value was set by the UIDelegate, or by the developer.
+     * 
+     * @param sb JXStatusBar
+     */
     protected void installDefaults(JXStatusBar sb) {
-        //only set the border if it is an instanceof UIResource
-        //In other words, only replace the border if it has not been
-        //set by the developer. UIResource is the flag we use to indicate whether
-        //the value was set by the UIDelegate, or by the developer.
         Border b = statusBar.getBorder();
         if (b == null || b instanceof UIResource) {
             statusBar.setBorder(createBorder());
         }
-        
         LookAndFeel.installProperty(sb, "opaque", Boolean.TRUE);
     }
     
@@ -288,7 +296,6 @@ public class BasicStatusBarUI extends StatusBarUI {
         if (handler == null) {
             handler = new Handler();
         }
-        
         return handler;
     }
     
@@ -337,6 +344,7 @@ public class BasicStatusBarUI extends StatusBarUI {
     /**
      * Create and install the listeners for the status bar.
      * This method is called when the UI is installed.
+     * @param sb JXStatusBar
      */
     protected void installListeners(JXStatusBar sb) {
         if ((mouseListener = createMouseListener()) != null) {
@@ -367,6 +375,10 @@ public class BasicStatusBarUI extends StatusBarUI {
         }
     }
     
+    /**
+     * uninstall border
+     * @param sb JXStatusBar
+     */
     protected void uninstallDefaults(JXStatusBar sb) {
         if (sb.getBorder() instanceof UIResource) {
             sb.setBorder(null);
@@ -377,6 +389,7 @@ public class BasicStatusBarUI extends StatusBarUI {
      * Remove the installed listeners from the status bar.
      * The number and types of listeners removed in this method should be
      * the same that were added in <code>installListeners</code>
+     * @param sb JXStatusBar
      */
     protected void uninstallListeners(JXStatusBar sb) {
         if (mouseListener != null) {
@@ -416,6 +429,11 @@ public class BasicStatusBarUI extends StatusBarUI {
     }
     
     //----------------------------------------------------- Extension Points
+    /**
+     * TODO doc
+     * @param g the <code>Graphics</code> context in which to paint
+     * @param bar status bar
+     */
     protected void paintBackground(Graphics2D g, JXStatusBar bar) {
         if (bar.isOpaque()) {
             g.setColor(bar.getBackground());
@@ -423,6 +441,15 @@ public class BasicStatusBarUI extends StatusBarUI {
         }
     }
     
+    /**
+     * TODO doc
+     * @param g the <code>Graphics</code> context in which to paint
+     * @param bar status bar
+     * @param      x   the <i>x</i> coordinate.
+     * @param      y   the <i>y</i> coordinate.
+     * @param      w   the width of the separator.
+     * @param      h   the height of the separator.
+     */
     protected void paintSeparator(Graphics2D g, JXStatusBar bar, int x, int y, int w, int h) {
         Color fg = UIManagerExt.getSafeColor("Separator.foreground", Color.BLACK);
         Color bg = UIManagerExt.getSafeColor("Separator.background", Color.WHITE);
@@ -434,7 +461,12 @@ public class BasicStatusBarUI extends StatusBarUI {
         g.setColor(bg);
         g.drawLine(x+1, y, x+1, h);
     }
-    
+
+    /**
+     * gets Separator Insets
+     * @param insets separator Insets inout
+     * @return insets out
+     */
     protected Insets getSeparatorInsets(Insets insets) {
         if (insets == null) {
             insets = new Insets(0, 0, 0, 0);
@@ -448,19 +480,35 @@ public class BasicStatusBarUI extends StatusBarUI {
         return insets;
     }
     
+    /**
+     * Separator Width
+     * @return constant 10
+     */
     protected int getSeparatorWidth() {
         return 10;
     }
     
+    /**
+     * get AUTO_ADD_SEPARATOR value
+     * @return boolean value of prop AUTO_ADD_SEPARATOR
+     */
     protected boolean includeSeparators() {
         Boolean b = (Boolean)statusBar.getClientProperty(AUTO_ADD_SEPARATOR);
         return b == null || b;
     }
     
+    /**
+     * create Empty Border
+     * @return BorderUIResource
+     */
     protected BorderUIResource createBorder() {
         return new BorderUIResource(BorderFactory.createEmptyBorder(4, 5, 4, 22));
     }
     
+    /**
+     * create LayoutManager
+     * @return LayoutManager
+     */
     protected LayoutManager createLayout() {
         //This is in the UI delegate because the layout
         //manager takes into account spacing for the separators between components

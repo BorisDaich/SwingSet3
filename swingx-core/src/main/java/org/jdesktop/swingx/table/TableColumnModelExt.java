@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.table;
 
 import java.util.List;
@@ -215,7 +212,7 @@ public interface TableColumnModelExt extends TableColumnModel {
      *         index
      * @throws ArrayIndexOutOfBoundsException if columnIndex out of allowed
      *         range, that is if
-     *         <code> (columnIndex < 0) || (columnIndex >= getColumnCount())</code>.
+     *         <code> (columnIndex &lt; 0) || (columnIndex &ge; getColumnCount())</code>.
      */
     public TableColumnExt getColumnExt(int columnIndex);
     

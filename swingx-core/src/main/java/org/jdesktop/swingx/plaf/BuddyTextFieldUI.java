@@ -18,6 +18,8 @@ import javax.swing.plaf.TextUI;
  * 
  */
 public class BuddyTextFieldUI extends PromptTextFieldUI {
+	
+	/** TODO doc */
 	protected BuddyLayoutAndBorder layoutAndBorder;
 
 	// Bad hacking: FIXME when know how to get the real margin.
@@ -47,10 +49,9 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	}
 
 	/**
-	 * Creates a new {@link BuddyTextFieldUI} which delegates most work to
-	 * another {@link TextUI}.
+	 * Creates a new {@link BuddyTextFieldUI} which delegates most work to another {@link TextUI}.
 	 * 
-	 * @param delegate
+	 * @param delegate TextUI
 	 */
 	public BuddyTextFieldUI(TextUI delegate) {
 		super(delegate);
@@ -63,6 +64,10 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 		layoutAndBorder.install((JTextField) c);
 	}
 
+	/**
+	 * TODO doc
+	 * @return BuddyLayoutAndBorder
+	 */
 	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder() {
 		return new BuddyLayoutAndBorder();
 	}

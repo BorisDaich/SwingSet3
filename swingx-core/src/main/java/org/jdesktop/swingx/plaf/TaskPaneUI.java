@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -37,7 +35,7 @@ public abstract class TaskPaneUI extends PanelUI {
    * Called by the component when an action is added to the component through
    * the {@link org.jdesktop.swingx.JXTaskPane#add(Action)} method.
    * 
-   * @param action
+   * @param action ui action
    * @return a component built from the action.
    */
   public Component createAction(Action action) {

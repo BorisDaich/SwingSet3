@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -69,7 +67,7 @@ public class CheckBoxProvider extends ComponentProvider<AbstractButton> {
     private boolean borderPainted;
 
     /**
-     * Instantiates a CheckBoxProvider with default properties. <p> 
+     * Instantiates a CheckBoxProvider with default properties.
      *
      */
     public CheckBoxProvider() {
@@ -77,8 +75,7 @@ public class CheckBoxProvider extends ComponentProvider<AbstractButton> {
     }
 
     /**
-     * Instantiates a CheckBoxProvider with the given StringValue and default
-     * alignment.
+     * Instantiates a CheckBoxProvider with the given StringValue and default alignment.
      * 
      * @param stringValue the StringValue to use for formatting.
      */
@@ -174,8 +171,7 @@ public class CheckBoxProvider extends ComponentProvider<AbstractButton> {
 
     /**
      * {@inheritDoc}<p>
-     * Here: returns a JCheckBox as rendering component.<p>
-     * 
+     * Here: returns a JCheckBox as rendering component.
      */
     @Override
     protected AbstractButton createRendererComponent() {

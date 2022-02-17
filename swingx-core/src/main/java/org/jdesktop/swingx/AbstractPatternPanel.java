@@ -223,7 +223,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
      * {@inheritDoc} <p>
      * Overridden to update locale-dependent properties. 
      * 
-     * @param locale
+     * @param l the local language
      * @see #updateLocaleState(Locale) 
      */
     @Override
@@ -241,7 +241,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
      * PENDING: Try better to find all column actions including custom
      * additions? Or move to columnControl?
      * 
-     * @param locale
+     * @param locale the local language
      * @see #setLocale(Locale)
      */
     protected void updateLocaleState(Locale locale) {
@@ -421,7 +421,7 @@ public abstract class AbstractPatternPanel extends JXPanel {
      * Here: sets text and mnenomic properties form ui values, 
      * configures as label for searchField.
      * 
-     * @param locale
+     * @param locale the local language
      */
     protected void bindSearchLabel(Locale locale) {
         searchLabel.setText(getUIString(SEARCH_FIELD_LABEL, locale));

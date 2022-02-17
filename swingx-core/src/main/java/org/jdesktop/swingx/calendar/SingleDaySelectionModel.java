@@ -29,7 +29,7 @@ import org.jdesktop.swingx.util.Contract;
 /**
  * DateSelectionModel which allows a single selection only. <p>
  * 
- * Temporary quick & dirty class to explore requirements as needed by
+ * Temporary quick &amp; dirty class to explore requirements as needed by
  * a DatePicker. Need to define the states more exactly. Currently 
  * <ul>
  * <li> takes all Dates as-are (that is the normalized is the same as the given):

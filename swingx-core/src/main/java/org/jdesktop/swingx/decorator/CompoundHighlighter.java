@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.decorator;
 
 import java.awt.Component;
@@ -40,8 +39,9 @@ import org.jdesktop.swingx.util.Contract;
  */
 public class CompoundHighlighter extends AbstractHighlighter implements UIDependent {
 	
+	/** TODO doc */
     public static final Highlighter[] EMPTY_HIGHLIGHTERS = new Highlighter[0];
-
+    /** TODO doc */
     protected List<Highlighter> highlighters;
     
     /** the listener for changes in contained Highlighters. */

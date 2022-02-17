@@ -107,19 +107,19 @@ public class CellContext implements Serializable {
 
     /** PENDING JW: maybe make this a WeakReference? Would be a more robust fix for Issue #1040-swingx. */
     protected transient Object value;
-
+	/** TODO doc */
     protected transient int row;
-
+	/** TODO doc */
     protected transient int column;
-
+	/** TODO doc */
     protected transient boolean selected;
-
+	/** TODO doc */
     protected transient boolean focused;
-
+	/** TODO doc */
     protected transient boolean expanded;
-
+	/** TODO doc */
     protected transient boolean leaf;
-
+	/** TODO doc */
     protected transient boolean dropOn;
     
     // --------------------------- install context
@@ -392,10 +392,18 @@ public class CellContext implements Serializable {
         return UIManager.getColor(getUIKey("focusCellBackground"));
     }
 
-    protected Color getDropCellForeground() {
+    /**
+     * TODO doc
+     * @return Color
+     */
+   protected Color getDropCellForeground() {
         return UIManager.getColor(getUIKey("dropCellForeground"));
     }
     
+    /**
+     * TODO doc
+     * @return Color
+     */
     protected Color getDropCellBackground() {
         return UIManager.getColor(getUIKey("dropCellBackground"));
     }
@@ -424,12 +432,16 @@ public class CellContext implements Serializable {
 
     /**
      * Returns the Font of the target component or null if no component installed.
-     * @return
+     * @return Font
      */
     protected Font getFont() {
         return getComponent() != null ? getComponent().getFont() : null;
     }
 
+    /**
+     * CellRendererName
+     * @return name
+     */
     public String getCellRendererName() {
         return getUIPrefix() + "cellRenderer";
     }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -153,17 +151,13 @@ public class SynthXListUI extends BasicXListUI
             installKeyboardActions();
         }
         // install currently unused properties of this delegate
-        useListColors = style.getBoolean(selectedContext,
-                "List.rendererUseListColors", true);
-        useUIBorder = style.getBoolean(selectedContext,
-                "List.rendererUseUIBorder", true);
+        useListColors = style.getBoolean(selectedContext, "List.rendererUseListColors", true);
+        useUIBorder = style.getBoolean(selectedContext, "List.rendererUseUIBorder", true);
         
     }
 
     /**
      * Installs a SynthBorder from the current style, if ui-installable.
-     * 
-     * @param context the context 
      */
     protected void installSynthBorder() {
         if (SwingXUtilities.isUIInstallable(list.getBorder())) {

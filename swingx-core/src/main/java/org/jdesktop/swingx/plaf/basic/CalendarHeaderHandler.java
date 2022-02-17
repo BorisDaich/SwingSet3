@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -71,17 +69,17 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 public abstract class CalendarHeaderHandler {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(CalendarHeaderHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(CalendarHeaderHandler.class.getName());
 
+	/** TODO doc */
     public static final String uiControllerID = "CalendarHeaderHandler";
-
+	/** TODO doc */
     protected JXMonthView monthView;
-
+	/** TODO doc */
     private JComponent calendarHeader;
-
+	/** TODO doc */
     protected Icon monthDownImage;
-
+	/** TODO doc */
     protected Icon monthUpImage;
 
     private PropertyChangeListener monthViewPropertyChangeListener;
@@ -309,6 +307,8 @@ public abstract class CalendarHeaderHandler {
      * Create a derived font used to when painting various pieces of the month
      * view component. This method will be called whenever the font on the
      * component is set so a new derived font can be created.
+     * 
+     * @return font
      */
     protected Font createDerivedFont() {
         return monthView.getFont().deriveFont(Font.BOLD);

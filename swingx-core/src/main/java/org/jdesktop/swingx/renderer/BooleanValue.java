@@ -25,6 +25,11 @@ package org.jdesktop.swingx.renderer;
  */
 public interface BooleanValue {
 
+	/**
+	 * get boolean from object
+	 * @param value
+	 * @return boolean
+	 */
     boolean getBoolean(Object value);
     
 }

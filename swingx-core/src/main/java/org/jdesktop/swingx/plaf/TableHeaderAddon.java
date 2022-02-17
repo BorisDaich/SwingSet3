@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -37,7 +35,7 @@ import javax.swing.plaf.metal.MetalBorders;
 public class TableHeaderAddon extends AbstractComponentAddon {
 
     /**
-     * @param name
+     * ctor
      */
     public TableHeaderAddon() {
         super("JXTableHeader");
@@ -59,7 +57,5 @@ public class TableHeaderAddon extends AbstractComponentAddon {
         }
         
     }
-    
-    
 
 }

@@ -39,21 +39,20 @@ public class TableAddon extends AbstractComponentAddon {
     public static final String TABLE_ALTERNATE_ROW_COLOR = "Table.alternateRowColor";
 
     /**
-     * @param name
+     * ctor
      */
     public TableAddon() {
         super("JXTable");
     }
 
     /**
-     * @inherited
+     * {@inheritDoc} <p>
+     * JW: Hacking around core issue 6882917
+     * which is the underlying reason for issue 1180-swingx (SwingX vs Nimbus table striping)
      */
     @Override
     protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addNimbusDefaults(addon, defaults);
-        // JW: Hacking around core issue #6882917
-        // which is the underlying reason for issue #1180-swingx
-        // (SwingX vs Nimbus table striping)
         Object keepAlternateRowColor = UIManager.get("Nimbus.keepAlternateRowColor");
         LOG.info("keepAlternateRowColor:"+keepAlternateRowColor);
         if (Boolean.TRUE.equals(keepAlternateRowColor)) return;
@@ -65,8 +64,7 @@ public class TableAddon extends AbstractComponentAddon {
     }
 
     /** 
-     * @inherited <p>
-     * 
+     * {@inheritDoc} <p>
      * PENDING JW: move to addLinuxDefaults after testing
      */
     @Override
@@ -82,8 +80,6 @@ public class TableAddon extends AbstractComponentAddon {
         replaceBorder(defaults, "Table.", "focusSelectedCellHighlightBorder");
         replaceBorder(defaults, "Table.", "noFocusBorder");
     }
-
-
 
     /**
      * @param defaults
@@ -104,8 +100,6 @@ public class TableAddon extends AbstractComponentAddon {
         }
     }
 
-
-
     /**
      * 
      * @return true if the LF is GTK.
@@ -114,5 +108,4 @@ public class TableAddon extends AbstractComponentAddon {
         return "GTK".equals(UIManager.getLookAndFeel().getID());
     }
 
-    
 }

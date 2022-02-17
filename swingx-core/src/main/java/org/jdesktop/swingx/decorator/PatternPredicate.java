@@ -116,8 +116,7 @@ public class PatternPredicate implements HighlightPredicate {
     /**
      * Instantiates a Predicate with the given regex and test-/decorate
      * column index in model coordinates. The pattern string is compiled to a 
-     * Pattern with flags 0. A column index of -1 is interpreted
-     * as "all". 
+     * Pattern with flags 0. A column index of -1 is interpreted as "all". 
      * 
      * @param regex the regex string to test the cell value against
      * @param testColumn the column index in model coordinates
@@ -132,13 +131,10 @@ public class PatternPredicate implements HighlightPredicate {
     }
 
     /**
-     * 
-     * @inherited <p>
-     * 
+     * {@inheritDoc} <p>
      * Implemented to return true if the match of cell content's String representation
      * against the Pattern if found and the adapter's view column maps to the 
      * decorateColumn/s. Otherwise returns false.
-     * 
      */
     @Override
     public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {

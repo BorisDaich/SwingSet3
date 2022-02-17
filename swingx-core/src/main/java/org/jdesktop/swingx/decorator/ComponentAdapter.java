@@ -97,12 +97,15 @@ import org.jdesktop.swingx.renderer.StringValues;
  * @see org.jdesktop.swingx.decorator.Highlighter
  */
 public abstract class ComponentAdapter {
+	
+	/** default */
     public static final Object DEFAULT_COLUMN_IDENTIFIER = "Column0";
     /** current row in view coordinates. */
     public int row = 0;
     /** current column in view coordinates. */
     public int column = 0;
-    protected final JComponent    target;
+    /** TODO doc */
+    protected final JComponent target;
 
     /**
      * Constructs a ComponentAdapter, setting the specified component as the
@@ -228,9 +231,10 @@ public abstract class ComponentAdapter {
      * Returns the common class of all data column identified by the given
      * column index in model coordinates.<p>
      * 
-     * This implementation returns <code>Object.class</code>. Subclasses should
-     * implement as appropriate.
+     * This implementation returns <code>Object.class</code>. 
+     * Subclasses should implement as appropriate.
      * 
+     * @param column not used here
      * @return the common class of all data given column in model coordinates.
      * 
      * @see #getColumnClass()
@@ -363,7 +367,7 @@ public abstract class ComponentAdapter {
      * specified row and column in model coordinates.<p>
      *
      * This implementation messages the StringValue.TO_STRING with the valueAt,
-     * subclasses should re-implement and use the api appropriate for the target component type.<p>
+     * subclasses should re-implement and use the api appropriate for the target component type.
      * 
      * @param row in model coordinates
      * @param column in model coordinates
@@ -395,7 +399,7 @@ public abstract class ComponentAdapter {
     
     /**
      * Returns the value of the cell identified by the current 
-     * adapter row and the given column index in model coordinates.<p>
+     * adapter row and the given column index in model coordinates.
      * 
      * @param modelColumnIndex the column index in model coordinates 
      * @return the value of the cell identified by this adapter
@@ -430,7 +434,7 @@ public abstract class ComponentAdapter {
     //----------------------- accessing the target's view state
 
     /**
-     * Returns the bounds of the cell identified by this adapter.<p>
+     * Returns the bounds of the cell identified by this adapter.
      * 
      * @return the bounds of the cell identified by this adapter
      */

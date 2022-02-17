@@ -17,18 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-/**Contains API required by the extended JTable component, JXTable.
-<h2>Package Specification</h2>
-
-<ul>
-  <li><a href="">hyperlink</a>
-</ul>
-
-<h2>Related Documentation</h2>
-
-<ul>
-  <li><a href="">hyperlink</a>
-</ul>
-
-*/
+/**
+ * Contains API required by the extended JTable component, JXTable.
+ */
 package org.jdesktop.swingx.table;

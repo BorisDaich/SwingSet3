@@ -22,6 +22,7 @@ import org.jdesktop.swingx.prompt.BuddySupport;
  * @author Peter Weishapl petw@gmx.net
  */
 public abstract class TextUIWrapper<UI extends TextUI> {
+	
     private static final DefaultWrapper defaultWrapper = new DefaultWrapper();
 
     public static final TextUIWrapper<? extends PromptTextUI> getDefaultWrapper() {
@@ -36,8 +37,8 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 
     /**
      * <p>
-     * Wraps and replaces the current UI of the given <code>textComponent</code>, by calling
-     * {@link #wrapUI(JTextComponent)} if necessary.
+     * Wraps and replaces the current UI of the given <code>textComponent</code>, 
+     * by calling {@link #wrapUI(JTextComponent)} if necessary.
      * </p>
      * 
      * @param textComponent
@@ -53,8 +54,8 @@ public abstract class TextUIWrapper<UI extends TextUI> {
     }
 
     /**
-     * Wraps and replaces the text components current UI by calling {@link #wrapUI(TextUI)}, if the
-     * text components current UI is not an instance of the given wrapper class.
+     * Wraps and replaces the text components current UI by calling {@link #wrapUI(JTextComponent)}, 
+     * if the text components current UI is not an instance of the given wrapper class.
      * 
      * @param textComponent
      * @return <code>true</code> if the UI has been replaced
@@ -72,7 +73,7 @@ public abstract class TextUIWrapper<UI extends TextUI> {
     /**
      * Override to return the appropriate UI wrapper object for the given {@link TextUI}.
      * 
-     * @param textUI
+     * @param textComponent
      * @return the wrapping UI
      */
     public abstract UI wrapUI(JTextComponent textComponent);
@@ -112,6 +113,7 @@ public abstract class TextUIWrapper<UI extends TextUI> {
     }
 
     public static final class DefaultWrapper extends TextUIWrapper<PromptTextUI> {
+    	
         private DefaultWrapper() {
             super(PromptTextUI.class);
         }

@@ -269,7 +269,7 @@ public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsibleP
   }
   
   /**
-   * Sets the L&F object that renders this component.
+   * Sets the LaF object that renders this component.
    * 
    * @param ui the <code>TaskPaneUI</code> LaF object
    * @see javax.swing.UIDefaults#getUI
@@ -436,7 +436,7 @@ public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsibleP
   /**
    * Enables or disables animation during expand/collapse transition.
    * 
-   * @param animated
+   * @param animated enables the animation 
    */
   /* @javabean.property
    *          bound="true"
@@ -551,7 +551,7 @@ public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsibleP
    * component built from the action. The returned component has been
    * added to the <code>JXTaskPane</code>.
    * 
-   * @param action
+   * @param action ui action
    * @return a component built from the action
    */
   public Component add(Action action) {

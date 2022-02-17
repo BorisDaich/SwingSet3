@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -219,7 +217,7 @@ public abstract class AbstractSearchable implements Searchable {
      * <p>
      * 
      * This implementation returns true if pattern is null or startIndex 
-     * exceeds the upper size limit.<p>
+     * exceeds the upper size limit.
      * 
      * @param pattern <code>Pattern</code> that we will try to locate
      * @param startIndex position in the document in the appropriate coordinates
@@ -232,8 +230,7 @@ public abstract class AbstractSearchable implements Searchable {
 
     /**
      * Called if <code>startIndex</code> is different from last search
-     * and make sure a backwards/forwards search starts at last/first row,
-     * respectively.<p>
+     * and make sure a backwards/forwards search starts at last/first row, respectively.
      * 
      * @param startIndex position in the document in the appropriate coordinates
      * from which we will start search or -1 to start from the beginning
@@ -316,7 +313,7 @@ public abstract class AbstractSearchable implements Searchable {
 
     /**
      * Matches the cell at row/lastFoundColumn against the pattern.
-     * Called if sameRowIndex && !hasEqualRegEx.
+     * Called if sameRowIndex &amp;&amp; !hasEqualRegEx.
      * PRE: lastFoundColumn valid.
      * 
      * @param pattern <code>Pattern</code> that we will try to match
@@ -339,7 +336,7 @@ public abstract class AbstractSearchable implements Searchable {
     }
 
    /** 
-    * Checks if index is in range: 0 <= index < getSize().
+    * Checks if index is in range: 0 &lt;= index &lt; getSize().
     * 
     * @param index possible start position that we will check for validity
     * @return <code>true</code> if given parameter is valid index

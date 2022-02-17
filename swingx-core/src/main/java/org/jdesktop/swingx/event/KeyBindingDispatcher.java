@@ -203,7 +203,7 @@ public class KeyBindingDispatcher implements KeyEventDispatcher {
      * method in InputMap.
      * 
      * @param keyStroke the keyStroke to bind
-     * @param key the key used for binding.
+     * @param actionMapKey the key used for binding.
      * 
      * @see javax.swing.InputMap#put(KeyStroke, Object)
      */

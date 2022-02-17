@@ -25,7 +25,7 @@ public class BasicMarginBorder extends BasicBorders.MarginBorder {
 	MetalButtonBorder outsideBorder = null;
 	/**
 	 * set MetalButtonBorder outsideBorder
-	 * @param border
+	 * @param border Border interface, if instanceof MetalButtonBorder then sets outsideBorder 
 	 */
     public void setOutsideBorder(Border border) {
     	if(border instanceof MetalButtonBorder) outsideBorder = (MetalButtonBorder)border;

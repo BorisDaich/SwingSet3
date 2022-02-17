@@ -57,14 +57,15 @@ public class BasicLoginPaneUI extends LoginPaneUI {
     /**
      * factory to create BasicLoginDialogUI 
      * @param c JXLoginPane
-     * @return
+     * @return instance of BasicLoginPaneUI
      */
 	public static ComponentUI createUI(JComponent c) {
 		return new BasicLoginPaneUI((JXLoginPane) c);
 	}
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * implements javax.swing.plaf.ComponentUI method
      */
     @Override
     public void installUI(JComponent c) {

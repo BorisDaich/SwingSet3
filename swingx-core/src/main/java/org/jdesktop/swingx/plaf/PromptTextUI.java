@@ -18,7 +18,6 @@ import javax.accessibility.Accessible;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
@@ -146,10 +145,9 @@ public abstract class PromptTextUI extends TextUI {
     protected JTextComponent promptComponent;
 
     /**
-     * Creates a new {@link PromptTextUI} which delegates most work to another
-     * {@link TextUI}.
+     * Creates a new {@link PromptTextUI} which delegates most work to another {@link TextUI}.
      * 
-     * @param delegate
+     * @param delegate TextUI
      */
     public PromptTextUI(TextUI delegate) {
         this.delegate = delegate;
@@ -158,7 +156,7 @@ public abstract class PromptTextUI extends TextUI {
     /**
      * Creates a component which should be used to render the prompt text.
      * 
-     * @return
+     * @return JTextComponent
      */
     protected abstract JTextComponent createPromptComponent();
 
@@ -193,7 +191,7 @@ public abstract class PromptTextUI extends TextUI {
      * prompt components properties to reflect the given {@link JTextComponent}s
      * properties and returns it.
      * 
-     * @param txt
+     * @param txt JTextComponent
      * @return the adjusted prompt component
      */
     public JTextComponent getPromptComponent(JTextComponent txt) {
@@ -298,7 +296,7 @@ public abstract class PromptTextUI extends TextUI {
      * Returns if the prompt or the text field should be painted, depending on
      * the state of <code>txt</code>.
      * 
-     * @param txt
+     * @param txt JTextComponent
      * @return true when <code>txt</code> contains not text, otherwise false
      */
     public boolean shouldPaintPrompt(JTextComponent txt) {

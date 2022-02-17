@@ -136,7 +136,6 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
     /**
      * Returns <code>true</code> if <code>node</code> is a leaf.
      *
-     * @impl {@code true} if {@code getChildCount(node) == 0}
      * @param   node  a node in the tree, obtained from this data source
      * @return  true if <code>node</code> is a leaf
      */
@@ -146,10 +145,10 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
     }
 
     /**
-     * Sets the value for the {@code node} at {@code columnIndex} to
-     * {@code value}.
+     * Sets the value for the {@code node} at {@code columnIndex} to {@code value}.
+     * <p>
+     * is no-op; provided for convenience for uneditable models
      * 
-     * @impl is no-op; provided for convenience for uneditable models
      * @param value
      *            the new value
      * @param node
@@ -171,7 +170,8 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
      * {@code treeNodesChanged} event.
      * <p>
      * 
-     * @impl is no-op. A {@code JXTreeTable} does not usually edit the node directly.
+     * impl is no-op. A {@code JXTreeTable} does not usually edit the node directly.
+     * 
      * @param path
      *            path to the node that has changed
      * @param newValue

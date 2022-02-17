@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,26 +33,24 @@ import org.jdesktop.swingx.JXBusyLabel;
  */
 public class BusyLabelAddon extends AbstractComponentAddon {
 
-  public BusyLabelAddon() {
-    super("JXBusyLabel");
-  }
+	/** TODO doc */
+	public BusyLabelAddon() {
+		super("JXBusyLabel");
+	}
 
   @Override
   protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
     defaults.add(JXBusyLabel.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicBusyLabelUI");
     defaults.add("JXBusyLabel.delay", 100);
     defaults.add("JXBusyLabel.baseColor", new ColorUIResource(Color.LIGHT_GRAY));
-    defaults.add("JXBusyLabel.highlightColor", new ColorUIResource(UIManagerExt.getSafeColor("Label.foreground", Color.BLACK)));
+    defaults.add("JXBusyLabel.highlightColor", 
+    		new ColorUIResource(UIManagerExt.getSafeColor("Label.foreground", Color.BLACK)));
     float barLength = 8;
     float barWidth = 4;
     float height = 26;
     defaults.add("JXBusyLabel.pointShape", new ShapeUIResource(
-            new RoundRectangle2D.Float(0, 0, barLength, barWidth,
-                barWidth, barWidth)));
+            new RoundRectangle2D.Float(0, 0, barLength, barWidth, barWidth, barWidth)));
     defaults.add("JXBusyLabel.trajectoryShape", new ShapeUIResource(
-            new Ellipse2D.Float(barLength / 2, barLength / 2, height
-                    - barLength, height - barLength)));
-    
-
+            new Ellipse2D.Float(barLength / 2, barLength / 2, height - barLength, height - barLength)));
   }
 }

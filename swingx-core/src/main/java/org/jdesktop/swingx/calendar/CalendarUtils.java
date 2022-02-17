@@ -32,27 +32,29 @@ import java.util.Date;
 public class CalendarUtils {
 
     // Constants used internally; unit is milliseconds
-    @SuppressWarnings("unused")
+	/** TODO doc */
     public static final int ONE_MINUTE = 60*1000;
-    @SuppressWarnings("unused")
+	/** TODO doc */
     public static final int ONE_HOUR   = 60*ONE_MINUTE;
-    @SuppressWarnings("unused")
+	/** TODO doc */
     public static final int THREE_HOURS = 3 * ONE_HOUR;
-    @SuppressWarnings("unused")
+	/** TODO doc */
     public static final int ONE_DAY    = 24*ONE_HOUR;
     
+	/** TODO doc */
     public static final int DECADE = 5467;
+	/** TODO doc */
     public static final int YEAR_IN_DECADE = DECADE + 1;
     
     /**
      * Increments the calendar field of the given calendar by amount. 
      * 
-     * @param calendar
+     * @param calendar Calendar
      * @param field the field to increment, allowed are all fields known to
      *   Calendar plus DECADE.
-     * @param amount
+     * @param amount to increment
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException for unsupported field
      */
     public static void add(Calendar calendar, int field, int amount) {
         if (isNativeField(field)) {
@@ -72,11 +74,11 @@ public class CalendarUtils {
     /**
      * Gets the calendar field of the given calendar by amount. 
      * 
-     * @param calendar
-     * @param field the field to get, allowed are all fields known to
-     *   Calendar plus DECADE.
+     * @param calendar Calendar
+     * @param field the field to get, allowed are all fields known to Calendar plus DECADE.
+     * @return calendar field
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException for unsupported field
      */
     public static int get(Calendar calendar, int field) {
         if (isNativeField(field)) {
@@ -101,7 +103,7 @@ public class CalendarUtils {
      * - for year-in-decade:  value is added/substracted to/from the start-of-decade of the
      *   date of the given calendar
      * 
-     * @param calendar
+     * @param calendar Calendar
      * @param field the field to increment, allowed are all fields known to
      *   Calendar plus DECADE.
      * @param value the decade to set, must be a 
@@ -146,8 +148,7 @@ public class CalendarUtils {
     /**
      * Adjusts the Calendar to the end of the day of the last day in DST in the
      * current year or unchanged if  not using DST. Returns the calendar's date or null, if not 
-     * using DST.<p>
-     * 
+     * using DST.
      * 
      * @param calendar the calendar to adjust
      * @return the end of day of the last day in DST, or null if not using DST.
@@ -516,7 +517,7 @@ public class CalendarUtils {
      * Adjusts the given calendar to the start of the period as indicated by the
      * given field. This delegates to startOfDay, -Week, -Month, -Year as appropriate.
      * 
-     * @param calendar
+     * @param calendar Calendar
      * @param field the period to adjust, allowed are Calendar.DAY_OF_MONTH, -.MONTH, 
      * -.WEEK and YEAR and CalendarUtils.DECADE.
      */
@@ -544,14 +545,15 @@ public class CalendarUtils {
     }
     
     /**
-     * Returns a boolean indicating if the calendar is set to the start of a 
-     * period  as defined by the
-     * given field. This delegates to startOfDay, -Week, -Month, -Year as appropriate.
+     * Returns a boolean indicating if the calendar is set to the start of a period 
+     * as defined by the given field. 
+     * This delegates to startOfDay, -Week, -Month, -Year as appropriate.
      * The calendar is unchanged.
      * 
-     * @param calendar
+     * @param calendar Calendar
      * @param field the period to adjust, allowed are Calendar.DAY_OF_MONTH, -.MONTH, 
      * -.WEEK and YEAR and CalendarUtils.DECADE.
+     * @return calendar is set to the start of a period
      * @throws IllegalArgumentException if the field is not supported.
      */
     public static boolean isStartOf(Calendar calendar, int field) {
@@ -595,8 +597,7 @@ public class CalendarUtils {
      *
      * @param today the Calendar representing a date, must not be null.
      * @param now the date to compare to, must not be null
-     * @return true if the calendar and date represent the same day in the
-     *   given calendar.
+     * @return true if the calendar and date represent the same day in the given calendar.
      */
     public static boolean isSameDay(Calendar today, Date now) {
         Calendar temp = (Calendar) today.clone();
@@ -613,9 +614,10 @@ public class CalendarUtils {
      * Calendar and date are unchanged by the check.
      *
      * @param today the Calendar representing a date, must not be null.
-     * @param now the date to compare to, must not be null
-     * @return true if the calendar and date represent the same day in the
-     *   given calendar.
+     * @param now the date to compare to, must not be null.
+     * @param field  the period to adjust, allowed are Calendar.DAY_OF_MONTH, 
+     * 		-.MONTH,-.WEEK and YEAR and CalendarUtils.DECADE.
+     * @return true if the calendar and date represent the same day in the given calendar.
      */
     public static boolean isSame(Calendar today, Date now, int field) {
         Calendar temp = (Calendar) today.clone();
@@ -634,8 +636,8 @@ public class CalendarUtils {
      * <p>
      * Note: this is for testing only and not entirely safe!
      * 
-     * @param calendar
-     * @return
+     * @param calendar Calendar
+     * @return calendar is flushed
      */
     public static boolean isFlushed(Calendar calendar) {
         return !calendar.toString().contains("time=?");

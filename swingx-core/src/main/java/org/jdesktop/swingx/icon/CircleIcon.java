@@ -17,35 +17,60 @@ import javax.swing.plaf.UIResource;
 // SizingConstants extends SwingConstants
 public class CircleIcon implements Icon, UIResource, SizingConstants {
 	
-	public static final Color OOUT_OF_ORDER = null;
+	/** without color: traffic lights are out of order */
+	public static final Color OUT_OF_ORDER = null;
 	// to implement traffic lights:
+	/** red light */
 	public static final Color RED = Color.RED;
+	/** yellow light */
 	public static final Color YELLOW = Color.YELLOW;
+	/** green light */
 	public static final Color GREEN = Color.GREEN;
 	
     private int width = SizingConstants.ACTION_ICON;
     private int height = SizingConstants.ACTION_ICON;
     private Color color;
 
+    /**
+     * the default is sized like ACTION_ICON and with no color
+     */
     public CircleIcon() {
-    	this(SizingConstants.ACTION_ICON, OOUT_OF_ORDER);
+    	this(SizingConstants.ACTION_ICON, OUT_OF_ORDER);
     }
 
+    /**
+     * ctor
+     * @param size icon width and length
+     * @param color circle is filled with
+     */
     public CircleIcon(int size, Color color) {
     	width = size;
     	height = size;
     	this.color = color;
     }
 
+    /**
+     * convienient ctor
+     * @param size icon width and length
+     */
     public CircleIcon(int size) {
     	this(size, null);
     }
 
+    /**
+     * convienient ctor
+     * @param width of the icon
+     * @param height of the icon
+     */
     protected CircleIcon(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * convienient ctor with Dimension
+     * @param size Dimension
+     */
     protected CircleIcon(Dimension size) {
     	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
     }

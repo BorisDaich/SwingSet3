@@ -247,11 +247,9 @@ public class JXDatePicker extends JComponent {
     }
     
     /**
-     * Intantiates a date picker with no selection and the default 
-     * <code>DatePickerFormatter</code>.
-     * <p/>
-     * The date picker is configured with the default time zone and specified 
-     * locale
+     * Intantiates a date picker with no selection and the default <code>DatePickerFormatter</code>.
+     * <p>
+     * The date picker is configured with the default time zone and specified locale
      *
      * @param locale    initial Locale
      * @see #setTimeZone
@@ -263,9 +261,8 @@ public class JXDatePicker extends JComponent {
 
     /**
      * Intantiates a date picker using the specified time as the initial
-     * selection and the default 
-     * <code>DatePickerFormatter</code>.
-     * <p/>
+     * selection and the default <code>DatePickerFormatter</code>.
+     * <p>
      * The date picker is configured with the default time zone and specified locale
      *
      * @param selection initially selected Date
@@ -400,7 +397,7 @@ public class JXDatePicker extends JComponent {
     }
 
     /**
-     * Returns the look and feel (L&F) object that renders this component.
+     * Returns the look and feel (LuF) object that renders this component.
      *
      * @return the DatePickerUI object that renders this component
      */
@@ -409,7 +406,7 @@ public class JXDatePicker extends JComponent {
     }
 
     /**
-     * Sets the L&F object that renders this component.
+     * Sets the LuF object that renders this component.
      *
      * @param ui UI to use for this {@code JXDatePicker}
      */
@@ -432,7 +429,8 @@ public class JXDatePicker extends JComponent {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc} <p>
+     * overrides method javax.swing.getUIClassID()
      */
     @Override
     public String getUIClassID() {
@@ -457,8 +455,7 @@ public class JXDatePicker extends JComponent {
         DateFormat[] dateFormats = null;
         if (formats !=  null) {
             Contract.asNotNull(formats,
-                    "the array of format strings must not "
-                            + "must not contain null elements");
+            	"the array of format strings must not contain null elements");
             dateFormats = new DateFormat[formats.length];
             for (int counter = formats.length - 1; counter >= 0; counter--) {
                 dateFormats[counter] = new SimpleDateFormat(formats[counter], getLocale());
@@ -468,11 +465,9 @@ public class JXDatePicker extends JComponent {
     }
 
     /**
-     * Replaces the currently installed formatter and factory used by the
-     * editor.<p>
-     *
-     * Note: The given formats are internally synched to the picker's current
-     *    TimeZone. 
+     * Replaces the currently installed formatter and factory used by the editor.
+     * <p>
+     * Note: The given formats are internally synched to the picker's current TimeZone. 
      * 
      * @param formats zero or more not null formats to use. Note that a 
      *    null array is allowed and resets the formatter to use the 
@@ -481,7 +476,7 @@ public class JXDatePicker extends JComponent {
      */
     public void setFormats(DateFormat... formats) {
         if (formats != null) {
-            Contract.asNotNull(formats, "the array of formats " + "must not contain null elements");
+            Contract.asNotNull(formats, "the array of formats must not contain null elements");
         }
         
         DateFormat[] old = getFormats();
@@ -492,7 +487,7 @@ public class JXDatePicker extends JComponent {
 
     /**
      * Returns an array of the formats used by the installed formatter
-     * if it is a subclass of <code>JXDatePickerFormatter<code>.
+     * if it is a subclass of <code>JXDatePickerFormatter</code>.
      * <code>javax.swing.JFormattedTextField.AbstractFormatter</code>
      * and <code>javax.swing.text.DefaultFormatter</code> do not have
      * support for accessing the formats used.
@@ -756,7 +751,7 @@ public class JXDatePicker extends JComponent {
      * 
      * The default value is true.
      * 
-     * @param value
+     * @param value of the prop
      * @see #isEditable()
      */
     public void setEditable(boolean value) {
@@ -810,14 +805,15 @@ public class JXDatePicker extends JComponent {
      * property is <code>true</code>, unless otherwise specified
      * by the look and feel.  Some look and feels always use
      * heavyweight popups, no matter what the value of this property.
-     * <p/>
+     * <p>
      * See the article <a href="http://java.sun.com/products/jfc/tsc/articles/mixing/index.html">Mixing Heavy and Light Components</a>
      * on <a href="http://java.sun.com/products/jfc/tsc">
      * <em>The Swing Connection</em></a>
      * This method fires a property changed event.
      *
      * @param aFlag if <code>true</code>, lightweight popups are desired
-     * @beaninfo bound: true
+     */
+    /* @beaninfo bound: true
      * expert: true
      * description: Set to <code>false</code> to require heavyweight popups.
      */
@@ -856,9 +852,8 @@ public class JXDatePicker extends JComponent {
 
     /**
      * Adds an ActionListener.
-     * <p/>
-     * The ActionListener will receive an ActionEvent when a selection has
-     * been made.
+     * <p>
+     * The ActionListener will receive an ActionEvent when a selection has been made.
      *
      * @param l The ActionListener that is to be notified
      */
@@ -892,8 +887,8 @@ public class JXDatePicker extends JComponent {
 
 
     /**
-     * Fires an ActionEvent with the given actionCommand
-     * to all listeners.
+     * Fires an ActionEvent with the given actionCommand to all listeners.
+     * @param actionCommand as String
      */
     protected void fireActionPerformed(String actionCommand) {
         ActionListener[] listeners = getListeners(ActionListener.class);
