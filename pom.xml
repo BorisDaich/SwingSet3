@@ -242,4 +242,9 @@ Aber : 92806DD3 - wurde auf keys.openpgp.org registriert, keyId (16 stellig): 46
     </dependencies>
   </dependencyManagement>
   
+  <scm>
+  	<url>https://github.com/homebeaver/SwingSet3</url>
+  	<connection>scm:git:https://github.com/homebeaver/SwingSet3.git</connection>
+  	<developerConnection>scm:git:https://github.com/homebeaver/</developerConnection>
+  </scm>
 </project>
