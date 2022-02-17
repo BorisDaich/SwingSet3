@@ -9,32 +9,19 @@
 
 package org.jdesktop.beans.editors;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Insets;
 import java.awt.LinearGradientPaint;
-import java.awt.RadialGradientPaint;
 import java.awt.MultipleGradientPaint.ColorSpaceType;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.QuadCurve2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
 import java.beans.PropertyEditorSupport;
 import java.beans.Statement;
-import java.beans.XMLEncoder;
-import java.io.ByteArrayOutputStream;
 
 import org.jdesktop.swingx.painter.Painter;
 
@@ -63,13 +50,18 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
             "new org.jdesktop.swingx.painter.CheckerboardPainter()";
     }
     
+	/** TODO doc */
     public static final class GradientPaintDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public GradientPaintDelegate() {
             super(new String[] {"point1", "color1", "point2", "color2"});
         }
     }
+    
+	/** TODO doc */
     public static final class LinearGradientPaintDelegate extends DefaultPersistenceDelegate {
-        public LinearGradientPaintDelegate() {
+    	/** ctor */
+       public LinearGradientPaintDelegate() {
             super(new String[] {"startPoint", "endPoint", "fractions", "colors"});
             //these 3 not yet supported. The problem is the
             //colorspace. I haven't figured out how to transfer that one yet
@@ -86,7 +78,10 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
             return retValue;
         }
     }
+    
+	/** TODO doc */
     public static final class RadialGradientPaintDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public RadialGradientPaintDelegate() {
             super(new String[] {"centerPoint", "radius", "focusPoint", "fractions", "colors"});
             //these 3 not yet supported. The problem is the
@@ -94,27 +89,42 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
             //, "cycleMethod", "colorSpace", "transform"});
         }
     }
+
+    /** TODO doc */
     public static final class Arc2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public Arc2DDelegate() {
             super(new String[] {"x", "y", "width", "height", "angleStart", "angleExtent", "arcType"});
         }
     }
+
+    /** TODO doc */
     public static final class CubicCurve2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public CubicCurve2DDelegate() {
             super(new String[] {"x1", "y1", "ctrlX1", "ctrlY1", "ctrlX2", "ctrlY2", "x2", "y2"});
         }
     }
+
+    /** TODO doc */
     public static final class Ellipse2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public Ellipse2DDelegate() {
             super(new String[] {"x", "y", "width", "height"});
         }
     }
+
+    /** TODO doc */
     public static final class Line2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public Line2DDelegate() {
             super(new String[] {"x1", "y1", "x2", "y2"});
         }
     }
+
+    /** TODO doc */
     public static final class Point2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public Point2DDelegate() {
             super(new String[] {"x", "y"});
         }/*
@@ -133,17 +143,26 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
         }*/
         
     }
+
+    /** TODO doc */
     public static final class QuadCurve2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public QuadCurve2DDelegate() {
             super(new String[] {"x1", "y1", "ctrlX", "ctrlY", "x2", "y2"});
         }
     }
+
+    /** TODO doc */
     public static final class Rectangle2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public Rectangle2DDelegate() {
             super(new String[] {"x", "y", "width", "height"});
         }
     }
+
+    /** TODO doc */
     public static final class InsetsDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public InsetsDelegate() {
             super(new String[] {"top", "left", "bottom", "right"});
         }
@@ -157,11 +176,16 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
                     new Object[]{ ins.top, ins.left, ins.bottom, ins.right });
         }
     }
+
+    /** TODO doc */
     public static final class RoundRectangle2DDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public RoundRectangle2DDelegate() {
             super(new String[] {"x", "y", "width", "height", "arcWidth", "arcHeight"});
         }
     }
+
+    /** TODO doc */
     public static final class AreaDelegate extends PersistenceDelegate {
         @Override
         protected Expression instantiate(Object oldInstance, Encoder out) {
@@ -201,11 +225,16 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
             return new Expression(a, Area.class, "new", new Object[] {path});
         }
     }
+
+    /** TODO doc */
     public static final class AffineTransformDelegate extends DefaultPersistenceDelegate {
+    	/** ctor */
         public AffineTransformDelegate() {
             super(new String[] {"scaleX", "shearY", "shearX", "scaleY", "translateX", "translateY"});
         }
     }
+
+    /** TODO doc */
     public static final class GeneralPathDelegate extends PersistenceDelegate {
         @Override
         protected Expression instantiate(Object oldInstance, Encoder out) {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,6 +30,7 @@ import org.jdesktop.beans.editors.EnumPropertyEditor;
  */
 public class JXHeaderBeanInfo extends BeanInfoSupport {
     
+	/** ctor */
     public JXHeaderBeanInfo() {
         super(JXHeader.class);
     }
@@ -47,8 +46,10 @@ public class JXHeaderBeanInfo extends BeanInfoSupport {
         setPropertyEditor(IconPositionPropertyEditor.class, "iconPosition");
     }
 
+	/** TODO doc */
     public static final class IconPositionPropertyEditor extends EnumPropertyEditor<JXHeader.IconPosition> {
-        public IconPositionPropertyEditor() {
+    	/** ctor */
+       public IconPositionPropertyEditor() {
             super(JXHeader.IconPosition.class);
         }
     }

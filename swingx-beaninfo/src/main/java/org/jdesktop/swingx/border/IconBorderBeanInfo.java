@@ -12,6 +12,7 @@ import org.jdesktop.beans.EnumerationValue;
  */
 public class IconBorderBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public IconBorderBeanInfo() {
         super(IconBorder.class);        
     }

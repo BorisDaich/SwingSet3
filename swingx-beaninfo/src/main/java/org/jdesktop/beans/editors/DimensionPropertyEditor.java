@@ -18,6 +18,7 @@ import java.beans.PropertyEditorSupport;
  */
 public class DimensionPropertyEditor extends PropertyEditorSupport {
     
+	/** ctor */
     public DimensionPropertyEditor() {
     }
     
@@ -54,4 +55,3 @@ public class DimensionPropertyEditor extends PropertyEditorSupport {
     }
     
 }
-

@@ -23,7 +23,11 @@ public class ImagePainterBeanInfo extends BeanInfoSupport {
         setPreferred(true, "image", "scaleType", "scaleToFit");
     }
 
+    /**
+     * TODO doc
+     */
     public static final class ScaleTypePropertyEditor extends EnumPropertyEditor<ImagePainter.ScaleType> {
+    	/** ctor */
         public ScaleTypePropertyEditor() {
             super(ImagePainter.ScaleType.class);
         }

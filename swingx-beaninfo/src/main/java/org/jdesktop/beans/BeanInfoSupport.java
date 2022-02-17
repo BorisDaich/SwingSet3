@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -37,7 +35,6 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-
 /**
  * Useful baseclass for BeanInfos. With this class, normal introspection occurs
  * and then you are given the opportunity to reconfigure portions of the
@@ -45,8 +42,8 @@ import javax.swing.ImageIcon;
  *
  * @author rbair, Jan Stola
  */
-@SuppressWarnings("nls")
 public abstract class BeanInfoSupport extends SimpleBeanInfo {
+	
     private static Logger LOG = Logger.getLogger(BeanInfoSupport.class.getName());
     
     /**
@@ -337,6 +334,11 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
         }
     }
     
+    /**
+     * TODO doc
+     * @param bound boolean
+     * @param propertyNames Strings
+     */
     protected void setBound(boolean bound, String... propertyNames) {
         for (String propertyName : propertyNames) {
             PropertyDescriptor pd = properties.get(propertyName);
@@ -349,6 +351,11 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
         }
     }
     
+    /**
+     * TODO doc
+     * @param constrained boolean
+     * @param propertyNames Strings
+     */
     protected void setConstrained(boolean constrained, String... propertyNames) {
         for (String propertyName : propertyNames) {
             PropertyDescriptor pd = properties.get(propertyName);
@@ -361,6 +368,11 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
         }
     }
     
+    /**
+     * TODO doc
+     * @param categoryName String
+     * @param propertyNames Strings
+     */
     protected void setCategory(String categoryName, String... propertyNames) {
         for (String propertyName : propertyNames) {
             PropertyDescriptor pd = properties.get(propertyName);
@@ -373,6 +385,11 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
         }
     }
     
+    /**
+     * TODO doc
+     * @param editorClass Class
+     * @param propertyNames Strings
+     */
     protected void setPropertyEditor(Class<?> editorClass, String... propertyNames) {
         for (String propertyName : propertyNames) {
             PropertyDescriptor pd = properties.get(propertyName);
@@ -385,6 +402,11 @@ public abstract class BeanInfoSupport extends SimpleBeanInfo {
         }
     }
     
+    /**
+     * TODO doc
+     * @param values array of EnumerationValues
+     * @param propertyNames Strings
+     */
     protected void setEnumerationValues(EnumerationValue[] values, String... propertyNames) {
         if (values == null) {
             return;

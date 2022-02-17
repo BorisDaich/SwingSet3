@@ -10,6 +10,7 @@ import org.jdesktop.beans.editors.PainterPropertyEditor;
  */
 public class JXLabelBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public JXLabelBeanInfo() {
         super(JXLabel.class);        
     }

@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jdesktop.beans.editors;
 
 import java.beans.PropertyEditorSupport;
@@ -19,10 +18,14 @@ import java.util.List;
  * @author joshy
  */
 public class EnumPropertyEditor<E extends Enum<E>> extends PropertyEditorSupport {
+	
     private Class<E> en;
     private EnumSet<E> set;
     
-    /** Creates a new instance of EnumPropertyEditor */
+    /**
+     * Creates a new instance of EnumPropertyEditor
+     * @param en Enum class
+     */
     public EnumPropertyEditor(Class<E> en) {
         this.en = en;
         set = EnumSet.allOf(en);

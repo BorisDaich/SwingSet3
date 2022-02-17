@@ -20,11 +20,16 @@ import org.jdesktop.beans.EnumerationValue;
  * @author Richard
  */
 public abstract class EnumerationValuePropertyEditor extends PropertyEditorSupport {
+	
     private String[] tags;
     private Map<Object,EnumerationValue> values = new HashMap<Object,EnumerationValue>();
     private EnumerationValue defaultValue;
     
-    /** Creates a new instance of EnumerationValuePropertyEditor */
+    /**
+     * Creates a new instance of EnumerationValuePropertyEditor
+     * @param defaultEnum EnumerationValue
+     * @param enums EnumerationValues
+     */
     public EnumerationValuePropertyEditor(EnumerationValue defaultEnum, EnumerationValue... enums) {
         this.defaultValue = defaultEnum;
         for (EnumerationValue v : enums) {

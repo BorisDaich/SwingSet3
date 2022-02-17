@@ -22,7 +22,11 @@ public class GlossPainterBeanInfo extends BeanInfoSupport {
         setPropertyEditor(GlossPositionPropertyEditor.class, "position");
     }
 
+    /**
+     * TODO doc
+     */
     public static final class GlossPositionPropertyEditor extends EnumPropertyEditor<GlossPainter.GlossPosition> {
+    	/** ctor */
         public GlossPositionPropertyEditor() {
             super(GlossPainter.GlossPosition.class);
         }

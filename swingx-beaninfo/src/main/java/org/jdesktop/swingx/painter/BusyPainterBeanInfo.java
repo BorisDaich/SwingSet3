@@ -6,6 +6,7 @@ import org.jdesktop.beans.editors.ShapePropertyEditor;
 import org.jdesktop.swingx.painter.GlossPainterBeanInfo.GlossPositionPropertyEditor;
 
 public class BusyPainterBeanInfo extends BeanInfoSupport {
+	/** ctor */
     public BusyPainterBeanInfo() {
         super(BusyPainter.class);
     }
@@ -17,7 +18,11 @@ public class BusyPainterBeanInfo extends BeanInfoSupport {
         setPropertyEditor(ShapePropertyEditor.class, "trajectory");
     }
 
+    /**
+     * TODO doc
+     */
     public static final class DirectionPropertyEditor extends EnumPropertyEditor<BusyPainter.Direction> {
+    	/** ctor */
         public DirectionPropertyEditor() {
             super(BusyPainter.Direction.class);
         }

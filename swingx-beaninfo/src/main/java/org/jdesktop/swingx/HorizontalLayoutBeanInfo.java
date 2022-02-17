@@ -9,6 +9,7 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class HorizontalLayoutBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public HorizontalLayoutBeanInfo() {
         super(HorizontalLayout.class);        
     }

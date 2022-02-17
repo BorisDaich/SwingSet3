@@ -9,6 +9,7 @@ import org.jdesktop.beans.EnumerationValue;
 import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
 
 public abstract class JXPromptBeanInfo extends BeanInfoSupport {
+	/** ctor */
 	protected JXPromptBeanInfo(Class<? extends JTextComponent> beanClass) {
 		super(beanClass);
 	}

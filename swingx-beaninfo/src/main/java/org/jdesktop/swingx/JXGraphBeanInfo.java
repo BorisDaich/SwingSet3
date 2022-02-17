@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -27,9 +25,10 @@ import org.jdesktop.beans.editors.Rectangle2DPropertyEditor;
 /**
  * Bean info for {@link org.jdesktop.swingx.JXGraph} component.
  *
- * @author Romain Guy <romain.guy@mac.com>
+ * @author Romain Guy romain.guy@mac.com
  */
 public class JXGraphBeanInfo extends BeanInfoSupport {
+	/** ctor */
     public JXGraphBeanInfo() {
         super(JXGraph.class);
     }

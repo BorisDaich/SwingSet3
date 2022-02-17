@@ -11,6 +11,7 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class JXTitledPanelBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public JXTitledPanelBeanInfo() {
         super(JXTitledPanel.class);
     }

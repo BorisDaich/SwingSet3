@@ -49,6 +49,9 @@ public class ImagePicker extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     
     
+    /**
+     * TODO doc
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public org.jdesktop.swingx.JXImageView imageView;
     private javax.swing.JButton jButton1;

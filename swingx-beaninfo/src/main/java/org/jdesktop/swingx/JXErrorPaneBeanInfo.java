@@ -11,6 +11,7 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class JXErrorPaneBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public JXErrorPaneBeanInfo() {
         super(JXErrorPane.class);        
     }

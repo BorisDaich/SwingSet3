@@ -33,7 +33,9 @@ public class NeonBorderEffectBeanInfo extends AbstractPainterBeanInfo {
     }
     
     
+	/** TODO doc */
     public static final class BorderPositionPropertyEditor extends EnumPropertyEditor {
+    	/** ctor */
         public BorderPositionPropertyEditor() {
             super(NeonBorderEffect.BorderPosition.class);
         }

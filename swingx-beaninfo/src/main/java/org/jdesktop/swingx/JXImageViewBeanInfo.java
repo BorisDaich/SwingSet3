@@ -17,9 +17,11 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class JXImageViewBeanInfo extends BeanInfoSupport{
 
+	/** ctor */
     public JXImageViewBeanInfo() {
         super(JXImageView.class);
     }
+    
     @Override
     protected void initialize() {
         setPreferred(true, "icon");

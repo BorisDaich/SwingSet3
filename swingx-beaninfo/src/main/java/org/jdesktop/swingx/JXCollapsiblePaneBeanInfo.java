@@ -49,7 +49,9 @@ public class JXCollapsiblePaneBeanInfo extends BeanInfoSupport {
         setPropertyEditor(DirectionPropertyEditor.class, "direction");
     }
 
+	/** TODO doc */
     public static final class DirectionPropertyEditor extends EnumPropertyEditor<JXCollapsiblePane.Direction> {
+    	/** ctor */
     	public DirectionPropertyEditor() {
     		super(JXCollapsiblePane.Direction.class);
     	}

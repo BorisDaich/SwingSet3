@@ -11,10 +11,14 @@ import org.jdesktop.beans.editors.Paint2PropertyEditor;
  */
 public class AbstractAreaPainterBeanInfo extends BeanInfoSupport {    
 
+	/** ctor */
     public AbstractAreaPainterBeanInfo() {
         super(AbstractAreaPainter.class);
     }
-    
+    /**
+     * TODO doc
+     * @param clazz Class
+     */
     public AbstractAreaPainterBeanInfo(Class clazz) {
         super(clazz);
     }
@@ -25,7 +29,11 @@ public class AbstractAreaPainterBeanInfo extends BeanInfoSupport {
         setPropertyEditor(Paint2PropertyEditor.class, "fillPaint", "borderPaint");
     }
 
+    /**
+     * TODO doc
+     */
     public static final class StylePropertyEditor extends EnumPropertyEditor<AbstractAreaPainter.Style> {
+    	/** ctor */
         public StylePropertyEditor() {
             super(AbstractAreaPainter.Style.class);
         }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -28,9 +26,10 @@ import org.jdesktop.beans.editors.PainterPropertyEditor;
 /**
  * Bean info for {@link org.jdesktop.swingx.JXMultiSplitPane} component.
  *
- * @author Hans Muller <Hans.Muller@Sun.COM>
+ * @author Hans Muller Hans.Muller@Sun.COM
  */
 public class JXMultiSplitPaneBeanInfo extends BeanInfoSupport {
+	/** ctor */
     public JXMultiSplitPaneBeanInfo() {
         super(JXMultiSplitPane.class);
     }

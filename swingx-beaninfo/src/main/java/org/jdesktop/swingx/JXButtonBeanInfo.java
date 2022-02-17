@@ -10,6 +10,7 @@ import org.jdesktop.beans.editors.PainterPropertyEditor;
  */
 public class JXButtonBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public JXButtonBeanInfo() {
         super(JXButton.class);        
     }

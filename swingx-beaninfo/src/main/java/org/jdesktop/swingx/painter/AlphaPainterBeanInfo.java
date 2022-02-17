@@ -9,6 +9,7 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class AlphaPainterBeanInfo extends BeanInfoSupport {
     
+	/** ctor */
     public AlphaPainterBeanInfo() {
         super(AlphaPainter.class);
     }

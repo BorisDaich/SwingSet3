@@ -8,7 +8,8 @@ import org.jdesktop.beans.BeanInfoSupport;
  * @author Jan Stola
  */
 public class DropShadowBorderBeanInfo extends BeanInfoSupport {
-
+	
+	/** ctor */
     public DropShadowBorderBeanInfo() {
         super(DropShadowBorder.class);        
     }

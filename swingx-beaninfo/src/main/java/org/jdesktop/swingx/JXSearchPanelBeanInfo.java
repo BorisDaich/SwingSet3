@@ -11,6 +11,7 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class JXSearchPanelBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public JXSearchPanelBeanInfo() {
         super(JXSearchPanel.class);
     }

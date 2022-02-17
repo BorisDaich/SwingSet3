@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,6 +28,7 @@ import org.jdesktop.beans.editors.EnumPropertyEditor;
  */
 public class JXFrameBeanInfo extends BeanInfoSupport {
     
+	/** ctor */
     public JXFrameBeanInfo() {
         super(JXFrame.class);
     }
@@ -42,8 +41,10 @@ public class JXFrameBeanInfo extends BeanInfoSupport {
         setHidden(true, "statusBar", "toolBar");
     }
 
+	/** TODO doc */
     public static final class StartPositionPropertyEditor extends EnumPropertyEditor<JXFrame.StartPosition> {
-        public StartPositionPropertyEditor() {
+    	/** ctor */
+       public StartPositionPropertyEditor() {
             super(JXFrame.StartPosition.class);
         }
     }

@@ -9,6 +9,7 @@ import org.jdesktop.beans.BeanInfoSupport;
  */
 public class JXBusyLabelBeanInfo extends BeanInfoSupport {
 
+	/** ctor */
     public JXBusyLabelBeanInfo() {
         super(JXBusyLabel.class);        
     }

@@ -5,6 +5,7 @@ import org.jdesktop.swingx.JXSearchField.LayoutStyle;
 import org.jdesktop.swingx.JXSearchField.SearchMode;
 
 public class JXSearchFieldBeanInfo extends JXTextFieldBeanInfo {
+	/** ctor */
 	public JXSearchFieldBeanInfo() {
 		super(JXSearchField.class);
 	}

@@ -15,6 +15,10 @@ public class AbstractPainterBeanInfo extends BeanInfoSupport {
         super(AbstractPainter.class);
     }
     
+    /**
+     * ctor 
+     * @param clazz Class
+     */
     public AbstractPainterBeanInfo(Class clazz) {
         super(clazz);
     }
@@ -28,9 +32,14 @@ public class AbstractPainterBeanInfo extends BeanInfoSupport {
         setExpert(true, "antialiasing","cacheable","interpolation");
     }
     
+    /**
+     * TODO doc
+     */
     public static final class InterpolationPropertyEditor extends EnumPropertyEditor<AbstractPainter.Interpolation> {
+    	/** ctor */
         public InterpolationPropertyEditor() {
             super(AbstractPainter.Interpolation.class);
         }
     }
+    
 }
