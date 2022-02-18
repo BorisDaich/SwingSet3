@@ -14,5 +14,5 @@ than any released version of SwingX by [SwingLabs](https://en.wikipedia.org/wiki
 
 **This SwingSet3 fork** continues the work with [v1.6.6-1 jar](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.6-1) build for Java 8
 
-The goal of this fork is a SwingSet3 jar [v1.6.7](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.7)+ for [OpenJDK](https://en.wikipedia.org/wiki/OpenJDK) (Adoptium or Temurin)
+The goal of this fork is a SwingSet3 jar [v1.6.7](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.7), [v1.6.8](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.8)+ for [OpenJDK](https://en.wikipedia.org/wiki/OpenJDK), (Adoptium or Temurin)
 
