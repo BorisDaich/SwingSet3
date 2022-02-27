@@ -201,6 +201,42 @@ public class SnippetMap {
             List<FileSnippets> fileSnippetList = snippetSets.get(key); 
             if (fileSnippetList == null) {
                 throw new IllegalArgumentException("snippet key " + key + " does not exist.");
+/* TODO:
+
+Jan. 25, 2022 9:57:03 PM org.jdesktop.swingxset.LoadedXDemoPanel initComponents
+INFORMATION: URL description:null
+Jan. 25, 2022 9:57:03 PM org.jdesktop.swingxset.LoadedXDemoPanel initComponents
+WARNUNG: no HTML Description for (Demo) class org.jdesktop.swingxset.IntroPanelDemo
+Jan. 25, 2022 9:57:03 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingxset/IntroPanelDemo.java'
+Jan. 25, 2022 9:57:03 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingxset/SwingXSet.java'
+Jan. 25, 2022 9:57:03 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingx/appframework/SingleXFrameApplication.java'
+Jan. 25, 2022 9:57:03 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingx/appframework/XProperties.java'
+Jan. 25, 2022 9:57:06 PM org.jdesktop.swingxset.LoadedXDemoPanel initComponents
+INFORMATION: URL description:file:/C:/proj/eclipseWS/swingset/SwingSet3/swingx-demos/bin/org/jdesktop/swingx/demos/treetable/resources/TreeTableDemo.html
+Jan. 25, 2022 9:57:06 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingx/demos/treetable/TreeTableDemo.java'
+Jan. 25, 2022 9:57:06 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingx/demos/tree/TreeDemoIconValues.java'
+Jan. 25, 2022 9:57:06 PM com.sun.swingset3.Demo getSourceFiles
+WARNUNG: unable to load source file 'org/jdesktop/swingxset/JXDemoFrame.java'
+Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: snippet key JXTreeTable rendering does not exist.
+	at com.sun.swingset3.codeview.SnippetMap.setCurrentSet(SnippetMap.java:203)
+	at com.sun.swingset3.codeview.CodeViewer.highlightSnippetSet(CodeViewer.java:662)
+	at org.jdesktop.swingxset.SwingXSet$ViewCodeSnippetAction.actionPerformed(SwingXSet.java:489)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1972)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2313)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
+	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
+	at java.desktop/javax.swing.AbstractButton.doClick(AbstractButton.java:374)
+	at java.desktop/javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:1028)
+	at java.desktop/javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:1072)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6626)
+
+ */
             }
             currentKey = key;
             currentSet = fileSnippetList;
