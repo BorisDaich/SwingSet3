@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.jdesktop.test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,6 +13,7 @@ import org.junit.runners.model.InitializationError;
  * A test runner for JUnit that ensures that all tests are run on the EDT.
  */
 public class EDTRunner extends BlockJUnit4ClassRunner {
+	
     /**
      * Creates a test runner for the specified test class.
      * 

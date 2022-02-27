@@ -5,8 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A category to use on tests that require demonstrate an issue. These tests are expected to fail
- * until the code in question is fixed.
+ * A category to use on tests that require demonstrate an issue. 
+ * These tests are expected to fail until the code in question is fixed.
  * <p>
  * {@code Issue} is used in preference to {@link org.junit.Ignore}, so that automated builds can
  * occasionally run these tests to determine if a fix addresses a known issue. This is often the

@@ -24,6 +24,9 @@ public final class SerializableSupport {
     
     /**
      * Serialize the specified object to bytes, then deserialize it back.
+     * @param <T> object type
+     * @param object the specified object
+     * @return deserialized object
      */
     @SuppressWarnings("unchecked")
     public static <T> T serialize(T object) {

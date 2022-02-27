@@ -26,6 +26,12 @@ public final class TestUtils extends Assert {
     private static final Logger LOG = Logger.getLogger(TestUtils.class.getName());
     private TestUtils() {}
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     * @param objects array of objects
+     * @param clazz isAssignableFrom
+     * @param count expected
+     */
     public static void assertContainsType(Object[] objects, Class<?> clazz, int count) {
         if (objects.length == 0 && count == 0) return;
         assertTrue("not enough elements: expected == " + count 

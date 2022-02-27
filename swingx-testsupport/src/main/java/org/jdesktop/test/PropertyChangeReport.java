@@ -1,11 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
-
 package org.jdesktop.test;
 
 import java.awt.Component;
@@ -24,13 +20,15 @@ import java.util.Map;
  * modified ("beanified") from JGoodies PropertyChangeReport.
  * 
  */
-@SuppressWarnings("nls")
 public class PropertyChangeReport implements PropertyChangeListener {
     
     /**
      * Holds a list of all received PropertyChangeEvents.
      */
     protected List<PropertyChangeEvent> events = Collections.synchronizedList(new LinkedList<PropertyChangeEvent>());
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     protected Map<String, PropertyChangeEvent> eventMap = Collections.synchronizedMap(new HashMap<String, PropertyChangeEvent>());
 
     /**
@@ -52,8 +50,8 @@ public class PropertyChangeReport implements PropertyChangeListener {
             component.addPropertyChangeListener(this);
         }
     }
-//------------------------ implement PropertyChangeListener
     
+//------------------------ implement PropertyChangeListener
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -63,19 +61,31 @@ public class PropertyChangeReport implements PropertyChangeListener {
         }
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public int getEventCount() {
         return events.size();
     }
  
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public void clear() {
         events.clear();
         eventMap.clear();
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public boolean hasEvents() {
         return !events.isEmpty();
     }
  
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public int getEventCount(String property) {
         if (property == null) return getMultiCastEventCount();
         int count = 0;
@@ -88,10 +98,16 @@ public class PropertyChangeReport implements PropertyChangeListener {
         return count;
     }
 
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public boolean hasEvents(String property) {
         return eventMap.get(property) != null;
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public int getMultiCastEventCount() {
         int count = 0;
         for (Iterator<PropertyChangeEvent> i = events.iterator(); i.hasNext();) {
@@ -102,25 +118,40 @@ public class PropertyChangeReport implements PropertyChangeListener {
         return count;
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public int getNamedEventCount() {
         return getEventCount() - getMultiCastEventCount();
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public PropertyChangeEvent getLastEvent() {
         return events.isEmpty()
             ? null
             : events.get(0);
     }
 
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public PropertyChangeEvent getLastEvent(String property) {
         return eventMap.get(property);
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public Object getLastOldValue() {
         PropertyChangeEvent last = getLastEvent();
         return last != null ? last.getOldValue() : null;
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public Object getLastNewValue() {
         PropertyChangeEvent last = getLastEvent();
         return last != null ? last.getNewValue() : null;
@@ -142,11 +173,17 @@ public class PropertyChangeReport implements PropertyChangeListener {
         return last != null ? last.getSource() : null;
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public Object getLastOldValue(String property) {
         PropertyChangeEvent last = getLastEvent(property);
         return last != null ? last.getOldValue() : null;
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public Object getLastNewValue(String property) {
         PropertyChangeEvent last = getLastEvent(property);
         return last != null ? last.getNewValue() : null;
@@ -179,6 +216,5 @@ public class PropertyChangeReport implements PropertyChangeListener {
         }
         return buffer.toString();
     }
-
 
 }

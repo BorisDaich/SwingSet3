@@ -18,7 +18,6 @@ import org.mockito.ArgumentMatcher;
  * @see Matcher
  * @see ArgumentMatcher
  */
-@SuppressWarnings("nls")
 class PropertyChangeEventMatcher extends BaseMatcher<PropertyChangeEvent> implements ArgumentMatcher<Object> {
 	
     private final String propertyName;
