@@ -23,6 +23,7 @@ package org.jdesktop.swingx.demos.taskpane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.logging.Logger;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -153,8 +154,20 @@ public class TaskPaneDemo extends JPanel {
         add(new JScrollPane(tpc));
     }
     
-    private void bind() {
+	private static final Logger LOG = Logger.getLogger(TaskPaneDemo.class.getName());
+
+	private void bind() {
         ApplicationActionMap map = Application.getInstance().getContext().getActionMap(this);
+        LOG.info("ApplicationActionMap map#:"+map.size());
+        Object[] keys = map.keys(); // es gibt auch allkeys()
+        for(int k=0; k<keys.length; k++) {
+        	Object key = keys[k];
+        	// Value is Action
+        	LOG.info("key "+k + ":"+key + " ("+key.getClass()+") value:" + map.get(key));
+//INFORMATION: key 3:email (class java.lang.String) value:org.jdesktop.application.ApplicationAction email "Send by email"
+
+        }
+        
         
         systemGroup.add(map.get("email"));
         systemGroup.add(map.get("delete"));
