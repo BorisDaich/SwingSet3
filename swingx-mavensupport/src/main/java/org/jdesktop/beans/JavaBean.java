@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Determines if the specified class is a Java Bean. This information is added to the manifest with
- * the annotation processor.
+ * Determines if the specified class is a Java Bean. 
+ * This information is added to the manifest with the annotation processor.
  * 
  * @author kschaefer
  */
@@ -16,12 +16,19 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface JavaBean {
+	
     @Documented
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.SOURCE)
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     public static @interface Property {
         
     }
     
+    /**
+     * maven-javadoc-plugin needs a comment : TODO
+     */
     boolean value() default true;
 }

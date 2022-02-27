@@ -28,10 +28,10 @@ import org.kohsuke.MetaInfServices;
  * 
  * @author kschaefer
  */
-@SuppressWarnings("nls")
 @MetaInfServices(Processor.class)
 @SupportedSourceVersion(SourceVersion.RELEASE_16)
 public class JavaBeanProcessor extends AbstractProcessor {
+	
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         return Collections.singleton(JavaBean.class.getName());
