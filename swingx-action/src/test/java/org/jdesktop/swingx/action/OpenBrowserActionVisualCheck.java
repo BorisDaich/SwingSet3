@@ -1,6 +1,4 @@
 /*
- * $Id: OpenBrowserActionVisualCheck.java -1 $
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -25,13 +23,13 @@ import java.net.MalformedURLException;
 import javax.swing.Action;
 
 /**
- *
  * @author Karl George Schaefer
  */
 public class OpenBrowserActionVisualCheck {
     public static void main(String ... args) throws MalformedURLException {
-        //System.out.println("trying to open a URL on the current platform");
-        Action action = new OpenBrowserAction("http://sun.com/");
+    	
+        // trying to open a URL on the current platform
+        Action action = new OpenBrowserAction("https://homebeaver.github.io/");
         action.actionPerformed(null);
     }
 }

@@ -77,7 +77,7 @@
  * will be dispatched to the TargetManager.</dd>
  *
  * <dt>{@link org.jdesktop.swingx.action.BoundAction}</dt>
- * <dd>Represents an action which has an exclicit binding.</dd>
+ * <dd>Represents an action which has an explicit binding.</dd>
  *
  * <dt>{@link org.jdesktop.swingx.action.TargetManager}</dt>
  * <dd>Manages the targetable policy for actions which have no

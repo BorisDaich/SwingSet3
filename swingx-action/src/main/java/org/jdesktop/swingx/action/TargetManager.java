@@ -32,15 +32,13 @@ import javax.swing.ActionMap;
 import javax.swing.JComponent;
 
 /**
- * The target manager dispatches commands to {@link Targetable} objects
- * that it manages. This design of this class is based on the <i>Chain of
- * Responsiblity</i> and <i>Mediator</i> design patterns. The target manager
- * acts as a mediator between {@link TargetableAction}s and the intended targets.
+ * The target manager dispatches commands to {@link Targetable} objects that it manages. 
+ * This design of this class is based on the <i>Chain of Responsiblity</i> and <i>Mediator</i> design patterns. 
+ * The target manager  acts as a mediator between {@link TargetableAction}s and the intended targets.
  * This allows Action based components to invoke commands on components
  * without explicitly binding the user Action to the component action.
  * <p>
- * The target manager maintains a reference to a current
- * target and a target list.
+ * The target manager maintains a reference to a current target and a target list.
  * The target list is managed using the <code>addTarget</code> and
  * <code>removeTarget</code> methods. The current target is managed using the
  * <code>setTarget</code> and <code>getTarget</code> methods.
@@ -59,10 +57,9 @@ import javax.swing.JComponent;
  * using the command string.
  * <p>
  * If the Action is not found on the focus order then the ActionMaps of the ancestor
- * hierarchy of the focus owner is searched until a matching Action can be found.
- *  Finally, if none
- * of the components can handle the command then it is dispatched to the ActionMap
- * of the current Application instance.
+ * hierarchy of the focus owner is searched until a matching Action can be found. 
+ * Finally, if none of the components can handle the command then it is dispatched 
+ * to the ActionMap of the current Application instance.
  * <p>
  * The order of command dispatch is as follows:
  * <ul>

@@ -30,8 +30,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(EDTRunner.class)
-@SuppressWarnings("nls")
 public class AbstractActionExtTest {
+	
     @SuppressWarnings("all")
     private static final Logger LOG = Logger.getLogger(AbstractActionExtTest.class.getName());
     
@@ -57,8 +57,8 @@ public class AbstractActionExtTest {
         extAction.setSelected(actionSelected);
         JToggleButton button = new JToggleButton();
         factory.configureSelectableButton(button, extAction, null);
-        // invert action selected and assert that the change is taken up
-        // by the button
+        LOG.config("button:"+button + "\n extAction:"+extAction + " button.isSelected="+button.isSelected());
+        // invert action selected and assert that the change is taken up by the button
         extAction.setSelected(!actionSelected);
         assertEquals("button selected must be synched to action", 
                 !actionSelected, button.isSelected());
@@ -86,8 +86,7 @@ public class AbstractActionExtTest {
         boolean actionSelected = true;
         extAction.setSelected(actionSelected);
         JToggleButton button = (JToggleButton) factory.createButton(extAction);
-        // invert action selected and assert that the change is taken up
-        // by the button
+        // invert action selected and assert that the change is taken up by the button
         extAction.setSelected(!actionSelected);
         assertEquals("button selected must be synched to action", 
                 !actionSelected, button.isSelected());
@@ -199,13 +198,11 @@ public class AbstractActionExtTest {
         AbstractActionExt extActionB = createStateAction();
         factory.configureSelectableButton(button, extActionB, null);
         // sanity: the new action is not effected by the old
-        // currently this may accidentally pass because the back direction isn't
-        // synched!! 
+        // currently this may accidentally pass because the back direction isn't synched!! 
         assertFalse(extActionB.isSelected());
         assertEquals("button selected must be initialized to new action",
                 extActionB.isSelected(), button.isSelected());
-        // invert the old action selected and assert that the change 
-        // does not effect the taken up by the button
+        // invert the old action selected and assert that the change does not effect the taken up by the button
         extAction.setSelected(!actionSelected);
         // need to be done twice, the first toggle produces 
         extAction.setSelected(actionSelected);
@@ -336,8 +333,7 @@ public class AbstractActionExtTest {
     }
 
     /**
-     * assert that the given itemListener is registered exactly
-     * expectedCount times to the given button.
+     * assert that the given itemListener is registered exactly expectedCount times to the given button.
      * @param checkBoxItem
      * @param extAction
      * @param expectedCount

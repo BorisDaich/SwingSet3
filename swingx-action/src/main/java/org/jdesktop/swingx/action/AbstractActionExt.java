@@ -130,7 +130,7 @@ public abstract class AbstractActionExt extends AbstractAction implements ItemLi
 
     /**
      * Sets the short description of the action. This will also
-     * set the long description value is it is null.
+     * set the long description value if it is null.
      * <p>
      * This is a convenience method for <code>putValue</code> with the
      * <code>Action.SHORT_DESCRIPTION</code> key.
@@ -366,9 +366,9 @@ public abstract class AbstractActionExt extends AbstractAction implements ItemLi
     // Properties etc....
 
     /**
-     * Indicates if this action has states. If this method returns
-     * true then the this will send ItemEvents to ItemListeners
-     * when the control constructed with this action in invoked.
+     * Indicates if this action has states. 
+     * If this method returnstrue then this will send ItemEvents 
+     * to ItemListeners when the control constructed with this action in invoked.
      *
      * @return true if this can handle states
      */

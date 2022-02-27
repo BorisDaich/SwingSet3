@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,12 +33,10 @@ import javax.swing.Action;
  * This listener is responsible for updating the selected property from the 
  * Action to the AbstractButton. <p>
  * 
- * It guarantees a maximum of 1 instance of 
- * ToggleActionPCL to be installed per button (PENDING JW: add test to verify). 
+ * It guarantees a maximum of 1 instance of ToggleActionPCL (PropertyChangeListener)
+ * to be installed per button (PENDING JW: add test to verify). 
  * It removes all ToggleActionPCLs which are targeted to unreachable buttons
  * from the action's listener list.
- * 
- * 
  */
 class ToggleActionPropertyChangeListener implements PropertyChangeListener {
 

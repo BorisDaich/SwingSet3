@@ -81,8 +81,7 @@ public class ActionContainerFactory {
     private Map<Integer, ButtonGroup> groupMap;
 
     /**
-     * Constructs an container factory which uses the default 
-     * ActionManager.
+     * Constructs an container factory which uses the default ActionManager.
      *
      */
     public ActionContainerFactory() {
@@ -98,8 +97,9 @@ public class ActionContainerFactory {
     }
 
     /**
-     * Gets the ActionManager instance. If the ActionManager has not been explicitly
-     * set then the default ActionManager instance will be used.
+     * Gets the ActionManager instance. 
+     * If the ActionManager has not been explicitly set then 
+     * the default ActionManager instance will be used.
      *
      * @return the ActionManager used by the ActionContainerFactory.
      * @see #setActionManager
@@ -113,6 +113,7 @@ public class ActionContainerFactory {
 
     /**
      * Sets the ActionManager instance that will be used by this ActionContainerFactory
+     * 
      * @param manager the ActionManager
      */
     public void setActionManager(ActionMap manager) {
@@ -120,8 +121,8 @@ public class ActionContainerFactory {
     }
 
     /**
-     * Constructs a toolbar from an action-list id. By convention,
-     * the identifier of the main toolbar should be "main-toolbar"
+     * Constructs a toolbar from an action-list id. 
+     * By convention, the identifier of the main toolbar should be "main-toolbar"
      *
      * @param list a list of action ids used to construct the toolbar.
      * @return the toolbar or null
@@ -245,9 +246,8 @@ public class ActionContainerFactory {
 
 
     /**
-     * Creates and returns a menu from a List which represents actions, separators
-     * and sub-menus. The menu
-     * constructed will have the attributes from the first action in the List.
+     * Creates and returns a menu from a List which represents actions, separators and sub-menus. 
+     * The menu constructed will have the attributes from the first action in the List.
      * Subsequent actions in the list represent menu items.
      *
      * @param actionIds an array of action ids used to construct the menu and menu items.
@@ -259,9 +259,8 @@ public class ActionContainerFactory {
     }
 
     /**
-     * Creates and returns a menu from a List which represents actions, separators
-     * and sub-menus. The menu
-     * constructed will have the attributes from the first action in the List.
+     * Creates and returns a menu from a List which represents actions, separators and sub-menus. 
+     * The menu constructed will have the attributes from the first action in the List.
      * Subsequent actions in the list represent menu items.
      *
      * @param list a list of action ids used to construct the menu and menu items.
@@ -284,12 +283,12 @@ public class ActionContainerFactory {
                 menu.addSeparator();
             } else {
                 JMenuItem newMenu;
-
+                // submenu 
                 if (element instanceof Object[]) {
                     newMenu = createMenu((Object[]) element);
                 } else if (element instanceof List<?>) {
                     newMenu = createMenu((List<?>) element);
-                } else {
+                } else { // item
                     newMenu = createMenuItem(element, menu);
                 }
 

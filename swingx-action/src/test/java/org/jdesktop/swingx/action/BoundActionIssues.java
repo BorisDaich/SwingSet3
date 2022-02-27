@@ -12,10 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
-import org.jdesktop.swingx.action.ActionManager;
-import org.jdesktop.swingx.action.BoundAction;
-
-@SuppressWarnings("nls")
 public class BoundActionIssues {
 
     public static void main(String[] args) {
