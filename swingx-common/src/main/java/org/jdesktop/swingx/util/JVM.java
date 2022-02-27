@@ -31,7 +31,7 @@ public class JVM {
    */
   public final static String JAVA_VERSION = "java.version";
   
-  // wg. Failed: Javadoc Validation auf nexus repo, maven-javadoc-plugin macht aus der warnung ein fehler :-(
+  // wg. Failed: Javadoc Validation auf nexus repo, maven-javadoc-plugin macht aus der warnung einen fehler :-(
   /**
    * JDK Version
    */
@@ -199,8 +199,8 @@ public class JVM {
 
   /**
    * check JDK
-   * @param p_Version
-   * @return
+   * @param p_Version int JDK Version, i.E. <code>JDK_8</code>
+   * @return boolean
    */
   public boolean isOrLater(int p_Version) {
     return jdkVersion >= p_Version;

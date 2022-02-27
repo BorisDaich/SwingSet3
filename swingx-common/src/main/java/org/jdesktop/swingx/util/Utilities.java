@@ -491,16 +491,16 @@ public class Utilities {
                             if ((getOperatingSystem() & OS_MAC) != 0) {
                                 if (!usableKeyOnMac(i.intValue(), needed)) {
                                     needed &= ~getMenuShortCutKeyMask();
-                                    needed |= KeyEvent.CTRL_MASK;
+                                    needed |= KeyEvent.CTRL_DOWN_MASK;
                                 }
                             }
                         }
 
                         if (macAlt) {
                             if (getOperatingSystem() == OS_MAC) {
-                                needed |= KeyEvent.CTRL_MASK;
+                                needed |= KeyEvent.CTRL_DOWN_MASK;
                             } else {
-                                needed |= KeyEvent.ALT_MASK;
+                                needed |= KeyEvent.ALT_DOWN_MASK;
                             }
                         }
 
@@ -518,22 +518,10 @@ public class Utilities {
      * need to guard against headlessExceptions when testing.
      * @return the acceletor mask for shortcuts.
      */
-    /* TODO
-     *  deprecated(since = "9") It is recommended that CTRL_DOWN_MASK and
-     *             {@link #getModifiersEx()} be used instead
-     *             ===> META_DOWN_MASK
-     */
     private static int getMenuShortCutKeyMask() {
         if (GraphicsEnvironment.isHeadless()) {
-            return ((getOperatingSystem() & OS_MAC) != 0) ? 
-                    KeyEvent.META_MASK : KeyEvent.CTRL_MASK;
+            return ((getOperatingSystem() & OS_MAC) != 0) ? KeyEvent.META_DOWN_MASK : KeyEvent.CTRL_DOWN_MASK;
         }
-/*
-Deprecated(since = "10") :
-     * It is recommended that extended modifier keys and
-     *             {@link #getMenuShortcutKeyMaskEx()} be used instead
-TODO
- */
         return Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     }
 
@@ -543,11 +531,11 @@ TODO
             return false;
         }
 
-        boolean isMeta = ((mask & KeyEvent.META_MASK) != 0) || ((mask & KeyEvent.CTRL_DOWN_MASK) != 0);
+        boolean isMeta = ((mask & KeyEvent.META_DOWN_MASK) != 0) || ((mask & KeyEvent.CTRL_DOWN_MASK) != 0);
 
-        boolean isAlt = ((mask & KeyEvent.ALT_MASK) != 0) || ((mask & KeyEvent.ALT_DOWN_MASK) != 0);
+        boolean isAlt = ((mask & KeyEvent.ALT_DOWN_MASK) != 0) || ((mask & KeyEvent.ALT_DOWN_MASK) != 0);
 
-        boolean isOnlyMeta = isMeta && ((mask & ~(KeyEvent.META_DOWN_MASK | KeyEvent.META_MASK)) == 0);
+        boolean isOnlyMeta = isMeta && ((mask & ~(KeyEvent.META_DOWN_MASK | KeyEvent.META_DOWN_MASK)) == 0);
 
         //Mac OS consumes keys Command+ these keys - the app will never see
         //them, so CTRL should not be remapped for these
@@ -588,22 +576,22 @@ TODO
     private static boolean addModifiers(StringBuffer buf, int modif) {
         boolean b = false;
 
-        if ((modif & KeyEvent.CTRL_MASK) != 0) {
+        if ((modif & KeyEvent.CTRL_DOWN_MASK) != 0) {
             buf.append("C"); // NOI18N
             b = true;
         }
 
-        if ((modif & KeyEvent.ALT_MASK) != 0) {
+        if ((modif & KeyEvent.ALT_DOWN_MASK) != 0) {
             buf.append("A"); // NOI18N
             b = true;
         }
 
-        if ((modif & KeyEvent.SHIFT_MASK) != 0) {
+        if ((modif & KeyEvent.SHIFT_DOWN_MASK) != 0) {
             buf.append("S"); // NOI18N
             b = true;
         }
 
-        if ((modif & KeyEvent.META_MASK) != 0) {
+        if ((modif & KeyEvent.META_DOWN_MASK) != 0) {
             buf.append("M"); // NOI18N
             b = true;
         }
@@ -632,19 +620,19 @@ TODO
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)) {
             case 'C':
-                m |= KeyEvent.CTRL_MASK;
+                m |= KeyEvent.CTRL_DOWN_MASK;
                 break;
 
             case 'A':
-                m |= KeyEvent.ALT_MASK;
+                m |= KeyEvent.ALT_DOWN_MASK;
                 break;
 
             case 'M':
-                m |= KeyEvent.META_MASK;
+                m |= KeyEvent.META_DOWN_MASK;
                 break;
 
             case 'S':
-                m |= KeyEvent.SHIFT_MASK;
+                m |= KeyEvent.SHIFT_DOWN_MASK;
                 break;
 
             case 'D':
@@ -1014,14 +1002,10 @@ widthcheck:  {
 			is = getFileAsStream(dir, resourceName);
 			if(is!=null) return is;
 
-// TODO LOG.info raus
-LOG.info(">>> cannot find file in "+dir + " resourceName " + resourceName + " <<< PackageName as dir");
-
 			if(dir.startsWith(MODULE_PACKAGE_DIR)) {
 				// MODULE_PACKAGE_DIR as dir
 				is = getFileAsStream(MODULE_PACKAGE_DIR, resourceName);
 				if(is!=null) return is;
-LOG.info(">>> cannot find file in "+MODULE_PACKAGE_DIR + " resourceName " + resourceName + " <<< MODULE_PACKAGE_DIR as dir");			
 			}
 			
 			// try default eclipse output folder ... (Java Nature/Builder) with extra resource folder (maven like)
@@ -1029,19 +1013,16 @@ LOG.info(">>> cannot find file in "+MODULE_PACKAGE_DIR + " resourceName " + reso
 			String rFolder = "resources/"; // resource folder dir
 			is = getFileAsStream(src+dir+rFolder, resourceName);
 			if(is!=null) return is;
-LOG.info(">>> cannot find file in "+src+dir+rFolder + " resourceName " + resourceName + " <<< default eclipse output folder with resource");			
 
 			// try default eclipse output folder ... (Java Nature/Builder) resource in src folder
 			rFolder = "";
 			is = getFileAsStream(src+dir+rFolder, resourceName);
 			if(is!=null) return is;
-LOG.info(">>> cannot find file in "+src+dir+rFolder + " resourceName " + resourceName + " <<< default eclipse output folder");			
 
 			// try default eclipse test folder ...
 			src = "src/test/resources/";
 			is = getFileAsStream(src+MODULE_PACKAGE_DIR, resourceName);
 			if(is!=null) return is;
-LOG.info(">>> cannot find file in "+src+MODULE_PACKAGE_DIR + " resourceName " + resourceName + " <<< default eclipse test folder ");			
 
 			if(is==null) return getFileAsStream(resourceName);
 		}
