@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Color;
@@ -23,7 +20,6 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.CompoundHighlighter;
@@ -32,30 +28,32 @@ import org.jdesktop.swingx.decorator.SearchPredicate;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.IconValues;
 import org.jdesktop.swingx.renderer.StringValues;
-import org.jdesktop.swingx.search.SearchFactory;
-import org.jdesktop.swingx.search.TableSearchable;
 import org.jdesktop.swingx.search.FindTest.TestListModel;
 import org.jdesktop.swingx.search.FindTest.TestTableModel;
+import org.jdesktop.swingx.search.SearchFactory;
+import org.jdesktop.swingx.search.TableSearchable;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.test.AncientSwingTeam;
 
 public class FindVisualCheck extends InteractiveTestCase {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(FindVisualCheck.class
-            .getName());
-    public static void main(String args[]) {
-      setSystemLF(true);
+	
+    private static final Logger LOG = Logger.getLogger(FindVisualCheck.class.getName());
+    
+	public static void main(String args[]) {
+		setSystemLF(true);
 //      Locale.setDefault(new Locale("es"));
-      FindVisualCheck test = new FindVisualCheck();
-      try {
-        test.runInteractiveTests();
-//          test.runInteractiveTests("interactive.*Compare.*");
-//          test.runInteractiveTests("interactive.*Close.*");
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-  }
+		FindVisualCheck test = new FindVisualCheck();
+		try {
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactiveFindDialogSelectionTree");
+//			test.runInteractiveTests("interactive.*Compare.*");
+//			test.runInteractiveTests("interactive.*Close.*");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
+
     @Override
     protected void setUp() {
         editorURL = FindVisualCheck.class.getResource("resources/test.txt");
@@ -207,8 +205,7 @@ public class FindVisualCheck extends InteractiveTestCase {
 
         @Override
         protected AbstractHighlighter createMatchHighlighter() {
-            base = new ColorHighlighter(Color.YELLOW.brighter(), null, 
-                    Color.YELLOW.darker(), null);
+            base = new ColorHighlighter(Color.YELLOW.brighter(), null, Color.YELLOW.darker(), null);
             cell = new ColorHighlighter(Color.YELLOW.darker(), null);
             CompoundHighlighter match = new CompoundHighlighter(base, cell);
             return match;
@@ -282,15 +279,11 @@ public class FindVisualCheck extends InteractiveTestCase {
         final JXTree table = new JXTree();
         JComponent comp = Box.createVerticalBox();
         comp.add(new JScrollPane(table));
-        Action action = new AbstractActionExt("open find dialog") {
-
-            public void actionPerformed(ActionEvent e) {
-                SearchFactory.getInstance().showFindDialog(table, table.getSearchable());
-                
-            }
-            
-        };
-        comp.add(new JButton(action));
+        JButton openFindDialog = new JButton("open find dialog");
+        openFindDialog.addActionListener( actionEvent -> {
+        	SearchFactory.getInstance().showFindDialog(table, table.getSearchable());
+        });
+        comp.add(openFindDialog);
         JXFrame frame = wrapInFrame(comp, "Tree FindDialog: selection lost");
         frame.setVisible(true);
     }

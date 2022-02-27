@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
@@ -33,9 +30,9 @@ import org.jdesktop.swingx.action.ActionManager;
  * @author Mark Davidson
  */
 public class JXEditorPaneVisualCheck extends JXEditorPaneTest {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(JXEditorPaneVisualCheck.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXEditorPaneVisualCheck.class.getName());
     private static String testText = "This is an example of some text";
 
     public static void main(String[] args) throws Exception {

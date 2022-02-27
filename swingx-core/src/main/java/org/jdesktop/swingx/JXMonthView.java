@@ -125,9 +125,9 @@ import org.jdesktop.swingx.util.Contract;
  */
 @JavaBean
 public class JXMonthView extends JComponent {
+	
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXMonthView.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXMonthView.class.getName());
     /*
      * moved from package calendar to swingx at version 1.51
      */

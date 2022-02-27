@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
  * California 95054, U.S.A. All rights reserved.
  * 
@@ -19,7 +17,6 @@
  * 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package org.jdesktop.swingx;
-
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -97,34 +94,35 @@ import org.jdesktop.test.AncientSwingTeam;
  * @author Jeanette Winzenburg
  */
 public class JXTreeTableVisualCheck extends JXTreeTableUnitTest {
+	
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger
-            .getLogger(JXTreeTableVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXTreeTableVisualCheck.class.getName());
+    
     public static void main(String[] args) {
         // NOTE JW: this property has be set "very early" in the application life-cycle
         // it's immutable once read from the UIManager (into a final static field!!)
 //        System.setProperty("sun.swing.enableImprovedDragGesture", "true" );
 //        setSystemLF(true);
         JXTreeTableVisualCheck test = new JXTreeTableVisualCheck();
-        try {
-//            test.runInteractiveTests();
-//            test.runInteractiveTests("interactive.*Hierarchical.*");
-            test.runInteractiveTests("interactive.*HierarchicalToolTip.*");
-               test.runInteractive("Rollover");
-//               test.runInteractiveTests("interactive.*DnD.*");
-//             test.runInteractiveTests("interactive.*ColumnSelection.*");
-//             test.runInteractiveTests("interactive.*RowHeightCompare.*");
-//             test.runInteractiveTests("interactive.*RToL.*");
-//            test.runInteractiveTests("interactive.*ColumnFactory.*");
-//             test.runInteractiveTests("interactive.*ScrollPath.*");
-//             test.runInteractiveTests("interactive.*Insert.*");
-//             test.runInteractiveTests("interactive.*WinP.*");
-//            test.runInteractiveTests("interactive.*EditorIcon.*");
-//            test.runInteractiveTests("interactive.*ExpandAll.*");
-//            test.runInteractiveTests("interactive.*Traversal.*");
-//            test.runInteractiveTests("interactive.*Edit.*");
-//             test.runInteractiveTests("interactive.*ComboBox.*");
-        } catch (Exception ex) {
+		try {
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactive.*Hierarchical.*");
+//			test.runInteractiveTests("interactive.*HierarchicalToolTip.*");
+//			test.runInteractive("Rollover");
+//			test.runInteractiveTests("interactive.*DnD.*");
+//			test.runInteractiveTests("interactive.*ColumnSelection.*");
+//			test.runInteractiveTests("interactive.*RowHeightCompare.*");
+//			test.runInteractiveTests("interactive.*RToL.*");
+//			test.runInteractiveTests("interactive.*ColumnFactory.*");
+//			test.runInteractiveTests("interactive.*ScrollPath.*");
+//			test.runInteractiveTests("interactive.*Insert.*");
+//			test.runInteractiveTests("interactive.*WinP.*");
+//			test.runInteractiveTests("interactive.*EditorIcon.*");
+//			test.runInteractiveTests("interactive.*ExpandAll.*");
+//			test.runInteractiveTests("interactive.*Traversal.*");
+//			test.runInteractiveTests("interactive.*Edit.*");
+//			test.runInteractiveTests("interactive.*ComboBox.*");
+		} catch (Exception ex) {
 
         }
     }

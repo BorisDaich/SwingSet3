@@ -77,6 +77,7 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
  * @author Shai Almog
  * @author Jeanette Winzenburg
  */
+@SuppressWarnings("serial")
 @JavaBean
 public class JXHyperlink extends JButton {
 
@@ -141,6 +142,7 @@ public class JXHyperlink extends JButton {
      * @see HyperlinkAction#createHyperlinkAction(URI)
      */
     public void setURI(URI uri) {
+    	// BUG: TODO: setText(uri) wird nicht gemacht, siehe SwingSet3-demos HyperlinkDemo
         setAction(HyperlinkAction.createHyperlinkAction(uri));
     }
     

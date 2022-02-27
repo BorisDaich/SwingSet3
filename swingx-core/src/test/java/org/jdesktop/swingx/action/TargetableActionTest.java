@@ -37,7 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * A unit test for targetable actions.
  */
@@ -60,8 +59,7 @@ public class TargetableActionTest extends TestCase {
         return createTargetableAction(id, name, null);
     }
 
-    public static TargetableAction createTargetableAction(String id, String name,
-                                                          String mnemonic) {
+    public static TargetableAction createTargetableAction(String id, String name, String mnemonic) {
         return createTargetableAction(id, name, mnemonic, false);
     }
 
