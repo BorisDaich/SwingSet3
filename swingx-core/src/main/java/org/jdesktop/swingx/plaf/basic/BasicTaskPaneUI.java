@@ -61,6 +61,7 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.SwingXUtilities;
+import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.icon.EmptyIcon;
 import org.jdesktop.swingx.plaf.TaskPaneUI;
 
@@ -462,42 +463,6 @@ public class BasicTaskPaneUI extends TaskPaneUI {
     }
 
     /**
-     * Toggle icon.
-     */
-    protected static class ChevronIcon implements Icon {
-        boolean up = true;
-
-        /**
-         * ctor 
-         * @param up TODO doc
-         */
-        public ChevronIcon(boolean up) {
-            this.up = up;
-        }
-
-        @Override
-        public int getIconHeight() {
-            return 3;
-        }
-
-        @Override
-        public int getIconWidth() {
-            return 6;
-        }
-
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            if (up) {
-                g.drawLine(x + 3, y, x, y + 3);
-                g.drawLine(x + 3, y, x + 6, y + 3);
-            } else {
-                g.drawLine(x, y, x + 3, y + 3);
-                g.drawLine(x + 3, y + 3, x + 6, y);
-            }
-        }
-    }
-
-    /**
      * The border around the content pane
      */
     protected static class ContentPaneBorder implements Border, UIResource {
@@ -868,19 +833,15 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          * @param height
          *            Height of the box.
          */
-        protected void paintChevronControls(JXTaskPane group, Graphics g,
-                int x, int y, int width, int height) {
-            ChevronIcon chevron;
+        protected void paintChevronControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
+            ChevronsIcon chevrons;
             if (group.isCollapsed()) {
-                chevron = new ChevronIcon(false);
+                chevrons = new ChevronsIcon();
+                chevrons.setOrientation(ChevronsIcon.Orientation.UP);
             } else {
-                chevron = new ChevronIcon(true);
+                chevrons = new ChevronsIcon();
             }
-            int chevronX = x + width / 2 - chevron.getIconWidth() / 2;
-            int chevronY = y + (height / 2 - chevron.getIconHeight());
-            chevron.paintIcon(group, g, chevronX, chevronY);
-            chevron.paintIcon(group, g, chevronX, chevronY
-                    + chevron.getIconHeight() + 1);
+            chevrons.paintIcon(group, g, x, y);
         }
 
         /**

@@ -48,8 +48,7 @@ import org.junit.Test;
 public class JXTaskPaneVisualCheck extends InteractiveTestCase {
     
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXTaskPaneVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(JXTaskPaneVisualCheck.class.getName());
     
     public JXTaskPaneVisualCheck() {
         super("JXLoginPane Test");
@@ -59,11 +58,11 @@ public class JXTaskPaneVisualCheck extends InteractiveTestCase {
         JXTaskPaneVisualCheck test = new JXTaskPaneVisualCheck();
         
         try {
-//            test.runInteractiveTests();
+            test.runInteractiveTests();
 //            test.runInteractiveTests("interactiveDisplay");
 //            test.runInteractiveTests("interactiveMnemonic");
 //            test.runInteractiveTests("interactiveEnablingTest");
-            test.runInteractive("Scrolls");
+//            test.runInteractive("Scrolls");
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
