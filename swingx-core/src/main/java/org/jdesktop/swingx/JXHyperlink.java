@@ -88,9 +88,9 @@ public class JXHyperlink extends JButton {
     public static final String uiClassID = "HyperlinkUI";
 
     // ensure at least the default ui is registered
-    static {
-      LookAndFeelAddons.contribute(new HyperlinkAddon());
-    }
+	static {
+		LookAndFeelAddons.contribute(new HyperlinkAddon());
+	}
 
     private boolean hasBeenVisited = false;
 
@@ -142,7 +142,6 @@ public class JXHyperlink extends JButton {
      * @see HyperlinkAction#createHyperlinkAction(URI)
      */
     public void setURI(URI uri) {
-    	// BUG: TODO: setText(uri) wird nicht gemacht, siehe SwingSet3-demos HyperlinkDemo
         setAction(HyperlinkAction.createHyperlinkAction(uri));
     }
     

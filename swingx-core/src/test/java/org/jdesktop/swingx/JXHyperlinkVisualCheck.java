@@ -56,11 +56,11 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
 	public static void main(String[] args) throws Exception {
 		JXHyperlinkVisualCheck test = new JXHyperlinkVisualCheck();
 		try {
-//			test.runInteractiveTests();
+			test.runInteractiveTests();
 //			test.runInteractiveTests("interactive.*Table.*");
 //			test.runInteractiveTests("interactive.*List.*");
 //			test.runInteractiveTests("interactive.*Tree.*");
-			test.runInteractiveTests("interactive.*Underline.*");
+//			test.runInteractiveTests("interactive.*Underline.*");
 //			test.runInteractive("Block");
 		} catch (Exception e) {
 			System.err.println("exception when executing interactive tests:");
