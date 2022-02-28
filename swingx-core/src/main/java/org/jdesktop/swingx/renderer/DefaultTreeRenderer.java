@@ -119,7 +119,7 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
     /**
      * 
      * Returns a configured component, appropriate to render the given tree
-     * cell. <p>
+     * cell.
      * 
      * @param tree the <code>JTree</code>
      * @param value the value to assign to the cell

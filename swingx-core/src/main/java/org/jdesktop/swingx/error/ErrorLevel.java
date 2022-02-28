@@ -28,6 +28,7 @@ import java.util.logging.Level;
  * @author rbair
  */
 public class ErrorLevel extends Level {
+	
     /**
      * FATAL is a message level indicating a catastrophic failure that should
      * result in the immediate termination of the application.
@@ -40,7 +41,11 @@ public class ErrorLevel extends Level {
      */    
     public static final ErrorLevel FATAL = new ErrorLevel("FATAL", 1100);
     
-    /** Creates a new instance of ErrorLevel */
+    /**
+     * Creates a new instance of ErrorLevel
+     * @param name
+     * @param value
+     */
     protected ErrorLevel(String name, int value) {
         super(name, value);
     }

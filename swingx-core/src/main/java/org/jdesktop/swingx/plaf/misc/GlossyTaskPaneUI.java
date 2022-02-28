@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,31 +38,35 @@ import org.jdesktop.swingx.plaf.basic.BasicTaskPaneUI;
  */
 public class GlossyTaskPaneUI extends BasicTaskPaneUI {
 
-  public static ComponentUI createUI(JComponent c) {
-    return new GlossyTaskPaneUI();
-  }
+	/**
+	 * create UI
+	 * @param c JComponent
+	 * @return ComponentUI
+	 */
+	public static ComponentUI createUI(JComponent c) {
+		return new GlossyTaskPaneUI();
+	}
 
-  @Override
-  protected Border createPaneBorder() {
-    return new GlossyPaneBorder();
-  }
-  
-  /**
-   * Overriden to paint the background of the component but keeping the rounded
-   * corners.
-   */
-  @Override
-  public void update(Graphics g, JComponent c) {
-    if (c.isOpaque()) {
-      g.setColor(c.getParent().getBackground());
-      g.fillRect(0, 0, c.getWidth(), c.getHeight());
-      g.setColor(c.getBackground());
-      g.fillRect(0, getRoundHeight(), c.getWidth(), c.getHeight() - getRoundHeight());
-    }
-    paint(g, c);
-  }
+	@Override
+	protected Border createPaneBorder() {
+		return new GlossyPaneBorder();
+	}
 
-  /**
+	/**
+	 * Overriden to paint the background of the component but keeping the rounded corners.
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		if (c.isOpaque()) {
+			g.setColor(c.getParent().getBackground());
+			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+			g.setColor(c.getBackground());
+			g.fillRect(0, getRoundHeight(), c.getWidth(), c.getHeight() - getRoundHeight());
+		}
+		paint(g, c);
+	}
+
+	  /**
    * The border of the taskpane group paints the "text", the "icon", the
    * "expanded" status and the "special" type.
    *  

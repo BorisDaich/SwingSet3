@@ -1954,7 +1954,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * Sets the filter to the sorter, if available and of type SortController.
      * Does nothing otherwise.
      *
-     * @param <R>
+     * @param <R> R extends TableModel
      * @param filter the filter used to determine what entries should be included
      */
 //     @param <R> ????????????????

@@ -111,7 +111,7 @@ public class DefaultUserNameStore extends UserNameStore {
     
     /**
      * Add a username to the store.
-     * @param name
+     * @param name username
      */
     @Override
     public void addUserName(String name) {
@@ -128,7 +128,7 @@ public class DefaultUserNameStore extends UserNameStore {
     /**
      * Removes a username from the list.
      *
-     * @param name
+     * @param name username
      */
     @Override
     public void removeUserName(String name) {

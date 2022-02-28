@@ -35,6 +35,9 @@ import org.jdesktop.swingx.event.DateSelectionListener;
  */
 public interface DateSelectionModel {
 	
+	/**
+	 * Selection Modes
+	 */
     public static enum SelectionMode {
         /**
          * Mode that allows for selection of a single day.

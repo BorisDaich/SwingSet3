@@ -48,8 +48,12 @@ import org.jdesktop.swingx.util.PaintUtils;
 @SuppressWarnings("serial") // super Same-version serialization only
 public class GradientPreviewPanel extends JXPanel {
 
+    private Logger log = Logger.getLogger(GradientPreviewPanel.class.getName());
+
     private Paint checker_texture = null;
     private Point2D start, end;
+    
+    /** picker */
     public JXGradientChooser picker;
     boolean moving_start = false;
     boolean moving_end = false;
@@ -59,6 +63,9 @@ public class GradientPreviewPanel extends JXPanel {
     private boolean repeated = false;
     private MultipleGradientPaint gradient;
     
+    /**
+     * ctor
+     */
     public GradientPreviewPanel() {
         start = new Point2D.Float(10,10);
         end = new Point2D.Float(80,10);
@@ -68,10 +75,17 @@ public class GradientPreviewPanel extends JXPanel {
         this.addMouseMotionListener(ma);
     }
     
+    /**
+     * repaint
+     */
     public void setGradient() {
         repaint();
     }
     
+    /**
+     * 
+     * @param grad MultipleGradientPaint
+     */
     public void setGradient(MultipleGradientPaint grad) {
         MultipleGradientPaint old = getGradient();
         if(grad instanceof LinearGradientPaint) {
@@ -88,10 +102,18 @@ public class GradientPreviewPanel extends JXPanel {
         repaint();
     }
     
+    /**
+     * 
+     * @return MultipleGradientPaint
+     */
     public MultipleGradientPaint getGradient() {
         return this.gradient;
     }
 
+    /**
+     * 
+     * @return MultipleGradientPaint
+     */
     public MultipleGradientPaint calculateGradient() {
         List<Thumb<Color>> stops = getStops();
         int len = stops.size();
@@ -112,19 +134,26 @@ public class GradientPreviewPanel extends JXPanel {
     }
 
     private MultiThumbModel model;
-    private Logger log = Logger.getLogger(GradientPreviewPanel.class.getName());
     
     private List<Thumb<Color>> getStops() {
         // calculate the color stops
         return model == null ? null : model.getSortedThumbs();
     }
     
+    /**
+     * 
+     * @param model MultiThumbModel
+     */
     public void setMultiThumbModel(MultiThumbModel model) {
         MultiThumbModel old = getMultiThumbModel();
         this.model = model;
         firePropertyChange("multiThumbModel", old, getMultiThumbModel());
     }
     
+    /**
+     * 
+     * @return MultiThumbModel
+     */
     public MultiThumbModel getMultiThumbModel() {
         return this.model;
     }
@@ -249,40 +278,72 @@ public class GradientPreviewPanel extends JXPanel {
         }
     }
 
+    /**
+     * 
+     * @return radial
+     */
     public boolean isRadial() {
         return radial;
     }
 
+    /**
+     * 
+     * @param radial
+     */
     public void setRadial(boolean radial) {
         boolean old = isRadial();
         this.radial = radial;
         firePropertyChange("radial", old, isRadial());
     }
 
+    /**
+     * 
+     * @return reversed
+     */
     public boolean isReversed() {
         return reversed;
     }
 
+    /**
+     * 
+     * @param reversed
+     */
     public void setReversed(boolean reversed) {
         boolean old = isReversed(); 
         this.reversed = reversed;
         firePropertyChange("reversed", old, isReversed());
     }
 
+    /**
+     * 
+     * @return reflected
+     */
     public boolean isReflected() {
         return reflected;
     }
 
+    /**
+     * 
+     * @param reflected
+     */
     public void setReflected(boolean reflected) {
         boolean old = isReflected();
         this.reflected = reflected;
         firePropertyChange("reflected", old, isReflected());
     }
 
+    /**
+     * 
+     * @return repeated
+     */
     public boolean isRepeated() {
         return repeated;
     }
 
+    /**
+     * 
+     * @param repeated
+     */
     public void setRepeated(boolean repeated) {
         boolean old = isRepeated();
         this.repeated = repeated;

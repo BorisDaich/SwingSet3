@@ -78,7 +78,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements TableCel
      * Instantiates an editor with the given dateFormat. If
      * null, the datePickers default is used.
      * 
-     * @param dateFormat
+     * @param dateFormat DateFormat
      */
     public DatePickerCellEditor(DateFormat dateFormat) {
         // JW: the copy is used to synchronize .. can 
@@ -245,7 +245,7 @@ public class DatePickerCellEditor extends AbstractCellEditor implements TableCel
 
     /**
      * empty check
-     * @param value
+     * @param value Object
      * @return value is empty
      */
     protected boolean isEmpty(Object value) {

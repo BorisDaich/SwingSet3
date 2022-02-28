@@ -90,8 +90,8 @@ public interface ColumnControlPopup extends UIDependent {
     public interface ActionGrouper {
     	/**
     	 * TODO doc
-    	 * @param <A>
-    	 * @param actions
+    	 * @param <A> A extends Action
+    	 * @param actions List of Actions
     	 * @return subclass of Action
     	 */
         <A extends Action> List<List<A>> group(List<A> actions);

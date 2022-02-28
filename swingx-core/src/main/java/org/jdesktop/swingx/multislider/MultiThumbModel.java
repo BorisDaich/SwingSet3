@@ -78,10 +78,14 @@ public interface MultiThumbModel<E> extends Iterable<Thumb<E>> {
     public Thumb<E> getThumbAt(int index);
     /**
      * finder
-     * @param thumb
+     * @param thumb generic Thumb
      * @return index
      */
     public int getThumbIndex(Thumb<E> thumb);
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @return List of Thumbs
+     */
     public List<Thumb<E>> getSortedThumbs();
     
     /**

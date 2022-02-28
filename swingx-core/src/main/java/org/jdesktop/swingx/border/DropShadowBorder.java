@@ -78,18 +78,41 @@ public class DropShadowBorder implements Border, Serializable {
     private boolean showBottomShadow;
     private boolean showRightShadow;
     
+    /**
+     * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
+     */
     public DropShadowBorder() {
         this(Color.BLACK, 5);
     }
     
+    /**
+     * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param shadowColor Color
+     * @param shadowSize
+     */
     public DropShadowBorder(Color shadowColor, int shadowSize) {
         this(shadowColor, shadowSize, .5f, 12, false, false, true, true);
     }
     
+    /**
+     * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param showLeftShadow
+     */
     public DropShadowBorder(boolean showLeftShadow) {
         this(Color.BLACK, 5, .5f, 12, false, showLeftShadow, true, true);
     }
-    
+
+    /**
+     * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param shadowColor
+     * @param shadowSize
+     * @param shadowOpacity
+     * @param cornerSize
+     * @param showTopShadow
+     * @param showLeftShadow
+     * @param showBottomShadow
+     * @param showRightShadow
+     */
     public DropShadowBorder(Color shadowColor, int shadowSize,
             float shadowOpacity, int cornerSize, boolean showTopShadow,
             boolean showLeftShadow, boolean showBottomShadow, boolean showRightShadow) {
@@ -381,67 +404,131 @@ public class DropShadowBorder implements Border, Serializable {
         return false;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return showTopShadow
+     */
     public boolean isShowTopShadow() {
         return showTopShadow;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return showLeftShadow
+     */
     public boolean isShowLeftShadow() {
         return showLeftShadow;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return showRightShadow
+     */
     public boolean isShowRightShadow() {
         return showRightShadow;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return showBottomShadow
+     */
     public boolean isShowBottomShadow() {
         return showBottomShadow;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return size
+     */
     public int getShadowSize() {
         return shadowSize;
     }
-    
+
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return Color
+     */
     public Color getShadowColor() {
         return shadowColor;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return Opacity
+     */
     public float getShadowOpacity() {
         return shadowOpacity;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @return
+     */
     public int getCornerSize() {
         return cornerSize;
     }
     
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param shadowColor
+     */
     public void setShadowColor(Color shadowColor) {
         this.shadowColor = shadowColor;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param shadowSize
+     */
     public void setShadowSize(int shadowSize) {
         this.shadowSize = shadowSize;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param shadowOpacity
+     */
     public void setShadowOpacity(float shadowOpacity) {
         this.shadowOpacity = shadowOpacity;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param cornerSize
+     */
     public void setCornerSize(int cornerSize) {
         this.cornerSize = cornerSize;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param showTopShadow
+     */
     public void setShowTopShadow(boolean showTopShadow) {
         this.showTopShadow = showTopShadow;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param showLeftShadow
+     */
     public void setShowLeftShadow(boolean showLeftShadow) {
         this.showLeftShadow = showLeftShadow;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param showBottomShadow
+     */
     public void setShowBottomShadow(boolean showBottomShadow) {
         this.showBottomShadow = showBottomShadow;
     }
 
-    public void setShowRightShadow(boolean showRightShadow) {
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param showRightShadow
+     */
+   public void setShowRightShadow(boolean showRightShadow) {
         this.showRightShadow = showRightShadow;
     }
 }

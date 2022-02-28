@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -46,10 +44,17 @@ public class EditorPaneLinkVisitor implements ActionListener {
     private HyperlinkListener hyperlinkListener;
     private LinkModel internalLink;
     
+    /**
+     * ctor
+     */
     public EditorPaneLinkVisitor() {
         this(null);
     }
     
+    /**
+     * ctor
+     * @param pane JXEditorPane
+     */
     public EditorPaneLinkVisitor(JXEditorPane pane) {
         if (pane == null) {
             pane = createDefaultEditorPane();
@@ -58,7 +63,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
         pane.addHyperlinkListener(getHyperlinkListener());
     }
     
-
+    /**
+     * 
+     * @return JXEditorPane
+     */
     public JXEditorPane getOutputComponent() {
         return editorPane;
     }
@@ -78,6 +86,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
    
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param link LinkModel
+     */
     public void visit(LinkModel link) {
         try {
             // make sure to reload
@@ -91,6 +103,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
         }
     }
 
+    /**
+     * 
+     * @return JXEditorPane
+     */
     protected JXEditorPane createDefaultEditorPane() {
         final JXEditorPane editorPane = new JXEditorPane();
         editorPane.setEditable(false);
@@ -98,6 +114,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
         return editorPane;
     }
 
+    /**
+     * 
+     * @return HyperlinkListener
+     */
     protected HyperlinkListener getHyperlinkListener() {
         if (hyperlinkListener == null) {
             hyperlinkListener = createHyperlinkListener();
@@ -105,6 +125,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
         return hyperlinkListener;
     }
 
+    /**
+     * 
+     * @return HyperlinkListener
+     */
     protected HyperlinkListener createHyperlinkListener() {
         return new HyperlinkListener() {
             @Override
@@ -118,6 +142,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
         };
     }
 
+    /**
+     * 
+     * @return LinkModel
+     */
     protected LinkModel getInternalLink() {
         if (internalLink == null) {
             internalLink = new LinkModel("internal");
@@ -125,6 +153,10 @@ public class EditorPaneLinkVisitor implements ActionListener {
         return internalLink;
     }
 
+    /**
+     * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
+     * @param url URL
+     */
     protected void visitInternal(URL url) {
         try {
             getInternalLink().setURL(url);

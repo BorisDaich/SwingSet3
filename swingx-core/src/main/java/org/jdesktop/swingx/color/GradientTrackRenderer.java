@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,8 +41,12 @@ import org.jdesktop.swingx.util.PaintUtils;
  * RadialGradientPaint, it requires the optional MultipleGradientPaint.jar</p>
  */
 public class GradientTrackRenderer extends JComponent implements TrackRenderer {
+	
     private Paint checker_paint;
 
+    /**
+     * ctor
+     */
     public GradientTrackRenderer() {
         checker_paint = PaintUtils.getCheckerPaint();
     }

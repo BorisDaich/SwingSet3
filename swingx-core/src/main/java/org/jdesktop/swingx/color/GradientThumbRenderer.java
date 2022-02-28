@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -31,10 +29,17 @@ import org.jdesktop.swingx.JXMultiThumbSlider;
 import org.jdesktop.swingx.multislider.ThumbRenderer;
 import org.jdesktop.swingx.util.PaintUtils;
 
+/**
+ * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+ */
 public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
+	
     private Image thumb_black;
     private Image thumb_gray;
 
+    /**
+     * ctor
+     */
     public GradientThumbRenderer() {
         super();
     
@@ -47,6 +52,7 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
     }
     
     private boolean selected;
+    
     @Override
     protected void paintComponent(Graphics g) {
         JComponent thumb = this;

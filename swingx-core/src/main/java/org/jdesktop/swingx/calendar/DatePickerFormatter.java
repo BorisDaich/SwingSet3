@@ -231,12 +231,17 @@ public class DatePickerFormatter extends JFormattedTextField.AbstractFormatter {
         }
 
         /**
-         * 
+         * ctor
          */
         public DatePickerFormatterUIResource() {
             this(null);
         }
      
+        /**
+         * ctor
+         * @param formats array of DateFormats
+         * @param locale Locale
+         */
         public DatePickerFormatterUIResource(DateFormat[] formats, Locale locale) {
             super(formats, locale);
         }

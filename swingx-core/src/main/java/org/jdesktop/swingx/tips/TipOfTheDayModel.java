@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,7 +33,7 @@ public interface TipOfTheDayModel {
   int getTipCount();
 
   /**
-   * @param index
+   * @param index TODO maven-javadoc-plugin 3.3.2 needs a doc here
    * @return the tip at <code>index</code>
    * @throws IndexOutOfBoundsException
    *           if the index is out of range (index &lt; 0 || index &gt;=

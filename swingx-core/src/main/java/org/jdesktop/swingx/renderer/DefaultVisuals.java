@@ -215,7 +215,7 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
 
 
     /**
-     * Configures the rendering component's border from the given cell context.<p>
+     * Configures the rendering component's border from the given cell context.
      * 
      * @param renderingComponent the component to configure, must not be null
      * @param context the cell context to configure from, must not be null

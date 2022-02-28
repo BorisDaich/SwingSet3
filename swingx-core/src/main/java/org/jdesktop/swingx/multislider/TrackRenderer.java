@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -24,7 +22,12 @@ import javax.swing.JComponent;
 
 import org.jdesktop.swingx.JXMultiThumbSlider;
 
-
 public interface TrackRenderer {
+	
+	/**
+	 * get Renderer Component
+	 * @param slider JXMultiThumbSlider
+	 * @return
+	 */
     public JComponent getRendererComponent(JXMultiThumbSlider slider);
 }

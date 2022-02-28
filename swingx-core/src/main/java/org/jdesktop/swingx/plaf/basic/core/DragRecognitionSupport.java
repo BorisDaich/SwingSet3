@@ -85,15 +85,20 @@ public class DragRecognitionSupport {
 
     /**
      * Returns whether or not the event is potentially part of a drag sequence.
+     * 
+     * @param me MouseEvent
+     * @return mousePressed (maven-javadoc-plugin 3.3.2 needs a doc here)
      */
     public static boolean mousePressed(MouseEvent me) {
-        return ((DragRecognitionSupport)getDragRecognitionSupport()).
-            mousePressedImpl(me);
+        return ((DragRecognitionSupport)getDragRecognitionSupport()).mousePressedImpl(me);
     }
 
     /**
      * If a dnd recognition has been going on, return the MouseEvent
      * that started the recognition. Otherwise, return null.
+     * 
+     * @param me MouseEvent
+     * @return MouseEvent
      */
     public static MouseEvent mouseReleased(MouseEvent me) {
         return ((DragRecognitionSupport)getDragRecognitionSupport()).
@@ -102,6 +107,10 @@ public class DragRecognitionSupport {
 
     /**
      * Returns whether or not a drag gesture recognition is ongoing.
+     * 
+     * @param me MouseEvent
+     * @param bd BeforeDrag
+     * @return mouseDragged  (maven-javadoc-plugin 3.3.2 needs a doc here)
      */
     public static boolean mouseDragged(MouseEvent me, BeforeDrag bd) {
         return ((DragRecognitionSupport)getDragRecognitionSupport()).

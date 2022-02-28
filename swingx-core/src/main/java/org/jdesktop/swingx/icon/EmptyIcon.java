@@ -33,15 +33,27 @@ public final class EmptyIcon implements Icon, Serializable {
     private int width;
     private int height;
 
+    /**
+     * ctor
+     */
     public EmptyIcon() {
         this(0, 0);
     }
 
+    /**
+     * ctor
+     * @param width of the icon
+     * @param height of the icon
+     */
     public EmptyIcon(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * convenient ctor with Dimension
+     * @param size Dimension
+     */
     public EmptyIcon(Dimension size) {
     	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
     }

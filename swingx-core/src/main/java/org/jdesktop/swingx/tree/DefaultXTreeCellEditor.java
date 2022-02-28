@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -50,23 +48,44 @@ import org.jdesktop.swingx.plaf.UIDependent;
  */
 public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UIDependent {
 
+	/**
+	 * ctor
+	 * @param tree
+	 * @param renderer
+	 */
     public DefaultXTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
     }
 
-    public DefaultXTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer,
-            TreeCellEditor editor) {
+    /**
+     * ctor - maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tree JTree
+     * @param renderer DefaultTreeCellRenderer
+     * @param editor TreeCellEditor
+     */
+    public DefaultXTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer, TreeCellEditor editor) {
         super(tree, renderer, editor);
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param renderer DefaultTreeCellRenderer
+     */
     public void setRenderer(DefaultTreeCellRenderer renderer) {
         this.renderer = renderer;
     }
     
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @return renderer
+     */
     public DefaultTreeCellRenderer getRenderer() {
         return renderer;
     }
     
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     */
     public class XEditorContainer extends EditorContainer {
 
         @Override
@@ -151,6 +170,9 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
         applyComponentOrientation();
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     */
     protected void applyComponentOrientation() {
         if (tree != null) {
             editingContainer.applyComponentOrientation(tree.getComponentOrientation());

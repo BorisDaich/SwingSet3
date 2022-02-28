@@ -81,8 +81,7 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
         setSortsOnUpdates(true);
     }
     /**
-     * {@inheritDoc} <p>
-     * 
+     * {@inheritDoc}
      */
     @Override
     public void setSortable(boolean sortable) {

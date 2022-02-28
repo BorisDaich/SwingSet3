@@ -67,6 +67,7 @@ public class DefaultListRenderer<E> extends AbstractRenderer implements ListCell
 
 	private static final long serialVersionUID = -6697507974102370474L;
 	
+	/** TODO maven-javadoc-plugin 3.3.2 needs a doc here */
 	protected ListCellContext cellContext;
 
     /**

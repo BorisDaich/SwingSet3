@@ -27,11 +27,16 @@ import org.jdesktop.beans.AbstractBean;
  * @author rbair
  */
 public abstract class UserNameStore extends AbstractBean {
+	
     /**
      * Gets the current list of users.
-     */
+	 * 
+	 * @return array of current users
+	 */
     public abstract String[] getUserNames();
     /**
+     * 
+     * @param names user names to set
      */
     public abstract void setUserNames(String[] names);
     /**
@@ -43,18 +48,21 @@ public abstract class UserNameStore extends AbstractBean {
      */
     public abstract void saveUserNames();
     /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param name user name
+     * @return true if user name is in the list
      */
     public abstract boolean containsUserName(String name);
     
     /**
      * Add a username to the store.
-     * @param userName
+     * @param userName user name
      */
     public abstract void addUserName(String userName);
     
     /**
      * Removes a username from the list.
-     * @param userName
+     * @param userName user name
      */
     public abstract void removeUserName(String userName);
 }

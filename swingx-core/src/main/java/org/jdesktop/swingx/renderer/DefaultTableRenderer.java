@@ -109,6 +109,7 @@ public class DefaultTableRenderer extends AbstractRenderer implements TableCellR
      * 
      * @param converter the converter to use for mapping the
      *   content value to a String representation.
+     * @param alignment the horizontal alignment.
      *   
      * @see #DefaultTableRenderer(ComponentProvider)  
      */

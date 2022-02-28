@@ -324,7 +324,7 @@ public abstract class ComponentAdapter {
 
     /**
      * Returns the String representation of the value of the cell identified by the current 
-     * adapter row and the given column index in model coordinates.<p>
+     * adapter row and the given column index in model coordinates.
      * 
      * @param modelColumnIndex the column index in model coordinates 
      * @return the String representation of the value of the cell identified by this adapter

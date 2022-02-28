@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -34,13 +32,24 @@ public class DefaultTipOfTheDayModel implements TipOfTheDayModel {
 
     private List<Tip> tips = new ArrayList<Tip>();
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     */
     public DefaultTipOfTheDayModel() {
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tips array of tips
+     */
     public DefaultTipOfTheDayModel(Tip[] tips) {
         this(Arrays.asList(tips));
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tips Collection of tips
+     */
     public DefaultTipOfTheDayModel(Collection<Tip> tips) {
         this.tips.addAll(tips);
     }
@@ -55,18 +64,34 @@ public class DefaultTipOfTheDayModel implements TipOfTheDayModel {
         return tips.size();
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tip a Tip
+     */
     public void add(Tip tip) {
         tips.add(tip);
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tip a Tip
+     */
     public void remove(Tip tip) {
         tips.remove(tip);
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @return tips
+     */
     public Tip[] getTips() {
         return tips.toArray(new Tip[tips.size()]);
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tips array of tips
+     */
     public void setTips(Tip[] tips) {
         this.tips.clear();
         this.tips.addAll(Arrays.asList(tips));

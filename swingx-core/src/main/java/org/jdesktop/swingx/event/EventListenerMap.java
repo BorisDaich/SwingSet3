@@ -53,7 +53,8 @@ public class EventListenerMap {
 
     /**
      * Return a list of all the listeners of the given type.
-     * 
+     * @param <T>
+     * @param clazz
      * @return all of the listeners of the specified type.
      */
     @SuppressWarnings("unchecked")
@@ -66,8 +67,8 @@ public class EventListenerMap {
     }
 
     /**
-     * Returns the total number of listeners of the supplied type 
-     * for this listener list.
+     * Returns the total number of listeners of the supplied type for this listener list.
+     * @return total number of listeners
      */
     public int getListenerCount() {
         int count = 0;
@@ -81,6 +82,9 @@ public class EventListenerMap {
 
     /**
      * Returns the total number of listeners for this listener type.
+     * @param <T>
+     * @param clazz
+     * @return total number of listeners
      */
     @SuppressWarnings("unchecked")
     public <T extends EventListener> int getListenerCount(Class<T> clazz) {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,9 +31,17 @@ public class DefaultTip implements Tip {
 
     private Object tip;
 
+    /**
+     * ctor
+     */
     public DefaultTip() {
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param name a String
+     * @param tip Object
+     */
     public DefaultTip(String name, Object tip) {
         this.name = name;
         this.tip = tip;
@@ -46,6 +52,10 @@ public class DefaultTip implements Tip {
         return tip;
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param tip Object
+     */
     public void setTip(Object tip) {
         this.tip = tip;
     }
@@ -55,6 +65,10 @@ public class DefaultTip implements Tip {
         return name;
     }
 
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * @param name a String
+     */
     public void setTipName(String name) {
         this.name = name;
     }

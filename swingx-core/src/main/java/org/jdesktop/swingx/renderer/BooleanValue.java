@@ -27,7 +27,7 @@ public interface BooleanValue {
 
 	/**
 	 * get boolean from object
-	 * @param value
+	 * @param value as Object
 	 * @return boolean
 	 */
     boolean getBoolean(Object value);

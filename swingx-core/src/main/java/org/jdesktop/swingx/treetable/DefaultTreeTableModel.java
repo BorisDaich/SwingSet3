@@ -109,7 +109,6 @@ public class DefaultTreeTableModel extends AbstractTreeTableModel {
      * the number of <code>newIdentifier</code>s is less than the current
      * number of columns, all the extra columns at the end of a row are
      * discarded.
-     * <p>
      * 
      * @param columnIdentifiers
      *            vector of column identifiers. If <code>null</code>, set the
@@ -369,19 +368,23 @@ public class DefaultTreeTableModel extends AbstractTreeTableModel {
      * This will then message nodesWereInserted to create the appropriate event.
      * This is the preferred way to add children as it will create the
      * appropriate event.
+     * 
+     * @param newChild MutableTreeTableNode
+     * @param parent MutableTreeTableNode
+     * @param index TODO maven-javadoc-plugin 3.3.2 needs a doc here
      */
-    public void insertNodeInto(MutableTreeTableNode newChild,
-            MutableTreeTableNode parent, int index) {
+    public void insertNodeInto(MutableTreeTableNode newChild, MutableTreeTableNode parent, int index) {
         parent.insert(newChild, index);
 
-        modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index,
-                newChild);
+        modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
     }
 
     /**
      * Message this to remove node from its parent. This will message
      * nodesWereRemoved to create the appropriate event. This is the preferred
      * way to remove a node as it handles the event creation for you.
+     * 
+     * @param node MutableTreeTableNode
      */
     public void removeNodeFromParent(MutableTreeTableNode node) {
         MutableTreeTableNode parent = (MutableTreeTableNode) node.getParent();

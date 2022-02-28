@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.error;
 
 import java.util.EventListener;
@@ -39,7 +36,7 @@ public interface ErrorListener extends EventListener {
     
     /**
      * Tells listeners that an error has occured within the watched component.
-     * @param event 
+     * @param event ErrorEvent
      */
     public void errorOccured(ErrorEvent event);
 }
