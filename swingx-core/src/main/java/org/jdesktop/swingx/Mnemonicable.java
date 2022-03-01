@@ -1,14 +1,13 @@
 package org.jdesktop.swingx;
 
 /**
- * An interface that describes an object that is capable of being accessed/used via a mnemonic
- * keystroke.
+ * An interface that describes an object that is capable of being accessed/used via a mnemonic keystroke.
  * 
  * @author Karl George Schaefer
  */
-// TODO this describes the mnemonic feature but not what is used,
-// ie. what String returning method is called
-interface Mnemonicable {
+// TODO this describes the mnemonic feature but not what is used, ie. what String returning method is called
+public interface Mnemonicable {
+	
     /**
      * Returns the keyboard mnemonic for this component.
      * 
@@ -32,8 +31,8 @@ interface Mnemonicable {
      * @see java.awt.event.KeyEvent
      * @see #setDisplayedMnemonicIndex
      * 
-     * @beaninfo bound: true attribute: visualUpdate true description: the
-     *           keyboard character mnemonic
+     * @beaninfo bound: true attribute: visualUpdate true 
+     *           description: the keyboard character mnemonic
      */
     void setMnemonic(int mnemonic);
     
