@@ -67,7 +67,7 @@ public class ServerAction extends AbstractAction {
     /**
      * Creates an {@code Action} with a specified name.
      * 
-     * @param name
+     * @param name String name
      */
     public ServerAction(String name) {
         super(name);
@@ -86,8 +86,8 @@ public class ServerAction extends AbstractAction {
     /**
      * Creates an {@code Action} with the specified name and small icon.
      * 
-     * @param name
-     * @param icon
+     * @param name String name
+     * @param icon Icon
      */
     public ServerAction(String name, Icon icon) {
         super(name, icon);
@@ -115,6 +115,10 @@ public class ServerAction extends AbstractAction {
         putValue(URL_CACHE, null);
     }
 
+    /**
+     * 
+     * @return url
+     */
     public String getURL() {
         return (String)getValue(URL);
     }
@@ -131,8 +135,8 @@ public class ServerAction extends AbstractAction {
     /**
      * Adds a name value pair which represents a url parameter in an http POST request.
      * 
-     * @param name
-     * @param value
+     * @param name String name
+     * @param value String value
      */
     public void addParam(String name, String value) {
         Map<String, String> params = getParams();
@@ -176,7 +180,7 @@ public class ServerAction extends AbstractAction {
      * "application/x-www-form-urlencoded"
      * 
      * @param name key
-     * @param value
+     * @param value String value
      */
     public void addHeader(String name, String value) {
         Map<String, String> map = getHeaders();
@@ -190,7 +194,7 @@ public class ServerAction extends AbstractAction {
     /**
      * Return a header value corresponding to name or null if it doesn't exist.
      * 
-     * @param name
+     * @param name key of header value
      * @return header value
      */
     public String getHeaderValue(String name) {

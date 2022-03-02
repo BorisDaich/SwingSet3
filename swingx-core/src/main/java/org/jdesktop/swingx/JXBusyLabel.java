@@ -180,7 +180,7 @@ public class JXBusyLabel extends JLabel {
      * be overridden to return any painter you like.  By default, this 
      * method uses the UI (BusyLabelUI) to create a BusyPainter.
      * @param dim Painter size.
-     *
+     * @return BusyPainter
      * @see #getUI()
      */
     protected BusyPainter createBusyPainter(Dimension dim) {
@@ -270,6 +270,9 @@ public class JXBusyLabel extends JLabel {
         }
     }
 
+    /**
+     * repaint
+     */
     protected void frameChanged() {
         repaint();
     }

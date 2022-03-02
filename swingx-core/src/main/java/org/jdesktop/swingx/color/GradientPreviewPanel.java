@@ -288,7 +288,7 @@ public class GradientPreviewPanel extends JXPanel {
 
     /**
      * 
-     * @param radial
+     * @param radial boolean
      */
     public void setRadial(boolean radial) {
         boolean old = isRadial();
@@ -306,7 +306,7 @@ public class GradientPreviewPanel extends JXPanel {
 
     /**
      * 
-     * @param reversed
+     * @param reversed boolean
      */
     public void setReversed(boolean reversed) {
         boolean old = isReversed(); 
@@ -324,7 +324,7 @@ public class GradientPreviewPanel extends JXPanel {
 
     /**
      * 
-     * @param reflected
+     * @param reflected boolean
      */
     public void setReflected(boolean reflected) {
         boolean old = isReflected();
@@ -342,7 +342,7 @@ public class GradientPreviewPanel extends JXPanel {
 
     /**
      * 
-     * @param repeated
+     * @param repeated boolean
      */
     public void setRepeated(boolean repeated) {
         boolean old = isRepeated();

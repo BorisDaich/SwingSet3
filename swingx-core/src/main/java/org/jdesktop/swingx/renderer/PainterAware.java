@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -25,12 +23,20 @@ import org.jdesktop.swingx.painter.Painter;
 /**
  * Temporary hook to allow painters in rendering. <p>
  * 
- * NOTE: this will be removed as soon as the painter_work enters
- * main.
+ * NOTE: this will be removed as soon as the painter_work enters main.
  * 
  * @author Jeanette Winzenburg
  */
 public interface PainterAware {
+	
+	/**
+	 * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+	 * @param painter Painter
+	 */
     void setPainter(Painter<?> painter);
+    /**
+     * 
+     * @return Painter
+     */
     Painter<?> getPainter();
 }

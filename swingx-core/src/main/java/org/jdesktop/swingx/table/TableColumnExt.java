@@ -229,7 +229,6 @@ public class TableColumnExt extends TableColumn implements UIDependent {
     /**
      * Appends a <code>Highlighter</code> to the end of the list of used
      * <code>Highlighter</code>s. The argument must not be null. 
-     * <p>
      * 
      * @param highlighter the <code>Highlighter</code> to add, must not be null.
      * @throws NullPointerException if <code>Highlighter</code> is null.
@@ -529,7 +528,7 @@ public class TableColumnExt extends TableColumn implements UIDependent {
      * 
      * The default value is true.
      * 
-     * @param hideable
+     * @param hideable boolean
      */
     public void setHideable(boolean hideable) {
         boolean old = isHideable();
@@ -561,7 +560,6 @@ public class TableColumnExt extends TableColumn implements UIDependent {
      * The <code>get/putClientProperty</code> methods provide access to a
      * per-instance hashtable, which is intended for small scale extensions of
      * TableColumn.
-     * <p>
      * 
      * @param key Object which is used as key to retrieve value
      * @param value Object containing value of client property

@@ -523,7 +523,7 @@ public class JXImageView extends JXPanel {
     
     /**
      * Implementation detail.
-     * @param g 
+     * @param g Graphics
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -730,30 +730,55 @@ public class JXImageView extends JXPanel {
         }
     }
 
+    /**
+     * 
+     * @return String exportName
+     */
     public String getExportName() {
         return exportName;
     }
 
+    /**
+     * 
+     * @param exportName String
+     */
     public void setExportName(String exportName) {
         String old = getExportName();
         this.exportName = exportName;
         firePropertyChange("exportName", old, getExportName());
     }
 
+    /**
+     * 
+     * @return String exportFormat
+     */
     public String getExportFormat() {
         return exportFormat;
     }
 
+    /**
+     * 
+     * @param exportFormat String
+     */
     public void setExportFormat(String exportFormat) {
         String old = getExportFormat();
         this.exportFormat = exportFormat;
         firePropertyChange("exportFormat", old, getExportFormat());
     }
 
+    /**
+     * 
+     * @return URL imageURL
+     */
     public URL getImageURL() {
         return imageURL;
     }
 
+    /**
+     * 
+     * @param imageURL URL
+     * @throws IOException TODO explain
+     */
     public void setImageURL(URL imageURL) throws IOException {
         URL old = getImageURL();
         this.imageURL = imageURL;

@@ -19,14 +19,14 @@ public interface IconAware {
     /**
      * Sets the icon property.
      * 
-     * @param icon 
+     * @param icon Icon
      */
     public void setIcon(Icon icon);
     
     /**
      * Returns the icon property.
      * 
-     * @return
+     * @return Icon
      */
     public Icon getIcon();
     

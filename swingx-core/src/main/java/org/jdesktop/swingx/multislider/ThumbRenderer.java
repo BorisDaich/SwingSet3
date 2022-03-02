@@ -27,8 +27,8 @@ public interface ThumbRenderer {
 	/**
 	 * get ThumbRenderer Component
 	 * @param slider JXMultiThumbSlider
-	 * @param index
-	 * @param selected
+	 * @param index int
+	 * @param selected boolean
 	 * @return JComponent
 	 */
     public JComponent getThumbRendererComponent(JXMultiThumbSlider slider, int index, boolean selected);

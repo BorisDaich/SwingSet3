@@ -569,6 +569,10 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
         return fgPainter;
     }
 
+    /**
+     * set ForegroundPainter
+     * @param p the Painter
+     */
     public void setForegroundPainter(Painter<Component> p) {
         Painter<?> old = getForegroundPainter();
         this.fgPainter = p;

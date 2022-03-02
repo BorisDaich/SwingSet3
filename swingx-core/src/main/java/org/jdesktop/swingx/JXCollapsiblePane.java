@@ -485,7 +485,7 @@ public class JXCollapsiblePane extends JXPanel {
      * If not animated, the <code>JXCollapsiblePane</code> will simply hide
      * (collapsing) or show (expanding) its content area.
      *
-     * @param animated
+     * @param animated useAnimation
      */
     /* @javabean.property bound="true" preferred="true"
      */
@@ -597,6 +597,8 @@ public class JXCollapsiblePane extends JXPanel {
      * As of SwingX 1.6.3, JXCollapsiblePane only fires property change events when
      * the component's state is accurate.  This means that animated collapsible 
      * pane's only fire events once the animation is complete.
+     * 
+     * @param val value
      *
      * @see #isAnimated()
      * @see #setAnimated(boolean)
@@ -779,6 +781,7 @@ public class JXCollapsiblePane extends JXPanel {
      * validated.
      */
     public static interface CollapsiblePaneContainer {
+    	/** TODO maven-javadoc-plugin 3.3.2 needs a doc here */
         Container getValidatingContainer();
     }
 

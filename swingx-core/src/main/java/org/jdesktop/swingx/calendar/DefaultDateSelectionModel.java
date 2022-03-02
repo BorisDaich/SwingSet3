@@ -46,7 +46,7 @@ public class DefaultDateSelectionModel extends AbstractDateSelectionModel {
 
     /**
      * The selection mode defaults to SINGLE_SELECTION.
-     * @param locale
+     * @param locale Locale
      */
     public DefaultDateSelectionModel(Locale locale) {
         super(locale);

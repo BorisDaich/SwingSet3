@@ -75,7 +75,14 @@ public class JXFrame extends JFrame {
      *
      * @author unascribed from JDNC
      */
-    public enum StartPosition {CenterInScreen, CenterInParent, Manual}
+    public enum StartPosition {
+    	/** CenterInScreen */
+    	CenterInScreen, 
+    	/** CenterInParent */
+    	CenterInParent, 
+    	/** Manual */
+    	Manual
+    }
     
     private Component waitPane = null;
     private Component glassPane = null;
@@ -114,7 +121,6 @@ public class JXFrame extends JFrame {
      * Creates a <code>JXFrame</code> in the specified
      * <code>GraphicsConfiguration</code> of
      * a screen device, a blank title and default closing behaviour.
-     * <p>
      *
      * @param gc the <code>GraphicsConfiguration</code> that is used
      *          to construct the new <code>Frame</code>;
@@ -133,7 +139,6 @@ public class JXFrame extends JFrame {
      * Creates a <code>JXFrame</code> with the specified title, the
      * specified <code>GraphicsConfiguration</code> of a screen device and
      * default closing behaviour.
-     * <p>
      *
      * @param title the title to be displayed in the
      *          frame's border. A <code>null</code> value is treated as
@@ -502,6 +507,10 @@ public class JXFrame extends JFrame {
         super.setVisible(visible);
     }
     
+    /**
+     * 
+     * @return boolean idle
+     */
     public boolean isIdle() {
         return idle;
     }

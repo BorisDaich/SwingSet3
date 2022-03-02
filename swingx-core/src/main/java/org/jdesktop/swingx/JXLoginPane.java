@@ -165,11 +165,31 @@ public class JXLoginPane extends JXPanel {
      * the username, password, or both to their respective stores.
      * This type specifies what type of save should be performed.
      */
-    public static enum SaveMode {NONE, USER_NAME, PASSWORD, BOTH}
+    public static enum SaveMode {
+    	/** NONE */
+    	NONE, 
+    	/** USER_NAME */
+    	USER_NAME, 
+    	/** PASSWORD */
+    	PASSWORD, 
+    	/** BOTH */
+    	BOTH
+    }
     /**
      * Returns the status of the login process
      */
-    public enum Status {NOT_STARTED, IN_PROGRESS, FAILED, CANCELLED, SUCCEEDED}
+    public enum Status {
+    	/** NOT_STARTED */
+    	NOT_STARTED, 
+    	/** IN_PROGRESS */
+    	IN_PROGRESS, 
+    	/** FAILED */
+    	FAILED, 
+    	/** CANCELLED */
+    	CANCELLED, 
+    	/** SUCCEEDED */
+    	SUCCEEDED
+    }
 
     /**
      * The current login status for this panel
@@ -890,6 +910,10 @@ public class JXLoginPane extends JXPanel {
         }
     }
     
+    /**
+     * 
+     * @return true if isRememberPassword is selected
+     */
 	public boolean isRememberPassword() {
 		return saveCB.isVisible() && saveCB.isSelected();
 	}
@@ -1690,20 +1714,37 @@ public class JXLoginPane extends JXPanel {
         return new JXLoginFrame(panel);
     }
 
+    /**
+     * TODO
+     */
     public static final class JXLoginDialog extends JDialog {
         private static final long serialVersionUID = -3185639594267828103L;
         private JXLoginPane panel;
 
+        /**
+         * 
+         * @param parent Frame
+         * @param p JXLoginPane
+         */
         public JXLoginDialog(Frame parent, JXLoginPane p) {
             super(parent, true);
             init(p);
         }
 
+        /**
+         * 
+         * @param parent Dialog
+         * @param p JXLoginPane
+         */
         public JXLoginDialog(Dialog parent, JXLoginPane p) {
             super(parent, true);
             init(p);
         }
 
+        /**
+         * 
+         * @param p JXLoginPane
+         */
         protected void init(JXLoginPane p) {
         	LOG.config("set titleString to Locale "+p.getLocale());
             setTitle(UIManagerExt.getString(CLASS_NAME + ".titleString", p.getLocale()));
@@ -1711,15 +1752,26 @@ public class JXLoginPane extends JXPanel {
             initWindow(this, panel);
         }
     
+        /**
+         * 
+         * @return JXLoginPane Status
+         */
         public JXLoginPane.Status getStatus() {
             return panel.getStatus();
         }
     }
 
+    /**
+     * TODO
+     */
 	public static final class JXLoginFrame extends JXFrame {
 		private static final long serialVersionUID = -9016407314342050807L;
 		private JXLoginPane panel;
 
+		/**
+		 * ctor
+		 * @param p JXLoginPane
+		 */
 		public JXLoginFrame(JXLoginPane p) {
 			super(UIManagerExt.getString(CLASS_NAME + ".titleString", p.getLocale()));
 			JXPanel cp = new JXPanel();
@@ -1734,10 +1786,18 @@ public class JXLoginPane extends JXPanel {
 			return (JXPanel) super.getContentPane();
 		}
 
+        /**
+         * 
+         * @return JXLoginPane Status
+         */
 		public JXLoginPane.Status getStatus() {
 			return panel.getStatus();
 		}
 
+        /**
+         * 
+         * @return JXLoginPane 
+         */
 		public JXLoginPane getPanel() {
 			return panel;
 		}

@@ -54,6 +54,9 @@ public class BoundAction extends AbstractActionExt {
     // Holds the listeners
     private transient EventListenerList listeners;
 
+    /**
+     * ctor
+     */
     public BoundAction() {
         this("BoundAction");
     }
@@ -102,6 +105,8 @@ public class BoundAction extends AbstractActionExt {
      * <pre>
      *     registerCallback(com.sun.foo.FubarHandler(), "handleBar");
      * </pre>
+     * 
+     * @param callback a String
      */
     public void setCallback(String callback) {
         String[] elems = callback.split("#", 2);
@@ -204,7 +209,7 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * Add an action listener which will be invoked when this action is invoked.
-     * @param listener
+     * @param listener ActionListener
      */
     public void addActionListener(ActionListener listener) {
         addListener(ActionListener.class, listener);
@@ -212,7 +217,7 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * Remove an action listener
-     * @param listener
+     * @param listener ActionListener
      */
     public void removeActionListener(ActionListener listener) {
         removeListener(ActionListener.class, listener);
@@ -228,7 +233,7 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * Add an item listener which will be invoked for toggle actions.
-     * @param listener
+     * @param listener ItemListener
      */
     public void addItemListener(ItemListener listener) {
         addListener(ItemListener.class, listener);
@@ -295,8 +300,8 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * write observed Objects to stream
-     * @param s
-     * @throws IOException
+     * @param s ObjectOutputStream
+     * @throws IOException TODO explain
      */
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
@@ -336,8 +341,8 @@ public class BoundAction extends AbstractActionExt {
 
     /**
      * read Objects from stream
-     * @param s
-     * @throws IOException
+     * @param s ObjectInputStream
+     * @throws IOException TODO explain
      */
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream s) throws ClassNotFoundException,

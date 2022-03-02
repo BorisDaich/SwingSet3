@@ -47,6 +47,9 @@ public class CompositeAction extends AbstractActionExt {
      */
     private static final String LIST_IDS = "action-list-ids";
 
+    /**
+     * ctor
+     */
     public CompositeAction() {
         this("CompositeAction");
     }
@@ -87,7 +90,7 @@ public class CompositeAction extends AbstractActionExt {
      * Add an action id to the action list. This action will be invoked 
      * when this composite action is invoked.
      * 
-     * @param id
+     * @param id action id
      */
     @SuppressWarnings("unchecked")
     public void addAction(String id) {

@@ -428,6 +428,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
      * This can be placed in the toolbar.
      * <p>
      * Note: This is only valid for the HTMLEditorKit
+     * @return JComboBox
      */
     public JComboBox getParagraphSelector() {
         if (selector == null) {
@@ -509,6 +510,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
 
     /**
      * Applys the tag to the current selection
+     * @param tag HTML Tag
      */
     protected void applyTag(HTML.Tag tag) {
         Document doc = getDocument();
@@ -571,10 +573,10 @@ public class JXEditorPane extends JEditorPane implements Targetable {
     }
 
     /**
-     * sets the Searchable for this editor. If null, a default 
-     * searchable will be used.
+     * sets the Searchable for this editor. 
+     * If null, a default searchable will be used.
      * 
-     * @param searchable
+     * @param searchable Searchable
      */
     public void setSearchable(Searchable searchable) {
         this.searchable = searchable;
@@ -624,7 +626,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
          *
          * TODO: This should be in a utility class.
          * 
-         * @param searchString
+         * @param searchString String
          * @return true if string is null or has zero length
          */
         protected boolean isEmpty(String searchString) {

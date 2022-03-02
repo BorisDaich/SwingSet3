@@ -34,7 +34,7 @@ public class TargetableSupport {
     
     /**
      * Creates a new instance of TargetableSupport for a component
-     * @param component
+     * @param component JComponent
      */
     public TargetableSupport(JComponent component) {
         this.component = component;
@@ -42,7 +42,7 @@ public class TargetableSupport {
     
     /**
      * perform a given action <code>command</code>
-     * @param command
+     * @param command Object
      * @param value ActionEvent source
      * @return false if <code>command</code> not found in the component ActionMap
      */
@@ -75,7 +75,7 @@ public class TargetableSupport {
 
     /**
      * find a given command <code>command</code>
-     * @param command
+     * @param command Object
      * @return true if found
      */
     public boolean hasCommand(Object command) {

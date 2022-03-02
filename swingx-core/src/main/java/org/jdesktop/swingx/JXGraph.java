@@ -560,8 +560,8 @@ public class JXGraph extends JXPanel {
      * <p>Enables or disables user input on the component. When user input is
      * enabled, panning, zooming and view resetting. Disabling input will
      * prevent the user from modifying the currently displayed view.<p>
-     * <p>Calling {@link #setEnabled(boolean)} disables the component in the
-     * Swing hierarchy and invokes this method.</p>
+     * Calling {@link #setEnabled(boolean)} disables the component in the
+     * Swing hierarchy and invokes this method.
      *
      * @param enabled true if user input must be enabled, false otherwise
      * @see #setEnabled(boolean)

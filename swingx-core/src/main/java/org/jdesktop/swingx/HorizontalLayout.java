@@ -34,23 +34,39 @@ import org.jdesktop.swingx.util.Separator;
  */
 @JavaBean
 public class HorizontalLayout extends AbstractLayoutManager {
+	
     private static final long serialVersionUID = 8640046926840737487L;
     
     private int gap;
 
+    /**
+     * ctor
+     */
     public HorizontalLayout() {
         this(0);
     }
 
+    /**
+     * ctor
+     * @param gap int
+     */
     //TODO should we allow negative gaps?
     public HorizontalLayout(int gap) {
         this.gap = gap;
     }
 
+    /**
+     * 
+     * @return int gap
+     */
     public int getGap() {
         return gap;
     }
 
+    /**
+     * 
+     * @param gap int
+     */
     //TODO should we allow negative gaps?
     public void setGap(int gap) {
         this.gap = gap;

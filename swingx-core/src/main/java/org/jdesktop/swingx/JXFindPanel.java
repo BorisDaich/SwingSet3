@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Component;
@@ -45,12 +42,15 @@ import org.jdesktop.swingx.search.Searchable;
 @JavaBean
 public class JXFindPanel extends AbstractPatternPanel {
 
+    /** findNext */
     public static final String FIND_NEXT_ACTION_COMMAND = "findNext";
+    /** findPrevious */
     public static final String FIND_PREVIOUS_ACTION_COMMAND = "findPrevious";
-    
+    /** searchable */
     protected Searchable searchable;
-
+    /** wrapCheck */
     protected JCheckBox wrapCheck;
+    /** backCheck */
     protected JCheckBox backCheck;
     private boolean initialized;
 

@@ -30,8 +30,8 @@ public interface Mnemonicable {
      *            the key code which represents the mnemonic
      * @see java.awt.event.KeyEvent
      * @see #setDisplayedMnemonicIndex
-     * 
-     * @beaninfo bound: true attribute: visualUpdate true 
+     */ 
+    /* @beaninfo bound: true attribute: visualUpdate true 
      *           description: the keyboard character mnemonic
      */
     void setMnemonic(int mnemonic);
@@ -67,8 +67,8 @@ public interface Mnemonicable {
      * @exception IllegalArgumentException will be thrown if <code>index</code>
      *            is &gt;= length of the text, or &lt; -1
      * @see #getDisplayedMnemonicIndex
-     *
-     * @beaninfo
+     */
+    /* @beaninfo
      *        bound: true
      *    attribute: visualUpdate true
      *  description: the index into the String to draw the keyboard character

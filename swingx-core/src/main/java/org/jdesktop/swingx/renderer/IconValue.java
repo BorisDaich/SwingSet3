@@ -50,13 +50,12 @@ public interface IconValue extends Serializable {
      * The cell type the icon is used for.
      */
     public enum IconType {
-        
+        /** LEAF */
         LEAF,
-        
+        /** OPEN_FOLDER */
         OPEN_FOLDER,
-        
-        CLOSED_FOLDER
-        
+        /** CLOSED_FOLDER */
+        CLOSED_FOLDER        
     }
     
     /**

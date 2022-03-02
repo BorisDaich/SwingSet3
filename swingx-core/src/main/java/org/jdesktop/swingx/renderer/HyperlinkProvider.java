@@ -54,12 +54,12 @@ import org.jdesktop.swingx.rollover.RolloverRenderer;
  * 
  * @author Jeanette Winzenburg
  */
-public class HyperlinkProvider
-   extends ComponentProvider<JXHyperlink> implements
-         RolloverRenderer {
+public class HyperlinkProvider extends ComponentProvider<JXHyperlink> implements RolloverRenderer {
 
 
     private AbstractHyperlinkAction<Object> linkAction;
+    
+    /** targetClass */
     protected Class<?> targetClass;
 
     /**
@@ -113,7 +113,7 @@ public class HyperlinkProvider
      * The action is assumed to be able to cope with any type, that is
      * this method is equivalent to setLinkAction(linkAction, null).
      * 
-     * @param linkAction
+     * @param linkAction AbstractHyperlinkAction
      */
     public void setLinkAction(AbstractHyperlinkAction linkAction) {
         setLinkAction(linkAction, null);
@@ -126,7 +126,8 @@ public class HyperlinkProvider
      * PENDING: in the general case this is not independent of the
      * targetClass. Need api to set them combined?
      * 
-     * @param linkAction
+     * @param linkAction AbstractHyperlinkAction
+     * @param targetClass Class
      */
     public void setLinkAction(AbstractHyperlinkAction linkAction, Class<?> targetClass) {
         if (linkAction == null) {

@@ -50,6 +50,7 @@ public class JAASLoginService extends LoginService {
 	
     private static final Logger LOG = Logger.getLogger(JAASLoginService.class.getName());
 
+    /** LoginContext */
 	protected LoginContext loginContext;
 
     /**
@@ -113,11 +114,10 @@ public class JAASLoginService extends LoginService {
     }
 
 	/**
-	 * Returns the <code>LoginContext</code> used during the authentication
-	 * process.
+	 * Returns the <code>LoginContext</code> used during the authentication process.
+	 * @return LoginContext
 	 */
-	public LoginContext getLoginContext()
-	{
+	public LoginContext getLoginContext() {
 		return loginContext;
 	}
 
@@ -125,9 +125,9 @@ public class JAASLoginService extends LoginService {
 	 * Returns the <code>Subject</code> representing the authenticated 
 	 * individual, or <code>null</code> if the user has not yet been 
 	 * successfully authenticated.
+	 * @return Subject
 	 */
-	public Subject getSubject()
-	{
+	public Subject getSubject()	{
 		if (loginContext == null)
 			return null;
 		return loginContext.getSubject();

@@ -71,17 +71,20 @@ public class JXDialog extends JDialog {
         LookAndFeelAddons.getAddon();
     }
     
+    /** EXECUTE_ACTION_COMMAND */
     public static final String EXECUTE_ACTION_COMMAND = "execute";
+    /** CLOSE_ACTION_COMMAND */
     public static final String CLOSE_ACTION_COMMAND = "close";
+    /** UIPREFIX */
     public static final String UIPREFIX = "XDialog.";
-
+    /** content */
     protected JComponent content;
     
     /**
      * Creates a non-modal dialog with the given component as 
      * content and without specified owner.  A shared, hidden frame will be
      * set as the owner of the dialog.
-     * <p>
+     *
      * @param content the component to show and to auto-configure from.
      */
     public JXDialog(JComponent content) {
@@ -93,7 +96,7 @@ public class JXDialog extends JDialog {
     /**
      * Creates a non-modal dialog with the given component as content and the
      * specified <code>Frame</code> as owner.
-     * <p>
+     *
      * @param frame the owner
      * @param content the component to show and to auto-configure from.
      */
@@ -105,7 +108,7 @@ public class JXDialog extends JDialog {
     /**
      * Creates a non-modal dialog with the given component as content and the
      * specified <code>Dialog</code> as owner.
-     * <p>
+     *
      * @param dialog the owner
      * @param content the component to show and to auto-configure from.
      */
@@ -117,7 +120,7 @@ public class JXDialog extends JDialog {
     /**
      * Creates a non-modal dialog with the given component as content and the
      * specified <code>Window</code> as owner.
-     * <p>
+     *
      * @param window the owner
      * @param content the component to show and to auto-configure from.
      */
@@ -264,9 +267,7 @@ public class JXDialog extends JDialog {
      * {@inheritDoc} <p>
      * 
      * Overridden to set the content's Locale and then updated
-     * this dialog's internal state. <p>
-     * 
-     * 
+     * this dialog's internal state.
      */
     @Override
     public void setLocale(Locale l) {
@@ -286,8 +287,8 @@ public class JXDialog extends JDialog {
      * Updates this dialog's locale-dependent state.
      * 
      * Here: updates title and actions.
-     * <p>
      * 
+     * @param locale Locale
      * 
      * @see #setLocale(Locale)
      */

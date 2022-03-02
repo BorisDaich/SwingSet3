@@ -39,9 +39,9 @@ public class ActionFactory {
 	/**
      * constructs a BoundAction
 	 * 
-	 * @param id
-	 * @param name
-	 * @param mnemonic
+	 * @param id String
+	 * @param name String
+	 * @param mnemonic String
 	 * @return BoundAction
 	 */
     public static BoundAction createBoundAction(String id, String name, String mnemonic) {
@@ -51,10 +51,10 @@ public class ActionFactory {
     /**
      * constructs a BoundAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
-     * @param toggle
+     * @param id String
+     * @param name String
+     * @param mnemonic String
+     * @param toggle boolean
      * @return BoundAction
      */
     public static BoundAction createBoundAction(String id, String name, String mnemonic, boolean toggle) {
@@ -64,11 +64,11 @@ public class ActionFactory {
     /**
      * constructs a BoundAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
-     * @param toggle
-     * @param group
+     * @param id String
+     * @param name String
+     * @param mnemonic String
+     * @param toggle boolean
+     * @param group String
      * @return BoundAction
      */
     public static BoundAction createBoundAction(String id, String name,
@@ -86,9 +86,9 @@ public class ActionFactory {
     /**
      * constructs a CompositeAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
+     * @param id String
+     * @param name String
+     * @param mnemonic String
      * @return CompositeAction
      */
     public static CompositeAction createCompositeAction(String id, String name, String mnemonic) {
@@ -98,10 +98,10 @@ public class ActionFactory {
     /**
      * constructs a CompositeAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
-     * @param toggle
+     * @param id String
+     * @param name String
+     * @param mnemonic String
+     * @param toggle boolean
      * @return CompositeAction
      */
     public static CompositeAction createCompositeAction(String id, String name, String mnemonic, boolean toggle) {
@@ -111,11 +111,11 @@ public class ActionFactory {
     /**
      * constructs a CompositeAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
-     * @param toggle
-     * @param group
+     * @param id String
+     * @param name String
+     * @param mnemonic String
+     * @param toggle boolean
+     * @param group String
      * @return CompositeAction
      */
     public static CompositeAction createCompositeAction(String id, String name,
@@ -128,9 +128,9 @@ public class ActionFactory {
     /**
      * constructs a ServerAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
+     * @param id String
+     * @param name String
+     * @param mnemonic String
      * @return ServerAction
      */
     public static ServerAction createServerAction(String id, String name, String mnemonic) {
@@ -149,8 +149,8 @@ public class ActionFactory {
     /**
      * constructs a TargetableAction
      * 
-     * @param id
-     * @param name
+     * @param id String
+     * @param name String
      * @return TargetableAction
      */
     public static TargetableAction createTargetableAction(String id, String name) {
@@ -160,9 +160,9 @@ public class ActionFactory {
     /**
      * constructs a TargetableAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
+     * @param id String
+     * @param name String
+     * @param mnemonic String
      * @return TargetableAction
      */
     public static TargetableAction createTargetableAction(String id, String name, String mnemonic) {
@@ -172,10 +172,10 @@ public class ActionFactory {
     /**
      * constructs a TargetableAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
-     * @param toggle
+     * @param id String
+     * @param name String
+     * @param mnemonic String
+     * @param toggle boolean
      * @return TargetableAction
      */
     public static TargetableAction createTargetableAction(String id, String name,
@@ -186,11 +186,11 @@ public class ActionFactory {
     /**
      * constructs a TargetableAction
      * 
-     * @param id
-     * @param name
-     * @param mnemonic
-     * @param toggle
-     * @param group
+     * @param id String
+     * @param name String
+     * @param mnemonic String
+     * @param toggle boolean
+     * @param group String
      * @return TargetableAction
      */
     public static TargetableAction createTargetableAction(String id, String name,
@@ -222,11 +222,11 @@ public class ActionFactory {
      * attributes map to the set methods on <code>AbstractActionExt</code>
      * 
      * @param action the action which will all the attributes will be applied
-     * @param shortDesc
-     * @param longDesc
-     * @param smallIcon
-     * @param largeIcon
-     * @param accel
+     * @param shortDesc String
+     * @param longDesc String
+     * @param smallIcon Icon
+     * @param largeIcon Icon
+     * @param accel KeyStroke
      */
     public static void decorateAction(AbstractAction action,
                                       String shortDesc, String longDesc,

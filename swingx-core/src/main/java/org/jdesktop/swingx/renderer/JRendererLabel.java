@@ -58,6 +58,7 @@ import org.jdesktop.swingx.painter.Painter;
  */
 public class JRendererLabel extends JLabel implements PainterAware, IconAware {
 
+	/** Painter */
     protected Painter painter;
 
     /**
@@ -186,7 +187,7 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
 
     /**
      * PRE: painter != null, isOpaque()
-     * @param g
+     * @param g Graphics2D
      */
     protected void paintComponentWithPainter(Graphics2D g) {
         // 1. be sure to fill the background

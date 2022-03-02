@@ -137,7 +137,7 @@ public class TargetManager {
     /**
      * Remove the target from the list
      * 
-     * @param target
+     * @param target Targetable
      */
     public void removeTarget(Targetable target) {
         if (targetList != null) {
@@ -196,7 +196,7 @@ public class TargetManager {
     /**
      * register a PropertyChangeListener
      * 
-     * @param listener
+     * @param listener PropertyChangeListener
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
@@ -205,7 +205,7 @@ public class TargetManager {
     /**
      * remove a PropertyChangeListener
      * 
-     * @param listener
+     * @param listener PropertyChangeListener
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(listener);

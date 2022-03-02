@@ -83,7 +83,7 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
     /**
      * {@inheritDoc} <p>
      * 
-     * Overridden to return false if painting flag is true.<p>
+     * Overridden to return false if painting flag is true.
      * 
      */
     @Override
@@ -97,7 +97,7 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
     /**
      * {@inheritDoc} <p>
      * 
-     * Overridden to return false if painting flag is true.<p>
+     * Overridden to return false if painting flag is true.
      * 
      */
      @Override
@@ -209,7 +209,7 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
 
     /**
      * 
-     * @param g
+     * @param g Graphics2D
      */
     protected void paintComponentWithPainter(Graphics2D g) {
         // 1. be sure to fill the background

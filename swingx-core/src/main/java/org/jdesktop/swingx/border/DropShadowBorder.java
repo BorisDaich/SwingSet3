@@ -88,7 +88,7 @@ public class DropShadowBorder implements Border, Serializable {
     /**
      * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
      * @param shadowColor Color
-     * @param shadowSize
+     * @param shadowSize int
      */
     public DropShadowBorder(Color shadowColor, int shadowSize) {
         this(shadowColor, shadowSize, .5f, 12, false, false, true, true);
@@ -96,7 +96,7 @@ public class DropShadowBorder implements Border, Serializable {
     
     /**
      * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param showLeftShadow
+     * @param showLeftShadow boolean
      */
     public DropShadowBorder(boolean showLeftShadow) {
         this(Color.BLACK, 5, .5f, 12, false, showLeftShadow, true, true);
@@ -104,14 +104,14 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * ctor (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param shadowColor
-     * @param shadowSize
-     * @param shadowOpacity
-     * @param cornerSize
-     * @param showTopShadow
-     * @param showLeftShadow
-     * @param showBottomShadow
-     * @param showRightShadow
+     * @param shadowColor int
+     * @param shadowSize int
+     * @param shadowOpacity float
+     * @param cornerSize int
+     * @param showTopShadow boolean
+     * @param showLeftShadow boolean
+     * @param showBottomShadow boolean
+     * @param showRightShadow boolean
      */
     public DropShadowBorder(Color shadowColor, int shadowSize,
             float shadowOpacity, int cornerSize, boolean showTopShadow,
@@ -462,7 +462,7 @@ public class DropShadowBorder implements Border, Serializable {
     
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @return
+     * @return cornerSize
      */
     public int getCornerSize() {
         return cornerSize;
@@ -470,7 +470,7 @@ public class DropShadowBorder implements Border, Serializable {
     
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param shadowColor
+     * @param shadowColor Color
      */
     public void setShadowColor(Color shadowColor) {
         this.shadowColor = shadowColor;
@@ -478,7 +478,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param shadowSize
+     * @param shadowSize int
      */
     public void setShadowSize(int shadowSize) {
         this.shadowSize = shadowSize;
@@ -486,7 +486,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param shadowOpacity
+     * @param shadowOpacity float
      */
     public void setShadowOpacity(float shadowOpacity) {
         this.shadowOpacity = shadowOpacity;
@@ -494,7 +494,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param cornerSize
+     * @param cornerSize int
      */
     public void setCornerSize(int cornerSize) {
         this.cornerSize = cornerSize;
@@ -502,7 +502,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param showTopShadow
+     * @param showTopShadow boolean
      */
     public void setShowTopShadow(boolean showTopShadow) {
         this.showTopShadow = showTopShadow;
@@ -510,7 +510,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param showLeftShadow
+     * @param showLeftShadow boolean
      */
     public void setShowLeftShadow(boolean showLeftShadow) {
         this.showLeftShadow = showLeftShadow;
@@ -518,7 +518,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param showBottomShadow
+     * @param showBottomShadow boolean
      */
     public void setShowBottomShadow(boolean showBottomShadow) {
         this.showBottomShadow = showBottomShadow;
@@ -526,7 +526,7 @@ public class DropShadowBorder implements Border, Serializable {
 
     /**
      * TODO (maven-javadoc-plugin 3.3.2 needs a doc here)
-     * @param showRightShadow
+     * @param showRightShadow boolean
      */
    public void setShowRightShadow(boolean showRightShadow) {
         this.showRightShadow = showRightShadow;

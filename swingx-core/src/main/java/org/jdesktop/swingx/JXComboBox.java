@@ -204,6 +204,9 @@ public class JXComboBox<E> extends JComboBox<E> {
         }
     }
     
+    /**
+     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     */
     protected static class ComboBoxAdapter extends ComponentAdapter {
         private final JXComboBox<?> comboBox;
 
@@ -481,6 +484,11 @@ public class JXComboBox<E> extends JComboBox<E> {
         }
     }
     
+    /**
+     * 
+     * @param comboBox JComboBox
+     * @return JList of Objects
+     */
     protected static JList<Object> getPopupListFor(JComboBox<? extends Object> comboBox) {
         int count = comboBox.getUI().getAccessibleChildrenCount(comboBox);
 
@@ -593,7 +601,7 @@ public class JXComboBox<E> extends JComboBox<E> {
     }
 
     /**
-     * Creates and returns the default registry for StringValues.<p>
+     * Creates and returns the default registry for StringValues.
      * 
      * @return the default registry for StringValues.
      */
@@ -638,7 +646,7 @@ public class JXComboBox<E> extends JComboBox<E> {
      * 
      * Overridden to return the delegating renderer which is wrapped around the
      * original to support highlighting. The returned renderer is of type 
-     * DelegatingRenderer and guaranteed to not-null<p>
+     * DelegatingRenderer and guaranteed to not-null
      * 
      * @see #setRenderer(ListCellRenderer)
      * @see DelegatingRenderer
@@ -705,6 +713,10 @@ public class JXComboBox<E> extends JComboBox<E> {
         return useHighlightersForCurrentValue;
     }
     
+    /**
+     * 
+     * @param useHighlightersForCurrentValue boolean
+     */
     public void setUseHighlightersForCurrentValue(boolean useHighlightersForCurrentValue) {
         boolean oldValue = isUseHighlightersForCurrentValue();
         this.useHighlightersForCurrentValue = useHighlightersForCurrentValue;
@@ -757,7 +769,6 @@ public class JXComboBox<E> extends JComboBox<E> {
     /**
      * Sets the <code>Highlighter</code>s to the column, replacing any old settings. None of the
      * given Highlighters must be null.
-     * <p>
      * 
      * @param highlighters
      *            zero or more not null highlighters to use for renderer decoration.
@@ -792,7 +803,6 @@ public class JXComboBox<E> extends JComboBox<E> {
 
     /**
      * Adds a Highlighter. Appends to the end of the list of used Highlighters.
-     * <p>
      * 
      * @param highlighter
      *            the <code>Highlighter</code> to add.

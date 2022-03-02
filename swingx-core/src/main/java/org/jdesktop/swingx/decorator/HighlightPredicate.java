@@ -364,8 +364,11 @@ public interface HighlightPredicate {
     };
 
     // PENDING: these general type empty arrays don't really belong here?
+    /** EMPTY_PREDICATE_ARRAY */
     public static final HighlightPredicate[] EMPTY_PREDICATE_ARRAY = new HighlightPredicate[0];
+    /** EMPTY_OBJECT_ARRAY */
     public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    /** EMPTY_INTEGER_ARRAY */
     public static final Integer[] EMPTY_INTEGER_ARRAY = new Integer[0];
     
 //----------------- logical implementations amongst HighlightPredicates
@@ -504,6 +507,9 @@ public interface HighlightPredicate {
     
 //------------------------ coordinates
     
+    /**
+     * TODO
+     */
     public static class RowGroupHighlightPredicate implements HighlightPredicate {
 
         private int linesPerGroup;
@@ -820,6 +826,10 @@ public interface HighlightPredicate {
             return clazz.isAssignableFrom(adapter.getColumnClass());
         }
         
+        /**
+         * 
+         * @return Class
+         */
         public Class<?> getType() {
             return clazz;
         }

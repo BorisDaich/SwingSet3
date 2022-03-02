@@ -49,7 +49,7 @@ public class TargetableAction extends AbstractActionExt {
     /**
      * Creates a TargetableAction
      * 
-     * @param name
+     * @param name String
      */
     public TargetableAction(String name) {
         super(name);
@@ -75,8 +75,8 @@ public class TargetableAction extends AbstractActionExt {
 
     /**
      * Constructs an Action with an icon
-     * @param name
-     * @param icon
+     * @param name String
+     * @param icon Icon
      */
     public TargetableAction(String name, Icon icon) {
         super(name, icon);

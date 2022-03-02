@@ -220,8 +220,7 @@ public class JXList<E> extends JList<E> {
         LookAndFeelAddons.contribute(new XListAddon());
     }
 
-    
-
+    /** EXECUTE_BUTTON_ACTIONCOMMAND */
     public static final String EXECUTE_BUTTON_ACTIONCOMMAND = "executeButtonAction";
 
     /**
@@ -525,7 +524,6 @@ public class JXList<E> extends JList<E> {
 
     /**
      * Creates and returns the RolloverProducer to use with this tree.
-     * <p>
      * 
      * @return <code>RolloverProducer</code> to use with this tree
      * 
@@ -707,7 +705,7 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Returns the table's sortable property.<p>
+     * Returns the table's sortable property.
      * 
      * @return true if the table is sortable.
      */
@@ -813,10 +811,9 @@ public class JXList<E> extends JList<E> {
     /**
      * Sets the filter to the sorter, if available and of type SortController.
      * Does nothing otherwise.
-     * <p>
      *
-     * @param filter the filter used to determine what entries should be
-     *        included
+     * @param <R> RowFilter, a type which extends ListModel
+     * @param filter the filter used to determine what entries should be included
      */
     public <R extends ListModel<Object>> void setRowFilter(RowFilter<? super R, ? super Integer> filter) {
         if (hasSortController()) {
@@ -853,17 +850,12 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * 
      * Toggles the sort order of the list.
      * Delegates to the SortController if available, or does nothing if not.<p>
      * 
-     * <p>
      * The exact behaviour is defined by the SortController's toggleSortOrder
      * implementation. Typically a unsorted list is sorted in ascending order,
      * a sorted list's order is reversed.
-     * <p>
-     * 
-     * 
      */
     public void toggleSortOrder() {
         if (hasSortController())
@@ -872,7 +864,7 @@ public class JXList<E> extends JList<E> {
 
     /**
      * Sorts the list using SortOrder.
-     * Delegates to the SortController if available, or does nothing if not.<p>
+     * Delegates to the SortController if available, or does nothing if not.
      * 
      * @param sortOrder the sort order to use.
      * 
@@ -885,7 +877,7 @@ public class JXList<E> extends JList<E> {
 
     /**
      * Returns the SortOrder. 
-     * Delegates to the SortController if available, or returns SortOrder.UNSORTED if not.<p>
+     * Delegates to the SortController if available, or returns SortOrder.UNSORTED if not.
      * 
      * @return the current SortOrder
      */
@@ -1267,7 +1259,6 @@ public class JXList<E> extends JList<E> {
     /**
      * Appends a <code>Highlighter</code> to the end of the list of used
      * <code>Highlighter</code>s. The argument must not be null. 
-     * <p>
      * 
      * @param highlighter the <code>Highlighter</code> to add, must not be null.
      * @throws NullPointerException if <code>Highlighter</code> is null.
@@ -1358,7 +1349,7 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Creates and returns the default registry for StringValues.<p>
+     * Creates and returns the default registry for StringValues.
      * 
      * @return the default registry for StringValues.
      */
@@ -1405,7 +1396,7 @@ public class JXList<E> extends JList<E> {
      * 
      * Overridden to return the delegating renderer which is wrapped around the
      * original to support highlighting. The returned renderer is of type 
-     * DelegatingRenderer and guaranteed to not-null<p>
+     * DelegatingRenderer and guaranteed to not-null
      * 
      * @see #setCellRenderer(ListCellRenderer)
      * @see DelegatingRenderer

@@ -42,6 +42,7 @@ import org.jdesktop.beans.AbstractBean;
  * @author Karl Schaefer
  */
 public abstract class LoginService extends AbstractBean {
+	
     @SuppressWarnings("unused")
     private Logger LOG = Logger.getLogger(LoginService.class.getName());
 
@@ -78,7 +79,7 @@ public abstract class LoginService extends AbstractBean {
      *            server (optional)
      * 
      * @return <code>true</code> on authentication success
-     * @throws Exception
+     * @throws Exception TODO explain
      */
     public abstract boolean authenticate(String name, char[] password, String server) throws Exception;
 
@@ -115,7 +116,7 @@ public abstract class LoginService extends AbstractBean {
      *            password
      * @param server
      *            server
-     * @throws Exception
+     * @throws Exception TODO explain
      */
     public void startAuthentication(final String user, final char[] password, final String server) throws Exception {
         if (getSynchronous()) {

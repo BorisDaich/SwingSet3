@@ -58,6 +58,10 @@ public class DragRecognitionSupport {
      * so that we can be notified immediately before a drag begins.
      */
     public static interface BeforeDrag {
+    	/**
+    	 * dragStarting
+    	 * @param me MouseEvent
+    	 */
         public void dragStarting(MouseEvent me);
     }
 

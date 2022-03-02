@@ -115,7 +115,15 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      * Text alignment enums. Controls alignment of the text when line wrapping is enabled.
      */
     public enum TextAlignment implements IValue {
-        LEFT(StyleConstants.ALIGN_LEFT), CENTER(StyleConstants.ALIGN_CENTER), RIGHT(StyleConstants.ALIGN_RIGHT), JUSTIFY(StyleConstants.ALIGN_JUSTIFIED);
+    	/** ALIGN_LEFT */
+        LEFT(StyleConstants.ALIGN_LEFT), 
+    	/** ALIGN_CENTER */
+        CENTER(StyleConstants.ALIGN_CENTER), 
+    	/** ALIGN_RIGHT */
+        RIGHT(StyleConstants.ALIGN_RIGHT), 
+    	/** ALIGN_JUSTIFIED */
+        JUSTIFY(StyleConstants.ALIGN_JUSTIFIED
+    );
         
         private int value;
         private TextAlignment(int val) {
@@ -129,17 +137,21 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
 
     }
     
+    /**
+     * interface IValue
+     */
     protected interface IValue {
+    	/** getter */
         int getValue();
     }
 
-    // textOrientation value declarations...
+    /** textOrientation value declaration NORMAL */
     public static final double NORMAL = 0;
-
+    /** INVERTED */
     public static final double INVERTED = Math.PI;
-
+    /** VERTICAL_LEFT */
     public static final double VERTICAL_LEFT = 3 * Math.PI / 2;
-
+    /** VERTICAL_RIGHT */
     public static final double VERTICAL_RIGHT = Math.PI / 2;
 
     private double textRotation = NORMAL;
@@ -608,10 +620,18 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
         return iconR;
     }
 
+    /**
+     * 
+     * @return int maxLineSpan
+     */
     public int getMaxLineSpan() {
         return maxLineSpan ;
     }
 
+    /**
+     * 
+     * @param maxLineSpan int
+     */
     public void setMaxLineSpan(int maxLineSpan) {
             int old = getMaxLineSpan();
             this.maxLineSpan = maxLineSpan;
@@ -679,7 +699,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
     private boolean paintBorderInsets = true;
 
     private int maxLineSpan = -1;
-
+    /** painted */
     public boolean painted;
 
     private TextAlignment textAlignment = TextAlignment.LEFT;
@@ -966,6 +986,9 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
     // before casting JComponent into JTextComponent to find out selected region since
     // JLabel/JXLabel does not support selection of the text.
 
+    /**
+     * related to lineWrap support
+     */
     public static class MultiLineSupport implements PropertyChangeListener {
 
         private static final String HTML = "<html>";
@@ -1022,6 +1045,11 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
             return s != null && s.toLowerCase().startsWith(HTML);
         }
 
+        /**
+         * 
+         * @param c JXLabel
+         * @return View
+         */
         public static View createView(JXLabel c) {
             BasicEditorKit kit = getFactory();
             float rightIndent = 0;
@@ -1040,6 +1068,10 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
             return v;
         }
 
+        /**
+         * 
+         * @param c JXLabel
+         */
         public static void updateRenderer(JXLabel c) {
             View value = null;
             View oldValue = (View) c.getClientProperty(BasicHTML.propertyKey);
@@ -1365,6 +1397,10 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
 
     }
 
+    /**
+     * 
+     * @return int occupiedWidth
+     */
    protected int getOccupiedWidth() {
         return occupiedWidth;
     }

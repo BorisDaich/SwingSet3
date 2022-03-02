@@ -43,8 +43,8 @@ public class ErrorLevel extends Level {
     
     /**
      * Creates a new instance of ErrorLevel
-     * @param name
-     * @param value
+     * @param name String
+     * @param value int
      */
     protected ErrorLevel(String name, int value) {
         super(name, value);

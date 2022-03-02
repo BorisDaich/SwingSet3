@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -65,23 +63,31 @@ import org.jdesktop.swingx.search.Searchable;
 @JavaBean
 public class JXFindBar extends JXFindPanel {
 
+	/** previousBackgroundColor */
     protected Color previousBackgroundColor;
-
+	/** previousForegroundColor */
     protected Color previousForegroundColor;
-
+	/** notFoundBackgroundColor */
     // PENDING: need to read from UIManager
     protected Color notFoundBackgroundColor = Color.decode("#FF6666");
-
+	/** notFoundForegroundColor */
     protected Color notFoundForegroundColor = Color.white;
-
+	/** findNext */
     protected JButton findNext;
-
+	/** findPrevious */
     protected JButton findPrevious;
 
+    /**
+     * ctor
+     */
     public JXFindBar() {
         this(null);
     }
 
+    /**
+     * 
+     * @param searchable Searchable
+     */
     public JXFindBar(Searchable searchable) {
         super(searchable);
         getPatternModel().setIncremental(true);

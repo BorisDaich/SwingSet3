@@ -362,7 +362,7 @@ public class ActionManager extends ActionMap {
 
     /**
      * Test to determine if the action is a <code>TargetableAction</code>
-     * @param id
+     * @param id Object
      * @return true if action is a <code>TargetableAction</code>
      */
     public boolean isTargetableAction(Object id) {
@@ -371,7 +371,7 @@ public class ActionManager extends ActionMap {
 
     /**
      * Test to determine if the action is a <code>BoundAction</code>
-     * @param id
+     * @param id Object
      * @return true if action is a <code>BoundAction</code>
      */
     public boolean isBoundAction(Object id) {
@@ -380,7 +380,7 @@ public class ActionManager extends ActionMap {
 
     /**
      * Test to determine if the action is a <code>CompositeAction</code>
-     * @param id
+     * @param id Object
      * @return true if action is a <code>CompositeAction</code>
      */
     public boolean isCompositeAction(Object id) {

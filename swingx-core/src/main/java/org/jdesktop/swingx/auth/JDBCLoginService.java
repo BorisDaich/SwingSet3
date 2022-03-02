@@ -56,10 +56,9 @@ public class JDBCLoginService extends LoginService {
     private Properties properties;
     
     /**
-     * Create a new JDBCLoginService and initializes it to connect to a
-     * database using the given params.
-     * @param driver
-     * @param url
+     * Create a new JDBCLoginService and initializes it to connect to a database using the given params.
+     * @param driver DB driver class name
+     * @param url DB url
      */
     public JDBCLoginService(String driver, String url) {
         super(url);
@@ -68,11 +67,10 @@ public class JDBCLoginService extends LoginService {
     }
     
     /**
-     * Create a new JDBCLoginService and initializes it to connect to a
-     * database using the given params.
-     * @param driver
-     * @param url
-     * @param props
+     * Create a new JDBCLoginService and initializes it to connect to a database using the given params.
+     * @param driver DB driver class name
+     * @param url DB url
+     * @param props Properties
      */
     public JDBCLoginService(String driver, String url, Properties props) {
         super(url);
@@ -118,9 +116,8 @@ org.postgresql.Driver: is NOT jdbcCompliant
     }
 
     /**
-     * Create a new JDBCLoginService and initializes it to connect to a
-     * database using the given params.
-     * @param jndiContext
+     * Create a new JDBCLoginService and initializes it to connect to a database using the given params.
+     * @param jndiContext String
      */
     public JDBCLoginService(String jndiContext) {
         super(jndiContext);
@@ -167,10 +164,18 @@ org.postgresql.Driver: is NOT jdbcCompliant
         firePropertyChange("properties", old, getProperties());
     }
     
+    /**
+     * 
+     * @return Connection
+     */
     public Connection getConnection() {
         return conn;
     }
     
+    /**
+     * 
+     * @param conn Connection
+     */
     public void setConnection(Connection conn) {
         Connection old = getConnection();
         this.conn = conn;

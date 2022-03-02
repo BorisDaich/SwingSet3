@@ -137,23 +137,30 @@ public class JXMonthView extends JComponent {
     /** action command used for cancel actionEvent. */
     public static final String CANCEL_KEY = "monthViewCancel";
 
+    /** BOX_PADDING_X */
     public static final String BOX_PADDING_X = "boxPaddingX";
+    /** BOX_PADDING_Y */
     public static final String BOX_PADDING_Y = "boxPaddingY";
+    /** DAYS_OF_THE_WEEK */
     public static final String DAYS_OF_THE_WEEK = "daysOfTheWeek";
+    /** SELECTION_MODEL */
     public static final String SELECTION_MODEL = "selectionModel";
+    /** TRAVERSABLE */
     public static final String TRAVERSABLE = "traversable";
+    /** FLAGGED_DATES */
     public static final String FLAGGED_DATES = "flaggedDates";
 
     static {
         LookAndFeelAddons.contribute(new MonthViewAddon());
     }
 
-     /**
+    /**
      * UI Class ID
      */
     public static final String uiClassID = "MonthViewUI";
-
+    /** DAYS_IN_WEEK */
     public static final int DAYS_IN_WEEK = 7;
+    /** MONTHS_IN_YEAR */
     public static final int MONTHS_IN_YEAR = 12;
 
 
@@ -216,8 +223,10 @@ public class JXMonthView extends JComponent {
     
     //-------------------
     // PENDING JW: ??
+    /** modifiedStartDate */
     @SuppressWarnings({"FieldCanBeLocal"})
     protected Date modifiedStartDate;
+    /** modifiedEndDate */
     @SuppressWarnings({"FieldCanBeLocal"})
     protected Date modifiedEndDate;
     
@@ -227,7 +236,7 @@ public class JXMonthView extends JComponent {
      * Localizable day column headers. Default typically installed by the uidelegate.
      */
     private String[] _daysOfTheWeek;
-
+    /** insets */
     protected Insets _monthStringInsets = new Insets(0, 0, 0, 0);
     private int boxPaddingX;
     private int boxPaddingY;

@@ -11,12 +11,16 @@ import javax.swing.JPanel;
  * @author kschaefer
  */
 public class JRendererPanel extends JPanel {
+	
+	/**
+	 * ctor
+	 */
     public JRendererPanel() {
         super();
     }
     
     /**
-     * @param layout
+     * @param layout LayoutManager
      */
     public JRendererPanel(LayoutManager layout) {
         super(layout);

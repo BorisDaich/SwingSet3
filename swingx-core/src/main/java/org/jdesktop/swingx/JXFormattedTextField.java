@@ -23,24 +23,44 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
  * 
  */
 public class JXFormattedTextField extends JFormattedTextField {
+	
+	/**
+	 * ctor
+	 */
 	public JXFormattedTextField() {
 		this(null);
 	}
 
+	/**
+	 * 
+	 * @param promptText String
+	 */
 	public JXFormattedTextField(String promptText) {
 		this(promptText, null);
 	}
 
+	/**
+	 * 
+	 * @param promptText String
+	 * @param promptForeground Color
+	 */
 	public JXFormattedTextField(String promptText, Color promptForeground) {
 		this(promptText, promptForeground, null);
 	}
 	
+	/**
+	 * 
+	 * @param promptText String
+	 * @param promptForeground Color
+	 * @param promptBackground Color
+	 */
 	public JXFormattedTextField(String promptText, Color promptForeground, Color promptBackground) {
 		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
 	/**
 	 * @see PromptSupport#getFocusBehavior(javax.swing.text.JTextComponent)
+	 * @return FocusBehavior
 	 */
 	public FocusBehavior getFocusBehavior() {
 		return PromptSupport.getFocusBehavior(this);
@@ -48,6 +68,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see PromptSupport#getPrompt(javax.swing.text.JTextComponent)
+	 * @return Prompt
 	 */
 	public String getPrompt() {
 		return PromptSupport.getPrompt(this);
@@ -55,6 +76,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see PromptSupport#getForeground(javax.swing.text.JTextComponent)
+	 * @return Color
 	 */
 	public Color getPromptForeground() {
 		return PromptSupport.getForeground(this);
@@ -62,6 +84,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 	
 	/**
 	 * @see PromptSupport#getForeground(javax.swing.text.JTextComponent)
+	 * @return Color
 	 */
 	public Color getPromptBackground() {
 		return PromptSupport.getBackground(this);
@@ -69,6 +92,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see PromptSupport#getFontStyle(javax.swing.text.JTextComponent)
+	 * @return FontStyle
 	 */
 	public Integer getPromptFontStyle() {
 		return PromptSupport.getFontStyle(this);
@@ -76,6 +100,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see PromptSupport#getFocusBehavior(javax.swing.text.JTextComponent)
+	 * @param focusBehavior FocusBehavior
 	 */
 	public void setFocusBehavior(FocusBehavior focusBehavior) {
 		PromptSupport.setFocusBehavior(focusBehavior, this);
@@ -83,6 +108,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see PromptSupport#setPrompt(String, javax.swing.text.JTextComponent)
+	 * @param labelText String
 	 */
 	public void setPrompt(String labelText) {
 		PromptSupport.setPrompt(labelText, this);
@@ -90,6 +116,8 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see PromptSupport#setForeground(Color, javax.swing.text.JTextComponent)
+	 * 
+	 * @param promptTextColor Color
 	 */
 	public void setPromptForeground(Color promptTextColor) {
 		PromptSupport.setForeground(promptTextColor, this);
@@ -97,14 +125,17 @@ public class JXFormattedTextField extends JFormattedTextField {
 	
 	/**
 	 * @see PromptSupport#setBackground(Color, javax.swing.text.JTextComponent)
+	 * 
+	 * @param promptTextColor Color
 	 */
 	public void setPromptBackround(Color promptTextColor) {
 		PromptSupport.setBackground(promptTextColor, this);
 	}
 
 	/**
-	 * @see PromptSupport#setFontStyle(Integer,
-	 *      javax.swing.text.JTextComponent)
+	 * @see PromptSupport#setFontStyle(Integer, javax.swing.text.JTextComponent)
+	 * 
+	 * @param fontStyle Integer
 	 */
 	public void setPromptFontStyle(Integer fontStyle) {
 		PromptSupport.setFontStyle(fontStyle, this);
@@ -112,6 +143,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 	
 	/**
 	 * @see BuddySupport#setOuterMargin(JTextField, Insets)
+	 * @param margin Insets
 	 */
 	public void setOuterMargin(Insets margin) {
 		BuddySupport.setOuterMargin(this, margin);
@@ -119,6 +151,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see BuddySupport#getOuterMargin(JTextField)
+	 * @return Insets
 	 */
 	public Insets getOuterMargin() {
 		return BuddySupport.getOuterMargin(this);
@@ -126,6 +159,8 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see BuddySupport#add(Component, Position, JTextField)
+	 * @param buddy Component
+	 * @param pos Position
 	 */
 	public void addBuddy(Component buddy, Position pos) {
 		BuddySupport.add(buddy, pos, this);
@@ -133,6 +168,8 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see BuddySupport#addGap(int, Position, JTextField)
+	 * @param width int
+	 * @param pos Position
 	 */
 	public void addGap(int width, Position pos) {
 		BuddySupport.addGap(width, pos, this);
@@ -140,6 +177,8 @@ public class JXFormattedTextField extends JFormattedTextField {
 
 	/**
 	 * @see BuddySupport#getBuddies(Position, JTextField)
+	 * @param pos Position
+	 * @return list of Components
 	 */
 	public List<Component> getBuddies(Position pos) {
 		return BuddySupport.getBuddies(pos, this);

@@ -176,9 +176,11 @@ public class JXDatePicker extends JComponent {
      */
     public static final String uiClassID = "DatePickerUI";
 
+    /** EDITOR */
     public static final String EDITOR = "editor";
+    /** MONTH_VIEW */
     public static final String MONTH_VIEW = "monthView";
-
+    /** LINK_PANEL */
     public static final String LINK_PANEL = "linkPanel";
 
     /** action command used for commit actionEvent. */
@@ -209,6 +211,7 @@ public class JXDatePicker extends JComponent {
     private boolean editable = true;
     // PENDING JW: remove - duplication, we have access to super's listenerlist
     private EventListenerMap listenerMap;
+    /** JPopupMenu lightWeightPopupEnabled */
     protected boolean lightWeightPopupEnabled = JPopupMenu.getDefaultLightWeightPopupEnabled();
 
     private Date date;

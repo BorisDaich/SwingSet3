@@ -50,8 +50,8 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
 
 	/**
 	 * ctor
-	 * @param tree
-	 * @param renderer
+	 * @param tree JTree
+	 * @param renderer DefaultTreeCellRenderer
 	 */
     public DefaultXTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
