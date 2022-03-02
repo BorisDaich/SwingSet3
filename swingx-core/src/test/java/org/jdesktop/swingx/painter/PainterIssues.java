@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,6 +20,7 @@
 package org.jdesktop.swingx.painter;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -75,18 +74,15 @@ public class PainterIssues extends InteractiveTestCase {
      */
     public void interactiveXLabelSharedDefaultForegroundPainter() {
         JComponent box = Box.createVerticalBox();
-        final JXLabel foreground = new JXLabel(
-                "setup: compound - default and overlay ");
+        final JXLabel foreground = new JXLabel("setup: compound - default and overlay ");
         ShapePainter shapePainter = new ShapePainter();
         AlphaPainter<?> alpha = new AlphaPainter<Object>();
         alpha.setAlpha(0.2f);
         alpha.setPainters(shapePainter);
-        CompoundPainter<?> compound = new CompoundPainter<Object>(alpha, foreground
-                .getForegroundPainter());
+        CompoundPainter<Component> compound = new CompoundPainter<Component>(alpha, foreground.getForegroundPainter());
         foreground.setForegroundPainter(compound);
         box.add(foreground);
-        JXLabel shared = new JXLabel(
-                "setup: shared compound of first label - this doesn't show up");
+        JXLabel shared = new JXLabel("setup: shared compound of first label - this doesn't show up");
         shared.setForegroundPainter(compound);
         box.add(shared);
         showInFrame(box, "shared foreground painters");

@@ -19,6 +19,7 @@
 package org.jdesktop.swingx;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -27,7 +28,6 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.Window;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
 import java.awt.font.TextAttribute;
@@ -109,7 +109,7 @@ import org.jdesktop.swingx.painter.Painter;
  * @author mario_cesar
  */
 @JavaBean
-public class JXLabel extends JLabel implements BackgroundPaintable {
+public class JXLabel extends JLabel implements BackgroundPaintable<Component>, Mnemonicable {
     
     /**
      * Text alignment enums. Controls alignment of the text when line wrapping is enabled.
@@ -146,9 +146,9 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
 
     private boolean painting = false;
 
-    private Painter foregroundPainter;
+    private Painter<Component> foregroundPainter;
 
-    private Painter backgroundPainter;
+    private Painter<Component> backgroundPainter;
 
     private boolean multiLine;
 
@@ -232,10 +232,31 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
         initLineWrapSupport();
     }
 
+    /**
+     * {@inheritDoc} <p>
+     * 
+     * This property is used when the label is part of a larger component.
+     * If the labelFor property of the label is not null, 
+     * the label will call the request Focus method of the component 
+     * specified by the labelFor property when the mnemonic is activated.
+     */
+    @Override
+    public int getMnemonic() {
+    	return super.getDisplayedMnemonic();
+    }
+
+    /**
+     * {@inheritDoc} 
+     */
+    @Override
+    public void setMnemonic(int mnemonic) {
+    	super.setDisplayedMnemonic(mnemonic);
+    }
+    
     private void initPainterSupport() {
-        foregroundPainter = new AbstractPainter<JXLabel>() {
+        foregroundPainter = new AbstractPainter<Component>() {
             @Override
-            protected void doPaint(Graphics2D g, JXLabel label, int width, int height) {
+            protected void doPaint(Graphics2D g, Component label, int width, int height) {
                 Insets i = getInsets();
                 g = (Graphics2D) g.create(-i.left, -i.top, width, height);
                 
@@ -293,7 +314,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      *
      * @return the current foreground painter.
      */
-    public final Painter getForegroundPainter() {
+    public final Painter<Component> getForegroundPainter() {
         return foregroundPainter;
     }
 
@@ -324,8 +345,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      *
      * @param painter the foregroundPainter
      */
-    public void setForegroundPainter(Painter painter) {
-        Painter old = this.getForegroundPainter();
+    public void setForegroundPainter(Painter<Component> painter) {
+        Painter<Component> old = this.getForegroundPainter();
         if (painter == null) {
             //restore default painter
             initPainterSupport();
@@ -345,8 +366,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      * @see #getBackgroundPainter()
      */
     @Override
-    public void setBackgroundPainter(Painter p) {
-        Painter old = getBackgroundPainter();
+    public void setBackgroundPainter(Painter<Component> p) {
+        Painter<Component> old = getBackgroundPainter();
         backgroundPainter = p;
         firePropertyChange("backgroundPainter", old, getBackgroundPainter());
         repaint();
@@ -360,7 +381,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
      * @see #setBackgroundPainter(Painter)
      */
     @Override
-    public final Painter getBackgroundPainter() {
+    public final Painter<Component> getBackgroundPainter() {
         return backgroundPainter;
     }
     
@@ -562,15 +583,16 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
         return view;
     }
 
-    private Container getViewport() {
-        for(Container p = this; p != null; p = p.getParent()) {
-//            if(p instanceof Window || p instanceof Applet || p instanceof JViewport) { // Applet is deprecated since version 9 and marked for removal
-            if(p instanceof Window || p instanceof JViewport) {
-                return p;
-            }
-        }
-        return null;
-    }
+// not used:
+//    private Container getViewport() {
+//        for(Container p = this; p != null; p = p.getParent()) {
+////            if(p instanceof Window || p instanceof Applet || p instanceof JViewport) { // Applet is deprecated since version 9 and marked for removal
+//            if(p instanceof Window || p instanceof JViewport) {
+//                return p;
+//            }
+//        }
+//        return null;
+//    }
 
     private Rectangle calculateIconRect() {
         Rectangle iconR = new Rectangle();
@@ -638,7 +660,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
             firePropertyChange("lineWrap", old, isLineWrap());
             if (getForegroundPainter() != null) {
                 // XXX There is a bug here. In order to make painter work with this, caching has to be disabled
-                ((AbstractPainter) getForegroundPainter()).setCacheable(!b);
+                ((AbstractPainter<?>) getForegroundPainter()).setCacheable(!b);
             }
             //repaint();
         }
@@ -1346,4 +1368,5 @@ public class JXLabel extends JLabel implements BackgroundPaintable {
    protected int getOccupiedWidth() {
         return occupiedWidth;
     }
+
 }

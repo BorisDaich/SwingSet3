@@ -20,6 +20,7 @@
 package org.jdesktop.swingx;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.font.TextAttribute;
@@ -71,7 +72,7 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
     public void interactiveFancyFilter() {
         JXLabel label = new JXLabel("that's the real text");
         label.setFont(new Font("SansSerif", Font.BOLD, 80));
-        AbstractPainter<?> fg = new MattePainter(Color.RED);
+        AbstractPainter<Component> fg = new MattePainter(Color.RED);
         fg.setFilters(new BlurFilter());
         label.setForegroundPainter(fg);
         JXFrame frame = wrapInFrame(label, "fancy filter");
@@ -94,14 +95,14 @@ public class JXLabelVisualCheck extends InteractiveTestCase {
         final AlphaPainter<?> alpha = new AlphaPainter<Object>();
         alpha.setAlpha(0.2f);
         alpha.setPainters(shapePainter);
-        CompoundPainter<?> compound = new CompoundPainter<Object>(foreground.getForegroundPainter(), alpha);
+        CompoundPainter<Component> compound = new CompoundPainter<Component>(foreground.getForegroundPainter(), alpha);
         foreground.setForegroundPainter(compound);
         box.add(foreground);
         Action action = new AbstractActionExt("reset default foreground") {
             boolean reset;
             public void actionPerformed(ActionEvent e) {
                 if (reset) {
-                    CompoundPainter<?> painter = new CompoundPainter<Object>(alpha, foreground.getForegroundPainter());
+                    CompoundPainter<Component> painter = new CompoundPainter<Component>(alpha, foreground.getForegroundPainter());
                     foreground.setForegroundPainter(painter);
                 } else {
                   // try to reset to default
