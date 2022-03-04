@@ -119,8 +119,8 @@ public class DatePickerAddon extends AbstractComponentAddon {
         // TODO: don't use an image here, Nimbus uses Painters for everything 
         // => e.g. reuse the
 //        com.sun.java.swing.plaf.nimbus.ComboBoxComboBoxArrowButtonPainter
-        // (at the moment the OS-X icon looks most similar, it's much better
-        //  than no icon...)
+// @see https://github.com/zxlooong/jdk16045/blob/master/com/sun/java/swing/plaf/nimbus/ComboBoxComboBoxArrowButtonPainter.java
+        // (at the moment the OS-X icon looks most similar, it's much better than no icon...)
         defaults.add ("JXDatePicker.arrowIcon",
             LookAndFeel.makeIcon(DatePickerAddon.class, "macosx/resources/combo-osx.png"));
 

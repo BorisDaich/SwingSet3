@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2005 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -45,8 +43,8 @@ import javax.swing.plaf.ComponentUI;
 public abstract class DatePickerUI extends ComponentUI {
     /**
      * Get the baseline for the specified component, or a value less
-     * than 0 if the baseline can not be determined.  The baseline is measured
-     * from the top of the component.
+     * than 0 if the baseline can not be determined. 
+     * The baseline is measured from the top of the component.
      *
      * @param width  Width of the component to determine baseline for.
      * @param height Height of the component to determine baseline for.
@@ -66,8 +64,7 @@ public abstract class DatePickerUI extends ComponentUI {
      * @param date date to check
      * @return the date as allowed in the context of the picker.
      * 
-     * @throws PropertyVetoException if the given date is not valid for 
-     *    selection
+     * @throws PropertyVetoException if the given date is not valid for selection
      */
     public abstract Date getSelectableDate(Date date) throws PropertyVetoException;
 
