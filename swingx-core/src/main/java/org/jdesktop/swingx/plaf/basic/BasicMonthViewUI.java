@@ -111,8 +111,8 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * @author Jeanette Winzenburg
  */
 public class BasicMonthViewUI extends MonthViewUI {
-    @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(BasicMonthViewUI.class.getName());
+
+	private static final Logger LOG = Logger.getLogger(BasicMonthViewUI.class.getName());
     
     private static final int CALENDAR_SPACING = 10;
     
