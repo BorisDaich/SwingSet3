@@ -112,8 +112,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  */
 public class BasicMonthViewUI extends MonthViewUI {
     @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(BasicMonthViewUI.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(BasicMonthViewUI.class.getName());
     
     private static final int CALENDAR_SPACING = 10;
     
@@ -1701,9 +1700,9 @@ public class BasicMonthViewUI extends MonthViewUI {
     }
     
 
-    private class Handler implements  
-        MouseListener, MouseMotionListener, LayoutManager,
-            PropertyChangeListener, DateSelectionListener {
+    private class Handler implements LayoutManager, 
+    		MouseListener, MouseMotionListener, PropertyChangeListener, DateSelectionListener {
+    	
         private boolean armed;
         private Date startDate;
         private Date endDate;
@@ -1845,14 +1844,11 @@ public class BasicMonthViewUI extends MonthViewUI {
         @Override
         public void mouseMoved(MouseEvent e) {}
 
-//------------------------ layout
-        
-        
+//------------------------ implements LayoutManager:
         private Dimension preferredSize = new Dimension();
 
         @Override
         public void addLayoutComponent(String name, Component comp) {}
-
         @Override
         public void removeLayoutComponent(Component comp) {}
 
@@ -1912,8 +1908,7 @@ public class BasicMonthViewUI extends MonthViewUI {
                 //  monthHeader pref > sum of box widths
                 // handle here: increase day box width accordingly
                 double diff = maxMonthWidth - (maxBoxWidth * dayColumns);
-                maxBoxWidth += Math.ceil(diff/(double) dayColumns);
-                
+                maxBoxWidth += Math.ceil(diff/(double) dayColumns);            
             }
             
             fullBoxWidth = maxBoxWidth;
@@ -1933,12 +1928,10 @@ public class BasicMonthViewUI extends MonthViewUI {
             fullCalendarHeight = calendarHeight + CALENDAR_SPACING;
             // Calculate minimum width/height for the component.
             int prefRows = getPreferredRows();
-            preferredSize.height = (calendarHeight * prefRows) +
-                    (CALENDAR_SPACING * (prefRows - 1));
+            preferredSize.height = (calendarHeight * prefRows) + (CALENDAR_SPACING * (prefRows - 1));
 
             int prefCols = getPreferredColumns();
-            preferredSize.width = (calendarWidth * prefCols) +
-                    (CALENDAR_SPACING * (prefCols - 1));
+            preferredSize.width = (calendarWidth * prefCols) + (CALENDAR_SPACING * (prefCols - 1));
 
             // Add insets to the dimensions.
             Insets insets = monthView.getInsets();
@@ -1966,8 +1959,7 @@ public class BasicMonthViewUI extends MonthViewUI {
             return isZoomable() ? 1 : monthView.getPreferredRowCount();
         }
 
-
-
+//------------------------ implements PropertyChangeListener:
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String property = evt.getPropertyName();
@@ -2010,11 +2002,11 @@ public class BasicMonthViewUI extends MonthViewUI {
             }
         }
 
+//------------------------ implements DateSelectionListener:     
         @Override
         public void valueChanged(DateSelectionEvent ev) {
             monthView.repaint();
         }
-
 
     }
 
@@ -2052,11 +2044,8 @@ public class BasicMonthViewUI extends MonthViewUI {
                 // refactor the logic ...
                 if (action == CANCEL_SELECTION) {
                     // Restore the original selection.
-                    if ((originalDateSpan != null)
-                            && !originalDateSpan.isEmpty()) {
-                        monthView.setSelectionInterval(
-                                originalDateSpan.first(), originalDateSpan
-                                        .last());
+                    if ((originalDateSpan != null) && !originalDateSpan.isEmpty()) {
+                        monthView.setSelectionInterval(originalDateSpan.first(), originalDateSpan.last());
                     } else {
                         monthView.clearSelection();
                     }
@@ -2066,8 +2055,7 @@ public class BasicMonthViewUI extends MonthViewUI {
                     monthView.commitSelection();
                 }
                 setUsingKeyboard(false);
-            } else if (action >= SELECT_PREVIOUS_DAY
-                    && action <= SELECT_DAY_NEXT_WEEK) {
+            } else if (action >= SELECT_PREVIOUS_DAY && action <= SELECT_DAY_NEXT_WEEK) {
                 setUsingKeyboard(true);
                 monthView.getSelectionModel().setAdjusting(true);
                 pivotDate = null;

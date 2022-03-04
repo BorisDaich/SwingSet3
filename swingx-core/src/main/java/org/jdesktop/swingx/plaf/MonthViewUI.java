@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -32,8 +30,7 @@ public abstract class MonthViewUI extends ComponentUI {
      * @return array of names for the days of the week.
      */
     public abstract String[] getDaysOfTheWeek();
-
-    
+   
     /**
      * Returns the Date at the given location. May be null if the
      * coordinates don't map to a day in the month which contains the 
@@ -48,9 +45,6 @@ public abstract class MonthViewUI extends ComponentUI {
      */ 
     public abstract Date getDayAtLocation(int x, int y);
 
-    
-
-
     /**
      * Returns the last possible date that can be displayed.
      * This is implemented by the UI since it is in control of layout
@@ -62,7 +56,5 @@ public abstract class MonthViewUI extends ComponentUI {
      * @return Date The date.
      */
     public abstract Date getLastDisplayedDay();
-    
-
 
 }
