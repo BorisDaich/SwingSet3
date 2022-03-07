@@ -53,12 +53,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField.AbstractFormatter;
+import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.JFormattedTextField.AbstractFormatter;
-import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -72,11 +72,11 @@ import org.jdesktop.swingx.JXMonthView;
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.calendar.CalendarUtils;
 import org.jdesktop.swingx.calendar.DatePickerFormatter;
-import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.calendar.DatePickerFormatter.DatePickerFormatterUIResource;
+import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.event.DateSelectionEvent;
-import org.jdesktop.swingx.event.DateSelectionListener;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
+import org.jdesktop.swingx.event.DateSelectionListener;
 import org.jdesktop.swingx.plaf.DatePickerUI;
 
 /**
@@ -87,7 +87,6 @@ import org.jdesktop.swingx.plaf.DatePickerUI;
  */
 public class BasicDatePickerUI extends DatePickerUI {
 
-    @SuppressWarnings("all")
     private static final Logger LOG = Logger.getLogger(BasicDatePickerUI.class.getName());
     
     /** datePicker */
@@ -517,6 +516,9 @@ public class BasicDatePickerUI extends DatePickerUI {
      * create Popup Button
      * @return buttom
      */
+    /*
+     * in Metal there is no "JXDatePicker.arrowIcon"
+     */
     protected JButton createPopupButton() {
         JButton b = new JButton();
         b.setName("popupButton");
@@ -525,6 +527,7 @@ public class BasicDatePickerUI extends DatePickerUI {
 
         Icon icon = UIManager.getIcon("JXDatePicker.arrowIcon");
         if (icon == null) {
+        	LOG.warning("use Tree.expandedIcon from javax.swing.plaf.basic.BasicTreeUI");
             icon = (Icon)UIManager.get("Tree.expandedIcon");
         }
         b.setIcon(icon);
