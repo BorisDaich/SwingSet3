@@ -46,6 +46,11 @@ public class DatePickerAddon extends AbstractComponentAddon {
         super.addBasicDefaults(addon, defaults);
         
         defaults.add(JXDatePicker.uiClassID, BasicDatePickerUI.class.getName());
+        
+        // add icon to Metal
+        defaults.add ("JXDatePicker.arrowIcon",
+                LookAndFeel.makeIcon(DatePickerAddon.class, "macosx/resources/combo-osx.png"));
+
         defaults.add("JXDatePicker.border",
                 new BorderUIResource(BorderFactory.createCompoundBorder(
                         LineBorder.createGrayLineBorder(),
@@ -111,8 +116,7 @@ public class DatePickerAddon extends AbstractComponentAddon {
     
     /** {@inheritDoc} */
     @Override
-    protected void addNimbusDefaults (LookAndFeelAddons addon, 
-        DefaultsList defaults) {
+    protected void addNimbusDefaults (LookAndFeelAddons addon, DefaultsList defaults) {
         super.addNimbusDefaults (addon, defaults);
 
         // Issue #913-swingx: ugly in Nimbus
