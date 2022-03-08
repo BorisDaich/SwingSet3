@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,131 +41,104 @@ import org.jdesktop.swingx.plaf.basic.BasicTaskPaneUI;
  */
 public class NimbusTaskPaneUI extends BasicTaskPaneUI {
 
-  public static ComponentUI createUI(JComponent c) {
-    return new NimbusTaskPaneUI();
-  }
-  
-  @Override
-protected Border createPaneBorder() {
-    return new NimbusPaneBorder();
-  }
-  
-  /**
-   * Overriden to paint the background of the component but keeping the rounded
-   * corners.
-   */
-  @Override
-public void update(Graphics g, JComponent c) {
-    if (c.isOpaque()) {
-      g.setColor(c.getParent().getBackground());
-      g.fillRect(0, 0, c.getWidth(), c.getHeight());
-      g.setColor(c.getBackground());
-      g.fillRect(0, getRoundHeight(), c.getWidth(), c.getHeight() -
-getRoundHeight());
-    }
-    paint(g, c);
-  }
+	public static ComponentUI createUI(JComponent c) {
+		return new NimbusTaskPaneUI();
+	}
 
-        /**
-         * The border of the task pane group paints the "text", the "icon", the
-         * "expanded" status and the "special" type.
-         * 
-         */
-        class NimbusPaneBorder extends PaneBorder {
+	@Override
+	protected Border createPaneBorder() {
+		return new NimbusPaneBorder();
+	}
 
-                @Override
-                protected void paintTitleBackground(JXTaskPane group, Graphics g) {
+	/**
+	 * Overriden to paint the background of the component but keeping the rounded corners.
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		if (c.isOpaque()) {
+			g.setColor(c.getParent().getBackground());
+			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+			g.setColor(c.getBackground());
+			g.fillRect(0, getRoundHeight(), c.getWidth(), c.getHeight() - getRoundHeight());
+		}
+		paint(g, c);
+	}
 
-                        Paint oldPaint = ((Graphics2D) g).getPaint();
+	/**
+	 * The border of the task pane group paints the "text", the "icon", 
+	 * the "expanded" status and the "special" type.
+	 * 
+	 */
+	class NimbusPaneBorder extends PaneBorder {
 
-                        roundHeight = 7;
+		@Override
+		protected void paintTitleBackground(JXTaskPane group, Graphics g) {
+			Graphics2D g2D = (Graphics2D) g;
+			Paint oldPaint = g2D.getPaint();
 
-                        if (group.isSpecial()) {
-                                g.setColor(specialTitleBackground);
+			roundHeight = 7;
 
-                                g.fillRoundRect(0, 0, group.getWidth(), getRoundHeight() * 2,
-                                                getRoundHeight(), getRoundHeight());
-                                g.fillRect(0, getRoundHeight(), group.getWidth(),
-                                                getTitleHeight(group) - getRoundHeight());
+			if (group.isSpecial()) {
+				g.setColor(specialTitleBackground);
 
-                        } else {
-                                Color[] colors = { titleBackgroundGradientStart,
-                                                titleBackgroundGradientEnd };
+				g.fillRoundRect(0, 0, group.getWidth(), getRoundHeight() * 2, getRoundHeight(), getRoundHeight());
+				g.fillRect(0, getRoundHeight(), group.getWidth(), getTitleHeight(group) - getRoundHeight());
 
-                                float[] fractions = { 0.0f, 1.0f };
+			} else {
+				Color[] colors = { titleBackgroundGradientStart, titleBackgroundGradientEnd };
+				float[] fractions = { 0.0f, 1.0f };
 
-                                LinearGradientPaint gradient = new LinearGradientPaint(group
-                                                .getWidth() / 2, 0.0f, group.getWidth() / 2,
-                                                getTitleHeight(group), fractions, colors);
+				LinearGradientPaint gradient = new LinearGradientPaint(group.getWidth() / 2, 0.0f
+						, group.getWidth() / 2,	getTitleHeight(group)
+						, fractions, colors);
+				
+				g2D.setPaint(gradient);
+				g2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+				g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                                ((Graphics2D) g).setPaint(gradient);
+				g.fillRoundRect(0, 0, group.getWidth(), getTitleHeight(group) / 2, getRoundHeight(), getRoundHeight());
+				g.fillRect(0, getRoundHeight(), group.getWidth(), getTitleHeight(group) - getRoundHeight());
+			}
 
-                                ((Graphics2D) g).setRenderingHint(
-                                                RenderingHints.KEY_COLOR_RENDERING,
-                                                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-                                ((Graphics2D) g).setRenderingHint(
-                                                RenderingHints.KEY_INTERPOLATION,
-                                                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                                ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_RENDERING,
-                                                RenderingHints.VALUE_RENDER_QUALITY);
-                                ((Graphics2D) g).setRenderingHint(
-                                                RenderingHints.KEY_ANTIALIASING,
-                                                RenderingHints.VALUE_ANTIALIAS_ON);
+			// draw the round border around the title area
+			g.setColor(borderColor);
+			g.drawRoundRect(0, 0, group.getWidth() - 1, getTitleHeight(group) + getRoundHeight()
+				, getRoundHeight(),	getRoundHeight()); // int arcWidth, int arcHeight)
+			g.drawLine(0, getTitleHeight(group) - 1, group.getWidth(), getTitleHeight(group) - 1);
+			g2D.setPaint(oldPaint);
+		}
 
-                                g.fillRoundRect(0, 0, group.getWidth(),
-                                                getTitleHeight(group) / 2, getRoundHeight(),
-                                                getRoundHeight());
+		@Override
+		protected void paintExpandedControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                                g.fillRect(0, getRoundHeight(), group.getWidth(),
-                                                getTitleHeight(group) - getRoundHeight());
+			g.setColor(getPaintColor(group));
+			paintChevronControls(group, g, x, y, width, height);
 
-                        }
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		}
 
-                        // draw the border around the title area
-                        g.setColor(borderColor);
+		@Override
+		protected void paintTitle(JXTaskPane group, Graphics g, Color textColor, int x, int y, int width, int height) {
+			configureLabel(group);
+			// Nimbus has some issues with ColorUIResource
+			label.setForeground(new Color(textColor.getRGB()));
+			if (group.getFont() != null && !(group.getFont() instanceof FontUIResource)) {
+				label.setFont(group.getFont());
+			}
+			g.translate(x, y);
+			label.setBounds(0, 0, width, height);
+			label.paint(g);
+			g.translate(-x, -y);
+		}
 
-                        g.drawRoundRect(0, 0, group.getWidth() - 1, getTitleHeight(group)
-                                        + getRoundHeight(), getRoundHeight(), getRoundHeight());
-                        g.drawLine(0, getTitleHeight(group) - 1, group.getWidth(),
-                                        getTitleHeight(group) - 1);
-
-                        ((Graphics2D) g).setPaint(oldPaint);
-                }
-
-                @Override
-                protected void paintExpandedControls(JXTaskPane group, Graphics g,
-                                int x, int y, int width, int height) {
-                        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                        RenderingHints.VALUE_ANTIALIAS_ON);
-
-                        g.setColor(getPaintColor(group));
-                        paintChevronControls(group, g, x, y, width, height);
-
-                        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                        RenderingHints.VALUE_ANTIALIAS_OFF);
-                }
-
-                @Override
-                protected void paintTitle(JXTaskPane group, Graphics g,
-                                Color textColor, int x, int y, int width, int height) {
-                        configureLabel(group);
-                        // Nimbus has some issues with ColorUIResource
-                        label.setForeground(new Color(textColor.getRGB()));
-                        if (group.getFont() != null
-                                        && !(group.getFont() instanceof FontUIResource)) {
-                                label.setFont(group.getFont());
-                        }
-                        g.translate(x, y);
-                        label.setBounds(0, 0, width, height);
-                        label.paint(g);
-                        g.translate(-x, -y);
-                }
-
-                @Override
-                protected boolean isMouseOverBorder() {
-                        return true;
-                }
-        }
+		@Override
+		protected boolean isMouseOverBorder() {
+			return true;
+		}
+	}
 
 }
 

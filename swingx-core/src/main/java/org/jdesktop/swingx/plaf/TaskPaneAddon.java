@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -51,16 +49,15 @@ public class TaskPaneAddon extends AbstractComponentAddon {
 
   @Override
   protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-    Font taskPaneFont = UIManagerExt.getSafeFont("Label.font", new Font(
-                "Dialog", Font.PLAIN, 12));
+	  
+    Font taskPaneFont = UIManagerExt.getSafeFont("Label.font", new Font("Dialog", Font.PLAIN, 12));
     taskPaneFont = taskPaneFont.deriveFont(Font.BOLD);
     
     Color menuBackground = new ColorUIResource(SystemColor.menu);
     
     defaults.add(JXTaskPane.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicTaskPaneUI");
     defaults.add("TaskPane.font", new FontUIResource(taskPaneFont));
-    defaults.add("TaskPane.background", UIManagerExt.getSafeColor("List.background",
-              new ColorUIResource(Color.decode("#005C5C"))));
+    defaults.add("TaskPane.background", UIManagerExt.getSafeColor("List.background", new ColorUIResource(Color.decode("#005C5C"))));
     defaults.add("TaskPane.specialTitleBackground", new ColorUIResource(menuBackground.darker()));
     defaults.add("TaskPane.titleBackgroundGradientStart", menuBackground);
     defaults.add("TaskPane.titleBackgroundGradientEnd", menuBackground);
@@ -108,8 +105,7 @@ public class TaskPaneAddon extends AbstractComponentAddon {
       defaults.add(JXTaskPane.uiClassID, "org.jdesktop.swingx.plaf.windows.WindowsTaskPaneUI");
 
       String xpStyle = OS.getWindowsVisualStyle();
-      if (WindowsLookAndFeelAddons.HOMESTEAD_VISUAL_STYLE
-        .equalsIgnoreCase(xpStyle)) {        
+      if (WindowsLookAndFeelAddons.HOMESTEAD_VISUAL_STYLE.equalsIgnoreCase(xpStyle)) {        
         defaults.add("TaskPane.foreground", new ColorUIResource(86, 102, 45));
         defaults.add("TaskPane.background", new ColorUIResource(246, 246, 236));
         defaults.add("TaskPane.specialTitleBackground", new ColorUIResource(224, 231, 184));
@@ -120,8 +116,7 @@ public class TaskPaneAddon extends AbstractComponentAddon {
         defaults.add("TaskPane.specialTitleForeground", new ColorUIResource(86, 102, 45));
         defaults.add("TaskPane.specialTitleOver", new ColorUIResource(114, 146, 29));
         defaults.add("TaskPane.borderColor", new ColorUIResource(Color.WHITE));
-      } else if (WindowsLookAndFeelAddons.SILVER_VISUAL_STYLE
-        .equalsIgnoreCase(xpStyle)) {
+      } else if (WindowsLookAndFeelAddons.SILVER_VISUAL_STYLE.equalsIgnoreCase(xpStyle)) {
         defaults.add("TaskPane.foreground", new ColorUIResource(Color.BLACK));
         defaults.add("TaskPane.background", new ColorUIResource(240, 241, 245));
         defaults.add("TaskPane.specialTitleBackground", new ColorUIResource(222, 222, 222));
@@ -189,50 +184,31 @@ public class TaskPaneAddon extends AbstractComponentAddon {
   }
   
     @Override
-    protected void addNimbusDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addNimbusDefaults(addon, defaults);
 
-        defaults.add(JXTaskPane.uiClassID,
-                "org.jdesktop.swingx.plaf.nimbus.NimbusTaskPaneUI");
+        defaults.add(JXTaskPane.uiClassID, "org.jdesktop.swingx.plaf.nimbus.NimbusTaskPaneUI");
         // dynamically changing the LaF to Nimbus does not refresh correctly the
-        // control colors if they are not hard-coded due to Nimbus DerivedColors
-        // lazy initialization
-        // defaults.add("TaskPane.foreground", new
-        // ColorUIResource(UIManager.getColor("activeCaption")));
+        // control colors if they are not hard-coded due to Nimbus DerivedColors lazy initialization
+        // see https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/_nimbusDefaults.html
+        // defaults.add("TaskPane.foreground", new ColorUIResource(UIManager.getColor("activeCaption")));
         defaults.add("TaskPane.foreground", new ColorUIResource(186, 190, 198));
-        // defaults.add("TaskPane.background", new
-        // ColorUIResource(UIManager.getColor("control")));
+        // defaults.add("TaskPane.background", new ColorUIResource(UIManager.getColor("control")));
         defaults.add("TaskPane.background", new ColorUIResource(214, 217, 223));
-        // defaults.add("TaskPane.specialTitleBackground", new
-        // ColorUIResource(UIManager.getColor("nimbusBlueGrey")));
-        defaults.add("TaskPane.specialTitleBackground", new ColorUIResource(
-                169, 176, 190));
-        // defaults.add("TaskPane.titleBackgroundGradientStart", new
-        // ColorUIResource(UIManager.getColor("background")));
-        defaults.add("TaskPane.titleBackgroundGradientStart",
-                new ColorUIResource(214, 217, 223));
-        // defaults.add("TaskPane.titleBackgroundGradientEnd", new
-        // ColorUIResource(UIManager.getColor("controlLHighlight")));
-        defaults.add("TaskPane.titleBackgroundGradientEnd",
-                new ColorUIResource(247, 248, 250));
-        defaults.add("TaskPane.titleForeground", new ColorUIResource(
-                Color.BLACK));
-        defaults.add("TaskPane.specialTitleForeground", new ColorUIResource(
-                Color.BLACK));
-        // defaults.add("TaskPane.borderColor", new
-        // ColorUIResource(UIManager.getColor("nimbusBorder")));
-        defaults
-                .add("TaskPane.borderColor", new ColorUIResource(146, 151, 161));
-        // defaults.add("TaskPane.titleOver", new
-        // ColorUIResource(UIManager.getColor("nimbusSelection")));
+        // defaults.add("TaskPane.specialTitleBackground", new ColorUIResource(UIManager.getColor("nimbusBlueGrey")));
+        defaults.add("TaskPane.specialTitleBackground", new ColorUIResource(169, 176, 190));
+        // defaults.add("TaskPane.titleBackgroundGradientStart", new ColorUIResource(UIManager.getColor("background")));
+        defaults.add("TaskPane.titleBackgroundGradientStart", new ColorUIResource(214, 217, 223));
+        // defaults.add("TaskPane.titleBackgroundGradientEnd", new ColorUIResource(UIManager.getColor("controlLHighlight")));
+        defaults.add("TaskPane.titleBackgroundGradientEnd", new ColorUIResource(247, 248, 250));
+        defaults.add("TaskPane.titleForeground", new ColorUIResource(Color.BLACK));
+        defaults.add("TaskPane.specialTitleForeground", new ColorUIResource(Color.BLACK));
+        // defaults.add("TaskPane.borderColor", new ColorUIResource(UIManager.getColor("nimbusBorder")));
+        defaults.add("TaskPane.borderColor", new ColorUIResource(146, 151, 161));
+        // defaults.add("TaskPane.titleOver", new ColorUIResource(UIManager.getColor("nimbusSelection")));
         defaults.add("TaskPane.titleOver", new ColorUIResource(57, 105, 138));
-        // defaults.add("TaskPane.specialTitleOver", new
-        // ColorUIResource(UIManager.getColor("nimbusSelection")));
-        defaults.add("TaskPane.specialTitleOver", new ColorUIResource(57, 105,
-                138));
-
+        // defaults.add("TaskPane.specialTitleOver", new ColorUIResource(UIManager.getColor("nimbusSelection")));
+        defaults.add("TaskPane.specialTitleOver", new ColorUIResource(57, 105, 138));
     }
-
 
 }

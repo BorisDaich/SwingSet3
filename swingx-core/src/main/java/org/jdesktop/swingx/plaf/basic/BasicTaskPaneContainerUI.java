@@ -99,11 +99,9 @@ public class BasicTaskPaneContainerUI extends TaskPaneContainerUI {
      * container.
      */
     protected void installDefaults() {
-        LookAndFeel.installColors(taskPane, "TaskPaneContainer.background",
-                "TaskPaneContainer.foreground");
+        LookAndFeel.installColors(taskPane, "TaskPaneContainer.background", "TaskPaneContainer.foreground");
         LookAndFeel.installBorder(taskPane, "TaskPaneContainer.border");
-        LookAndFeelAddons.installBackgroundPainter(taskPane,
-                "TaskPaneContainer.backgroundPainter");
+        LookAndFeelAddons.installBackgroundPainter(taskPane, "TaskPaneContainer.backgroundPainter");
         LookAndFeel.installProperty(taskPane, "opaque", Boolean.TRUE);
     }
     

@@ -129,8 +129,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
      * </ul>
      */
     protected void installDefaults() {
-        LookAndFeel.installColorsAndFont(group, "TaskPane.background",
-                "TaskPane.foreground", "TaskPane.font");
+        LookAndFeel.installColorsAndFont(group, "TaskPane.background", "TaskPane.foreground", "TaskPane.font");
         LookAndFeel.installProperty(group, "opaque", false);
         
         if (isUIInstallable(group.getBorder())) {
@@ -140,8 +139,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         if (group.getContentPane() instanceof JComponent) {
             JComponent content = (JComponent) group.getContentPane();
             
-            LookAndFeel.installColorsAndFont(content,
-                    "TaskPane.background", "TaskPane.foreground", "TaskPane.font");
+            LookAndFeel.installColorsAndFont(content, "TaskPane.background", "TaskPane.foreground", "TaskPane.font");
             
             if (isUIInstallable(content.getBorder())) {
                 content.setBorder(createContentPaneBorder());
@@ -168,8 +166,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
     protected void installKeyboardActions() {
         InputMap inputMap = (InputMap) UIManager.get("TaskPane.focusInputMap");
         if (inputMap != null) {
-            SwingUtilities.replaceUIInputMap(group, JComponent.WHEN_FOCUSED,
-                    inputMap);
+            SwingUtilities.replaceUIInputMap(group, JComponent.WHEN_FOCUSED, inputMap);
         }
 
         ActionMap map = getActionMap();
@@ -277,10 +274,8 @@ public class BasicTaskPaneUI extends TaskPaneUI {
 
         Border groupBorder = group.getBorder();
         if (groupBorder instanceof PaneBorder) {
-            ((PaneBorder) groupBorder).label.setDisplayedMnemonic(group
-                    .getMnemonic());
-            Dimension border = ((PaneBorder) groupBorder)
-                    .getPreferredSize(group);
+            ((PaneBorder) groupBorder).label.setDisplayedMnemonic(group.getMnemonic());
+            Dimension border = ((PaneBorder) groupBorder).getPreferredSize(group);
             dim.width = Math.max(dim.width, border.width);
             dim.height += border.height;
         } else {
@@ -334,8 +329,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                group.scrollRectToVisible(new Rectangle(group.getWidth(), group
-                        .getHeight()));
+                group.scrollRectToVisible(new Rectangle(group.getWidth(), group.getHeight()));
             }
         });
     }
@@ -367,18 +361,14 @@ public class BasicTaskPaneUI extends TaskPaneUI {
             if (("collapsed".equals(evt.getPropertyName())
                     // JW: fix for 1572-swingx - scrollOnExpand broken in 1.6.5-1
                     && Boolean.FALSE.equals(evt.getNewValue())))  {
-//                    && Boolean.TRUE.equals(evt.getNewValue()) && !group
-//                    .isAnimated())) {
+//                    && Boolean.TRUE.equals(evt.getNewValue()) && !group.isAnimated())) {
                 if (group.isScrollOnExpand()) {
                     ensureVisible();
                 }
                      
-            } else if (JXTaskPane.ICON_CHANGED_KEY
-                    .equals(evt.getPropertyName())
-                    || JXTaskPane.TITLE_CHANGED_KEY.equals(evt
-                            .getPropertyName())
-                    || JXTaskPane.SPECIAL_CHANGED_KEY.equals(evt
-                            .getPropertyName())) {
+            } else if (JXTaskPane.ICON_CHANGED_KEY.equals(evt.getPropertyName())
+                    || JXTaskPane.TITLE_CHANGED_KEY.equals(evt.getPropertyName())
+                    || JXTaskPane.SPECIAL_CHANGED_KEY.equals(evt.getPropertyName())) {
                 // icon, title, special must lead to a repaint()
                 group.repaint();
             } else if ("mnemonic".equals(evt.getPropertyName())) {
@@ -398,37 +388,34 @@ public class BasicTaskPaneUI extends TaskPaneUI {
      * Mouse listener responsible for handling of toggle events.
      */
     class ToggleListener extends MouseInputAdapter {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            if (isInBorder(e)) {
-                e.getComponent().setCursor(
-                        Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            } else {
-                mouseOver = false;
-                                group.repaint(0, 0, group.getWidth(), getTitleHeight(group));
-            }
-        }
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			if (isInBorder(e)) {
+				e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			} else {
+				mouseOver = false;
+				group.repaint(0, 0, group.getWidth(), getTitleHeight(group));
+			}
+		}
 
-        @Override
-        public void mouseExited(MouseEvent e) {
-            e.getComponent().setCursor(null);
-            mouseOver = false;
-                        group.repaint(0, 0, group.getWidth(), getTitleHeight(group));
-        }
+		@Override
+		public void mouseExited(MouseEvent e) {
+			e.getComponent().setCursor(null);
+			mouseOver = false;
+			group.repaint(0, 0, group.getWidth(), getTitleHeight(group));
+		}
 
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            if (isInBorder(e)) {
-                e.getComponent().setCursor(
-                        Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                mouseOver = true;
-            } else {
-                e.getComponent().setCursor(null);
-                mouseOver = false;
-            }
-            
-                        group.repaint(0, 0, group.getWidth(), getTitleHeight(group));
-        }
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			if (isInBorder(e)) {
+				e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				mouseOver = true;
+			} else {
+				e.getComponent().setCursor(null);
+				mouseOver = false;
+			}
+			group.repaint(0, 0, group.getWidth(), getTitleHeight(group));
+		}
 
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -488,8 +475,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         }
 
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y,
-                int width, int height) {
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             g.setColor(color);
             g.drawLine(x, y, x, y + height - 1);
             g.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
@@ -504,21 +490,21 @@ public class BasicTaskPaneUI extends TaskPaneUI {
      */
     protected class PaneBorder implements Border, UIResource {
 
-        /** TODO doc */
+        /** borderColor as set in TaskPaneAddon */
         protected Color borderColor;
-        /** TODO doc */
+        /** titleForeground color as set in TaskPaneAddon */
         protected Color titleForeground;
-        /** TODO doc */
+        /** specialTitleBackground color as set in TaskPaneAddon */
         protected Color specialTitleBackground;
-        /** TODO doc */
+        /** specialTitleForeground color as set in TaskPaneAddon */
         protected Color specialTitleForeground;
-        /** TODO doc */
+        /** titleBackgroundGradientStart color as set in TaskPaneAddon */
         protected Color titleBackgroundGradientStart;
-        /** TODO doc */
+        /** titleBackgroundGradientEnd color as set in TaskPaneAddon */
         protected Color titleBackgroundGradientEnd;
-        /** TODO doc */
+        /** titleOver color as set in TaskPaneAddon */
         protected Color titleOver;
-        /** TODO doc */
+        /** specialTitleOver color as set in TaskPaneAddon */
         protected Color specialTitleOver;
 
         /** TODO doc */
@@ -532,15 +518,11 @@ public class BasicTaskPaneUI extends TaskPaneUI {
 
             titleForeground = UIManager.getColor("TaskPane.titleForeground");
 
-            specialTitleBackground = UIManager
-                    .getColor("TaskPane.specialTitleBackground");
-            specialTitleForeground = UIManager
-                    .getColor("TaskPane.specialTitleForeground");
+            specialTitleBackground = UIManager.getColor("TaskPane.specialTitleBackground");
+            specialTitleForeground = UIManager.getColor("TaskPane.specialTitleForeground");
 
-            titleBackgroundGradientStart = UIManager
-                    .getColor("TaskPane.titleBackgroundGradientStart");
-            titleBackgroundGradientEnd = UIManager
-                    .getColor("TaskPane.titleBackgroundGradientEnd");
+            titleBackgroundGradientStart = UIManager.getColor("TaskPane.titleBackgroundGradientStart");
+            titleBackgroundGradientEnd = UIManager.getColor("TaskPane.titleBackgroundGradientEnd");
 
             titleOver = UIManager.getColor("TaskPane.titleOver");
             if (titleOver == null) {
@@ -632,8 +614,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          * @param height
          *            Height of the box.
          */
-        protected void paintTitle(JXTaskPane group, Graphics g,
-                Color textColor, int x, int y, int width, int height) {
+        protected void paintTitle(JXTaskPane group, Graphics g, Color textColor, int x, int y, int width, int height) {
             configureLabel(group);
             label.setForeground(textColor);
             if (group.getFont() != null && ! (group.getFont() instanceof FontUIResource)) {
@@ -675,9 +656,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          * @param height
          *            Height of the box.
          */
-        protected void paintExpandedControls(JXTaskPane group, Graphics g,
-                int x, int y, int width, int height) {
-        }
+        protected void paintExpandedControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {}
 
         /**
          * Gets current paint color.
@@ -717,8 +696,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          *      java.awt.Graphics, int, int, int, int)
          */
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y,
-                int width, int height) {
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 
             JXTaskPane group = (JXTaskPane) c;
 
@@ -740,8 +718,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
             paintTitleBackground(group, g);
 
             // paint the the toggles
-            paintExpandedControls(group, g, controlX, controlY, controlWidth,
-                    controlWidth);
+            paintExpandedControls(group, g, controlX, controlY, controlWidth, controlWidth);
 
             // paint the title text and icon
             Color paintColor = getPaintColor(group);
@@ -751,8 +728,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
                 paintFocus(g, paintColor, 3, 3, width - 6, getTitleHeight(group) - 6);
             }
 
-            paintTitle(group, g, paintColor, titleX, titleY, titleWidth,
-                    titleHeight);
+            paintTitle(group, g, paintColor, titleX, titleY, titleWidth, titleHeight);
         }
 
         /**
@@ -803,8 +779,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          * @param height
          *            Height of the box.
          */
-        protected void paintOvalAroundControls(JXTaskPane group, Graphics g,
-                int x, int y, int width, int height) {
+        protected void paintOvalAroundControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
             if (group.isSpecial()) {
                 g.setColor(specialTitleBackground.brighter());
                 g.drawOval(x, y, width, height);
@@ -860,8 +835,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          * @param height
          *            Height of the box.
          */
-        protected void paintFocus(Graphics g, Color paintColor, int x, int y,
-                int width, int height) {
+        protected void paintFocus(Graphics g, Color paintColor, int x, int y, int width, int height) {
             g.setColor(paintColor);
             BasicGraphicsUtils.drawDashedRect(g, x, y, width, height);
         }
