@@ -130,7 +130,7 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
  *          shortDescription="JXTaskPane is a container for tasks and other arbitrary components."
  *          stopClass="java.awt.Component"
  * 
- * @javabean.icons
+ * @javabean.icons // nur noch in marxenter-labs\java.labs\jdnc-trunk\www\demos\ vorhanden:
  *          mono16="JXTaskPane16-mono.gif"
  *          color16="JXTaskPane16.gif"
  *          mono32="JXTaskPane32-mono.gif"
@@ -139,57 +139,59 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
 @JavaBean
 public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsiblePaneContainer, Mnemonicable {
 
-  /**
-   * JXTaskPane pluggable UI key <i>swingx/TaskPaneUI</i> 
-   */
-  public final static String uiClassID = "swingx/TaskPaneUI";
-  
-  // ensure at least the default ui is registered
-  static {
-    LookAndFeelAddons.contribute(new TaskPaneAddon());
-  }
+//	private static final Logger LOG = Logger.getLogger(JXTaskPane.class.getName());
 
-  /**
-   * Used when generating PropertyChangeEvents for the "scrollOnExpand" property
-   */
-  public static final String SCROLL_ON_EXPAND_CHANGED_KEY = "scrollOnExpand";
+	/**
+	 * JXTaskPane pluggable UI key <i>swingx/TaskPaneUI</i>
+	 */
+	public final static String uiClassID = "swingx/TaskPaneUI";
 
-  /**
-   * Used when generating PropertyChangeEvents for the "title" property
-   */
-  public static final String TITLE_CHANGED_KEY = "title";
+	// ensure at least the default ui is registered
+	static {
+		LookAndFeelAddons.contribute(new TaskPaneAddon());
+	}
 
-  /**
-   * Used when generating PropertyChangeEvents for the "icon" property
-   */
-  public static final String ICON_CHANGED_KEY = "icon";
+	/**
+	 * Used when generating PropertyChangeEvents for the "scrollOnExpand" property
+	 */
+	public static final String SCROLL_ON_EXPAND_CHANGED_KEY = "scrollOnExpand";
 
-  /**
-   * Used when generating PropertyChangeEvents for the "special" property
-   */
-  public static final String SPECIAL_CHANGED_KEY = "special";
+	/**
+	 * Used when generating PropertyChangeEvents for the "title" property
+	 */
+	public static final String TITLE_CHANGED_KEY = "title";
 
-  /**
-   * Used when generating PropertyChangeEvents for the "animated" property
-   */
-  public static final String ANIMATED_CHANGED_KEY = "animated";
+	/**
+	 * Used when generating PropertyChangeEvents for the "icon" property
+	 */
+	public static final String ICON_CHANGED_KEY = "icon";
 
-  private String title;
-  private Icon icon;
-  private boolean special;
-  private boolean scrollOnExpand;
+	/**
+	 * Used when generating PropertyChangeEvents for the "special" property
+	 */
+	public static final String SPECIAL_CHANGED_KEY = "special";
 
-  private int        mnemonic;
-  private int        mnemonicIndex           = -1;
-  
-  private JXCollapsiblePane collapsePane;
-  
-  /**
-   * Creates a new empty <code>JXTaskPane</code>.
-   */
-  public JXTaskPane() {
-      this((String) null);
-  }
+	/**
+	 * Used when generating PropertyChangeEvents for the "animated" property
+	 */
+	public static final String ANIMATED_CHANGED_KEY = "animated";
+
+	private String title;
+	private Icon icon;
+	private boolean special;
+	private boolean scrollOnExpand;
+
+	private int mnemonic;
+	private int mnemonicIndex = -1;
+
+	private JXCollapsiblePane collapsePane;
+
+	/**
+	 * Creates a new empty <code>JXTaskPane</code>.
+	 */
+	public JXTaskPane() {
+		this((String) null);
+	}
 
     /**
      * Creates a new task pane with the specified title.
@@ -546,89 +548,84 @@ public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsibleP
         }
     }
   
-  /**
-   * Adds an action to this <code>JXTaskPane</code>. Returns a
-   * component built from the action. The returned component has been
-   * added to the <code>JXTaskPane</code>.
-   * 
-   * @param action ui action
-   * @return a component built from the action
-   */
-  public Component add(Action action) {
-    Component c = ((TaskPaneUI)ui).createAction(action);
-    add(c);
-    return c;
-  }
+	/**
+	 * Adds an action to this <code>JXTaskPane</code>. Returns a component built
+	 * from the action. The returned component has been added to the
+	 * <code>JXTaskPane</code>.
+	 * 
+	 * @param action ui action
+	 * @return a component built from the action
+	 */
+	public Component add(Action action) {
+		Component c = ((TaskPaneUI) ui).createAction(action);
+		add(c);
+		return c;
+	}
 
-  /**
-   * @see JXCollapsiblePane.CollapsiblePaneContainer
-   */
-  @Override
-public Container getValidatingContainer() {
-    return getParent();
-  }
-  
-  /**
-   * Overridden to redirect call to the content pane.
-   */
-  @Override
-  protected void addImpl(Component comp, Object constraints, int index) {
-    getContentPane().add(comp, constraints, index);
-    //Fixes SwingX #364; adding to internal component we need to revalidate ourself
-    revalidate();
-  }
+	/**
+	 * @see JXCollapsiblePane.CollapsiblePaneContainer
+	 */
+	@Override
+	public Container getValidatingContainer() {
+		return getParent();
+	}
 
-  /**
-   * Overridden to redirect call to the content pane.
-   */
-  @Override
-  public void setLayout(LayoutManager mgr) {
-    if (collapsePane != null) {
-      getContentPane().setLayout(mgr);
-    }
-  }
-  
-  /**
-   * Overridden to redirect call to the content pane
-   */
-  @Override
-  public void remove(Component comp) {
-    getContentPane().remove(comp);
-  }
+	/**
+	 * Overridden to redirect call to the content pane.
+	 */
+	@Override
+	protected void addImpl(Component comp, Object constraints, int index) {
+		getContentPane().add(comp, constraints, index);
+		// Fixes SwingX #364; adding to internal component we need to revalidate ourself
+		revalidate();
+	}
 
-  /**
-   * Overridden to redirect call to the content pane.
-   */
-  @Override
-  public void remove(int index) {
-    getContentPane().remove(index);
-  }
-  
-  /**
-   * Overridden to redirect call to the content pane.
-   */
-  @Override
-  public void removeAll() {
-    getContentPane().removeAll();
-  }
-  
-  /**
-   * @see JComponent#paramString()
-   */
-  @Override
-  protected String paramString() {
-    return super.paramString()
-      + ",title="
-      + getTitle()
-      + ",icon="
-      + getIcon()
-      + ",collapsed="
-      + String.valueOf(isCollapsed())
-      + ",special="
-      + String.valueOf(isSpecial())
-      + ",scrollOnExpand=" 
-      + String.valueOf(isScrollOnExpand())
-      + ",ui=" + getUI();
-  }
+	/**
+	 * Overridden to redirect call to the content pane.
+	 */
+	@Override
+	public void setLayout(LayoutManager mgr) {
+		if (collapsePane != null) {
+			getContentPane().setLayout(mgr);
+		}
+	}
+
+	/**
+	 * Overridden to redirect call to the content pane
+	 */
+	@Override
+	public void remove(Component comp) {
+		getContentPane().remove(comp);
+	}
+
+	/**
+	 * Overridden to redirect call to the content pane.
+	 */
+	@Override
+	public void remove(int index) {
+		getContentPane().remove(index);
+	}
+
+	/**
+	 * Overridden to redirect call to the content pane.
+	 */
+	@Override
+	public void removeAll() {
+		getContentPane().removeAll();
+	}
+
+	/**
+	 * @see JComponent#paramString()
+	 */
+	@Override
+	protected String paramString() {
+		return super.paramString() 
+				+ ",title=" + getTitle() 
+				+ ",icon=" + getIcon() 
+				+ ",collapsed="+ String.valueOf(isCollapsed()) 
+				+ ",special=" + String.valueOf(isSpecial()) 
+				+ ",scrollOnExpand=" + String.valueOf(isScrollOnExpand()) 
+				+ ",ui=" + getUI();
+	}
 
 }

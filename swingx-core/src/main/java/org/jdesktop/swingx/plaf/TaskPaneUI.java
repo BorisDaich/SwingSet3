@@ -31,15 +31,18 @@ import javax.swing.plaf.PanelUI;
  */
 public abstract class TaskPaneUI extends PanelUI {
 
-  /**
-   * Called by the component when an action is added to the component through
-   * the {@link org.jdesktop.swingx.JXTaskPane#add(Action)} method.
-   * 
-   * @param action ui action
-   * @return a component built from the action.
-   */
-  public Component createAction(Action action) {
-    return new JButton(action);
-  }
+	/**
+	 * Called by the component when an action is added to the component through the
+	 * {@link org.jdesktop.swingx.JXTaskPane#add(Action)} method. 
+	 * <p>
+	 * The strategie to create the button icon in <code>AbstractButton.setIconFromAction</code> is 
+	 * first try Action.LARGE_ICON_KEY, if not exists then use Action.SMALL_ICON
+	 * 
+	 * @param action ui action
+	 * @return a component built from the action.
+	 */
+	public Component createAction(Action action) {
+		return new JButton(action);
+	}
 
 }
