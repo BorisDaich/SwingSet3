@@ -47,7 +47,6 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -76,8 +75,8 @@ import org.jdesktop.swingx.calendar.DatePickerFormatter.DatePickerFormatterUIRes
 import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
-import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.event.DateSelectionListener;
+import org.jdesktop.swingx.icon.CalendarIcon;
 import org.jdesktop.swingx.plaf.DatePickerUI;
 
 /**
@@ -517,28 +516,18 @@ public class BasicDatePickerUI extends DatePickerUI {
      * create Popup Button
      * @return buttom
      */
-    /*
-     * in Metal there is no "JXDatePicker.arrowIcon"
-     */
     protected JButton createPopupButton() {
         JButton b = new JButton();
         b.setName("popupButton");
         b.setRolloverEnabled(false);
         b.setMargin(new Insets(0, 3, 0, 3));
 
-        Icon icon = UIManager.getIcon("JXDatePicker.arrowIcon");
-        if (icon == null) {
-        	LOG.warning("use Tree.expandedIcon from javax.swing.plaf.basic.BasicTreeUI");
-            icon = (Icon)UIManager.get("Tree.expandedIcon");
-        }
-//        ChevronsIcon chevrons = new ChevronsIcon(); // just show use of another icon, TODO use feather calendar
-        b.setIcon(icon);
+        b.setIcon(new CalendarIcon());
         b.setFocusable(false);
         return b;
     }
 
     /**
-     * 
      * A subclass of JFormattedTextField which calculates a "reasonable"
      * minimum preferred size, independent of value/text.<p>
      * 
@@ -550,7 +539,6 @@ public class BasicDatePickerUI extends DatePickerUI {
      *   don't we use it?
      */
     private class DefaultEditor extends JFormattedTextField implements UIResource {
-
 
         public DefaultEditor(AbstractFormatter formatter) {
             super(formatter);
@@ -1324,8 +1312,7 @@ public class BasicDatePickerUI extends DatePickerUI {
             // Retarget mouse event to the month view.
             if (_forwardReleaseEvent) {
                 JXMonthView monthView = datePicker.getMonthView();
-                ev = SwingUtilities.convertMouseEvent(popupButton, ev,
-                        monthView);
+                ev = SwingUtilities.convertMouseEvent(popupButton, ev, monthView);
                 monthView.dispatchEvent(ev);
                 _forwardReleaseEvent = false;
             }
@@ -1400,8 +1387,7 @@ public class BasicDatePickerUI extends DatePickerUI {
          */
         private void editorPropertyChange(PropertyChangeEvent evt) {
             if ("value".equals(evt.getPropertyName())) {
-                updateFromValueChanged((Date) evt.getOldValue(), (Date) evt
-                        .getNewValue());
+                updateFromValueChanged((Date) evt.getOldValue(), (Date) evt.getNewValue());
             }
 
         }
