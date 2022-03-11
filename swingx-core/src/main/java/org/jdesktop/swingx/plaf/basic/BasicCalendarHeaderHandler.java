@@ -60,7 +60,6 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
 
     @Override
     protected void installNavigationActions() {
-        // TODO Auto-generated method stub
         super.installNavigationActions();
         ZoomOutAction zoomOutAction = new ZoomOutAction();
         zoomOutAction.setTarget(monthView);
@@ -75,7 +74,6 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
 
     @Override
     public BasicCalendarHeader getHeaderComponent() {
-        // TODO Auto-generated method stub
         return (BasicCalendarHeader) super.getHeaderComponent();
     }
 
@@ -97,23 +95,21 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
         private StringValue tsv ;
 
         /** TODO doc */
-        public ZoomOutAction() {
-            super();
-            tsv = new StringValue() {
-                
-                @Override
-                public String getString(Object value) {
-                    if (value instanceof Calendar) {
-                        String month = monthNames[((Calendar) value)
-                                                  .get(Calendar.MONTH)];
-                        return month + " "
-                        + ((Calendar) value).get(Calendar.YEAR); 
-                    }
-                    return StringValues.TO_STRING.getString(value);
-                }
-                
-            };
-        }
+		public ZoomOutAction() {
+			super();
+			tsv = new StringValue() {
+
+				@Override
+				public String getString(Object value) {
+					if (value instanceof Calendar) {
+						String month = monthNames[((Calendar) value).get(Calendar.MONTH)];
+						return month + " " + ((Calendar) value).get(Calendar.YEAR);
+					}
+					return StringValues.TO_STRING.getString(value);
+				}
+
+			};
+		}
         
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -258,4 +254,3 @@ public class BasicCalendarHeaderHandler extends CalendarHeaderHandler {
     }
 
 }
-    

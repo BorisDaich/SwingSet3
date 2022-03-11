@@ -166,14 +166,11 @@ import org.jdesktop.swingx.util.Contract;
 public class JXDatePicker extends JComponent {
 	
     private static final Logger LOG = Logger.getLogger(JXDatePicker.class.getName());
+    
     static {
         LookAndFeelAddons.contribute(new DatePickerAddon());
     }
-// -------------------------
-    public void paint(Graphics g) {
-    	super.paint(g);
-    }
- // -------------------------
+
     /**
      * UI Class ID
      */
@@ -279,13 +276,13 @@ public class JXDatePicker extends JComponent {
      */
     public JXDatePicker(Date selection, Locale locale) {
         init();
-        LOG.info("Date selection:"+selection + ", Locale="+locale);
+        LOG.fine("Date selection:"+selection + ", Locale="+locale);
         if (locale != null) {
             setLocale(locale);
         }
         // install the controller before setting the date
         updateUI();
-        LOG.info("UIClassID="+getUIClassID());
+        LOG.finer("UIClassID="+getUIClassID());
         setDate(selection);
     }
 
