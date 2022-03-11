@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,45 +39,38 @@ import org.jdesktop.swingx.plaf.basic.BasicTaskPaneUI;
  */
 public class WindowsClassicTaskPaneUI extends BasicTaskPaneUI {
 
-  public static ComponentUI createUI(JComponent c) {
-    return new WindowsClassicTaskPaneUI();
-  }
+	public static ComponentUI createUI(JComponent c) {
+		return new WindowsClassicTaskPaneUI();
+	}
 
-  @Override
-  protected void installDefaults() {
-    super.installDefaults();
-    
-    LookAndFeel.installProperty(group, "opaque", false);
-  }
+	@Override
+	protected void installDefaults() {
+		super.installDefaults();
+		LookAndFeel.installProperty(group, "opaque", false);
+	}
 
-  @Override
-  protected Border createPaneBorder() {
-    return new ClassicPaneBorder();
-  }
+	@Override
+	protected Border createPaneBorder() {
+		return new ClassicPaneBorder();
+	}
 
-  /**
-   * The border of the taskpane group paints the "text", the "icon", the
-   * "expanded" status and the "special" type.
-   *  
-   */
-  class ClassicPaneBorder extends PaneBorder {
+	/**
+	 * The border of the taskpane group paints the "text", the "icon", the
+	 * "expanded" status and the "special" type.
+	 * 
+	 */
+	class ClassicPaneBorder extends PaneBorder {
 
-    @Override
-    protected void paintExpandedControls(JXTaskPane group, Graphics g, int x,
-      int y, int width, int height) {
-      ((Graphics2D)g).setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON);
-      
-      paintRectAroundControls(group, g, x, y, width, height, Color.white,
-        Color.gray);
-      g.setColor(getPaintColor(group));
-      paintChevronControls(group, g, x, y, width, height);
-      
-      ((Graphics2D)g).setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_OFF);
-    }
-  }
+		@Override
+		protected void paintExpandedControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			paintRectAroundControls(group, g, x, y, width, height, Color.white, Color.gray);
+			g.setColor(getPaintColor(group));
+			paintChevronControls(group, g, x, y, width, height);
+
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		}
+	}
 
 }

@@ -48,97 +48,92 @@ import org.jdesktop.swingx.util.OS;
  */
 public class TaskPaneContainerAddon extends AbstractComponentAddon {
 
-  public TaskPaneContainerAddon() {
-    super("JXTaskPaneContainer");
-  }
+	static private final String  KEY_BACKGROUND = "TaskPaneContainer.background";
+	static private final Color COLOR_BACKGROUND = Color.decode("#005C5C"); // ~ dark olive green / deep cyan
+	
+	public TaskPaneContainerAddon() {
+		super("JXTaskPaneContainer");
+	}
 
-  @Override
-  protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-    super.addBasicDefaults(addon, defaults);
-    
-    defaults.add(JXTaskPaneContainer.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicTaskPaneContainerUI");
-    defaults.add("TaskPaneContainer.background", UIManagerExt.getSafeColor("Desktop.background",
-                        new ColorUIResource(Color.decode("#005C5C"))));
-    defaults.add("TaskPaneContainer.border", new BorderUIResource(BorderFactory.createEmptyBorder(10, 10, 0, 10)));
-  }
+	@Override
+	protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+		super.addBasicDefaults(addon, defaults);
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-    super.addMetalDefaults(addon, defaults);
-    
-    defaults.add("TaskPaneContainer.background", MetalLookAndFeel.getDesktopColor());
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void addWindowsDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-    super.addWindowsDefaults(addon, defaults);
-    if (addon instanceof WindowsClassicLookAndFeelAddons) {
-      defaults.add("TaskPaneContainer.background", UIManagerExt.getSafeColor("List.background",
-                new ColorUIResource(Color.decode("#005C5C"))));
-    } else if (addon instanceof WindowsLookAndFeelAddons) {     
-      String xpStyle = OS.getWindowsVisualStyle();
-      ColorUIResource background;
-      Color backgroundGradientStart;
-      Color backgroundGradientEnd;
-      
-      if (WindowsLookAndFeelAddons.HOMESTEAD_VISUAL_STYLE
-        .equalsIgnoreCase(xpStyle)) {        
-        background = new ColorUIResource(201, 215, 170);
-        backgroundGradientStart = new Color(204, 217, 173);
-        backgroundGradientEnd = new Color(165, 189, 132);
-      } else if (WindowsLookAndFeelAddons.SILVER_VISUAL_STYLE
-        .equalsIgnoreCase(xpStyle)) {
-        background = new ColorUIResource(192, 195, 209);
-        backgroundGradientStart = new Color(196, 200, 212);
-        backgroundGradientEnd = new Color(177, 179, 200);
-      } else {        
-        if (OS.isWindowsVista()) {
-          final Toolkit toolkit = Toolkit.getDefaultToolkit();
-          background = new ColorUIResource((Color)toolkit.getDesktopProperty("win.3d.backgroundColor"));
-          backgroundGradientStart = (Color)toolkit.getDesktopProperty("win.frame.activeCaptionColor");
-          backgroundGradientEnd = (Color)toolkit.getDesktopProperty("win.frame.inactiveCaptionColor");
-        } else {
-          background = new ColorUIResource(117, 150, 227);
-          backgroundGradientStart = new ColorUIResource(123, 162, 231);
-          backgroundGradientEnd = new ColorUIResource(99, 117, 214);
-        }
-      }      
-      
-      defaults.add("TaskPaneContainer.backgroundPainter", new PainterUIResource<JXTaskPaneContainer>(
-              new MattePainter(new GradientPaint(
-                      0f, 0f, backgroundGradientStart,
-                      0f, 1f, backgroundGradientEnd),
-                      true)));
-      defaults.add("TaskPaneContainer.background", background);
-    }
-  }
+		defaults.add(JXTaskPaneContainer.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicTaskPaneContainerUI");
+		defaults.add(KEY_BACKGROUND,
+				UIManagerExt.getSafeColor("Desktop.background", new ColorUIResource(COLOR_BACKGROUND)));
+		defaults.add("TaskPaneContainer.border", new BorderUIResource(BorderFactory.createEmptyBorder(10, 10, 0, 10)));
+	}
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void addMacDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-    super.addMacDefaults(addon, defaults);
-    
-    defaults.add("TaskPaneContainer.background", new ColorUIResource(238, 238, 238));
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+		super.addMetalDefaults(addon, defaults);
+		defaults.add(KEY_BACKGROUND, MetalLookAndFeel.getDesktopColor());
+	}
 
-    @Override
-    protected void addNimbusDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
-        super.addNimbusDefaults(addon, defaults);
-        // dynamically changing the LaF to Nimbus does not refresh correctly the
-        // control colors if they are not hard-coded due to Nimbus DerivedColors
-        // lazy initialization
-//        defaults.add("TaskPaneContainer.background", new ColorUIResource(
-//                UIManager.getColor("control")));
-        defaults.add("TaskPaneContainer.background", new ColorUIResource(214,217,223));
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void addWindowsDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+		super.addWindowsDefaults(addon, defaults);
+		if (addon instanceof WindowsClassicLookAndFeelAddons) {
+			defaults.add(KEY_BACKGROUND,
+					UIManagerExt.getSafeColor("List.background", new ColorUIResource(COLOR_BACKGROUND)));
+		} else if (addon instanceof WindowsLookAndFeelAddons) {
+			String xpStyle = OS.getWindowsVisualStyle();
+			ColorUIResource background;
+			Color backgroundGradientStart;
+			Color backgroundGradientEnd;
+
+			if (WindowsLookAndFeelAddons.HOMESTEAD_VISUAL_STYLE.equalsIgnoreCase(xpStyle)) {
+				background = new ColorUIResource(201, 215, 170);
+				backgroundGradientStart = new Color(204, 217, 173);
+				backgroundGradientEnd = new Color(165, 189, 132);
+			} else if (WindowsLookAndFeelAddons.SILVER_VISUAL_STYLE.equalsIgnoreCase(xpStyle)) {
+				background = new ColorUIResource(192, 195, 209);
+				backgroundGradientStart = new Color(196, 200, 212);
+				backgroundGradientEnd = new Color(177, 179, 200);
+			} else {
+				if (OS.isWindowsVista()) {
+					final Toolkit toolkit = Toolkit.getDefaultToolkit();
+					background = new ColorUIResource((Color) toolkit.getDesktopProperty("win.3d.backgroundColor"));
+					backgroundGradientStart = (Color) toolkit.getDesktopProperty("win.frame.activeCaptionColor");
+					backgroundGradientEnd = (Color) toolkit.getDesktopProperty("win.frame.inactiveCaptionColor");
+				} else {
+					background = new ColorUIResource(117, 150, 227);
+					backgroundGradientStart = new ColorUIResource(123, 162, 231);
+					backgroundGradientEnd = new ColorUIResource(99, 117, 214);
+				}
+			}
+
+			defaults.add("TaskPaneContainer.backgroundPainter",
+					new PainterUIResource<JXTaskPaneContainer>(new MattePainter(
+							new GradientPaint(0f, 0f, backgroundGradientStart, 0f, 1f, backgroundGradientEnd), true)));
+			defaults.add(KEY_BACKGROUND, background);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void addMacDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+		super.addMacDefaults(addon, defaults);
+		defaults.add(KEY_BACKGROUND, new ColorUIResource(238, 238, 238)); // white
+	}
+
+	@Override
+	protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+		super.addNimbusDefaults(addon, defaults);
+		// dynamically changing the LaF to Nimbus does not refresh correctly the
+		// control colors if they are not hard-coded due to Nimbus DerivedColors
+		// lazy initialization
+//        defaults.add(KEY_BACKGROUND, new ColorUIResource(UIManager.getColor("control")));
+		defaults.add(KEY_BACKGROUND, new ColorUIResource(214, 217, 223));
+	}
 
 }

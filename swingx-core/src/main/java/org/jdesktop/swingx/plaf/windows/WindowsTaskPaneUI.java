@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,114 +38,77 @@ import org.jdesktop.swingx.plaf.basic.BasicTaskPaneUI;
  */
 public class WindowsTaskPaneUI extends BasicTaskPaneUI {
 
-  public static ComponentUI createUI(JComponent c) {
-    return new WindowsTaskPaneUI();
-  }
-   
-  @Override
-  protected Border createPaneBorder() {
-    return new XPPaneBorder();
-  }
-  
-  /**
-   * Overriden to paint the background of the component but keeping the rounded
-   * corners.
-   */
-  @Override
-  public void update(Graphics g, JComponent c) {
-    if (c.isOpaque()) {
-      g.setColor(c.getParent().getBackground());
-      g.fillRect(0, 0, c.getWidth(), c.getHeight());
-      g.setColor(c.getBackground());
-      g.fillRect(0, getRoundHeight(), c.getWidth(), c.getHeight() - getRoundHeight());
-    }
-    paint(g, c);
-  }
+	public static ComponentUI createUI(JComponent c) {
+		return new WindowsTaskPaneUI();
+	}
 
-  /**
-   * The border of the taskpane group paints the "text", the "icon", the
-   * "expanded" status and the "special" type.
-   *  
-   */
-  class XPPaneBorder extends PaneBorder {
+	@Override
+	protected Border createPaneBorder() {
+		return new XPPaneBorder();
+	}
 
-    @Override
-    protected void paintTitleBackground(JXTaskPane group, Graphics g) {
-      if (group.isSpecial()) {
-        g.setColor(specialTitleBackground);
-        g.fillRoundRect(
-          0,
-          0,
-          group.getWidth(),
-          getRoundHeight() * 2,
-          getRoundHeight(),
-          getRoundHeight());
-        g.fillRect(
-          0,
-          getRoundHeight(),
-          group.getWidth(),
-          getTitleHeight(group) - getRoundHeight());
-      } else {
-        Paint oldPaint = ((Graphics2D)g).getPaint();
-        GradientPaint gradient = new GradientPaint(
-          0f,
-          group.getWidth() / 2,
-          group.getComponentOrientation().isLeftToRight()?
-            titleBackgroundGradientStart
-            :titleBackgroundGradientEnd,
-          group.getWidth(),
-          getTitleHeight(group),
-          group.getComponentOrientation().isLeftToRight()?
-            titleBackgroundGradientEnd
-            :titleBackgroundGradientStart);
-        
-        ((Graphics2D)g).setRenderingHint(
-          RenderingHints.KEY_COLOR_RENDERING,
-          RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        ((Graphics2D)g).setRenderingHint(
-          RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        ((Graphics2D)g).setRenderingHint(
-          RenderingHints.KEY_RENDERING,
-          RenderingHints.VALUE_RENDER_QUALITY);
-        ((Graphics2D)g).setPaint(gradient);
-        g.fillRoundRect(
-          0,
-          0,
-          group.getWidth(),
-          getRoundHeight() * 2,
-          getRoundHeight(),
-          getRoundHeight());
-        g.fillRect(
-          0,
-          getRoundHeight(),
-          group.getWidth(),
-          getTitleHeight(group) - getRoundHeight());
-        ((Graphics2D)g).setPaint(oldPaint);
-      }
-    }
+	/**
+	 * Overriden to paint the background of the component but keeping the rounded
+	 * corners.
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		if (c.isOpaque()) {
+			g.setColor(c.getParent().getBackground());
+			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+			g.setColor(c.getBackground());
+			g.fillRect(0, getRoundHeight(), c.getWidth(), c.getHeight() - getRoundHeight());
+		}
+		paint(g, c);
+	}
 
-    @Override
-    protected void paintExpandedControls(JXTaskPane group, Graphics g, int x,
-      int y, int width, int height) {
-      ((Graphics2D)g).setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON);
+	/**
+	 * The border of the taskpane group paints the "text", the "icon", the
+	 * "expanded" status and the "special" type.
+	 * 
+	 */
+	class XPPaneBorder extends PaneBorder {
 
-      paintOvalAroundControls(group, g, x, y, width, height);
-      g.setColor(getPaintColor(group));
-      paintChevronControls(group, g, x, y, width, height);
-      
-      ((Graphics2D)g).setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_OFF);
-    }
-    
-    @Override
-    protected boolean isMouseOverBorder() {
-      return true;
-    }
-    
-  }
+		@Override
+		protected void paintTitleBackground(JXTaskPane group, Graphics g) {
+			if (group.isSpecial()) {
+				g.setColor(specialTitleBackground);
+				g.fillRoundRect(0, 0, group.getWidth(), getRoundHeight() * 2, getRoundHeight(), getRoundHeight());
+				g.fillRect(0, getRoundHeight(), group.getWidth(), getTitleHeight(group) - getRoundHeight());
+			} else {
+				Graphics2D g2D = (Graphics2D) g;
+				Paint oldPaint = g2D.getPaint();
+				GradientPaint gradient = new GradientPaint(0f, group.getWidth() / 2,
+					group.getComponentOrientation().isLeftToRight() ? titleBackgroundGradientStart : titleBackgroundGradientEnd,
+					group.getWidth(), getTitleHeight(group),
+					group.getComponentOrientation().isLeftToRight() ? titleBackgroundGradientEnd : titleBackgroundGradientStart);
+
+				g2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+				g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				g2D.setPaint(gradient);
+				g.fillRoundRect(0, 0, group.getWidth(), getRoundHeight() * 2, getRoundHeight(), getRoundHeight());
+				g.fillRect(0, getRoundHeight(), group.getWidth(), getTitleHeight(group) - getRoundHeight());
+				g2D.setPaint(oldPaint);
+			}
+		}
+
+		@Override
+		protected void paintExpandedControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			paintOvalAroundControls(group, g, x, y, width, height);
+			g.setColor(getPaintColor(group));
+			paintChevronControls(group, g, x, y, width, height);
+
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		}
+
+		@Override
+		protected boolean isMouseOverBorder() {
+			return true;
+		}
+
+	}
 
 }

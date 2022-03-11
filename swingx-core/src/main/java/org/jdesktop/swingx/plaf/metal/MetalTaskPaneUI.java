@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,50 +37,44 @@ import org.jdesktop.swingx.plaf.basic.BasicTaskPaneUI;
  */
 public class MetalTaskPaneUI extends BasicTaskPaneUI {
 
-  public static ComponentUI createUI(JComponent c) {
-    return new MetalTaskPaneUI();
-  }
+	public static ComponentUI createUI(JComponent c) {
+		return new MetalTaskPaneUI();
+	}
 
-  @Override
-  protected void installDefaults() {
-    super.installDefaults();
-    
-    LookAndFeel.installProperty(group, "opaque", false);
-  }
+	@Override
+	protected void installDefaults() {
+		super.installDefaults();
 
-  @Override
-  protected Border createPaneBorder() {
-    return new MetalPaneBorder();
-  }
+		LookAndFeel.installProperty(group, "opaque", false);
+	}
 
-  /**
-   * The border of the task pane group paints the "text", the "icon",
-   * the "expanded" status and the "special" type.
-   *  
-   */
-  class MetalPaneBorder extends PaneBorder {
+	@Override
+	protected Border createPaneBorder() {
+		return new MetalPaneBorder();
+	}
 
-    @Override
-    protected void paintExpandedControls(JXTaskPane group, Graphics g, int x,
-      int y, int width, int height) {
-      ((Graphics2D)g).setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON);
-      
-      g.setColor(getPaintColor(group));
-      paintRectAroundControls(group, g, x, y, width, height, g.getColor(), g
-        .getColor());
-      paintChevronControls(group, g, x, y, width, height);
-      
-      ((Graphics2D)g).setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_OFF);      
-    }
+	/**
+	 * The border of the task pane group paints the "text", the "icon", the
+	 * "expanded" status and the "special" type.
+	 * 
+	 */
+	class MetalPaneBorder extends PaneBorder {
 
-    @Override
-    protected boolean isMouseOverBorder() {
-      return true;
-    }    
-  }
+		@Override
+		protected void paintExpandedControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			g.setColor(getPaintColor(group));
+			paintRectAroundControls(group, g, x, y, width, height, g.getColor(), g.getColor());
+			paintChevronControls(group, g, x, y, width, height);
+
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		}
+
+		@Override
+		protected boolean isMouseOverBorder() {
+			return true;
+		}
+	}
 
 }
