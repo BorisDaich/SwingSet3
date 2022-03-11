@@ -444,8 +444,8 @@ public class JXMonthView extends JComponent {
      * 
      * @param model the DateSelectionModel which should drive the monthView. 
      *    If null, a default model is created and initialized with the given locale.
-     * @param locale the Locale to use with the selectionModel. If null,
-     *   JComponent.getDefaultLocale is used.
+     * @param locale the Locale to use with the selectionModel. 
+     *    If null, JComponent.getDefaultLocale is used.
      */
     private void initModel(DateSelectionModel model, Locale locale) {
         if (locale == null) {
@@ -1314,10 +1314,14 @@ public class JXMonthView extends JComponent {
     public String[] getDaysOfTheWeek() {
         if (_daysOfTheWeek != null) {
             String[] days = new String[DAYS_IN_WEEK];
+//            LOG.info("--------------------days:"+days);
             System.arraycopy(_daysOfTheWeek, 0, days, 0, DAYS_IN_WEEK);
             return days;
-        } 
-        return getUI().getDaysOfTheWeek();
+        }
+//        return getUI().getDaysOfTheWeek();
+        String[] dotw = getUI().getDaysOfTheWeek();
+        LOG.fine("-----"+getUI()+"---------------dotw day 0 of week:"+dotw[0]);
+        return dotw;
     }
 
     /**

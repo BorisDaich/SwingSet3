@@ -165,12 +165,15 @@ import org.jdesktop.swingx.util.Contract;
 @JavaBean
 public class JXDatePicker extends JComponent {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXDatePicker.class.getName());
     static {
         LookAndFeelAddons.contribute(new DatePickerAddon());
     }
-
+// -------------------------
+    public void paint(Graphics g) {
+    	super.paint(g);
+    }
+ // -------------------------
     /**
      * UI Class ID
      */
@@ -276,11 +279,13 @@ public class JXDatePicker extends JComponent {
      */
     public JXDatePicker(Date selection, Locale locale) {
         init();
+        LOG.info("Date selection:"+selection + ", Locale="+locale);
         if (locale != null) {
             setLocale(locale);
         }
         // install the controller before setting the date
         updateUI();
+        LOG.info("UIClassID="+getUIClassID());
         setDate(selection);
     }
 
@@ -356,7 +361,7 @@ public class JXDatePicker extends JComponent {
 
     private void initMonthView() {
         _monthView = new JXMonthView();
-//        _monthView.setSelectionModel(new SingleDaySelectionModel());
+        LOG.info("monthView.SelectionModel/Mode:"+_monthView.getSelectionModel()+"/"+_monthView.getSelectionMode());
         _monthView.setTraversable(true);
         _monthView.addPropertyChangeListener(getMonthViewListener());
     }

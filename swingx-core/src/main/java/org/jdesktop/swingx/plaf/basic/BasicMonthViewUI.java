@@ -566,8 +566,7 @@ public class BasicMonthViewUI extends MonthViewUI {
 
         if (daysOfTheWeek == null) {
             daysOfTheWeek = new String[7];
-            String[] dateFormatSymbols = DateFormatSymbols.getInstance(locale)
-                    .getShortWeekdays();
+            String[] dateFormatSymbols = DateFormatSymbols.getInstance(locale).getShortWeekdays();
             daysOfTheWeek = new String[JXMonthView.DAYS_IN_WEEK];
             for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
                 daysOfTheWeek[i - 1] = dateFormatSymbols[i];
@@ -1903,15 +1902,17 @@ public class BasicMonthViewUI extends MonthViewUI {
             if (monthView.isShowingWeekNumber()) {
                 dayColumns++;
             }
-            
+            LOG.fine("maxMonthWidth > maxBoxWidth * dayColumns : "+maxMonthWidth+">"+maxBoxWidth+"*"+dayColumns);
             if (maxMonthWidth > maxBoxWidth * dayColumns) {
                 //  monthHeader pref > sum of box widths
                 // handle here: increase day box width accordingly
                 double diff = maxMonthWidth - (maxBoxWidth * dayColumns);
                 maxBoxWidth += Math.ceil(diff/(double) dayColumns);            
+            } else {
+            	LOG.fine("maxMonthWidth <= maxBoxWidth * dayColumns");
             }
             
-            fullBoxWidth = maxBoxWidth;
+            fullBoxWidth = maxBoxWidth; // TODO EUG !!!!!!!!!!!!!!!!!!!
             fullBoxHeight = maxBoxHeight;
             // PENDING JW: huuh? what we doing here?
             int boxHeight = maxBoxHeight - 2 * monthView.getBoxPaddingY();

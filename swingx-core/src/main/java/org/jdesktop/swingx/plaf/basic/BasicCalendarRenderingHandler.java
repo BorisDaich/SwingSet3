@@ -40,6 +40,7 @@ import org.jdesktop.swingx.renderer.StringValues;
  * 
  */
 class BasicCalendarRenderingHandler implements CalendarRenderingHandler {
+	
     /** The CellContext for content and default visual config. */
     private CalendarCellContext cellContext;
     /** The providers to use per DayState. */
@@ -78,8 +79,7 @@ class BasicCalendarRenderingHandler implements CalendarRenderingHandler {
         providers.put(CalendarState.LEADING, provider);
 
         StringValue wsv = createWeekOfYearStringValue(null);
-        ComponentProvider<?> weekOfYearProvider = new LabelProvider(wsv,
-                JLabel.RIGHT);
+        ComponentProvider<?> weekOfYearProvider = new LabelProvider(wsv, JLabel.RIGHT);
         providers.put(CalendarState.WEEK_OF_YEAR, weekOfYearProvider);
 
         ComponentProvider<?> dayOfWeekProvider = new LabelProvider(JLabel.CENTER) {

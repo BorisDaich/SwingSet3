@@ -76,6 +76,7 @@ import org.jdesktop.swingx.calendar.DatePickerFormatter.DatePickerFormatterUIRes
 import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
+import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.event.DateSelectionListener;
 import org.jdesktop.swingx.plaf.DatePickerUI;
 
@@ -530,6 +531,7 @@ public class BasicDatePickerUI extends DatePickerUI {
         	LOG.warning("use Tree.expandedIcon from javax.swing.plaf.basic.BasicTreeUI");
             icon = (Icon)UIManager.get("Tree.expandedIcon");
         }
+//        ChevronsIcon chevrons = new ChevronsIcon(); // just show use of another icon, TODO use feather calendar
         b.setIcon(icon);
         b.setFocusable(false);
         return b;

@@ -28,6 +28,7 @@ import javax.swing.plaf.FontUIResource;
 import org.jdesktop.swingx.JXMonthView;
 
 public class MonthViewAddon extends AbstractComponentAddon {
+	
     public MonthViewAddon() {
         super("JXMonthView");
     }
@@ -50,8 +51,7 @@ public class MonthViewAddon extends AbstractComponentAddon {
         defaults.add("JXMonthView.flaggedDayForeground", new ColorUIResource(Color.RED));
         defaults.add("JXMonthView.leadingDayForeground", new ColorUIResource(Color.LIGHT_GRAY));
         defaults.add("JXMonthView.trailingDayForeground", new ColorUIResource(Color.LIGHT_GRAY));
-        defaults.add("JXMonthView.font", UIManagerExt.getSafeFont("Button.font",
-                        new FontUIResource("Dialog", Font.PLAIN, 12)));
+        defaults.add("JXMonthView.font", UIManagerExt.getSafeFont("Button.font", new FontUIResource("Dialog", Font.PLAIN, 12)));
         defaults.add("JXMonthView.monthDownFileName",
                 LookAndFeel.makeIcon(MonthViewAddon.class, "basic/resources/month-down.png"));
         defaults.add("JXMonthView.monthUpFileName",
