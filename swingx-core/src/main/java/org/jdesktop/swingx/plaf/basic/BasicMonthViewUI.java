@@ -425,10 +425,10 @@ public class BasicMonthViewUI extends MonthViewUI {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "selectDayInPreviousWeek");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "selectDayInNextWeek");
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_MASK, false), "adjustSelectionPreviousDay");
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_MASK, false), "adjustSelectionNextDay");
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_MASK, false), "adjustSelectionPreviousWeek");
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_MASK, false), "adjustSelectionNextWeek");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK, false), "adjustSelectionPreviousDay");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK, false), "adjustSelectionNextDay");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK, false), "adjustSelectionPreviousWeek");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK, false), "adjustSelectionNextWeek");
     }
 
     /**
@@ -623,7 +623,6 @@ public class BasicMonthViewUI extends MonthViewUI {
         if (handler == null) {
             handler = new Handler();
         }
-
         return handler;
     }
 
@@ -1902,17 +1901,14 @@ public class BasicMonthViewUI extends MonthViewUI {
             if (monthView.isShowingWeekNumber()) {
                 dayColumns++;
             }
-            LOG.fine("maxMonthWidth > maxBoxWidth * dayColumns : "+maxMonthWidth+">"+maxBoxWidth+"*"+dayColumns);
             if (maxMonthWidth > maxBoxWidth * dayColumns) {
                 //  monthHeader pref > sum of box widths
                 // handle here: increase day box width accordingly
                 double diff = maxMonthWidth - (maxBoxWidth * dayColumns);
                 maxBoxWidth += Math.ceil(diff/(double) dayColumns);            
-            } else {
-            	LOG.fine("maxMonthWidth <= maxBoxWidth * dayColumns");
             }
             
-            fullBoxWidth = maxBoxWidth; // TODO EUG !!!!!!!!!!!!!!!!!!!
+            fullBoxWidth = maxBoxWidth+1;  // Add a pixel, sometimes weekdays are shorten: "M... Di. Mi.
             fullBoxHeight = maxBoxHeight;
             // PENDING JW: huuh? what we doing here?
             int boxHeight = maxBoxHeight - 2 * monthView.getBoxPaddingY();
