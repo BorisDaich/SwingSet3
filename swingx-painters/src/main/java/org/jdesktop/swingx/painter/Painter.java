@@ -20,6 +20,7 @@ package org.jdesktop.swingx.painter;
 
 import java.awt.Graphics2D;
 
+// EUG das ist identisch zu javax.swing.Painter - kann also weg?
 /**
  * <p>A painting delegate. The Painter interface defines exactly one method,
  * <code>paint</code>. It is used in situations where the developer can change
@@ -54,8 +55,10 @@ import java.awt.Graphics2D;
  * @author rbair
  * @see AbstractPainter
  * @see CompoundPainter
+ * @deprecated use <code>javax.swing.Painter&lt;T&gt</code>.
  */
-public interface Painter<T> {
+@Deprecated
+public interface Painter<T> extends javax.swing.Painter<T> {
 	
     /**
      * <p>Renders to the given {@link java.awt.Graphics2D} object. Implementations
@@ -99,5 +102,5 @@ public interface Painter<T> {
      * @param width width of the area to paint.
      * @param height height of the area to paint.
      */
-    public void paint(Graphics2D g, T object, int width, int height);
+//    public void paint(Graphics2D g, T object, int width, int height);
 }
