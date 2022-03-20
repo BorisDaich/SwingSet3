@@ -55,7 +55,7 @@ import java.awt.Graphics2D;
  * @author rbair
  * @see AbstractPainter
  * @see CompoundPainter
- * @deprecated use <code>javax.swing.Painter&lt;T&gt</code>.
+ * @deprecated use <code>javax.swing.Painter&lt;T&gt;</code>.
  */
 @Deprecated
 public interface Painter<T> extends javax.swing.Painter<T> {
