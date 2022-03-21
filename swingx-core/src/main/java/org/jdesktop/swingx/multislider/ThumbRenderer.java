@@ -31,5 +31,5 @@ public interface ThumbRenderer {
 	 * @param selected boolean
 	 * @return JComponent
 	 */
-    public JComponent getThumbRendererComponent(JXMultiThumbSlider slider, int index, boolean selected);
+    public JComponent getThumbRendererComponent(JXMultiThumbSlider<?> slider, int index, boolean selected);
 }

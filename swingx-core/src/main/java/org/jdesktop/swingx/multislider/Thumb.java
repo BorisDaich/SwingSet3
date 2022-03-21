@@ -19,7 +19,6 @@
 package org.jdesktop.swingx.multislider;
 
 /**
- *
  * @author jm158417
  */
 public class Thumb<E> {

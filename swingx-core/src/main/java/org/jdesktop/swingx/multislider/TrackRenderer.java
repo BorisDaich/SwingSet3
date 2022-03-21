@@ -29,5 +29,5 @@ public interface TrackRenderer {
 	 * @param slider JXMultiThumbSlider
 	 * @return JComponent
 	 */
-    public JComponent getRendererComponent(JXMultiThumbSlider slider);
+    public JComponent getRendererComponent(JXMultiThumbSlider<?> slider);
 }

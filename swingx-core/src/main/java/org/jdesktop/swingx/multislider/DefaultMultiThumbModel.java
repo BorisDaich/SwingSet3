@@ -28,6 +28,8 @@ import java.util.List;
  *
  * @author joshy
  */
+                                            //                             interface MultiThumbModel<E> extends Iterable<Thumb<E>>
+                                            // AbstractMultiThumbModel<E> implements MultiThumbModel<E> 
 public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
     
     /** TODO doc */
