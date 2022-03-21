@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -22,6 +20,7 @@ package org.jdesktop.swingx.demos.prompt;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -37,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -46,7 +46,6 @@ import org.jdesktop.swingx.binding.DisplayInfo;
 import org.jdesktop.swingx.combobox.EnumComboBoxModel;
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.ShapePainter;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
@@ -84,7 +83,7 @@ public class PromptSupportDemo extends JPanel {
     private JTextField textField;
     private JComboBox focusCombo;
     private JTextField promptText;
-    private JComboBox backgroundPainter;
+    private JComboBox<DisplayInfo<Painter<? super Component>>> backgroundPainter;
     private JComboBox fontStyle;
     
     public PromptSupportDemo() {
@@ -135,7 +134,11 @@ public class PromptSupportDemo extends JPanel {
         backgroundPainter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PromptSupport.setBackgroundPainter(((DisplayInfo<Painter>) backgroundPainter.getSelectedItem()).getValue(), textField);
+                Object o = backgroundPainter.getSelectedItem();
+                if(o instanceof DisplayInfo) {
+                    DisplayInfo<Painter<? super Component>> di = (DisplayInfo<Painter<? super Component>>)o;
+                    PromptSupport.setBackgroundPainter(di.getValue(), textField);
+                }
             }
         });
         
@@ -228,7 +231,7 @@ public class PromptSupportDemo extends JPanel {
         label = new JLabel("Painter:");
         panel.add(label, cc.rc(7, 2));
         
-        backgroundPainter = new JComboBox(new ListComboBoxModel<DisplayInfo<Painter<?>>>(getPainters()));
+        backgroundPainter = new JComboBox<DisplayInfo<Painter<? super Component>>>(new ListComboBoxModel<DisplayInfo<Painter<? super Component>>>(getPainters()));
         backgroundPainter.setRenderer(new DefaultListRenderer(DisplayValues.DISPLAY_INFO_DESCRIPTION));
         panel.add(backgroundPainter, cc.rc(7, 4));
         
@@ -242,13 +245,13 @@ public class PromptSupportDemo extends JPanel {
         return panel;
     }
     
-    private List<DisplayInfo<Painter<?>>> getPainters() {
-        List<DisplayInfo<Painter<?>>> painters = new ArrayList<DisplayInfo<Painter<?>>>();
+    private List<DisplayInfo<Painter<? super Component>>> getPainters() {
+        List<DisplayInfo<Painter<? super Component>>> painters = new ArrayList<DisplayInfo<Painter<? super Component>>>();
         
-        painters.add(new DisplayInfo<Painter<?>>("None", null));
-        painters.add(new DisplayInfo<Painter<?>>("Checkered", new MattePainter(PaintUtils.getCheckerPaint(new Color(0, 0, 0, 0), new Color(33, 33, 128), 20))));
-        painters.add(new DisplayInfo<Painter<?>>("Gradient", new MattePainter(PaintUtils.AERITH, true)));
-        painters.add(new DisplayInfo<Painter<?>>("Star Shape", new ShapePainter(ShapeUtils.generatePolygon(5, 10, 5, true), Color.GREEN)));
+        painters.add(new DisplayInfo<Painter<? super Component>>("None", null));
+        painters.add(new DisplayInfo<Painter<? super Component>>("Checkered", new MattePainter(PaintUtils.getCheckerPaint(new Color(0, 0, 0, 0), new Color(33, 33, 128), 20))));
+        painters.add(new DisplayInfo<Painter<? super Component>>("Gradient", new MattePainter(PaintUtils.AERITH, true)));
+        painters.add(new DisplayInfo<Painter<? super Component>>("Star Shape", new ShapePainter(ShapeUtils.generatePolygon(5, 10, 5, true), Color.GREEN)));
         
         return painters;
     }
