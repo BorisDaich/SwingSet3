@@ -29,11 +29,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.logging.Logger;
 
+import javax.swing.Painter;
 import javax.swing.plaf.ColorUIResource;
 
 import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.PainterUIResource;
 import org.jdesktop.test.EDTRunner;
 import org.jdesktop.test.PropertyChangeReport;
@@ -201,7 +201,7 @@ public class JXPanelTest extends TestCase {
     public void testSetUIResourceColorDoesNotOverrideBackgroundPainter() {
         JXPanel panel = new JXPanel();
         
-        Painter painter = new MattePainter(Color.BLACK);
+        Painter<Component> painter = new MattePainter(Color.BLACK);
         panel.setBackgroundPainter(painter);
         
         panel.setBackground(new ColorUIResource(Color.BLACK));

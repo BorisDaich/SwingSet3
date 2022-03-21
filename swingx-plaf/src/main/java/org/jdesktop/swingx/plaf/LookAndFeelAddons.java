@@ -33,12 +33,11 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
+import javax.swing.Painter;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
-
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * Provides additional pluggable UI for new components added by the library. By default, the library
@@ -647,6 +646,8 @@ public abstract class LookAndFeelAddons {
             Painter<?> p = (Painter<?>) getter.invoke(c);
 
             if (p == null || p instanceof UIResource) {
+            	LOG.finer("painter:"+painter + " UIManager.get::"+UIManager.get(painter));
+            	LOG.finer("painter:"+painter + " UIManagerExt::"+UIManagerExt.getPainter(painter));
                 setter.invoke(c, UIManagerExt.getPainter(painter));
             }
         } catch (RuntimeException e) {

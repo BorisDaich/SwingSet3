@@ -41,6 +41,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -66,7 +67,6 @@ import javax.swing.text.WrappedPlainView;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * <p>
@@ -141,7 +141,10 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      * interface IValue
      */
     protected interface IValue {
-    	/** getter */
+    	/**
+    	 * getter
+    	 * @return int value
+    	 */
         int getValue();
     }
 

@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jdesktop.beans.editors;
 
 import java.awt.Insets;
@@ -23,7 +22,7 @@ import java.beans.PersistenceDelegate;
 import java.beans.PropertyEditorSupport;
 import java.beans.Statement;
 
-import org.jdesktop.swingx.painter.Painter;
+import javax.swing.Painter;
 
 /**
  * Two parts to this property editor. The first part is a simple dropdown.
@@ -46,8 +45,7 @@ public class PainterPropertyEditor extends PropertyEditorSupport {
     public String getJavaInitializationString() {
         Painter painter = getValue();
         //TODO!!!
-        return painter == null ? "null" :
-            "new org.jdesktop.swingx.painter.CheckerboardPainter()";
+        return painter == null ? "null" : "new org.jdesktop.swingx.painter.CheckerboardPainter()";
     }
     
 	/** TODO doc */

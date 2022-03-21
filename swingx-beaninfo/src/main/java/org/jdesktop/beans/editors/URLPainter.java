@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,8 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
-
 package org.jdesktop.beans.editors;
 
 import java.awt.Graphics2D;
@@ -27,15 +23,18 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.painter.CompoundPainter;
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  *
  * @author joshy
  */
 public class URLPainter extends CompoundPainter {
+	
     URL url;
+    
     /**
      * Creates a new instance of URLPainter
      */

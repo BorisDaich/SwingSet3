@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.LookAndFeel;
+import javax.swing.Painter;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -26,20 +27,17 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 
 import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 import org.jdesktop.test.EDTRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(EDTRunner.class)
-@SuppressWarnings("nls")
 public class LookAndFeelAddonsTest {
     
     
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(LookAndFeelAddonsTest.class.getName());
+    private static final Logger LOG = Logger.getLogger(LookAndFeelAddonsTest.class.getName());
     
     /**
      * PENDING JW: something fishy here - not trackingLAF changes? This test
@@ -86,13 +84,14 @@ public class LookAndFeelAddonsTest {
     public void testInstallBackgroundPainter() {
         Painter plafPainter = new PainterUIResource(null);
         UIManager.put("test.painter", plafPainter);
+//        LOG.info("plafPainter:"+plafPainter);
+//        LOG.info("plafPainter:"+UIManager.get("test.painter"));
         
         BackgroundPainterTestingComponent panel = new BackgroundPainterTestingComponent();
-        //overwrite null painter
+        // installs plafPainter to panel
         LookAndFeelAddons.installBackgroundPainter(panel, "test.painter");
         
         assertThat(panel.getBackgroundPainter(), CoreMatchers.is(sameInstance(plafPainter)));
-        
         panel.setBackgroundPainter(new PainterUIResource(null));
         
         //overwrite uiresource painter
@@ -256,7 +255,6 @@ public class LookAndFeelAddonsTest {
     }
 }
 
-@SuppressWarnings("nls")
 class Addon extends AbstractComponentAddon {
     boolean initialized;
     LookAndFeelAddons initializedWith;
@@ -291,17 +289,18 @@ class Addon extends AbstractComponentAddon {
 
 @SuppressWarnings("serial")
 class BackgroundPainterTestingComponent extends JComponent {
-    static {
-        LookAndFeelAddons.contribute(new Addon());
-    }
-    
-    private Painter<?> backgroundPainter;
-    
-    public Painter<?> getBackgroundPainter() {
-        return backgroundPainter;
-    }
-    
-    public void setBackgroundPainter(Painter<?> backgroundPainter) {
-        this.backgroundPainter = backgroundPainter;
-    }
+	static {
+		LookAndFeelAddons.contribute(new Addon());
+	}
+
+	private Painter<?> backgroundPainter;
+
+	public Painter<?> getBackgroundPainter() {
+		return backgroundPainter;
+	}
+
+	public void setBackgroundPainter(Painter<?> backgroundPainter) {
+		this.backgroundPainter = backgroundPainter;
+	}
+
 }

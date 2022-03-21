@@ -24,8 +24,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.Icon;
-
-import org.jdesktop.swingx.painter.Painter;
+import javax.swing.Painter;
 
 public class PainterIcon implements Icon {
 	
@@ -50,13 +49,11 @@ public class PainterIcon implements Icon {
     public void setPainter(Painter<Component> painter) {
         this.painter = painter;
     }
-
-    
-    // implements interface Icon:
-    
+   
     /**
      * {@inheritDoc}
      */
+    // implements interface Icon:
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (getPainter() != null && g instanceof Graphics2D) {

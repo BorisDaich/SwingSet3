@@ -24,6 +24,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 
+import javax.swing.Painter;
+
 import org.jdesktop.beans.JavaBean;
 
 /**

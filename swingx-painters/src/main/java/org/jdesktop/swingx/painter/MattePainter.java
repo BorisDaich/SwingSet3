@@ -110,7 +110,7 @@ public class MattePainter extends AbstractAreaPainter<Component> {
      */
     @Override
     protected Shape provideShape(Graphics2D g, Component comp, int width, int height) {
-        return new Rectangle(0,0,width,height);
+        return new Rectangle(0, 0, width, height);
     }
     
 }

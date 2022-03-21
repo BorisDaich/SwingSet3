@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 
 import org.jdesktop.application.Application;
@@ -43,7 +44,6 @@ import org.jdesktop.swingx.icon.PainterIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.SwingXSet;

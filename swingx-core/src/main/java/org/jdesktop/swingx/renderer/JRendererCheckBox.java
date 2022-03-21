@@ -23,9 +23,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.JCheckBox;
+import javax.swing.Painter;
 import javax.swing.UIManager;
-
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * A <code>JCheckBox</code> optimized for usage in renderers and

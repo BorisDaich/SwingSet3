@@ -23,9 +23,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.JLabel;
+import javax.swing.Painter;
 import javax.swing.UIManager;
-
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * A <code>JLabel</code> optimized for usage in renderers and

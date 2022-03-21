@@ -31,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.Painter;
 import javax.swing.border.Border;
 
 import org.jdesktop.swingx.InteractiveTestCase;
@@ -95,9 +96,9 @@ public class PainterIssues extends InteractiveTestCase {
      */
     public void interactiveRestoreGraphics() {
         Border redLine = BorderFactory.createLineBorder(Color.RED, 3);
-        final Painter<JComponent> permanentTranslate = new Painter<JComponent>() {
+        final Painter<Component> permanentTranslate = new Painter<Component>() {
 
-            public void paint(Graphics2D g, JComponent object, int width, int height) {
+            public void paint(Graphics2D g, Component object, int width, int height) {
                 g.translate(50, 0); 
             }
             

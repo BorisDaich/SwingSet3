@@ -38,6 +38,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.icon.PauseIcon;
@@ -45,7 +46,6 @@ import org.jdesktop.swingx.icon.PlayIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.util.PaintUtils;
 
 /**

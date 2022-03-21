@@ -26,13 +26,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.PainterHighlighter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 
 @SuppressWarnings("unchecked")
 //Specialized PainterHighlighter which has a Relativizer

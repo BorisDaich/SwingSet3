@@ -20,14 +20,15 @@ package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.Painter;
 
 import org.jdesktop.beans.JavaBean;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.TitledPanelAddon;
 import org.jdesktop.swingx.plaf.TitledPanelUI;
@@ -95,7 +96,7 @@ public class JXTitledPanel extends JXPanel {
     /**
      * The Painter to use for painting the title section of the JXTitledPanel
      */
-    private Painter titlePainter;
+    private Painter<Component> titlePainter;
 
     /**
      * Create a new JTitledPanel with an empty string for the title.
@@ -271,8 +272,8 @@ public class JXTitledPanel extends JXPanel {
      *
      * @param p The Painter to use. May be null
      */
-    public void setTitlePainter(Painter p) {
-        Painter old = getTitlePainter();
+    public void setTitlePainter(Painter<Component> p) {
+        Painter<Component> old = getTitlePainter();
         this.titlePainter = p;
         firePropertyChange("titlePainter", old, getTitlePainter());
     }
@@ -280,7 +281,7 @@ public class JXTitledPanel extends JXPanel {
     /**
      * @return the Painter to use for painting the background of the title section
      */
-    public Painter getTitlePainter() {
+    public Painter<Component> getTitlePainter() {
         return titlePainter;
     }
 

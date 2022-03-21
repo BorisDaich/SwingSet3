@@ -18,7 +18,7 @@
  */
 package org.jdesktop.swingx;
 
-import org.jdesktop.swingx.painter.Painter;
+import javax.swing.Painter;
 
 /**
  * An interface to define the common methods that are required for defining a background painter.

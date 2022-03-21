@@ -39,6 +39,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -64,7 +65,6 @@ import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.demos.monthviewext.MonthViewExtDemoUtils.DayOfWeekHighlightPredicate;
 import org.jdesktop.swingx.painter.ImagePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.basic.CalendarHeaderHandler;
 import org.jdesktop.swingx.plaf.basic.CalendarRenderingHandler;
 import org.jdesktop.swingx.plaf.basic.DemoCalendarRenderingHandler;

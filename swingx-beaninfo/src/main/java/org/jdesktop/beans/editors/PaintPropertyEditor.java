@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jdesktop.beans.editors;
 
 import java.awt.Color;

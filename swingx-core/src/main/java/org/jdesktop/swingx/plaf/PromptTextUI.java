@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 
 import javax.accessibility.Accessible;
 import javax.swing.JComponent;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.TextUI;
@@ -29,7 +30,6 @@ import javax.swing.text.Position;
 import javax.swing.text.Position.Bias;
 import javax.swing.text.View;
 
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
 
@@ -228,8 +228,7 @@ public abstract class PromptTextUI extends TextUI {
         }
 
         promptComponent.setBackground(PromptSupport.getBackground(txt));
-        promptComponent.setHighlighter(new PainterHighlighter(PromptSupport
-                .getBackgroundPainter(txt)));
+        promptComponent.setHighlighter(new PainterHighlighter(PromptSupport.getBackgroundPainter(txt)));
         promptComponent.setEnabled(txt.isEnabled());
         promptComponent.setOpaque(txt.isOpaque());
         promptComponent.setBounds(txt.getBounds());

@@ -14,7 +14,7 @@ final class PainterUtils {
     static Paint getForegroundPaint(Paint current, Object o) {
         if (current == null) {
             if (o instanceof Component) {
-                return ((Component) o).getForeground();
+                return ((Component) o).getForeground(); // class Color implements Paint
             }
         }
         
@@ -24,7 +24,7 @@ final class PainterUtils {
     static Paint getBackgroundPaint(Paint current, Object o) {
         if (current == null) {
             if (o instanceof Component) {
-                return ((Component) o).getBackground();
+                return ((Component) o).getBackground(); // class Color implements Paints
             }
         }
         

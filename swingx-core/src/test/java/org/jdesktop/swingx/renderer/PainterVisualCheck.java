@@ -43,10 +43,12 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListModel;
+import javax.swing.Painter;
 import javax.swing.Timer;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreeModel;
@@ -70,10 +72,8 @@ import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.BusyPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.ShapePainter;
 import org.jdesktop.swingx.painter.effects.GlowPathEffect;
-import org.jdesktop.swingx.painter.effects.InnerGlowPathEffect;
 import org.jdesktop.swingx.renderer.RelativePainterHighlighter.NumberRelativizer;
 import org.jdesktop.swingx.renderer.RelativePainterHighlighter.RelativePainter;
 import org.jdesktop.swingx.sort.DefaultSortController;
@@ -143,7 +143,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         JXTable table = new JXTable(new AncientSwingTeam());
         
         MattePainter matte = new MattePainter(getTransparentColor(Color.RED, 80));
-        RelativePainter<?> painter = new RelativePainter<Component>(matte);
+        RelativePainter<?> painter = new RelativePainter<JComponent>(matte);
         painter.setYFactor(0.2);
         painter.setVerticalAlignment(VerticalAlignment.BOTTOM);
         Highlighter hl = new PainterHighlighter(HighlightPredicate.ROLLOVER_ROW, painter);
@@ -181,7 +181,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         JXTable table = new JXTable(new AncientSwingTeam());
         
         MattePainter p =  new MattePainter(getTransparentColor(Color.BLUE, 125));
-        RelativePainter<?> relativePainter = new RelativePainter<Component>(p);
+        RelativePainter<?> relativePainter = new RelativePainter<JComponent>(p);
         relativePainter.setXFactor(.5);
         Highlighter hl = new PainterHighlighter(createComponentTextBasedPredicate("y"), relativePainter);
         
@@ -258,7 +258,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         painter.setPaintStretched(true);
         // not entirely successful - the relative stretching is on
         // top of a .5 stretched gradient in matte
-        RelativePainter<?> wrapper = new RelativePainter<Component>(painter);
+        RelativePainter<?> wrapper = new RelativePainter<JComponent>(painter);
         wrapper.setXFactor(end);
         return wrapper;
     }
@@ -310,7 +310,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
 //        imagePainter.setAreaEffects(new InnerGlowPathEffect());
         imagePainter.setAreaEffects(new GlowPathEffect());
         
-        final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
+        final RelativePainter<?> painter = new RelativePainter<JComponent>(imagePainter);
         painter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
         painter.setVisible(true); // by default, the painter is NOT visible
 
@@ -326,7 +326,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         tableColumnExt3.addHighlighter(rHighlighter); // add to INTEGER_COLUMN
         
         // DO NOT re-use component controller and highlighter in a JXList, reuse imagePainter
-        final RelativePainter<?> rpainter = new RelativePainter<Component>(imagePainter);
+        final RelativePainter<?> rpainter = new RelativePainter<JComponent>(imagePainter);
         RelativePainterHighlighter lHighlighter = new RelativePainterHighlighter(rpainter);
         lHighlighter.setRelativizer(new NumberRelativizer(100));
         JXList list = new JXList(createListNumberModel(), true); // true: autoCreateRowSorter
@@ -350,7 +350,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
 
         final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
-        final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
+        final RelativePainter<?> painter = new RelativePainter<JComponent>(imagePainter);
         painter.setVisible(true); // by default, the painter is NOT visible
         PainterHighlighter highlighter = new PainterHighlighter(HighlightPredicate.ROLLOVER_CELL, painter);
 
@@ -425,7 +425,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         tree.setCellRenderer(new DefaultTreeRenderer(StringValues.FILE_NAME));
         ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage("green-orb.png"));
         imagePainter.setHorizontalAlignment(HorizontalAlignment.RIGHT);
-        final RelativePainter<?> painter = new RelativePainter<Component>(imagePainter);
+        final RelativePainter<?> painter = new RelativePainter<JComponent>(imagePainter);
         painter.setVisible(true); // by default, the painter is NOT visible
         PainterHighlighter iconHighlighter = new PainterHighlighter();
         iconHighlighter.setHighlightPredicate(HighlightPredicate.ROLLOVER_ROW);
@@ -637,7 +637,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
                 );
         MattePainter painter = new MattePainter(paint);
         painter.setPaintStretched(true);
-        final RelativePainter<?> rPainter = new RelativePainter<Component>(painter);
+        final RelativePainter<?> rPainter = new RelativePainter<JComponent>(painter);
         rPainter.setVisible(true); // by default, the painter is NOT visible
         RelativePainterHighlighter p = new RelativePainterHighlighter(painter);
         p.setHorizontalAlignment(right);

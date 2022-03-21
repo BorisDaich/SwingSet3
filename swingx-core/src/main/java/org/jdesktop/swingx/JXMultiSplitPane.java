@@ -16,10 +16,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -33,17 +33,15 @@ import java.io.Serializable;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
 import javax.swing.JPanel;
+import javax.swing.Painter;
 import javax.swing.event.MouseInputAdapter;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.MultiSplitLayout.Divider;
 import org.jdesktop.swingx.MultiSplitLayout.Node;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 
 /**
- *
- * <p>
  * All properties in this class are bound: when a properties value
  * is changed, all PropertyChangeListeners are fired.
  * 
@@ -51,11 +49,12 @@ import org.jdesktop.swingx.painter.Painter;
  * @author Luan O'Carroll
  */
 @JavaBean
-public class JXMultiSplitPane extends JPanel implements BackgroundPaintable {
+public class JXMultiSplitPane extends JPanel implements BackgroundPaintable<Component> {
+
     private AccessibleContext accessibleContext = null;
     private boolean continuousLayout = true;
     private DividerPainter dividerPainter = new DefaultDividerPainter();
-    private Painter backgroundPainter;
+    private Painter<Component> backgroundPainter;
     private boolean paintBorderInsets;
 
     /**
@@ -120,6 +119,7 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable {
      * A convenience method that returns the MultiSplitLayout dividerSize
      * property. Equivalent to 
      * <code>getMultiSplitLayout().getDividerSize()</code>.
+     * @return dividerSize
      * 
      * @see #getMultiSplitLayout
      * @see MultiSplitLayout#getDividerSize
@@ -172,17 +172,16 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable {
      * @see #getDividerPainter
      * @see #setDividerPainter
      */
-    public static abstract class DividerPainter extends AbstractPainter<Divider> {
-    }
+    public static abstract class DividerPainter extends AbstractPainter<Divider> {}
 
     private class DefaultDividerPainter extends DividerPainter implements Serializable {
         @Override
-        protected void doPaint(Graphics2D g, Divider divider, int width, int height) {
-            if ((divider == activeDivider()) && !isContinuousLayout()) {
-            g.setColor(Color.black);
-            g.fillRect(0, 0, width, height);
-            }
-        }
+		protected void doPaint(Graphics2D g, Divider divider, int width, int height) {
+			if ((divider == activeDivider()) && !isContinuousLayout()) {
+				g.setColor(Color.black);
+				g.fillRect(0, 0, width, height);
+			}
+		}
     }
 
     /** 
@@ -274,9 +273,9 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable {
      * paint certain pixels, such as around the border insets.
      */
     @Override
-    public void setBackgroundPainter(Painter p)
+    public void setBackgroundPainter(Painter<Component> p)
     {
-        Painter old = getBackgroundPainter();
+        Painter<Component> old = getBackgroundPainter();
         this.backgroundPainter = p;
         
         if (p != null) {
@@ -288,7 +287,7 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable {
     }
     
     @Override
-    public Painter getBackgroundPainter() {
+    public Painter<Component> getBackgroundPainter() {
         return backgroundPainter;
     }
     
@@ -585,6 +584,9 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable {
         return accessibleContext;
     }
     
+    /**
+     * TODO
+     */
     protected class AccessibleMultiSplitPane extends AccessibleJPanel {
         @Override
         public AccessibleRole getAccessibleRole() {

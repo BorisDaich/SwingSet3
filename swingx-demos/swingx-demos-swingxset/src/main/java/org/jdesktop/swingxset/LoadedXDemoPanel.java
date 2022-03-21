@@ -21,6 +21,7 @@ package org.jdesktop.swingxset;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -30,12 +31,12 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
+import javax.swing.Painter;
 import javax.swing.UIManager;
 
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledPanel;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.util.PaintUtils;
 
 import com.jgoodies.forms.builder.PanelBuilder;
@@ -155,15 +156,14 @@ public class LoadedXDemoPanel extends JXTitledPanel {
 
     private void applyDefaults() {
         Color color = UIManager.getColor(SwingXSet.TITLE_GRADIENT_COLOR2_KEY);
-        GradientPaint gradient = new GradientPaint(0f, 0f, UIManager
-                .getColor(SwingXSet.TITLE_GRADIENT_COLOR1_KEY), 500f, 0f,
+        GradientPaint gradient = new GradientPaint(0f, 0f, UIManager.getColor(SwingXSet.TITLE_GRADIENT_COLOR1_KEY), 
+        		500f, 0f,
                 PaintUtils.setAlpha(color, 0));
-        Painter<?> matte = new MattePainter(gradient, true);
+        Painter<Component> matte = new MattePainter(gradient, true);
         setTitlePainter(matte); 
 
         setTitleFont(UIManager.getFont(SwingXSet.TITLE_FONT_KEY));
-        Color bg = Utilities.deriveColorHSB(UIManager
-                .getColor("Panel.background"), 0, 0, -.06f);
+        Color bg = Utilities.deriveColorHSB(UIManager.getColor("Panel.background"), 0, 0, -.06f);
         setBackground(bg);
         setForeground(UIManager.getColor(SwingXSet.TITLE_FOREGROUND_KEY));
         if (demoPanel != null) {

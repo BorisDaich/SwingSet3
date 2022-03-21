@@ -35,13 +35,13 @@ import javax.swing.ButtonModel;
 import javax.swing.CellRendererPane;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.graphics.FilterComposite;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.PainterPaint;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 import org.jdesktop.swingx.util.PaintUtils;

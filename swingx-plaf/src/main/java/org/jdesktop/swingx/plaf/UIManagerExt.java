@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.Icon;
+import javax.swing.Painter;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -43,7 +44,6 @@ import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.util.Contract;
 
 /**

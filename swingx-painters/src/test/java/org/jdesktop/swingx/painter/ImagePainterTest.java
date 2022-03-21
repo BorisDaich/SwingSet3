@@ -32,6 +32,7 @@ import org.junit.Test;
  */
 @SuppressWarnings({"rawtypes"})
 public class ImagePainterTest extends AbstractAreaPainterTest {
+	
     /**
      * {@inheritDoc}
      */
@@ -75,4 +76,5 @@ public class ImagePainterTest extends AbstractAreaPainterTest {
         assertThat(ip.isScaleToFit(), CoreMatchers.is(false));
         assertThat(ip.isVerticalRepeat(), CoreMatchers.is(false));
     }
+
 }

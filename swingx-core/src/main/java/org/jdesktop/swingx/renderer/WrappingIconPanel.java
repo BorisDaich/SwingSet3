@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,10 +28,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.Painter;
 import javax.swing.border.Border;
 
 import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * Compound component for usage in tree renderer. <p>
@@ -46,6 +44,7 @@ import org.jdesktop.swingx.painter.Painter;
  * is of type PainterAware. Does nothing if not.
  */
 public class WrappingIconPanel extends JXPanel implements PainterAware, IconAware {
+	
     protected JComponent delegate;
     JLabel iconLabel;
     String labelPosition = BorderLayout.CENTER; //2;
@@ -54,7 +53,6 @@ public class WrappingIconPanel extends JXPanel implements PainterAware, IconAwar
     private Border rtolBorder;
     private boolean dropHackEnabled;
     private boolean extendsComponentOpacity;
-    
     
     /**
      * Instantiates and configures a WrappingIconPanel with the dropHack

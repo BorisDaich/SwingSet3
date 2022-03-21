@@ -35,6 +35,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImageOp;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,17 +101,21 @@ public class AbstractPainterTest {
     }
     
     @SuppressWarnings("serial")
-	class AnyComponent extends java.awt.Component {
-    	
+	class AnyJComponent extends JComponent {
     }
+    @SuppressWarnings("serial")
+	class AnyComponent extends java.awt.Component {  	
+    }
+    
     /**
      * {@link AbstractPainter} will pass any object to
      * {@link AbstractPainter#doPaint(Graphics2D, Object, int, int) doPaint}.
-     * EUG: really any object? : or of type java.awt.Component
+     * EUG: really any object? : or of type JComponent
      */
     @Test
     public void testPaintWithAnyObject() {
-    	AnyComponent any = new AnyComponent();
+    	AnyJComponent any = new AnyJComponent();
+    	LOG.fine("AbstractPainter p:"+p);
         p.paint(g, any, 10, 10);
         
         if (p.isCacheable()) {
@@ -120,8 +126,10 @@ public class AbstractPainterTest {
 
         try {
             java.awt.Button aButton = new Button(); // Throws: HeadlessException
+//            JButton aButton = new JButton();
 
             p.clearCache();
+        	LOG.fine("aButton AbstractPainter p:"+p);
             p.paint(g, aButton, 10, 10);
             
             if (p.isCacheable()) {

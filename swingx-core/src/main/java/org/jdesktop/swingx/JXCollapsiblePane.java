@@ -781,7 +781,10 @@ public class JXCollapsiblePane extends JXPanel {
      * validated.
      */
     public static interface CollapsiblePaneContainer {
-    	/** TODO maven-javadoc-plugin 3.3.2 needs a doc here */
+    	/**
+    	 * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+    	 * @return Container
+    	 */
         Container getValidatingContainer();
     }
 

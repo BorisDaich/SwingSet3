@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 
 import org.jdesktop.application.Application;
@@ -64,7 +65,6 @@ import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.util.PaintUtils;
 import org.jdesktop.swingxset.DefaultDemoPanel;
 import org.jdesktop.swingxset.SwingXSet;

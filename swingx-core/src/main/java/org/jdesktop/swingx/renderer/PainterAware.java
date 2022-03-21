@@ -18,7 +18,7 @@
  */
 package org.jdesktop.swingx.renderer;
 
-import org.jdesktop.swingx.painter.Painter;
+import javax.swing.Painter;
 
 /**
  * Temporary hook to allow painters in rendering. <p>

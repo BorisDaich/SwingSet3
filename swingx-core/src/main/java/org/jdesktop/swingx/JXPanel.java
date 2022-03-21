@@ -35,6 +35,7 @@ import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
+import javax.swing.Painter;
 import javax.swing.RepaintManager;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
@@ -43,7 +44,6 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.util.Contract;
 import org.jdesktop.swingx.util.JVM;
 

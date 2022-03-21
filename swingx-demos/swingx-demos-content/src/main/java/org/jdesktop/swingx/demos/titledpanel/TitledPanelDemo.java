@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,16 +39,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import org.jdesktop.application.Action;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
-import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledPanel;
@@ -59,7 +58,6 @@ import org.jdesktop.swingx.binding.DisplayInfo;
 import org.jdesktop.swingx.binding.DisplayInfoConverter;
 import org.jdesktop.swingx.binding.LabelHandler;
 import org.jdesktop.swingx.painter.CheckerboardPainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.PainterUIResource;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingxset.util.DemoUtils;
@@ -92,8 +90,7 @@ public class TitledPanelDemo extends JXPanel {
     // just a provider of a view :-)
     
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(TitledPanelDemo.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(TitledPanelDemo.class.getName());
     
     // private JXTitledPanel panel1;
     private JXTitledPanel titledPanel;

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -24,8 +22,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.JXHyperlink;
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * A <code>JXHyperlink</code> optimized for usage in renderers and
@@ -37,6 +36,7 @@ import org.jdesktop.swingx.painter.Painter;
  * @author Jeanette Winzenburg
  */
 public class JXRendererHyperlink extends JXHyperlink implements PainterAware {
+	
     protected Painter painter;
 
     /**

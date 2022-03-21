@@ -22,8 +22,9 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.renderer.PainterAware;
 
 /**

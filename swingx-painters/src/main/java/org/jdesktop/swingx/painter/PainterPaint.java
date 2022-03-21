@@ -30,6 +30,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
 /**

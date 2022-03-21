@@ -44,9 +44,10 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.Painter;
+
 import org.jdesktop.beans.AbstractBean;
 import org.jdesktop.beans.JavaBean;
-import org.jdesktop.swingx.painter.Painter;
 
 // TODO: keyboard navigation
 // TODO: honor clip rect with text painting
@@ -1563,8 +1564,7 @@ public class JXGraph extends JXPanel {
     // and < 100 are formatted with a regular, 2-digits, numbers formatter.
     // Other numbers use a scientific notation given by a DecimalFormat instance
     private String format(double number) {
-        boolean farAway = (number != 0.0d && Math.abs(number) < 0.01d) ||
-            Math.abs(number) > 99.0d;
+        boolean farAway = (number != 0.0d && Math.abs(number) < 0.01d) || Math.abs(number) > 99.0d;
         return (farAway ? secondFormatter : mainFormatter).format(number);
     }
 

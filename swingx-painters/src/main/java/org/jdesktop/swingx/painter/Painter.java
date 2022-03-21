@@ -18,8 +18,6 @@
  */
 package org.jdesktop.swingx.painter;
 
-import java.awt.Graphics2D;
-
 // EUG das ist identisch zu javax.swing.Painter - kann also weg?
 /**
  * <p>A painting delegate. The Painter interface defines exactly one method,

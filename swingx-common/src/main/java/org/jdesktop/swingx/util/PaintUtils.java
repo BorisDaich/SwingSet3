@@ -365,7 +365,7 @@ public class PaintUtils {
             g.dispose();
         }
         
-        return new TexturePaint(img,new Rectangle(0,0,size,size));
+        return new TexturePaint(img, new Rectangle(0, 0, size, size));
     }
 
     /**

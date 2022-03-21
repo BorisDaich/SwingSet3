@@ -8,11 +8,11 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Painter;
 import javax.swing.Timer;
 
 import org.jdesktop.swingx.painter.AlphaPainter;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.PinstripePainter;
 
 public class DecoratorFactory {

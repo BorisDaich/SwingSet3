@@ -3,12 +3,12 @@ package org.jdesktop.swingx.prompt;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.Painter;
 import javax.swing.text.JTextComponent;
 
 import org.jdesktop.swingx.JXFormattedTextField;
 import org.jdesktop.swingx.JXTextArea;
 import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.Painters;
 import org.jdesktop.swingx.plaf.PromptTextUI;
 import org.jdesktop.swingx.plaf.TextUIWrapper;
@@ -272,7 +272,7 @@ public final class PromptSupport {
 	 */
 	public static <T extends JTextComponent> void setBackgroundPainter(Painter<? super T> background, T textComponent) {
 	    TextUIWrapper.getDefaultWrapper().install(textComponent, true);
-	    
+	                                 // BACKGROUND_PAINTER = "promptBackgroundPainter"
 	    textComponent.putClientProperty(BACKGROUND_PAINTER, background);
 	    textComponent.repaint();
 	}

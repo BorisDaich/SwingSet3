@@ -25,13 +25,14 @@ import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.PainterHighlighter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter;
 import org.jdesktop.swingx.painter.AbstractLayoutPainter.HorizontalAlignment;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 
 // <snip> Relative Decorator
 // Specialized PainterHighlighter which has a Relativizer
@@ -357,8 +358,7 @@ public class RelativePainterHighlighter extends PainterHighlighter {
          */
         protected void installPainterListener() {
             if (getPainter() instanceof AbstractPainter) {
-                ((AbstractPainter) getPainter())
-                        .addPropertyChangeListener(getPainterListener());
+                ((AbstractPainter) getPainter()).addPropertyChangeListener(getPainterListener());
             }
         }
 

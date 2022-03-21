@@ -7,8 +7,9 @@ package org.jdesktop.swingx;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 import org.jdesktop.test.EDTRunner;
@@ -51,13 +52,11 @@ public class JXImageViewTest extends InteractiveTestCase {
      *     ImageView should use backgroundPainter 
      */
     public void interactiveBackgroundPainterUsed() {
-        BufferedImage im = XTestUtils.loadDefaultImage(
-                "500by500.png");
+        BufferedImage im = XTestUtils.loadDefaultImage("500by500.png");
         BufferedImage im2 = GraphicsUtilities.createThumbnail(im, 100);
         JXImageView ipa = new JXImageView();
         ipa.setBackgroundPainter(new MattePainter(Color.RED));
         ipa.setImage(im2);
-        showInFrame(ipa, "Imageview background");
-        
+        showInFrame(ipa, "Imageview background");      
     }
 }

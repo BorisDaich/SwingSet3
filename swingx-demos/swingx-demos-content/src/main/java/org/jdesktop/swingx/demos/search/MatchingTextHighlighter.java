@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -35,6 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import javax.swing.JLabel;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -43,7 +42,6 @@ import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.SearchPredicate;
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.renderer.PainterAware;
 
 /**

@@ -71,7 +71,7 @@ public class EyeDropperColorChooserPanel extends AbstractColorChooserPanel {
 
 	/**
 	 * Example usage
-	 * @param args
+	 * @param args String arguments
 	 */
     public static void main(String ... args) {
         SwingUtilities.invokeLater(new Runnable() {

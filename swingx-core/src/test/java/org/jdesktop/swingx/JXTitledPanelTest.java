@@ -40,8 +40,7 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class JXTitledPanelTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(JXTitledPanelTest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXTitledPanelTest.class.getName());
     
     // flag used in setup to explicitly choose LF
     private boolean defaultToSystemLF;
@@ -128,8 +127,7 @@ public class JXTitledPanelTest extends InteractiveTestCase {
      * the painter. See Issue #1163-swingx
      */
     public void interactiveGradient() {
-        GradientPaint paint = new GradientPaint(0f, 0f, Color.WHITE, 500f, 
-                500f, Color.BLUE);
+        GradientPaint paint = new GradientPaint(0f, 0f, Color.WHITE, 500f, 500f, Color.BLUE);
         JXTitledPanel panel = new JXTitledPanel("want a gradient");
         panel.setTitlePainter(new MattePainter(paint, true));
 //        ImagePainter p = new ImagePainter(XTestUtils.loadDefaultImage());

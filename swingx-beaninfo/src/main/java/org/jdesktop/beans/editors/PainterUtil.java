@@ -6,10 +6,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jdesktop.beans.editors;
 
-
+import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -50,6 +49,7 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.Painter;
 
 import org.jdesktop.beans.editors.PainterPropertyEditor.AffineTransformDelegate;
 import org.jdesktop.beans.editors.PainterPropertyEditor.Arc2DDelegate;
@@ -73,7 +73,6 @@ import org.jdesktop.swingx.painter.AbstractLayoutPainter;
 import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.painter.RectanglePainter;
 
 /**
@@ -283,15 +282,14 @@ public class PainterUtil {
     }
     
     public static void savePainterToImage(JComponent testPanel, CompoundPainter compoundPainter, File file) throws IOException {
-        BufferedImage img = new BufferedImage(testPanel.getWidth(),testPanel.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(testPanel.getWidth(),testPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
-        setBGP(testPanel,compoundPainter);
+        setBGP(testPanel, compoundPainter);
         testPanel.paint(g);
-        ImageIO.write(img,"png",file);
+        ImageIO.write(img, "png", file);
     }
     
-    public static void setBGP(JComponent comp, Painter painter) {
+    public static void setBGP(Component comp, Painter<Component> painter) {
         if(comp instanceof JXPanel) {
             ((JXPanel)comp).setBackgroundPainter(painter);
         }
@@ -299,7 +297,7 @@ public class PainterUtil {
             ((JXButton)comp).setBackgroundPainter(painter);
         }
     }
-    public static void setFGP(JComponent comp, Painter painter) {
+    public static void setFGP(Component comp, Painter<Component> painter) {
         if(comp instanceof JXLabel) {
             ((JXLabel)comp).setForegroundPainter(painter);
         }
@@ -308,7 +306,7 @@ public class PainterUtil {
         }
     }
     
-    public static Painter getFGP(JComponent comp) {
+    public static Painter getFGP(Component comp) {
         if(comp instanceof JXLabel) {
             return ((JXLabel)comp).getForegroundPainter();
         }
@@ -318,7 +316,7 @@ public class PainterUtil {
         return null;
     }
     
-    public static Painter getBGP(JComponent comp) {
+    public static Painter getBGP(Component comp) {
         if(comp instanceof JXPanel) {
             return ((JXPanel)comp).getBackgroundPainter();
         }

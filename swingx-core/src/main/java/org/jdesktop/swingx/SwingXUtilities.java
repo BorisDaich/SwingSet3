@@ -49,14 +49,13 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.MenuElement;
+import javax.swing.Painter;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentInputMapUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.html.HTMLDocument;
-
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * A collection of utility methods for Swing(X) classes.

@@ -21,9 +21,9 @@ package org.jdesktop.swingx.plaf;
 import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
+import javax.swing.Painter;
 import javax.swing.plaf.UIResource;
 
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * An implementation of Painter as a UIResource. UI classes that create Painters
@@ -38,8 +38,7 @@ public class PainterUIResource<T extends JComponent> implements Painter<T>, UIRe
     private Painter<? super T> p;
 
     /**
-     * Creates a new instance of PainterUIResource with the specified delegate
-     * painter.
+     * Creates a new instance of PainterUIResource with the specified delegate painter.
      * 
      * @param p
      *            the delegate painter

@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,11 +28,10 @@ import java.util.List;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
 import javax.swing.InputMap;
+import javax.swing.Painter;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
-import org.jdesktop.swingx.painter.Painter;
-//import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.util.Contract;
 
 /**
@@ -46,6 +43,7 @@ import org.jdesktop.swingx.util.Contract;
  */
 @SuppressWarnings("nls")
 public final class DefaultsList {
+	
     private List<Object> delegate;
 
     /**

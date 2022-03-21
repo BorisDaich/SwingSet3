@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.Painter;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
@@ -43,11 +44,10 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
 import org.jdesktop.swingx.JXHeader;
-import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXHeader.IconPosition;
+import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXLabel.MultiLineSupport;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.plaf.HeaderUI;
 import org.jdesktop.swingx.plaf.PainterUIResource;
 import org.jdesktop.swingx.plaf.UIManagerExt;

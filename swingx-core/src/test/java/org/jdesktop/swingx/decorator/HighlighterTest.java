@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -28,7 +29,6 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.HighlighterFactory.UIColorHighlighter;
 import org.jdesktop.swingx.painter.AbstractAreaPainter;
 import org.jdesktop.swingx.painter.MattePainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.jdesktop.swingx.renderer.IconAware;
 import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.jdesktop.swingx.renderer.StringValues;
@@ -40,7 +40,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
 
 /**
  * 

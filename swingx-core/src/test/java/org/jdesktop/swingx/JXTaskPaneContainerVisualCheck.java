@@ -36,9 +36,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.Painter;
 
 import org.jdesktop.swingx.action.AbstractActionExt;
-import org.jdesktop.swingx.painter.Painter;
 
 /**
  * Simple tests to ensure that the {@code JXTaskPane} can be instantiated and
@@ -114,7 +114,6 @@ public class JXTaskPaneContainerVisualCheck extends InteractiveTestCase {
 
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        // TODO Auto-generated method stub
                         updateCurrentTaskPane((JXTaskPane) evt.getSource());
                     }
                 };

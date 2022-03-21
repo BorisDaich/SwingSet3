@@ -26,6 +26,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.lang.ref.SoftReference;
 
+import javax.swing.Painter;
+
 import org.jdesktop.beans.AbstractBean;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 

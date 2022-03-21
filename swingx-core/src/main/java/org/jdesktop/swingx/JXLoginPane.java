@@ -555,6 +555,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * indicator for customized Banner
+     * @return boolean
      */
     public boolean isCustomizedBanner() {
     	if(banner!=null && txtPainter!=null && createLoginBanner() != getBanner()) {
@@ -866,6 +867,7 @@ public class JXLoginPane extends JXPanel {
     /**
      * Create and return an image to use for the Banner. 
      * This may be overridden to return any image you like
+     * @return Image to use for the Banner
      */
     protected Image createLoginBanner() {
     	if(getUI() == null) return null;
@@ -874,6 +876,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Create and return an Action for logging in
+     * @return Action to log in
      */
     protected Action createLoginAction() {
         return new LoginAction(this);
@@ -881,6 +884,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Create and return an Action for canceling login
+     * @return Action to cancel log in
      */
     protected Action createCancelAction() {
         return new CancelAction(this);
@@ -927,6 +931,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Sets the list of servers. See the servers field javadoc for more info.
+     * @param servers list of servers
      */
     public void setServers(List<String> servers) {
         //only at startup
@@ -1011,7 +1016,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Sets the user name store for this panel.
-     * @param store
+     * @param store UserNameStore
      */
     public void setUserNameStore(UserNameStore store) {
         UserNameStore oldStore = getUserNameStore();
@@ -1050,7 +1055,7 @@ public class JXLoginPane extends JXPanel {
     /**
      * Enables or disables <strong>User name</strong> for this panel.
      *
-     * @param enabled 
+     * @param enabled flag
      */
     public void setUserNameEnabled(boolean enabled) {
         boolean old = isUserNameEnabled();
@@ -1100,6 +1105,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Return the image used as the banner
+     * @return Image banner
      */
     public Image getBanner() {
     	return imgPainter==null ? null : imgPainter.getImage();
@@ -1153,6 +1159,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Returns text shown in the banner
+     * @return banner text
      */
     public String getBannerText() {
         return bannerText;
@@ -1160,6 +1167,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Returns the custom message for this login panel
+     * @return message text
      */
     public String getMessage() {
         return messageLabel.getText();
@@ -1167,6 +1175,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Sets a custom message for this login panel
+     * @param message text
      */
     public void setMessage(String message) {
         String old = messageLabel.getText();
@@ -1176,6 +1185,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Returns the error message for this login panel
+     * @return error message
      */
     public String getErrorMessage() {
         return errorMessageLabel.getText();
@@ -1183,6 +1193,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Sets the error message for this login panel
+     * @param errorMessage the error message
      */
     public void setErrorMessage(String errorMessage) {
         isErrorMessageSet = true;
@@ -1193,6 +1204,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Returns the panel's status
+     * @return Status
      */
     public Status getStatus() {
         return status;
@@ -1200,6 +1212,7 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Change the status
+     * @param newStatus Status
      */
     protected void setStatus(Status newStatus) {
         if (status != newStatus) {
@@ -1645,6 +1658,8 @@ public class JXLoginPane extends JXPanel {
     //------------------------------------------ Static Construction Methods
     /**
      * Shows a login dialog. This method blocks.
+     * @param parent Component
+     * @param svc LoginService
      * @return The status of the login operation
      */
     public static Status showLoginDialog(Component parent, LoginService svc) {
@@ -1653,6 +1668,10 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Shows a login dialog. This method blocks.
+     * @param parent Component
+     * @param svc LoginService
+     * @param ps PasswordStore
+     * @param us UserNameStore
      * @return The status of the login operation
      */
     public static Status showLoginDialog(Component parent, LoginService svc, PasswordStore ps, UserNameStore us) {
@@ -1661,6 +1680,11 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Shows a login dialog. This method blocks.
+     * @param parent Component
+     * @param svc LoginService
+     * @param ps PasswordStore
+     * @param us UserNameStore
+     * @param servers list of servers
      * @return The status of the login operation
      */
     public static Status showLoginDialog(Component parent, LoginService svc, PasswordStore ps, UserNameStore us, List<String> servers) {
@@ -1670,6 +1694,8 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Shows a login dialog. This method blocks.
+     * @param parent Component
+     * @param panel JXLoginPane to show
      * @return The status of the login operation
      */
     public static Status showLoginDialog(Component parent, JXLoginPane panel) {
@@ -1690,18 +1716,31 @@ public class JXLoginPane extends JXPanel {
 
     /**
      * Shows a login frame. A JFrame is not modal, and thus does not block
+     * @param svc LoginService
+     * @return JXLoginFrame to show
      */
     public static JXLoginFrame showLoginFrame(LoginService svc) {
         return showLoginFrame(svc, null, null);
     }
 
     /**
+     * Shows a login frame. 
+     * @param svc LoginService
+     * @param ps PasswordStore
+     * @param us UserNameStore
+     * @return JXLoginFrame to show
      */
     public static JXLoginFrame showLoginFrame(LoginService svc, PasswordStore ps, UserNameStore us) {
         return showLoginFrame(svc, ps, us, null);
     }
 
     /**
+     * Shows a login frame. 
+     * @param svc LoginService
+     * @param ps PasswordStore
+     * @param us UserNameStore
+     * @param servers list of servers
+     * @return JXLoginFrame to show
      */
     public static JXLoginFrame showLoginFrame(LoginService svc, PasswordStore ps, UserNameStore us, List<String> servers) {
         JXLoginPane panel = new JXLoginPane(svc, ps, us, servers);
@@ -1709,6 +1748,9 @@ public class JXLoginPane extends JXPanel {
     }
 
     /**
+     * Shows a login frame. 
+     * @param panel JXLoginPane panel to show
+     * @return JXLoginFrame to show
      */
     public static JXLoginFrame showLoginFrame(JXLoginPane panel) {
         return new JXLoginFrame(panel);

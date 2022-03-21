@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -23,8 +21,9 @@ package org.jdesktop.swingx;
 
 import java.util.logging.Logger;
 
+import javax.swing.Painter;
+
 import org.jdesktop.swingx.painter.AbstractPainter;
-import org.jdesktop.swingx.painter.Painter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
