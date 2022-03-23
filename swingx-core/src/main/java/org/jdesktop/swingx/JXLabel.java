@@ -36,6 +36,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -110,7 +111,9 @@ import org.jdesktop.swingx.painter.AbstractPainter;
  */
 @JavaBean
 public class JXLabel extends JLabel implements BackgroundPaintable<Component>, Mnemonicable {
-    
+   
+	private static final Logger LOG = Logger.getLogger(JXLabel.class.getName());
+
     /**
      * Text alignment enums. Controls alignment of the text when line wrapping is enabled.
      */
@@ -121,9 +124,9 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
         CENTER(StyleConstants.ALIGN_CENTER), 
     	/** ALIGN_RIGHT */
         RIGHT(StyleConstants.ALIGN_RIGHT), 
-    	/** ALIGN_JUSTIFIED */
+    	/** ALIGN_JUSTIFIED (de)Blocksatz */
         JUSTIFY(StyleConstants.ALIGN_JUSTIFIED
-    );
+        );
         
         private int value;
         private TextAlignment(int val) {
@@ -167,8 +170,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
 
     private boolean multiLine;
 
+    // painter (or private?) Width, Height:
     private int pWidth;
-
     private int pHeight;
 
     // using reverse logic ... some methods causing re-flow of text are called from super constructor, but private variables are initialized only after call to super so have to rely on default for boolean being false
@@ -324,7 +327,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
     }
 
     /**
-     * Returns the current foregroundPainter. This is a bound property. By default the foregroundPainter will be an
+     * Returns the current foregroundPainter. This is a bound property. 
+     * By default the foregroundPainter will be an
      * internal painter which executes the standard painting code (paintComponent()).
      *
      * @return the current foreground painter.
@@ -334,11 +338,19 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void reshape(int x, int y, int w, int h) {
+    public void setText(String text) {
+    	super.setText(text);
+//    	if(MultiLineSupport.isHTML(getText())) {
+//    		LOG.info(" - Size:"+ getPreferredSize());
+//    		LOG.info("BasicHTML.propertyKey = "
+//    				+getClientProperty(BasicHTML.propertyKey)); //javax.swing.plaf.basic.BasicHTML$Renderer
+//    	}
+    }
+
+    @Override
+    public void setBounds(int x, int y, int w, int h) {
         int oldH = getHeight();
-        // TODO Deprecated.  As of JDK 5,replaced by Component.setBounds(int, int, int, int). 
-        super.reshape(x, y, w, h);
+        super.setBounds(x, y, w, h);
         if (!isLineWrap()) {
             return;
         }
@@ -415,27 +427,30 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
         Dimension size = super.getPreferredSize();
         //if (true) return size;
         if (isPreferredSizeSet()) {
-            //log.fine("ret 0");
+            LOG.fine("ret 0");
             return size;
         } else if (this.textRotation != NORMAL) {
             // #swingx-680 change the preferred size when rotation is set ... ideally this would be solved in the LabelUI rather then here
             double theta = getTextRotation();
-            size.setSize(rotateWidth(size, theta), rotateHeight(size,
-            theta));
+            size.setSize(rotateWidth(size, theta), rotateHeight(size, theta));
+            LOG.fine("textRotation theta="+theta);
         } else {
             // #swingx-780 preferred size is not set properly when parent container doesn't enforce the width
             View view = getWrappingView();
             if (view == null) {
                 if (isLineWrap() && !MultiLineSupport.isHTML(getText())) {
+                	// XXX EUG: kein HTML! prop BasicHTML.propertyKey wird gesetzt javax.swing.text.View
                     getMultiLineSupport();
                     // view might get lost on LAF change ...
-                    putClientProperty(BasicHTML.propertyKey, 
-                            MultiLineSupport.createView(this));
+                    putClientProperty(BasicHTML.propertyKey, MultiLineSupport.createView(this));
                     view = (View) getClientProperty(BasicHTML.propertyKey);
                 } else {
+                	// XXX EUG: bei NOT LineWrap || HTML :
+                    LOG.fine("isLineWrap() == multiLine="+isLineWrap() + ", size="+size + " view==null !!!");
                     return size;
                 }
             }
+            LOG.info(">>>>>>>>>>>isLineWrap() == multiLine="+isLineWrap() + " view:"+view);
             Insets insets = getInsets();
             int dx = insets.left + insets.right;
             int dy = insets.top + insets.bottom;
@@ -684,17 +699,25 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
             if (getForegroundPainter() != null) {
                 // XXX There is a bug here. In order to make painter work with this, caching has to be disabled
                 ((AbstractPainter<?>) getForegroundPainter()).setCacheable(!b);
+                
+                // XXX EUG: or clearCache:
+//            	if(getForegroundPainter() instanceof AbstractPainter) {
+//            		AbstractPainter<Component> fgPainter = (AbstractPainter<Component>)getForegroundPainter();
+//                	LOG.info("ForegroundPainter:"+fgPainter + "isLineWrap() == multiLine="+isLineWrap());
+//                	fgPainter.clearCache();
+//            	}
             }
-            //repaint();
         }
     }
 
     /**
-     * Returns the current status of line wrap support. The default value of this property is false to mimic default
-     * JLabel behavior. Value of this property has no effect on HTML text.
+     * Returns the current status of line wrap support. 
+     * The default value of this property is false to mimic default JLabel behavior. 
+     * Value of this property has no effect on HTML text. 
      *
      * @return the current multiple line splitting status
      */
+    // XXX EUG: bei HTML wird multiLine==true unterstellt
     public boolean isLineWrap() {
         return this.multiLine;
     }
@@ -721,10 +744,12 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      * @see TextAlignment for accepted values.
      * @param alignment property "textAlignment"
      */
+    // XXX EUG: bei HTML wird textAlignment==LEFT unterstellt
     public void setTextAlignment(TextAlignment alignment) {
         TextAlignment old = getTextAlignment();
         this.textAlignment = alignment;
         firePropertyChange("textAlignment", old, getTextAlignment());
+        LOG.config("old:"+old +" <== "+alignment);
     }
 
     /**
@@ -766,7 +791,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      */
     @Override
     protected void paintComponent(Graphics g) {
-        //log.fine("in");
+        LOG.fine("in TextAlignment="+getTextAlignment()+"/LineWrap="+isLineWrap()+" text:"+getText());
         // resizing the text view causes recursive callback to the paint down the road. In order to prevent such
         // computationally intensive series of repaints every call to paint is skipped while top most call is being
         // executed.
@@ -777,6 +802,11 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
         if (painting || backgroundPainter == null && foregroundPainter == null) {
             super.paintComponent(g);
         } else {
+        	// TODO EUG: macht doPaint, siehe initPainterSupport()
+            if(MultiLineSupport.isHTML(getText()) && (!isLineWrap() || textAlignment!=TextAlignment.LEFT) ) {
+            	LOG.info("---BUG--- text is html ==> isLineWrap assumed true, TextAlignment assumed LEFT" +
+                    "\npainting="+painting + " backgroundPainter:"+backgroundPainter + " foregroundPainter:"+foregroundPainter );
+            }
             pWidth = getWidth();
             pHeight = getHeight();
             if (backgroundPainter != null) {
@@ -799,11 +829,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
                 double x = (getWidth() - wx) / 2 + Math.sin(textRotation) * tPoint.getY();
                 double y = (getHeight() - wy) / 2;
                 Graphics2D tmp = (Graphics2D) g.create();
-                if (i != null) {
-                    tmp.translate(i.left + x, i.top + y);
-                } else {
-                        tmp.translate(x, y);
-                }
+                tmp.translate((i==null ? 0 : i.left) + x, (i==null ? 0 : i.top) + y);
                 tmp.rotate(textRotation);
 
                 painting = true;
@@ -813,13 +839,14 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
                 // g2.fillRect(0, 0, getWidth(), getHeight());
                 // g2.setColor(c);
                 //log.fine("PW:" + pWidth + ", PH:" + pHeight);
-                foregroundPainter.paint(tmp, this, pWidth, pHeight);
+                foregroundPainter.paint(tmp, this, pWidth, pHeight); // call of doPaint, see initPainterSupport()
                 tmp.dispose();
                 painting = false;
                 pWidth = 0;
                 pHeight = 0;
             }
         }
+        LOG.fine("out\n");
     }
 
     private Point2D calculateT() {
@@ -1013,16 +1040,14 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
                         updateRenderer(src);
                     }
                 } else if ("text".equals(name)) {
-                    if (isHTML((String) evt.getOldValue()) && evt.getNewValue() != null
-                            && !isHTML((String) evt.getNewValue())) {
+                    if (isHTML((String) evt.getOldValue()) && evt.getNewValue() != null && !isHTML((String) evt.getNewValue())) {
                         // was html , but is not
                         if (src.getClientProperty(oldRendererKey) == null
                                 && src.getClientProperty(BasicHTML.propertyKey) != null) {
                             src.putClientProperty(oldRendererKey, src.getClientProperty(BasicHTML.propertyKey));
                         }
                         src.putClientProperty(BasicHTML.propertyKey, createView(src));
-                    } else if (!isHTML((String) evt.getOldValue()) && evt.getNewValue() != null
-                            && !isHTML((String) evt.getNewValue())) {
+                    } else if (!isHTML((String) evt.getOldValue()) && evt.getNewValue() != null && !isHTML((String) evt.getNewValue())) {
                         // wasn't html and isn't
                         updateRenderer(src);
                     } else {
