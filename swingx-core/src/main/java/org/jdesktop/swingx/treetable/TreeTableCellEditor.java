@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.treetable;
 
 import java.awt.Component;
@@ -81,8 +78,7 @@ public class TreeTableCellEditor extends GenericEditor {
 //    borders different in hierarchical column vs. table column
 //    
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(TreeTableCellEditor.class.getName());
+    private static final Logger LOG = Logger.getLogger(TreeTableCellEditor.class.getName());
     
     public TreeTableCellEditor(JTree tree) {
         super(new TreeTableTextField());
@@ -102,10 +98,8 @@ public class TreeTableCellEditor extends GenericEditor {
      * constructor, and returned.
      */
     @Override
-    public Component getTableCellEditorComponent(JTable table, Object value,
-            boolean isSelected, int row, int column) {
-        Component component = super.getTableCellEditorComponent(table, value,
-                isSelected, row, column);
+    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        Component component = super.getTableCellEditorComponent(table, value, isSelected, row, column);
         // JW: this implementation is not bidi-compliant, need to do better
         initEditorOffset(table, row, column, isSelected);
         return component;
@@ -116,8 +110,7 @@ public class TreeTableCellEditor extends GenericEditor {
      * @param row
      * @param isSelected
      */
-    protected void initEditorOffset(JTable table, int row, int column,
-            boolean isSelected) {
+    protected void initEditorOffset(JTable table, int row, int column, boolean isSelected) {
         if (tree == null)
             return;
 //        Rectangle bounds = tree.getRowBounds(row);
@@ -126,11 +119,9 @@ public class TreeTableCellEditor extends GenericEditor {
         boolean leaf = tree.getModel().isLeaf(node);
         boolean expanded = tree.isExpanded(row);
         TreeCellRenderer tcr = tree.getCellRenderer();
-        Component editorComponent = tcr.getTreeCellRendererComponent(tree, node,
-                isSelected, expanded, leaf, row, false);
+        Component editorComponent = tcr.getTreeCellRendererComponent(tree, node, isSelected, expanded, leaf, row, false);
 
-        ((TreeTableTextField) getComponent()).init(row,
-                column, table, tree, editorComponent);
+        ((TreeTableTextField) getComponent()).init(row, column, table, tree, editorComponent);
     }
 
     /**
@@ -173,8 +164,7 @@ public class TreeTableCellEditor extends GenericEditor {
             Icon icon = ((JLabel) treeComponent).getIcon();
             if (icon != null) {
                 iconWidth = icon.getIconWidth() + ((JLabel) treeComponent).getIconTextGap();
-            }
-            
+            }         
         }
 
         private int column;
@@ -191,9 +181,9 @@ public class TreeTableCellEditor extends GenericEditor {
          * PENDING JW: insets?
          * 
          */
-        @SuppressWarnings("deprecation")
+//        @SuppressWarnings("deprecation") // deprecated As of JDK 5,
         @Override
-        public void reshape(int x, int y, int width, int height) {
+        public void setBounds(int x, int y, int width, int height) {
             // Allows precise positioning of text field in the tree cell.
             // following three lines didn't work out
             //Border border = this.getBorder(); // get this text field's border
@@ -206,7 +196,7 @@ public class TreeTableCellEditor extends GenericEditor {
             if(table.getComponentOrientation().isLeftToRight()) {
                 int nodeStart = cellRect.x + nodeRect.x + iconWidth;
                 int nodeEnd = cellRect.x + cellRect.width;
-                super.reshape(nodeStart, y, nodeEnd - nodeStart, height);
+                super.setBounds(nodeStart, y, nodeEnd - nodeStart, height);
 //                int newOffset = nodeLeftX - getInsets().left;
 //                super.reshape(x + newOffset, y, width - newOffset, height);
             } else {
@@ -214,7 +204,7 @@ public class TreeTableCellEditor extends GenericEditor {
                 nodeRect.x = 0; //Math.max(0, nodeRect.x);
                 // ignore the parameter
                 width = nodeRightX - nodeRect.x;
-                super.reshape(cellRect.x + nodeRect.x, y, width, height);
+                super.setBounds(cellRect.x + nodeRect.x, y, width, height);
             }
         }
         
