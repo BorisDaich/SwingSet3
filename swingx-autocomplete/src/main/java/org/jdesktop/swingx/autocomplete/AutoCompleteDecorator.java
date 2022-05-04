@@ -66,15 +66,37 @@ import org.jdesktop.swingx.autocomplete.workarounds.MacOSXPopupLocationFix;
  * @author Thomas Bierhance
  * @author Karl Schaefer
  */
-@SuppressWarnings({"nls", "serial"})
+@SuppressWarnings({"serial"})
 public class AutoCompleteDecorator {
-    //these keys were pulled from BasicComboBoxUI from Sun JDK 1.6.0_20
-    private static final List<String> COMBO_BOX_ACTIONS = unmodifiableList(asList("selectNext",
-            "selectNext2", "selectPrevious", "selectPrevious2", "pageDownPassThrough",
-            "pageUpPassThrough", "homePassThrough", "endPassThrough"));
+	
+/*	these keys were pulled from BasicComboBoxUI.Actions from Sun JDK 1.6.0_20
+    private static class Actions extends UIAction {
+        //private static final String HIDE = "hidePopup";
+        private static final String DOWN = "selectNext";
+        private static final String DOWN_2 = "selectNext2";
+        //private static final String TOGGLE = "togglePopup";
+        //private static final String TOGGLE_2 = "spacePopup";
+        private static final String UP = "selectPrevious";
+        private static final String UP_2 = "selectPrevious2";
+        //private static final String ENTER = "enterPressed";
+        private static final String PAGE_DOWN = "pageDownPassThrough";
+        private static final String PAGE_UP = "pageUpPassThrough";
+        private static final String HOME = "homePassThrough";
+        private static final String END = "endPassThrough";
+	...
+ */
+    private static final List<String> COMBO_BOX_ACTIONS = unmodifiableList(asList(
+    		"selectNext",
+            "selectNext2", 
+            "selectPrevious", 
+            "selectPrevious2", 
+            "pageDownPassThrough",
+            "pageUpPassThrough", 
+            "homePassThrough", 
+            "endPassThrough"));
     /**
-     * A TextAction that provides an error feedback for the text component that invoked
-     * the action. The error feedback is most likely a "beep".
+     * A TextAction that provides an error feedback for the text component that invoked the action. 
+     * The error feedback is most likely a "beep".
      */
     private static final Object errorFeedbackAction = new TextAction("provide-error-feedback") {
         @Override
@@ -106,52 +128,48 @@ public class AutoCompleteDecorator {
         componentMap.setParent(map);
     }
     
-    static AutoCompleteDocument createAutoCompleteDocument(
-            AbstractAutoCompleteAdaptor adaptor, boolean strictMatching,
-            ObjectToStringConverter stringConverter, Document delegate) {
+    static AutoCompleteDocument createAutoCompleteDocument(AbstractAutoCompleteAdaptor adaptor, 
+    		boolean strictMatching, ObjectToStringConverter stringConverter, Document delegate) {
+
         if (delegate instanceof StyledDocument) {
-            return new AutoCompleteStyledDocument(adaptor, strictMatching,
-                    stringConverter, (StyledDocument) delegate);
+            return new AutoCompleteStyledDocument(adaptor, strictMatching, stringConverter, (StyledDocument)delegate);
         }
-        
-        return new AutoCompleteDocument(adaptor, strictMatching,
-                stringConverter, delegate);
+        return new AutoCompleteDocument(adaptor, strictMatching, stringConverter, delegate);
     }
     
     /**
-     * Enables automatic completion for the given JComboBox. The automatic
-     * completion will be strict (only items from the combo box can be selected)
+     * Enables automatic completion for the given JComboBox. 
+     * The automatic completion will be strict (only items from the combo box can be selected)
      * if the combo box is not editable.
      * @param comboBox a combo box
      * @see #decorate(JComboBox, ObjectToStringConverter)
      */
-    public static void decorate(JComboBox comboBox) {
+    public static void decorate(JComboBox<?> comboBox) {
         decorate(comboBox, null);
     }
     
     /**
-     * Enables automatic completion for the given JComboBox. The automatic
-     * completion will be strict (only items from the combo box can be selected)
+     * Enables automatic completion for the given JComboBox. 
+     * The automatic completion will be strict (only items from the combo box can be selected)
      * if the combo box is not editable.
      * <p>
-     * <b>Note:</b> the {@code AutoCompleteDecorator} will alter the state of
-     * the {@code JComboBox} to be editable. This can cause side effects with
-     * layouts and sizing. {@code JComboBox} caches the size, which differs
-     * depending on the component's editability. Therefore, if the component's
-     * size is accessed prior to being decorated and then the cached size is
-     * forced to be recalculated, the size of the component will change.
+     * <b>Note:</b> 
+     * the {@code AutoCompleteDecorator} will alter the state of the {@code JComboBox} to be editable. 
+     * This can cause side effects with layouts and sizing. 
+     * {@code JComboBox} caches the size, which differs depending on the component's editability. 
+     * Therefore, if the component's size is accessed prior to being decorated and then 
+     * the cached size is forced to be recalculated, the size of the component will change.
      * <p>
-     * Because the size of the component can be altered (recalculated), the
-     * decorator does not attempt to set any sizes on the supplied
-     * {@code JComboBox}. Users that need to ensure sizes of supplied combos
-     * should take measures to set the size of the combo.
+     * Because the size of the component can be altered (recalculated), 
+     * the decorator does not attempt to set any sizes on the supplied {@code JComboBox}. 
+     * Users that need to ensure sizes of supplied combos should take measures to set the size of the combo.
      * 
      * @param comboBox
      *                a combo box
      * @param stringConverter
      *                the converter used to transform items to strings
      */
-    public static void decorate(JComboBox comboBox, ObjectToStringConverter stringConverter) {
+    public static void decorate(JComboBox<?> comboBox, ObjectToStringConverter stringConverter) {
         undecorate(comboBox);
         
         boolean strictMatching = !comboBox.isEditable();
@@ -188,7 +206,7 @@ public class AutoCompleteDecorator {
         }
     }
 
-    static void undecorate(JComboBox comboBox) {
+    static void undecorate(JComboBox<?> comboBox) {
         JTextComponent editorComponent = (JTextComponent) comboBox.getEditor().getEditorComponent();
         
         if (editorComponent.getDocument() instanceof AutoCompleteDocument) {
@@ -235,8 +253,7 @@ public class AutoCompleteDecorator {
                 }
             }
             
-            //TODO remove aqua fix
-            
+            //TODO remove aqua fix     
             //TODO reset editibility
         }
     }
@@ -249,7 +266,7 @@ public class AutoCompleteDecorator {
      * @param textComponent the text component that will be enabled for automatic
      * completion
      */
-    public static void decorate(JList list, JTextComponent textComponent) {
+    public static void decorate(JList<?> list, JTextComponent textComponent) {
         decorate(list, textComponent, null);
     }
     
@@ -262,7 +279,7 @@ public class AutoCompleteDecorator {
      * completion
      * @param stringConverter the converter used to transform items to strings
      */
-    public static void decorate(JList list, JTextComponent textComponent, ObjectToStringConverter stringConverter) {
+    public static void decorate(JList<?> list, JTextComponent textComponent, ObjectToStringConverter stringConverter) {
         undecorate(list);
         
         AbstractAutoCompleteAdaptor adaptor = new ListAdaptor(list, textComponent, stringConverter);
@@ -270,7 +287,7 @@ public class AutoCompleteDecorator {
         decorate(textComponent, document, adaptor);
     }
 
-    static void undecorate(JList list) {
+    static void undecorate(JList<?> list) {
         for (ListSelectionListener l : list.getListSelectionListeners()) {
             if (l instanceof ListAdaptor) {
                 list.removeListSelectionListener(l);

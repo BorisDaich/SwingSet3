@@ -45,13 +45,14 @@ import javax.swing.text.JTextComponent;
  * column.setCellEditor(new ComboBoxCellEditor(comboBox));
  * </code></pre>
  */
+@SuppressWarnings("serial")
 public class ComboBoxCellEditor extends DefaultCellEditor {
     
     /**
      * Creates a new ComboBoxCellEditor.
      * @param comboBox the comboBox that should be used as the cell editor.
      */
-    public ComboBoxCellEditor(final JComboBox comboBox) {
+    public ComboBoxCellEditor(final JComboBox<?> comboBox) {
         super(comboBox);
 
         comboBox.removeActionListener(this.delegate);

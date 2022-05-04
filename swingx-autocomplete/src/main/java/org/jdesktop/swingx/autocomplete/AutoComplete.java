@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2010 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,6 +37,7 @@ import javax.swing.text.JTextComponent;
  * @author kschaefer
  */
 final class AutoComplete {
+
     static class InputMap extends javax.swing.InputMap {
         private static final long serialVersionUID = 1L;
     }
@@ -57,9 +56,9 @@ final class AutoComplete {
     }
     
     static class KeyAdapter extends java.awt.event.KeyAdapter {
-        private JComboBox comboBox;
+        private JComboBox<?> comboBox;
         
-        public KeyAdapter(JComboBox comboBox) {
+        public KeyAdapter(JComboBox<?> comboBox) {
             this.comboBox = comboBox;
         }
         
@@ -83,9 +82,9 @@ final class AutoComplete {
     }
 
     static class PropertyChangeListener implements java.beans.PropertyChangeListener {
-        private JComboBox comboBox;
+        private JComboBox<?> comboBox;
         
-        public PropertyChangeListener(JComboBox comboBox) {
+        public PropertyChangeListener(JComboBox<?> comboBox) {
             this.comboBox = comboBox;
         }
         
@@ -93,7 +92,7 @@ final class AutoComplete {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("nls")
+//        @SuppressWarnings("nls")
         public void propertyChange(PropertyChangeEvent evt) {
             if ("editor".equals(evt.getPropertyName())) {
                 handleEditor(evt);
@@ -160,7 +159,7 @@ final class AutoComplete {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            JComboBox comboBox = (JComboBox) e.getSource();
+            JComboBox<?> comboBox = (JComboBox<?>) e.getSource();
             JTextComponent textComponent = (JTextComponent) comboBox.getEditor().getEditorComponent();
             AutoCompleteDocument doc = (AutoCompleteDocument) textComponent.getDocument();
             

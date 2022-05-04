@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.jdesktop.swingx.autocomplete;
 
 import javax.swing.event.DocumentEvent;
@@ -12,6 +9,7 @@ import javax.swing.text.Element;
  *
  */
 final class DelegatingDocumentEvent implements DocumentEvent {
+	
     private final Document resourcedDocument;
     private final DocumentEvent sourceEvent;
     

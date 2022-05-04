@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -36,17 +34,17 @@ import javax.swing.text.JTextComponent;
  * @author Thomas Bierhance
  * @author Karl Schaefer
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class ComboBoxAdaptor extends AbstractAutoCompleteAdaptor implements ActionListener {
     
     /** the combobox being adapted */
-    private JComboBox comboBox;
+    private JComboBox<?> comboBox;
     
     /**
      * Creates a new ComobBoxAdaptor for the given combobox.
      * @param comboBox the combobox that should be adapted
      */
-    public ComboBoxAdaptor(JComboBox comboBox) {
+    public ComboBoxAdaptor(JComboBox<?> comboBox) {
         this.comboBox = comboBox;
         // mark the entire text when a new item is selected
         comboBox.addActionListener(this);
@@ -89,7 +87,7 @@ public class ComboBoxAdaptor extends AbstractAutoCompleteAdaptor implements Acti
         Accessible a = comboBox.getUI().getAccessibleChild(comboBox, 0);
         
         if (getItemCount() > 0 && a instanceof ComboPopup) {
-            JList list = ((ComboPopup) a).getList();
+            JList<?> list = ((ComboPopup) a).getList();
             int lastIndex = list.getModel().getSize() - 1;
             
             Rectangle rect = list.getCellBounds(lastIndex, lastIndex);
