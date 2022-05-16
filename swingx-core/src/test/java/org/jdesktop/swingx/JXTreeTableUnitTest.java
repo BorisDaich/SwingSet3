@@ -71,12 +71,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 @RunWith(JUnit4.class)
 public class JXTreeTableUnitTest extends InteractiveTestCase {
-    @SuppressWarnings ("unused")
-    private static final Logger LOG = Logger
-            .getLogger(JXTreeTableUnitTest.class.getName());
+
+	private static final Logger LOG = Logger.getLogger(JXTreeTableUnitTest.class.getName());
     
     protected TreeTableModel treeTableModel;
     protected TreeTableModel simpleTreeTableModel;
@@ -254,6 +252,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         JXTreeTable table = new JXTreeTable(new FileSystemModel());
         TreeExpansionReport report = new TreeExpansionReport(table);
         table.expandRow(0);
+        // this fails on linux
+        LOG.info("table.getRowCount()="+table.getRowCount() +", expected:"+1+", report.getEventCount():"+report.getEventCount());        
         assertEquals(1, report.getEventCount());
         assertEquals(table, report.getLastExpandedEvent().getSource());
     }
@@ -266,7 +266,9 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         table.expandRow(0);
         TreeExpansionReport report = new TreeExpansionReport(table);
         table.collapseRow(0);
+        LOG.info("table.getRowCount()="+table.getRowCount() +", expected:"+1+", report.getEventCount():"+report.getEventCount());        
         assertEquals(1, report.getEventCount());
+        LOG.info("expected                       :"+table+"\n, report.getLastCollapsedEvent().getSource():"+report.getLastCollapsedEvent().getSource());        
         assertEquals(table, report.getLastCollapsedEvent().getSource());
     }
     
@@ -1238,7 +1240,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         JXTreeTable treeTable = new JXTreeTable(simpleTreeTableModel);
         assertNull(treeTable.getClientProperty(JXTreeTable.DRAG_HACK_FLAG_KEY));
         treeTable.getTreeTableHacker().expandOrCollapseNode(0, 
-                new MouseEvent(treeTable, MouseEvent.MOUSE_PRESSED, 0, InputEvent.BUTTON1_MASK, 0, 0, 1, false));
+                new MouseEvent(treeTable, MouseEvent.MOUSE_PRESSED, 0, InputEvent.BUTTON1_DOWN_MASK, 0, 0, 1, false));
         Boolean dragHackFlag = (Boolean) treeTable.getClientProperty(JXTreeTable.DRAG_HACK_FLAG_KEY);
         assertNull(dragHackFlag);
         System.getProperties().remove("sun.swing.enableImprovedDragGesture");
