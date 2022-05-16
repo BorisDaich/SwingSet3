@@ -17,7 +17,7 @@ import javax.swing.plaf.UIResource;
 public class ChevronsIcon implements Icon, UIResource, SizingConstants {
 
 	/**
-	 * Orientation - chevrons icon defaults to DOWN
+	 * Orientation aka Direction - chevrons icon defaults to DOWN / SOUTH
 	 */
 	public enum Orientation {
 		/** this is the default for chevrons : double v */
@@ -35,7 +35,7 @@ public class ChevronsIcon implements Icon, UIResource, SizingConstants {
     
     private Orientation orientation = Orientation.DOWN;
     /**
-     * You can chenge the orientation from DOWN to UP
+     * You can change the orientation from DOWN to UP
      * @param orientation DOWN or UP
      */
     public void setOrientation(Orientation orientation) {
