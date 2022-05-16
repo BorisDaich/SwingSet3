@@ -26,10 +26,13 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import javax.swing.SwingConstants;
 
 /**
  * A collection of utilities for working with Paints and Colors.
@@ -132,6 +135,7 @@ public class PaintUtils {
                 new Color(74, 82, 96),
                 new Color(123, 132, 145)});
     
+    // never instantiate
     private PaintUtils() {
     }
     
@@ -571,4 +575,75 @@ public class PaintUtils {
         
         return y > .5f ? Color.BLACK : Color.WHITE;
     }
+    
+    /**
+     * Gradient Image between colors
+     * @param width
+     * @param height
+     * @param gradient1
+     * @param gradient2
+     * @return BufferedImage
+     */
+    // from swingx-demos-swingxset com.sun.swingset3.utilities.Utilities
+	public static BufferedImage createGradientImage(int width, int height, Color gradient1, Color gradient2) {
+
+		BufferedImage gradientImage = GraphicsUtilities.createCompatibleImage(width, height);
+		GradientPaint gradient = new GradientPaint(0, 0, gradient1, 0, height, gradient2, false);
+		Graphics2D g2 = (Graphics2D) gradientImage.getGraphics();
+		g2.setPaint(gradient);
+		g2.fillRect(0, 0, width, height);
+		g2.dispose();
+
+		return gradientImage;
+	}
+
+    /**
+     * algorithm derived from Romain Guy's blog
+     * @param width
+     * @param height
+     * @param orientation
+     * @return BufferedImage
+     */
+    // from swingx-demos-swingxset com.sun.swingset3.utilities.Utilities
+    public static BufferedImage createGradientMask(int width, int height, int orientation) {
+        BufferedImage gradient = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = gradient.createGraphics();
+        GradientPaint paint = new GradientPaint(0.0f, 0.0f,
+                new Color(1.0f, 1.0f, 1.0f, 1.0f),
+                orientation == SwingConstants.HORIZONTAL? width : 0.0f, 
+                orientation == SwingConstants.VERTICAL? height : 0.0f,
+                new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        g.setPaint(paint);
+        g.fill(new Rectangle2D.Double(0, 0, width, height));
+
+        g.dispose();
+        gradient.flush();
+
+        return gradient;
+    }
+
+    /**
+     * Derives a color by adding the specified offsets to the base color's 
+     * hue, saturation, and brightness values.   
+     * The resulting hue, saturation, and brightness values will be constrained to be between 0 and 1.
+     * @param base the color to which the HSV offsets will be added
+     * @param dH the offset for hue
+     * @param dS the offset for saturation
+     * @param dB the offset for brightness
+     * @return Color with modified HSV values
+     */
+    // from swingx-demos-swingxset com.sun.swingset3.utilities.Utilities
+    public static Color deriveColorHSB(Color base, float dH, float dS, float dB) {
+        float hsb[] = Color.RGBtoHSB(base.getRed(), base.getGreen(), base.getBlue(), null);
+
+        hsb[0] += dH;
+        hsb[1] += dS;
+        hsb[2] += dB;
+        return Color.getHSBColor(
+                hsb[0] < 0? 0 : (hsb[0] > 1? 1 : hsb[0]),
+                hsb[1] < 0? 0 : (hsb[1] > 1? 1 : hsb[1]),
+                hsb[2] < 0? 0 : (hsb[2] > 1? 1 : hsb[2]));
+                                               
+    }
+
 }
