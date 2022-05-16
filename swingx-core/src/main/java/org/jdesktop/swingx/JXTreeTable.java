@@ -143,9 +143,8 @@ public class JXTreeTable extends JXTable {
      */
     public static final String DROP_HACK_FLAG_KEY = "treeTable.dropHackFlag";
     /**
-     * Renderer used to render cells within the
-     *  {@link #isHierarchical(int) hierarchical} column.
-     *  renderer extends JXTree and implements TableCellRenderer
+     * Renderer used to render cells within the {@link #isHierarchical(int) hierarchical} column.
+     * JXTreeTable$TreeTableCellRenderer renderer extends JXTree and implements TableCellRenderer
      */
     private TreeTableCellRenderer renderer;
 
@@ -2011,6 +2010,7 @@ public class JXTreeTable extends JXTable {
     private TreeExpansionBroadcaster getTreeExpansionBroadcaster() {
         if (treeExpansionBroadcaster == null) {
             treeExpansionBroadcaster = new TreeExpansionBroadcaster(this);
+            LOG.info("XXX renderer.addTreeExpansionListener(treeExpansionBroadcaster:"+treeExpansionBroadcaster);
             renderer.addTreeExpansionListener(treeExpansionBroadcaster);
         }
         return treeExpansionBroadcaster;
@@ -2307,8 +2307,7 @@ public class JXTreeTable extends JXTable {
     /**
      * 
      */
-    protected static class TreeTableModelAdapter extends AbstractTableModel 
-        implements TreeTableModelProvider {
+    protected static class TreeTableModelAdapter extends AbstractTableModel implements TreeTableModelProvider {
         private TreeModelListener treeModelListener;
         private final JTree tree; // immutable
         private JXTreeTable treeTable; // logically immutable
@@ -2676,6 +2675,11 @@ public class JXTreeTable extends JXTable {
         private PropertyChangeListener rolloverListener;
         private Border cellBorder;
 
+        // EUG
+        public void expandRow(int row) {
+        	LOG.info("TODO TODO call super.expandRow(row="+row);
+        	super.expandRow(row);
+        }
         // Force user to specify TreeTableModel instead of more general TreeModel
         public TreeTableCellRenderer(TreeTableModel model) {
             super(model);
