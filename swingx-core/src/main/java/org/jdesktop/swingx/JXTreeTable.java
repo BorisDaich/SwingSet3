@@ -2677,8 +2677,8 @@ public class JXTreeTable extends JXTable {
 
         // EUG
         public void expandRow(int row) {
-        	LOG.info("TODO TODO call super.expandRow(row="+row);
-        	super.expandRow(row);
+        	LOG.info("TODO TODO call super.expandRow(row="+row + " getPathForRow:"+getPathForRow(row));
+        	super.expandRow(row); // dort expandPath(getPathForRow(row));
         }
         // Force user to specify TreeTableModel instead of more general TreeModel
         public TreeTableCellRenderer(TreeTableModel model) {

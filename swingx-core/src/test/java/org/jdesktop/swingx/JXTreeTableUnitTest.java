@@ -263,17 +263,17 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     /**
      * Issue #876-swingx: add support for adding/removing expansion listeners.
      */
-    @Test
-    public void testExpansionListenerSourceCollapsed() {
-        JXTreeTable table = new JXTreeTable(new FileSystemModel());
-        table.expandRow(0);
-        TreeExpansionReport report = new TreeExpansionReport(table);
-        table.collapseRow(0);
-        LOG.info("table.getRowCount()="+table.getRowCount() +", expected:"+1+", report.getEventCount():"+report.getEventCount());
+//    @Test
+//    public void testExpansionListenerSourceCollapsed() {
+//        JXTreeTable table = new JXTreeTable(new FileSystemModel());
+//        table.expandRow(0);
+//        TreeExpansionReport report = new TreeExpansionReport(table);
+//        table.collapseRow(0);
+//        LOG.info("\n\n -----table.getRowCount()="+table.getRowCount() +", expected:"+1+", report.getEventCount():"+report.getEventCount());
 //        assertEquals(1, report.getEventCount());
 //        LOG.info("expected                       :"+table+"\n, report.getLastCollapsedEvent().getSource():"+report.getLastCollapsedEvent().getSource());        
 //        assertEquals(table, report.getLastCollapsedEvent().getSource());
-    }
+//    }
     
     /**
      * Part of issue ??-swingx: tree width must be same as hierarchical column width
