@@ -43,6 +43,7 @@ public class TreeExpansionReport implements TreeExpansionListener {
     public TreeExpansionReport(JXTreeTable tree) {
         if (tree != null) {
             tree.addTreeExpansionListener(this);
+    		LOG.warning("registert as TreeExpansionListener to " + tree);
         }
     }
 
