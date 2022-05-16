@@ -251,9 +251,10 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     public void testExpansionListenerSourceExpanded() {
         JXTreeTable table = new JXTreeTable(new FileSystemModel());
         TreeExpansionReport report = new TreeExpansionReport(table);
+        LOG.warning("isExpanded="+table.isExpanded(0)+" PathForRow(0):"+table.getPathForRow(0));
         table.expandRow(0);
         // this fails on linux
-        LOG.info("table.getRowCount()="+table.getRowCount() +", expected:"+1
+        LOG.warning("table.getRowCount()="+table.getRowCount() +", expected:"+1
         		+", report.getExpandedEventCount():"+report.getExpandedEventCount()    
         		+", report.getEventCount():"+report.getEventCount());
         assertEquals(1, report.getEventCount());

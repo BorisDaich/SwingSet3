@@ -49,13 +49,13 @@ public class TreeExpansionReport implements TreeExpansionListener {
 //------------------------ implement CellEditorListener
 
 	public void treeExpanded(TreeExpansionEvent e) {
-		LOG.info("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
+		LOG.warning("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
 		expandedEvents.add(0, e);
 		allEvents.add(0, e);
 	}
 
 	public void treeCollapsed(TreeExpansionEvent e) {
-		LOG.info("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
+		LOG.warning("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
 		collapsedEvents.add(0, e);
 		allEvents.add(0, e);
 	}
