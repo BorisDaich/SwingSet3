@@ -131,9 +131,9 @@ import org.jdesktop.swingx.util.Contract;
  */
 @JavaBean
 public class JXTreeTable extends JXTable {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXTreeTable.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JXTreeTable.class.getName());
+    
     /**
      * Key for clientProperty to decide whether to apply hack around #168-jdnc.
      */
@@ -215,8 +215,7 @@ public class JXTreeTable extends JXTable {
     }
 
     /**
-     * Initializes this JXTreeTable and permanently binds the specified renderer
-     * to it.
+     * Initializes this JXTreeTable and permanently binds the specified renderer to it.
      *
      * @param renderer private tree/renderer permanently and exclusively bound
      * to this JXTreeTable.
@@ -226,8 +225,7 @@ public class JXTreeTable extends JXTable {
         assert ((TreeTableModelAdapter) getModel()).tree == this.renderer;
         
         // Force the JTable and JTree to share their row selection models.
-        ListToTreeSelectionModelWrapper selectionWrapper =
-            new ListToTreeSelectionModelWrapper();
+        ListToTreeSelectionModelWrapper selectionWrapper = new ListToTreeSelectionModelWrapper();
 
         // JW: when would that happen?
         if (renderer != null) {
@@ -244,8 +242,7 @@ public class JXTreeTable extends JXTable {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                JXTreeTable.this.renderer.putClientProperty(evt.getPropertyName(), evt.getNewValue());
-                
+                JXTreeTable.this.renderer.putClientProperty(evt.getPropertyName(), evt.getNewValue());              
             }
             
         };
@@ -596,9 +593,8 @@ public class JXTreeTable extends JXTable {
                     if (renderer.getComponentOrientation().isLeftToRight() ? x < nodeBounds.x
                             : x > nodeBounds.x + nodeBounds.width) {
                         return new MouseEvent(renderer, e.getID(), e.getWhen(),
-                                e.getModifiers(), x, e.getY(),
-                                e.getXOnScreen(), e.getYOnScreen(), e
-                                        .getClickCount(), false, e.getButton());
+                                e.getModifiersEx(), x, e.getY(), e.getXOnScreen(), 
+                                e.getYOnScreen(), e.getClickCount(), false, e.getButton());
                     }
                 }
             }
@@ -1729,6 +1725,7 @@ public class JXTreeTable extends JXTable {
      * not valid, this method will have no effect.
      */
     public void expandRow(int row) {
+    	LOG.info("calling renderer.expandRow("+row);
         renderer.expandRow(row);
     }
 
@@ -2667,8 +2664,7 @@ public class JXTreeTable extends JXTable {
 
     }
 
-    static class TreeTableCellRenderer extends JXTree implements
-        TableCellRenderer
+    static class TreeTableCellRenderer extends JXTree implements TableCellRenderer
         // need to implement RolloverRenderer
         // PENDING JW: method name clash rolloverRenderer.isEnabled and
         // component.isEnabled .. don't extend, use? And change
@@ -2680,8 +2676,7 @@ public class JXTreeTable extends JXTable {
         private PropertyChangeListener rolloverListener;
         private Border cellBorder;
 
-        // Force user to specify TreeTableModel instead of more general
-        // TreeModel
+        // Force user to specify TreeTableModel instead of more general TreeModel
         public TreeTableCellRenderer(TreeTableModel model) {
             super(model);
             putClientProperty("JTree.lineStyle", "None");
@@ -2955,8 +2950,7 @@ public class JXTreeTable extends JXTable {
             // for simplicity, it's stopped always (even if the row is not changed)
             treeTable.getTreeTableHacker().completeEditing();
             super.setExpandedState(path, state);
-            treeTable.getTreeTableHacker().expansionChanged();
-            
+            treeTable.getTreeTableHacker().expansionChanged();        
         }
 
         /**
@@ -2966,8 +2960,7 @@ public class JXTreeTable extends JXTable {
         @Override
         public void updateUI() {
             super.updateUI();
-            // Make the tree's cell renderer use the table's cell selection
-            // colors.
+            // Make the tree's cell renderer use the table's cell selection colors.
             // TODO JW: need to revisit...
             // a) the "real" of a JXTree is always wrapped into a DelegatingRenderer
             //  consequently the if-block never executes
@@ -2988,10 +2981,8 @@ public class JXTreeTable extends JXTable {
         }
 
         /**
-         * Sets the row height of the tree, and forwards the row height to
-         * the table.
-         * 
-         *
+         * Sets the row height of the tree, 
+         * and forwards the row height to the table.
          */
         @Override
         public void setRowHeight(int rowHeight) {
