@@ -1,16 +1,13 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
-
 package org.jdesktop.test;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
@@ -24,6 +21,8 @@ import org.jdesktop.swingx.JXTreeTable;
  */
 public class TreeExpansionReport implements TreeExpansionListener {
     
+	private static final Logger LOG = Logger.getLogger(TreeExpansionReport.class.getName());
+	
     /**
      * Holds a list of all canceled events.
      */
@@ -46,20 +45,20 @@ public class TreeExpansionReport implements TreeExpansionListener {
             tree.addTreeExpansionListener(this);
         }
     }
+
 //------------------------ implement CellEditorListener
 
-    
-    public void treeExpanded(TreeExpansionEvent e) {
-        expandedEvents.add(0, e);
-        allEvents.add(0, e);
-    }
-    
-    
-    public void treeCollapsed(TreeExpansionEvent e) {
-        collapsedEvents.add(0, e);
-        allEvents.add(0, e);
-        
-    }
+	public void treeExpanded(TreeExpansionEvent e) {
+		LOG.info("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
+		expandedEvents.add(0, e);
+		allEvents.add(0, e);
+	}
+
+	public void treeCollapsed(TreeExpansionEvent e) {
+		LOG.info("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
+		collapsedEvents.add(0, e);
+		allEvents.add(0, e);
+	}
     
 //----------------------- utility methods to access all events    
     public void clear() {
