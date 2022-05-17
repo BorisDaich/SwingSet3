@@ -24,16 +24,11 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 
-import org.jdesktop.swingx.JXTreeTable;
-
 /**
  * Helper to listen to TreeExpansion events and notify with a remapped source.
+ * Used in JXTreeTable
  * 
  * @author Jeanette Winzenburg
- */
-/*
- * EUG: 
- * used in JXTreeTable
  */
 public class TreeExpansionBroadcaster implements TreeExpansionListener {
 
@@ -73,7 +68,6 @@ public class TreeExpansionBroadcaster implements TreeExpansionListener {
     @Override
     public void treeExpanded(TreeExpansionEvent event) {
         if (!hasListeners()) return;
-    	LOG.info("XXX now fireTreeExpanded(retarget(event:"+event);
         fireTreeExpanded(retarget(event));
     }
 
@@ -88,6 +82,7 @@ public class TreeExpansionBroadcaster implements TreeExpansionListener {
      */
     private void fireTreeExpanded(TreeExpansionEvent event) {
         TreeExpansionListener[] ls = listeners.getListeners(TreeExpansionListener.class);
+    	LOG.info("there are "+ls.length+" listeners, event:"+event);
         for (int i = ls.length - 1; i >= 0; i--) {
             ls[i].treeExpanded(event);
         }
@@ -98,6 +93,7 @@ public class TreeExpansionBroadcaster implements TreeExpansionListener {
      */
     private void fireTreeCollapsed(TreeExpansionEvent event) {
         TreeExpansionListener[] ls = listeners.getListeners(TreeExpansionListener.class);
+    	LOG.info("there are "+ls.length+" listeners, event:"+event);
         for (int i = ls.length - 1; i >= 0; i--) {
             ls[i].treeCollapsed(event);
         }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
  * California 95054, U.S.A. All rights reserved.
  * 
@@ -75,9 +73,8 @@ import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.jdesktop.test.TableModelReport;
+import org.jdesktop.test.TreeExpansionReport;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Test to exposed known issues of <code>JXTreeTable</code>. <p>
@@ -92,8 +89,9 @@ import static org.junit.Assert.*;
  * @author Jeanette Winzenburg
  */
 public class JXTreeTableIssues extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(JXTreeTableIssues.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JXTreeTableIssues.class.getName());
+    
     public static void main(String[] args) {
         setSystemLF(true);
         JXTreeTableIssues test = new JXTreeTableIssues();
@@ -101,17 +99,51 @@ public class JXTreeTableIssues extends InteractiveTestCase {
 //            test.runInteractiveTests();
 //            test.runInteractiveTests(".*Combo.*");
 //            test.runInteractiveTests(".*Text.*");
-//            test.runInteractiveTests(".*TreeExpand.*");
+            //test.runInteractiveTests(".*TreeExpand.*"); // testExpansionListenerSourceExpanded() removed 2007-08-08
+        	test.runInteractiveTests(".*ExpansionListener.*");
 //            test.runInteractiveTests("interactive.*EditWith.*");
 //            test.runInteractiveTests("interactive.*Clip.*");
-            test.runInteractive("Prototype");
-//          test.runInteractiveTests("interactive.*CustomColor.*");
-              
+//            test.runInteractive("Prototype");
+//          test.runInteractiveTests("interactive.*CustomColor.*");           
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
         }
     }
+
+    /**
+     * EUG: moved from JXTreeTableUnitTest, because test fails on linux
+     * see: https://github.com/homebeaver/SwingSet/issues/21
+     * 
+     * Issue #876-swingx: add support for adding/removing expansion listeners.
+     */
+    public void testExpansionListenerSourceExpanded() {
+        JXTreeTable table = new JXTreeTable(new FileSystemModel());
+        TreeExpansionReport report = new TreeExpansionReport(table);
+        LOG.warning("isExpanded="+table.isExpanded(0)+" PathForRow(0):"+table.getPathForRow(0));
+        table.expandRow(0);
+        // this fails on linux
+        LOG.warning("table.getRowCount()="+table.getRowCount() +", expected:"+1
+        		+", report.getExpandedEventCount():"+report.getExpandedEventCount()    
+        		+", report.getEventCount():"+report.getEventCount());
+        assertEquals(1, report.getEventCount());
+        assertEquals(table, report.getLastExpandedEvent().getSource());    	
+    }
+    /**
+     * Issue #876-swingx: add support for adding/removing expansion listeners.
+     */
+	public void testExpansionListenerSourceCollapsed() {
+		JXTreeTable table = new JXTreeTable(new FileSystemModel());
+		table.expandRow(0);
+		TreeExpansionReport report = new TreeExpansionReport(table);
+		table.collapseRow(0);
+		LOG.info("\n\n -----table.getRowCount()=" + table.getRowCount() + ", expected:" + 1
+				+ ", report.getEventCount():" + report.getEventCount());
+		assertEquals(1, report.getEventCount());
+		LOG.info("expected                       :" + table + "\n, report.getLastCollapsedEvent().getSource():"
+				+ report.getLastCollapsedEvent().getSource());
+		assertEquals(table, report.getLastCollapsedEvent().getSource());
+	}
 
     /**
      * Issue #1509: configure column width based on prototype not working at all 

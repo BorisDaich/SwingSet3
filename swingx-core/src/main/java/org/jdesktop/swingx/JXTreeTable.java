@@ -63,6 +63,7 @@ import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -1724,7 +1725,7 @@ public class JXTreeTable extends JXTable {
      * not valid, this method will have no effect.
      */
     public void expandRow(int row) {
-    	LOG.info("calling renderer.expandRow("+row);
+    	LOG.info("calling renderer.expandRow for row "+row);
         renderer.expandRow(row);
     }
 
@@ -2001,7 +2002,8 @@ public class JXTreeTable extends JXTable {
      * when a tree node is expanded or collapsed
      */
     public void addTreeExpansionListener(TreeExpansionListener tel) {
-        getTreeExpansionBroadcaster().addTreeExpansionListener(tel);
+    	TreeExpansionBroadcaster teb = getTreeExpansionBroadcaster();
+    	teb.addTreeExpansionListener(tel);
     }
 
     /**
@@ -2010,7 +2012,6 @@ public class JXTreeTable extends JXTable {
     private TreeExpansionBroadcaster getTreeExpansionBroadcaster() {
         if (treeExpansionBroadcaster == null) {
             treeExpansionBroadcaster = new TreeExpansionBroadcaster(this);
-            LOG.info("XXX renderer.addTreeExpansionListener(treeExpansionBroadcaster:"+treeExpansionBroadcaster);
             renderer.addTreeExpansionListener(treeExpansionBroadcaster);
         }
         return treeExpansionBroadcaster;
@@ -2677,9 +2678,20 @@ public class JXTreeTable extends JXTable {
 
         // EUG
         public void expandRow(int row) {
-        	LOG.info("TODO TODO call super.expandRow(row="+row + " getPathForRow:"+getPathForRow(row));
-        	super.expandRow(row); // dort expandPath(getPathForRow(row));
+// TODO       	LOG.info("TODO TODO call super.expandRow(row="+row + " getPathForRow:"+getPathForRow(row));
+        	TreePath tp = getPathForRow(row);
+        	expandPath(tp); // Only expand if not leaf!
+//        	super.expandRow(row); // dort, in JTree expandPath(getPathForRow(row));
         }
+        public void expandPath(TreePath path) {
+        	TreeModel model = getModel();
+            if(path != null && model != null && !model.isLeaf(path.getLastPathComponent())) {
+            	setExpandedState(path, true);
+            } else {
+            	LOG.warning("path "+path + "is leaf! ==> not expanding. TreeModel model:"+model);
+            }
+        }
+        
         // Force user to specify TreeTableModel instead of more general TreeModel
         public TreeTableCellRenderer(TreeTableModel model) {
             super(model);
@@ -2944,12 +2956,13 @@ public class JXTreeTable extends JXTable {
 
         @Override
         protected void setExpandedState(TreePath path, boolean state) {
+        	LOG.info("new state:"+state);
             // JW: fix for #1126 - CellEditors are removed immediately after starting an
             // edit if they involve a change of selection and the 
             // expandsOnSelection property is true
-            // back out if the selection change does not cause a change in 
-            // expansion state
+            // back out if the selection change does not cause a change in expansion state
             if (isExpanded(path) == state) return;
+        	LOG.info("isExpanded(path) <> state ==> change of expansion state!");
             // on change of expansion state, the editor's row might be changed
             // for simplicity, it's stopped always (even if the row is not changed)
             treeTable.getTreeTableHacker().completeEditing();

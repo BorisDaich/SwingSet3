@@ -554,12 +554,10 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     /**
      * Issue #493-swingx: incorrect table events fired.
-     * Issue #592-swingx: (no structureChanged table events) is a special
-     *   case of the former.
+     * Issue #592-swingx: (no structureChanged table events) is a specialcase of the former.
      *    
      * Here: must fire structureChanged on setRoot(null).
-     * fails - because the treeStructureChanged is mapped to a 
-     * tableDataChanged.
+     * fails - because the treeStructureChanged is mapped to atableDataChanged.
      *
      * @throws InvocationTargetException 
      * @throws InterruptedException 
@@ -573,6 +571,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         final TableModelReport report = new TableModelReport();
         table.getModel().addTableModelListener(report);
         ((DefaultTreeTableModel) model).setRoot(null);
+        
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
