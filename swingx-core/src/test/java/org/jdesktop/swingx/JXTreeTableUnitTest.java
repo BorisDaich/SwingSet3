@@ -42,6 +42,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.decorator.BorderHighlighter;
@@ -250,6 +251,13 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     @Test
     public void testExpansionListenerSourceExpanded() {
         JXTreeTable table = new JXTreeTable(new FileSystemModel());
+        TreeModel model = table.getTreeTableModel();
+        TreePath tp = table.getPathForRow(0);
+        if(model.isLeaf(tp.getLastPathComponent())) {
+        	LOG.warning("PathForRow 0 ("+tp+") is leaf! ==> not expanding.");
+        	return;
+        }
+        // for non leaves do the test:
         TreeExpansionReport report = new TreeExpansionReport(table);
         LOG.warning("isExpanded="+table.isExpanded(0)+" PathForRow(0):"+table.getPathForRow(0));
         table.expandRow(0);
@@ -257,8 +265,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         LOG.warning("table.getRowCount()="+table.getRowCount() +", expected:"+1
         		+", report.getExpandedEventCount():"+report.getExpandedEventCount()    
         		+", report.getEventCount():"+report.getEventCount());
-//        assertEquals(1, report.getEventCount());
-//        assertEquals(table, report.getLastExpandedEvent().getSource());
+        assertEquals(1, report.getEventCount());
+        assertEquals(table, report.getLastExpandedEvent().getSource());
     }
     /**
      * Issue #876-swingx: add support for adding/removing expansion listeners.
@@ -1428,8 +1436,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     
     @Test
     public void testRowForPath() {
+        LOG.info("@todo - make sure we find an expandible row instead of hardcoding");
         JXTreeTable treeTable = new JXTreeTable(simpleTreeTableModel);
-        // @todo - make sure we find an expandible row instead of hardcoding
         int rowCount = treeTable.getRowCount();
         int row = 2;
         TreePath path = treeTable.getPathForRow(row);
@@ -1552,8 +1560,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
 
     //copied from JTree and modified to use TTNs
     protected static TreeTableModel getDefaultTreeTableModel() {
-        DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode(
-                "JXTreeTable");
+        DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode("JXTreeTable");
         DefaultMutableTreeTableNode parent;
 
         parent = new DefaultMutableTreeTableNode("colors");
@@ -1588,8 +1595,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     private TreeTableModel createCustomTreeTableModelFromDefault() {
         JXTree tree = new JXTree();
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-        TreeTableModel customTreeTableModel = TreeTableUtils
-                .convertDefaultTreeModel(treeModel);
+        TreeTableModel customTreeTableModel = TreeTableUtils.convertDefaultTreeModel(treeModel);
 
         return customTreeTableModel;
     }

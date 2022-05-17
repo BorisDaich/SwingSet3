@@ -2676,19 +2676,19 @@ public class JXTreeTable extends JXTable {
         private PropertyChangeListener rolloverListener;
         private Border cellBorder;
 
-        // EUG
-        public void expandRow(int row) {
-// TODO       	LOG.info("TODO TODO call super.expandRow(row="+row + " getPathForRow:"+getPathForRow(row));
-        	TreePath tp = getPathForRow(row);
-        	expandPath(tp); // Only expand if not leaf!
-//        	super.expandRow(row); // dort, in JTree expandPath(getPathForRow(row));
-        }
+        /**
+         * {@inheritDoc} <p>
+         * 
+         * Overridden to log because "Only expand if not leaf!"
+         * EUG wg. https://github.com/homebeaver/SwingSet/issues/21
+         */
+        @Override
         public void expandPath(TreePath path) {
         	TreeModel model = getModel();
             if(path != null && model != null && !model.isLeaf(path.getLastPathComponent())) {
             	setExpandedState(path, true);
             } else {
-            	LOG.warning("path "+path + "is leaf! ==> not expanding. TreeModel model:"+model);
+            	LOG.fine("path "+path+" is leaf! ==> not expanding. TreeModel model:"+model);
             }
         }
         
@@ -2956,13 +2956,13 @@ public class JXTreeTable extends JXTable {
 
         @Override
         protected void setExpandedState(TreePath path, boolean state) {
-        	LOG.info("new state:"+state);
+//        	LOG.info("new state:"+state);
             // JW: fix for #1126 - CellEditors are removed immediately after starting an
             // edit if they involve a change of selection and the 
             // expandsOnSelection property is true
             // back out if the selection change does not cause a change in expansion state
             if (isExpanded(path) == state) return;
-        	LOG.info("isExpanded(path) <> state ==> change of expansion state!");
+        	LOG.info("isExpanded(path) <> state ==> change of expansion state to "+state);
             // on change of expansion state, the editor's row might be changed
             // for simplicity, it's stopped always (even if the row is not changed)
             treeTable.getTreeTableHacker().completeEditing();
