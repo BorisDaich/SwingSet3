@@ -246,7 +246,7 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
     }
 
     /**
-     * Issue #876-swingx: add support for adding/removing expansion listeners.
+     * add support for adding/removing expansion listeners, for non leaves
      */
     @Test
     public void testExpansionListenerSourceExpanded() {
@@ -254,34 +254,38 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
         TreeModel model = table.getTreeTableModel();
         TreePath tp = table.getPathForRow(0);
         if(model.isLeaf(tp.getLastPathComponent())) {
-        	LOG.warning("PathForRow 0 ("+tp+") is leaf! ==> not expanding.");
+        	LOG.warning("PathForRow 0 ("+tp+") is leaf! ==> not expanding. Skip test!");
         	return;
         }
         // for non leaves do the test:
         TreeExpansionReport report = new TreeExpansionReport(table);
-        LOG.warning("isExpanded="+table.isExpanded(0)+" PathForRow(0):"+table.getPathForRow(0));
         table.expandRow(0);
-        // this fails on linux
-        LOG.warning("table.getRowCount()="+table.getRowCount() +", expected:"+1
+        LOG.info("EventCount expected:"+1
         		+", report.getExpandedEventCount():"+report.getExpandedEventCount()    
         		+", report.getEventCount():"+report.getEventCount());
         assertEquals(1, report.getEventCount());
         assertEquals(table, report.getLastExpandedEvent().getSource());
     }
     /**
-     * Issue #876-swingx: add support for adding/removing expansion listeners.
+     * add support for removing expansion listeners.
      */
-//    @Test
-//    public void testExpansionListenerSourceCollapsed() {
-//        JXTreeTable table = new JXTreeTable(new FileSystemModel());
-//        table.expandRow(0);
-//        TreeExpansionReport report = new TreeExpansionReport(table);
-//        table.collapseRow(0);
-//        LOG.info("\n\n -----table.getRowCount()="+table.getRowCount() +", expected:"+1+", report.getEventCount():"+report.getEventCount());
-//        assertEquals(1, report.getEventCount());
-//        LOG.info("expected                       :"+table+"\n, report.getLastCollapsedEvent().getSource():"+report.getLastCollapsedEvent().getSource());        
-//        assertEquals(table, report.getLastCollapsedEvent().getSource());
-//    }
+    @Test
+    public void testExpansionListenerSourceCollapsed() {
+        JXTreeTable table = new JXTreeTable(new FileSystemModel());
+        TreeModel model = table.getTreeTableModel();
+        TreePath tp = table.getPathForRow(0);
+        if(model.isLeaf(tp.getLastPathComponent())) {
+        	LOG.warning("PathForRow 0 ("+tp+") is leaf! ==> not expanding. Skip test!");
+        	return;
+        }
+        // for non leaves do the test:
+        table.expandRow(0);
+        TreeExpansionReport report = new TreeExpansionReport(table);
+        table.collapseRow(0);
+        assertEquals(1, report.getEventCount());
+        LOG.info("expected                       :"+table+"\n, report.getLastCollapsedEvent().getSource():"+report.getLastCollapsedEvent().getSource());        
+        assertEquals(table, report.getLastCollapsedEvent().getSource());
+    }
     
     /**
      * Part of issue ??-swingx: tree width must be same as hierarchical column width

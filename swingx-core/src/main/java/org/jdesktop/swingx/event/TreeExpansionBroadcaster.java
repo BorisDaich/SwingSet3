@@ -39,14 +39,14 @@ public class TreeExpansionBroadcaster implements TreeExpansionListener {
     private EventListenerList listeners;
 
     public TreeExpansionBroadcaster(Object source) {
-    	LOG.info("ctor source:"+source);
+//    	LOG.info("ctor source:"+source);
         this.source = source;
     }
 
     public void addTreeExpansionListener(TreeExpansionListener l) {
-    	LOG.info("add(TreeExpansionListener.class listener:"+l);
+//    	LOG.info("add(TreeExpansionListener.class listener:"+l);
         getEventListenerList().add(TreeExpansionListener.class, l);
-    	LOG.info("XXX now there are #listeners in EventListenerList:"+listeners.getListenerCount());
+//    	LOG.info("XXX now there are #listeners in EventListenerList:"+listeners.getListenerCount());
     }
 
     public void removeTreeExpansionListener(TreeExpansionListener l) {

@@ -1725,7 +1725,7 @@ public class JXTreeTable extends JXTable {
      * not valid, this method will have no effect.
      */
     public void expandRow(int row) {
-    	LOG.info("calling renderer.expandRow for row "+row);
+//    	LOG.info("calling renderer.expandRow for row "+row);
         renderer.expandRow(row);
     }
 
@@ -2962,7 +2962,7 @@ public class JXTreeTable extends JXTable {
             // expandsOnSelection property is true
             // back out if the selection change does not cause a change in expansion state
             if (isExpanded(path) == state) return;
-        	LOG.info("isExpanded(path) <> state ==> change of expansion state to "+state);
+//        	LOG.fine("isExpanded(path) <> state ==> change of expansion state to "+state);
             // on change of expansion state, the editor's row might be changed
             // for simplicity, it's stopped always (even if the row is not changed)
             treeTable.getTreeTableHacker().completeEditing();

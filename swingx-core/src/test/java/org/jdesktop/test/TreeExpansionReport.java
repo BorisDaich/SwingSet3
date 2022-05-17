@@ -43,20 +43,20 @@ public class TreeExpansionReport implements TreeExpansionListener {
     public TreeExpansionReport(JXTreeTable tree) {
         if (tree != null) {
             tree.addTreeExpansionListener(this);
-    		LOG.warning("registered as TreeExpansionListener to " + tree);
+    		LOG.info("registered as TreeExpansionListener to " + tree);
         }
     }
 
 //------------------------ implement CellEditorListener
 
 	public void treeExpanded(TreeExpansionEvent e) {
-		LOG.warning("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
+		LOG.info("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
 		expandedEvents.add(0, e);
 		allEvents.add(0, e);
 	}
 
 	public void treeCollapsed(TreeExpansionEvent e) {
-		LOG.warning("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
+		LOG.info("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
 		collapsedEvents.add(0, e);
 		allEvents.add(0, e);
 	}
@@ -77,9 +77,7 @@ public class TreeExpansionReport implements TreeExpansionListener {
     }
  
     public TreeExpansionEvent getLastEvent() {
-        return allEvents.isEmpty()
-            ? null
-            : allEvents.get(0);
+        return allEvents.isEmpty() ? null : allEvents.get(0);
     }
 
 //------------------ access canceled events
@@ -92,9 +90,7 @@ public class TreeExpansionReport implements TreeExpansionListener {
     }
     
     public TreeExpansionEvent getLastExpandedEvent() {
-        return expandedEvents.isEmpty()
-        ? null
-                : expandedEvents.get(0);
+        return expandedEvents.isEmpty() ? null : expandedEvents.get(0);
     }
 
 //----------------- access stopped events
@@ -108,9 +104,7 @@ public class TreeExpansionReport implements TreeExpansionListener {
     }
     
     public TreeExpansionEvent getLastCollapsedEvent() {
-        return collapsedEvents.isEmpty()
-        ? null
-                : collapsedEvents.get(0);
+        return collapsedEvents.isEmpty() ? null : collapsedEvents.get(0);
     }
     
     
