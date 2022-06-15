@@ -66,35 +66,51 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
     	northChevrons.setDirection(SwingConstants.NORTH);
         JButton northButton = new JButton("north", northChevrons);
         
-    	ChevronsIcon northwestChevrons;
-    	northwestChevrons = new ChevronsIcon(SizingConstants.XXL, Color.BLUE);
-    	northwestChevrons.setDirection(SwingConstants.NORTH_WEST);
-        JButton northwestButton = new JButton("north west", northwestChevrons);
-        
-    	ChevronsIcon northeastChevrons;
-    	northeastChevrons = new ChevronsIcon(SizingConstants.XXL, Color.RED);
-    	northeastChevrons.setDirection(SwingConstants.NORTH_EAST);
-        JButton northeastButton = new JButton("north east", northeastChevrons);
-        
     	ChevronsIcon westChevrons;
     	westChevrons = new ChevronsIcon(SizingConstants.XXL, Color.BLUE);
-    	westChevrons.setDirection(SwingConstants.NORTH); // TODO
+    	westChevrons.setDirection(SwingConstants.WEST);
         JButton westButton = new JButton("west XXL", westChevrons);
         
     	ChevronsIcon eastChevrons;
     	eastChevrons = new ChevronsIcon(SizingConstants.XXL, Color.RED);
-    	eastChevrons.setDirection(SwingConstants.NORTH); // TODO
+    	eastChevrons.setDirection(SwingConstants.EAST);
         JButton eastButton = new JButton("east XXL", eastChevrons);
+        
+    	ChevronsIcon northwestChevrons;
+    	northwestChevrons = new ChevronsIcon(SizingConstants.XL, Color.BLUE);
+    	northwestChevrons.setDirection(SwingConstants.NORTH_WEST);
+        JButton northwestButton = new JButton("north west XL", northwestChevrons);
+        
+    	ChevronsIcon northeastChevrons;
+    	northeastChevrons = new ChevronsIcon(SizingConstants.XL, Color.RED);
+    	northeastChevrons.setDirection(SwingConstants.NORTH_EAST);
+        JButton northeastButton = new JButton("north east XL", northeastChevrons);
+        
+    	ChevronsIcon southwestChevrons;
+    	southwestChevrons = new ChevronsIcon(SizingConstants.L, Color.BLUE);
+    	southwestChevrons.setDirection(SwingConstants.SOUTH_WEST);
+        JButton southwestButton = new JButton("south west L", southwestChevrons);
+        
+    	ChevronsIcon southeastChevrons;
+    	southeastChevrons = new ChevronsIcon(SizingConstants.L, Color.RED);
+    	southeastChevrons.setDirection(SwingConstants.SOUTH_EAST);
+        JButton southeastButton = new JButton("south east L", southeastChevrons);
         
     	JPanel panel = new JPanel(new BorderLayout());
     	JPanel northpanel = new JPanel(new BorderLayout());
+    	JPanel southpanel = new JPanel(new BorderLayout());
     	//chevrons.paintIcon(component, graphics, x, y);
-    	panel.add(new JLabel(" chevrons, red in east, blue in west"), BorderLayout.CENTER);
+    	panel.add(new JLabel(" chevrons, blue in west, red in east "), BorderLayout.CENTER);
     	northpanel.add(northButton, BorderLayout.CENTER);
     	northpanel.add(northwestButton, BorderLayout.WEST);
     	northpanel.add(northeastButton, BorderLayout.EAST);
     	panel.add(northpanel, BorderLayout.NORTH);
-    	panel.add(chevronsButton, BorderLayout.SOUTH);
+    	
+    	southpanel.add(chevronsButton, BorderLayout.CENTER);
+    	southpanel.add(southwestButton, BorderLayout.WEST);
+    	southpanel.add(southeastButton, BorderLayout.EAST);
+    	panel.add(southpanel, BorderLayout.SOUTH);
+    	
     	panel.add(westButton, BorderLayout.WEST);
     	panel.add(eastButton, BorderLayout.EAST);
         showInFrame(panel, "default - for debugging only");
