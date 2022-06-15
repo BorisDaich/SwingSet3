@@ -1,9 +1,12 @@
 package org.jdesktop.swingx.icon;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 
 import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
@@ -19,6 +22,7 @@ public class ChevronsIcon implements Icon, UIResource, SizingConstants {
 	/**
 	 * Orientation aka Direction - chevrons icon defaults to DOWN / SOUTH
 	 */
+	@Deprecated // wg. https://github.com/homebeaver/SwingSet/issues/22
 	public enum Orientation {
 		/** this is the default for chevrons : double v */
 		DOWN,
@@ -33,13 +37,20 @@ public class ChevronsIcon implements Icon, UIResource, SizingConstants {
     private int height = SizingConstants.SMALL_ICON;
     private Color color;
     
-    private Orientation orientation = Orientation.DOWN;
+//    private Orientation orientation = Orientation.DOWN;
+    private int direction = SOUTH; // Compass-direction SOUTH == Orientation.DOWN
+    public void setDirection(int direction) {
+    	this.direction = direction;
+    }
     /**
      * You can change the orientation from DOWN to UP
      * @param orientation DOWN or UP
+     * Use setDirection
      */
+	@Deprecated // wg. https://github.com/homebeaver/SwingSet/issues/22
     public void setOrientation(Orientation orientation) {
-    	this.orientation = orientation;
+    	//this.orientation = orientation;
+    	setDirection(orientation==Orientation.DOWN ? SOUTH : NORTH);
     }
 
     /**
@@ -110,8 +121,14 @@ public class ChevronsIcon implements Icon, UIResource, SizingConstants {
      */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		g.setColor(color==null ? c.getForeground() : color);
-        if (orientation==Orientation.UP) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(color==null ? c.getForeground() : color);
+		
+		// creates a solid stroke with line width is 2
+		Stroke stroke = new BasicStroke(2f*width/24);
+		g2d.setStroke(stroke);
+
+        if (direction==NORTH) {
         	g.drawLine(x+(int)(17*width/24), y+(int)(11*height/24), x+(int)(12*width/24), y+(int)( 6*height/24));
         	g.drawLine(x+(int)(12*width/24), y+(int)( 6*height/24), x+(int)( 7*width/24), y+(int)(11*height/24));
         	g.drawLine(x+(int)(17*width/24), y+(int)(18*height/24), x+(int)(12*width/24), y+(int)(13*height/24));

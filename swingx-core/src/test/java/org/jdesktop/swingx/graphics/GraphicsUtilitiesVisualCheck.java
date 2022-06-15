@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,12 +18,20 @@
  */
 package org.jdesktop.swingx.graphics;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-import org.jdesktop.swingx.JXImageView;
 import org.jdesktop.swingx.InteractiveTestCase;
+import org.jdesktop.swingx.JXImageView;
+import org.jdesktop.swingx.icon.ChevronsIcon;
+import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
 /**
@@ -45,6 +51,55 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
         }
     }
 
+    /**
+     * issue https://github.com/homebeaver/SwingSet/issues/22
+     * show chevrons with all compass directions 
+     * and different sizes and colors
+     */
+    public void interactiveChevronsIcon() throws Exception {
+    	ChevronsIcon chevrons;
+    	chevrons = new ChevronsIcon();
+        JButton chevronsButton = new JButton("south", chevrons);
+        
+    	ChevronsIcon northChevrons;
+    	northChevrons = new ChevronsIcon();
+    	northChevrons.setDirection(SwingConstants.NORTH);
+        JButton northButton = new JButton("north", northChevrons);
+        
+    	ChevronsIcon northwestChevrons;
+    	northwestChevrons = new ChevronsIcon(SizingConstants.XXL, Color.BLUE);
+    	northwestChevrons.setDirection(SwingConstants.NORTH_WEST);
+        JButton northwestButton = new JButton("north west", northwestChevrons);
+        
+    	ChevronsIcon northeastChevrons;
+    	northeastChevrons = new ChevronsIcon(SizingConstants.XXL, Color.RED);
+    	northeastChevrons.setDirection(SwingConstants.NORTH_EAST);
+        JButton northeastButton = new JButton("north east", northeastChevrons);
+        
+    	ChevronsIcon westChevrons;
+    	westChevrons = new ChevronsIcon(SizingConstants.XXL, Color.BLUE);
+    	westChevrons.setDirection(SwingConstants.NORTH); // TODO
+        JButton westButton = new JButton("west XXL", westChevrons);
+        
+    	ChevronsIcon eastChevrons;
+    	eastChevrons = new ChevronsIcon(SizingConstants.XXL, Color.RED);
+    	eastChevrons.setDirection(SwingConstants.NORTH); // TODO
+        JButton eastButton = new JButton("east XXL", eastChevrons);
+        
+    	JPanel panel = new JPanel(new BorderLayout());
+    	JPanel northpanel = new JPanel(new BorderLayout());
+    	//chevrons.paintIcon(component, graphics, x, y);
+    	panel.add(new JLabel(" chevrons, red in east, blue in west"), BorderLayout.CENTER);
+    	northpanel.add(northButton, BorderLayout.CENTER);
+    	northpanel.add(northwestButton, BorderLayout.WEST);
+    	northpanel.add(northeastButton, BorderLayout.EAST);
+    	panel.add(northpanel, BorderLayout.NORTH);
+    	panel.add(chevronsButton, BorderLayout.SOUTH);
+    	panel.add(westButton, BorderLayout.WEST);
+    	panel.add(eastButton, BorderLayout.EAST);
+        showInFrame(panel, "default - for debugging only");
+    }
+    
     /**
      * Issue #524-swingx: Thumbnails not generated correctly.
      * 
