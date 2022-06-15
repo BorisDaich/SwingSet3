@@ -34,6 +34,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -73,6 +74,7 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
 public class BasicTaskPaneUI extends TaskPaneUI {
 
     private static FocusListener focusListener = new RepaintOnFocus();
+	private static final Logger LOG = Logger.getLogger(BasicTaskPaneUI.class.getName());
 
     /**
      * factory
@@ -809,12 +811,12 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          *            Height of the box.
          */
         protected void paintChevronControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
-            ChevronsIcon chevrons;
+        	LOG.fine("x="+x + ",y="+y + ", width="+width + ",height="+height);
+            ChevronsIcon chevrons = new ChevronsIcon();
             if (group.isCollapsed()) {
-                chevrons = new ChevronsIcon();
                 chevrons.setDirection(ChevronsIcon.NORTH);
-            } else {
-                chevrons = new ChevronsIcon();
+//            } else {
+//                chevrons.setDirection(ChevronsIcon.SOUTH); // this is default
             }
             chevrons.paintIcon(group, g, x, y);
         }

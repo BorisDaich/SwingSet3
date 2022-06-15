@@ -21,38 +21,19 @@ import javax.swing.plaf.UIResource;
  */
 public class ChevronsIcon implements Icon, UIResource, SizingConstants {
 
-	/**
-	 * Orientation aka Direction - chevrons icon defaults to DOWN / SOUTH
-	 */
-	@Deprecated // wg. https://github.com/homebeaver/SwingSet/issues/22
-	public enum Orientation {
-		/** this is the default for chevrons : double v */
-		DOWN,
-		// TODO:
-//		RIGHT,
-//		LEFT,
-		/** the reverse to DOWN */
-		UP
-	}
+//	private static final Logger LOG = Logger.getLogger(ChevronsIcon.class.getName());
 	
     private int width = SizingConstants.SMALL_ICON;
     private int height = SizingConstants.SMALL_ICON;
     private Color color;
     
-//    private Orientation orientation = Orientation.DOWN;
     private int direction = SOUTH; // Compass-direction SOUTH == Orientation.DOWN
-    public void setDirection(int direction) {
-    	this.direction = direction;
-    }
     /**
      * You can change the orientation from DOWN to UP
-     * @param orientation DOWN or UP
-     * Use setDirection
+     * @param direction Compass-direction SOUTH == Orientation.DOWN
      */
-	@Deprecated // wg. https://github.com/homebeaver/SwingSet/issues/22
-    public void setOrientation(Orientation orientation) {
-    	//this.orientation = orientation;
-    	setDirection(orientation==Orientation.DOWN ? SOUTH : NORTH);
+    public void setDirection(int direction) {
+    	this.direction = direction;
     }
 
     /**
@@ -123,6 +104,7 @@ public class ChevronsIcon implements Icon, UIResource, SizingConstants {
      */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
+//    	LOG.info("direction="+direction + ", x="+x + ",y="+y);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(color==null ? c.getForeground() : color);
 		
@@ -132,52 +114,37 @@ public class ChevronsIcon implements Icon, UIResource, SizingConstants {
 		
 		AffineTransform saveAT = g2d.getTransform();
 		switch (direction) {
+		case NORTH: // 1
+//	    	LOG.info("NORTH direction="+direction + " no rotation ");
+            break;
 		case NORTH_EAST:
-			g2d.rotate(Math.PI / 4, width / 2, width / 2);
+			g2d.rotate(Math.PI/4, x+width/2, y+height/2);
 			break;
 		case EAST:
-			g2d.rotate(Math.PI / 2, width / 2, width / 2);
+			g2d.rotate(Math.PI/2, x+width/2, y+height/2);
 			break;
 		case SOUTH_EAST:
-			g2d.rotate(Math.PI*3/4, width / 2, width / 2);
+			g2d.rotate(Math.PI*3/4, x+width/2, y+height/2);
 			break;
-		case SOUTH:
-        	g2d.rotate(Math.PI, height/2, height/2);
-            /*
-Overwrites the Transform in the Graphics2D context.
-WARNING: This method should never be used to apply a new coordinate transform on top of an existing transform 
-because the Graphics2D might already have a transform that is needed for other purposes, 
-such as rendering Swingcomponents or applying a scaling transformation to adjust for theresolution of a printer. 
-
-To add a coordinate transform, use the transform, rotate, scale,or shear methods. 
-The setTransfor mmethod is intended only for restoring the original Graphics2D transform after rendering, 
-as shown in this example: 
- // Get the current transform
- AffineTransform saveAT = g2.getTransform();
- // Perform transformation
- g2d.transform(...);
- // Render
- g2d.draw(...);
- // Restore original transform
- g2d.setTransform(saveAT);
-             */
+		case SOUTH: // 5
+//	    	LOG.info("SOUTH direction="+direction + ", x="+x + ",y="+y);
+			g2d.rotate(Math.PI, x+width/2, y+height/2);
             break;
         case SOUTH_WEST:
-        	g2d.rotate(-(Math.PI*3/4), width/2, width/2);
+        	g2d.rotate(-(Math.PI*3/4), x+width/2, y+height/2);
             break;
         case WEST:
-        	g2d.rotate(-(Math.PI/2), width/2, width/2);
+        	g2d.rotate(-(Math.PI/2), x+width/2, y+height/2);
             break;
         case NORTH_WEST:
-        	g2d.rotate(-(Math.PI/4), width/2, width/2);
+        	g2d.rotate(-(Math.PI/4), x+width/2, y+height/2);
             break;
-		case NORTH:
 		default: { /* no xform */ }
 		}
-		g2d.draw(new Line2D.Float(17f * width / 24, 11f * height / 24, 12f * height / 24,  6f * height / 24));
-		g2d.draw(new Line2D.Float(12f * width / 24,  6f * height / 24,  7f * height / 24, 11f * height / 24));
-		g2d.draw(new Line2D.Float(17f * width / 24, 18f * height / 24, 12f * height / 24, 13f * height / 24));
-		g2d.draw(new Line2D.Float(12f * width / 24, 13f * height / 24,  7f * height / 24, 18f * height / 24));
+		g2d.draw(new Line2D.Float((17f*width/24)+x, (11f*height/24)+y, (12f*width/24)+x, ( 6f*height/24)+y));
+		g2d.draw(new Line2D.Float((12f*width/24)+x, ( 6f*height/24)+y, ( 7f*width/24)+x, (11f*height/24)+y));
+		g2d.draw(new Line2D.Float((17f*width/24)+x, (18f*height/24)+y, (12f*width/24)+x, (13f*height/24)+y));
+		g2d.draw(new Line2D.Float((12f*width/24)+x, (13f*height/24)+y, ( 7f*width/24)+x, (18f*height/24)+y));
 
 		g2d.setTransform(saveAT);
 	}

@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -65,29 +64,7 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
     	ChevronsIcon northChevrons;
     	northChevrons = new ChevronsIcon(SizingConstants.ACTION_ICON); // SizingConstants.M
     	northChevrons.setDirection(SwingConstants.NORTH);
-    	
-        //CircleIcon red = new CircleIcon(SizingConstants.ACTION_ICON, CircleIcon.RED);
-        //JButton northButton = new JButton("M red Circle", red); // das ist mittig
-        //JButton northButton = new JButton("M red Circle", northChevrons); // das ist NICHT mittig
-
-        JButton northJButton = new JButton("north M", northChevrons);
-        northJButton.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 20));
-        northJButton.setVerticalTextPosition(SwingConstants.TOP);
-        JPanel northButton = new JPanel();
-        //northButton.add(new JLabel(northChevrons)); // mittig
-        northButton.add(northJButton); // mittig
-        
-//        northButton.setIcon(northChevrons);
-        // TODO den text unterhalb icon darstellen und icon mittig
-//        northButton.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 20));
-//        northButton.setAlignmentX(0); // CENTER
-//        northButton.setAlignmentY(0); // CENTER
-//        northButton.setVerticalTextPosition(SwingConstants.TOP);
-//        northButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        
-//        northButton.setHorizontalAlignment(SwingConstants.LEFT);
-//        northButton.setVerticalAlignment(SwingConstants.BOTTOM);
-//        northButton.setHideActionText(true);
+        JButton northButton = new JButton("north M", northChevrons);
         
     	ChevronsIcon westChevrons;
     	westChevrons = new ChevronsIcon(SizingConstants.XXL, Color.BLUE);
