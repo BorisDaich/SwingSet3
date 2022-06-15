@@ -192,15 +192,6 @@ as shown in this example:
 		return height;
 	}
 
-	// visual test:
-//    public static void main(String args[]) {
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        JLabel label = new JLabel(new ChevronsIcon(SizingConstants.XL, Color.RED));
-//        frame.getContentPane().setSize(300, 300);
-//        frame.getContentPane().add(java.awt.BorderLayout.CENTER, label);
-//        frame.pack();
-//        frame.setVisible(true);  
-//    }
+	// visual test: use GraphicsUtilitiesVisualCheck
 
 }

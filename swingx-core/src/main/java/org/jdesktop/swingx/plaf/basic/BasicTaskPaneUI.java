@@ -812,7 +812,7 @@ public class BasicTaskPaneUI extends TaskPaneUI {
             ChevronsIcon chevrons;
             if (group.isCollapsed()) {
                 chevrons = new ChevronsIcon();
-                chevrons.setOrientation(ChevronsIcon.Orientation.UP);
+                chevrons.setDirection(ChevronsIcon.NORTH);
             } else {
                 chevrons = new ChevronsIcon();
             }
