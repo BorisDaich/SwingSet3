@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
@@ -82,8 +83,14 @@ public class CircleIcon implements Icon, UIResource, SizingConstants {
      */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.setColor(c.getForeground());
-
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(c.getForeground());
+		
+		// creates a solid stroke with line width is 2
+		float s = 2f*width/24;
+//		Stroke stroke = new BasicStroke(2f*width/24);
+//		g2d.setStroke(stroke);
+		
 /* https://openbook.rheinwerk-verlag.de/java8/11_002.html#u11.2.3 :
 Bei der Methode drawOval(…) müssen wir immer daran denken, dass die Ellipse oder im Spezialfall 
 der Kreis in ein Rechteck mit Startkoordinaten und mit Breite und Höhe gezeichnet wird. 
@@ -93,10 +100,12 @@ Einen Kreis bzw. eine Ellipse um den Mittelpunkt x, y mit den Radien rx und ry z
 	g.drawOval( x – rx, y – ry, rx + rx, ry + ry );
 
  */
-        g.drawOval(x, y, width-1, height-1);
+//		g2d.drawOval(x, y, width-1, height-1);
+		g2d.fillOval(x, y, width-1, height-1);
 
-        g.setColor(this.color==null ? c.getBackground() : this.color);
-        g.fillOval(x+1, y+1, width-2, height-2);
+		g2d.setColor(color==null ? c.getForeground() : color);
+		g2d.fillOval(x+(int)(s/2), y+(int)(s/2), width-1-(int)s, height-1-(int)s);
+		
 //		g.dispose(); NO dispose! wg. https://github.com/homebeaver/SwingSet/issues/19
 	}
 
