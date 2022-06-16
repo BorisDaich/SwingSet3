@@ -12,9 +12,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.plaf.UIResource;
 
 /**
@@ -31,8 +28,11 @@ public class ArrowIcon implements Icon, UIResource, SizingConstants {
     private int width = SizingConstants.ACTION_ICON;
     private int height = SizingConstants.ACTION_ICON;
     private Color color;
+    private boolean filled = false; // to be used for PlayIcon
+    protected void setFilled(boolean filled) {
+    	this.filled = filled;
+    }
     private int direction = EAST; // Compass-direction EAST == Orientation.RIGHT
-    private boolean filled = true; // to be used for PlayIcon
     /**
      * You can change the orientation from DOWN to UP
      * @param direction Compass-direction SOUTH == Orientation.DOWN
@@ -40,7 +40,6 @@ public class ArrowIcon implements Icon, UIResource, SizingConstants {
     public void setDirection(int direction) {
     	this.direction = direction;
     }
-//    private BufferedImage arrowImage;
 
     public ArrowIcon() {
     }
@@ -73,85 +72,6 @@ public class ArrowIcon implements Icon, UIResource, SizingConstants {
 
     // implements interface Icon:
 
-//    protected Image getArrowImage() {
-//        if (arrowImage == null) {
-//        	int size = getIconWidth();
-//            arrowImage = GraphicsUtilities.createCompatibleTranslucentImage(size, size);
-//            AffineTransform atx = direction != SOUTH? new AffineTransform() : null;
-//            switch(direction ) {
-//                case NORTH:
-//                    atx.setToRotation(Math.PI, size/2, size/2);
-//                    break;
-//                case EAST:
-//                    atx.setToRotation(-(Math.PI/2), size/2, size/2);
-//                    break;
-//                case WEST:
-//                    atx.setToRotation(Math.PI/2, size/2, size/2);
-//                case SOUTH:
-//                default:{ /* no xform*/ }                   
-//            }       
-//            Graphics2D ig = (Graphics2D)arrowImage.getGraphics();
-//            if (atx != null) {
-//                ig.setTransform(atx);
-//            }
-//            int width = size;
-//            int height = size/2 + 1;
-//            int xx = (size - width)/2;
-//            int yy = (size - height + 1)/2;
-//
-//            Color base = color != null? color : UIManager.getColor("controlDkShadow").darker(); 
-//
-//            paintArrow(ig, base, xx, yy); // paintArrow(Graphics2D g, Color base, int x, int y)
-//            paintArrowBevel(ig, base, xx, yy);
-//            paintArrowBevel(ig, PaintUtils.deriveColorHSB(base, 0f, 0f, .20f), xx, yy + 1);
-//        }
-//        return arrowImage;
-//    }
-//    
-//    protected void paintArrow(Graphics2D g, Color base, int x, int y) {
-//        g.setColor(base);
-//        /*
-//        Path2D.Float arrowShape = new Path2D.Float();
-//        arrowShape.moveTo(x, y-1);
-//        System.out.println("moveTo "+(x)+","+(y-1));
-//        arrowShape.lineTo(size-1, y-1);
-//        System.out.println("lineTo "+(size-1)+","+(y-1));
-//        arrowShape.lineTo(size/2, y+(size/2));
-//        System.out.println("lineTo "+(size/2)+","+(y+(size/2)));
-//        arrowShape.lineTo(size/2 - 1, y+(size/2));
-//        System.out.println("lineTo "+ (size/2 - 1)+","+(y+(size/2)));
-//        arrowShape.lineTo(x, y-1);
-//        System.out.println("lineTo "+(x)+","+(y-1));
-//        g.fill(arrowShape);
-//*/       
-//        int len = getIconWidth() - 2;
-//        int xx = x;
-//        int yy = y-1;
-//        while (len >= 2) {
-//            xx++;
-//            yy++;
-//            g.fillRect(xx, yy, len, 1);
-//            len -= 2;
-//        }
-//    }
-//
-//    private static final float DB = -.06f;
-//    protected void paintArrowBevel(Graphics g, Color base, int x, int y) {
-//        int len = getIconWidth();
-//        int xx = x;
-//        int yy = y;
-//        Color c2 = PaintUtils.deriveColorHSB(base, 0f, 0f, (-DB)*(getIconWidth()/2));
-//        while (len >= 2) {
-//            c2 = PaintUtils.deriveColorHSB(c2, 0f, 0f, DB);
-//            g.setColor(c2);
-//            g.fillRect(xx, yy, 1, 1);
-//            g.fillRect(xx + len - 1, yy, 1, 1);
-//            len -= 2;
-//            xx++;
-//            yy++;
-//        }
-//    }
-
     /**
      * {@inheritDoc}
      */
@@ -183,31 +103,13 @@ public class ArrowIcon implements Icon, UIResource, SizingConstants {
 		g2d.setStroke(stroke);
 		
 		AffineTransform saveAT = g2d.getTransform();
-//		switch (direction) {
-//		case NORTH: // 1
-//			g2d.rotate(0, x+width/2, y+height/2);
-//            break;
-//		case NORTH_EAST: // 2
-//			g2d.rotate(Math.PI*(direction-1)/4, x+width/2, y+height/2);
-//			break;
-//		case EAST: // 3
-//			g2d.rotate(Math.PI/2, x+width/2, y+height/2);
-//			break;
-//		case SOUTH: // 5
-//			g2d.rotate(Math.PI, x+width/2, y+height/2);
-//            break;
-//        case WEST: // 7
-//        	g2d.rotate(-(Math.PI/2), x+width/2, y+height/2);
-//            break;
-//		default: { /* no xform */ }
-//		}
 		g2d.rotate(Math.PI*(direction-1)/4, x+width/2, y+height/2);
 		if(filled) {
 			Path2D.Float arrowShape = new Path2D.Float();
-			arrowShape.moveTo(( 5f*width/24)+x, (12f*height/24)+y);
-			arrowShape.lineTo((12f*width/24)+x, ( 5f*height/24)+y);
-			arrowShape.lineTo((19f*width/24)+x, (12f*height/24)+y);
-			arrowShape.lineTo(( 5f*width/24)+x, (12f*height/24)+y);
+			arrowShape.moveTo(( 3f*width/24)+x, (17f*height/24)+y);
+			arrowShape.lineTo((13f*width/24)+x, ( 1f*height/24)+y);
+			arrowShape.lineTo((21f*width/24)+x, (17f*height/24)+y);
+			arrowShape.lineTo(( 3f*width/24)+x, (17f*height/24)+y);
 			g2d.fill(arrowShape);
 		} else {
 			g2d.draw(new Line2D.Float((12f*width/24)+x, (19f*height/24)+y, (12f*width/24)+x, ( 5f*height/24)+y));
@@ -217,57 +119,6 @@ public class ArrowIcon implements Icon, UIResource, SizingConstants {
 
 		g2d.setTransform(saveAT);
 	}
-//	public void paintIconXXX(Component c, Graphics g, int x, int y) {
-//		Graphics2D g2d = (Graphics2D) g;
-//		g2d.setColor(color==null ? c.getForeground() : color);
-//		//g.drawImage(getArrowImage(), x, y, c);
-//		
-//		// creates a solid stroke with line width is 2
-////		Stroke stroke = new BasicStroke(2f*width/24, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER); // default is CAP_SQUARE, JOIN_MITER
-////		g2d.setStroke(stroke);
-//		
-//		AffineTransform saveAT = g2d.getTransform();
-//		switch (direction) {
-//		case NORTH: // 1
-////	    	LOG.info("NORTH direction="+direction + " no rotation ");
-//			g2d.translate(0, -height/3);
-//			g2d.rotate(Math.PI, x+width/2, y+height/2);
-//            break;
-//		case EAST: // 3
-//			g2d.translate(width/3, 0);
-//        	g2d.rotate(-(Math.PI/2), x+width/2, y+height/2);
-//			break;
-//		case SOUTH: // 5
-////	    	LOG.info("SOUTH direction="+direction + ", x="+x + ",y="+y);
-////			g2d.rotate(Math.PI, x+width/2, y+height/2);
-//			g2d.translate(0, height/3);
-//            break;
-//        case WEST: // 7
-//			g2d.translate(-width/3, 0);
-//			g2d.rotate(Math.PI/2, x+width/2, y+height/2);
-//            break;
-//		default: { /* no xform */ }
-//		}
-//
-//        Path2D.Float arrowShape = new Path2D.Float();
-//        arrowShape.moveTo(x, y-1);
-////        arrowShape.moveTo(x, y-height/3);
-//        arrowShape.lineTo(width-1, y-1);
-////        arrowShape.lineTo(width-1, y-height/3);
-//        arrowShape.lineTo(width/2, y+(height/2));
-//        arrowShape.lineTo(width/2 - 1, y+(height/2));
-//        arrowShape.lineTo(x, y-1);
-//        g2d.fill(arrowShape);
-//        
-//		g2d.setTransform(saveAT);
-//
-////		GeneralPath path = new GeneralPath();
-////		path.moveTo(x + 2, y + 2);
-////		path.lineTo(x + width - 2, y + height / 2);
-////		path.lineTo(x + 2, y + height - 2);
-////		path.lineTo(x + 2, y + 2);
-////		g2d.fill(path);
-//	}
 
 	@Override
 	public int getIconWidth() {
@@ -280,22 +131,22 @@ public class ArrowIcon implements Icon, UIResource, SizingConstants {
 	}
 
 	// visual test: use GraphicsUtilitiesVisualCheck
-    public static void main(String args[]) {
-        JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
-        frame.add(panel);
-        
-        // dedault size = SizingConstants.ACTION_ICON:
-        panel.add(new JLabel("north", new ArrowIcon(NORTH, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-        panel.add(new JLabel("west", new ArrowIcon(WEST, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-        panel.add(new JLabel("south", new ArrowIcon(SOUTH, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-        panel.add(new JLabel("east", new ArrowIcon(EAST, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-        // zum Vergleich: PlayIcon ist dunkler, schärfer und spitzer:
-        panel.add(new JLabel("PlayIcon", new PlayIcon(), JLabel.CENTER));
-        panel.add(new JLabel("east-10", new ArrowIcon(EAST, SizingConstants.XS, Color.blue), JLabel.CENTER));
-        
-        frame.pack();
-        frame.setVisible(true);
-    }
+//    public static void main(String args[]) {
+//        JFrame frame = new JFrame();
+//        JPanel panel = new JPanel();
+//        frame.add(panel);
+//        
+//        // dedault size = SizingConstants.ACTION_ICON:
+//        panel.add(new JLabel("north", new ArrowIcon(NORTH, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
+//        panel.add(new JLabel("west", new ArrowIcon(WEST, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
+//        panel.add(new JLabel("south", new ArrowIcon(SOUTH, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
+//        panel.add(new JLabel("east", new ArrowIcon(EAST, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
+//        // zum Vergleich: PlayIcon ist dunkler, schärfer und spitzer:
+//        panel.add(new JLabel("PlayIcon", new PlayIcon(), JLabel.CENTER));
+//        panel.add(new JLabel("east-10", new ArrowIcon(EAST, SizingConstants.XS, Color.blue), JLabel.CENTER));
+//        
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
 
 }

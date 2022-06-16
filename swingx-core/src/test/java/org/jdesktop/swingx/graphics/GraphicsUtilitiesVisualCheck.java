@@ -33,6 +33,7 @@ import org.jdesktop.swingx.JXImageView;
 import org.jdesktop.swingx.icon.ArrowIcon;
 import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.icon.CircleIcon;
+import org.jdesktop.swingx.icon.PlayIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
@@ -78,7 +79,7 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
     	panel.add(redXXLButton, BorderLayout.EAST);
     	panel.add(chevronsButton, BorderLayout.CENTER);
     	panel.add(redMButton, BorderLayout.SOUTH);
-        showInFrame(panel, "default - for debugging only");
+        showInFrame(panel, "interactiveCircleIcon");
     }
     /**
      * issue https://github.com/homebeaver/SwingSet/issues/22
@@ -142,11 +143,10 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
     	
     	panel.add(westButton, BorderLayout.WEST);
     	panel.add(eastButton, BorderLayout.EAST);
-        showInFrame(panel, "default - for debugging only");
+        showInFrame(panel, "interactiveChevronsIcon");
     }
     /**
-     * issue https://github.com/homebeaver/SwingSet/issues/22
-     * show chevrons with all compass directions 
+     * show ArrowIcon with all compass directions 
      * and different sizes and colors
      */
     public void interactiveArrowIcon() throws Exception {
@@ -206,7 +206,71 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
     	
     	panel.add(westButton, BorderLayout.WEST);
     	panel.add(eastButton, BorderLayout.EAST);
-        showInFrame(panel, "default - for debugging only");
+        showInFrame(panel, "interactiveArrowIcon");
+    }
+    
+    /**
+     * show PlayIcon, a subclass of ArrowIcon with different sizes and colors
+     */
+    public void interactivePlayIcon() throws Exception {
+    	PlayIcon south;
+    	south = new PlayIcon(SizingConstants.SMALL_ICON);
+    	south.setDirection(SwingConstants.SOUTH);
+        JButton southButton = new JButton("south S", south);
+        
+        PlayIcon north;
+    	north = new PlayIcon(SizingConstants.ACTION_ICON); // SizingConstants.M
+    	north.setDirection(SwingConstants.NORTH);
+        JButton northButton = new JButton("north M", north);
+        
+        PlayIcon west;
+    	west = new PlayIcon(SizingConstants.XXL, Color.BLUE);
+    	west.setDirection(SwingConstants.WEST);
+        JButton westButton = new JButton("west XXL", west);
+        
+        PlayIcon east;
+    	east = new PlayIcon(SizingConstants.XXL, Color.RED);
+    	east.setDirection(SwingConstants.EAST);
+        JButton eastButton = new JButton("east XXL", east);
+        
+        PlayIcon northwest;
+    	northwest = new PlayIcon(SizingConstants.XL, Color.BLUE);
+    	northwest.setDirection(SwingConstants.NORTH_WEST);
+        JButton northwestButton = new JButton("north west XL", northwest);
+        
+        PlayIcon northeast;
+    	northeast = new PlayIcon(SizingConstants.XL, Color.RED);
+    	northeast.setDirection(SwingConstants.NORTH_EAST);
+        JButton northeastButton = new JButton("north east XL", northeast);
+        
+        PlayIcon southwest;
+    	southwest = new PlayIcon(SizingConstants.L, Color.BLUE);
+    	southwest.setDirection(SwingConstants.SOUTH_WEST);
+        JButton southwestButton = new JButton("south west L", southwest);
+        
+        PlayIcon southeast;
+    	southeast = new PlayIcon(SizingConstants.L, Color.RED);
+    	southeast.setDirection(SwingConstants.SOUTH_EAST);
+        JButton southeastButton = new JButton("south east L", southeast);
+        
+    	JPanel panel = new JPanel(new BorderLayout());
+    	JPanel northpanel = new JPanel(new BorderLayout());
+    	JPanel southpanel = new JPanel(new BorderLayout());
+    	panel.add(new JLabel(" PlayIcon, blue in west, red in east "), BorderLayout.CENTER);
+    	northpanel.add(northButton, BorderLayout.CENTER);
+    	northpanel.add(northwestButton, BorderLayout.WEST);
+    	northpanel.add(northeastButton, BorderLayout.EAST);
+    	panel.add(northpanel, BorderLayout.NORTH);
+    	
+    	southpanel.add(southButton, BorderLayout.CENTER);
+    	southpanel.add(southwestButton, BorderLayout.WEST);
+    	southpanel.add(southeastButton, BorderLayout.EAST);
+    	panel.add(southpanel, BorderLayout.SOUTH);
+    	
+    	panel.add(westButton, BorderLayout.WEST);
+    	panel.add(eastButton, BorderLayout.EAST);
+        showInFrame(panel, "interactivePlayIcon");
+
     }
     
     /**
@@ -220,7 +284,7 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
         BufferedImage im2 = GraphicsUtilities.createThumbnail(im, 100);
         JXImageView ipa = new JXImageView();
         ipa.setImage(im2);
-        showInFrame(ipa, "default - for debugging only");
+        showInFrame(ipa, "interactiveMistargetedKeyStrokes");
     }
 
     /**
