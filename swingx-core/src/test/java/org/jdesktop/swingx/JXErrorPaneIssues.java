@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -21,8 +19,9 @@
  */
 package org.jdesktop.swingx;
 
-import org.jdesktop.swingx.error.ErrorInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
+import org.jdesktop.swingx.error.ErrorInfo;
 
 /**
  * Test to expose known issues around <code>JXError*</code>.
@@ -35,17 +34,24 @@ import org.jdesktop.swingx.error.ErrorInfo;
  * @author Jeanette Winzenburg
  */
 public class JXErrorPaneIssues extends InteractiveTestCase {
-    public static void main(String[] args) {
-//      setSystemLF(true);
-      JXErrorPaneIssues test = new JXErrorPaneIssues();
-      try {
-        test.runInteractiveTests();
-      } catch (Exception e) {
-          System.err.println("exception when executing interactive tests:");
-          e.printStackTrace();
-      }
-
-    }
+	
+	public static void main(String[] args) {
+//		setSystemLF(true);
+		try {
+			setLookAndFeel("Nimbus");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e2) {
+			System.err.println("exception when setLookAndFeel to Nimbus.");
+		}
+		
+		JXErrorPaneIssues test = new JXErrorPaneIssues();
+		try {
+			test.runInteractiveTests();
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
+	}
     
     /**
      * Issue #1486-swingx: errorInfo/pane doesn't substitute system properties

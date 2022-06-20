@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.event.ActionEvent;
@@ -27,7 +24,8 @@ public class JXErrorPaneVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) throws Exception {
       JXErrorPaneVisualCheck test = new JXErrorPaneVisualCheck();
       try {
-          test.runInteractive("Texts");
+          test.runInteractiveTests(); // all
+//          test.runInteractive("Texts");
 //          test.runInteractiveTests("interactiveShowFrameWithException");
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");

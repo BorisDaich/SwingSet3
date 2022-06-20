@@ -3,7 +3,6 @@
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
@@ -609,8 +608,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @param system
      */
     public static void setSystemLF(boolean system) {
-        String lfName = system ? UIManager.getSystemLookAndFeelClassName()
-                : UIManager.getCrossPlatformLookAndFeelClassName();
+        String lfName = system ? UIManager.getSystemLookAndFeelClassName() : UIManager.getCrossPlatformLookAndFeelClassName();
         try {
             UIManager.setLookAndFeel(lfName);
 //            systemLF = system;

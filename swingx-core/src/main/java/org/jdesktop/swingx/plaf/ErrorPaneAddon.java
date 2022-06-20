@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf;
 
 import org.jdesktop.swingx.JXErrorPane;
@@ -43,8 +40,7 @@ public class ErrorPaneAddon extends AbstractComponentAddon {
         
         defaults.add(JXErrorPane.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicErrorPaneUI");
         
-        UIManagerExt.addResourceBundle(
-            "org.jdesktop.swingx.plaf.basic.resources.ErrorPane");
+        UIManagerExt.addResourceBundle("org.jdesktop.swingx.plaf.basic.resources.ErrorPane");
     }
 
     /**
@@ -56,7 +52,6 @@ public class ErrorPaneAddon extends AbstractComponentAddon {
         
         defaults.add(JXErrorPane.uiClassID, "org.jdesktop.swingx.plaf.macosx.MacOSXErrorPaneUI");
         
-        UIManagerExt.addResourceBundle(
-            "org.jdesktop.swingx.plaf.macosx.resources.ErrorPane");
+        UIManagerExt.addResourceBundle("org.jdesktop.swingx.plaf.macosx.resources.ErrorPane");
     }    
 }
