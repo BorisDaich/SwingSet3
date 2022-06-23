@@ -400,10 +400,18 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
         firePropertyChange("scrollableHeightHint", oldValue, getScrollableHeightHint());
     }
     
+    /**
+     * get scrollableWidthHint
+     * @return ScrollableSizeHint
+     */
     protected ScrollableSizeHint getScrollableWidthHint() {
         return scrollableWidthHint;
     }
     
+    /**
+     * get scrollableHeightHint
+     * @return ScrollableSizeHint
+     */
     protected ScrollableSizeHint getScrollableHeightHint() {
         return scrollableHeightHint;
         
@@ -691,6 +699,10 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
         
     }
     
+    /**
+     * when background should be painted returns if patch is opaque
+     * @return true if this component is completely opaque.
+     */
     protected boolean isOpaquePatch() {
         if (fakeTransparent) return false;
         if (isPaintingBackground()) {

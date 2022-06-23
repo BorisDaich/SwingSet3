@@ -7,8 +7,8 @@ import javax.swing.UIManager;
  * collects property names for default UI icons defined in javax swing
  * 
  * @author EUG https://github.com/homebeaver
- * @see https://github.com/homebeaver/SwingSet/issues/23
  */
+// see https://github.com/homebeaver/SwingSet/issues/23
 public class DefaultIcons {
 
 	/*
