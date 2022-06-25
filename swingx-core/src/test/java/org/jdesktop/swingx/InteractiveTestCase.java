@@ -18,6 +18,7 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.search.SearchFactory;
 
 /**
@@ -553,27 +555,31 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * current application. Used to setup the plaf-menu.
      */
     @SuppressWarnings("serial")
-	private static class SetPlafAction extends AbstractAction {
+	private static class SetPlafAction extends AbstractActionExt {
+
         private String plaf;
         private Window toplevel;
         
-        
         @SuppressWarnings("unused")
         public SetPlafAction(String name, String plaf) {
-            this(name, plaf, null);
+            this(name, plaf, null, null);
         }
         
+        public SetPlafAction(String name, String plaf, Window toplevel) {
+            this(name, plaf, null, toplevel);
+        }
         /**
-         * Instantiates an action which updates the toplevel window to
-         * the given LAF. 
+         * Instantiates an action which updates the toplevel window to the given LAF. 
          * 
          * @param name the name of the action
          * @param plaf the class name of the LAF to set
+         * @param group identity of the state action
          * @param toplevel the window to update, may be null to indicate
          *   update of all application windows
          */
-        public SetPlafAction(String name, String plaf, Window toplevel) {
+        public SetPlafAction(String name, String plaf, ButtonGroup group, Window toplevel) {
             super(name);
+            super.setGroup(group);
             this.plaf = plaf;
             this.toplevel = toplevel;
         }
