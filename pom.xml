@@ -5,7 +5,7 @@
   
   <groupId>io.github.homebeaver</groupId>
   <artifactId>swingset3</artifactId>
-  <version>1.6.9-SNAPSHOT</version>
+  <version>1.7.0-SNAPSHOT</version>
   <packaging>pom</packaging> <!-- multi-module project -->
   <modules>
     <module>swingx-mavensupport</module>
@@ -60,7 +60,7 @@
 	  <plugin>
 	    <groupId>org.sonatype.plugins</groupId>
 	    <artifactId>nexus-staging-maven-plugin</artifactId>
-	    <version>1.6.12</version>
+	    <version>1.6.13</version>
 	    <extensions>true</extensions>
 	    <configuration>
 	      <serverId>ossrh</serverId>
