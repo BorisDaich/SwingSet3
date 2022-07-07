@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -19,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 /**
- * Contains classes and interfaces used by the {@code JXGradientChooser}
- * component.
+ * Contains classes and interfaces used by the {@code JXGradientChooser} component.
  */
 package org.jdesktop.swingx.color;

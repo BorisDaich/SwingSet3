@@ -43,7 +43,15 @@ import org.jdesktop.swingx.util.PaintUtils;
  * <p><b>Dependency</b>: Because this class relies on LinearGradientPaint and
  * RadialGradientPaint, it requires the optional MultipleGradientPaint.jar</p>
  *  
- * @author joshy
+ * @author jm158417 Joshua Marinacci joshy
+ */
+/*
+ * MultipleGradientPaint.jar gibt es als com/kenai/swingjavabuilderext/swingjavabuilderext-swingx/1.0.3
+ * von 2009-04-15 22:34
+ * darin nur eine Klasse: org.javabuilders.swing.swingx.SwingXConfig
+ * 
+ * LinearGradientPaint und RadialGradientPaint sind seit 1.6
+ * in package java.awt 
  */
 @SuppressWarnings("serial") // super Same-version serialization only
 public class GradientPreviewPanel extends JXPanel {

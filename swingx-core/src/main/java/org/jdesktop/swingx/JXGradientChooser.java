@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
@@ -74,10 +71,20 @@ import org.jdesktop.swingx.util.PaintUtils;
  * <p><b>Dependency</b>: Because this class relies on LinearGradientPaint and
  * RadialGradientPaint, it requires the optional MultipleGradientPaint.jar</p>
  * 
- * @author joshy
+ * @author jm158417 Joshua Marinacci joshy
  */
+/*
+ * MultipleGradientPaint.jar gibt es als com/kenai/swingjavabuilderext/swingjavabuilderext-swingx/1.0.3
+ * von 2009-04-15 22:34
+ * darin nur eine Klasse: org.javabuilders.swing.swingx.SwingXConfig
+ * 
+ * LinearGradientPaint und RadialGradientPaint sind seit 1.6
+ * in package java.awt 
+ */
+
 @JavaBean
 public class JXGradientChooser extends JXPanel {
+	
     private enum GradientStyle { Linear, Radial }
     
     /**
