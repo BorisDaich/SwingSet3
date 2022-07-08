@@ -3,7 +3,6 @@
  *
  * Created on July 19, 2006, 7:13 PM
  */
-
 package org.jdesktop.beans.editors;
 
 import java.awt.Color;
@@ -26,12 +25,14 @@ import org.jdesktop.swingx.util.PaintUtils;
 
 /**
  *
- * @author  joshy
+ * @author  jm158417 Joshua Marinacci joshy
  */
 public class PaintPicker extends javax.swing.JPanel {
+	
     Component lastPickerUsed = null;
     Paint selectedPaint = Color.PINK;
     JXGradientChooser gradientPicker;
+    
     /** Creates new form PaintPicker */
     public PaintPicker() {
         initComponents();
@@ -46,26 +47,40 @@ public class PaintPicker extends javax.swing.JPanel {
         // set up the gradient picker
         gradientPicker = new JXGradientChooser();
         tabbedPane.addTab("Gradient",gradientPicker);
-        gradientPicker.addPropertyChangeListener("gradient",new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                lastPickerUsed = gradientPicker;
-                setPaint(gradientPicker.getGradient());
-            }
-        });
+        gradientPicker.addPropertyChangeListener("gradient" // property Name
+        	,new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+					lastPickerUsed = gradientPicker;
+					setPaint(gradientPicker.getGradient());
+				}
+		});
         
         // update when the tabs change
-        tabbedPane.getModel().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent changeEvent) {
-                lastPickerUsed = tabbedPane.getSelectedComponent();
-                Paint old = selectedPaint;
-                if(lastPickerUsed == colorPickerParent) {
-                    selectedPaint = colorPicker.getSelectionModel().getSelectedColor();
-                }
-                if(lastPickerUsed == gradientPicker) {
-                    selectedPaint = gradientPicker.getGradient();
-                }
-                firePropertyChange("paint",old,selectedPaint);
+        // konventionell
+//        tabbedPane.getModel().addChangeListener(new ChangeListener() {
+//            public void stateChanged(ChangeEvent changeEvent) {
+//                lastPickerUsed = tabbedPane.getSelectedComponent();
+//                Paint old = selectedPaint;
+//                if(lastPickerUsed == colorPickerParent) {
+//                    selectedPaint = colorPicker.getSelectionModel().getSelectedColor();
+//                }
+//                if(lastPickerUsed == gradientPicker) {
+//                    selectedPaint = gradientPicker.getGradient();
+//                }
+//                firePropertyChange("paint",old,selectedPaint);
+//            }
+//        });
+        // using Lambda expression:
+        tabbedPane.getModel().addChangeListener( ce -> {
+            lastPickerUsed = tabbedPane.getSelectedComponent();
+            Paint old = selectedPaint;
+            if(lastPickerUsed == colorPickerParent) {
+                selectedPaint = colorPicker.getSelectionModel().getSelectedColor();
             }
+            if(lastPickerUsed == gradientPicker) {
+                selectedPaint = gradientPicker.getGradient();
+            }
+            firePropertyChange("paint",old,selectedPaint);
         });
         
     }
