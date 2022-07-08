@@ -27,6 +27,7 @@ import java.awt.Paint;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.logging.Logger;
@@ -119,7 +120,7 @@ public class GradientPreviewPanel extends JXPanel {
     }
 
     /**
-     * 
+     * calculate a color gradient 
      * @return MultipleGradientPaint
      */
     public MultipleGradientPaint calculateGradient() {
@@ -141,7 +142,7 @@ public class GradientPreviewPanel extends JXPanel {
         return getGradient();
     }
 
-    private MultiThumbModel model;
+    private MultiThumbModel<Color> model;
     
     private List<Thumb<Color>> getStops() {
         // calculate the color stops
@@ -152,8 +153,8 @@ public class GradientPreviewPanel extends JXPanel {
      * 
      * @param model MultiThumbModel
      */
-    public void setMultiThumbModel(MultiThumbModel model) {
-        MultiThumbModel old = getMultiThumbModel();
+    public void setMultiThumbModel(MultiThumbModel<Color> model) {
+        MultiThumbModel<Color> old = getMultiThumbModel();
         this.model = model;
         firePropertyChange("multiThumbModel", old, getMultiThumbModel());
     }
@@ -162,7 +163,7 @@ public class GradientPreviewPanel extends JXPanel {
      * 
      * @return MultiThumbModel
      */
-    public MultiThumbModel getMultiThumbModel() {
+    public MultiThumbModel<Color> getMultiThumbModel() {
         return this.model;
     }
 
@@ -216,9 +217,12 @@ public class GradientPreviewPanel extends JXPanel {
         // create the underlying gradient paint
         MultipleGradientPaint paint = null;
         if(isRadial()) { //picker.styleCombo.getSelectedItem().toString().equals("Radial")) {
-            paint = new RadialGradientPaint(
-            start, (float)start.distance(end),start,
-            fractions, colors, cycle, MultipleGradientPaint.ColorSpaceType.SRGB, null
+            //@ConstructorProperties({ "centerPoint", "radius", "focusPoint", "fractions", "colors", "cycleMethod", "colorSpace", "transform" })
+            paint = new RadialGradientPaint(start // centerPoint
+            	, (float)start.distance(end) 	// radius
+            	, start
+            	, fractions, colors, cycle, MultipleGradientPaint.ColorSpaceType.SRGB
+            	, new AffineTransform() // Gradient transform cannot be null : use Identity transformation
             );
         } else {
             paint = new LinearGradientPaint(
