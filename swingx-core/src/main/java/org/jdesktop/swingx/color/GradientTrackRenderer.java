@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
@@ -39,26 +40,41 @@ import org.jdesktop.swingx.util.PaintUtils;
 /**
  * <p><b>Dependency</b>: Because this class relies on LinearGradientPaint and
  * RadialGradientPaint, it requires the optional MultipleGradientPaint.jar</p>
+ * 
+ * @author jm158417 Joshua Marinacci joshy
+ */
+/*
+ * MultipleGradientPaint.jar gibt es als com/kenai/swingjavabuilderext/swingjavabuilderext-swingx/1.0.3
+ * von 2009-04-15 22:34
+ * darin nur eine Klasse: org.javabuilders.swing.swingx.SwingXConfig
  */
 public class GradientTrackRenderer extends JComponent implements TrackRenderer {
 	
-    private Paint checker_paint;
+    private static final Logger LOG = Logger.getLogger(GradientTrackRenderer.class.getName());
+    private static final int SIZE = 20;
 
     /**
      * ctor
      */
     public GradientTrackRenderer() {
-        checker_paint = PaintUtils.getCheckerPaint();
+        checker_paint = //PaintUtils.getCheckerPaint();
+        		PaintUtils.getCheckerPaint(Color.WHITE, Color.GRAY, SIZE);
+        LOG.info("checker_paint.Transparency="+checker_paint.getTransparency() +" 3==TRANSLUCENT");
     }
     
-    private JXMultiThumbSlider slider;
+    /**
+     * A white and gray TRANSLUCENT checkered {@code TexturePaint} with default size of 20 
+     */
+    private Paint checker_paint; // interface java.awt.Paint extends Transparency
+    private JXMultiThumbSlider<Color> slider;
     
+    // Invoked by Swing to draw components. Overrides JComponent.paint
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+//        super.paint(g);
         paintComponent(g);
     }
-
+    // Overrides JComponent.paintComponent
     @Override
     protected void paintComponent(Graphics gfx) {
         Graphics2D g = (Graphics2D)gfx;
@@ -105,8 +121,25 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
         g.translate(-thumb_width / 2, -12);
     }
 
-    public JComponent getRendererComponent(JXMultiThumbSlider slider) {
-        this.slider = slider;
+    /**
+     * {@inheritDoc}<p>
+     * slider objects expected to be Color
+     */
+    @Override
+    public JComponent getRendererComponent(JXMultiThumbSlider<?> slider) {
+    	if(slider!=null && slider.getModel().getThumbCount()>0) {
+    		Object o = slider.getModel().getThumbAt(0).getObject();
+    		if(o instanceof Color) {
+    			// checked!
+    		} else {
+    			// ClassCastException expected
+    			LOG.warning("ClassCastException expected because slider objects expected to be Color not "+o.getClass().getName());
+    			Color.class.cast(o);
+    		}
+    	}
+        this.slider = (JXMultiThumbSlider<Color>) slider;
+//        LOG.info("size:"+this.getHeight()+"/"+this.getWidth());
+//        LOG.info("this:"+this.toString());
         return this;
     }
 }
