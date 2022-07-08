@@ -219,25 +219,23 @@ public class GradientPreviewPanel extends JXPanel {
         if(isRadial()) { //picker.styleCombo.getSelectedItem().toString().equals("Radial")) {
             //@ConstructorProperties({ "centerPoint", "radius", "focusPoint", "fractions", "colors", "cycleMethod", "colorSpace", "transform" })
             paint = new RadialGradientPaint(start // centerPoint
-            	, (float)start.distance(end) 	// radius
+            	, (float)start.distance(end) 	// Radius must be greater than zero TODO
             	, start
             	, fractions, colors, cycle, MultipleGradientPaint.ColorSpaceType.SRGB
             	, new AffineTransform() // Gradient transform cannot be null : use Identity transformation
             );
         } else {
-            paint = new LinearGradientPaint(
-            (float)start.getX(),
-            (float)start.getY(),
-            (float)end.getX(),
-            (float)end.getY(),
-            fractions,colors,cycle);            
+        	//@ConstructorProperties({ "startPoint", "endPoint", "fractions", "colors", "cycleMethod", "colorSpace", "transform" })
+            paint = new LinearGradientPaint(start // startPoint
+            	, end // endPoint : Start point cannot equal endpoint TODO
+            	, fractions, colors, cycle
+            );
         }
         return paint;
     }
     
     private void drawHandles(final Graphics2D g2) {
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // draw the points and gradient line
         g2.setColor(Color.black);
         g2.drawOval((int)start.getX()-5,(int)start.getY()-5,10,10);
@@ -250,11 +248,9 @@ public class GradientPreviewPanel extends JXPanel {
         g2.drawOval((int)end.getX()-4,(int)end.getY()-4,8,8);
         
         g2.setColor(Color.darkGray);
-        g2.drawLine((int)start.getX(),(int)start.getY(),
-                (int)end.getX(),(int)end.getY());
+        g2.drawLine((int)start.getX(),(int)start.getY(), (int)end.getX(),(int)end.getY());
         g2.setColor(Color.gray);
-        g2.drawLine((int)start.getX()-1,(int)start.getY()-1,
-                (int)end.getX()-1,(int)end.getY()-1);
+        g2.drawLine((int)start.getX()-1,(int)start.getY()-1, (int)end.getX()-1,(int)end.getY()-1);
     }
     
     private class GradientMouseHandler extends MouseInputAdapter {
