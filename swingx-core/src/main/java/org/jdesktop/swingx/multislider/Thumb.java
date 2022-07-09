@@ -19,7 +19,7 @@
 package org.jdesktop.swingx.multislider;
 
 /**
- * @author jm158417
+ * @author jm158417 Joshua Marinacci joshy
  */
 public class Thumb<E> {
 	
@@ -48,5 +48,28 @@ public class Thumb<E> {
     public void setObject(E object) {
         this.object = object;
         model.thumbValueChanged(this);
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer("[");
+        buffer.append(this.getClass().toString());
+        buffer.append(":");
+        buffer.append("position");
+        buffer.append('=');
+        buffer.append(position);
+        buffer.append(',');
+        
+        buffer.append("object");
+        buffer.append('=');
+        buffer.append(object.toString());
+        buffer.append(',');
+        
+        buffer.append("model");
+        buffer.append('=');
+        buffer.append(model.toString());
+        buffer.append(']');
+
+        return buffer.toString();
     }
 }

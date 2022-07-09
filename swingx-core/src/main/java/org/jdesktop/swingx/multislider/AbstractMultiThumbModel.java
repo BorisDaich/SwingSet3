@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author jm158417
+ * @author jm158417 Joshua Marinacci joshy
  */
 public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
 	
@@ -52,7 +52,7 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
     }
     
     /**
-     * the Listeners collection
+     * the collection of thumb Data Listeners
      */
     protected List<ThumbDataListener> thumbDataListeners = new ArrayList<ThumbDataListener>();
     
@@ -75,8 +75,8 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
     }
     
     /**
-     * TODO doc
-     * @param thumb TODO doc
+     * Notifies all listeners that have registered interest for notification on thumb position change.
+     * @param thumb the thumb which changed position
      */
     protected void fireThumbPositionChanged(Thumb<E> thumb) {
         if(getThumbIndex(thumb) >= 0) {
@@ -89,7 +89,7 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
     /**
      * Notifies all listeners that have registered interest for notification on value change.
      * Calls <code>fireThumbValueChanged</code>
-     * @param thumb TODO doc
+     * @param thumb the thumb which changed value
      */
     public void thumbValueChanged(Thumb<E> thumb) {
         fireThumbValueChanged(thumb);
@@ -97,7 +97,7 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
     
     /**
      * Notifies all listeners that have registered interest for notification on value change.
-     * @param thumb TODO doc
+     * @param thumb the thumb which changed value
      */
     protected void fireThumbValueChanged(Thumb<E> thumb) {
         ThumbDataEvent evt = new ThumbDataEvent(this,-1,getThumbIndex(thumb),thumb);
@@ -105,6 +105,11 @@ public abstract class AbstractMultiThumbModel<E> implements MultiThumbModel<E> {
             l.valueChanged(evt);
         }
     }
-    
+
+    @Override
+    public String toString() {
+    	return getClass().getName() + '[' + getMinimumValue() + "," + getMaximumValue() + ']';
+    }
+
 }
 

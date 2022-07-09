@@ -25,14 +25,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
- * @author joshy
+ * implements a MultiThumbModel
+ * @author jm158417 Joshua Marinacci joshy
  */
-                                            //                             interface MultiThumbModel<E> extends Iterable<Thumb<E>>
-                                            // AbstractMultiThumbModel<E> implements MultiThumbModel<E> 
+//                             interface MultiThumbModel<E> extends Iterable<Thumb<E>>
+// AbstractMultiThumbModel<E> implements MultiThumbModel<E> 
 public class DefaultMultiThumbModel<E> extends AbstractMultiThumbModel<E> {
     
-    /** TODO doc */
+    /** the collection of thumbs */
     protected List<Thumb<E>>thumbs = new ArrayList<Thumb<E>>();
     
     /** Creates a new instance of DefaultMultiThumbModel */

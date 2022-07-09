@@ -21,7 +21,7 @@ package org.jdesktop.swingx.multislider;
 import java.util.List;
 
 /**
- * @author joshy
+ * @author jm158417 Joshua Marinacci joshy
  */
 public interface MultiThumbModel<E> extends Iterable<Thumb<E>> {
     

@@ -21,7 +21,7 @@ package org.jdesktop.swingx.multislider;
 import java.util.EventObject;
 
 /**
- * @author jm158417
+ * @author jm158417 Joshua Marinacci joshy
  */
 public class ThumbDataEvent extends EventObject {
 
