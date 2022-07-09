@@ -20,53 +20,86 @@ package org.jdesktop.swingx.color;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.JXMultiThumbSlider;
+import org.jdesktop.swingx.icon.ArrowIcon;
+import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.multislider.ThumbRenderer;
 import org.jdesktop.swingx.util.PaintUtils;
 
 /**
- * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+ * A GradientThumbRenderer, together with GradientTrackRenderer
+ * used in JXGradientChooser for Colors
+ * 
+ * @author jm158417 Joshua Marinacci joshy
+ * @author EUG https://github.com/homebeaver/
  */
 public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
-	
-    private Image thumb_black;
-    private Image thumb_gray;
 
+    private static final Logger LOG = Logger.getLogger(GradientThumbRenderer.class.getName());
+
+//    private Image thumb_black;
+//    private Image thumb_gray;
+    private Icon arrowIcon;
+    private Icon selectedIcon;
+
+    private class SelectedIcon extends ArrowIcon {
+    	public SelectedIcon(int direction, int size, Color color) {
+    		super(direction, size, color);
+    		super.setFilled(true);
+    	}
+    }
+    
     /**
      * ctor
      */
     public GradientThumbRenderer() {
         super();
     
-        try {
-            thumb_black = ImageIO.read(GradientThumbRenderer.class.getResourceAsStream("/icons/thumb_black.png"));
-            thumb_gray = ImageIO.read(GradientThumbRenderer.class.getResourceAsStream("/icons/thumb_gray.png"));
-        } catch (Exception ex)        {
+//        try {
+//            thumb_black = ImageIO.read(GradientThumbRenderer.class.getResourceAsStream("/icons/thumb_black.png"));
+//            thumb_gray = ImageIO.read(GradientThumbRenderer.class.getResourceAsStream("/icons/thumb_gray.png"));
+//        } catch (Exception ex)        {
 //            ex.printStackTrace();
-        }        
+//        }  
+        arrowIcon = new ArrowIcon(SwingConstants.SOUTH, SizingConstants.SMALL_ICON, null); // int direction, int size, Color color
+        selectedIcon = new SelectedIcon(SwingConstants.SOUTH, SizingConstants.SMALL_ICON, null);
+        LOG.fine("ctor die icon png fehlen, daher ArrowIcon "+arrowIcon);
     }
     
     private boolean selected;
     
+    /* Invoked by Swing to draw components. Overrides JComponent.paint
+     * zuerst JComponent.paint, dann this.paintComponent
+     * - nur so ist der Track vollständig zu sehen
+     */
     @Override
-    protected void paintComponent(Graphics g) {
-        JComponent thumb = this;
-        int w = thumb.getWidth();
-        g.setColor(getForeground());
-        g.fillRect(0, 0, w - 1, w - 1);
-        if (selected) {
-            g.drawImage(thumb_black, 0, 0, null);
-        } else {
-            g.drawImage(thumb_gray, 0, 0, null);
-        }
+    public void paint(Graphics g) {
+    	if(selected) {
+    		selectedIcon.paintIcon(this, g, 0, 0);
+    	} else {
+    		arrowIcon.paintIcon(this, g, 0, 0);
+    	}
     }
+//    @Override
+//    protected void paintComponent(Graphics g) {
+//        JComponent thumb = this;
+//        int w = thumb.getWidth();
+//        g.setColor(getForeground());
+//        g.fillRect(0, 0, w - 1, w - 1);
+//        if (selected) {
+//            g.drawImage(thumb_black, 0, 0, null);
+//        } else {
+//            g.drawImage(thumb_gray, 0, 0, null);
+//        }
+//    }
 
-    public JComponent getThumbRendererComponent(JXMultiThumbSlider slider, int index, boolean selected) {
+    public JComponent getThumbRendererComponent(JXMultiThumbSlider<?> slider, int index, boolean selected) {
         Color c = (Color)slider.getModel().getThumbAt(index).getObject();
         c = PaintUtils.removeAlpha(c);
         this.setForeground(c);
