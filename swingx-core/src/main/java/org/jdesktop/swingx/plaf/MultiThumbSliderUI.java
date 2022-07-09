@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -23,8 +21,7 @@ package org.jdesktop.swingx.plaf;
 import javax.swing.plaf.ComponentUI;
 
 /**
- *
- * @author Joshua Marinacci
+ * @author m158417 Joshua Marinacci joshy
  */
 public abstract class MultiThumbSliderUI extends ComponentUI {
         
