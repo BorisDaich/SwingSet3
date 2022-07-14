@@ -5,7 +5,6 @@
 package org.jdesktop.swingx.plaf;
 
 import java.net.URL;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
@@ -16,7 +15,6 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons.IterableLAFAddonsPrivilegedAct
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -127,32 +125,21 @@ junit.framework.AssertionFailedError: services must be found
     /**
      * Testing privileged access to the ServiceLoader.
      * 
-     * Here we access the iterator inside the priviledged access, thus 
-     * forcing the load.
+     * Here we access the iterator inside the (priviledged) access, thus forcing the load.
      */
     @Test
     public void testServiceLoaderIteratorPrivileged() {
-        final ServiceLoader<LookAndFeelAddons> loader = 
-        		ServiceLoader.load(LookAndFeelAddons.class);
+        final ServiceLoader<LookAndFeelAddons> loader = ServiceLoader.load(LookAndFeelAddons.class);
 		LOG.info("ServiceLoader<LookAndFeelAddons>:"+loader);
 		loader.forEach(laf -> {
 			LOG.info("  LookAndFeelAddons:"+laf);
 		});
-        // need to access the iterator inside the priviledge
-        // action
+        // need to access the iterator inside the (priviledge) action
         // probably because it's lazily loaded
-        Iterable<LookAndFeelAddons> iLoader = AccessController.doPrivileged(new IterableLAFAddonsPrivilegedAction(loader));
-//        AccessController
-//                .doPrivileged(new PrivilegedAction<Iterable<LookAndFeelAddons>>() {
-//                    @Override
-//                    public Iterable<LookAndFeelAddons> run() {
-//                        loader.iterator().hasNext();
-//                        return loader;
-//                    }
-//                });
+		IterableLAFAddonsPrivilegedAction action = new IterableLAFAddonsPrivilegedAction(loader);
+		Iterable<LookAndFeelAddons> iLoader = action.run();
         int count = 0;
 		LOG.info("iterate:");
-//        for (@SuppressWarnings("unused") LookAndFeelAddons addons : loader) {
         for (LookAndFeelAddons addons : iLoader) {
     		LOG.info("count="+count + " addons:"+addons);
             count++;
@@ -162,6 +149,15 @@ junit.framework.AssertionFailedError: services must be found
         	LOG.warning("excpected "+excpected+" addons but found "+count + "\n");
         }
 //        assertEquals("loader must have addons", 7, count); // EUG: wie kommt man auf die 7 addons?
+/*
+INFORMATION: count=0 addons:[LinuxLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+INFORMATION: count=1 addons:[MacOSXLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+INFORMATION: count=2 addons:[MetalLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+INFORMATION: count=3 addons:[MotifLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+INFORMATION: count=4 addons:[NimbusLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+INFORMATION: count=5 addons:[WindowsClassicLookAndFeelAddons, [WindowsClassicLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]]
+INFORMATION: count=6 addons:[WindowsLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+ */
     }
     
     /**
@@ -182,22 +178,30 @@ junit.framework.AssertionFailedError: services must be found
         LookAndFeelAddons.getAddon();
     }
     
+    private static final String NOT_SPECIFIED = "not specified";
+    
     /**
      * Sanity: verify access to swing.addon denied.
      *
      */
-    @Test(expected= SecurityException.class)
+//    @Test(expected= SecurityException.class)
+    @Test
     public void testPropertySwingAddonDenied() {
-        System.getProperty("swing.addon", "not specified");
+        String propValue = System.getProperty("swing.addon", NOT_SPECIFIED);
+        LOG.info("swing.addon propValue:"+propValue);
+    	assertEquals(NOT_SPECIFIED, propValue);
     }
     
     /**
      * Sanity: verify access to swing.crossplatformaddon denied.
      *
      */
-    @Test(expected= SecurityException.class)
+//    @Test(expected= SecurityException.class)
+    @Test
     public void testPropertySwingCrossplatformAddonDenied() {
-        System.getProperty("swing.crossplatformlafaddon", "not specified");
+    	String propValue = System.getProperty("swing.crossplatformlafaddon", "not specified");
+        LOG.info("swing.crossplatformlafaddon propValue:"+propValue);
+    	assertEquals(NOT_SPECIFIED, propValue);
     }
     
     /**
@@ -207,8 +211,8 @@ junit.framework.AssertionFailedError: services must be found
     @Override
     @Before
     public void setUp() throws Exception {
-		LOG.info("System.SecurityManager:"+System.getSecurityManager());
-        assertNotNull("Sandbox test cannot be run, no securityManager", System.getSecurityManager());
+//		LOG.info("System.SecurityManager:"+System.getSecurityManager());
+//        assertNotNull("Sandbox test cannot be run, no securityManager", System.getSecurityManager());
     }
     
     /**
@@ -219,7 +223,7 @@ junit.framework.AssertionFailedError: services must be found
      */
     @BeforeClass
     public static void install() {
-		LOG.info("set setSecurityManager which is deprecated forRemoval since=17");
+//		LOG.info("set setSecurityManager which is deprecated forRemoval since=17");
         // A - install the default SecurityManager. 
         // Doing so we are not allowed to reverse the install -
         // which makes this testCase to a manual-run-only affair
@@ -233,7 +237,7 @@ junit.framework.AssertionFailedError: services must be found
 		There is no replacement for the Security Manager.See JEP 411 for discussion and alternatives.
 		https://openjdk.java.net/jeps/411
  */
-        System.setSecurityManager(new SecurityManager());
+//        System.setSecurityManager(new SecurityManager());
         
         // B- if we install a SecurityManager we need to be sure
         // that we are allowed to uninstall it.

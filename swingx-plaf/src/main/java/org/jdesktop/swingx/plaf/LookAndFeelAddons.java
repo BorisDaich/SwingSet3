@@ -22,7 +22,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessController; // Deprecated since="17" forRemoval
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -67,10 +66,8 @@ import javax.swing.plaf.UIResource;
  * @author <a href="mailto:fred@L2FProd.com">Frederic Lavigne</a>
  * @author Karl Schaefer
  */
-@SuppressWarnings("nls")
 public abstract class LookAndFeelAddons {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(LookAndFeelAddons.class.getName());
     
     private static List<ComponentAddon> contributedComponents = new ArrayList<ComponentAddon>();
@@ -104,7 +101,8 @@ public abstract class LookAndFeelAddons {
         } catch (Exception e) {
             // PENDING(fred) do we want to log an error and continue with a default
             // addon class or do we just fail?
-            throw new ExceptionInInitializerError(e);
+//            throw new java.lang.ExceptionInInitializerError(e); // fehlt
+        	LOG.warning("ExceptionInInitializerError "+e);
         }
 
         setTrackingLookAndFeelChanges(true);
@@ -279,20 +277,23 @@ public abstract class LookAndFeelAddons {
         ClassLoader cl = null;
         
         try {
-    		cl = AccessController.doPrivileged(new ClassLoaderPrivilegedAction(LookAndFeelAddons.class));
+        	ClassLoaderPrivilegedAction action = new ClassLoaderPrivilegedAction(LookAndFeelAddons.class);
+        	cl = action.run();
         } catch (SecurityException ignore) { }
         
         if (cl == null) {
             final Thread t = Thread.currentThread();
             
             try {
-        		cl = AccessController.doPrivileged(new ClassLoaderPrivilegedAction(t));
+            	ClassLoaderPrivilegedAction action = new ClassLoaderPrivilegedAction(t);
+            	cl = action.run();
             } catch (SecurityException ignore) { }
         }
         
         if (cl == null) {
             try {
-        		cl = AccessController.doPrivileged(new ClassLoaderPrivilegedAction());
+            	ClassLoaderPrivilegedAction action = new ClassLoaderPrivilegedAction();
+            	cl = action.run();
             } catch (SecurityException ignore) { }
         }
         
@@ -355,18 +356,16 @@ public abstract class LookAndFeelAddons {
      * @return the class name of the cross-platform addon
      */
     public static String getCrossPlatformAddonClassName() {
-        try {
-            return AccessController.doPrivileged(new PrivilegedAction<String>() {
-                @Override
-                public String run() {
-                    return System.getProperty("swing.crossplatformlafaddon",
-                            "org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons");
-                }
-            });
-        } catch (SecurityException ignore) {
-        }
+    	PrivilegedAction<String> action = new PrivilegedAction<String>() {
 
-        return "org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons";
+			@Override
+			public String run() {
+                return System.getProperty("swing.crossplatformlafaddon",
+                        "org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons");
+			}
+    		
+    	};
+    	return action.run();
     }
 
     /**
@@ -434,17 +433,8 @@ public abstract class LookAndFeelAddons {
         final ServiceLoader<LookAndFeelAddons> loader = ServiceLoader.load(LookAndFeelAddons.class, getClassLoader());
         // need to access the iterator inside a privileged action
         // probably because it's lazily loaded
-		return AccessController.doPrivileged(new IterableLAFAddonsPrivilegedAction(loader));
-//        AccessController
-//                .doPrivileged(new PrivilegedAction<Iterable<LookAndFeelAddons>>() {
-//                    @Override
-//                    public Iterable<LookAndFeelAddons> run() {
-//                        loader.iterator().hasNext();
-//                        return loader;
-//                    }
-//                });
-//
-//        return loader;
+        IterableLAFAddonsPrivilegedAction action = new IterableLAFAddonsPrivilegedAction(loader);
+        return action.run();
     }
 
     /**
