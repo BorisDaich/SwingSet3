@@ -91,7 +91,7 @@ public class TipOfTheDayDemo extends JPanel {
         createTipOfTheDayDemo();
 
         Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
-
+        totd.setAlpha(1.0f); // wg. https://github.com/homebeaver/SwingSet/issues/27
         bind();
     }
 
