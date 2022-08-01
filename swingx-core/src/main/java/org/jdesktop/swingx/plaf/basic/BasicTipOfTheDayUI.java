@@ -81,16 +81,11 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		return new BasicTipOfTheDayUI((JXTipOfTheDay) c);
 	}
 
-	/** TODO doc */
 	protected JXTipOfTheDay tipPane;
-	/** TODO doc */
 	protected JPanel tipArea;
-	/** TODO doc */
 	protected Component currentTipComponent;
 
-	/** TODO doc */
 	protected Font tipFont;
-	/** TODO doc */
 	protected PropertyChangeListener changeListener;
 
 	/**
@@ -220,7 +215,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		showCurrentTip();
 	}
 
-	/** TODO doc */
 	protected void installKeyboardActions() {
 		ActionMap map = getActionMap();
 		if (map != null) {
@@ -235,7 +229,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		return map;
 	}
 
-	/** TODO doc */
 	protected void installListeners() {
 		changeListener = createChangeListener();
 		tipPane.addPropertyChangeListener(changeListener);
@@ -249,7 +242,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		return new ChangeListener();
 	}
 
-	/** TODO doc */
 	protected void installDefaults() {
 		LookAndFeel.installColorsAndFont(tipPane, "TipOfTheDay.background", "TipOfTheDay.foreground",
 				"TipOfTheDay.font");
@@ -258,7 +250,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		tipFont = UIManager.getFont("TipOfTheDay.tipFont");
 	}
 
-	/** TODO doc */
 	protected void installComponents() {
 		tipPane.setLayout(new BorderLayout());
 
@@ -283,7 +274,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		return new Dimension(420, 175);
 	}
 
-	/** TODO doc */
 	protected void showCurrentTip() {
 		if (currentTipComponent != null) {
 			tipArea.remove(currentTipComponent);
@@ -362,18 +352,13 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		super.uninstallUI(c);
 	}
 
-	/** TODO doc */
 	protected void uninstallListeners() {
 		tipPane.removePropertyChangeListener(changeListener);
 	}
 
-	/** TODO doc */
-	protected void uninstallComponents() {
-	}
+  protected void uninstallComponents() {}
 
-	/** TODO doc */
-	protected void uninstallDefaults() {
-	}
+  protected void uninstallDefaults() {}
 
 	class ChangeListener implements PropertyChangeListener {
 		@Override
