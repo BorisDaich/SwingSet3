@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -79,14 +77,13 @@ protected void installComponents() {
     
     // tip area
     JPanel rightPane = new JPanel(new BorderLayout());
-    JLabel didYouKnow = new JLabel(UIManagerExt
-      .getString("TipOfTheDay.didYouKnowText", tipPane.getLocale()));
+    JLabel didYouKnow = new JLabel(UIManagerExt.getString("TipOfTheDay.didYouKnowText", tipPane.getLocale()));
     didYouKnow.setPreferredSize(new Dimension(50, 32));
     didYouKnow.setOpaque(true);
     didYouKnow.setBackground(UIManager.getColor("TextArea.background"));
-    didYouKnow.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(0,
-      0, 2, 0, tipPane.getBackground()), BorderFactory.createEmptyBorder(4, 4,
-      4, 4)));
+    didYouKnow.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, 
+    		tipPane.getBackground()), BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+    // resize the font and make it BOLD
     didYouKnow.setFont(tipPane.getFont().deriveFont(Font.BOLD, 15));    
     rightPane.add("North", didYouKnow);
     

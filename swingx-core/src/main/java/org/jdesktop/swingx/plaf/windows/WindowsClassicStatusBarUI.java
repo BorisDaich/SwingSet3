@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf.windows;
 
 import java.awt.Color;
@@ -59,7 +56,8 @@ public class WindowsClassicStatusBarUI extends BasicStatusBarUI {
         return new WindowsClassicStatusBarUI();
     }
     
-    @Override protected void paintBackground(Graphics2D g, JXStatusBar bar) {        
+    @Override 
+    protected void paintBackground(Graphics2D g, JXStatusBar bar) {        
         g.setColor(bar.getBackground());
         g.fillRect(0, 0, bar.getWidth(), bar.getHeight());
         
