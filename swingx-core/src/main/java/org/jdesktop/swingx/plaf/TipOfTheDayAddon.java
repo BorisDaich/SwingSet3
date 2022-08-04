@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -44,25 +42,31 @@ public class TipOfTheDayAddon extends AbstractComponentAddon {
     super("JXTipOfTheDay");
   }
 
+  // either fontkey/"TextPane.font" or "Label.font" or defaultFont Font.DIALOG
+  private FontUIResource getFontUIResource(String fontkey) {
+      Font defaultFont = new Font(Font.DIALOG, Font.PLAIN, 12);
+      Font font = UIManagerExt.getSafeFont(fontkey, defaultFont);
+      font = font.deriveFont(font.getStyle(), 13f);
+      return new FontUIResource(font);
+  }
+  
   @Override
   protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
       super.addBasicDefaults(addon, defaults);
       
-      Font font = UIManagerExt.getSafeFont("Label.font", new Font("Dialog", Font.PLAIN, 12));
-      font = font.deriveFont(Font.BOLD, 13f);
-      
       defaults.add(JXTipOfTheDay.uiClassID, BasicTipOfTheDayUI.class.getName());
-      defaults.add("TipOfTheDay.font", UIManagerExt.getSafeFont("TextPane.font",
-                new FontUIResource("Serif", Font.PLAIN, 12)));
-      defaults.add("TipOfTheDay.tipFont", new FontUIResource(font));
-      defaults.add("TipOfTheDay.background", new ColorUIResource(Color.WHITE));
+      defaults.add("TipOfTheDay.font", getFontUIResource("TextPane.font"));
+      defaults.add("TipOfTheDay.tipFont", getFontUIResource("Label.font"));
+      // TODO getSafeColor, aber was ist Colorkey?
+      defaults.add("TipOfTheDay.background", new ColorUIResource(Color.WHITE)); //  LIGHT_GRAY statt .WHITE
       defaults.add("TipOfTheDay.icon",
               LookAndFeel.makeIcon(BasicTipOfTheDayUI.class, "resources/TipOfTheDay24.gif"));
-      defaults.add("TipOfTheDay.border", new BorderUIResource(
-              BorderFactory.createLineBorder(new Color(117, 117, 117))));
-
-    UIManagerExt.addResourceBundle(
-            "org.jdesktop.swingx.plaf.basic.resources.TipOfTheDay");
+//      Color bittersweet = new Color(0xFF6666);
+      // TODO getSafeColor, aber was ist der Colorkey?
+      Color grey = new Color(117, 117, 117); // #757575 Grey <> #808080 Color.GRAY
+      defaults.add("TipOfTheDay.border", new BorderUIResource(BorderFactory.createLineBorder(grey)));
+      
+      UIManagerExt.addResourceBundle("org.jdesktop.swingx.plaf.basic.resources.TipOfTheDay");
   }
 
   /**
@@ -72,16 +76,12 @@ public class TipOfTheDayAddon extends AbstractComponentAddon {
   protected void addWindowsDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
     super.addWindowsDefaults(addon, defaults);
 
-    Font font = UIManagerExt.getSafeFont("Label.font",
-            new Font("Dialog", Font.PLAIN, 12));
-    font = font.deriveFont(13f);
-    
     defaults.add(JXTipOfTheDay.uiClassID, WindowsTipOfTheDayUI.class.getName());
-    defaults.add("TipOfTheDay.background", new ColorUIResource(Color.GRAY));
-    defaults.add("TipOfTheDay.font", new FontUIResource(font));
+    defaults.add("TipOfTheDay.background", new ColorUIResource(Color.GRAY)); // #808080
+    defaults.add("TipOfTheDay.font", getFontUIResource("Label.font"));
     defaults.add("TipOfTheDay.icon",
             LookAndFeel.makeIcon(WindowsTipOfTheDayUI.class, "resources/tipoftheday.png"));
-    defaults.add("TipOfTheDay.border" ,new BorderUIResource(new WindowsTipOfTheDayUI.TipAreaBorder()));
+    defaults.add("TipOfTheDay.border", new BorderUIResource(new WindowsTipOfTheDayUI.TipAreaBorder()));
 
     UIManagerExt.addResourceBundle(
         "org.jdesktop.swingx.plaf.windows.resources.TipOfTheDay");

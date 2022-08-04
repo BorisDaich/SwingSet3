@@ -474,7 +474,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
         
         for (LookAndFeelInfo info : plafs) {
 //            LOG.info(info.getName()+" "+info.getClassName()+" "+target);
-            menu.add(new SetPlafAction(info.getName(), info.getClassName(), target));
+            menu.add(createPlafAction(info.getName(), info.getClassName(), target));
         }
         return menu;
     }
@@ -550,6 +550,11 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
         }
         return null;
     }
+    
+    protected static AbstractActionExt createPlafAction(String name, String plaf, Window toplevel) {
+    	return new SetPlafAction(name, plaf, toplevel);
+    }
+    
     /**
      * Action to toggle plaf and update all toplevel windows of the
      * current application. Used to setup the plaf-menu.
@@ -588,7 +593,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-//        	LOG.info("plaf:"+plaf +", ActionEvent "+e);
+//        	LOG.info("plaf:"+plaf +"\n,toplevel:"+toplevel +", ActionEvent:"+e);
             try {
                 UIManager.setLookAndFeel(plaf);
                 if (toplevel != null) {
@@ -599,7 +604,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
                 
             } catch (Exception e1) {
                 e1.printStackTrace();
-                LOG.log(Level.FINE, "problem in setting laf: " + plaf, e1);
+                LOG.log(Level.WARNING, "problem in setting laf: " + plaf, e1);
             } 
         }
 
