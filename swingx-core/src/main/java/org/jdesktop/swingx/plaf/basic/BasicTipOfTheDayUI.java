@@ -217,7 +217,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 
 	protected void installDefaults() {
 		LookAndFeel.installColorsAndFont(tipPane, // component
-				"TipOfTheDay.background", "TipOfTheDay.foreground", // default FG and BG
+				"TipOfTheDay.background", "TipOfTheDay.foreground", // default BG and FG
 				"TipOfTheDay.font"); // default Font
 		LookAndFeel.installBorder(tipPane, "TipOfTheDay.border");
 		LookAndFeel.installProperty(tipPane, "opaque", Boolean.TRUE);
@@ -238,19 +238,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		return map;
 	}
 
-	protected void installListeners() {
-		changeListener = createChangeListener();
-		tipPane.addPropertyChangeListener(changeListener);
-	}
-
-	/**
-	 * create PropertyChangeListener
-	 * @return listener
-	 */
-	protected PropertyChangeListener createChangeListener() {
-		return new ChangeListener();
-	}
-
 	protected void installComponents() {
 		tipPane.setLayout(new BorderLayout());
 
@@ -266,6 +253,19 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		tipArea.setOpaque(false);
 		tipArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		tipPane.add("Center", tipArea);
+	}
+
+	protected void installListeners() {
+		changeListener = createChangeListener();
+		tipPane.addPropertyChangeListener(changeListener);
+	}
+
+	/**
+	 * create PropertyChangeListener
+	 * @return listener
+	 */
+	protected PropertyChangeListener createChangeListener() {
+		return new ChangeListener();
 	}
 
 	/**
