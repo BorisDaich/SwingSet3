@@ -60,7 +60,6 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.jdesktop.swingx.JXTipOfTheDay;
 import org.jdesktop.swingx.SwingXUtilities;
-import org.jdesktop.swingx.JXTipOfTheDay.ShowOnStartupChoice;
 import org.jdesktop.swingx.plaf.TipOfTheDayUI;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.tips.TipOfTheDayModel.Tip;
@@ -82,7 +81,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 	}
 
 	protected JXTipOfTheDay tipPane;
-	protected JPanel tipArea; // warum nicht JXPanel
+	protected JPanel tipArea; // warum nicht JXPanel? 
 	protected Component currentTipComponent;
 
 	protected Font tipFont;
@@ -100,7 +99,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
      * {@inheritDoc}
 	 */
 	@Override
-	public JDialog createDialog(Component parentComponent, final ShowOnStartupChoice choice) {
+	public JDialog createDialog(Component parentComponent, final JXTipOfTheDay.ShowOnStartupChoice choice) {
 		return createDialog(parentComponent, choice, true);
 	}
 
@@ -111,7 +110,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 	 * @param showPreviousButton showPreviousButton
 	 * @return JDialog
 	 */
-	protected JDialog createDialog(Component parentComponent, final ShowOnStartupChoice choice,
+	protected JDialog createDialog(Component parentComponent, final JXTipOfTheDay.ShowOnStartupChoice choice,
 			boolean showPreviousButton) {
 		Locale locale = parentComponent == null ? null : parentComponent.getLocale();
 		String title = UIManagerExt.getString("TipOfTheDay.dialogTitle", locale);
@@ -150,7 +149,9 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 			showOnStartupBox = null;
 		}
 
-		JPanel buttons = new JPanel(new GridLayout(1, showPreviousButton ? 3 : 2, 9, 0));
+		JPanel buttons = new JPanel(new GridLayout(1, // 1 row 
+			showPreviousButton ? 3 : 2, // cols 
+			9, 0)); // hgap, vgap
 		controls.add(buttons, BorderLayout.LINE_END);
 
 		if (showPreviousButton) {

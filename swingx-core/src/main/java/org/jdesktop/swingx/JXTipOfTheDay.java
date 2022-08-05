@@ -231,9 +231,7 @@ public class JXTipOfTheDay extends JXPanel {
    */
   public void setCurrentTip(int currentTip) {
     if (currentTip < 0 || currentTip >= getModel().getTipCount()) {
-      throw new IllegalArgumentException(
-      "Current tip must be within the bounds [0, " + getModel().getTipCount()
-        + "]");
+      throw new IllegalArgumentException("Current tip must be within the bounds [0, " + getModel().getTipCount() + "]");
     }
 
     int oldTip = this.currentTip;
@@ -277,7 +275,8 @@ public class JXTipOfTheDay extends JXPanel {
    *              if GraphicsEnvironment.isHeadless() returns true.
    * @see java.awt.GraphicsEnvironment#isHeadless
    */
-  public void showDialog(Component parentComponent) throws HeadlessException {
+  public void showDialog(Component parentComponent) 
+		  throws HeadlessException {
     showDialog(parentComponent, (ShowOnStartupChoice)null);
   }
 
@@ -295,8 +294,8 @@ public class JXTipOfTheDay extends JXPanel {
    * @see java.awt.GraphicsEnvironment#isHeadless
    * @return true if the user chooses to see the tips again, false otherwise.
    */
-  public boolean showDialog(Component parentComponent,
-    Preferences showOnStartupPref) throws HeadlessException {
+  public boolean showDialog(Component parentComponent, Preferences showOnStartupPref) 
+		  throws HeadlessException {
     return showDialog(parentComponent, showOnStartupPref, false);
   }
   
@@ -318,28 +317,31 @@ public class JXTipOfTheDay extends JXPanel {
    * @return true if the user chooses to see the tips again, false
    *         otherwise.
    */
-  public boolean showDialog(Component parentComponent,
-    final Preferences showOnStartupPref, boolean force) throws HeadlessException {
-    if (showOnStartupPref == null) { throw new IllegalArgumentException(
-      "Preferences can not be null"); }
+  public boolean showDialog(Component parentComponent, final Preferences showOnStartupPref, boolean force) 
+		  throws HeadlessException {
+    if (showOnStartupPref == null) { 
+    	throw new IllegalArgumentException("Preferences can not be null"); 
+    }
 
-    ShowOnStartupChoice store = new ShowOnStartupChoice() {
-      @Override
-    public boolean isShowingOnStartup() {
-        return showOnStartupPref.getBoolean(PREFERENCE_KEY, true);
-      }
-      @Override
-    public void setShowingOnStartup(boolean showOnStartup) {
-        if (showOnStartup && !showOnStartupPref.getBoolean(PREFERENCE_KEY, true)) {
-          // if the choice was previously not enable and now we re-enable it, we
-          // must remove the key
-          showOnStartupPref.remove(PREFERENCE_KEY);
-        } else if (!showOnStartup) {
-          // user does not want to see the tip
-          showOnStartupPref.putBoolean(PREFERENCE_KEY, showOnStartup);
-        }
-      }
-    };
+	ShowOnStartupChoice store = new ShowOnStartupChoice() {
+		@Override
+		public boolean isShowingOnStartup() {
+			return showOnStartupPref.getBoolean(PREFERENCE_KEY, true);
+		}
+
+		@Override
+		public void setShowingOnStartup(boolean showOnStartup) {
+			if (showOnStartup && !showOnStartupPref.getBoolean(PREFERENCE_KEY, true)) {
+				// if the choice was previously not enable and now we re-enable it,
+				// we must remove the key
+				showOnStartupPref.remove(PREFERENCE_KEY);
+			} else if (!showOnStartup) {
+				// user does not want to see the tip
+				showOnStartupPref.putBoolean(PREFERENCE_KEY, showOnStartup);
+			}
+		}
+	};
+    
     return showDialog(parentComponent, store, force);
   }
 
@@ -360,8 +362,7 @@ public class JXTipOfTheDay extends JXPanel {
    * @see java.awt.GraphicsEnvironment#isHeadless
    * @return true if the user chooses to see the tips again, false otherwise.
    */
-  public boolean showDialog(Component parentComponent,
-    ShowOnStartupChoice choice) {
+  public boolean showDialog(Component parentComponent, ShowOnStartupChoice choice) {
     return showDialog(parentComponent, choice, false);
   }
 
@@ -386,8 +387,7 @@ public class JXTipOfTheDay extends JXPanel {
    * @see java.awt.GraphicsEnvironment#isHeadless
    * @return true if the user chooses to see the tips again, false otherwise.
    */
-  public boolean showDialog(Component parentComponent,
-    ShowOnStartupChoice choice, boolean force) {    
+  public boolean showDialog(Component parentComponent, ShowOnStartupChoice choice, boolean force) {    
     if (choice == null) {
       JDialog dialog = createDialog(parentComponent, choice);
       dialog.setVisible(true);
@@ -433,8 +433,7 @@ public class JXTipOfTheDay extends JXPanel {
    * @param choice
    * @return a JDialog to show this TipOfTheDay pane
    */
-  protected JDialog createDialog(Component parentComponent,
-    ShowOnStartupChoice choice) {
+  protected JDialog createDialog(Component parentComponent, ShowOnStartupChoice choice) {
     return getUI().createDialog(parentComponent, choice);
   }
 
