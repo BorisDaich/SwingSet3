@@ -256,6 +256,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 
 		// tip icon
 		JLabel tipIcon = new JLabel(UIManagerExt.getString("TipOfTheDay.didYouKnowText", tipPane.getLocale()));
+		tipIcon.setFont(tipFont);
 		tipIcon.setIcon(UIManager.getIcon("TipOfTheDay.icon"));
 		tipIcon.setBorder(BorderFactory.createEmptyBorder(22, 15, 22, 15));
 		tipPane.add("North", tipIcon);
