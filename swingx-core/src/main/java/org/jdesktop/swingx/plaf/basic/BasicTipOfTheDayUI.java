@@ -82,7 +82,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 	}
 
 	protected JXTipOfTheDay tipPane;
-	protected JPanel tipArea;
+	protected JPanel tipArea; // warum nicht JXPanel
 	protected Component currentTipComponent;
 
 	protected Font tipFont;
@@ -116,7 +116,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		Locale locale = parentComponent == null ? null : parentComponent.getLocale();
 		String title = UIManagerExt.getString("TipOfTheDay.dialogTitle", locale);
 
-		final JDialog dialog;
+		final JDialog dialog; // warum nicht JXDialog
 
 		Window window;
 		if (parentComponent == null) {
@@ -215,6 +215,15 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		showCurrentTip();
 	}
 
+	protected void installDefaults() {
+		LookAndFeel.installColorsAndFont(tipPane, // component
+				"TipOfTheDay.background", "TipOfTheDay.foreground", // default FG and BG
+				"TipOfTheDay.font"); // default Font
+		LookAndFeel.installBorder(tipPane, "TipOfTheDay.border");
+		LookAndFeel.installProperty(tipPane, "opaque", Boolean.TRUE);
+		tipFont = UIManager.getFont("TipOfTheDay.tipFont");
+	}
+
 	protected void installKeyboardActions() {
 		ActionMap map = getActionMap();
 		if (map != null) {
@@ -240,14 +249,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 	 */
 	protected PropertyChangeListener createChangeListener() {
 		return new ChangeListener();
-	}
-
-	protected void installDefaults() {
-		LookAndFeel.installColorsAndFont(tipPane, "TipOfTheDay.background", "TipOfTheDay.foreground",
-				"TipOfTheDay.font");
-		LookAndFeel.installBorder(tipPane, "TipOfTheDay.border");
-		LookAndFeel.installProperty(tipPane, "opaque", Boolean.TRUE);
-		tipFont = UIManager.getFont("TipOfTheDay.tipFont");
 	}
 
 	protected void installComponents() {
@@ -356,9 +357,11 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		tipPane.removePropertyChangeListener(changeListener);
 	}
 
-  protected void uninstallComponents() {}
+	protected void uninstallComponents() {
+	}
 
-  protected void uninstallDefaults() {}
+	protected void uninstallDefaults() {
+	}
 
 	class ChangeListener implements PropertyChangeListener {
 		@Override
