@@ -245,6 +245,8 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		// tip icon
 		JLabel tipIcon = new JLabel(UIManagerExt.getString("TipOfTheDay.didYouKnowText", tipPane.getLocale()));
 		tipIcon.setFont(tipFont);
+		// use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
+		tipIcon.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
 		tipIcon.setIcon(UIManager.getIcon("TipOfTheDay.icon"));
 		tipIcon.setBorder(BorderFactory.createEmptyBorder(22, 15, 22, 15));
 		tipPane.add("North", tipIcon);
@@ -326,6 +328,8 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 				} else {
 					JTextArea area = new JTextArea(text);
 					area.setFont(tipPane.getFont());
+					// use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
+					area.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
 					area.setEditable(false);
 					area.setLineWrap(true);
 					area.setWrapStyleWord(true);
