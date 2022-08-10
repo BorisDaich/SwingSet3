@@ -318,7 +318,9 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 				if (BasicHTML.isHTMLString(text)) {
 					JEditorPane editor = new JEditorPane("text/html", text);
 					editor.setFont(tipPane.getFont());
-//          BasicHTML.updateRenderer(editor, text);
+					// use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
+					editor.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
+//					BasicHTML.updateRenderer(editor, text);
 					SwingXUtilities.setHtmlFont((HTMLDocument) editor.getDocument(), tipPane.getFont());
 					editor.setEditable(false);
 					editor.setBorder(null);
