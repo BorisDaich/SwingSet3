@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,11 +39,11 @@ import org.jdesktop.swingx.util.OS;
  * @author Jeanette Winzenburg
  * @author Karl Schaefer
  */
+// used in inner Class org.jdesktop.swingx.decorator.HighlighterFactory.UIColorHighlighter
 public class UIColorHighlighterAddon extends AbstractComponentAddon {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(UIColorHighlighterAddon.class.getName());
+    private static final Logger LOG = Logger.getLogger(UIColorHighlighterAddon.class.getName());
     
     public UIColorHighlighterAddon() {
         super("UIColorHighlighter");
@@ -57,7 +55,7 @@ public class UIColorHighlighterAddon extends AbstractComponentAddon {
     @Override
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addBasicDefaults(addon, defaults);
-        
+        // #E5E5E5 : approx Whisper
         defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(229, 229, 229));
     }
 
@@ -67,7 +65,7 @@ public class UIColorHighlighterAddon extends AbstractComponentAddon {
     @Override
     protected void addMacDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addMacDefaults(addon, defaults);
-        
+        // #EDF3FE : approx Solitude
         defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(237, 243, 254));
     }
 
@@ -79,8 +77,10 @@ public class UIColorHighlighterAddon extends AbstractComponentAddon {
         super.addMetalDefaults(addon, defaults);
         
         if (MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme) {
+        	// #E6EEF6 : approx Solitude
             defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(230, 238, 246));
         } else {
+        	// #EBEBFF : approx Lavender
             defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(235, 235, 255));
         }
     }
@@ -95,14 +95,12 @@ public class UIColorHighlighterAddon extends AbstractComponentAddon {
         if (OS.isUsingWindowsVisualStyles()) {
             String xpStyle = OS.getWindowsVisualStyle();
             
-            if (WindowsLookAndFeelAddons.HOMESTEAD_VISUAL_STYLE
-                    .equalsIgnoreCase(xpStyle)) {
+            if (WindowsLookAndFeelAddons.HOMESTEAD_VISUAL_STYLE.equalsIgnoreCase(xpStyle)) {
                 defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(228, 231, 219));
-            } else if (WindowsLookAndFeelAddons.SILVER_VISUAL_STYLE
-                    .equalsIgnoreCase(xpStyle)) {
+            } else if (WindowsLookAndFeelAddons.SILVER_VISUAL_STYLE.equalsIgnoreCase(xpStyle)) {
                 defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(235, 235, 236));
             } else {
-                // default blue
+                // default blue #E0E9F6 : approx Solitude
                 defaults.add("UIColorHighlighter.stripingBackground", new ColorUIResource(224, 233, 246));
             }
             
@@ -112,12 +110,13 @@ public class UIColorHighlighterAddon extends AbstractComponentAddon {
     }
 
     @Override
-    protected void addNimbusDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
+    protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+//    	LOG.info("##############addon:"+addon + " defaults the DefaultsList to add size:"+defaults.toArray().length);
         super.addNimbusDefaults(addon, defaults);
         // JW: Hacking around core issue #6882917
         // which is the underlying reason for issue #1180-swingx
         // (SwingX vs Nimbus table striping)
+//       	LOG.info("Table.alternateRowColor:"+UIManager.get("Table.alternateRowColor"));
         if (Boolean.TRUE.equals(UIManager.get("Nimbus.keepAlternateRowColor"))) return;
         // PENDING JW: not entirely sure if it is safe to really grab the color here
         // the Nimbus (Derived)Color is not yet fully installed at this moment
