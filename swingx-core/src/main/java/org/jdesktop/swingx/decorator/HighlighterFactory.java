@@ -110,12 +110,9 @@ public final class HighlighterFactory {
      * @param rowsPerGroup the number of rows in a group
      * @return a Highlighter striping every second row group background.
      */
-    public static Highlighter createSimpleStriping(Color stripeBackground,
-            int rowsPerGroup) {
-        HighlightPredicate predicate = new RowGroupHighlightPredicate(
-                rowsPerGroup);
-        ColorHighlighter hl = new ColorHighlighter(predicate, stripeBackground,
-                null);
+    public static Highlighter createSimpleStriping(Color stripeBackground, int rowsPerGroup) {
+        HighlightPredicate predicate = new RowGroupHighlightPredicate(rowsPerGroup);
+        ColorHighlighter hl = new ColorHighlighter(predicate, stripeBackground, null);
         return hl;
     }
 
