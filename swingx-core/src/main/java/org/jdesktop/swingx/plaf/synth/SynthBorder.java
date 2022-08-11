@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -48,6 +46,7 @@ import javax.swing.plaf.synth.SynthStyle;
  * @author Scott Violet
  */
 class SynthBorder extends AbstractBorder implements UIResource {
+	
     private SynthUI ui;
     private Insets insets;
 
@@ -67,8 +66,7 @@ class SynthBorder extends AbstractBorder implements UIResource {
         SynthContext context = ui.getContext(jc);
         SynthStyle style = context.getStyle();
         if (style == null) {
-            assert false: "SynthBorder is being used outside after the UI " +
-                          "has been uninstalled";
+            assert false: "SynthBorder is being used outside after the UI has been uninstalled";
             return;
         }
         ui.paintBorder(context, g, x, y, width, height);
@@ -94,27 +92,23 @@ class SynthBorder extends AbstractBorder implements UIResource {
      * @return the <code>insets</code> object
      */
     @Override
-    public Insets getBorderInsets(Component c, Insets insets) {
-        if (this.insets != null) {
-            if (insets == null) {
-                insets = new Insets(this.insets.top, this.insets.left,
-                                  this.insets.bottom, this.insets.right);
-            }
-            else {
-                insets.top    = this.insets.top;
-                insets.bottom = this.insets.bottom;
-                insets.left   = this.insets.left;
-                insets.right  = this.insets.right;
-            }
-        }
-        else if (insets == null) {
-            insets = new Insets(0, 0, 0, 0);
-        }
-        else {
-            insets.top = insets.bottom = insets.left = insets.right = 0;
-        }
-        return insets;
-    }
+	public Insets getBorderInsets(Component c, Insets insets) {
+		if (this.insets != null) {
+			if (insets == null) {
+				insets = new Insets(this.insets.top, this.insets.left, this.insets.bottom, this.insets.right);
+			} else {
+				insets.top = this.insets.top;
+				insets.bottom = this.insets.bottom;
+				insets.left = this.insets.left;
+				insets.right = this.insets.right;
+			}
+		} else if (insets == null) {
+			insets = new Insets(0, 0, 0, 0);
+		} else {
+			insets.top = insets.bottom = insets.left = insets.right = 0;
+		}
+		return insets;
+	}
 
     /**
      * This default implementation returns false.

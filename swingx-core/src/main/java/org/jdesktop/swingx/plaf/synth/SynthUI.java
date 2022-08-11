@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,8 +37,6 @@ public interface SynthUI {
     
     public SynthContext getContext(JComponent arg0);
 
-    public void paintBorder(SynthContext context, Graphics g, int x,
-            int y, int w, int h);
-
+	public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h);
 
 }

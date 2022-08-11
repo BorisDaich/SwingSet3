@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -67,8 +65,9 @@ public class XRegion extends Region {
      */
     public static Region getXRegion(JComponent component, boolean useParent) {
         XRegion region = uiToXRegionMap.get(component.getUIClassID());
-        if (region != null)
+        if (region != null) {
             return useParent && region.parent != null ? region.parent : region;
+        }
         return region;
     }
 }

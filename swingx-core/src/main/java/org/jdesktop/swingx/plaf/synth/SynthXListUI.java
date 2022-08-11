@@ -38,7 +38,7 @@ import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.basic.core.BasicXListUI;
 
 /**
- * TODO add type doc
+ * Extends BasicXListUI for synth
  * 
  * @author Jeanette Winzenburg
  */
@@ -131,14 +131,12 @@ public class SynthXListUI extends BasicXListUI
         SynthContext selectedContext = getContext(SELECTED);
         Color sbg = list.getSelectionBackground();
         if (sbg == null || sbg instanceof UIResource) {
-            list.setSelectionBackground(style.getColor(
-                    selectedContext, ColorType.TEXT_BACKGROUND));
+            list.setSelectionBackground(style.getColor(selectedContext, ColorType.TEXT_BACKGROUND));
         }
         
         Color sfg = list.getSelectionForeground();
         if (sfg == null || sfg instanceof UIResource) {
-            list.setSelectionForeground(style.getColor(
-                    selectedContext, ColorType.TEXT_FOREGROUND));
+            list.setSelectionForeground(style.getColor(selectedContext, ColorType.TEXT_FOREGROUND));
         }
         // install cell height
         int height = style.getInt(selectedContext, "List.cellHeight", -1);
