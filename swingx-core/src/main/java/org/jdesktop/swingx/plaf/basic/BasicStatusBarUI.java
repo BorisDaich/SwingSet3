@@ -107,11 +107,10 @@ public class BasicStatusBarUI extends StatusBarUI {
         public void mouseEntered(MouseEvent e) {
             if (isHandleAreaPoint(e.getPoint())) {
                 if (statusBar.getComponentOrientation().isLeftToRight()) {
-                    window.setCursor(Cursor.getPredefinedCursor(
-                            Cursor.SE_RESIZE_CURSOR));
+                	// south-east-resize cursor type:
+                    window.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
                 } else {
-                    window.setCursor(Cursor.getPredefinedCursor(
-                            Cursor.SW_RESIZE_CURSOR));
+                    window.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
                 }
             } else {
                 window.setCursor(null);
@@ -179,11 +178,9 @@ public class BasicStatusBarUI extends StatusBarUI {
         public void mouseMoved(MouseEvent e) {
             if (isHandleAreaPoint(e.getPoint())) {
                 if (statusBar.getComponentOrientation().isLeftToRight()) {
-                    window.setCursor(Cursor.getPredefinedCursor(
-                            Cursor.SE_RESIZE_CURSOR));
+                    window.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
                 } else {
-                    window.setCursor(Cursor.getPredefinedCursor(
-                            Cursor.SW_RESIZE_CURSOR));
+                    window.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
                 }
             } else {
                 window.setCursor(null);
@@ -214,7 +211,11 @@ public class BasicStatusBarUI extends StatusBarUI {
         }
     }
     
-	/** TODO doc */
+	/**
+	 * The BasicStatusBarUI.AUTO_ADD_SEPARATOR client property can be specified 
+	 * to disable the auto-adding of separators. 
+	 * In this case, you must add your own JSeparator components
+	 */
     public static final String AUTO_ADD_SEPARATOR = new StringBuffer("auto-add-separator").toString();
 
     /**
@@ -227,11 +228,8 @@ public class BasicStatusBarUI extends StatusBarUI {
      */
     protected JXStatusBar statusBar;
     
-	/** TODO doc */
     protected MouseListener mouseListener; 
-	/** TODO doc */
     protected MouseMotionListener mouseMotionListener;   
-	/** TODO doc */
     protected PropertyChangeListener propertyChangeListener;
     
     private Handler handler;
@@ -442,7 +440,7 @@ public class BasicStatusBarUI extends StatusBarUI {
     }
     
     /**
-     * TODO doc
+     * Paint a Separator (a simple line).
      * @param g the <code>Graphics</code> context in which to paint
      * @param bar status bar
      * @param      x   the <i>x</i> coordinate.

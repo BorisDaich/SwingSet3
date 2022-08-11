@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -38,32 +36,28 @@ public class StatusBarAddon extends AbstractComponentAddon {
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addBasicDefaults(addon, defaults);
         
-        defaults.add(JXStatusBar.uiClassID,
-                "org.jdesktop.swingx.plaf.basic.BasicStatusBarUI");
+        defaults.add(JXStatusBar.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicStatusBarUI");
     }
     
     @Override
     protected void addMacDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addMacDefaults(addon, defaults);
         
-        defaults.add(JXStatusBar.uiClassID,
-                "org.jdesktop.swingx.plaf.macosx.MacOSXStatusBarUI");
+        defaults.add(JXStatusBar.uiClassID, "org.jdesktop.swingx.plaf.macosx.MacOSXStatusBarUI");
     }
     
     @Override
     protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addMetalDefaults(addon, defaults);
         
-        defaults.add(JXStatusBar.uiClassID,
-                "org.jdesktop.swingx.plaf.metal.MetalStatusBarUI");
+        defaults.add(JXStatusBar.uiClassID, "org.jdesktop.swingx.plaf.metal.MetalStatusBarUI");
     }
     
     @Override
     protected void addWindowsDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addWindowsDefaults(addon, defaults);
         if (OS.isUsingWindowsVisualStyles()) {
-            defaults.add(JXStatusBar.uiClassID,
-                    "org.jdesktop.swingx.plaf.windows.WindowsStatusBarUI");
+            defaults.add(JXStatusBar.uiClassID, "org.jdesktop.swingx.plaf.windows.WindowsStatusBarUI");
             
             String xpStyle = OS.getWindowsVisualStyle();
             
