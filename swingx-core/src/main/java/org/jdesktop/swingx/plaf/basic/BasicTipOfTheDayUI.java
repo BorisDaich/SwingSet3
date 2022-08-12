@@ -318,8 +318,9 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 				if (BasicHTML.isHTMLString(text)) {
 					JEditorPane editor = new JEditorPane("text/html", text);
 					editor.setFont(tipPane.getFont());
-					// use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
-					editor.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
+					// do not use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
+					// use "TextArea.foreground"
+//					editor.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
 //					BasicHTML.updateRenderer(editor, text);
 					SwingXUtilities.setHtmlFont((HTMLDocument) editor.getDocument(), tipPane.getFont());
 					editor.setEditable(false);
@@ -330,8 +331,9 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 				} else {
 					JTextArea area = new JTextArea(text);
 					area.setFont(tipPane.getFont());
-					// use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
-					area.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
+					// do not use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
+					// use "TextArea.foreground"
+//					area.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
 					area.setEditable(false);
 					area.setLineWrap(true);
 					area.setWrapStyleWord(true);
