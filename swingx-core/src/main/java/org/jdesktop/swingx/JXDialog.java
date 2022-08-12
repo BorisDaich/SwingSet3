@@ -63,6 +63,7 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  * @author Jeanette Winzenburg
  * @author Karl Schaefer
  */
+@SuppressWarnings("serial")
 @JavaBean
 public class JXDialog extends JDialog {
 
@@ -71,13 +72,10 @@ public class JXDialog extends JDialog {
         LookAndFeelAddons.getAddon();
     }
     
-    /** EXECUTE_ACTION_COMMAND */
     public static final String EXECUTE_ACTION_COMMAND = "execute";
-    /** CLOSE_ACTION_COMMAND */
     public static final String CLOSE_ACTION_COMMAND = "close";
-    /** UIPREFIX */
     public static final String UIPREFIX = "XDialog.";
-    /** content */
+
     protected JComponent content;
     
     /**
