@@ -76,9 +76,9 @@ public class BasicTitledPanelUI extends TitledPanelUI {
      */
     protected PropertyChangeListener titleChangeListener;
 
-	/** TODO doc */
+	/** component embedded to the left */
     protected JComponent left;
-	/** TODO doc */
+	/** component embedded to the right */
     protected JComponent right;
     
     /** Creates a new instance of BasicTitledPanelUI */

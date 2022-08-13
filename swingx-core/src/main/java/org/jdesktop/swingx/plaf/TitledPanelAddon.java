@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -20,7 +18,6 @@
  */
 package org.jdesktop.swingx.plaf;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -34,7 +31,7 @@ import org.jdesktop.swingx.JXTitledPanel;
 import org.jdesktop.swingx.painter.MattePainter;
 
 /**
- * Addon for <code>JXTitledPanel</code>.<br>
+ * Addon for <code>JXTitledPanel</code>.
  *
  */
 public class TitledPanelAddon extends AbstractComponentAddon {
@@ -48,12 +45,13 @@ public class TitledPanelAddon extends AbstractComponentAddon {
     super.addBasicDefaults(addon, defaults);
     
     defaults.add(JXTitledPanel.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicTitledPanelUI");
-    defaults.add("JXTitledPanel.titleFont", UIManagerExt.getSafeFont("Button.font",
-            new FontUIResource("Dialog", Font.PLAIN, 12)));
+    defaults.add("JXTitledPanel.titleFont", 
+    		UIManagerExt.getSafeFont("Button.font", new FontUIResource("Dialog", Font.PLAIN, 12)));
     defaults.add("JXTitledPanel.titleForeground", new ColorUIResource(Color.WHITE));
-    defaults.add("JXTitledPanel.titlePainter", new PainterUIResource<JXTitledPanel>(
-              new MattePainter(
-                      new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, 1, Color.GRAY), true)));
+    GradientPaint lightGrayToGray = new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, 1, Color.GRAY);
+    defaults.add("JXTitledPanel.titlePainter", 
+    		new PainterUIResource<JXTitledPanel>(new MattePainter(lightGrayToGray, true)
+    				));
     defaults.add("JXTitledPanel.captionInsets", new InsetsUIResource(4, 12, 4, 12));
     defaults.add("JXTitledPanel.rightDecorationInsets", new InsetsUIResource(1,1,1,1));
     defaults.add("JXTitledPanel.leftDecorationInsets", new InsetsUIResource(1,1,1,1));
@@ -74,17 +72,20 @@ public class TitledPanelAddon extends AbstractComponentAddon {
   protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
     super.addMetalDefaults(addon, defaults);
 
-    if (isPlastic()) {
+    if (isPlastic()) { // JGoodies Plastic LaFs
       defaults.add("JXTitledPanel.titleForeground", new ColorUIResource(Color.WHITE));
-      defaults.add("JXTitledPanel.titlePainter", new PainterUIResource<JXTitledPanel>(
-                new MattePainter(new GradientPaint(0, 0, new Color(49, 121, 242),
-                    0, 1,  new Color(198, 211, 247)), true)));
+      // #3179F2 : approx Royal Blue to #C6D3F7 : approx Hawkes Blue
+      GradientPaint royalToHawkesBlue = new GradientPaint(0, 0, new Color(49, 121, 242), 0, 1, new Color(198, 211, 247));
+      defaults.add("JXTitledPanel.titlePainter", 
+    		  new PainterUIResource<JXTitledPanel>(new MattePainter(royalToHawkesBlue, true)
+    				  ));
     } else {
       defaults.add("JXTitledPanel.titleForeground", new ColorUIResource(Color.WHITE));
-      defaults.add("JXTitledPanel.titlePainter", new PainterUIResource<JXTitledPanel>(
-                new MattePainter(new GradientPaint(0, 0, 
-                    MetalLookAndFeel.getCurrentTheme().getPrimaryControl(), 0, 1,
-                    MetalLookAndFeel.getCurrentTheme().getPrimaryControlDarkShadow()),true)));
+      // Primary3/LEVANDER_BLUE to Primary1/DARK_BLUE_GRAY
+      GradientPaint levanderToDarkBlueGray = new GradientPaint(0, 0, MetalLookAndFeel.getPrimaryControl(), 0, 1, MetalLookAndFeel.getPrimaryControlDarkShadow());
+      defaults.add("JXTitledPanel.titlePainter", 
+    		  new PainterUIResource<JXTitledPanel>(new MattePainter(levanderToDarkBlueGray, true)
+    				  ));
     }
   }
 
@@ -98,13 +99,19 @@ public class TitledPanelAddon extends AbstractComponentAddon {
     // don't understand why this has blown when trying to toggle to Metal...
     // definitely needs deeper digging 
     // kgs: moved to using getSafeXXX from UIManagerExt
-    defaults.add("JXTitledPanel.titleForeground", UIManagerExt.getSafeColor(
-            "InternalFrame.activeTitleForeground", new ColorUIResource(Color.WHITE)));
-    defaults.add("JXTitledPanel.titlePainter", new PainterUIResource<JXTitledPanel>(
-            new MattePainter(new GradientPaint(0, 0, UIManagerExt.getSafeColor(
-                    "InternalFrame.inactiveTitleGradient", new ColorUIResource(49, 121, 242)),
-                    0, 1, UIManagerExt.getSafeColor( "InternalFrame.activeTitleBackground",
-                                new ColorUIResource(198, 211, 247))), true)));
+    defaults.add("JXTitledPanel.titleForeground", 
+    		UIManagerExt.getSafeColor("InternalFrame.activeTitleForeground", new ColorUIResource(Color.WHITE)));
+
+    // fallBack colors:
+    Color royalBlue = new ColorUIResource(49, 121, 242);   // #3179F2 : approx Royal Blue
+    Color hawkesBlue = new ColorUIResource(198, 211, 247); // #C6D3F7 : approx Hawkes Blue
+    GradientPaint royalToHawkesBlue = new GradientPaint(
+    		0, 0, UIManagerExt.getSafeColor("InternalFrame.inactiveTitleBackground", royalBlue), 
+    		0, 1, UIManagerExt.getSafeColor("InternalFrame.activeTitleBackground", hawkesBlue));
+    
+    defaults.add("JXTitledPanel.titlePainter", 
+    		new PainterUIResource<JXTitledPanel>(new MattePainter(royalToHawkesBlue, true)
+    				));
   
   }
 }
