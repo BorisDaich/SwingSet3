@@ -450,7 +450,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
                     return size;
                 }
             }
-            LOG.info(">>>>>>>>>>>isLineWrap() == multiLine="+isLineWrap() + " view:"+view);
+//            LOG.info(">>>>>>>>>>>isLineWrap() == multiLine="+isLineWrap() + " view:"+view);
             Insets insets = getInsets();
             int dx = insets.left + insets.right;
             int dy = insets.top + insets.bottom;
