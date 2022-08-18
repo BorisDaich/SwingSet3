@@ -19,7 +19,6 @@
  */
 package org.jdesktop.swingx;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -52,7 +51,6 @@ import org.jdesktop.swingx.test.XTestUtils;
  */
 public class JXHeaderVisualCheck extends InteractiveTestCase {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXHeaderVisualCheck.class.getName());
 
     public static void main(String args[]) {
@@ -257,10 +255,9 @@ public class JXHeaderVisualCheck extends InteractiveTestCase {
         p.setPreferredSize(new Dimension(400,150));
         JXFrame frame = wrapInFrame(p, "Titlefont lost on updateUI / word wrapping JXHeader");
         Action action = new AbstractAction("updateUI") {
-
             public void actionPerformed(ActionEvent e) {
-                header.updateUI();
-                
+            	LOG.info("ActionEvent e:"+e + "\n do header.updateUI() header:"+header);
+                header.updateUI();                
             }};
         addAction(frame, action);
         Action tree = new AbstractAction("updateComponentTree") {

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -27,7 +25,6 @@ import java.util.logging.Logger;
 
 import org.jdesktop.swingx.painter.MattePainter;
 
-
 /**
  * Test to expose known issues of <code>JXHeader</code>.
  * <p>
@@ -43,9 +40,9 @@ import org.jdesktop.swingx.painter.MattePainter;
  * @author Jeanette Winzenburg
  */
 public class JXHeaderIssues extends InteractiveTestCase {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(JXHeaderIssues.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(JXHeaderIssues.class.getName());
+    
     public static void main(String args[]) {
         JXHeaderIssues test = new JXHeaderIssues();
         try {
@@ -63,8 +60,9 @@ public class JXHeaderIssues extends InteractiveTestCase {
      */
     public void interactiveHeaderGradient() {
         JXHeader header = new JXHeader();
-        JXFrame frame = wrapInFrame(header, "gradient not CO-aware");
+        JXFrame frame = wrapInFrame(header, "interactiveHeaderGradient gradient not CO-aware");
         addComponentOrientationToggle(frame);
+        LOG.fine("pack + setSize + setVisible(true)");
         show(frame, 500, 500);
     }
     
@@ -77,6 +75,7 @@ public class JXHeaderIssues extends InteractiveTestCase {
         JXLoginPane header = new JXLoginPane();
         JXFrame frame = wrapInFrame(header, "gradient not CO-aware");
         addComponentOrientationToggle(frame);
+        // pack + setSize + setVisible(true)
         show(frame, 500, 500);
     }
     
@@ -86,8 +85,7 @@ public class JXHeaderIssues extends InteractiveTestCase {
      * 
      */
     public void interactiveGradient() {
-        GradientPaint paint = new GradientPaint(0f, 0f, Color.WHITE, 500f, 
-                500f, Color.BLUE);
+        GradientPaint paint = new GradientPaint(0f, 0f, Color.WHITE, 500f, 500f, Color.BLUE);
         JXTitledPanel panel = new JXTitledPanel("want a gradient");
         panel.setTitlePainter(new MattePainter(paint, true));
         JXFrame frame = wrapInFrame(panel, "gradient");
