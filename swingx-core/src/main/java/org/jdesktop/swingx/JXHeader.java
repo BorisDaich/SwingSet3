@@ -175,8 +175,7 @@ public class JXHeader extends JXPanel {
      */
     @Override
     public void updateUI() {
-        setUI((HeaderUI) LookAndFeelAddons
-                .getUI(this, HeaderUI.class));
+        setUI((HeaderUI) LookAndFeelAddons.getUI(this, HeaderUI.class));
     }
 
     /**
