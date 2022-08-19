@@ -76,11 +76,8 @@ public class JXFrame extends JFrame {
      * @author unascribed from JDNC
      */
     public enum StartPosition {
-    	/** CenterInScreen */
     	CenterInScreen, 
-    	/** CenterInParent */
     	CenterInParent, 
-    	/** Manual */
     	Manual
     }
     
@@ -507,10 +504,6 @@ public class JXFrame extends JFrame {
         super.setVisible(visible);
     }
     
-    /**
-     * 
-     * @return boolean idle
-     */
     public boolean isIdle() {
         return idle;
     }
