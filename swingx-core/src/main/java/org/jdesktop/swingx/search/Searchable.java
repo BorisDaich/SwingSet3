@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,14 +16,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.search;
 
 import java.util.regex.Pattern;
 
 /**
- * Interface that used to implement search logic in all the search capable 
- * components. 
+ * Interface that used to implement search logic in all the search capable components. 
  *
  * @author Ramesh Gupta
  */
