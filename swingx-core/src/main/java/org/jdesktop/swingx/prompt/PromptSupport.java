@@ -2,6 +2,7 @@ package org.jdesktop.swingx.prompt;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.logging.Logger;
 
 import javax.swing.Painter;
 import javax.swing.text.JTextComponent;
@@ -37,6 +38,9 @@ import org.jdesktop.swingx.plaf.TextUIWrapper;
  * @author Karl Schaefer
  */
 public final class PromptSupport {
+	
+	private static final Logger LOG = Logger.getLogger(PromptSupport.class.getName());
+
 	/**
 	 * The prompt text property.
 	 */
@@ -68,9 +72,8 @@ public final class PromptSupport {
 	public static final String FONT_STYLE = "promptFontStyle";
 
 	/**
-	 * <p>
-	 * Determines how the {@link JTextComponent} is rendered when focused and no
-	 * text is present.
+	 * Determines how the {@link JTextComponent} is rendered 
+	 * when focused and no text is present.
 	 */
 	public static enum FocusBehavior {
 		/**
@@ -104,6 +107,7 @@ public final class PromptSupport {
 	 * @param textComponent JTextComponent
 	 */
 	public static void init(String promptText, Color promptForeground, Color promptBackground, final JTextComponent textComponent) {
+		LOG.info("textComponent:"+textComponent);
 		if (promptText != null && promptText.length() > 0) {
 			setPrompt(promptText, textComponent);
 		}

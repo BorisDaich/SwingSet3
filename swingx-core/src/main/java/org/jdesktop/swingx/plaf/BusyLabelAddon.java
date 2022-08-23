@@ -33,7 +33,6 @@ import org.jdesktop.swingx.JXBusyLabel;
  */
 public class BusyLabelAddon extends AbstractComponentAddon {
 
-	/** TODO doc */
 	public BusyLabelAddon() {
 		super("JXBusyLabel");
 	}

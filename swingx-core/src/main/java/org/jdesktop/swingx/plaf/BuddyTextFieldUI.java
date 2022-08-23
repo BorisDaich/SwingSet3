@@ -19,7 +19,6 @@ import javax.swing.plaf.TextUI;
  */
 public class BuddyTextFieldUI extends PromptTextFieldUI {
 	
-	/** TODO doc */
 	protected BuddyLayoutAndBorder layoutAndBorder;
 
 	// Bad hacking: FIXME when know how to get the real margin.
@@ -27,8 +26,7 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 
 	@Override
 	public void paint(Graphics g, JComponent c) {
-		// yet another dirty mac hack to prevent painting background outside of
-		// border.
+		// yet another dirty mac hack to prevent painting background outside of border.
 		if (hasMacTextFieldBorder(c)) {
 			Insets borderInsets = layoutAndBorder.getRealBorderInsets();
 

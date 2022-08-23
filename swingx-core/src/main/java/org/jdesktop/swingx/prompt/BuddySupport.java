@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -13,20 +14,19 @@ import javax.swing.plaf.basic.BasicTextUI;
 
 import org.jdesktop.swingx.plaf.TextUIWrapper;
 
-/** TODO doc */
 public class BuddySupport {
-	/** TODO doc */
+
+	private static final Logger LOG = Logger.getLogger(BuddySupport.class.getName());
+
 	public enum Position {
-		/** left */
-		LEFT, 
-		/** right */
+		LEFT,
 		RIGHT
 	};
-	/** TODO doc */
+
 	public static final String OUTER_MARGIN = "outerMargin";
 
 	/**
-	 * TODO doc
+	 * 
 	 * @param c Component
 	 * @param textField JTextField
 	 */
@@ -35,7 +35,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 * 
 	 * @param c Component
 	 * @param textField JTextField
 	 */
@@ -44,12 +44,13 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param c Component
 	 * @param pos Position
 	 * @param textField JTextField
 	 */
 	public static void add(Component c, Position pos, JTextField textField) {
+		LOG.info("add Component "+c + "\n to "+textField + " at "+pos );
 		TextUIWrapper.getDefaultWrapper().install(textField, true);
 
 		List<Component> leftBuddies = buddies(Position.LEFT, textField);
@@ -66,15 +67,17 @@ public class BuddySupport {
 
 		if (Position.LEFT == pos) {
 			leftBuddies.add(c);
+			LOG.fine("Component/"+c.getClass().getSimpleName()+" added , leftBuddies.size="+leftBuddies.size() );
 		} else {
 			rightBuddies.add(0, c);
+			LOG.fine("Component/"+c.getClass().getSimpleName()+" added , rightBuddies.size="+rightBuddies.size() );
 		}
 
 		addToComponentHierarchy(c, pos, textField);
 	}
 	
 	/**
-	 * TODO doc
+	 *
 	 * @param width the gap width
 	 * @param pos Position
 	 * @param textField JTextField
@@ -84,7 +87,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param textField JTextField
 	 * @param rightBuddies list of components
 	 */
@@ -93,7 +96,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param textField JTextField
 	 * @param leftBuddies list of components
 	 */
@@ -102,27 +105,29 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param buddies list
 	 * @param pos Position
 	 * @param textField JTextField
 	 */
 	public static void set(List<Component> buddies, Position pos, JTextField textField) {
+//		LOG.info("textField.putClientProperty key="+pos + " value="+buddies);
 		textField.putClientProperty(pos, buddies);
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param c Component
 	 * @param pos Position
 	 * @param textField JTextField
 	 */
 	private static void addToComponentHierarchy(Component c, Position pos, JTextField textField) {
-		textField.add(c, pos.toString());
+		Component comp = textField.add(c, pos==Position.LEFT ? -1 : 0);
+		LOG.fine("added "+comp);
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param textField JTextField
 	 * @return list of components
 	 */
@@ -131,7 +136,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param textField JTextField
 	 * @return list of components
 	 */
@@ -140,7 +145,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param pos Position
 	 * @param textField JTextField
 	 * @return list of components
@@ -149,8 +154,17 @@ public class BuddySupport {
 		return Collections.unmodifiableList(buddies(pos, textField));
 	}
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	private static List<Component> buddies(Position pos, JTextField textField) {
+		Object o = textField.getClientProperty(pos);
+		if(o==null) {
+			return new ArrayList<Component>();
+		}
+//		LOG.info("textField.getClientProperty("+pos + " :"+o);
+		if(o instanceof List<?> l) {
+			return (List<Component>)l;
+		}
+		LOG.warning(" DARF NICHT SEIN!!------------------------ getClientProperty("+pos + " :"+o);
 		List<Component> buddies = (List<Component>) textField.getClientProperty(pos);
 
 		if (buddies != null) {
@@ -183,26 +197,22 @@ public class BuddySupport {
 		textField.remove(c);
 	}
 
-	/**
-	 * TODO doc
-	 * @param textField JTextField
-	 */
 	public static void removeAll(JTextField textField) {
 		List<Component> left = buddies(Position.LEFT, textField);
 		for (Component c : left) {
 			textField.remove(c);
 		}
 		left.clear();
+		
 		List<Component> right = buddies(Position.RIGHT, textField);
 		for (Component c : right) {
 			textField.remove(c);
 		}
 		right.clear();
-		
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param buddyField JTextField
 	 * @param margin Insets
 	 */
@@ -211,7 +221,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param buddyField JTextField
 	 * @return Insets
 	 */
@@ -220,7 +230,7 @@ public class BuddySupport {
 	}
 
 	/**
-	 * TODO doc
+	 *
 	 * @param textField JTextField
 	 */
 	public static void ensureBuddiesAreInComponentHierarchy(JTextField textField) {

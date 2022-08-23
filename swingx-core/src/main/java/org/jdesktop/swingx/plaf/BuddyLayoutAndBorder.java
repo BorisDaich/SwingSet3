@@ -9,6 +9,7 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -17,16 +18,17 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
 import org.jdesktop.swingx.prompt.BuddySupport;
-import org.jdesktop.swingx.prompt.BuddySupport.Position;
 
-/** TODO doc */
 public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChangeListener, UIResource {
 	
-//    private static final Logger LOG = Logger.getLogger(BuddyLayoutAndBorder.class.getName());
+    private static final Logger LOG = Logger.getLogger(BuddyLayoutAndBorder.class.getName());
 
 	private JTextField textField;
 
 	private Border borderDelegate;
+	public Border getBorderDelegate() {
+		return borderDelegate;
+	}
 
 	/**
 	 * Installs a {@link BuddyLayoutAndBorder} as a layout and border of the
@@ -37,6 +39,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	 */
 	protected void install(JTextField textField) {
 		uninstall();
+		LOG.fine("uninstall and install "+this);
 		this.textField = textField;
 
 		textField.setLayout(this);
@@ -45,12 +48,15 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		textField.addPropertyChangeListener("border", this);
 	}
 
-	/**
-	 * 
-	 * @return Border
-	 */
-	public Border getBorderDelegate() {
-		return borderDelegate;
+	public void uninstall() {
+		if (textField != null) {
+			textField.removePropertyChangeListener("border", this);
+			if (textField.getBorder() == this) {
+				textField.setBorder(borderDelegate);
+			}
+			textField.setLayout(null);
+			textField = null;
+		}
 	}
 
 	/**
@@ -70,7 +76,10 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	/**
 	 * Does nothing.
 	 * 
+	 */
+	/*
 	 * @see BuddySupport#add(javax.swing.JComponent, Position, JTextField)
+	 * dort steht nichts!
 	 */
 	@Override
     public void addLayoutComponent(String name, Component comp) {
@@ -137,14 +146,14 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 			}
 
 			size = comp.getPreferredSize();
-			comp.setBounds(visibleRect.x + visibleRect.width - size.width, centerY(visibleRect, size), size.width,
-					size.height);
+			comp.setBounds(visibleRect.x + visibleRect.width - size.width, centerY(visibleRect, size), 
+					size.width,	size.height);
 			visibleRect.width -= size.width;
 		}
 	}
 
 	/**
-	 * TODO doc
+	 * 
 	 * @param rect Rectangle
 	 * @param size Dimension
 	 * @return center of Rectangle
@@ -272,18 +281,6 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	@Override
     public void propertyChange(PropertyChangeEvent evt) {
 		replaceBorderIfNecessary();
-	}
-
-	/** TODO doc */
-	public void uninstall() {
-		if (textField != null) {
-			textField.removePropertyChangeListener("border", this);
-			if (textField.getBorder() == this) {
-				textField.setBorder(borderDelegate);
-			}
-			textField.setLayout(null);
-			textField = null;
-		}
 	}
 
 	@Override
