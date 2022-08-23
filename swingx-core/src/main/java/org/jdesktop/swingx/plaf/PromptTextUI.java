@@ -12,6 +12,8 @@ import java.awt.Rectangle;
 import java.awt.TextComponent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Method;
 
 import javax.accessibility.Accessible;
@@ -34,7 +36,6 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
 
 /**
- * <p>
  * Abstract {@link TextUI} class that delegates most work to another
  * {@link TextUI} and additionally renders a prompt text as specified in the
  * {@link JTextComponent}s client properties by {@link PromptSupport}.
@@ -49,11 +50,11 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
 public abstract class PromptTextUI extends TextUI {
 	
     protected class PainterHighlighter implements Highlighter {
-        private final Painter painter;
+        private final Painter<? super JTextComponent> painter;
 
-        private JTextComponent c;
+        private JTextComponent c; // JTextComponent extends JComponent
 
-        public PainterHighlighter(Painter painter) {
+        public PainterHighlighter(Painter<? super JTextComponent> painter) {
             this.painter = painter;
         }
 
@@ -61,8 +62,7 @@ public abstract class PromptTextUI extends TextUI {
          * {@inheritDoc}
          */
         @Override
-        public Object addHighlight(int p0, int p1, HighlightPainter p)
-                throws BadLocationException {
+        public Object addHighlight(int p0, int p1, HighlightPainter p) throws BadLocationException {
             return new Object();
         }
 
@@ -70,8 +70,7 @@ public abstract class PromptTextUI extends TextUI {
          * {@inheritDoc}
          */
         @Override
-        public void changeHighlight(Object tag, int p0, int p1)
-                throws BadLocationException {
+        public void changeHighlight(Object tag, int p0, int p1) throws BadLocationException {
 
         }
 
@@ -171,8 +170,7 @@ public abstract class PromptTextUI extends TextUI {
 
         JTextComponent txt = (JTextComponent) c;
 
-        // repaint to correctly highlight text if FocusBehavior is
-        // HIGHLIGHT_LABEL in Metal and Windows LnF
+        // repaint to correctly highlight text if FocusBehavior is HIGHLIGHT_LABEL in Metal and Windows LnF
         txt.addFocusListener(focusHandler);
     }
 
@@ -198,20 +196,17 @@ public abstract class PromptTextUI extends TextUI {
         if (promptComponent == null) {
             promptComponent = createPromptComponent();
         }
-        if (txt.isFocusOwner()
-                && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIDE_PROMPT) {
+        if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIDE_PROMPT) {
             promptComponent.setText(null);
         } else {
             promptComponent.setText(PromptSupport.getPrompt(txt));
         }
 
         promptComponent.getHighlighter().removeAllHighlights();
-        if (txt.isFocusOwner()
-                && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIGHLIGHT_PROMPT) {
+        if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIGHLIGHT_PROMPT) {
             promptComponent.setForeground(txt.getSelectedTextColor());
             try {
-                promptComponent.getHighlighter().addHighlight(0,
-                        promptComponent.getText().length(),
+                promptComponent.getHighlighter().addHighlight(0, promptComponent.getText().length(),
                         new DefaultHighlightPainter(txt.getSelectionColor()));
             } catch (BadLocationException e) {
                 e.printStackTrace();
@@ -223,12 +218,16 @@ public abstract class PromptTextUI extends TextUI {
         if (PromptSupport.getFontStyle(txt) == null) {
             promptComponent.setFont(txt.getFont());
         } else {
-            promptComponent.setFont(txt.getFont().deriveFont(
-                    PromptSupport.getFontStyle(txt)));
+            promptComponent.setFont(txt.getFont().deriveFont(PromptSupport.getFontStyle(txt)));
         }
 
         promptComponent.setBackground(PromptSupport.getBackground(txt));
+
+        //Painter<? super JTextComponent> painter = PromptSupport.getBackgroundPainter(txt);
+        //promptComponent.setHighlighter(new PainterHighlighter(painter));
+        // or short:
         promptComponent.setHighlighter(new PainterHighlighter(PromptSupport.getBackgroundPainter(txt)));
+        
         promptComponent.setEnabled(txt.isEnabled());
         promptComponent.setOpaque(txt.isOpaque());
         promptComponent.setBounds(txt.getBounds());
@@ -238,8 +237,7 @@ public abstract class PromptTextUI extends TextUI {
             promptComponent.setBorder(txt.getBorder());
         } else {
             Insets insets = b.getBorderInsets(txt);
-            promptComponent.setBorder(
-                    createEmptyBorder(insets.top, insets.left, insets.bottom, insets.right));
+            promptComponent.setBorder(createEmptyBorder(insets.top, insets.left, insets.bottom, insets.right));
         }
         
         promptComponent.setSelectedTextColor(txt.getSelectedTextColor());
@@ -315,14 +313,8 @@ public abstract class PromptTextUI extends TextUI {
         }
     }
 
-    /**
-     * Delegate when {@link #shouldPaintPrompt(JTextComponent)} returns false.
-     * Otherwise get the prompt component's UI and delegate to it. This ensures
-     * that the {@link Caret} is painted on the correct position (this is
-     * important when the text is centered, so that the caret will not be
-     * painted inside the label text)
-     */
     @Override
+	@Deprecated // TODO remove when javax.swing.plaf.TextUI.modelToView is removed	
     public Rectangle modelToView(JTextComponent t, int pos, Bias bias)
             throws BadLocationException {
         if (shouldPaintPrompt(t)) {
@@ -331,14 +323,33 @@ public abstract class PromptTextUI extends TextUI {
             return delegate.modelToView(t, pos, bias);
         }
     }
-
+    
     /**
-     * Calls {@link #modelToView(JTextComponent, int, Bias)} with
-     * {@link Bias#Forward}.
+     * Delegate when {@link #shouldPaintPrompt(JTextComponent)} returns false.
+     * Otherwise get the prompt component's UI and delegate to it. This ensures
+     * that the {@link Caret} is painted on the correct position (this is
+     * important when the text is centered, so that the caret will not be
+     * painted inside the label text)
      */
     @Override
-    public Rectangle modelToView(JTextComponent t, int pos)
-            throws BadLocationException {
+    public Rectangle2D modelToView2D(JTextComponent t, int pos, Bias bias) throws BadLocationException {
+        if (shouldPaintPrompt(t)) {
+        	return getPromptComponent(t).getUI().modelToView2D(t, pos, bias);
+        } else {
+        	return delegate.modelToView2D(t, pos, bias);
+        }
+    }
+
+    /**
+     * Calls {@link #modelToView2D(JTextComponent, int, Bias)} with {@link Bias#Forward}.
+     */
+    public Rectangle2D modelToView2D(JTextComponent t, int pos) throws BadLocationException {
+        return modelToView2D(t, pos, Position.Bias.Forward);
+    }
+
+    @Override
+	@Deprecated	// TODO remove when javax.swing.plaf.TextUI.modelToView is removed
+    public Rectangle modelToView(JTextComponent t, int pos) throws BadLocationException {
         return modelToView(t, pos, Position.Bias.Forward);
     }
 
@@ -351,8 +362,7 @@ public abstract class PromptTextUI extends TextUI {
     }
 
     @Override
-    public void damageRange(JTextComponent t, int p0, int p1, Bias firstBias,
-            Bias secondBias) {
+    public void damageRange(JTextComponent t, int p0, int p1, Bias firstBias, Bias secondBias) {
         delegate.damageRange(t, p0, p1, firstBias, secondBias);
     }
 
@@ -392,10 +402,8 @@ public abstract class PromptTextUI extends TextUI {
     }
 
     @Override
-    public int getNextVisualPositionFrom(JTextComponent t, int pos, Bias b,
-            int direction, Bias[] biasRet) throws BadLocationException {
-        return delegate
-                .getNextVisualPositionFrom(t, pos, b, direction, biasRet);
+    public int getNextVisualPositionFrom(JTextComponent t, int pos, Bias b, int direction, Bias[] biasRet) throws BadLocationException {
+        return delegate.getNextVisualPositionFrom(t, pos, b, direction, biasRet);
     }
 
     @Override
@@ -403,9 +411,14 @@ public abstract class PromptTextUI extends TextUI {
         return delegate.getRootView(t);
     }
 
+//    @Override
+//    public String getToolTipText(JTextComponent t, Point pt) {
+//        return delegate.getToolTipText(t, pt);
+//    }
+
     @Override
-    public String getToolTipText(JTextComponent t, Point pt) {
-        return delegate.getToolTipText(t, pt);
+    public String getToolTipText2D(JTextComponent t, Point2D pt) {
+        return delegate.getToolTipText2D(t, pt);
     }
 
     @Override
@@ -415,16 +428,21 @@ public abstract class PromptTextUI extends TextUI {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", getClass().getName(), delegate
-                .toString());
+        return String.format("%s (%s)", getClass().getName(), delegate.toString());
     }
 
     @Override
+    public int viewToModel2D(JTextComponent t, Point2D pt, Bias[] biasReturn) {
+        return delegate.viewToModel2D(t, pt, biasReturn);
+    }
+
+    @Override
+	@Deprecated	// TODO remove when javax.swing.plaf.TextUI.modelToView is removed
     public int viewToModel(JTextComponent t, Point pt, Bias[] biasReturn) {
         return delegate.viewToModel(t, pt, biasReturn);
     }
-
     @Override
+	@Deprecated // TODO remove when javax.swing.plaf.TextUI.modelToView is removed
     public int viewToModel(JTextComponent t, Point pt) {
         return delegate.viewToModel(t, pt);
     }

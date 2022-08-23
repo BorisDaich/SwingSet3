@@ -3,12 +3,16 @@ package org.jdesktop.swingx.plaf;
 import static javax.swing.BorderFactory.createEmptyBorder;
 
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.plaf.TextUI;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.Position;
+import javax.swing.text.Position.Bias;
 
 import org.jdesktop.swingx.search.NativeSearchFieldSupport;
 import org.jdesktop.swingx.util.OS;
@@ -44,26 +48,21 @@ public class PromptTextFieldUI extends PromptTextUI {
         lbl.setColumns(txtField.getColumns());
 
         // Make search field in Leopard paint focused border.
-        lbl.hasFocus = txtField.hasFocus()
-                && NativeSearchFieldSupport.isNativeSearchField(txtField);
+        lbl.hasFocus = txtField.hasFocus() && NativeSearchFieldSupport.isNativeSearchField(txtField);
 
         // leopard client properties. see
         // http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
-        NativeSearchFieldSupport.setSearchField(lbl, NativeSearchFieldSupport
-                .isSearchField(txtField));
-        NativeSearchFieldSupport.setFindPopupMenu(lbl, NativeSearchFieldSupport
-                .getFindPopupMenu(txtField));
+        NativeSearchFieldSupport.setSearchField(lbl, NativeSearchFieldSupport.isSearchField(txtField));
+        NativeSearchFieldSupport.setFindPopupMenu(lbl, NativeSearchFieldSupport.getFindPopupMenu(txtField));
 
-        // here we need to copy the border again for Mac OS X, because the above
-        // calls may have replaced it.
+        // here we need to copy the border again for Mac OS X, because the above calls may have replaced it.
         Border b = txt.getBorder();
 
         if (b == null) {
             lbl.setBorder(txt.getBorder());
         } else {
             Insets insets = b.getBorderInsets(txt);
-            lbl.setBorder(
-                    createEmptyBorder(insets.top, insets.left, insets.bottom, insets.right));
+            lbl.setBorder(createEmptyBorder(insets.top, insets.left, insets.bottom, insets.right));
         }
         //		lbl.setBorder(txtField.getBorder());
 
@@ -187,4 +186,28 @@ public class PromptTextFieldUI extends PromptTextUI {
         	}
         }
     }
+
+	@Override
+	@Deprecated // TODO remove when javax.swing.plaf.TextUI.modelToView is removed
+	public Rectangle modelToView(JTextComponent t, int pos) throws BadLocationException {
+		return super.modelToView(t, pos, Position.Bias.Forward);
+	}
+
+	@Override
+	@Deprecated	// TODO remove when javax.swing.plaf.TextUI.modelToView is removed
+	public Rectangle modelToView(JTextComponent t, int pos, Bias bias) throws BadLocationException {
+		return super.modelToView(t, pos, bias);
+	}
+
+	@Override
+	@Deprecated	// TODO remove when javax.swing.plaf.TextUI.modelToView is removed
+	public int viewToModel(JTextComponent t, Point pt) {
+		return super.viewToModel(t, pt);
+	}
+
+	@Override
+	@Deprecated // TODO remove when javax.swing.plaf.TextUI.modelToView is removed
+	public int viewToModel(JTextComponent t, Point pt, Bias[] biasReturn) {
+		return super.viewToModel(t, pt, biasReturn);
+	}
 }

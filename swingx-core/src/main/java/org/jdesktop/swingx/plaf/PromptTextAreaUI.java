@@ -1,7 +1,10 @@
 package org.jdesktop.swingx.plaf;
 
+import java.awt.Rectangle;
+
 import javax.swing.JTextArea;
 import javax.swing.plaf.TextUI;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 /**
@@ -12,6 +15,7 @@ import javax.swing.text.JTextComponent;
  * 
  */
 public class PromptTextAreaUI extends PromptTextUI {
+	
     /**
      * Shared prompt renderer.
      */
@@ -49,4 +53,10 @@ public class PromptTextAreaUI extends PromptTextUI {
         txt.updateUI();
         return txt;
     }
+
+	@Override
+	@Deprecated // TODO remove when javax.swing.plaf.TextUI.modelToView is removed	
+	public Rectangle modelToView(JTextComponent t, int pos) throws BadLocationException {
+		return super.modelToView(t, pos);
+	}
 }
