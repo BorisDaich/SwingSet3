@@ -9,10 +9,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 
 import org.jdesktop.swingx.prompt.BuddySupport;
-import org.jdesktop.swingx.prompt.PromptSupport;
 import org.jdesktop.swingx.prompt.BuddySupport.Position;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
-
 
 /**
  * {@link JFormattedTextField}, with integrated support for prompts and buddies.
@@ -20,41 +19,44 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
  * @see PromptSupport
  * @see BuddySupport
  * @author Peter Weishapl petw@gmx.net
- * 
+ * @author EUG https://github.com/homebeaver
  */
 public class JXFormattedTextField extends JFormattedTextField {
 	
-	/**
-	 * ctor
-	 */
-	public JXFormattedTextField() {
-		this(null);
+	private static final long serialVersionUID = -6438553038504842348L;
+
+	public JXFormattedTextField(Object value) {
+		super(value);
 	}
 
-	/**
-	 * 
-	 * @param promptText String
-	 */
+	public JXFormattedTextField(java.text.Format format) {
+		super(format);
+	}
+
+    public JXFormattedTextField(AbstractFormatter formatter) {
+    	super(formatter);
+    }
+
+	public JXFormattedTextField() {
+		this((String)null);
+	}
+
 	public JXFormattedTextField(String promptText) {
 		this(promptText, null);
 	}
 
-	/**
-	 * 
-	 * @param promptText String
-	 * @param promptForeground Color
-	 */
 	public JXFormattedTextField(String promptText, Color promptForeground) {
 		this(promptText, promptForeground, null);
 	}
 	
 	/**
-	 * 
+	 * ctor
 	 * @param promptText String
 	 * @param promptForeground Color
 	 * @param promptBackground Color
 	 */
 	public JXFormattedTextField(String promptText, Color promptForeground, Color promptBackground) {
+		super();
 		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
@@ -128,7 +130,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 	 * 
 	 * @param promptTextColor Color
 	 */
-	public void setPromptBackround(Color promptTextColor) {
+	public void setPromptBackground(Color promptTextColor) {
 		PromptSupport.setBackground(promptTextColor, this);
 	}
 
