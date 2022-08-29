@@ -31,87 +31,28 @@ public class JVM {
    */
   public final static String JAVA_VERSION = "java.version";
   
-  // wg. Failed: Javadoc Validation auf nexus repo, maven-javadoc-plugin macht aus der warnung einen fehler :-(
-  /**
-   * JDK Version
-   */
   public final static int JDK1_0 = 1000;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_1 = 1100;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_2 = 1200;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_3 = 1300;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_4 = 1400;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_5 = 1500;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_6 = 1600;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_6N = 1610;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_7 = 1700;
-  /**
-   * JDK Version
-   */
   public final static int JDK1_8 = 1800;
-  /**
-   * JDK Version
-   */
   public final static int JDK_8  = 8000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_9  = 9000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_10 =10000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_11 =11000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_12 =12000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_13 =13000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_14 =14000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_15 =15000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_16 =16000;
-  /**
-   * JDK Version
-   */
   public final static int JDK_17 =17000;
+  public final static int JDK_18 =18000;
+  public final static int JDK_19 =19000;
 
   private static JVM current;
   static {
@@ -146,7 +87,11 @@ public class JVM {
    * @param p_JavaVersion String indicating version
    */
   public JVM(String p_JavaVersion) {
-		if (p_JavaVersion.startsWith("17")) {
+		if (p_JavaVersion.startsWith("19")) {
+			jdkVersion = JDK_19;
+		} else if (p_JavaVersion.startsWith("18")) {
+			jdkVersion = JDK_18;
+		} else if (p_JavaVersion.startsWith("17")) {
 			jdkVersion = JDK_17;
 		} else if (p_JavaVersion.startsWith("16")) {
 			jdkVersion = JDK_16;
