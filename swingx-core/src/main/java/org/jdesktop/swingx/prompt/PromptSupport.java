@@ -107,7 +107,7 @@ public final class PromptSupport {
 	 * @param textComponent JTextComponent
 	 */
 	public static void init(String promptText, Color promptForeground, Color promptBackground, final JTextComponent textComponent) {
-		LOG.info("textComponent:"+textComponent);
+		LOG.fine("textComponent:"+textComponent);
 		if (promptText != null && promptText.length() > 0) {
 			setPrompt(promptText, textComponent);
 		}
