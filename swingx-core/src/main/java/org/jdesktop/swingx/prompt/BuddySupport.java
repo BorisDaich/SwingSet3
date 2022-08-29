@@ -50,7 +50,7 @@ public class BuddySupport {
 	 * @param textField JTextField
 	 */
 	public static void add(Component c, Position pos, JTextField textField) {
-		LOG.info("add Component "+c + "\n to "+textField + " at "+pos );
+		LOG.finest("add Component "+c + "\n to "+textField + " at "+pos );
 		TextUIWrapper.getDefaultWrapper().install(textField, true);
 
 		List<Component> leftBuddies = buddies(Position.LEFT, textField);
@@ -154,7 +154,7 @@ public class BuddySupport {
 		return Collections.unmodifiableList(buddies(pos, textField));
 	}
 
-//	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	private static List<Component> buddies(Position pos, JTextField textField) {
 		Object o = textField.getClientProperty(pos);
 		if(o==null) {

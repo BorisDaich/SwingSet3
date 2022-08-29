@@ -463,7 +463,8 @@ public abstract class PromptTextUI extends TextUI {
     @Override
     public int getBaseline(JComponent c, int width, int height) {
     	//delegate.getBaseline(c, width, height)
-    	LOG.info(">>>>> delegate.getClass():"+delegate.getClass());
+    	LOG.finest(">>>>> delegate.getClass():"+delegate.getClass()); 
+    	// javax.swing.plaf.basic.BasicTextAreaUI resp. javax.swing.plaf.metal.MetalTextFieldUI
         try {
             Method m = delegate.getClass().getMethod("getBaseline", JComponent.class, int.class, int.class);
             Object o = m.invoke(delegate, new Object[] { c, width, height });
