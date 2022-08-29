@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.util.List;
 
 import javax.swing.JTextField;
+import javax.swing.text.Document;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.prompt.BuddySupport;
@@ -24,6 +25,16 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
 @JavaBean
 public class JXTextField extends JTextField {
 	
+	private static final long serialVersionUID = 2386219487863540092L;
+
+	public JXTextField(String text, int columns) {
+        this(null, text, columns);
+    }
+
+    public JXTextField(Document doc, String text, int columns) {
+        super(doc, text, columns);
+    }
+
 	public JXTextField() {
 		this(null);
 	}
@@ -36,10 +47,9 @@ public class JXTextField extends JTextField {
 		this(promptText, promptForeground, null);
 	}
 
-	public JXTextField(String promptText, Color promptForeground,
-			Color promptBackground) {
-		PromptSupport.init(promptText, promptForeground, promptBackground,
-				this);
+	public JXTextField(String promptText, Color promptForeground, Color promptBackground) {
+		super();
+		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
 	/**

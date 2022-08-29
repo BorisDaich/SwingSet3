@@ -3,6 +3,7 @@ package org.jdesktop.swingx;
 import java.awt.Color;
 
 import javax.swing.JTextArea;
+import javax.swing.text.Document;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.prompt.BuddySupport;
@@ -19,8 +20,27 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
  */
 @JavaBean
 public class JXTextArea extends JTextArea {
+
+	private static final long serialVersionUID = -4795426700642723446L;
+
+	public JXTextArea(String text, int rows, int columns) {
+        this(null, text, rows, columns);
+    }
+
+    public JXTextArea(Document doc) {
+        this(doc, null, 0, 0);
+    }
+    
+    public JXTextArea(int rows, int columns) {
+        this(null, null, rows, columns);
+    }
+
+    public JXTextArea(Document doc, String text, int rows, int columns) {
+    	super(doc, text, rows, columns);
+    }
+
 	public JXTextArea() {
-		this(null);
+		this((String)null);
 	}
 
 	public JXTextArea(String promptText) {
@@ -31,10 +51,9 @@ public class JXTextArea extends JTextArea {
 		this(promptText, promptForeground, null);
 	}
 
-	public JXTextArea(String promptText, Color promptForeground,
-			Color promptBackground) {
-		PromptSupport.init(promptText, promptForeground, promptBackground,
-				this);
+	public JXTextArea(String promptText, Color promptForeground, Color promptBackground) {
+		super();
+		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
 	/**
