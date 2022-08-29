@@ -56,11 +56,10 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
     /**
      * ctor
      */
-    public GradientTrackRenderer() {
-        checker_paint = //PaintUtils.getCheckerPaint();
-        		PaintUtils.getCheckerPaint(Color.WHITE, Color.GRAY, SIZE);
-        LOG.info("checker_paint.Transparency="+checker_paint.getTransparency() +" 3==TRANSLUCENT");
-    }
+	public GradientTrackRenderer() {
+		checker_paint = PaintUtils.getCheckerPaint(Color.WHITE, Color.GRAY, SIZE);
+//		LOG.info("checker_paint.Transparency=" + checker_paint.getTransparency() + " 3==TRANSLUCENT");
+	}
     
     /**
      * A white and gray TRANSLUCENT checkered {@code TexturePaint} with default size of 20 

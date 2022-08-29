@@ -50,7 +50,6 @@ import javax.swing.JComponent;
  */
 public abstract class RolloverProducer implements MouseListener, MouseMotionListener, ComponentListener {
 
-//    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(RolloverProducer.class.getName());
     
     /** 
@@ -219,8 +218,7 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
         Point componentLocation = null;
         
         try {
-            componentLocation = e.getComponent()
-            		.getMousePosition(); // throws HeadlessException
+            componentLocation = e.getComponent().getMousePosition(); // throws HeadlessException
         } catch (java.awt.HeadlessException ex) {
         	// on linux: No X11 DISPLAY variable was set, ...
         	LOG.warning("Operation component.getMousePosition() throws "+ex.toString());
@@ -296,8 +294,7 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
      * @param fireAlways a flag indicating whether a client property 
      *  should be forced to fire an event.
      */
-    protected void updateClientProperty(JComponent component, String property,
-            boolean fireAlways) {
+    protected void updateClientProperty(JComponent component, String property, boolean fireAlways) {
         if (fireAlways) {
             // fix Issue #864-swingx: force propertyChangeEvent
             component.putClientProperty(property, null);

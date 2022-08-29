@@ -28,8 +28,6 @@ import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
 /**
- * TODO add type doc
- * 
  * @author Jeanette Winzenburg
  */
 public class TableAddon extends AbstractComponentAddon {
@@ -54,7 +52,7 @@ public class TableAddon extends AbstractComponentAddon {
     protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addNimbusDefaults(addon, defaults);
         Object keepAlternateRowColor = UIManager.get("Nimbus.keepAlternateRowColor");
-        LOG.info("keepAlternateRowColor:"+keepAlternateRowColor);
+        LOG.fine("keepAlternateRowColor:"+keepAlternateRowColor);
         if (Boolean.TRUE.equals(keepAlternateRowColor)) return;
         
         Object value = UIManager.getLookAndFeelDefaults().remove(TABLE_ALTERNATE_ROW_COLOR);
@@ -96,7 +94,6 @@ public class TableAddon extends AbstractComponentAddon {
             UIManager.getLookAndFeelDefaults().put(key, border);
             // adding to defaults is not
 //            defaults.add(key, border);
-            
         }
     }
 
