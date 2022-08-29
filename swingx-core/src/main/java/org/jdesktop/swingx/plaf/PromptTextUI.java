@@ -15,6 +15,7 @@ import java.awt.event.FocusEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 import javax.accessibility.Accessible;
 import javax.swing.JComponent;
@@ -49,6 +50,8 @@ import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
  */
 public abstract class PromptTextUI extends TextUI {
 	
+	private static final Logger LOG = Logger.getLogger(PromptTextUI.class.getName());
+
     protected class PainterHighlighter implements Highlighter {
         private final Painter<? super JTextComponent> painter;
 
@@ -459,11 +462,14 @@ public abstract class PromptTextUI extends TextUI {
      */
     @Override
     public int getBaseline(JComponent c, int width, int height) {
+    	//delegate.getBaseline(c, width, height)
+    	LOG.info(">>>>> delegate.getClass():"+delegate.getClass());
         try {
             Method m = delegate.getClass().getMethod("getBaseline", JComponent.class, int.class, int.class);
             Object o = m.invoke(delegate, new Object[] { c, width, height });
             return (Integer) o;
         } catch (Exception ex) {
+        	LOG.warning(ex.toString());
             // ignore
             return -2;
         }
