@@ -5,7 +5,7 @@
   
   <groupId>io.github.homebeaver</groupId>
   <artifactId>swingset3</artifactId>
-  <version>1.7.0</version>
+  <version>1.7.2-SNAPSHOT</version>
   <packaging>pom</packaging> <!-- multi-module project -->
   <modules>
     <module>swingx-mavensupport</module>
@@ -17,7 +17,6 @@
     <module>swingx-graphics</module>
     <module>swingx-plaf</module>
     <module>swingx-core</module>
-    <module>swingx-all</module>
     <module>swingx-beaninfo</module>
   </modules>
 
