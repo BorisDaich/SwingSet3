@@ -1,124 +1,298 @@
 package org.jdesktop.swingx.icon;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.RoundRectangle2D;
+import java.util.Stack;
 
-import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
 
-/**
- * Rendering a Calendar icon.
- * Used in Date Picker.
- *
- * @author EUG https://github.com/homebeaver/
+/*
+ * generiert aus feather calendar und hierhin kopiert + organize imports
+
+import org.pushingpixels.radiance.common.api.icon.RadianceIcon;
+import org.pushingpixels.radiance.common.api.icon.RadianceIconUIResource;
+
  */
-public class CalendarIcon implements Icon, UIResource, SizingConstants {
 
-    private int width = SizingConstants.SMALL_ICON;
-    private int height = SizingConstants.SMALL_ICON;
-    private Color color;
+/**
+ * This class has been automatically generated using <a
+ * href="https://github.com/kirill-grouchnikov/radiance">Radiance SVG transcoder</a>.
+ */
+public class CalendarIcon implements RadianceIcon {
+    private Shape shape = null;
+    private GeneralPath generalPath = null;
+    private Paint paint = null;
+    private Stroke stroke = null;
+    private Shape clip = null;
+    private RadianceIcon.ColorFilter colorFilter = null;
+    private Stack<AffineTransform> transformsStack = new Stack<>();
+
+	// EUG https://github.com/homebeaver (rotation + point/axis reflection)
+    private int rsfx = 1, rsfy = 1;
+    public void setReflection(boolean horizontal, boolean vertical) {
+    	this.rsfx = vertical ? -1 : 1;
+    	this.rsfy = horizontal ? -1 : 1;
+    }    
+    public boolean isReflection() {
+		return rsfx==-1 || rsfy==-1;
+	}
+	
+    private double theta = 0;
+    public void setRotation(double theta) {
+    	this.theta = theta;
+    }    
+    public double getRotation() {
+		return theta;
+	}
+	// EUG -- END
+
     
-    /**
-     * ctor for default - this is a SMALL_ICON for Date Picker
-     */
-    public CalendarIcon() {
-    }
 
-    /**
-     * ctor with icon size and color
-     * @param size width and height
-     * @param color Foreground Color
-     */
-    public CalendarIcon(int size, Color color) {
-    	width = size;
-    	height = size;
-    	this.color = color;
-    }
+	private void _paint0(Graphics2D g,float origAlpha) {
+transformsStack.push(g.getTransform());
+// 
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -0.0f, -0.0f));
+// _0
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_0
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+shape = new RoundRectangle2D.Double(3.0, 4.0, 18.0, 18.0, 4.0, 4.0);
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_1
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+shape = new Line2D.Float(16.000000f,2.000000f,16.000000f,6.000000f);
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_2
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+shape = new Line2D.Float(8.000000f,2.000000f,8.000000f,6.000000f);
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_3
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+shape = new Line2D.Float(3.000000f,10.000000f,21.000000f,10.000000f);
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setTransform(transformsStack.pop());
+g.setTransform(transformsStack.pop());
 
-    /**
-     * ctor with icon size
-     * @param size width and height
-     */
-    public CalendarIcon(int size) {
-    	this(size, null);
-    }
+}
 
-    /**
-     * optional ctor with width and height
-     * @param width of the icon
-     * @param height of the icon
-     */
-    protected CalendarIcon(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
 
-    /**
-     * convenient ctor with Dimension
-     * @param size Dimension
-     */
-    protected CalendarIcon(Dimension size) {
-    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
-    }
 
-    // implements interface Icon:
+    @SuppressWarnings("unused")
+	private void innerPaint(Graphics2D g) {
+        float origAlpha = 1.0f;
+        Composite origComposite = g.getComposite();
+        if (origComposite instanceof AlphaComposite) {
+            AlphaComposite origAlphaComposite = 
+                (AlphaComposite)origComposite;
+            if (origAlphaComposite.getRule() == AlphaComposite.SRC_OVER) {
+                origAlpha = origAlphaComposite.getAlpha();
+            }
+        }
+        
+	    _paint0(g, origAlpha);
 
-    /**
-     * {@inheritDoc} 
-     */
-    /* example:
-     * <pre><code>
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-  <line x1="16" y1="2" x2="16" y2="6" />
-  <line x1="8" y1="2" x2="8" y2="6" />
-  <line x1="3" y1="10" x2="21" y2="10" />
-</svg>      * </code></pre>
-     */
-	@Override
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-		g.setColor(color==null ? c.getForeground() : color);
-    	g.drawRect(x+(int)( 3*width/24), y+(int)( 4*height/24),   (int)(18*width/24),   (int)(18*height/24));
-//    	g.drawLine(x+(int)( 3*width/24), y+(int)( 4*height/24), x+(int)( 3*width/24), y+(int)(20*height/24));
-//    	g.drawLine(x+(int)( 3*width/24), y+(int)(20*height/24), x+(int)(21*width/24), y+(int)(20*height/24));
-//    	g.drawLine(x+(int)(21*width/24), y+(int)(20*height/24), x+(int)(21*width/24), y+(int)( 4*height/24));
-//    	g.drawLine(x+(int)(21*width/24), y+(int)( 4*height/24), x+(int)( 3*width/24), y+(int)( 4*height/24));
-    	g.drawLine(x+(int)(16*width/24), y+(int)( 2*height/24), x+(int)(16*width/24), y+(int)( 6*height/24));
-    	g.drawLine(x+(int)( 8*width/24), y+(int)( 2*height/24), x+(int)( 8*width/24), y+(int)( 6*height/24));
-    	g.drawLine(x+(int)( 3*width/24), y+(int)(10*height/24), x+(int)(21*width/24), y+(int)(10*height/24));
+
+	    shape = null;
+	    generalPath = null;
+	    paint = null;
+	    stroke = null;
+	    clip = null;
+        transformsStack.clear();
 	}
 
-	@Override
+    /**
+     * Returns the X of the bounding box of the original SVG image.
+     * 
+     * @return The X of the bounding box of the original SVG image.
+     */
+    public static double getOrigX() {
+        return 2.0;
+    }
+
+    /**
+     * Returns the Y of the bounding box of the original SVG image.
+     * 
+     * @return The Y of the bounding box of the original SVG image.
+     */
+    public static double getOrigY() {
+        return 1.0;
+    }
+
+	/**
+	 * Returns the width of the bounding box of the original SVG image.
+	 * 
+	 * @return The width of the bounding box of the original SVG image.
+	 */
+	public static double getOrigWidth() {
+		return 20.0;
+	}
+
+	/**
+	 * Returns the height of the bounding box of the original SVG image.
+	 * 
+	 * @return The height of the bounding box of the original SVG image.
+	 */
+	public static double getOrigHeight() {
+		return 22.0;
+	}
+
+	/** The current width of this icon. */
+	private int width;
+
+    /** The current height of this icon. */
+	private int height;
+
+	/**
+	 * Creates a new transcoded SVG image. This is marked as private to indicate that app
+	 * code should be using the {@link #of(int, int)} method to obtain a pre-configured instance.
+	 */
+	private CalendarIcon() {
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
+	}
+
+    @Override
+	public int getIconHeight() {
+		return height;
+	}
+
+    @Override
 	public int getIconWidth() {
 		return width;
 	}
 
 	@Override
-	public int getIconHeight() {
-		return height;
+	public synchronized void setDimension(Dimension newDimension) {
+		this.width = newDimension.width;
+		this.height = newDimension.height;
 	}
 
-	// visual test:
-//    public static void main(String args[]) {
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        JLabel label = new JLabel(new CalendarIcon(SizingConstants.XL));
-//        frame.getContentPane().setSize(300, 300);
-//        frame.getContentPane().add(java.awt.BorderLayout.CENTER, label);
-//        frame.pack();
-//        frame.setVisible(true);  
-//    }
+    @Override
+    public boolean supportsColorFilter() {
+        return true;
+    }
 
+    @Override
+    public void setColorFilter(ColorFilter colorFilter) {
+        this.colorFilter = colorFilter;
+    }
+
+    @Override
+	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        if(getRotation()!=0) {
+            g2d.rotate(getRotation(), x+width/2, y+height/2);
+        }
+        if(isReflection()) {
+        	g2d.translate(x+width/2, y+height/2);
+        	g2d.scale(this.rsfx, this.rsfy);
+        	g2d.translate(-x-width/2, -y-height/2);
+        }
+		g2d.translate(x, y);
+
+        double coef1 = (double) this.width / getOrigWidth();
+        double coef2 = (double) this.height / getOrigHeight();
+        double coef = Math.min(coef1, coef2);
+        g2d.clipRect(0, 0, this.width, this.height);
+        g2d.scale(coef, coef);
+        g2d.translate(-getOrigX(), -getOrigY());
+        if (coef1 != coef2) {
+            if (coef1 < coef2) {
+               int extraDy = (int) ((getOrigWidth() - getOrigHeight()) / 2.0);
+               g2d.translate(0, extraDy);
+            } else {
+               int extraDx = (int) ((getOrigHeight() - getOrigWidth()) / 2.0);
+               g2d.translate(extraDx, 0);
+            }
+        }
+        Graphics2D g2ForInner = (Graphics2D) g2d.create();
+        innerPaint(g2ForInner);
+        g2ForInner.dispose();
+        g2d.dispose();
+	}
+    
+    /**
+     * Returns a new instance of this icon with specified dimensions.
+     *
+     * @param width Required width of the icon
+     * @param height Required height of the icon
+     * @return A new instance of this icon with specified dimensions.
+     */
+    public static RadianceIcon of(int width, int height) {
+       CalendarIcon base = new CalendarIcon();
+       base.width = width;
+       base.height = height;
+       return base;
+    }
+
+    /**
+     * Returns a new {@link UIResource} instance of this icon with specified dimensions.
+     *
+     * @param width Required width of the icon
+     * @param height Required height of the icon
+     * @return A new {@link UIResource} instance of this icon with specified dimensions.
+     */
+    public static RadianceIconUIResource uiResourceOf(int width, int height) {
+       CalendarIcon base = new CalendarIcon();
+       base.width = width;
+       base.height = height;
+       return new RadianceIconUIResource(base);
+    }
+
+    /**
+     * Returns a factory that returns instances of this icon on demand.
+     *
+     * @return Factory that returns instances of this icon on demand.
+     */
+    public static Factory factory() {
+        return CalendarIcon::new;
+    }
 }
+
