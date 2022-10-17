@@ -4,7 +4,7 @@
 		<groupId>io.github.homebeaver</groupId>
 		<artifactId>swingset3</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>1.7.2</version>
+		<version>1.7.3</version>
 	</parent>
 	
   <artifactId>swingx-plaf</artifactId>
