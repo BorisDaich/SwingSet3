@@ -45,6 +45,7 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.LookAndFeel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -62,8 +63,10 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.SwingXUtilities;
-import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.icon.EmptyIcon;
+import org.jdesktop.swingx.icon.ChevronsIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
+import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.plaf.TaskPaneUI;
 
 /**
@@ -85,20 +88,14 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         return new BasicTaskPaneUI();
     }
 
-	/** TODO doc */
     protected int titleHeight = 25;
-	/** TODO doc */
     protected int roundHeight = 5;
 
-	/** TODO doc */
     protected JXTaskPane group;
 
-	/** TODO doc */
     protected boolean mouseOver;
-	/** TODO doc */
     protected MouseInputListener mouseListener;
 
-	/** TODO doc */
     protected PropertyChangeListener propertyListener;
 
     /**
@@ -509,7 +506,6 @@ public class BasicTaskPaneUI extends TaskPaneUI {
         /** specialTitleOver color as set in TaskPaneAddon */
         protected Color specialTitleOver;
 
-        /** TODO doc */
         protected JLabel label;
 
         /**
@@ -812,11 +808,11 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          */
         protected void paintChevronControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
         	LOG.fine("x="+x + ",y="+y + ", width="+width + ",height="+height);
-            ChevronsIcon chevrons = new ChevronsIcon();
+        	RadianceIcon chevrons = ChevronsIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
             if (group.isCollapsed()) {
-                chevrons.setDirection(ChevronsIcon.NORTH);
-//            } else {
-//                chevrons.setDirection(ChevronsIcon.SOUTH); // this is default
+            	chevrons.setRotation(SwingConstants.SOUTH);
+            } else {
+            	chevrons.setRotation(SwingConstants.NORTH);
             }
             chevrons.paintIcon(group, g, x, y);
         }

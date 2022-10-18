@@ -1,164 +1,290 @@
 package org.jdesktop.swingx.icon;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
+import java.awt.geom.GeneralPath;
+import java.util.Stack;
 
-import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
 
-/**
- * Rendering a Chevrons icon (v). Can be filled with any color, default is component foreground (black).
- * Used in Task Pane.
- *
- * @author EUG https://github.com/homebeaver/
+/*
+ * generiert aus feather chevrons und hierhin kopiert + organize imports
+
+import org.pushingpixels.radiance.common.api.icon.RadianceIcon;
+import org.pushingpixels.radiance.common.api.icon.RadianceIconUIResource;
+
  */
-public class ChevronsIcon implements Icon, UIResource, SizingConstants {
 
-//	private static final Logger LOG = Logger.getLogger(ChevronsIcon.class.getName());
+/**
+ * This class has been automatically generated using <a
+ * href="https://github.com/kirill-grouchnikov/radiance">Radiance SVG transcoder</a>.
+ */
+public class ChevronsIcon implements RadianceIcon {
+    private Shape shape = null;
+    private GeneralPath generalPath = null;
+    private Paint paint = null;
+    private Stroke stroke = null;
+    private Shape clip = null;
+    private RadianceIcon.ColorFilter colorFilter = null;
+    private Stack<AffineTransform> transformsStack = new Stack<>();
+
+	// EUG https://github.com/homebeaver (rotation + point/axis reflection)
+    private int rsfx = 1, rsfy = 1;
+    public void setReflection(boolean horizontal, boolean vertical) {
+    	this.rsfx = vertical ? -1 : 1;
+    	this.rsfy = horizontal ? -1 : 1;
+    }    
+    public boolean isReflection() {
+		return rsfx==-1 || rsfy==-1;
+	}
 	
-    private int width = SizingConstants.SMALL_ICON;
-    private int height = SizingConstants.SMALL_ICON;
-    private Color color;
+    private double theta = 0;
+    public void setRotation(double theta) {
+    	this.theta = theta;
+    }    
+    public double getRotation() {
+		return theta;
+	}
+	// EUG -- END
+
     
-    private int direction = SOUTH; // Compass-direction SOUTH == Orientation.DOWN
-    /**
-     * You can change the orientation from DOWN to UP
-     * @param direction Compass-direction SOUTH == Orientation.DOWN
-     */
-    public void setDirection(int direction) {
-    	this.direction = direction;
-    }
 
-    /**
-     * ctor for default Chevrons - this is SMALL_ICON and Foreground Color of the Component to paint in
-     */
-    public ChevronsIcon() {
-    }
+	private void _paint0(Graphics2D g,float origAlpha) {
+transformsStack.push(g.getTransform());
+// 
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -0.0f, -0.0f));
+// _0
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_0
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(17.0f, 11.0f);
+generalPath.lineTo(12.0f, 6.0f);
+generalPath.lineTo(7.0f, 11.0f);
+shape = generalPath;
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_1
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(17.0f, 18.0f);
+generalPath.lineTo(12.0f, 13.0f);
+generalPath.lineTo(7.0f, 18.0f);
+shape = generalPath;
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setTransform(transformsStack.pop());
+g.setTransform(transformsStack.pop());
 
-    /**
-     * ctor with icon size and color
-     * @param size width and height
-     * @param color Foreground Color
-     */
-    public ChevronsIcon(int size, Color color) {
-    	width = size;
-    	height = size;
-    	this.color = color;
-    }
+}
 
-    /**
-     * ctor with icon size
-     * @param size width and height
-     */
-    public ChevronsIcon(int size) {
-    	this(size, null);
-    }
 
-    /**
-     * optional ctor with width and height
-     * @param width of the icon
-     * @param height of the icon
-     */
-    protected ChevronsIcon(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
 
-    /**
-     * convenient ctor with Dimension
-     * @param size Dimension
-     */
-    protected ChevronsIcon(Dimension size) {
-    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
-    }
+    @SuppressWarnings("unused")
+	private void innerPaint(Graphics2D g) {
+        float origAlpha = 1.0f;
+        Composite origComposite = g.getComposite();
+        if (origComposite instanceof AlphaComposite) {
+            AlphaComposite origAlphaComposite = 
+                (AlphaComposite)origComposite;
+            if (origAlphaComposite.getRule() == AlphaComposite.SRC_OVER) {
+                origAlpha = origAlphaComposite.getAlpha();
+            }
+        }
+        
+	    _paint0(g, origAlpha);
 
-    // implements interface Icon:
 
-    /**
-     * {@inheritDoc} 
-     */
-    /* example chevrons up:
-     * <pre><code>
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <polyline points="17 11 12 6 7 11" />
-  <polyline points="17 18 12 13 7 18" />
-</svg> 
-     * </code></pre>
-     */
-	@Override
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-//    	LOG.info("direction="+direction + ", x="+x + ",y="+y);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(color==null ? c.getForeground() : color);
-		
-		// creates a solid stroke with line width is 2
-		Stroke stroke = new BasicStroke(2f*width/24, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER); // default is CAP_SQUARE, JOIN_MITER
-		g2d.setStroke(stroke);
-		
-		AffineTransform saveAT = g2d.getTransform();
-		switch (direction) {
-		case NORTH: // 1
-//	    	LOG.info("NORTH direction="+direction + " no rotation ");
-            break;
-		case NORTH_EAST:
-			g2d.rotate(Math.PI/4, x+width/2, y+height/2);
-			break;
-		case EAST:
-			g2d.rotate(Math.PI/2, x+width/2, y+height/2);
-			break;
-		case SOUTH_EAST:
-			g2d.rotate(Math.PI*3/4, x+width/2, y+height/2);
-			break;
-		case SOUTH: // 5
-//	    	LOG.info("SOUTH direction="+direction + ", x="+x + ",y="+y);
-			g2d.rotate(Math.PI, x+width/2, y+height/2);
-            break;
-        case SOUTH_WEST:
-        	g2d.rotate(-(Math.PI*3/4), x+width/2, y+height/2);
-            break;
-        case WEST:
-        	g2d.rotate(-(Math.PI/2), x+width/2, y+height/2);
-            break;
-        case NORTH_WEST:
-        	g2d.rotate(-(Math.PI/4), x+width/2, y+height/2);
-            break;
-		default: { /* no xform */ }
-		}
-		g2d.draw(new Line2D.Float((17f*width/24)+x, (11f*height/24)+y, (12f*width/24)+x, ( 6f*height/24)+y));
-		g2d.draw(new Line2D.Float((12f*width/24)+x, ( 6f*height/24)+y, ( 7f*width/24)+x, (11f*height/24)+y));
-		g2d.draw(new Line2D.Float((17f*width/24)+x, (18f*height/24)+y, (12f*width/24)+x, (13f*height/24)+y));
-		g2d.draw(new Line2D.Float((12f*width/24)+x, (13f*height/24)+y, ( 7f*width/24)+x, (18f*height/24)+y));
-
-		g2d.setTransform(saveAT);
+	    shape = null;
+	    generalPath = null;
+	    paint = null;
+	    stroke = null;
+	    clip = null;
+        transformsStack.clear();
 	}
 
-	@Override
+    /**
+     * Returns the X of the bounding box of the original SVG image.
+     * 
+     * @return The X of the bounding box of the original SVG image.
+     */
+    public static double getOrigX() {
+        return 5.902369022369385;
+    }
+
+    /**
+     * Returns the Y of the bounding box of the original SVG image.
+     * 
+     * @return The Y of the bounding box of the original SVG image.
+     */
+    public static double getOrigY() {
+        return 4.902369022369385;
+    }
+
+	/**
+	 * Returns the width of the bounding box of the original SVG image.
+	 * 
+	 * @return The width of the bounding box of the original SVG image.
+	 */
+	public static double getOrigWidth() {
+		return 12.19526195526123;
+	}
+
+	/**
+	 * Returns the height of the bounding box of the original SVG image.
+	 * 
+	 * @return The height of the bounding box of the original SVG image.
+	 */
+	public static double getOrigHeight() {
+		return 14.19526195526123;
+	}
+
+	/** The current width of this icon. */
+	private int width;
+
+    /** The current height of this icon. */
+	private int height;
+
+	/**
+	 * Creates a new transcoded SVG image. This is marked as private to indicate that app
+	 * code should be using the {@link #of(int, int)} method to obtain a pre-configured instance.
+	 */
+	private ChevronsIcon() {
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
+	}
+
+    @Override
+	public int getIconHeight() {
+		return height;
+	}
+
+    @Override
 	public int getIconWidth() {
 		return width;
 	}
 
 	@Override
-	public int getIconHeight() {
-		return height;
+	public synchronized void setDimension(Dimension newDimension) {
+		this.width = newDimension.width;
+		this.height = newDimension.height;
 	}
 
-	// visual test: use GraphicsUtilitiesVisualCheck
+    @Override
+    public boolean supportsColorFilter() {
+        return true;
+    }
 
+    @Override
+    public void setColorFilter(ColorFilter colorFilter) {
+        this.colorFilter = colorFilter;
+    }
+
+    @Override
+	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        if(getRotation()!=0) {
+            g2d.rotate(getRotation(), x+width/2, y+height/2);
+        }
+        if(isReflection()) {
+        	g2d.translate(x+width/2, y+height/2);
+        	g2d.scale(this.rsfx, this.rsfy);
+        	g2d.translate(-x-width/2, -y-height/2);
+        }
+		g2d.translate(x, y);
+
+        double coef1 = (double) this.width / getOrigWidth();
+        double coef2 = (double) this.height / getOrigHeight();
+        double coef = Math.min(coef1, coef2);
+        g2d.clipRect(0, 0, this.width, this.height);
+        g2d.scale(coef, coef);
+        g2d.translate(-getOrigX(), -getOrigY());
+        if (coef1 != coef2) {
+            if (coef1 < coef2) {
+               int extraDy = (int) ((getOrigWidth() - getOrigHeight()) / 2.0);
+               g2d.translate(0, extraDy);
+            } else {
+               int extraDx = (int) ((getOrigHeight() - getOrigWidth()) / 2.0);
+               g2d.translate(extraDx, 0);
+            }
+        }
+        Graphics2D g2ForInner = (Graphics2D) g2d.create();
+        innerPaint(g2ForInner);
+        g2ForInner.dispose();
+        g2d.dispose();
+	}
+    
+    /**
+     * Returns a new instance of this icon with specified dimensions.
+     *
+     * @param width Required width of the icon
+     * @param height Required height of the icon
+     * @return A new instance of this icon with specified dimensions.
+     */
+    public static RadianceIcon of(int width, int height) {
+       ChevronsIcon base = new ChevronsIcon();
+       base.width = width;
+       base.height = height;
+       return base;
+    }
+
+    /**
+     * Returns a new {@link UIResource} instance of this icon with specified dimensions.
+     *
+     * @param width Required width of the icon
+     * @param height Required height of the icon
+     * @return A new {@link UIResource} instance of this icon with specified dimensions.
+     */
+    public static RadianceIconUIResource uiResourceOf(int width, int height) {
+       ChevronsIcon base = new ChevronsIcon();
+       base.width = width;
+       base.height = height;
+       return new RadianceIconUIResource(base);
+    }
+
+    /**
+     * Returns a factory that returns instances of this icon on demand.
+     *
+     * @return Factory that returns instances of this icon on demand.
+     */
+    public static Factory factory() {
+        return ChevronsIcon::new;
+    }
 }
+
