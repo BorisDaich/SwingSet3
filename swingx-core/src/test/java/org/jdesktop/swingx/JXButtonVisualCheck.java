@@ -43,6 +43,7 @@ import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.icon.PauseIcon;
 import org.jdesktop.swingx.icon.PlayIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
@@ -64,7 +65,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
      */
     public void interactiveButton() {
     	JPanel center = new JPanel();
-    	JButton pause = new JButton("ACTION_ICON size", new PauseIcon());
+    	JButton pause = new JButton("ACTION_ICON size", PauseIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON));
     	center.add(pause);
     	
     	JPanel control = new JPanel();
@@ -91,7 +92,9 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
             }
         };
         action.putValue(Action.NAME, "My Action");
-        action.putValue(Action.LARGE_ICON_KEY, new PauseIcon(SizingConstants.LAUNCHER_ICON, Color.MAGENTA));
+    	RadianceIcon pauseIcon = PauseIcon.of(SizingConstants.LAUNCHER_ICON, SizingConstants.LAUNCHER_ICON);
+    	pauseIcon.setColorFilter(color -> Color.MAGENTA);
+        action.putValue(Action.LARGE_ICON_KEY, pauseIcon);
         action.setEnabled(true);
 
         final JFrame f = new JFrame();
@@ -100,7 +103,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         jContentPane.setLayout(new BorderLayout());
         
     	JButton pause = new JButton(action);
-    	pause.setIcon(new PauseIcon());
+    	pause.setIcon(PauseIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON));
     	pause.setText("ACTION_ICON size");
     	jContentPane.add(pause, BorderLayout.WEST);
         
@@ -189,7 +192,8 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     		button.setText(ringArray.get());
         });
     	
-        button.setIcon(new PlayIcon());
+    	RadianceIcon play = PlayIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+        button.setIcon(play);
         
         showInFrame(button, "BackgroundCheck");
     }
