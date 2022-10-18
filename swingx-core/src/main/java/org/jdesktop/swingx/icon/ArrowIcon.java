@@ -1,152 +1,283 @@
 package org.jdesktop.swingx.icon;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
+import java.util.Stack;
 
-import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
 
-/**
- * Rendering an Arrow icon (an arrow subclass PlayIcon is used for Players). 
- * Can be filled with any color, default is component foreground (black).
- *
- * @author EUG https://github.com/homebeaver/
- */
 /*
- * replaces (swingx-demos) com.sun.swingset3.utilities.ArrowIcon
+ * generiert aus feather arrow (up) und hierhin kopiert + organize imports
+
+import org.pushingpixels.radiance.common.api.icon.RadianceIcon;
+import org.pushingpixels.radiance.common.api.icon.RadianceIconUIResource;
+
  */
-public class ArrowIcon implements Icon, UIResource, SizingConstants {
 
-    private int width = SizingConstants.ACTION_ICON;
-    private int height = SizingConstants.ACTION_ICON;
-    private Color color;
-    private boolean filled = false; // to be used for PlayIcon
-    protected void setFilled(boolean filled) {
-    	this.filled = filled;
-    }
-    private int direction = EAST; // Compass-direction EAST == Orientation.RIGHT
-    /**
-     * You can change the orientation from DOWN to UP
-     * @param direction Compass-direction SOUTH == Orientation.DOWN
-     */
-    public void setDirection(int direction) {
-    	this.direction = direction;
-    }
+/**
+ * This class has been automatically generated using <a
+ * href="https://github.com/kirill-grouchnikov/radiance">Radiance SVG transcoder</a>.
+ */
+public class ArrowIcon implements RadianceIcon {
+    private Shape shape = null;
+    private GeneralPath generalPath = null;
+    private Paint paint = null;
+    private Stroke stroke = null;
+    private Shape clip = null;
+    private RadianceIcon.ColorFilter colorFilter = null;
+    private Stack<AffineTransform> transformsStack = new Stack<>();
 
-    public ArrowIcon() {
-    }
+	// EUG https://github.com/homebeaver (rotation + point/axis reflection)
+    private int rsfx = 1, rsfy = 1;
+    public void setReflection(boolean horizontal, boolean vertical) {
+    	this.rsfx = vertical ? -1 : 1;
+    	this.rsfy = horizontal ? -1 : 1;
+    }    
+    public boolean isReflection() {
+		return rsfx==-1 || rsfy==-1;
+	}
+	
+    private double theta = 0;
+    public void setRotation(double theta) {
+    	this.theta = theta;
+    }    
+    public double getRotation() {
+		return theta;
+	}
+	// EUG -- END
 
-    public ArrowIcon(int direction, int size, Color color) {
-    	setDirection(direction);
-    	width = size;
-    	height = size;
-    	this.color = color;
-    }
     
-    public ArrowIcon(int size, Color color) {
-    	width = size;
-    	height = size;
-    	this.color = color;
-    }
 
-    public ArrowIcon(int size) {
-    	this(size, null);
-    }
-    
-    protected ArrowIcon(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
+	private void _paint0(Graphics2D g,float origAlpha) {
+transformsStack.push(g.getTransform());
+// 
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -0.0f, -0.0f));
+// _0
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_0
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+shape = new Line2D.Float(12.000000f,19.000000f,12.000000f,5.000000f);
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_1
+paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
+stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(5.0f, 12.0f);
+generalPath.lineTo(12.0f, 5.0f);
+generalPath.lineTo(19.0f, 12.0f);
+shape = generalPath;
+g.setPaint(paint);
+g.setStroke(stroke);
+g.draw(shape);
+g.setTransform(transformsStack.pop());
+g.setTransform(transformsStack.pop());
+g.setTransform(transformsStack.pop());
 
-    protected ArrowIcon(Dimension size) {
-    	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
-    }
+}
 
-    // implements interface Icon:
 
-    /**
-     * {@inheritDoc}
-     */
-    /* example arrow up:
-     * <pre><code>
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <line x1="12" y1="19" x2="12" y2="5" />
-  <polyline points="5 12 12 5 19 12" />
-</svg> 
-     * </code></pre>
-     */
-	@Override
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(color==null ? c.getForeground() : color);
-		
-		// creates a solid stroke with line width is 2
-		Stroke stroke = new BasicStroke(2f*width/24, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // default is CAP_SQUARE, JOIN_MITER
-		g2d.setStroke(stroke);
-		
-		AffineTransform saveAT = g2d.getTransform();
-		g2d.rotate(Math.PI*(direction-1)/4, x+width/2, y+height/2);
-		if(filled) {
-			Path2D.Float arrowShape = new Path2D.Float();
-			arrowShape.moveTo(( 3f*width/24)+x, (17f*height/24)+y);
-			arrowShape.lineTo((13f*width/24)+x, ( 1f*height/24)+y);
-			arrowShape.lineTo((21f*width/24)+x, (17f*height/24)+y);
-			arrowShape.lineTo(( 3f*width/24)+x, (17f*height/24)+y);
-			g2d.fill(arrowShape);
-		} else {
-			g2d.draw(new Line2D.Float((12f*width/24)+x, (19f*height/24)+y, (12f*width/24)+x, ( 5f*height/24)+y));
-			g2d.draw(new Line2D.Float(( 5f*width/24)+x, (12f*height/24)+y, (12f*width/24)+x, ( 5f*height/24)+y));
-			g2d.draw(new Line2D.Float((19f*width/24)+x, (12f*height/24)+y, (12f*width/24)+x, ( 5f*height/24)+y));
-		}
 
-		g2d.setTransform(saveAT);
+    @SuppressWarnings("unused")
+	private void innerPaint(Graphics2D g) {
+        float origAlpha = 1.0f;
+        Composite origComposite = g.getComposite();
+        if (origComposite instanceof AlphaComposite) {
+            AlphaComposite origAlphaComposite = 
+                (AlphaComposite)origComposite;
+            if (origAlphaComposite.getRule() == AlphaComposite.SRC_OVER) {
+                origAlpha = origAlphaComposite.getAlpha();
+            }
+        }
+        
+	    _paint0(g, origAlpha);
+
+
+	    shape = null;
+	    generalPath = null;
+	    paint = null;
+	    stroke = null;
+	    clip = null;
+        transformsStack.clear();
 	}
 
-	@Override
+    /**
+     * Returns the X of the bounding box of the original SVG image.
+     * 
+     * @return The X of the bounding box of the original SVG image.
+     */
+    public static double getOrigX() {
+        return 3.9023690223693848;
+    }
+
+    /**
+     * Returns the Y of the bounding box of the original SVG image.
+     * 
+     * @return The Y of the bounding box of the original SVG image.
+     */
+    public static double getOrigY() {
+        return 3.9023690223693848;
+    }
+
+	/**
+	 * Returns the width of the bounding box of the original SVG image.
+	 * 
+	 * @return The width of the bounding box of the original SVG image.
+	 */
+	public static double getOrigWidth() {
+		return 16.195262908935547;
+	}
+
+	/**
+	 * Returns the height of the bounding box of the original SVG image.
+	 * 
+	 * @return The height of the bounding box of the original SVG image.
+	 */
+	public static double getOrigHeight() {
+		return 16.097631454467773;
+	}
+
+	/** The current width of this icon. */
+	private int width;
+
+    /** The current height of this icon. */
+	private int height;
+
+	/**
+	 * Creates a new transcoded SVG image. This is marked as private to indicate that app
+	 * code should be using the {@link #of(int, int)} method to obtain a pre-configured instance.
+	 */
+	private ArrowIcon() {
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
+	}
+
+    @Override
+	public int getIconHeight() {
+		return height;
+	}
+
+    @Override
 	public int getIconWidth() {
 		return width;
 	}
 
 	@Override
-	public int getIconHeight() {
-		return height;
+	public synchronized void setDimension(Dimension newDimension) {
+		this.width = newDimension.width;
+		this.height = newDimension.height;
 	}
 
-	// visual test: use GraphicsUtilitiesVisualCheck
-//    public static void main(String args[]) {
-//        JFrame frame = new JFrame();
-//        JPanel panel = new JPanel();
-//        frame.add(panel);
-//        
-//        // dedault size = SizingConstants.ACTION_ICON:
-//        panel.add(new JLabel("north", new ArrowIcon(NORTH, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-//        panel.add(new JLabel("west", new ArrowIcon(WEST, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-//        panel.add(new JLabel("south", new ArrowIcon(SOUTH, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-//        panel.add(new JLabel("east", new ArrowIcon(EAST, SizingConstants.ACTION_ICON, (Color)null), JLabel.CENTER));
-//        // zum Vergleich: PlayIcon ist dunkler, schärfer und spitzer:
-//        panel.add(new JLabel("PlayIcon", new PlayIcon(), JLabel.CENTER));
-//        panel.add(new JLabel("east-10", new ArrowIcon(EAST, SizingConstants.XS, Color.blue), JLabel.CENTER));
-//        
-//        frame.pack();
-//        frame.setVisible(true);
-//    }
+    @Override
+    public boolean supportsColorFilter() {
+        return true;
+    }
 
+    @Override
+    public void setColorFilter(ColorFilter colorFilter) {
+        this.colorFilter = colorFilter;
+    }
+
+    @Override
+	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        if(getRotation()!=0) {
+            g2d.rotate(getRotation(), x+width/2, y+height/2);
+        }
+        if(isReflection()) {
+        	g2d.translate(x+width/2, y+height/2);
+        	g2d.scale(this.rsfx, this.rsfy);
+        	g2d.translate(-x-width/2, -y-height/2);
+        }
+		g2d.translate(x, y);
+
+        double coef1 = (double) this.width / getOrigWidth();
+        double coef2 = (double) this.height / getOrigHeight();
+        double coef = Math.min(coef1, coef2);
+        g2d.clipRect(0, 0, this.width, this.height);
+        g2d.scale(coef, coef);
+        g2d.translate(-getOrigX(), -getOrigY());
+        if (coef1 != coef2) {
+            if (coef1 < coef2) {
+               int extraDy = (int) ((getOrigWidth() - getOrigHeight()) / 2.0);
+               g2d.translate(0, extraDy);
+            } else {
+               int extraDx = (int) ((getOrigHeight() - getOrigWidth()) / 2.0);
+               g2d.translate(extraDx, 0);
+            }
+        }
+        Graphics2D g2ForInner = (Graphics2D) g2d.create();
+        innerPaint(g2ForInner);
+        g2ForInner.dispose();
+        g2d.dispose();
+	}
+    
+    /**
+     * Returns a new instance of this icon with specified dimensions.
+     *
+     * @param width Required width of the icon
+     * @param height Required height of the icon
+     * @return A new instance of this icon with specified dimensions.
+     */
+    public static RadianceIcon of(int width, int height) {
+       ArrowIcon base = new ArrowIcon();
+       base.width = width;
+       base.height = height;
+       return base;
+    }
+
+    /**
+     * Returns a new {@link UIResource} instance of this icon with specified dimensions.
+     *
+     * @param width Required width of the icon
+     * @param height Required height of the icon
+     * @return A new {@link UIResource} instance of this icon with specified dimensions.
+     */
+    public static RadianceIconUIResource uiResourceOf(int width, int height) {
+       ArrowIcon base = new ArrowIcon();
+       base.width = width;
+       base.height = height;
+       return new RadianceIconUIResource(base);
+    }
+
+    /**
+     * Returns a factory that returns instances of this icon on demand.
+     *
+     * @return Factory that returns instances of this icon on demand.
+     */
+    public static Factory factory() {
+        return ArrowIcon::new;
+    }
 }
+

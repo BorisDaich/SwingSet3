@@ -22,12 +22,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.logging.Logger;
 
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.JXMultiThumbSlider;
 import org.jdesktop.swingx.icon.ArrowIcon;
+import org.jdesktop.swingx.icon.PlayIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.multislider.ThumbRenderer;
 import org.jdesktop.swingx.util.PaintUtils;
@@ -45,30 +46,19 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
 
 //    private Image thumb_black;
 //    private Image thumb_gray;
-    private Icon arrowIcon;
-    private Icon selectedIcon;
+    private RadianceIcon arrowIcon;
+    private RadianceIcon selectedIcon;
 
-    private class SelectedIcon extends ArrowIcon {
-    	public SelectedIcon(int direction, int size, Color color) {
-    		super(direction, size, color);
-    		super.setFilled(true);
-    	}
-    }
-    
     /**
      * ctor
      */
     public GradientThumbRenderer() {
         super();
     
-//        try {
-//            thumb_black = ImageIO.read(GradientThumbRenderer.class.getResourceAsStream("/icons/thumb_black.png"));
-//            thumb_gray = ImageIO.read(GradientThumbRenderer.class.getResourceAsStream("/icons/thumb_gray.png"));
-//        } catch (Exception ex)        {
-//            ex.printStackTrace();
-//        }  
-        arrowIcon = new ArrowIcon(SwingConstants.SOUTH, SizingConstants.SMALL_ICON, null); // int direction, int size, Color color
-        selectedIcon = new SelectedIcon(SwingConstants.SOUTH, SizingConstants.SMALL_ICON, null);
+        arrowIcon = ArrowIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+        arrowIcon.setRotation(SwingConstants.SOUTH);
+        selectedIcon = PlayIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+        selectedIcon.setRotation(Math.toRadians(90d));
         LOG.fine("ctor die icon png fehlen, daher ArrowIcon "+arrowIcon);
     }
     
