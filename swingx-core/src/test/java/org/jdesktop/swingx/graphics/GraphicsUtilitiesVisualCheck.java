@@ -30,11 +30,15 @@ import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXImageView;
-import org.jdesktop.swingx.icon.ArrowIcon;
 import org.jdesktop.swingx.icon.ChevronsIcon;
+import org.jdesktop.swingx.icon.IconRarrow;
 import org.jdesktop.swingx.icon.CircleIcon;
 import org.jdesktop.swingx.icon.PlayIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
+import org.jdesktop.swingx.icon.TrafficLightGreenIcon;
+import org.jdesktop.swingx.icon.TrafficLightRedIcon;
+import org.jdesktop.swingx.icon.TrafficLightYellowIcon;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
 /**
@@ -58,27 +62,24 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
      * show CircleIcon different sizes and colors
      */
     public void interactiveCircleIcon() throws Exception {
-    	CircleIcon redS;
-    	redS = new CircleIcon(SizingConstants.SMALL_ICON, CircleIcon.RED);
-        JButton redSButton = new JButton("redS", redS);
+    	RadianceIcon greenS = TrafficLightGreenIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+        JButton sButton = new JButton("green S", greenS);
         
-    	CircleIcon redM;
-    	redM = new CircleIcon(SizingConstants.ACTION_ICON, CircleIcon.RED);
-        JButton redMButton = new JButton("redM", redM);
+    	RadianceIcon yellowN = TrafficLightYellowIcon.of(SizingConstants.N, SizingConstants.N);
+        JButton nButton = new JButton("yellow N", yellowN);
         
-    	CircleIcon redXXL;
-    	redXXL = new CircleIcon(SizingConstants.XXL, CircleIcon.RED);
-        JButton redXXLButton = new JButton("redXXL", redXXL);
+    	RadianceIcon redXXL = TrafficLightRedIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+    	redXXL.setRotation(SwingConstants.NORTH_WEST); // das Licht fällt von NE
+        JButton redXXLButton = new JButton("red XXL", redXXL);
         
-    	CircleIcon chevrons;
-    	chevrons = new CircleIcon();
-        JButton chevronsButton = new JButton("default", chevrons);
+    	RadianceIcon circle = CircleIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+        JButton mButton = new JButton("circle action (M) size", circle);
         
     	JPanel panel = new JPanel(new BorderLayout());
-    	panel.add(redSButton, BorderLayout.WEST);
+    	panel.add(sButton, BorderLayout.WEST);
     	panel.add(redXXLButton, BorderLayout.EAST);
-    	panel.add(chevronsButton, BorderLayout.CENTER);
-    	panel.add(redMButton, BorderLayout.SOUTH);
+    	panel.add(mButton, BorderLayout.CENTER);
+    	panel.add(nButton, BorderLayout.SOUTH);
         showInFrame(panel, "interactiveCircleIcon");
     }
     /**
@@ -87,49 +88,47 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
      * and different sizes and colors
      */
     public void interactiveChevronsIcon() throws Exception {
-    	ChevronsIcon chevrons;
-    	chevrons = new ChevronsIcon();
-        JButton chevronsButton = new JButton("south", chevrons);
+    	RadianceIcon chevrons = ChevronsIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+    	chevrons.setRotation(SwingConstants.SOUTH);
+        JButton chevronsButton = new JButton("south S", chevrons);
         
-    	ChevronsIcon northChevrons;
-    	northChevrons = new ChevronsIcon(SizingConstants.ACTION_ICON); // SizingConstants.M
-    	northChevrons.setDirection(SwingConstants.NORTH);
-        JButton northButton = new JButton("north M", northChevrons);
+    	RadianceIcon northChevrons = ChevronsIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+    	northChevrons.setRotation(SwingConstants.NORTH);
+        JButton northButton = new JButton("north M", northChevrons); // SizingConstants.M == ACTION_ICON
         
-    	ChevronsIcon westChevrons;
-    	westChevrons = new ChevronsIcon(SizingConstants.XXL, Color.BLUE);
-    	westChevrons.setDirection(SwingConstants.WEST);
+    	RadianceIcon westChevrons = ChevronsIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+    	westChevrons.setRotation(SwingConstants.WEST);
+    	westChevrons.setColorFilter(color -> Color.BLUE);
         JButton westButton = new JButton("west XXL", westChevrons);
         
-    	ChevronsIcon eastChevrons;
-    	eastChevrons = new ChevronsIcon(SizingConstants.XXL, Color.RED);
-    	eastChevrons.setDirection(SwingConstants.EAST);
+    	RadianceIcon eastChevrons = ChevronsIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+    	eastChevrons.setRotation(SwingConstants.EAST);
+    	eastChevrons.setColorFilter(color -> Color.RED);
         JButton eastButton = new JButton("east XXL", eastChevrons);
         
-    	ChevronsIcon northwestChevrons;
-    	northwestChevrons = new ChevronsIcon(SizingConstants.XL, Color.BLUE);
-    	northwestChevrons.setDirection(SwingConstants.NORTH_WEST);
+    	RadianceIcon northwestChevrons = ChevronsIcon.of(SizingConstants.XL, SizingConstants.XL);
+    	northwestChevrons.setRotation(SwingConstants.NORTH_WEST);
+    	northwestChevrons.setColorFilter(color -> Color.BLUE);
         JButton northwestButton = new JButton("north west XL", northwestChevrons);
         
-    	ChevronsIcon northeastChevrons;
-    	northeastChevrons = new ChevronsIcon(SizingConstants.XL, Color.RED);
-    	northeastChevrons.setDirection(SwingConstants.NORTH_EAST);
+    	RadianceIcon northeastChevrons = ChevronsIcon.of(SizingConstants.XL, SizingConstants.XL);
+    	northeastChevrons.setRotation(SwingConstants.NORTH_EAST);
+    	northeastChevrons.setColorFilter(color -> Color.RED);
         JButton northeastButton = new JButton("north east XL", northeastChevrons);
         
-    	ChevronsIcon southwestChevrons;
-    	southwestChevrons = new ChevronsIcon(SizingConstants.L, Color.BLUE);
-    	southwestChevrons.setDirection(SwingConstants.SOUTH_WEST);
+    	RadianceIcon southwestChevrons = ChevronsIcon.of(SizingConstants.L, SizingConstants.L);
+    	southwestChevrons.setRotation(SwingConstants.SOUTH_WEST);
+    	southwestChevrons.setColorFilter(color -> Color.BLUE);
         JButton southwestButton = new JButton("south west L", southwestChevrons);
         
-    	ChevronsIcon southeastChevrons;
-    	southeastChevrons = new ChevronsIcon(SizingConstants.L, Color.RED);
-    	southeastChevrons.setDirection(SwingConstants.SOUTH_EAST);
+    	RadianceIcon southeastChevrons = ChevronsIcon.of(SizingConstants.L, SizingConstants.L);
+    	southeastChevrons.setRotation(SwingConstants.SOUTH_EAST);
+    	southeastChevrons.setColorFilter(color -> Color.RED);
         JButton southeastButton = new JButton("south east L", southeastChevrons);
         
     	JPanel panel = new JPanel(new BorderLayout());
     	JPanel northpanel = new JPanel(new BorderLayout());
     	JPanel southpanel = new JPanel(new BorderLayout());
-    	//chevrons.paintIcon(component, graphics, x, y);
     	panel.add(new JLabel(" chevrons, blue in west, red in east "), BorderLayout.CENTER);
     	northpanel.add(northButton, BorderLayout.CENTER);
     	northpanel.add(northwestButton, BorderLayout.WEST);
@@ -150,44 +149,42 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
      * and different sizes and colors
      */
     public void interactiveArrowIcon() throws Exception {
-    	ArrowIcon south;
-    	south = new ArrowIcon(SizingConstants.SMALL_ICON);
-    	south.setDirection(SwingConstants.SOUTH);
-        JButton southButton = new JButton("south S", south);
+    	RadianceIcon south = IconRarrow.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+    	south.setRotation(SwingConstants.SOUTH);
+    	JButton southButton = new JButton("south S", south);
         
-        ArrowIcon north;
-    	north = new ArrowIcon(SizingConstants.ACTION_ICON); // SizingConstants.M
-    	north.setDirection(SwingConstants.NORTH);
-        JButton northButton = new JButton("north M", north);
+    	RadianceIcon north = IconRarrow.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+    	north.setRotation(SwingConstants.NORTH);
+    	JButton northButton = new JButton("north M", north);
         
-        ArrowIcon west;
-    	west = new ArrowIcon(SizingConstants.XXL, Color.BLUE);
-    	west.setDirection(SwingConstants.WEST);
+    	RadianceIcon west = IconRarrow.of(SizingConstants.XXL, SizingConstants.XXL);
+    	west.setRotation(SwingConstants.WEST);
+    	west.setColorFilter(color -> Color.BLUE);
         JButton westButton = new JButton("west XXL", west);
         
-        ArrowIcon east;
-    	east = new ArrowIcon(SizingConstants.XXL, Color.RED);
-    	east.setDirection(SwingConstants.EAST);
+    	RadianceIcon east = IconRarrow.of(SizingConstants.XXL, SizingConstants.XXL);
+    	east.setRotation(SwingConstants.EAST);
+    	east.setColorFilter(color -> Color.RED);
         JButton eastButton = new JButton("east XXL", east);
         
-        ArrowIcon northwest;
-    	northwest = new ArrowIcon(SizingConstants.XL, Color.BLUE);
-    	northwest.setDirection(SwingConstants.NORTH_WEST);
+    	RadianceIcon northwest = IconRarrow.of(SizingConstants.XL, SizingConstants.XL);
+    	northwest.setRotation(SwingConstants.NORTH_WEST);
+    	northwest.setColorFilter(color -> Color.BLUE);
         JButton northwestButton = new JButton("north west XL", northwest);
         
-        ArrowIcon northeast;
-    	northeast = new ArrowIcon(SizingConstants.XL, Color.RED);
-    	northeast.setDirection(SwingConstants.NORTH_EAST);
+    	RadianceIcon northeast = IconRarrow.of(SizingConstants.XL, SizingConstants.XL);
+    	northeast.setRotation(SwingConstants.NORTH_EAST);
+    	northeast.setColorFilter(color -> Color.RED);
         JButton northeastButton = new JButton("north east XL", northeast);
         
-        ArrowIcon southwest;
-    	southwest = new ArrowIcon(SizingConstants.L, Color.BLUE);
-    	southwest.setDirection(SwingConstants.SOUTH_WEST);
+    	RadianceIcon southwest = IconRarrow.of(SizingConstants.L, SizingConstants.L);
+    	southwest.setRotation(SwingConstants.SOUTH_WEST);
+    	southwest.setColorFilter(color -> Color.BLUE);
         JButton southwestButton = new JButton("south west L", southwest);
         
-        ArrowIcon southeast;
-    	southeast = new ArrowIcon(SizingConstants.L, Color.RED);
-    	southeast.setDirection(SwingConstants.SOUTH_EAST);
+    	RadianceIcon southeast = IconRarrow.of(SizingConstants.L, SizingConstants.L);
+    	southeast.setRotation(SwingConstants.SOUTH_EAST);
+    	southeast.setColorFilter(color -> Color.RED);
         JButton southeastButton = new JButton("south east L", southeast);
         
     	JPanel panel = new JPanel(new BorderLayout());
@@ -213,44 +210,42 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
      * show PlayIcon, a subclass of ArrowIcon with different sizes and colors
      */
     public void interactivePlayIcon() throws Exception {
-    	PlayIcon south;
-    	south = new PlayIcon(SizingConstants.SMALL_ICON);
-    	south.setDirection(SwingConstants.SOUTH);
+    	RadianceIcon south = PlayIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+    	south.setRotation(Math.toRadians(90d));
         JButton southButton = new JButton("south S", south);
         
-        PlayIcon north;
-    	north = new PlayIcon(SizingConstants.ACTION_ICON); // SizingConstants.M
-    	north.setDirection(SwingConstants.NORTH);
-        JButton northButton = new JButton("north M", north);
+    	RadianceIcon north = PlayIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+    	north.setRotation(Math.toRadians(270d));
+        JButton northButton = new JButton("north M", north); // SizingConstants.M
         
-        PlayIcon west;
-    	west = new PlayIcon(SizingConstants.XXL, Color.BLUE);
-    	west.setDirection(SwingConstants.WEST);
+    	RadianceIcon west = PlayIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+    	west.setRotation(Math.toRadians(180d)); // rotate 180°
+    	west.setColorFilter(color -> Color.BLUE);
         JButton westButton = new JButton("west XXL", west);
         
-        PlayIcon east;
-    	east = new PlayIcon(SizingConstants.XXL, Color.RED);
-    	east.setDirection(SwingConstants.EAST);
+    	RadianceIcon east = PlayIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+//    	east.setRotation(SwingConstants.NORTH); // no rotation
+    	east.setColorFilter(color -> Color.RED);
         JButton eastButton = new JButton("east XXL", east);
         
-        PlayIcon northwest;
-    	northwest = new PlayIcon(SizingConstants.XL, Color.BLUE);
-    	northwest.setDirection(SwingConstants.NORTH_WEST);
+    	RadianceIcon northwest = PlayIcon.of(SizingConstants.XL, SizingConstants.XL);
+    	northwest.setRotation(Math.toRadians(225d));
+    	northwest.setColorFilter(color -> Color.BLUE);
         JButton northwestButton = new JButton("north west XL", northwest);
         
-        PlayIcon northeast;
-    	northeast = new PlayIcon(SizingConstants.XL, Color.RED);
-    	northeast.setDirection(SwingConstants.NORTH_EAST);
+    	RadianceIcon northeast = PlayIcon.of(SizingConstants.XL, SizingConstants.XL);
+    	northeast.setRotation(Math.toRadians(315d));
+    	northeast.setColorFilter(color -> Color.RED);
         JButton northeastButton = new JButton("north east XL", northeast);
         
-        PlayIcon southwest;
-    	southwest = new PlayIcon(SizingConstants.L, Color.BLUE);
-    	southwest.setDirection(SwingConstants.SOUTH_WEST);
+    	RadianceIcon southwest = PlayIcon.of(SizingConstants.L, SizingConstants.L);
+    	southwest.setRotation(Math.toRadians(135d));
+    	southwest.setColorFilter(color -> Color.BLUE);
         JButton southwestButton = new JButton("south west L", southwest);
         
-        PlayIcon southeast;
-    	southeast = new PlayIcon(SizingConstants.L, Color.RED);
-    	southeast.setDirection(SwingConstants.SOUTH_EAST);
+    	RadianceIcon southeast = PlayIcon.of(SizingConstants.L, SizingConstants.L);
+    	southeast.setRotation(Math.toRadians(45d));
+    	southeast.setColorFilter(color -> Color.RED);
         JButton southeastButton = new JButton("south east L", southeast);
         
     	JPanel panel = new JPanel(new BorderLayout());

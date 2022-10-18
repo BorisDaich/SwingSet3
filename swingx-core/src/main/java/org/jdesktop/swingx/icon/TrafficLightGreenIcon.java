@@ -1,26 +1,27 @@
 package org.jdesktop.swingx.icon;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.LinearGradientPaint;
+import java.awt.MultipleGradientPaint;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.util.Stack;
 
 import javax.swing.plaf.UIResource;
 
 /*
- * generiert aus feather circle und hierhin kopiert + organize imports
+ * generiert aus feather und hierhin kopiert + organize imports
 
 import org.pushingpixels.radiance.common.api.icon.RadianceIcon;
 import org.pushingpixels.radiance.common.api.icon.RadianceIconUIResource;
@@ -31,7 +32,7 @@ import org.pushingpixels.radiance.common.api.icon.RadianceIconUIResource;
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/radiance">Radiance SVG transcoder</a>.
  */
-public class CircleIcon implements RadianceIcon {
+public class TrafficLightGreenIcon implements RadianceIcon {
     private Shape shape = null;
     private GeneralPath generalPath = null;
     private Paint paint = null;
@@ -66,18 +67,98 @@ transformsStack.push(g.getTransform());
 // 
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 transformsStack.push(g.getTransform());
-g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -0.0f, -0.0f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 transformsStack.push(g.getTransform());
-g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -261.6295166015625f, -313.940673828125f));
 // _0_0
-paint = (colorFilter != null) ? colorFilter.filter(new Color(0, 0, 0, 255)) : new Color(0, 0, 0, 255);
-stroke = new BasicStroke(2.0f,1,1,4.0f,null,0.0f);
-shape = new Ellipse2D.Double(2.0, 2.0, 20.0, 20.0);
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.1734694242477417f, 0.0f, 0.0f, 1.1734694242477417f, -65.53622436523438f, -74.61061096191406f));
+// _0_0_0
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(476.79202f, 430.10822f);
+generalPath.curveTo(476.95065f, 465.58118f, 458.1171f, 498.4276f, 427.4228f, 516.21f);
+generalPath.curveTo(396.7285f, 533.9925f, 358.86566f, 533.9925f, 328.17136f, 516.21f);
+generalPath.curveTo(297.47705f, 498.4276f, 278.6435f, 465.58118f, 278.80212f, 430.10822f);
+generalPath.curveTo(278.6435f, 394.63525f, 297.47705f, 361.78882f, 328.17136f, 344.00638f);
+generalPath.curveTo(358.86566f, 326.22394f, 396.7285f, 326.22394f, 427.4228f, 344.00638f);
+generalPath.curveTo(458.1171f, 361.78882f, 476.95065f, 394.63525f, 476.79202f, 430.10822f);
+generalPath.closePath();
+shape = generalPath;
+paint = new LinearGradientPaint(new Point2D.Double(438.05487060546875, 506.7217102050781), new Point2D.Double(314.9568176269531, 356.07720947265625), new float[] {0.0f,1.0f}, new Color[] {((colorFilter != null) ? colorFilter.filter(new Color(16, 16, 16, 255)) : new Color(16, 16, 16, 255)),((colorFilter != null) ? colorFilter.filter(new Color(64, 64, 64, 255)) : new Color(64, 64, 64, 255))}, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
+g.fill(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0306123495101929f, 0.0f, 0.0f, 1.0306123495101929f, -11.565216064453125f, -13.166579246520996f));
+// _0_0_1
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(476.79202f, 430.10822f);
+generalPath.curveTo(476.95065f, 465.58118f, 458.1171f, 498.4276f, 427.4228f, 516.21f);
+generalPath.curveTo(396.7285f, 533.9925f, 358.86566f, 533.9925f, 328.17136f, 516.21f);
+generalPath.curveTo(297.47705f, 498.4276f, 278.6435f, 465.58118f, 278.80212f, 430.10822f);
+generalPath.curveTo(278.6435f, 394.63525f, 297.47705f, 361.78882f, 328.17136f, 344.00638f);
+generalPath.curveTo(358.86566f, 326.22394f, 396.7285f, 326.22394f, 427.4228f, 344.00638f);
+generalPath.curveTo(458.1171f, 361.78882f, 476.95065f, 394.63525f, 476.79202f, 430.10822f);
+generalPath.closePath();
+shape = generalPath;
+paint = new LinearGradientPaint(new Point2D.Double(316.4324951171875, 353.9866638183594), new Point2D.Double(437.5220031738281, 508.812255859375), new float[] {0.0f,1.0f}, new Color[] {((colorFilter != null) ? colorFilter.filter(new Color(16, 16, 16, 255)) : new Color(16, 16, 16, 255)),((colorFilter != null) ? colorFilter.filter(new Color(64, 64, 64, 255)) : new Color(64, 64, 64, 255))}, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+g.setPaint(paint);
+g.fill(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_0_2
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(476.79202f, 430.10822f);
+generalPath.curveTo(476.95065f, 465.58118f, 458.1171f, 498.4276f, 427.4228f, 516.21f);
+generalPath.curveTo(396.7285f, 533.9925f, 358.86566f, 533.9925f, 328.17136f, 516.21f);
+generalPath.curveTo(297.47705f, 498.4276f, 278.6435f, 465.58118f, 278.80212f, 430.10822f);
+generalPath.curveTo(278.6435f, 394.63525f, 297.47705f, 361.78882f, 328.17136f, 344.00638f);
+generalPath.curveTo(358.86566f, 326.22394f, 396.7285f, 326.22394f, 427.4228f, 344.00638f);
+generalPath.curveTo(458.1171f, 361.78882f, 476.95065f, 394.63525f, 476.79202f, 430.10822f);
+generalPath.closePath();
+shape = generalPath;
+paint = (colorFilter != null) ? colorFilter.filter(new Color(25, 240, 0, 255)) : new Color(25, 240, 0, 255);
+g.setPaint(paint);
+g.fill(shape);
+g.setTransform(transformsStack.pop());
+g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
+transformsStack.push(g.getTransform());
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+// _0_0_3
+if (generalPath == null) {
+   generalPath = new GeneralPath();
+} else {
+   generalPath.reset();
+}
+generalPath.moveTo(455.07373f, 398.7935f);
+generalPath.curveTo(449.2557f, 429.6131f, 413.2274f, 440.72052f, 376.7869f, 445.76556f);
+generalPath.curveTo(340.2812f, 450.81964f, 297.92938f, 446.63812f, 289.7151f, 411.1858f);
+generalPath.curveTo(281.51862f, 375.8104f, 323.15186f, 331.11328f, 377.79706f, 331.11328f);
+generalPath.curveTo(432.44226f, 331.11328f, 460.87363f, 368.06982f, 455.07373f, 398.7935f);
+generalPath.closePath();
+shape = generalPath;
+paint = new LinearGradientPaint(new Point2D.Double(348.5026550292969, 337.67926025390625), new Point2D.Double(372.0980529785156, 443.2402038574219), new float[] {0.0f,1.0f}, new Color[] {((colorFilter != null) ? colorFilter.filter(new Color(255, 255, 255, 255)) : new Color(255, 255, 255, 255)),((colorFilter != null) ? colorFilter.filter(new Color(255, 255, 255, 0)) : new Color(255, 255, 255, 0))}, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+g.setPaint(paint);
+g.fill(shape);
+g.setTransform(transformsStack.pop());
 g.setTransform(transformsStack.pop());
 g.setTransform(transformsStack.pop());
 g.setTransform(transformsStack.pop());
@@ -115,7 +196,7 @@ g.setTransform(transformsStack.pop());
      * @return The X of the bounding box of the original SVG image.
      */
     public static double getOrigX() {
-        return 1.0;
+        return 0.0;
     }
 
     /**
@@ -124,7 +205,7 @@ g.setTransform(transformsStack.pop());
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 1.0;
+        return 0.0;
     }
 
 	/**
@@ -133,7 +214,7 @@ g.setTransform(transformsStack.pop());
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 22.0;
+		return 232.3350830078125;
 	}
 
 	/**
@@ -142,7 +223,7 @@ g.setTransform(transformsStack.pop());
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 22.0;
+		return 232.3350830078125;
 	}
 
 	/** The current width of this icon. */
@@ -155,7 +236,7 @@ g.setTransform(transformsStack.pop());
 	 * Creates a new transcoded SVG image. This is marked as private to indicate that app
 	 * code should be using the {@link #of(int, int)} method to obtain a pre-configured instance.
 	 */
-	private CircleIcon() {
+	private TrafficLightGreenIcon() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -232,7 +313,7 @@ g.setTransform(transformsStack.pop());
      * @return A new instance of this icon with specified dimensions.
      */
     public static RadianceIcon of(int width, int height) {
-       CircleIcon base = new CircleIcon();
+       TrafficLightGreenIcon base = new TrafficLightGreenIcon();
        base.width = width;
        base.height = height;
        return base;
@@ -246,7 +327,7 @@ g.setTransform(transformsStack.pop());
      * @return A new {@link UIResource} instance of this icon with specified dimensions.
      */
     public static RadianceIconUIResource uiResourceOf(int width, int height) {
-       CircleIcon base = new CircleIcon();
+       TrafficLightGreenIcon base = new TrafficLightGreenIcon();
        base.width = width;
        base.height = height;
        return new RadianceIconUIResource(base);
@@ -258,7 +339,7 @@ g.setTransform(transformsStack.pop());
      * @return Factory that returns instances of this icon on demand.
      */
     public static Factory factory() {
-        return CircleIcon::new;
+        return TrafficLightGreenIcon::new;
     }
 }
 
