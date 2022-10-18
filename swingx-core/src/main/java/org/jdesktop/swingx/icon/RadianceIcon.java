@@ -34,18 +34,19 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
-import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.image.RadianceCC;
 
 /**
  * Extension of the core {@link Icon} interface that adds more capabilities like
  * resizing and color filtering.
+ * <p>
+ * SizingConstants extends SwingConstants with sizing from XS to XXL
  * 
  * @author Kirill Grouchnikov
  * @author EUG https://github.com/homebeaver (rotation + point/axis reflection)
  */
-public interface RadianceIcon extends Icon, SwingConstants {
+public interface RadianceIcon extends Icon, SizingConstants {
 	
 	/**
 	 * A hint for point/axis reflection (mirroring) the icon when painting.

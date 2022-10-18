@@ -45,7 +45,6 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.LookAndFeel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -63,10 +62,9 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.SwingXUtilities;
-import org.jdesktop.swingx.icon.EmptyIcon;
 import org.jdesktop.swingx.icon.ChevronsIcon;
+import org.jdesktop.swingx.icon.EmptyIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
-import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.plaf.TaskPaneUI;
 
 /**
@@ -808,11 +806,11 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          */
         protected void paintChevronControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
         	LOG.fine("x="+x + ",y="+y + ", width="+width + ",height="+height);
-        	RadianceIcon chevrons = ChevronsIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+        	RadianceIcon chevrons = ChevronsIcon.of(width, height);
             if (group.isCollapsed()) {
-            	chevrons.setRotation(SwingConstants.SOUTH);
+            	chevrons.setRotation(RadianceIcon.SOUTH);
             } else {
-            	chevrons.setRotation(SwingConstants.NORTH);
+            	chevrons.setRotation(RadianceIcon.NORTH);
             }
             chevrons.paintIcon(group, g, x, y);
         }

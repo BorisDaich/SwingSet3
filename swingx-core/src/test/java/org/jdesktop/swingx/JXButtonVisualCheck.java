@@ -44,7 +44,6 @@ import javax.swing.SwingConstants;
 import org.jdesktop.swingx.icon.PauseIcon;
 import org.jdesktop.swingx.icon.PlayIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
-import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.image.FastBlurFilter;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.util.PaintUtils;
@@ -65,7 +64,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
      */
     public void interactiveButton() {
     	JPanel center = new JPanel();
-    	JButton pause = new JButton("ACTION_ICON size", PauseIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON));
+    	JButton pause = new JButton("ACTION_ICON size", PauseIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON));
     	center.add(pause);
     	
     	JPanel control = new JPanel();
@@ -92,7 +91,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
             }
         };
         action.putValue(Action.NAME, "My Action");
-    	RadianceIcon pauseIcon = PauseIcon.of(SizingConstants.LAUNCHER_ICON, SizingConstants.LAUNCHER_ICON);
+    	RadianceIcon pauseIcon = PauseIcon.of(RadianceIcon.LAUNCHER_ICON, RadianceIcon.LAUNCHER_ICON);
     	pauseIcon.setColorFilter(color -> Color.MAGENTA);
         action.putValue(Action.LARGE_ICON_KEY, pauseIcon);
         action.setEnabled(true);
@@ -103,7 +102,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
         jContentPane.setLayout(new BorderLayout());
         
     	JButton pause = new JButton(action);
-    	pause.setIcon(PauseIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON));
+    	pause.setIcon(PauseIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON));
     	pause.setText("ACTION_ICON size");
     	jContentPane.add(pause, BorderLayout.WEST);
         
@@ -192,7 +191,7 @@ public class JXButtonVisualCheck extends InteractiveTestCase {
     		button.setText(ringArray.get());
         });
     	
-    	RadianceIcon play = PlayIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+    	RadianceIcon play = PlayIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
         button.setIcon(play);
         
         showInFrame(button, "BackgroundCheck");

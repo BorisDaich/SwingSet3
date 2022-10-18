@@ -149,41 +149,41 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
      * and different sizes and colors
      */
     public void interactiveArrowIcon() throws Exception {
-    	RadianceIcon south = ArrowIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
-    	south.setRotation(SwingConstants.SOUTH);
+    	RadianceIcon south = ArrowIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+    	south.setRotation(RadianceIcon.SOUTH);
     	JButton southButton = new JButton("south S", south);
         
-    	RadianceIcon north = ArrowIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
-    	north.setRotation(SwingConstants.NORTH);
+    	RadianceIcon north = ArrowIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
+    	north.setRotation(RadianceIcon.NORTH);
     	JButton northButton = new JButton("north M", north);
         
-    	RadianceIcon west = ArrowIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+    	RadianceIcon west = ArrowIcon.of(RadianceIcon.XXL, RadianceIcon.XXL);
     	west.setRotation(SwingConstants.WEST);
     	west.setColorFilter(color -> Color.BLUE);
         JButton westButton = new JButton("west XXL", west);
         
-    	RadianceIcon east = ArrowIcon.of(SizingConstants.XXL, SizingConstants.XXL);
-    	east.setRotation(SwingConstants.EAST);
+    	RadianceIcon east = ArrowIcon.of(RadianceIcon.XXL, RadianceIcon.XXL);
+    	east.setRotation(RadianceIcon.EAST);
     	east.setColorFilter(color -> Color.RED);
         JButton eastButton = new JButton("east XXL", east);
         
-    	RadianceIcon northwest = ArrowIcon.of(SizingConstants.XL, SizingConstants.XL);
-    	northwest.setRotation(SwingConstants.NORTH_WEST);
+    	RadianceIcon northwest = ArrowIcon.of(RadianceIcon.XL, RadianceIcon.XL);
+    	northwest.setRotation(RadianceIcon.NORTH_WEST);
     	northwest.setColorFilter(color -> Color.BLUE);
         JButton northwestButton = new JButton("north west XL", northwest);
         
-    	RadianceIcon northeast = ArrowIcon.of(SizingConstants.XL, SizingConstants.XL);
-    	northeast.setRotation(SwingConstants.NORTH_EAST);
+    	RadianceIcon northeast = ArrowIcon.of(RadianceIcon.XL, RadianceIcon.XL);
+    	northeast.setRotation(RadianceIcon.NORTH_EAST);
     	northeast.setColorFilter(color -> Color.RED);
         JButton northeastButton = new JButton("north east XL", northeast);
         
-    	RadianceIcon southwest = ArrowIcon.of(SizingConstants.L, SizingConstants.L);
-    	southwest.setRotation(SwingConstants.SOUTH_WEST);
+    	RadianceIcon southwest = ArrowIcon.of(RadianceIcon.L, RadianceIcon.L);
+    	southwest.setRotation(RadianceIcon.SOUTH_WEST);
     	southwest.setColorFilter(color -> Color.BLUE);
         JButton southwestButton = new JButton("south west L", southwest);
         
-    	RadianceIcon southeast = ArrowIcon.of(SizingConstants.L, SizingConstants.L);
-    	southeast.setRotation(SwingConstants.SOUTH_EAST);
+    	RadianceIcon southeast = ArrowIcon.of(RadianceIcon.L, RadianceIcon.L);
+    	southeast.setRotation(RadianceIcon.SOUTH_EAST);
     	southeast.setColorFilter(color -> Color.RED);
         JButton southeastButton = new JButton("south east L", southeast);
         
@@ -210,40 +210,40 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
      * show PlayIcon, a subclass of ArrowIcon with different sizes and colors
      */
     public void interactivePlayIcon() throws Exception {
-    	RadianceIcon south = PlayIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+    	RadianceIcon south = PlayIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
     	south.setRotation(Math.toRadians(90d));
         JButton southButton = new JButton("south S", south);
         
-    	RadianceIcon north = PlayIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+    	RadianceIcon north = PlayIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
     	north.setRotation(Math.toRadians(270d));
         JButton northButton = new JButton("north M", north); // SizingConstants.M
         
-    	RadianceIcon west = PlayIcon.of(SizingConstants.XXL, SizingConstants.XXL);
+    	RadianceIcon west = PlayIcon.of(RadianceIcon.XXL, RadianceIcon.XXL);
     	west.setRotation(Math.toRadians(180d)); // rotate 180°
     	west.setColorFilter(color -> Color.BLUE);
         JButton westButton = new JButton("west XXL", west);
         
-    	RadianceIcon east = PlayIcon.of(SizingConstants.XXL, SizingConstants.XXL);
-//    	east.setRotation(SwingConstants.NORTH); // no rotation
+    	RadianceIcon east = PlayIcon.of(RadianceIcon.XXL, RadianceIcon.XXL);
+//    	east.setRotation(RadianceIcon.NORTH); // no rotation
     	east.setColorFilter(color -> Color.RED);
         JButton eastButton = new JButton("east XXL", east);
         
-    	RadianceIcon northwest = PlayIcon.of(SizingConstants.XL, SizingConstants.XL);
+    	RadianceIcon northwest = PlayIcon.of(RadianceIcon.XL, RadianceIcon.XL);
     	northwest.setRotation(Math.toRadians(225d));
     	northwest.setColorFilter(color -> Color.BLUE);
         JButton northwestButton = new JButton("north west XL", northwest);
         
-    	RadianceIcon northeast = PlayIcon.of(SizingConstants.XL, SizingConstants.XL);
+    	RadianceIcon northeast = PlayIcon.of(RadianceIcon.XL, RadianceIcon.XL);
     	northeast.setRotation(Math.toRadians(315d));
     	northeast.setColorFilter(color -> Color.RED);
         JButton northeastButton = new JButton("north east XL", northeast);
         
-    	RadianceIcon southwest = PlayIcon.of(SizingConstants.L, SizingConstants.L);
+    	RadianceIcon southwest = PlayIcon.of(RadianceIcon.L, RadianceIcon.L);
     	southwest.setRotation(Math.toRadians(135d));
     	southwest.setColorFilter(color -> Color.BLUE);
         JButton southwestButton = new JButton("south west L", southwest);
         
-    	RadianceIcon southeast = PlayIcon.of(SizingConstants.L, SizingConstants.L);
+    	RadianceIcon southeast = PlayIcon.of(RadianceIcon.L, RadianceIcon.L);
     	southeast.setRotation(Math.toRadians(45d));
     	southeast.setColorFilter(color -> Color.RED);
         JButton southeastButton = new JButton("south east L", southeast);

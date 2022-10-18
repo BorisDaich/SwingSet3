@@ -78,7 +78,6 @@ import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
 import org.jdesktop.swingx.event.DateSelectionListener;
 import org.jdesktop.swingx.icon.CalendarIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
-import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.plaf.DatePickerUI;
 
 /**
@@ -524,7 +523,7 @@ public class BasicDatePickerUI extends DatePickerUI {
         b.setRolloverEnabled(false);
         b.setMargin(new Insets(0, 3, 0, 3));
 
-        RadianceIcon calendar = CalendarIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON);
+        RadianceIcon calendar = CalendarIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
         b.setIcon(calendar);
         b.setFocusable(false);
         return b;

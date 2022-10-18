@@ -24,7 +24,6 @@ import javax.swing.SwingConstants;
 import org.jdesktop.swingx.icon.PauseIcon;
 import org.jdesktop.swingx.icon.PlayIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
-import org.jdesktop.swingx.icon.SizingConstants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -137,7 +136,7 @@ public class JXFrameTest extends InteractiveTestCase {
                 }
             };
             addFrameAction.putValue(Action.NAME, "addFrame");
-        	RadianceIcon play = PlayIcon.of(SizingConstants.ACTION_ICON, SizingConstants.ACTION_ICON);
+        	RadianceIcon play = PlayIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
         	play.setColorFilter(color -> Color.GREEN);
             addFrameAction.putValue(Action.LARGE_ICON_KEY, play);
             JXButton addFrameBtn = new JXButton(addFrameAction);
@@ -154,7 +153,7 @@ public class JXFrameTest extends InteractiveTestCase {
                 }
             };
             disableFrameMgrAction.putValue(Action.NAME, "disableFrameMgr");
-        	RadianceIcon pauseIcon = PauseIcon.of(SizingConstants.LAUNCHER_ICON, SizingConstants.LAUNCHER_ICON);
+        	RadianceIcon pauseIcon = PauseIcon.of(RadianceIcon.LAUNCHER_ICON, RadianceIcon.LAUNCHER_ICON);
         	pauseIcon.setColorFilter(color -> Color.MAGENTA);
             disableFrameMgrAction.putValue(Action.LARGE_ICON_KEY, pauseIcon);
         	JXButton pause = new JXButton(disableFrameMgrAction);
