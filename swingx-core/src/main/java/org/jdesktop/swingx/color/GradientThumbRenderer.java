@@ -29,7 +29,6 @@ import org.jdesktop.swingx.icon.ArrowIcon;
 import org.jdesktop.swingx.icon.PlayIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.multislider.ThumbRenderer;
-import org.jdesktop.swingx.util.PaintUtils;
 
 /**
  * A GradientThumbRenderer, together with GradientTrackRenderer
@@ -42,9 +41,7 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
 
     private static final Logger LOG = Logger.getLogger(GradientThumbRenderer.class.getName());
 
-//    private Image thumb_black;
-//    private Image thumb_gray;
-    private RadianceIcon arrowIcon;
+    private RadianceIcon thumbIcon; // unselected
     private RadianceIcon selectedIcon;
 
     /**
@@ -53,11 +50,11 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
     public GradientThumbRenderer() {
         super();
     
-        arrowIcon = ArrowIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
-        arrowIcon.setRotation(RadianceIcon.SOUTH);
+        thumbIcon = ArrowIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+        thumbIcon.setRotation(RadianceIcon.SOUTH);
         selectedIcon = PlayIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
         selectedIcon.setRotation(Math.toRadians(90d));
-        LOG.fine("ctor die icon png fehlen, daher ArrowIcon "+arrowIcon);
+        LOG.fine("ctor die icon png fehlen, daher ArrowIcon "+thumbIcon);
     }
     
     private boolean selected;
@@ -71,7 +68,7 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
     	if(selected) {
     		selectedIcon.paintIcon(this, g, 0, 0);
     	} else {
-    		arrowIcon.paintIcon(this, g, 0, 0);
+    		thumbIcon.paintIcon(this, g, 0, 0);
     	}
     }
 //    @Override
@@ -88,9 +85,10 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
 //    }
 
     public JComponent getThumbRendererComponent(JXMultiThumbSlider<?> slider, int index, boolean selected) {
-        Color c = (Color)slider.getModel().getThumbAt(index).getObject();
-        c = PaintUtils.removeAlpha(c);
-        this.setForeground(c);
+        final Color c = (Color)slider.getModel().getThumbAt(index).getObject();
+        // color the thumb icon:
+        thumbIcon.setColorFilter(color -> c);
+        selectedIcon.setColorFilter(color -> c);
         this.selected = selected;
         return this;
     }
