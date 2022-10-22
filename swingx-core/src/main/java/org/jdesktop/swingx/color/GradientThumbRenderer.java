@@ -26,7 +26,7 @@ import javax.swing.JComponent;
 
 import org.jdesktop.swingx.JXMultiThumbSlider;
 import org.jdesktop.swingx.icon.ArrowIcon;
-import org.jdesktop.swingx.icon.PlayIcon;
+import org.jdesktop.swingx.icon.PlayIconSolid;
 import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.multislider.ThumbRenderer;
 
@@ -39,7 +39,8 @@ import org.jdesktop.swingx.multislider.ThumbRenderer;
  */
 public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
 
-    private static final Logger LOG = Logger.getLogger(GradientThumbRenderer.class.getName());
+	private static final long serialVersionUID = 7522003930712055716L;
+	private static final Logger LOG = Logger.getLogger(GradientThumbRenderer.class.getName());
 
     private RadianceIcon thumbIcon; // unselected
     private RadianceIcon selectedIcon;
@@ -50,9 +51,9 @@ public class GradientThumbRenderer extends JComponent implements ThumbRenderer {
     public GradientThumbRenderer() {
         super();
     
-        thumbIcon = ArrowIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+        thumbIcon = ArrowIcon.uiResourceOf(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
         thumbIcon.setRotation(RadianceIcon.SOUTH);
-        selectedIcon = PlayIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+        selectedIcon = PlayIconSolid.uiResourceOf(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
         selectedIcon.setRotation(Math.toRadians(90d));
         LOG.fine("ctor die icon png fehlen, daher ArrowIcon "+thumbIcon);
     }
