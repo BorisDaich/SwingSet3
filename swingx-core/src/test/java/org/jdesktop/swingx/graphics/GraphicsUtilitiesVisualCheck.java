@@ -30,10 +30,10 @@ import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXImageView;
-import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.icon.ArrowIcon;
+import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.icon.CircleIcon;
-import org.jdesktop.swingx.icon.PlayIcon;
+import org.jdesktop.swingx.icon.PlayIconSolid;
 import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.icon.SizingConstants;
 import org.jdesktop.swingx.icon.TrafficLightGreenIcon;
@@ -207,43 +207,45 @@ public class GraphicsUtilitiesVisualCheck extends InteractiveTestCase {
     }
     
     /**
-     * show PlayIcon, a subclass of ArrowIcon with different sizes and colors
+     * show solid PlayIcon with different sizes and colors
+     * diff between method of and uiResourceOf: 
+     * see https://github.com/kirill-grouchnikov/radiance/issues/417
      */
     public void interactivePlayIcon() throws Exception {
-    	RadianceIcon south = PlayIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+    	RadianceIcon south = PlayIconSolid.uiResourceOf(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
     	south.setRotation(Math.toRadians(90d));
         JButton southButton = new JButton("south S", south);
         
-    	RadianceIcon north = PlayIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
+    	RadianceIcon north = PlayIconSolid.uiResourceOf(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
     	north.setRotation(Math.toRadians(270d));
         JButton northButton = new JButton("north M", north); // SizingConstants.M
         
-    	RadianceIcon west = PlayIcon.of(RadianceIcon.XXL, RadianceIcon.XXL);
+    	RadianceIcon west = PlayIconSolid.uiResourceOf(RadianceIcon.XXL, RadianceIcon.XXL);
     	west.setRotation(Math.toRadians(180d)); // rotate 180°
     	west.setColorFilter(color -> Color.BLUE);
         JButton westButton = new JButton("west XXL", west);
         
-    	RadianceIcon east = PlayIcon.of(RadianceIcon.XXL, RadianceIcon.XXL);
+    	RadianceIcon east = PlayIconSolid.uiResourceOf(RadianceIcon.XXL, RadianceIcon.XXL);
 //    	east.setRotation(RadianceIcon.NORTH); // no rotation
     	east.setColorFilter(color -> Color.RED);
         JButton eastButton = new JButton("east XXL", east);
         
-    	RadianceIcon northwest = PlayIcon.of(RadianceIcon.XL, RadianceIcon.XL);
+    	RadianceIcon northwest = PlayIconSolid.uiResourceOf(RadianceIcon.XL, RadianceIcon.XL);
     	northwest.setRotation(Math.toRadians(225d));
     	northwest.setColorFilter(color -> Color.BLUE);
         JButton northwestButton = new JButton("north west XL", northwest);
         
-    	RadianceIcon northeast = PlayIcon.of(RadianceIcon.XL, RadianceIcon.XL);
+    	RadianceIcon northeast = PlayIconSolid.uiResourceOf(RadianceIcon.XL, RadianceIcon.XL);
     	northeast.setRotation(Math.toRadians(315d));
     	northeast.setColorFilter(color -> Color.RED);
         JButton northeastButton = new JButton("north east XL", northeast);
         
-    	RadianceIcon southwest = PlayIcon.of(RadianceIcon.L, RadianceIcon.L);
+    	RadianceIcon southwest = PlayIconSolid.uiResourceOf(RadianceIcon.L, RadianceIcon.L);
     	southwest.setRotation(Math.toRadians(135d));
     	southwest.setColorFilter(color -> Color.BLUE);
         JButton southwestButton = new JButton("south west L", southwest);
         
-    	RadianceIcon southeast = PlayIcon.of(RadianceIcon.L, RadianceIcon.L);
+    	RadianceIcon southeast = PlayIconSolid.uiResourceOf(RadianceIcon.L, RadianceIcon.L);
     	southeast.setRotation(Math.toRadians(45d));
     	southeast.setColorFilter(color -> Color.RED);
         JButton southeastButton = new JButton("south east L", southeast);

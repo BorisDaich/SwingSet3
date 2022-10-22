@@ -39,6 +39,20 @@ public class RadianceIconUIResource implements RadianceIcon, UIResource {
 		this.delegate = delegate;
 	}
 
+	public void setReflection(boolean horizontal, boolean vertical) {
+		delegate.setReflection(horizontal, vertical);
+	}
+	public boolean isReflection() {
+		return delegate.isReflection();
+	}
+
+	public void setRotation(double theta) {
+		delegate.setRotation(theta);
+	}
+	public double getRotation() {
+		return delegate.getRotation();
+	}
+
 	public int getIconHeight() {
 		return delegate.getIconHeight();
 	}
