@@ -35,7 +35,6 @@ import java.util.logging.Logger;
  */
 public class HyperlinkAction extends AbstractHyperlinkAction<URI> {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(HyperlinkAction.class.getName());
     
     private Action desktopAction;
@@ -152,7 +151,7 @@ public class HyperlinkAction extends AbstractHyperlinkAction<URI> {
             setVisited(true);
         } catch (IOException e1) {
             setVisited(false);
-            LOG.fine("cant visit Desktop " + e);
+            LOG.fine("can't visit Desktop " + e);
         }
     }
     

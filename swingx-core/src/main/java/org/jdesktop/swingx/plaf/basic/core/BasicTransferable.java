@@ -39,9 +39,7 @@ import javax.swing.plaf.UIResource;
  */
 public class BasicTransferable implements Transferable, UIResource {
     
-	/** TODO doc */
     protected String plainData;
-	/** TODO doc */
     protected String htmlData;
 
     private static DataFlavor[] htmlFlavors;

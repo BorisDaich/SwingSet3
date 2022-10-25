@@ -27,9 +27,6 @@ import org.jdesktop.swingx.JXHyperlink;
  */
 public class HyperlinkAddon extends AbstractComponentAddon {
 	
-	/**
-	 * ctor
-	 */
     public HyperlinkAddon() {
         super("JXHyperlink");
     }

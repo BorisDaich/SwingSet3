@@ -44,9 +44,6 @@ public class DaySelectionModel extends AbstractDateSelectionModel {
     private SortedSet<Date> selectedDates;
     private SortedSet<Date> unselectableDates;
 
-    /**
-     * TODO
-     */
     public DaySelectionModel() {
         this(null);
     }

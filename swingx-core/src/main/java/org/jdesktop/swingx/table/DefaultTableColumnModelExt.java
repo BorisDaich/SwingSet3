@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.table;
 
 import java.beans.PropertyChangeEvent;
@@ -36,7 +33,6 @@ import javax.swing.table.TableColumn;
 
 import org.jdesktop.swingx.event.TableColumnModelExtListener;
 
-
 /**
  * A default implementation of <code>TableColumnModelExt</code>.
  * <p>
@@ -46,7 +42,6 @@ import org.jdesktop.swingx.event.TableColumnModelExtListener;
  * need enhanced TableColumnModelEvent and -Listeners that are
  * aware of the event.)
  * 
- *  
  * @author Richard Bair
  * @author Jeanette Winzenburg
  */

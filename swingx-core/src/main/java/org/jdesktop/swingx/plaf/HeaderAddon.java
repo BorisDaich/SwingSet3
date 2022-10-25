@@ -33,9 +33,6 @@ import org.jdesktop.swingx.JXHeader;
  */
 public class HeaderAddon extends AbstractComponentAddon {
 
-	/**
-	 * ctor
-	 */
     public HeaderAddon() {
         super("JXHeader");
     }

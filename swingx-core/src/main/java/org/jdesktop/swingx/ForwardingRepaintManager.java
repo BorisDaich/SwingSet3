@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -68,6 +66,7 @@ public class ForwardingRepaintManager extends RepaintManager {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated(since = "9", forRemoval = true)
     public void addDirtyRegion(Applet applet, int x, int y, int w, int h) {
         delegate.addDirtyRegion(applet, x, y, w, h);
     }

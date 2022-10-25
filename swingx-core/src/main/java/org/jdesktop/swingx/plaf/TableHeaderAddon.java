@@ -34,9 +34,6 @@ import javax.swing.plaf.metal.MetalBorders;
  */
 public class TableHeaderAddon extends AbstractComponentAddon {
 
-    /**
-     * ctor
-     */
     public TableHeaderAddon() {
         super("JXTableHeader");
     }

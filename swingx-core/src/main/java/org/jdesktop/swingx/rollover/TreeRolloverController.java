@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -30,13 +28,12 @@ import javax.swing.tree.TreePath;
 
 
 /**
-     * listens to rollover properties. 
-     * Repaints effected component regions.
-     * Updates link cursor.
-     * 
-     * @author Jeanette Winzenburg
-     */
-    public class TreeRolloverController<T extends JTree>  extends RolloverController<T> {
+ * listens to rollover properties. Repaints effected component regions. 
+ * Updates link cursor.
+ * 
+ * @author Jeanette Winzenburg
+ */
+public class TreeRolloverController<T extends JTree> extends RolloverController<T> {
     
         private Cursor oldCursor;
         

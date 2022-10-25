@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -41,8 +39,7 @@ import org.jdesktop.swingx.renderer.StringValues;
 public final class StringValueRegistry implements StringValueProvider {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(StringValueRegistry.class.getName());
+    private static final Logger LOG = Logger.getLogger(StringValueRegistry.class.getName());
     
     private Map<Class<?>, StringValue> perClass;
     private HashMap<Integer, StringValue> perColumn;

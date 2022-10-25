@@ -68,12 +68,8 @@ public abstract class DefaultSortController<M> extends DefaultRowSorter<M, Integ
 
     private StringValueProvider stringValueProvider;
 
-    /** TODO doc */
     protected int cachedModelRowCount;
     
-    /**
-     * ctor
-     */
     public DefaultSortController() {
         super();
         setSortable(true);

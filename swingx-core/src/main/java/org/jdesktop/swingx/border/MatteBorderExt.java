@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.border;
 
 import java.awt.Color;
@@ -41,24 +38,23 @@ public class MatteBorderExt extends MatteBorder {
     protected Icon[] tileIcons = null;
     private Icon defaultIcon = null;
 
-    /**
-     * Draws a matte border using specialized icons for corners and sides. If
-         * tileIcons is null, or if the length of tileIcons array is less than 2, this
-         * defaults to the {@link javax.swing.border.MatteBorder superclass} behavior.
-         * Otherwise, tileIcons must specify icons in clockwise order, starting with
-         * the top-left icon at index zero, culminating with the left icon at index 7.
-     * If the length of the tileIcons array is greater than 1, but less than 8,
-     * then tileIcons[0] is used to paint the corners, and tileIcons[1] is used
-         * to paint the sides, with icons rotated as necessary. Other icons, if any,
-     * are ignored.
-     *
-     * @param top top inset
-     * @param left left inset
-     * @param bottom bottom inset
-     * @param right right inset
-     * @param tileIcons array of icons starting with top-left in index 0,
-     * continuing clockwise through the rest of the indices
-     */
+	/**
+	 * Draws a matte border using specialized icons for corners and sides. If
+	 * tileIcons is null, or if the length of tileIcons array is less than 2, this
+	 * defaults to the {@link javax.swing.border.MatteBorder superclass} behavior.
+	 * Otherwise, tileIcons must specify icons in clockwise order, starting with the
+	 * top-left icon at index zero, culminating with the left icon at index 7. If
+	 * the length of the tileIcons array is greater than 1, but less than 8, then
+	 * tileIcons[0] is used to paint the corners, and tileIcons[1] is used to paint
+	 * the sides, with icons rotated as necessary. Other icons, if any, are ignored.
+	 *
+	 * @param top       top inset
+	 * @param left      left inset
+	 * @param bottom    bottom inset
+	 * @param right     right inset
+	 * @param tileIcons array of icons starting with top-left in index 0, continuing
+	 *                  clockwise through the rest of the indices
+	 */
     public MatteBorderExt(int top, int left, int bottom, int right,
                           Icon[] tileIcons) {
         super(top, left, bottom, right,

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -33,7 +31,6 @@ import java.util.Date;
  * PENDING JW: move the missing ops. Volunteers, please! Once done, this will be deprecated.
  * 
  * @author Scott Violet
- * @version  $Revision$
  * 
  */
 public class DateUtils {

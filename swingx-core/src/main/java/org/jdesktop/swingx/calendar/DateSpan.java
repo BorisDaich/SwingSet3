@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -29,7 +27,6 @@ import java.util.Date;
  * if you modify returned <code>Date</code>s you will <b>not</b> effect
  * the <code>DateSpan</code>.  The end points are inclusive.
  *
- * @version  $Revision$
  */
 public class DateSpan {
     private long _start;

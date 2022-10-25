@@ -32,18 +32,12 @@ import java.util.Date;
 public class CalendarUtils {
 
     // Constants used internally; unit is milliseconds
-	/** TODO doc */
     public static final int ONE_MINUTE = 60*1000;
-	/** TODO doc */
     public static final int ONE_HOUR   = 60*ONE_MINUTE;
-	/** TODO doc */
     public static final int THREE_HOURS = 3 * ONE_HOUR;
-	/** TODO doc */
     public static final int ONE_DAY    = 24*ONE_HOUR;
     
-	/** TODO doc */
     public static final int DECADE = 5467;
-	/** TODO doc */
     public static final int YEAR_IN_DECADE = DECADE + 1;
     
     /**

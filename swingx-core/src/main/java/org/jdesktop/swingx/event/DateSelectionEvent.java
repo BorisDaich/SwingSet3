@@ -29,31 +29,18 @@ import org.jdesktop.swingx.calendar.DateSelectionModel;
  */
 public class DateSelectionEvent extends EventObject {
 	
-    /** TODO doc */
     public static enum EventType {
-        /** TODO doc */
         DATES_ADDED,
-        /** TODO doc */
         DATES_REMOVED,
-        /** TODO doc */
         DATES_SET,
-        /** TODO doc */
         SELECTION_CLEARED,
-        /** TODO doc */
         SELECTABLE_DATES_CHANGED,
-        /** TODO doc */
         SELECTABLE_RANGE_CHANGED,
-        /** TODO doc */
         UNSELECTED_DATES_CHANGED,
-        /** TODO doc */
         LOWER_BOUND_CHANGED,
-        /** TODO doc */
         UPPER_BOUND_CHANGED, 
-        /** TODO doc */
         ADJUSTING_STARTED, 
-        /** TODO doc */
         ADJUSTING_STOPPED, 
-        /** TODO doc */
         CALENDAR_CHANGED,
     }
 

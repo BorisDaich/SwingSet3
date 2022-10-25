@@ -29,7 +29,6 @@ import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
 import org.jdesktop.swingx.util.Contract;
 
 /**
- * 
  * @author Joshua Outwater
  */
 public class DefaultDateSelectionModel extends AbstractDateSelectionModel {
@@ -37,9 +36,6 @@ public class DefaultDateSelectionModel extends AbstractDateSelectionModel {
     private SortedSet<Date> selectedDates;
     private SortedSet<Date> unselectableDates;
 
-    /**
-     * 
-     */
     public DefaultDateSelectionModel() {
         this(null);
     }

@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -23,4 +21,3 @@
  * mechanism to support custom component look-and-feels.
  */
 package org.jdesktop.swingx.plaf.macosx;
-

@@ -53,15 +53,11 @@ public class DatePickerCellEditor extends AbstractCellEditor implements TableCel
 
     private static Logger LOG = Logger.getLogger(DatePickerCellEditor.class.getName());
     private static final long serialVersionUID = -1L;
-    /** TODO doc */
     protected JXDatePicker datePicker;
-    /** TODO doc */
     protected DateFormat dateFormat;
-    /** TODO doc */
     protected int clickCountToStart = 2;
 
     private ActionListener pickerActionListener;
-    /** TODO doc */
     protected boolean ignoreAction;
 
     /**

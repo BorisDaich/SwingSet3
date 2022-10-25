@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,7 +38,7 @@ import org.jdesktop.swingx.util.Contract;
  * @author Jeanette Winzenburg
  * @author Karl Schaefer
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public enum ScrollableSizeHint {
     /**
      * Size should be unchanged.
