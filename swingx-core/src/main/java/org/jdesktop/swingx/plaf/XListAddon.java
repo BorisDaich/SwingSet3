@@ -1,6 +1,4 @@
 /*
- * $Id: BusyLabelAddon.java 2565 2008-01-03 19:08:32Z rah003 $
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -40,20 +38,16 @@ public class XListAddon extends AbstractComponentAddon {
     }
 
     @Override
-    protected void addBasicDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
-        defaults.add(JXList.uiClassID,
-                "org.jdesktop.swingx.plaf.basic.core.BasicXListUI");
+    protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+        defaults.add(JXList.uiClassID, "org.jdesktop.swingx.plaf.basic.core.BasicXListUI");
         if (isGTK()) {
             replaceListTableBorders(addon, defaults);
         }
     }
 
     @Override
-    protected void addNimbusDefaults(LookAndFeelAddons addon,
-            DefaultsList defaults) {
-        defaults.add(JXList.uiClassID,
-                "org.jdesktop.swingx.plaf.synth.SynthXListUI");
+    protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+        defaults.add(JXList.uiClassID, "org.jdesktop.swingx.plaf.synth.SynthXListUI");
     }
     
 
@@ -86,8 +80,6 @@ public class XListAddon extends AbstractComponentAddon {
         }
     }
 
-
-
     /**
      * 
      * @return true if the LF is GTK.
@@ -95,6 +87,5 @@ public class XListAddon extends AbstractComponentAddon {
     private boolean isGTK() {
         return "GTK".equals(UIManager.getLookAndFeel().getID());
     }
-
 
 }
