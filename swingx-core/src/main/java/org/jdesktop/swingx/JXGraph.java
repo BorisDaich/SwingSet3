@@ -20,6 +20,7 @@ package org.jdesktop.swingx;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -292,7 +293,9 @@ import org.jdesktop.beans.JavaBean;
  */
 @JavaBean
 public class JXGraph extends JXPanel {
-    // stroke widths used to draw the main axis and the grid
+	
+	private static final long serialVersionUID = 839170848365319138L;
+	// stroke widths used to draw the main axis and the grid
     // the main axis is slightly thicker
     private static final float STROKE_AXIS = 1.2f;
     private static final float STROKE_GRID = 1.0f;
@@ -1433,7 +1436,6 @@ public class JXGraph extends JXPanel {
         double axisH = yPositionToPixel(originY);
         FontMetrics metrics = g2.getFontMetrics();
         
-//        double startX = Math.floor((minX - originX) / majorX) * majorX;
         double startX = Math.floor(minX / majorX) * majorX;
         for (double x = startX; x < maxX + majorX; x += majorX) {
             if (((x - majorX / 2.0) < originX) &&
@@ -1447,8 +1449,7 @@ public class JXGraph extends JXPanel {
         }
     }
     
-    // Draws the vertical lines of the grid. Draws both minor and major
-    // grid lines.
+    // Draws the vertical lines of the grid. Draws both minor and major grid lines.
     private void drawVerticalGrid(Graphics2D g2) {
         double minorSpacing = majorX / getMinorCountX();
         double axisH = yPositionToPixel(originY);
@@ -1467,7 +1468,6 @@ public class JXGraph extends JXPanel {
             }
         }
         
-//        double startX = Math.floor((minX - originX) / majorX) * majorX;
         double startX = Math.floor(minX / majorX) * majorX;
         for (double x = startX; x < maxX + majorX; x += majorX) {
             g2.setStroke(gridStroke);
@@ -1493,7 +1493,7 @@ public class JXGraph extends JXPanel {
         }
     }
 
-    // Drase the main axis.
+    // Draws the main axis.
     private void drawAxis(Graphics2D g2) {
         if (!isAxisPainted()) {
             return;
@@ -1550,7 +1550,7 @@ public class JXGraph extends JXPanel {
      */
     protected void paintBackground(Graphics2D g2) {
         if (isBackgroundPainted()) {
-            Painter p = getBackgroundPainter();
+            Painter<Component> p = getBackgroundPainter();
             if (p != null) {
                 p.paint(g2, this, getWidth(), getHeight());
             } else {
