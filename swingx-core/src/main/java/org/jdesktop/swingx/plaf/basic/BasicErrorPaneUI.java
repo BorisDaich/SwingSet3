@@ -76,7 +76,9 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.error.ErrorInfo;
 import org.jdesktop.swingx.error.ErrorLevel;
 import org.jdesktop.swingx.error.ErrorReporter;
+import org.jdesktop.swingx.icon.CircleIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
+import org.jdesktop.swingx.icon.TrafficLightGreenIcon;
 import org.jdesktop.swingx.icon.TrafficLightRedIcon;
 import org.jdesktop.swingx.icon.TrafficLightYellowIcon;
 import org.jdesktop.swingx.plaf.ErrorPaneUI;
@@ -508,23 +510,38 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         return new DetailsTransferHandler(detailComponent);
     }
 
-    /**
-     * @return the default error icon
-     */
-    protected Icon getDefaultErrorIcon() {
-    	RadianceIcon icon = TrafficLightRedIcon.of(RadianceIcon.BUTTON_ICON, RadianceIcon.BUTTON_ICON);
-    	icon.setRotation(pane.getComponentOrientation().isLeftToRight() ? RadianceIcon.NORTH_WEST : RadianceIcon.NORTH_EAST);
-    	return icon;
-    }
-
-    /**
-     * @return the default warning icon
-     */
-    protected Icon getDefaultWarningIcon() {
-    	RadianceIcon icon = TrafficLightYellowIcon.of(RadianceIcon.BUTTON_ICON, RadianceIcon.BUTTON_ICON);
+    private RadianceIcon getMessageTypeIcon(int messageType, int size) {
+    	RadianceIcon icon = CircleIcon.of(size, size); // out of order ==> no color
+    	switch(messageType) {
+		case JOptionPane.ERROR_MESSAGE:
+			icon = TrafficLightRedIcon.of(size, size);
+			break;
+		case JOptionPane.INFORMATION_MESSAGE:
+			icon = TrafficLightGreenIcon.of(size, size);
+			break;
+		case JOptionPane.WARNING_MESSAGE:
+			icon = TrafficLightYellowIcon.of(size, size);
+			break;
+		case JOptionPane.QUESTION_MESSAGE:
+		default:
+			break;
+		}
     	// smart shining light:
     	icon.setRotation(pane.getComponentOrientation().isLeftToRight() ? RadianceIcon.NORTH_WEST : RadianceIcon.NORTH_EAST);
     	return icon;
+    }
+    /**
+     * @return the default error icon (red)
+     */
+    protected Icon getDefaultErrorIcon() {
+    	return getMessageTypeIcon(JOptionPane.ERROR_MESSAGE, RadianceIcon.BUTTON_ICON);
+    }
+
+    /**
+     * @return the default warning icon (yellow)
+     */
+    protected Icon getDefaultWarningIcon() {
+    	return getMessageTypeIcon(JOptionPane.WARNING_MESSAGE, RadianceIcon.BUTTON_ICON);
     }
 
     /**
@@ -931,6 +948,10 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * removed.
      */
     private void initWindow(final Window w, final JXErrorPane pane) {
+    	// an icon image to be displayed in frame title
+    	RadianceIcon icon = getMessageTypeIcon(JOptionPane.QUESTION_MESSAGE, RadianceIcon.SMALL_ICON);
+    	w.setIconImage(icon.toImage(1d));
+    	
         w.setLayout(new BorderLayout());
         w.add(pane, BorderLayout.CENTER);
         final Action closeAction = new CloseAction(w);
