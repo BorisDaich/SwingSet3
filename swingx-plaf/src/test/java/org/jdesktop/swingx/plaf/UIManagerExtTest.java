@@ -44,17 +44,14 @@ public class UIManagerExtTest {
     }
     
     /**
-     * Ensure that the {@code getSafeXXX} methods always return
-     * {@code UIResource}.
+     * Ensure that the {@code getSafeXXX} methods always return {@code UIResource}.
      */
     @Test
     public void testGetSafeMethodsReturnUIResource() {
-        assertTrue(UIManagerExt.getSafeBorder("", BorderFactory
-                .createEmptyBorder()) instanceof UIResource);
+        assertTrue(UIManagerExt.getSafeBorder("", BorderFactory.createEmptyBorder()) instanceof UIResource);
         assertTrue(UIManagerExt.getSafeColor("", Color.RED) instanceof UIResource);
         assertTrue(UIManagerExt.getSafeDimension("", new Dimension()) instanceof UIResource);
-        assertTrue(UIManagerExt.getSafeFont("", new Font("Dialog", Font.BOLD,
-                12)) instanceof UIResource);
+        assertTrue(UIManagerExt.getSafeFont("", new Font("Dialog", Font.BOLD, 12)) instanceof UIResource);
         assertTrue(UIManagerExt.getSafeIcon("", new ImageIcon()) instanceof UIResource);
         assertTrue(UIManagerExt.getSafeInsets("", new Insets(0, 0, 0, 0)) instanceof UIResource);
     }

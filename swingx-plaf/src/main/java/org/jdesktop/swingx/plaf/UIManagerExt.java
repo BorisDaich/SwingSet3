@@ -53,11 +53,9 @@ import org.jdesktop.swingx.util.Contract;
  * utility methods:
  * <ul>
  * <li>Support for the safe creation of {@code UIResource}s.</li>
- * <li>Support for new {@code UIResource} types, such as
- * {@code PainterUIResource}.</li>
+ * <li>Support for new {@code UIResource} types, such as {@code PainterUIResource}.</li>
  * <li>Support for the dynamic localization of {@code UIDefaults}.</li>
- * <li>Support for returning non-{@code String} localizations from
- * {@code ResourceBundle}s.</li>
+ * <li>Support for returning non-{@code String} localizations from {@code ResourceBundle}s.</li>
  * </ul>
  * <h2>Safe Methods</h2>
  * <p>
@@ -103,11 +101,11 @@ import org.jdesktop.swingx.util.Contract;
  * @see UIManager
  * @see UIDefaults
  */
-@SuppressWarnings("nls")
+//@SuppressWarnings("nls")
 public class UIManagerExt {
+	
     /**
-     * Used to replicate the resource bundle behavior from the
-     * {@code UIDefaults}.
+     * Used to replicate the resource bundle behavior from the {@code UIDefaults}.
      */
     private static class UIDefaultsExt {
         //use vector; we want synchronization
@@ -689,6 +687,10 @@ public class UIManagerExt {
      * @return the {@code Icon} object
      * @throws NullPointerException
      *                 if {@code key} or {@code defaultIcon} is {@code null}
+     */
+    /*
+     * default swing icon keys: "html.pendingImage", "html.missingImage", ...
+     * get it with UIManager.getIcon(key)
      */
     public static Icon getSafeIcon(Object key, Icon defaultIcon) {
         Contract.asNotNull(defaultIcon, "defaultIcon cannot be null");

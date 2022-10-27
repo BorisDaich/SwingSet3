@@ -15,6 +15,8 @@ public class DefaultIcons {
 	/** property name for icons/image-delayed.png */
     public static final String PENDING = HTML+".pendingImage";
 	/** property name for icons/image-failed.png */
+    // see javax.swing.text.html.ImageView public Icon getNoImageIcon() :
+    // UIManager.getLookAndFeelDefaults().get(MISSING) / UIManager.getIcon(MISSING)
     public static final String MISSING = HTML+".missingImage";
     
 	/*
