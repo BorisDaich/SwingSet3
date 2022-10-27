@@ -62,7 +62,6 @@ import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
@@ -77,6 +76,9 @@ import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.error.ErrorInfo;
 import org.jdesktop.swingx.error.ErrorLevel;
 import org.jdesktop.swingx.error.ErrorReporter;
+import org.jdesktop.swingx.icon.RadianceIcon;
+import org.jdesktop.swingx.icon.TrafficLightRedIcon;
+import org.jdesktop.swingx.icon.TrafficLightYellowIcon;
 import org.jdesktop.swingx.plaf.ErrorPaneUI;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.util.WindowUtils;
@@ -194,7 +196,8 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         Action a = c.getActionMap().get(JXErrorPane.REPORT_ACTION_KEY);
         if (a == null) {
             final JXErrorPane pane = (JXErrorPane)c;
-            AbstractActionExt reportAction = new AbstractActionExt() {
+            @SuppressWarnings("serial")
+			AbstractActionExt reportAction = new AbstractActionExt() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ErrorReporter reporter = pane.getErrorReporter();
@@ -331,8 +334,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         //add the JLabel responsible for displaying the icon.
         //TODO: in the future, replace this usage of a JLabel with a JXImagePane,
         //which may add additional "coolness" such as allowing the user to drag
-        //the image off the dialog onto the desktop. This kind of coolness is common
-        //in the mac world.
+        //the image off the dialog onto the desktop. This kind of coolness is common in the mac world.
         pane.add(iconLabel);
         pane.add(errorScrollPane);
         pane.add(closeButton);
@@ -510,24 +512,19 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * @return the default error icon
      */
     protected Icon getDefaultErrorIcon() {
-        try {
-            Icon icon = UIManager.getIcon(CLASS_NAME + ".errorIcon");
-            return icon == null ? UIManager.getIcon("OptionPane.errorIcon") : icon;
-        } catch (Exception e) {
-            return null;
-        }
+    	RadianceIcon icon = TrafficLightRedIcon.of(RadianceIcon.BUTTON_ICON, RadianceIcon.BUTTON_ICON);
+    	icon.setRotation(pane.getComponentOrientation().isLeftToRight() ? RadianceIcon.NORTH_WEST : RadianceIcon.NORTH_EAST);
+    	return icon;
     }
 
     /**
      * @return the default warning icon
      */
     protected Icon getDefaultWarningIcon() {
-        try {
-            Icon icon = UIManager.getIcon(CLASS_NAME + ".warningIcon");
-            return icon == null ? UIManager.getIcon("OptionPane.warningIcon") : icon;
-        } catch (Exception e) {
-            return null;
-        }
+    	RadianceIcon icon = TrafficLightYellowIcon.of(RadianceIcon.BUTTON_ICON, RadianceIcon.BUTTON_ICON);
+    	// smart shining light:
+    	icon.setRotation(pane.getComponentOrientation().isLeftToRight() ? RadianceIcon.NORTH_WEST : RadianceIcon.NORTH_EAST);
+    	return icon;
     }
 
     /**
@@ -627,8 +624,7 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         if (errorInfo == null) {
             iconLabel.setIcon(pane.getIcon());
             setErrorMessage("");
-            closeButton.setText(UIManagerExt.getString(
-                    CLASS_NAME + ".ok_button_text", closeButton.getLocale()));
+            closeButton.setText(UIManagerExt.getString(CLASS_NAME + ".ok_button_text", closeButton.getLocale()));
             setDetails("");
             //TODO Does this ever happen? It seems like if errorInfo is null and
             //this is called, it would be an IllegalStateException.
@@ -636,11 +632,9 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
             //change the "closeButton"'s text to either the default "ok"/"close" text
             //or to the "fatal" text depending on the error level of the incident info
             if (errorInfo.getErrorLevel() == ErrorLevel.FATAL) {
-                closeButton.setText(UIManagerExt.getString(
-                        CLASS_NAME + ".fatal_button_text", closeButton.getLocale()));
+                closeButton.setText(UIManagerExt.getString(CLASS_NAME + ".fatal_button_text", closeButton.getLocale()));
             } else {
-                closeButton.setText(UIManagerExt.getString(
-                        CLASS_NAME + ".ok_button_text", closeButton.getLocale()));
+                closeButton.setText(UIManagerExt.getString(CLASS_NAME + ".ok_button_text", closeButton.getLocale()));
             }
 
             //if the icon for the pane has not been specified by the developer,
@@ -710,7 +704,8 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      *  Default action for closing the JXErrorPane's enclosing window
      *  (JDialog, JFrame, or JInternalFrame)
      */
-    private static final class CloseAction extends AbstractAction {
+    @SuppressWarnings("serial")
+	private static final class CloseAction extends AbstractAction {
         private Window w;
 
         /**
@@ -784,7 +779,8 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * This is better than using setPreferredSize since this will work regardless
      * of changes to the text of the button and its language.
      */
-    private static final class EqualSizeJButton extends JButton {
+    @SuppressWarnings("serial")
+	private static final class EqualSizeJButton extends JButton {
 
         public EqualSizeJButton(String text) {
             super(text);
@@ -840,7 +836,8 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
      * Returns the text as non-HTML in a COPY operation, and disabled CUT/PASTE
      * operations for the Details pane.
      */
-    private static final class DetailsTransferHandler extends TransferHandler {
+    @SuppressWarnings("serial")
+	private static final class DetailsTransferHandler extends TransferHandler {
         private JTextComponent details;
         private DetailsTransferHandler(JTextComponent detailComponent) {
             if (detailComponent == null) {
@@ -867,7 +864,8 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
 
     }
 
-    private final class JXErrorDialog extends JDialog {
+    @SuppressWarnings("serial")
+	private final class JXErrorDialog extends JDialog {
         public JXErrorDialog(Frame parent, JXErrorPane p) {
             super(parent, true);
             init(p);
@@ -885,44 +883,46 @@ public class BasicErrorPaneUI extends ErrorPaneUI {
         }
     }
 
-    private final class JXErrorFrame extends JFrame {
-        public JXErrorFrame(JXErrorPane p) {
-            setTitle(p.getErrorInfo().getTitle());
-                initWindow(this, p);
-        }
-    }
+    @SuppressWarnings("serial")
+	private final class JXErrorFrame extends JFrame {
+		public JXErrorFrame(JXErrorPane p) {
+			setTitle(p.getErrorInfo().getTitle());
+			initWindow(this, p);
+		}
+	}
 
-    private final class JXInternalErrorFrame extends JInternalFrame {
-        public JXInternalErrorFrame(JXErrorPane p) {
-            setTitle(p.getErrorInfo().getTitle());
+    @SuppressWarnings("serial")
+	private final class JXInternalErrorFrame extends JInternalFrame {
+		public JXInternalErrorFrame(JXErrorPane p) {
+			setTitle(p.getErrorInfo().getTitle());
 
-            setLayout(new BorderLayout());
-            add(p, BorderLayout.CENTER);
-            final Action closeAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    setVisible(false);
-                    dispose();
-                }
-            };
-            closeButton.addActionListener(closeAction);
-            addComponentListener(new ComponentAdapter() {
-                @Override
-                public void componentHidden(ComponentEvent e) {
-                    //remove the action listener
-                    closeButton.removeActionListener(closeAction);
-                    exitIfFatal();
-                }
-            });
+			setLayout(new BorderLayout());
+			add(p, BorderLayout.CENTER);
+			final Action closeAction = new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					setVisible(false);
+					dispose();
+				}
+			};
+			closeButton.addActionListener(closeAction);
+			addComponentListener(new ComponentAdapter() {
+				@Override
+				public void componentHidden(ComponentEvent e) {
+					// remove the action listener
+					closeButton.removeActionListener(closeAction);
+					exitIfFatal();
+				}
+			});
 
-            getRootPane().setDefaultButton(closeButton);
-            setResizable(false);
-            setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-            KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-            getRootPane().registerKeyboardAction(closeAction, ks, JComponent.WHEN_IN_FOCUSED_WINDOW);
-            //setPreferredSize(calculatePreferredDialogSize());
-        }
-    }
+			getRootPane().setDefaultButton(closeButton);
+			setResizable(false);
+			setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+			getRootPane().registerKeyboardAction(closeAction, ks, JComponent.WHEN_IN_FOCUSED_WINDOW);
+			// setPreferredSize(calculatePreferredDialogSize());
+		}
+	}
 
     /**
      * Utility method for initializing a Window for displaying a JXErrorPane.
