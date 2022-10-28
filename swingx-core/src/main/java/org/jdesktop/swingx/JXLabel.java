@@ -39,6 +39,7 @@ import java.io.StringReader;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
@@ -110,7 +111,7 @@ import org.jdesktop.swingx.painter.AbstractPainter;
  * @author mario_cesar
  */
 @JavaBean
-public class JXLabel extends JLabel implements BackgroundPaintable<Component>, Mnemonicable {
+public class JXLabel extends JLabel implements BackgroundPaintable<JComponent>, Mnemonicable {
    
 	private static final Logger LOG = Logger.getLogger(JXLabel.class.getName());
 
@@ -164,9 +165,9 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
 
     private boolean painting = false;
 
-    private Painter<Component> foregroundPainter;
+    private Painter<? super JComponent> foregroundPainter;
 
-    private Painter<Component> backgroundPainter;
+    private Painter<? super JComponent> backgroundPainter;
 
     private boolean multiLine;
 
@@ -333,7 +334,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      *
      * @return the current foreground painter.
      */
-    public final Painter<Component> getForegroundPainter() {
+    public final Painter<? super JComponent> getForegroundPainter() {
         return foregroundPainter;
     }
 
@@ -372,8 +373,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      *
      * @param painter the foregroundPainter
      */
-    public void setForegroundPainter(Painter<Component> painter) {
-        Painter<Component> old = this.getForegroundPainter();
+    public void setForegroundPainter(Painter<? super JComponent> painter) {
+    	Painter<? super JComponent> old = this.getForegroundPainter();
         if (painter == null) {
             //restore default painter
             initPainterSupport();
@@ -393,8 +394,8 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      * @see #getBackgroundPainter()
      */
     @Override
-    public void setBackgroundPainter(Painter<Component> p) {
-        Painter<Component> old = getBackgroundPainter();
+    public void setBackgroundPainter(Painter<? super JComponent> p) {
+    	Painter<? super JComponent> old = getBackgroundPainter();
         backgroundPainter = p;
         firePropertyChange("backgroundPainter", old, getBackgroundPainter());
         repaint();
@@ -408,7 +409,7 @@ public class JXLabel extends JLabel implements BackgroundPaintable<Component>, M
      * @see #setBackgroundPainter(Painter)
      */
     @Override
-    public final Painter<Component> getBackgroundPainter() {
+    public final Painter<? super JComponent> getBackgroundPainter() {
         return backgroundPainter;
     }
     

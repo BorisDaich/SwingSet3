@@ -16,7 +16,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package org.jdesktop.swingx.plaf.basic;
 
 import java.awt.Color;
@@ -100,11 +99,8 @@ public class BasicHeaderUI extends HeaderUI {
             }
     }
 
-    /** TODO doc */
     protected JLabel titleLabel;
-    /** TODO doc */
     protected DescriptionPane descriptionPane;
-    /** TODO doc */
     protected JLabel imagePanel;
 
     private PropertyChangeListener propListener;
@@ -228,7 +224,7 @@ public class BasicHeaderUI extends HeaderUI {
         }
 
         if (isUIInstallable(header.getBackgroundPainter())) {
-            header.setBackgroundPainter(createBackgroundPainter());
+        	header.setBackgroundPainter(createBackgroundPainter());
         }
 
         // title properties
@@ -263,8 +259,9 @@ public class BasicHeaderUI extends HeaderUI {
         
         // icon label properties
         if (isUIInstallable(header.getIcon())) {
-            header.setIcon(UIManager.getIcon("Header.defaultIcon"));
-        }
+            header.setIcon(UIManager.getIcon("Header.defaultIcon")); // icon not exists
+//            header.setIcon(PauseIcon.of(SizingConstants.SMALL_ICON, SizingConstants.SMALL_ICON));
+       }
     }
     
     /**
@@ -477,11 +474,10 @@ public class BasicHeaderUI extends HeaderUI {
      * create BackgroundPainter
      * @return the painter
      */
-    protected Painter createBackgroundPainter() {
+    protected Painter<? super JComponent> createBackgroundPainter() {
         MattePainter p = new MattePainter(new GradientPaint(0, 0, gradientLightColor, 1, 0, gradientDarkColor));
         p.setPaintStretched(true);
-        return new PainterUIResource(p);
+        return new PainterUIResource<JComponent>(p);
     }
-    
     
 }

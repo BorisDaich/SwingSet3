@@ -34,14 +34,14 @@ interface BackgroundPaintable<T> {
      * @see #setBackgroundPainter(Painter)
      * @see #isPaintBorderInsets()
      */
-    Painter<T> getBackgroundPainter();
+    Painter<? super T> getBackgroundPainter();
     
     /**
      * Sets the new background painter.
      * 
      * @param painter the new background painter; may be {@code null}
      */
-    void setBackgroundPainter(Painter<T> painter);
+    void setBackgroundPainter(Painter<? super T> painter);
     
     /**
      * Determines whether this component paints its background paint underneath the border.

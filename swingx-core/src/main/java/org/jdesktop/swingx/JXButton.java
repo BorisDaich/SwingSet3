@@ -19,7 +19,6 @@
 package org.jdesktop.swingx;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -35,6 +34,7 @@ import javax.swing.ButtonModel;
 import javax.swing.CellRendererPane;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
@@ -70,7 +70,7 @@ import org.jdesktop.swingx.util.PaintUtils;
  */
 @JavaBean
 @SuppressWarnings("serial")
-public class JXButton extends JButton implements BackgroundPaintable<Component> {
+public class JXButton extends JButton implements BackgroundPaintable<JComponent> {
 
 	private static final Logger LOG = Logger.getLogger(JXButton.class.getName());
 
@@ -474,10 +474,10 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
     }
     
     private ForegroundButton fgStamp;
-    private Painter<Component> fgPainter;
-    private PainterPaint<Component> fgPaint;
+    private Painter<? super JComponent> fgPainter;
+    private PainterPaint<? super JComponent> fgPaint;
     private BackgroundButton bgStamp;
-    private Painter<Component> bgPainter;
+    private Painter<? super JComponent> bgPainter;
     
     private boolean paintBorderInsets = true;
 
@@ -547,7 +547,7 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
      * {@inheritDoc}
      */
     @Override
-    public Painter<Component> getBackgroundPainter() {
+    public Painter<? super JComponent> getBackgroundPainter() {
         return bgPainter;
     }
 
@@ -555,8 +555,8 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundPainter(Painter<Component> p) {
-        Painter<?> old = getBackgroundPainter();
+    public void setBackgroundPainter(Painter<? super JComponent> p) {
+    	Painter<? super JComponent> old = getBackgroundPainter();
         this.bgPainter = p;
         firePropertyChange("backgroundPainter", old, getBackgroundPainter());
         repaint();
@@ -565,7 +565,7 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
     /**
      * @return the foreground painter for this button
      */
-    public Painter<Component> getForegroundPainter() {
+    public Painter<? super JComponent> getForegroundPainter() {
         return fgPainter;
     }
 
@@ -573,14 +573,14 @@ public class JXButton extends JButton implements BackgroundPaintable<Component> 
      * set ForegroundPainter
      * @param p the Painter
      */
-    public void setForegroundPainter(Painter<Component> p) {
-        Painter<?> old = getForegroundPainter();
+    public void setForegroundPainter(Painter<? super JComponent> p) {
+    	Painter<? super JComponent> old = getForegroundPainter();
         this.fgPainter = p;
         
         if (fgPainter == null) {
             fgPaint = null;
         } else {
-            fgPaint = new PainterPaint<Component>(fgPainter, this);
+            fgPaint = new PainterPaint<JComponent>(fgPainter, this);
             
             if (bgStamp == null) {
                 bgStamp = new BackgroundButton();

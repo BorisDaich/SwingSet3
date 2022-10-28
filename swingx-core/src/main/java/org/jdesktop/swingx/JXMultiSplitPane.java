@@ -19,7 +19,6 @@
 package org.jdesktop.swingx;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -32,6 +31,7 @@ import java.io.Serializable;
 
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Painter;
 import javax.swing.event.MouseInputAdapter;
@@ -49,12 +49,12 @@ import org.jdesktop.swingx.painter.AbstractPainter;
  * @author Luan O'Carroll
  */
 @JavaBean
-public class JXMultiSplitPane extends JPanel implements BackgroundPaintable<Component> {
+public class JXMultiSplitPane extends JPanel implements BackgroundPaintable<JComponent> {
 
     private AccessibleContext accessibleContext = null;
     private boolean continuousLayout = true;
     private DividerPainter dividerPainter = new DefaultDividerPainter();
-    private Painter<Component> backgroundPainter;
+    private Painter<? super JComponent> backgroundPainter;
     private boolean paintBorderInsets;
 
     /**
@@ -273,9 +273,9 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable<Comp
      * paint certain pixels, such as around the border insets.
      */
     @Override
-    public void setBackgroundPainter(Painter<Component> p)
+    public void setBackgroundPainter(Painter<? super JComponent> p)
     {
-        Painter<Component> old = getBackgroundPainter();
+    	Painter<? super JComponent> old = getBackgroundPainter();
         this.backgroundPainter = p;
         
         if (p != null) {
@@ -287,7 +287,7 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable<Comp
     }
     
     @Override
-    public Painter<Component> getBackgroundPainter() {
+    public Painter<? super JComponent> getBackgroundPainter() {
         return backgroundPainter;
     }
     
@@ -584,9 +584,6 @@ public class JXMultiSplitPane extends JPanel implements BackgroundPaintable<Comp
         return accessibleContext;
     }
     
-    /**
-     * TODO
-     */
     protected class AccessibleMultiSplitPane extends AccessibleJPanel {
         @Override
         public AccessibleRole getAccessibleRole() {

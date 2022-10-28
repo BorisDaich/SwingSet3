@@ -20,7 +20,6 @@ package org.jdesktop.swingx;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -45,6 +44,7 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.Painter;
 
 import org.jdesktop.beans.AbstractBean;
@@ -1550,7 +1550,7 @@ public class JXGraph extends JXPanel {
      */
     protected void paintBackground(Graphics2D g2) {
         if (isBackgroundPainted()) {
-            Painter<Component> p = getBackgroundPainter();
+        	Painter<? super JComponent> p = getBackgroundPainter();
             if (p != null) {
                 p.paint(g2, this, getWidth(), getHeight());
             } else {

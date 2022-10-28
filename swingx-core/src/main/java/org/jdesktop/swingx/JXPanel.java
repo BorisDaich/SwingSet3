@@ -34,6 +34,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Painter;
 import javax.swing.RepaintManager;
@@ -95,13 +96,10 @@ import org.jdesktop.swingx.util.JVM;
  */
 @JavaBean
 @SuppressWarnings("serial") // super Same-version serialization only
-public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable<Component>, Scrollable {
+public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintable<JComponent>, Scrollable {
 	
     private static final Logger LOG = Logger.getLogger(JXPanel.class.getName());
 
-//    private boolean scrollableTracksViewportHeight = true;
-//    private boolean scrollableTracksViewportWidth = true;
-    
     private ScrollableSizeHint scrollableWidthHint = ScrollableSizeHint.FIT;
     private ScrollableSizeHint scrollableHeightHint = ScrollableSizeHint.FIT;
     
@@ -130,7 +128,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      * If no painter is specified, the normal painting routine for JPanel is called. 
      * Old behavior is also honored for the time being if no backgroundPainter is specified
      */
-    private Painter<?> backgroundPainter;
+    private Painter<? super JComponent> backgroundPainter;
 
     /**
      * The backgroundPainter of this component paints the background underneath the border.
@@ -520,8 +518,8 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      */
     @Override
 	// implements interface BackgroundPaintable<T> method void setBackgroundPainter(Painter<T> painter)
-    public void setBackgroundPainter(Painter<Component> p) {
-        Painter<?> old = getBackgroundPainter();
+    public void setBackgroundPainter(Painter<? super JComponent> p) {
+    	Painter<? super JComponent> old = getBackgroundPainter();
         if (old instanceof AbstractPainter) {
             ((AbstractPainter<?>) old).removePropertyChangeListener(painterChangeListener);
         }
@@ -543,8 +541,8 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
      */
 	@Override
 	// implements interface BackgroundPaintable<T> method Painter<T> getBackgroundPainter()
-    public Painter<Component> getBackgroundPainter() {
-		return (Painter<Component>) backgroundPainter;
+    public Painter<? super JComponent> getBackgroundPainter() {
+		return backgroundPainter;
     }
     
     /**
@@ -647,7 +645,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
             }
             
             if (getBackgroundPainter() != null) {
-            	Painter<Component> bp = getBackgroundPainter();
+            	Painter<? super JComponent> bp = getBackgroundPainter();
         		LOG.fine("backgroundPainter bp type:"+bp.getClass());
 
                 if (isPaintBorderInsets()) {
@@ -686,7 +684,7 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
                 g2.fillRect(0, 0, getWidth(), getHeight());
             }
             if (getBackgroundPainter() != null) {
-            	Painter<Component> bp = getBackgroundPainter();
+            	Painter<? super JComponent> bp = getBackgroundPainter();
         		LOG.fine("backgroundPainter bp type:"+bp.getClass());
                 bp.paint(g2, this, getWidth(), getHeight());
             }

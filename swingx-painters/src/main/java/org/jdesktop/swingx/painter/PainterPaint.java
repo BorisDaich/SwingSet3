@@ -42,7 +42,7 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
 public class PainterPaint<T> implements Paint {
 	
     protected static class PainterPaintContext<T> implements PaintContext {
-        private Painter<T> painter;
+        private Painter<? super T> painter;
         private T object;
         private BufferedImage saved;
         
@@ -51,7 +51,7 @@ public class PainterPaint<T> implements Paint {
          * @param painter a Painter instance
          * @param object of type T
          */
-        public PainterPaintContext(Painter<T> painter, T object) {
+        public PainterPaintContext(Painter<? super T> painter, T object) {
             painter.getClass(); // null check
             this.painter = painter;
             this.object = object;
@@ -111,7 +111,7 @@ public class PainterPaint<T> implements Paint {
      * @param painter a Painter instance
      * @param object of type T
      */
-    public PainterPaint(Painter<T> painter, T object) {
+    public PainterPaint(Painter<? super T> painter, T object) {
         context = new PainterPaintContext<T>(painter, object);
     }
     
