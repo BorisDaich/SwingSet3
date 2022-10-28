@@ -120,8 +120,9 @@ public class BasicLoginPaneUI extends LoginPaneUI {
                     originalGraphics = (Graphics2D) g2.create();
                     g2.scale(-1, 1);
                     g2.translate(-w, 0);
+                    String banner0 = bannerText==null ? "" : bannerText; // prevent NPE in getStringBounds
                     loginStringX = w
-                    	- (((float) font.getStringBounds(bannerText, originalGraphics.getFontRenderContext())
+                    	- (((float) font.getStringBounds(banner0, originalGraphics.getFontRenderContext())
                                     .getWidth()) + w * .05f);
                 }
 

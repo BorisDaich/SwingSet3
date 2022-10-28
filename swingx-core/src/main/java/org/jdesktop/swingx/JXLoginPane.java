@@ -89,6 +89,8 @@ import org.jdesktop.swingx.auth.LoginService;
 import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.icon.RadianceIcon;
+import org.jdesktop.swingx.icon.TrafficLightRedIcon;
 import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.ImagePainter;
 import org.jdesktop.swingx.painter.MattePainter;
@@ -447,7 +449,9 @@ public class JXLoginPane extends JXPanel {
         loginPanel = createLoginPanel();
 
         //create the message and hyperlink and hide them
-        errorMessageLabel.setIcon(UIManager.getIcon(CLASS_NAME + ".errorIcon", getLocale()));
+    	RadianceIcon icon = TrafficLightRedIcon.of(RadianceIcon.BUTTON_ICON, RadianceIcon.BUTTON_ICON);
+    	icon.setRotation(getComponentOrientation().isLeftToRight() ? RadianceIcon.NORTH_WEST : RadianceIcon.NORTH_EAST);
+        errorMessageLabel.setIcon(icon);
         errorMessageLabel.setVerticalTextPosition(SwingConstants.TOP);
         errorMessageLabel.setLineWrap(true);
         errorMessageLabel.setPaintBorderInsets(false);
@@ -1756,9 +1760,6 @@ public class JXLoginPane extends JXPanel {
         return new JXLoginFrame(panel);
     }
 
-    /**
-     * TODO
-     */
     public static final class JXLoginDialog extends JDialog {
         private static final long serialVersionUID = -3185639594267828103L;
         private JXLoginPane panel;
@@ -1803,9 +1804,6 @@ public class JXLoginPane extends JXPanel {
         }
     }
 
-    /**
-     * TODO
-     */
 	public static final class JXLoginFrame extends JXFrame {
 		private static final long serialVersionUID = -9016407314342050807L;
 		private JXLoginPane panel;
