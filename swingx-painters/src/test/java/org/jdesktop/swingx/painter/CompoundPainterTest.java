@@ -30,6 +30,8 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Painter;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.Ignore;
 import org.junit.Test;

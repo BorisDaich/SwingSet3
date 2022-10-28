@@ -20,6 +20,9 @@ package org.jdesktop.swingx.painter;
 
 import java.awt.Graphics2D;
 
+import javax.swing.Painter;
+
+
 /**
  * A collection of static painters. 
  * These painters do not store state and are safe to reuse.

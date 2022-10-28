@@ -47,7 +47,7 @@ import org.jdesktop.swingx.util.GraphicsUtilities;
 import org.jdesktop.swingx.util.PaintUtils;
 
 /**
- * <p>A {@link org.jdesktop.swingx.painter.Painter} enabled subclass of {@link javax.swing.JButton}.
+ * <p>A {@link javax.swing.Painter} enabled subclass of {@link javax.swing.JButton}.
  * This class supports setting the foreground and background painters of the button separately.</p>
  *
  * <p>For example, if you wanted to blur <em>just the text</em> on the button, and let everything else be

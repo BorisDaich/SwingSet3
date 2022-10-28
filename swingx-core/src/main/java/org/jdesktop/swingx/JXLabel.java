@@ -71,7 +71,7 @@ import org.jdesktop.swingx.painter.AbstractPainter;
 
 /**
  * <p>
- * A {@link javax.swing.JLabel} subclass which supports {@link org.jdesktop.swingx.painter.Painter}s, multi-line text,
+ * A {@link javax.swing.JLabel} subclass which supports {@link javax.swing.Painter}s, multi-line text,
  * and text rotation.
  * </p>
  *
