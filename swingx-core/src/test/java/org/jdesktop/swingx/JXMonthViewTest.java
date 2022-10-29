@@ -50,6 +50,8 @@ import org.jdesktop.swingx.calendar.DaySelectionModel;
 import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
 import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
+import org.jdesktop.swingx.icon.ChevronIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.test.DateSelectionReport;
 import org.jdesktop.test.ActionReport;
 import org.jdesktop.test.PropertyChangeReport;
@@ -288,19 +290,24 @@ public class JXMonthViewTest extends InteractiveTestCase {
         
     }
     /**
-     * Issue #1072-swingx: nav icons incorrect for RToL if zoomable
+     * Issue 37 : Radiance nav icons incorrect for RToL if zoomable
      */
     @Test
     public void testNavigationIconsUpdatedWithCO() {
-       Action action = monthView.getActionMap().get("nextMonth"); 
-       if (monthView.getComponentOrientation().isLeftToRight()) {
-           Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
-           assertNotNull("sanity: the decorated month nav action has an icon", icon);
-           assertEquals(UIManager.getIcon("JXMonthView.monthUpFileName"), icon);
-           monthView.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-//           assertNotSame(icon, action.getValue(Action.SMALL_ICON));
-           assertEquals(action.getValue(Action.SMALL_ICON), UIManager.getIcon("JXMonthView.monthDownFileName"));
-       } else {
+		Class<?> expectedType = ChevronIcon.class;
+		Action action = monthView.getActionMap().get("nextMonth");
+		if (monthView.getComponentOrientation().isLeftToRight()) {
+			Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
+			assertNotNull("sanity: the decorated month nav action has an icon", icon);
+			assertEquals(expectedType, icon.getClass());
+			RadianceIcon ri = (RadianceIcon) icon;
+			assertEquals(Math.PI / 2, ri.getRotation()); // rotated to EAST
+
+			monthView.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+			icon = (Icon) action.getValue(Action.SMALL_ICON);
+			assertEquals(expectedType, icon.getClass());
+			assertEquals(Math.PI / 2 * 3, ((RadianceIcon) icon).getRotation()); // rotated to WEST
+	       } else {
            
        }
     }
