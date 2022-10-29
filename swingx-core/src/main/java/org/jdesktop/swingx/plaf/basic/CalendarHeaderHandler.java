@@ -29,11 +29,11 @@ import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.JXMonthView;
 import org.jdesktop.swingx.action.AbstractActionExt;
+import org.jdesktop.swingx.icon.RadianceIcon;
 
 /**
  * Provides and wires a component appropriate as a calendar navigation header.
@@ -71,15 +71,10 @@ public abstract class CalendarHeaderHandler {
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(CalendarHeaderHandler.class.getName());
 
-	/** TODO doc */
     public static final String uiControllerID = "CalendarHeaderHandler";
-	/** TODO doc */
     protected JXMonthView monthView;
-	/** TODO doc */
     private JComponent calendarHeader;
-	/** TODO doc */
     protected Icon monthDownImage;
-	/** TODO doc */
     protected Icon monthUpImage;
 
     private PropertyChangeListener monthViewPropertyChangeListener;
@@ -91,11 +86,10 @@ public abstract class CalendarHeaderHandler {
      */
     public void install(JXMonthView monthView) {
         this.monthView = monthView;
-        // PENDING JW: remove here if rendererHandler takes over control
-        // completely
+        // PENDING JW: remove here if rendererHandler takes over control completely
         // as is, some properties are duplicated
-        monthDownImage = UIManager.getIcon("JXMonthView.monthDownFileName");
-        monthUpImage = UIManager.getIcon("JXMonthView.monthUpFileName");
+        monthDownImage = BasicMonthViewUI.getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.WEST); // was "JXMonthView.monthDownFileName"
+        monthUpImage   = BasicMonthViewUI.getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.EAST); // was "JXMonthView.monthUpFileName"
         installNavigationActions();
         installListeners();
         componentOrientationChanged();
@@ -260,8 +254,7 @@ public abstract class CalendarHeaderHandler {
      * @param newActionKey the key of the wrapper action
      * @param icon the icon to use in the wrapper action
      */
-    private void installWrapper(final String actionKey, String newActionKey,
-            Icon icon) {
+    private void installWrapper(final String actionKey, String newActionKey, Icon icon) {
         AbstractActionExt wrapper = new AbstractActionExt(null, icon) {
 
             @Override

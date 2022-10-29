@@ -62,6 +62,8 @@ import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.event.DateSelectionListener;
+import org.jdesktop.swingx.icon.ChevronIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.plaf.MonthViewUI;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 
@@ -122,23 +124,15 @@ public class BasicMonthViewUI extends MonthViewUI {
     public static final int MONTH_UP = 2;
 
     // constants for day columns
-    /** TODO doc */
     protected static final int WEEK_HEADER_COLUMN = 0;
-    /** TODO doc */
     protected static final int DAYS_IN_WEEK = 7;
-    /** TODO doc */
     protected static final int FIRST_DAY_COLUMN = WEEK_HEADER_COLUMN + 1;
-    /** TODO doc */
     protected static final int LAST_DAY_COLUMN = FIRST_DAY_COLUMN + DAYS_IN_WEEK -1;
 
     // constants for day rows (aka: weeks)
-    /** TODO doc */
     protected static final int DAY_HEADER_ROW = 0;
-    /** TODO doc */
     protected static final int WEEKS_IN_MONTH = 6;
-    /** TODO doc */
     protected static final int FIRST_WEEK_ROW = DAY_HEADER_ROW + 1;
-    /** TODO doc */
     protected static final int LAST_WEEK_ROW = FIRST_WEEK_ROW + WEEKS_IN_MONTH - 1;
 
 
@@ -167,11 +161,8 @@ public class BasicMonthViewUI extends MonthViewUI {
 
     //------------------ visuals
 
-    /** TODO doc */
     protected boolean isLeftToRight;
-    /** TODO doc */
     protected Icon monthUpImage;
-    /** TODO doc */
     protected Icon monthDownImage;   
 
     /**
@@ -340,6 +331,11 @@ public class BasicMonthViewUI extends MonthViewUI {
         monthView.setBoxPaddingY(UIManagerExt.getInt("JXMonthView.boxPaddingY"));
     }
 
+    static Icon getIcon(int size, int rotation) {
+    	RadianceIcon icon = ChevronIcon.of(size, size);
+    	icon.setRotation(rotation);
+    	return icon;
+    }
     /**
      * Installs this ui delegate's properties.
      */
@@ -347,8 +343,8 @@ public class BasicMonthViewUI extends MonthViewUI {
         isLeftToRight = monthView.getComponentOrientation().isLeftToRight();
         // PENDING JW: remove here if rendererHandler takes over control completely
         // as is, some properties are duplicated
-        monthDownImage = UIManager.getIcon("JXMonthView.monthDownFileName");
-        monthUpImage = UIManager.getIcon("JXMonthView.monthUpFileName");
+        monthDownImage = getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.WEST); // was "JXMonthView.monthDownFileName"
+        monthUpImage = getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.EAST);   // was "JXMonthView.monthUpFileName"
         // install date related state
         setFirstDisplayedDay(monthView.getFirstDisplayedDay());
     }
@@ -356,7 +352,6 @@ public class BasicMonthViewUI extends MonthViewUI {
     /** empty */
     protected void uninstallDefaults() {}
 
-    /** TODO doc */
     protected void installKeyboardActions() {
         // Setup the keyboard handler.
         // JW: changed (0.9.6) to when-ancestor just to be on the safe side
@@ -439,7 +434,6 @@ public class BasicMonthViewUI extends MonthViewUI {
         inputMap.clear();
     }
 
-	/** TODO doc */
     protected void uninstallKeyboardActions() {}
 
     /**
@@ -627,14 +621,12 @@ public class BasicMonthViewUI extends MonthViewUI {
     }
 
     /**
-     * TODO doc
      * @return true if usingKeyboard
      */
     public boolean isUsingKeyboard() {
         return usingKeyboard;
     }
     /**
-     * TODO doc
      * @param uk usingKeyboard
      */
     public void setUsingKeyboard(boolean uk) {
@@ -2354,5 +2346,4 @@ public class BasicMonthViewUI extends MonthViewUI {
         return calendarHeaderHandler;
     }
     
-
 }

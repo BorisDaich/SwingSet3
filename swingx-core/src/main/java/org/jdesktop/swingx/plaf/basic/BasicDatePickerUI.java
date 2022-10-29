@@ -754,8 +754,7 @@ public class BasicDatePickerUI extends DatePickerUI {
      * @param updateListeners a flag to indicate whether the listeners
      *   are ready for usage.   
      */
-    protected void updateFromEditorChanged(JFormattedTextField oldEditor, 
-            boolean updateListeners) { 
+    protected void updateFromEditorChanged(JFormattedTextField oldEditor, boolean updateListeners) { 
         if (oldEditor != null) {
             datePicker.remove(oldEditor);
             oldEditor.putClientProperty("doNotCancelPopup", null);
@@ -1041,7 +1040,6 @@ public class BasicDatePickerUI extends DatePickerUI {
     	
         private JFormattedTextField editor;
         private Action cancelAction;
-        /** TODO doc */
         public static final String TEXT_CANCEL_KEY = "reset-field-edit";
 
         /**
@@ -1242,7 +1240,6 @@ public class BasicDatePickerUI extends DatePickerUI {
      * buttons to allow traversal of the months.  Upon selection of a date the
      * popup will automatically hide itself and enter the selection into the
      * editable field of the JXDatePicker.
-     * 
      */
     protected class BasicDatePickerPopup extends JPopupMenu {
 
@@ -1590,7 +1587,6 @@ public class BasicDatePickerUI extends DatePickerUI {
         private KeyboardFocusManager manager;
         private boolean loaded;
         
-        /** TODO doc */
         public void load() {
             if (manager != KeyboardFocusManager.getCurrentKeyboardFocusManager()) {
                 unload();
@@ -1615,7 +1611,6 @@ public class BasicDatePickerUI extends DatePickerUI {
             loaded = false;
          }
 
-        /** TODO doc */
         public void unload() {
             unload(true);
         }

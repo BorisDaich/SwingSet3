@@ -126,7 +126,6 @@ import org.jdesktop.swingx.util.Contract;
 @JavaBean
 public class JXMonthView extends JComponent {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXMonthView.class.getName());
     /*
      * moved from package calendar to swingx at version 1.51
@@ -137,32 +136,20 @@ public class JXMonthView extends JComponent {
     /** action command used for cancel actionEvent. */
     public static final String CANCEL_KEY = "monthViewCancel";
 
-    /** BOX_PADDING_X */
     public static final String BOX_PADDING_X = "boxPaddingX";
-    /** BOX_PADDING_Y */
     public static final String BOX_PADDING_Y = "boxPaddingY";
-    /** DAYS_OF_THE_WEEK */
     public static final String DAYS_OF_THE_WEEK = "daysOfTheWeek";
-    /** SELECTION_MODEL */
     public static final String SELECTION_MODEL = "selectionModel";
-    /** TRAVERSABLE */
     public static final String TRAVERSABLE = "traversable";
-    /** FLAGGED_DATES */
     public static final String FLAGGED_DATES = "flaggedDates";
 
     static {
         LookAndFeelAddons.contribute(new MonthViewAddon());
     }
 
-    /**
-     * UI Class ID
-     */
     public static final String uiClassID = "MonthViewUI";
-    /** DAYS_IN_WEEK */
     public static final int DAYS_IN_WEEK = 7;
-    /** MONTHS_IN_YEAR */
     public static final int MONTHS_IN_YEAR = 12;
-
 
     /**
      * Keeps track of the first date we are displaying.  We use this as a
@@ -191,8 +178,7 @@ public class JXMonthView extends JComponent {
      * The timer used to keep today in synch with system time.
      */
     private Timer todayTimer;
-    // PENDING JW: why kept apart from cal? Why writable? - shouldn't the calendar have complete
-    // control?
+    // PENDING JW: why kept apart from cal? Why writable? - shouldn't the calendar have complete control?
     private int firstDayOfWeek;
     //-------------- selection/flagging
     /** 
@@ -224,10 +210,8 @@ public class JXMonthView extends JComponent {
     //-------------------
     // PENDING JW: ??
     /** modifiedStartDate */
-    @SuppressWarnings({"FieldCanBeLocal"})
     protected Date modifiedStartDate;
     /** modifiedEndDate */
-    @SuppressWarnings({"FieldCanBeLocal"})
     protected Date modifiedEndDate;
     
     //------------- visuals
@@ -255,8 +239,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Create a new instance of the <code>JXMonthView</code> class using the
-     * default Locale and the current system time as the first date to 
-     * display.
+     * default Locale and the current system time as the first date to display.
      */
     public JXMonthView() {
         this(null, null, null);
@@ -264,8 +247,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Create a new instance of the <code>JXMonthView</code> class using the 
-     * default Locale and the current system time as the first date to 
-     * display.
+     * default Locale and the current system time as the first date to display.
      * 
      * @param locale desired locale, if null the system default locale is used
      */
@@ -275,8 +257,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Create a new instance of the <code>JXMonthView</code> class using the
-     * default Locale and the given time as the first date to 
-     * display.
+     * default Locale and the given time as the first date to display.
      *
      * @param firstDisplayedDay a day of the first month to display; if null, the current
      *   System time is used.
@@ -287,8 +268,7 @@ public class JXMonthView extends JComponent {
 
     /**
      * Create a new instance of the <code>JXMonthView</code> class using the
-     * default Locale, the given time as the first date to 
-     * display and the given selection model. 
+     * default Locale, the given time as the first date to display and the given selection model. 
      * 
      * @param firstDisplayedDay a day of the first month to display; if null, the current
      *   System time is used.
@@ -326,9 +306,7 @@ public class JXMonthView extends JComponent {
 
         setFocusable(true);
         todayBackgroundColor = getForeground();
-
     }
-
     
 //------------------ Calendar related properties
     
@@ -361,7 +339,6 @@ public class JXMonthView extends JComponent {
     private void superSetLocale(Locale locale) {
         // PENDING JW: formally, a null value is allowed and must be passed on to super
         // I suspect this is not done here to keep the logic out off the constructor?
-        // 
         if (locale != null) {
             super.setLocale(locale);
             repaint();
@@ -430,8 +407,6 @@ public class JXMonthView extends JComponent {
     public void setFirstDayOfWeek(int firstDayOfWeek) {
         getSelectionModel().setFirstDayOfWeek(firstDayOfWeek);
     }
-
-
 
 //---------------------- synch to model's calendar    
 

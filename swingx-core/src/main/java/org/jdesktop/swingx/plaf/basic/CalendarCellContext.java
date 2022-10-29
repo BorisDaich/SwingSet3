@@ -24,11 +24,11 @@ import java.util.Calendar;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.jdesktop.swingx.JXMonthView;
 import org.jdesktop.swingx.border.IconBorder;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.renderer.CellContext;
 
@@ -184,9 +184,8 @@ class CalendarCellContext extends CellContext {
      */
     private Border getTitleBorder() {
         if (getComponent().isTraversable()) {
-            Icon downIcon = UIManager.getIcon("JXMonthView.monthDownFileName");
-            Icon upIcon = UIManager.getIcon("JXMonthView.monthUpFileName");
-
+        	Icon downIcon = BasicMonthViewUI.getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.WEST); // was "JXMonthView.monthDownFileName"
+        	Icon upIcon   = BasicMonthViewUI.getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.EAST); // was "JXMonthView.monthUpFileName"
             // fix for #1028-swingx: title border whacky for boxpadding 0
             // in fact there had been a deeper issue - without using the arrowPadding here
             // the hit-detection of the buttons is slightly off target
