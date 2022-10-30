@@ -227,19 +227,15 @@ public class SearchFieldUI extends BuddyTextFieldUI {
             clearButton().setIcon(UIManager.getIcon("SearchField.clearIcon"));
         }
         if (shouldReplaceResource(clearButton().getPressedIcon())) {
-            clearButton().setPressedIcon(
-                    UIManager.getIcon("SearchField.clearPressedIcon"));
+            clearButton().setPressedIcon(UIManager.getIcon("SearchField.clearPressedIcon"));
         }
         if (shouldReplaceResource(clearButton().getRolloverIcon())) {
-            clearButton().setRolloverIcon(
-                    UIManager.getIcon("SearchField.clearRolloverIcon"));
+            clearButton().setRolloverIcon(UIManager.getIcon("SearchField.clearRolloverIcon"));
         }
 
-        searchButton().setIcon(
-                getNewIcon(searchButton().getIcon(), "SearchField.icon"));
+        searchButton().setIcon(getNewIcon(searchButton().getIcon(), "SearchField.icon"));
 
-        popupButton().setIcon(
-                getNewIcon(popupButton().getIcon(), "SearchField.popupIcon"));
+        popupButton().setIcon(getNewIcon(popupButton().getIcon(), "SearchField.popupIcon"));
         popupButton().setRolloverIcon(
                 getNewIcon(popupButton().getRolloverIcon(),
                         "SearchField.popupRolloverIcon"));
