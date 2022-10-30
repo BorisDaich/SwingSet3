@@ -59,8 +59,11 @@ public class TipOfTheDayAddon extends AbstractComponentAddon {
       defaults.add("TipOfTheDay.tipFont", getFontUIResource("Label.font"));
       // TODO getSafeColor, aber was ist Colorkey?
       defaults.add("TipOfTheDay.background", new ColorUIResource(Color.WHITE)); //  LIGHT_GRAY statt .WHITE
+      
+      // replaced with Radience Icon
       defaults.add("TipOfTheDay.icon",
               LookAndFeel.makeIcon(BasicTipOfTheDayUI.class, "resources/TipOfTheDay24.gif"));
+      
 //      Color bittersweet = new Color(0xFF6666);
       // TODO getSafeColor, aber was ist der Colorkey?
       Color grey = new Color(117, 117, 117); // #757575 Grey <> #808080 Color.GRAY

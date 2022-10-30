@@ -60,6 +60,8 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.jdesktop.swingx.JXTipOfTheDay;
 import org.jdesktop.swingx.SwingXUtilities;
+import org.jdesktop.swingx.icon.PauseIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.plaf.TipOfTheDayUI;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.tips.TipOfTheDayModel.Tip;
@@ -87,10 +89,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 	protected Font tipFont;
 	protected PropertyChangeListener changeListener;
 
-	/**
-	 * 
-	 * @param tipPane TODO doc
-	 */
 	public BasicTipOfTheDayUI(JXTipOfTheDay tipPane) {
 		this.tipPane = tipPane;
 	}
@@ -104,7 +102,6 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 	}
 
 	/**
-	 * TODO doc
 	 * @param parentComponent Component
 	 * @param choice ShowOnStartupChoice
 	 * @param showPreviousButton showPreviousButton
@@ -247,7 +244,7 @@ public class BasicTipOfTheDayUI extends TipOfTheDayUI {
 		tipIcon.setFont(tipFont);
 		// use installed color for FG , https://github.com/homebeaver/SwingSet/issues/27
 		tipIcon.setForeground(UIManager.getColor("TipOfTheDay.foreground"));
-		tipIcon.setIcon(UIManager.getIcon("TipOfTheDay.icon"));
+		tipIcon.setIcon(PauseIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON));
 		tipIcon.setBorder(BorderFactory.createEmptyBorder(22, 15, 22, 15));
 		tipPane.add("North", tipIcon);
 

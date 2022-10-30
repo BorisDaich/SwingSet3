@@ -37,6 +37,8 @@ import javax.swing.plaf.ComponentUI;
 
 import org.jdesktop.swingx.JXTipOfTheDay;
 import org.jdesktop.swingx.JXTipOfTheDay.ShowOnStartupChoice;
+import org.jdesktop.swingx.icon.PauseIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.plaf.basic.BasicTipOfTheDayUI;
 
@@ -67,7 +69,9 @@ public class WindowsTipOfTheDayUI extends BasicTipOfTheDayUI {
 		// tip icon
 		JLabel tipIcon = new JLabel();
 		tipIcon.setPreferredSize(new Dimension(60, 100));
-		tipIcon.setIcon(UIManager.getIcon("TipOfTheDay.icon"));
+		RadianceIcon icon = PauseIcon.of(RadianceIcon.ACTION_ICON, RadianceIcon.ACTION_ICON);
+		icon.setColorFilter(colot -> UIManager.getColor("TextArea.background"));
+		tipIcon.setIcon(icon);
 		tipIcon.setHorizontalAlignment(JLabel.CENTER);
 		tipIcon.setVerticalAlignment(JLabel.TOP);
 		tipIcon.setBorder(BorderFactory.createEmptyBorder(24, 0, 0, 0));
