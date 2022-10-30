@@ -806,11 +806,28 @@ public class BasicTaskPaneUI extends TaskPaneUI {
          */
         protected void paintChevronControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
         	LOG.fine("x="+x + ",y="+y + ", width="+width + ",height="+height);
+/*
+        	LOG.info("borderColor:"+borderColor + " titleForeground:"+titleForeground
+        			+ " specialTitleBackground:"+specialTitleBackground + " specialTitleForeground:"+specialTitleForeground
+        			+ " titleBackgroundGradientStart:"+titleBackgroundGradientStart + " titleBackgroundGradientEnd:"+titleBackgroundGradientEnd
+        			);
+**
+        protected Color borderColor;
+        protected Color titleForeground; Win [r=33,g=89,b=201]
+        protected Color specialTitleBackground;
+        protected Color specialTitleForeground;
+        protected Color titleBackgroundGradientStart;
+        protected Color titleBackgroundGradientEnd;
+        protected Color titleOver;
+        protected Color specialTitleOver;
+ */
         	RadianceIcon chevrons = ChevronsIcon.of(width, height);
             if (group.isCollapsed()) {
             	chevrons.setRotation(RadianceIcon.SOUTH);
+            	chevrons.setColorFilter(color -> titleForeground);
             } else {
             	chevrons.setRotation(RadianceIcon.NORTH);
+            	chevrons.setColorFilter(color -> titleForeground);
             }
             chevrons.paintIcon(group, g, x, y);
         }

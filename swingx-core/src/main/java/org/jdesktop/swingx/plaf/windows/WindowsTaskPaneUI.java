@@ -97,7 +97,7 @@ public class WindowsTaskPaneUI extends BasicTaskPaneUI {
 		protected void paintExpandedControls(JXTaskPane group, Graphics g, int x, int y, int width, int height) {
 			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-			paintOvalAroundControls(group, g, x, y, width, height);
+			//paintOvalAroundControls(group, g, x, y, width, height); // ugly
 			g.setColor(getPaintColor(group));
 			paintChevronControls(group, g, x, y, width, height);
 
