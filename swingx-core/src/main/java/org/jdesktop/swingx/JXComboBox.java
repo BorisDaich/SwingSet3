@@ -114,8 +114,7 @@ public class JXComboBox<E> extends JComboBox<E> {
         /**
          * Returns the delegate.
          * 
-         * @return the delegate renderer used by this renderer, guaranteed to
-         *   not-null.
+         * @return the delegate renderer used by this renderer, guaranteed to not-null.
          */
         public ListCellRenderer<? super E> getDelegateRenderer() {
             return delegateRenderer;
@@ -135,6 +134,7 @@ public class JXComboBox<E> extends JComboBox<E> {
              } else if (delegateRenderer != null) {
             	 // ListCellRenderer<? super E> delegateRenderer, dh superclass von E
                  try {
+                	 // JList<? extends Object> getPopupListFor
                 	 // interface : getListCellRendererComponent( JList<? extends E> list, E value, ...
                 	 JList lo = getPopupListFor(JXComboBox.this);
                      Component comp = delegateRenderer.getListCellRendererComponent(lo, null, -1, false, false);
@@ -158,7 +158,7 @@ public class JXComboBox<E> extends JComboBox<E> {
             Component comp = null;
 
             if (index == -1) {
-                comp = delegateRenderer.getListCellRendererComponent(list, value,getSelectedIndex(), isSelected, cellHasFocus);
+                comp = delegateRenderer.getListCellRendererComponent(list, value, getSelectedIndex(), isSelected, cellHasFocus);
                 
                 if (isUseHighlightersForCurrentValue() && compoundHighlighter != null && getSelectedIndex() != -1) {
                     comp = compoundHighlighter.highlight(comp, getComponentAdapter(getSelectedIndex()));
@@ -204,15 +204,11 @@ public class JXComboBox<E> extends JComboBox<E> {
         }
     }
     
-    /**
-     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
-     */
     protected static class ComboBoxAdapter extends ComponentAdapter {
         private final JXComboBox<?> comboBox;
 
         /**
-         * Constructs a <code>ListAdapter</code> for the specified target
-         * JXList.
+         * Constructs a <code>ListAdapter</code> for the specified target JXList.
          * 
          * @param component  the target list.
          */
@@ -249,7 +245,7 @@ public class JXComboBox<E> extends JComboBox<E> {
         @Override
         public boolean hasFocus() {
             if (isPopupVisible()) {
-                JList<Object> list = getPopupListFor(comboBox);
+                JList<? extends Object> list = getPopupListFor(comboBox);
                 
                 return list != null && list.isFocusOwner() && (row == list.getLeadSelectionIndex());
             }
@@ -290,7 +286,7 @@ public class JXComboBox<E> extends JComboBox<E> {
          */
         @Override
         public Rectangle getCellBounds() {
-            JList<Object> list = getPopupListFor(comboBox);
+            JList<? extends Object> list = getPopupListFor(comboBox);
             
             if (list == null) {
                 assert false;
@@ -322,7 +318,7 @@ public class JXComboBox<E> extends JComboBox<E> {
         @Override
         public boolean isSelected() {
             if (isPopupVisible()) {
-                JList<Object> list = getPopupListFor(comboBox);
+                JList<? extends Object> list = getPopupListFor(comboBox);
                 
                 return list != null && row == list.getLeadSelectionIndex();
             }
@@ -489,7 +485,7 @@ public class JXComboBox<E> extends JComboBox<E> {
      * @param comboBox JComboBox
      * @return JList of Objects
      */
-    protected static JList<Object> getPopupListFor(JComboBox<? extends Object> comboBox) {
+    protected static JList<? extends Object> getPopupListFor(JComboBox<? extends Object> comboBox) {
         int count = comboBox.getUI().getAccessibleChildrenCount(comboBox);
 
         for (int i = 0; i < count; i++) {
@@ -690,8 +686,7 @@ public class JXComboBox<E> extends JComboBox<E> {
         // == multiple delegation...
         ListCellRenderer<? super E> oldValue = super.getRenderer();
         getDelegatingRenderer().setDelegateRenderer(renderer);
-        getStringValueRegistry().setStringValue(
-                renderer instanceof StringValue ? (StringValue) renderer : null, 0);
+        getStringValueRegistry().setStringValue(renderer instanceof StringValue ? (StringValue) renderer : null, 0);
         super.setRenderer(delegatingRenderer);
         
         if (oldValue == delegatingRenderer) {
