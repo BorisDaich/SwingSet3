@@ -17,7 +17,6 @@ import org.jdesktop.swingx.plaf.SearchFieldUI;
  */
 public class BuddyButton extends JButton {
 	
-	/** TODO doc */
     public BuddyButton() {
         this(null);
     }

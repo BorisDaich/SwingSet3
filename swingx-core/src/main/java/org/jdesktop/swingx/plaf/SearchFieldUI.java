@@ -237,11 +237,9 @@ public class SearchFieldUI extends BuddyTextFieldUI {
 
         popupButton().setIcon(getNewIcon(popupButton().getIcon(), "SearchField.popupIcon"));
         popupButton().setRolloverIcon(
-                getNewIcon(popupButton().getRolloverIcon(),
-                        "SearchField.popupRolloverIcon"));
+                getNewIcon(popupButton().getRolloverIcon(), "SearchField.popupRolloverIcon"));
         popupButton().setPressedIcon(
-                getNewIcon(popupButton().getPressedIcon(),
-                        "SearchField.popupPressedIcon"));
+                getNewIcon(popupButton().getPressedIcon(), "SearchField.popupPressedIcon"));
     }
 
     /**
@@ -330,8 +328,7 @@ public class SearchFieldUI extends BuddyTextFieldUI {
      * @return the popup button is used in addition to the search button
      */
     public boolean usingSeperatePopupButton() {
-        return searchField.isUseSeperatePopupButton()
-                && searchField.getFindPopupMenu() != null;
+        return searchField.isUseSeperatePopupButton() && searchField.getFindPopupMenu() != null;
     }
 
     /**
@@ -359,28 +356,20 @@ public class SearchFieldUI extends BuddyTextFieldUI {
      */
     protected void updateButtons() {
         clearButton().setVisible(
-                (!searchField.isRegularSearchMode() || searchField
-                        .isMacLayoutStyle())
-                        && hasText());
+                (!searchField.isRegularSearchMode() || searchField.isMacLayoutStyle()) && hasText());
 
-        boolean clearNotHere = (searchField.isMacLayoutStyle() || !clearButton()
-                .isVisible());
+        boolean clearNotHere = (searchField.isMacLayoutStyle() || !clearButton().isVisible());
 
-        searchButton()
-                .setVisible(
-                        (searchField.getFindPopupMenu() == null || usingSeperatePopupButton())
-                                && clearNotHere);
+        searchButton().setVisible(
+        		(searchField.getFindPopupMenu() == null || usingSeperatePopupButton()) && clearNotHere);
         popupButton().setVisible(
-                searchField.getFindPopupMenu() != null
-                        && (clearNotHere || usingSeperatePopupButton()));
+                searchField.getFindPopupMenu() != null && (clearNotHere || usingSeperatePopupButton()));
 
         if (searchField.isRegularSearchMode()) {
             searchButton().setRolloverIcon(
-                    getNewIcon(searchButton().getRolloverIcon(),
-                            "SearchField.rolloverIcon"));
+                    getNewIcon(searchButton().getRolloverIcon(), "SearchField.rolloverIcon"));
             searchButton().setPressedIcon(
-                    getNewIcon(searchButton().getPressedIcon(),
-                            "SearchField.pressedIcon"));
+                    getNewIcon(searchButton().getPressedIcon(), "SearchField.pressedIcon"));
         } else {
             // no action, therefore no rollover icon.
             if (shouldReplaceResource(searchButton().getRolloverIcon())) {
@@ -393,12 +382,10 @@ public class SearchFieldUI extends BuddyTextFieldUI {
     }
 
     private boolean hasText() {
-        return searchField.getText() != null
-                && searchField.getText().length() > 0;
+        return searchField.getText() != null && searchField.getText().length() > 0;
     }
 
-    class Handler implements PropertyChangeListener, ActionListener,
-            DocumentListener {
+    class Handler implements PropertyChangeListener, ActionListener, DocumentListener {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String prop = evt.getPropertyName();
@@ -435,8 +422,7 @@ public class SearchFieldUI extends BuddyTextFieldUI {
                         : (Component) e.getSource();
 
                 Rectangle r = SwingUtilities.getLocalBounds(src);
-                int popupWidth = searchField.getFindPopupMenu()
-                        .getPreferredSize().width;
+                int popupWidth = searchField.getFindPopupMenu().getPreferredSize().width;
                 int x = searchField.isVistaLayoutStyle()
                         || usingSeperatePopupButton() ? r.x + r.width
                         - popupWidth : r.x;

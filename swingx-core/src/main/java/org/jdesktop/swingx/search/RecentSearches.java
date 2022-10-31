@@ -2,7 +2,7 @@ package org.jdesktop.swingx.search;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.AccessControlException;
+import java.security.AccessControlException;  // deprecated
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,8 +68,7 @@ public class RecentSearches implements ActionListener {
 			try {
 				prefs = Preferences.userRoot();
 			} catch (AccessControlException ace) {
-				// disable persistency, if we aren't allowed to access
-				// preferences.
+				// disable persistency, if we aren't allowed to access preferences.
 				Logger.getLogger(getClass().getName()).warning("cannot acces preferences. persistency disabled.");
 			}
 		}

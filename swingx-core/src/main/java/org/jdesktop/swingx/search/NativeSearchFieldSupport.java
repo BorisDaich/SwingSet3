@@ -11,7 +11,7 @@ import org.jdesktop.swingx.plaf.AbstractUIChangeHandler;
 import org.jdesktop.swingx.util.OS;
 
 /**
- * TODO: comment
+ * NativeSearchFieldSupport for Mac
  * 
  * @author Peter Weishapl petw@gmx.net
  */
@@ -38,15 +38,13 @@ public class NativeSearchFieldSupport {
 			return OS.isMacOSX() && Float.parseFloat(versionString) >= 10.5
 					&& UIManager.getLookAndFeel().getName().equals("Mac OS X");
 		} catch (Exception e) {
-			// in case the os.version cannot be parsed, we are surely not
-			// running mac os x.
+			// in case the os.version cannot be parsed, we are surely not running mac os x.
 			return false;
 		}
 	}
 
 	public static void setSearchField(JTextField txt, boolean isSearchField) {
-		// Leopard Hack: ensure property change event is triggered, if nothing
-		// changes.
+		// Leopard Hack: ensure property change event is triggered, if nothing changes.
 		if (isSearchField == isSearchField(txt)) {
 			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT_PROPERTY, "_triggerevent_");
 		} else if (isSearchField) {

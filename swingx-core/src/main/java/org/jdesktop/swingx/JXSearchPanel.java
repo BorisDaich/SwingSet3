@@ -63,8 +63,7 @@ import org.jdesktop.swingx.search.PatternModel;
  * }
  * </pre>
  * <p>
- * TODO: allow custom PatternModel and/or access to configuration of bound
- * PatternModel.
+ * TODO: allow custom PatternModel and/or access to configuration of bound PatternModel.
  * </p>
  * <p>
  * TODO: fully support control of multiple PatternMatchers.
@@ -73,6 +72,7 @@ import org.jdesktop.swingx.search.PatternModel;
  * @author Ramesh Gupta
  * @author Jeanette Winzenburg
  */
+@SuppressWarnings("serial")
 @JavaBean
 public class JXSearchPanel extends AbstractPatternPanel {
     /**
@@ -172,8 +172,7 @@ public class JXSearchPanel extends AbstractPatternPanel {
     @Override
     public void match() {
         for (Iterator<PatternMatcher> iter = getPatternMatchers().iterator(); iter.hasNext();) {
-            iter.next().setPattern(getPattern());
-            
+            iter.next().setPattern(getPattern());         
         }
     }
 
@@ -185,8 +184,7 @@ public class JXSearchPanel extends AbstractPatternPanel {
      * No need to ever call directly.
      */
     public void updateMatchRule() {
-        getPatternModel().setMatchRule(
-                (String) searchCriteria.getSelectedItem());
+        getPatternModel().setMatchRule( (String) searchCriteria.getSelectedItem() );
     }
 
     private List<PatternMatcher> getPatternMatchers() {
@@ -222,22 +220,16 @@ public class JXSearchPanel extends AbstractPatternPanel {
         model.setSelectedItem(getPatternModel().getMatchRule());
         searchCriteria.setModel(model);
         searchCriteria.setAction(getAction(MATCH_RULE_ACTION_COMMAND));
-        searchCriteria.setRenderer(new DefaultListRenderer(createStringValue(getLocale())));
-        
+        searchCriteria.setRenderer(new DefaultListRenderer(createStringValue(getLocale())));       
     }
 
     
     private StringValue createStringValue(Locale locale) {
-        // TODO Auto-generated method stub
         Map<Object, String> keys = new HashMap<Object, String>();
-        keys.put(PatternModel.MATCH_RULE_CONTAINS, 
-                PatternModel.MATCH_RULE_CONTAINS);
-        keys.put(PatternModel.MATCH_RULE_ENDSWITH, 
-                PatternModel.MATCH_RULE_ENDSWITH);
-        keys.put(PatternModel.MATCH_RULE_EQUALS, 
-                PatternModel.MATCH_RULE_EQUALS);
-        keys.put(PatternModel.MATCH_RULE_STARTSWITH, 
-                PatternModel.MATCH_RULE_STARTSWITH);
+        keys.put(PatternModel.MATCH_RULE_CONTAINS, PatternModel.MATCH_RULE_CONTAINS);
+        keys.put(PatternModel.MATCH_RULE_ENDSWITH, PatternModel.MATCH_RULE_ENDSWITH);
+        keys.put(PatternModel.MATCH_RULE_EQUALS, PatternModel.MATCH_RULE_EQUALS);
+        keys.put(PatternModel.MATCH_RULE_STARTSWITH, PatternModel.MATCH_RULE_STARTSWITH);
         return new LocalizableStringValue(keys, PatternModel.SEARCH_PREFIX, locale);
     }
 
@@ -246,7 +238,6 @@ public class JXSearchPanel extends AbstractPatternPanel {
      */
     @Override
     protected void updateLocaleState(Locale locale) {
-        // TODO Auto-generated method stub
         super.updateLocaleState(locale);
         searchCriteria.setRenderer(new DefaultListRenderer(createStringValue(locale)));
     }
@@ -273,6 +264,5 @@ public class JXSearchPanel extends AbstractPatternPanel {
         super.initComponents();
         searchCriteria = new JXComboBox();
     }
-
 
 }

@@ -109,10 +109,9 @@ public class JXSearchField extends JXTextField {
 		 * </p>
 		 * <p>
 		 * The find button can have a rollover and a pressed icon, defined by
-		 * the "SearchField.rolloverIcon" and "SearchField.pressedIcon" UI
-		 * properties. When a find popup menu is set,
-		 * "SearchField.popupRolloverIcon" and "SearchField.popupPressedIcon"
-		 * are used.
+		 * the "SearchField.rolloverIcon" and "SearchField.pressedIcon" UI properties. 
+		 * When a find popup menu is set, "SearchField.popupRolloverIcon" 
+		 * and "SearchField.popupPressedIcon" are used.
 		 * </p>
 		 * 
 		 */
@@ -505,8 +504,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Set if the popup button should be used for displaying the find popup
-	 * menu.
+	 * Set if the popup button should be used for displaying the find popup menu.
 	 * 
 	 * @param useSeperatePopupButton
 	 */
@@ -606,8 +604,6 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * TODO
-	 * 
 	 * @return
 	 */
 	public final boolean isManagingRecentSearches() {
@@ -645,8 +641,8 @@ public class JXSearchField extends JXTextField {
 		this.recentSearchesSaveKey = recentSearchesSaveKey;
 
 		if (recentSearches != null) {
-			// set null before uninstalling. otherwise the popup menu is not
-			// allowed to be changed.
+			// set null before uninstalling. 
+			// otherwise the popup menu is not allowed to be changed.
 			RecentSearches rs = recentSearches;
 			recentSearches = null;
 			rs.uninstall(this);
@@ -661,8 +657,6 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * TODO
-	 * 
 	 * @return
 	 */
 	public RecentSearches getRecentSearches() {
