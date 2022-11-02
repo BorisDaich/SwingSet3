@@ -380,11 +380,8 @@ public class JXSearchField extends JXTextField {
 	public final JButton getCancelButton() {
 		if (cancelButton == null) {
 			cancelButton = createCancelButton();
-			cancelButton.addActionListener(new ActionListener() {
-				@Override
-                public void actionPerformed(ActionEvent e) {
-					getCancelAction().actionPerformed(e);
-				}
+			cancelButton.addActionListener(actionEvent -> {
+				getCancelAction().actionPerformed(actionEvent);
 			});
 		}
 		return cancelButton;
@@ -439,11 +436,8 @@ public class JXSearchField extends JXTextField {
 	public final JButton getFindButton() {
 		if (findButton == null) {
 			findButton = createFindButton();
-			findButton.addActionListener(new ActionListener() {
-				@Override
-                public void actionPerformed(ActionEvent e) {
-					getFindAction().actionPerformed(e);
-				}
+			findButton.addActionListener(actionEvent -> {
+				getFindAction().actionPerformed(actionEvent);
 			});
 		}
 		return findButton;
@@ -460,7 +454,7 @@ public class JXSearchField extends JXTextField {
 	 */
 	protected JButton createFindButton() {
 		BuddyButton btn = new BuddyButton();
-
+		btn.setName("findButton");
 		return btn;
 	}
 
