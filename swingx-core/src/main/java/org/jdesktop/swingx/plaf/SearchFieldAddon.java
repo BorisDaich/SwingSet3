@@ -8,7 +8,7 @@ import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 
 import org.jdesktop.swingx.JXSearchField.LayoutStyle;
-import org.jdesktop.swingx.icon.ChevronIcon;
+import org.jdesktop.swingx.icon.ChevronsIcon;
 import org.jdesktop.swingx.icon.DeleteIcon;
 import org.jdesktop.swingx.icon.DeletedIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
@@ -53,16 +53,22 @@ public class SearchFieldAddon extends AbstractComponentAddon {
 		RadianceIcon deletedIcon = DeletedIcon.of(ICON_SIZE, ICON_SIZE);
 		deletedIcon.setColorFilter(color -> Color.RED);
 		
-		RadianceIcon popupIcon = ChevronIcon.of(RadianceIcon.XS, RadianceIcon.XS);		
-		RadianceIcon popupIconRollover = ChevronIcon.of(RadianceIcon.XS, RadianceIcon.XS);
-		popupIconRollover.setRotation(RadianceIcon.SOUTH);
+		RadianceIcon popupIcon = ChevronsIcon.of(RadianceIcon.XS, RadianceIcon.XS);		
+		popupIcon.setRotation(RadianceIcon.SOUTH);
+		RadianceIcon popupRolloverIcon = ChevronsIcon.of(RadianceIcon.XS, RadianceIcon.XS);
+		RadianceIcon popupPressedIcon = ChevronsIcon.of(RadianceIcon.XS, RadianceIcon.XS);
+		popupPressedIcon.setColorFilter(color -> Color.RED);
 		
 		defaults.add("SearchField.icon",         new IconUIResource(searchIcon));
 		defaults.add("SearchField.rolloverIcon", new IconUIResource(searchIconRollover));
 		defaults.add("SearchField.pressedIcon",  new IconUIResource(searchIconpPessed));
 		
-		defaults.add("SearchField.popupIcon",         new IconUIResource(popupIcon));
-		defaults.add("SearchField.popupRolloverIcon", new IconUIResource(popupIconRollover));
+		defaults.add("SearchField.popupIcon",         new IconUIResource(popupIcon));	
+//		IconUIResource popupIconUIR = new IconUIResource(popupIcon);
+//		defaults.add("SearchField.popupIcon",         popupIconUIR);
+//		System.out.println(">>>>>>>>>>>popup IconUIResource:"+popupIconUIR);
+		defaults.add("SearchField.popupRolloverIcon", new IconUIResource(popupRolloverIcon));
+		defaults.add("SearchField.popupPressedIcon", new IconUIResource(popupPressedIcon));
 		
 		defaults.add("SearchField.clearIcon",         new IconUIResource(deleteIcon));
 		defaults.add("SearchField.clearRolloverIcon", new IconUIResource(deleteIconRollover));

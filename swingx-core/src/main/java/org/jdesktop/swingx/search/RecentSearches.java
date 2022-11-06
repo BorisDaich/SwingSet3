@@ -29,6 +29,8 @@ import org.jdesktop.swingx.plaf.UIManagerExt;
  */
 public class RecentSearches implements ActionListener {
 	
+    private static final Logger LOG = Logger.getLogger(RecentSearches.class.getName());
+
 	private Preferences prefsNode;
 
 	private int maxRecents = 5;
@@ -64,6 +66,7 @@ public class RecentSearches implements ActionListener {
 	 *            persisted
 	 */
 	public RecentSearches(Preferences prefs, String saveName) {
+		LOG.fine("Preferences:"+prefs + " String saveName="+saveName);
 		if (prefs == null) {
 			try {
 				prefs = Preferences.userRoot();
@@ -302,11 +305,20 @@ public class RecentSearches implements ActionListener {
 		 * @param searchField
 		 */
 		public RecentSearchesPopup(RecentSearches recentSearches, JTextField searchField) {
+			if(searchField instanceof JXSearchField xsf) {
+				LOG.fine("RecentSearches:"+recentSearches + " JXSearchField PopupButton.Icon:"+xsf.getPopupButton().getIcon());
+				// JXSearchField PopupButton.Icon is javax.swing.plaf.IconUIResource 
+				//   und kapselt private Icon delegate 
+			} else {
+				LOG.fine("RecentSearches:"+recentSearches + " JTextField searchField:"+searchField);
+			}
 			this.searchField = searchField;
 			this.recentSearches = recentSearches;
 
-			recentSearches.addChangeListener(this);
-			buildMenu();
+			if(recentSearches!=null) {
+				recentSearches.addChangeListener(this);
+				buildMenu();
+			}
 		}
 
 		/**

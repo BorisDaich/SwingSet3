@@ -87,6 +87,45 @@ public class JXSearchFieldVisualCheck extends InteractiveTestCase {
     }
 
     @Test
+    public void interactiveSearchFieldRegularWithPopUpButton() {
+        JXSearchField search = new JXSearchField(LONG_PROMPT);
+		assertEquals(JXSearchField.SearchMode.INSTANT, search.getSearchMode());
+        LOG.info("default SearchMode="+search.getSearchMode() + " switch to REGULAR ...");
+        search.setSearchMode(JXSearchField.SearchMode.REGULAR);
+        // In REGULAR search mode, an action event is fired, 
+        // when the user presses enter or clicks the find button.
+        LOG.fine("SearchMode="+search.getSearchMode() + " isUseSeperatePopupButton="+search.isUseSeperatePopupButton());
+		assertFalse(search.isUseSeperatePopupButton());
+		
+        JButton popup = search.getPopupButton();
+        LOG.info("SearchMode="+search.getSearchMode() + " popup button="+popup);
+        
+/* void setFindPopupMenu(JPopupMenu findPopupMenu)
+
+Sets the popup menu that will be displayed when the popup button is clicked. 
+If a find popup menu is set and isUseSeperatePopupButton() returns false, 
+the popup button will be displayed instead of the find button.
+                                   -------
+ */
+        JPopupMenu popupMenu = search.getFindPopupMenu();
+        LOG.info("search.isManagingRecentSearches="+search.isManagingRecentSearches() 
+        + ", isUseSeperatePopupButton="+search.isUseSeperatePopupButton()
+        + ", popupMenu="+popupMenu + "// expected null because not installed"); 
+		assertFalse(search.isManagingRecentSearches());
+		assertNull(popupMenu);
+		search.setFindPopupMenu(new RecentSearches.RecentSearchesPopup(search.getRecentSearches(), search));
+		
+		search.addActionListener(actionEvent -> {
+			LOG.info("actionEvent["+actionEvent.getClass().getSimpleName()+"]:"+actionEvent.getActionCommand()
+			+", ModifiersExText("+actionEvent.getModifiers()+")="+InputEvent.getModifiersExText(actionEvent.getModifiers())
+			+(actionEvent.getModifiers()==0 ? " ENTER" : " find button pushed")
+			);
+		});
+                
+        showInFrame(search, "JXSearchField REGULAR WithPopUpButton testing");
+    }
+    
+    @Test
     public void interactiveRenderingCheck() {
         JXSearchField search = new JXSearchField(LONG_PROMPT);
 		assertEquals(JXSearchField.SearchMode.INSTANT, search.getSearchMode());
@@ -102,33 +141,34 @@ public class JXSearchFieldVisualCheck extends InteractiveTestCase {
         LOG.info("SearchMode="+search.getSearchMode() + " popup button="+popup);
         
 /* void setFindPopupMenu(JPopupMenu findPopupMenu)
-Sets the popup menu that will be displayed when the popup button is clicked. 
-If a find popup menu is set and isUseSeperatePopupButton() returns false, 
-the popup button will be displayed instead of the find button. 
-Otherwise the popup button will be displayed in addition to the find button.
+
+Otherwise - isUseSeperatePopupButton() returns true
+the popup button will be displayed in addition to the find button.
 The find popup menu is managed using NativeSearchFieldSupport to achieve compatibility 
 with the native search field support provided by the Mac Look And Feel since Mac OS 10.5.
 If a recent searches save key has been set and therefore a recent searches popup menu is installed, 
 this method does nothing. 
-You must first remove the recent searches save key, 
-by calling setRecentSearchesSaveKey(String) with a null parameter.
-Parameters:findPopupMenu the popup menu, which will be displayed when the popup button is clicked        
  */
         JPopupMenu popupMenu = search.getFindPopupMenu();
-        LOG.info("popupMenu="+popupMenu + "// expected null"); 
+        LOG.info("search.isManagingRecentSearches="+search.isManagingRecentSearches() 
+        + ", isUseSeperatePopupButton="+search.isUseSeperatePopupButton()
+        + ", popupMenu="+popupMenu + "// expected null because not installed"); 
+		assertFalse(search.isManagingRecentSearches());
+		assertNull(popupMenu);
+		
+		// Now Install a recent searches popup menu as the find popup menu,
         search.setRecentSearchesSaveKey("String recentSearchesSaveKey");
+        LOG.info("????? search.isManagingRecentSearches="+search.isManagingRecentSearches());
         popupMenu = new RecentSearches.RecentSearchesPopup(search.getRecentSearches(), search);
+        search.setFindPopupMenu(popupMenu);
         LOG.info("popupMenu"
         		+ "="+search.getFindPopupMenu());
+        
 		search.addActionListener(actionEvent -> {
 			LOG.info("actionEvent["+actionEvent.getClass().getSimpleName()+"]:"+actionEvent.getActionCommand()
 			+", ModifiersExText("+actionEvent.getModifiers()+")="+InputEvent.getModifiersExText(actionEvent.getModifiers())
 			+(actionEvent.getModifiers()==0 ? " ENTER" : " find button pushed")
 			);
-//			JXSearchField f = (JXSearchField)actionEvent.getSource();
-//			LOG.info("prop NativeSearchFieldSupport.FIND_ACTION_PROPERTY="
-//					+f.getClientProperty(NativeSearchFieldSupport.FIND_ACTION_PROPERTY)
-//					);
 		});
                 
         showInFrame(search, "JXSearchFieldVisualCheck testing");
