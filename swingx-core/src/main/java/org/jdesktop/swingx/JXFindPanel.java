@@ -27,6 +27,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.search.PatternModel;
@@ -39,18 +40,14 @@ import org.jdesktop.swingx.search.Searchable;
  * @author unascribed from JDNC
  * @author Jeanette Winzenburg
  */
+@SuppressWarnings("serial")
 @JavaBean
 public class JXFindPanel extends AbstractPatternPanel {
 
-    /** findNext */
     public static final String FIND_NEXT_ACTION_COMMAND = "findNext";
-    /** findPrevious */
     public static final String FIND_PREVIOUS_ACTION_COMMAND = "findPrevious";
-    /** searchable */
     protected Searchable searchable;
-    /** wrapCheck */
     protected JCheckBox wrapCheck;
-    /** backCheck */
     protected JCheckBox backCheck;
     private boolean initialized;
 
@@ -230,7 +227,19 @@ public class JXFindPanel extends AbstractPatternPanel {
      * Report that no match is found.
      */
     protected void showNotFoundMessage() {
-        JOptionPane.showMessageDialog(this, getUIString("notFound"));
+    	String nlsNotFound = getUIString("notFound");
+    	if(UIManager.getLookAndFeel().getClass().getName().contains("Nimbus")) {
+    		// javax.swing.plaf.nimbus.NimbusLookAndFeel
+    		JOptionPane.showMessageDialog(this, nlsNotFound);
+    	} else {
+    		// avoid ugly icon with PLAIN_MESSAGE
+            JOptionPane.showMessageDialog
+        	( this
+            , nlsNotFound
+            , UIManager.getString("OptionPane.messageDialogTitle", getLocale())
+            , JOptionPane.PLAIN_MESSAGE
+            );
+    	}
     }
 
     
