@@ -137,11 +137,13 @@ import org.jdesktop.swingx.search.Searchable;
  * 
  * @author Mark Davidson
  */
+@SuppressWarnings("serial")
 @JavaBean
 public class JXEditorPane extends JEditorPane implements Targetable {
 	
 	/*
 	 *  Searchable is implemeted in inner class DocumentSearchable
+	 *  TODO Demo with search/find
 	 */
 
     private static final Logger LOG = Logger.getLogger(JXEditorPane.class.getName());
@@ -149,7 +151,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
     private UndoableEditListener undoHandler;
     private UndoManager undoManager;
     private CaretListener caretHandler;
-    private JComboBox selector;
+    private JComboBox<HTML.Tag> selector;
 
     // The ids of supported actions. Perhaps this should be public.
     private final static String ACTION_FIND = "find";
@@ -430,7 +432,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
      * Note: This is only valid for the HTMLEditorKit
      * @return JComboBox
      */
-    public JComboBox getParagraphSelector() {
+    public JComboBox<HTML.Tag> getParagraphSelector() {
         if (selector == null) {
             selector = new ParagraphSelector();
         }
@@ -441,7 +443,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
      * A control which should be placed in the toolbar to enable
      * paragraph selection.
      */
-    private class ParagraphSelector extends JComboBox implements ItemListener {
+    private class ParagraphSelector extends JComboBox<HTML.Tag> implements ItemListener {
 
         private Map<HTML.Tag, String> itemMap;
 
@@ -469,7 +471,7 @@ public class JXEditorPane extends JEditorPane implements Targetable {
             items.addElement(HTML.Tag.H6);
             items.addElement(HTML.Tag.PRE);
 
-            setModel(new DefaultComboBoxModel(items));
+            setModel(new DefaultComboBoxModel<HTML.Tag>(items));
             setRenderer(new ParagraphRenderer());
             addItemListener(this);
             setFocusable(false);
@@ -489,16 +491,13 @@ public class JXEditorPane extends JEditorPane implements Targetable {
             }
 
             @Override
-            public Component getListCellRendererComponent(JList list,
+            public Component getListCellRendererComponent(JList<?> list,
                                                           Object value,
                                                           int index,
                                                           boolean isSelected,
                                                           boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected,
-                                                   cellHasFocus);
-
-                setText((String)itemMap.get(value));
-
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setText(itemMap.get(value));
                 return this;
             }
         }
