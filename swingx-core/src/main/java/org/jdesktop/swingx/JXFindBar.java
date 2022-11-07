@@ -20,11 +20,14 @@ package org.jdesktop.swingx;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.io.Serial;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.search.Searchable;
@@ -63,18 +66,26 @@ import org.jdesktop.swingx.search.Searchable;
 @JavaBean
 public class JXFindBar extends JXFindPanel {
 
-	/** previousBackgroundColor */
+	@Serial
+	private static final long serialVersionUID = -5234235892786822041L;
+	private static final Logger LOG = Logger.getLogger(JXFindBar.class.getName());
+	
+	public final static String uiClassID = "swingx/FindBarUI";
+
+//    static {
+//        LookAndFeelAddons.contribute(new FindBarAddon());
+//    }
+
     protected Color previousBackgroundColor;
-	/** previousForegroundColor */
     protected Color previousForegroundColor;
-	/** notFoundBackgroundColor */
+    
     // PENDING: need to read from UIManager
+    // #FF6666 (or 0xFF6666) is unknown color: approx Bittersweet: FE6F5E, "nimbusRed":[r=169,g=46,b=34]=A92E0E
+//    protected Color notFoundBackgroundColor = UIManagerExt.getSafeColor("nimbusRed", Color.decode("#FF6666"));
     protected Color notFoundBackgroundColor = Color.decode("#FF6666");
-	/** notFoundForegroundColor */
-    protected Color notFoundForegroundColor = Color.white;
-	/** findNext */
+//    protected Color notFoundBackgroundColor = UIManager.getColor("Search.notFoundBackground");
+    protected Color notFoundForegroundColor = UIManager.getColor("infoText");
     protected JButton findNext;
-	/** findPrevious */
     protected JButton findPrevious;
 
     /**
@@ -105,8 +116,11 @@ public class JXFindBar extends JXFindPanel {
      */
     @Override
     protected void showNotFoundMessage() {
+    	LOG.info("searchField.Text:"+(searchField==null?"searchField==null":searchField.getText())
+    			+" notFoundBackgroundColor:"+notFoundBackgroundColor
+    			+" notFoundForegroundColor:"+notFoundForegroundColor);
         //JW: quick hack around #487-swingx - NPE in setSearchable
-        if (searchField ==  null) return;
+        if (searchField == null) return;
         searchField.setForeground(notFoundForegroundColor);
         searchField.setBackground(notFoundBackgroundColor);
     }
@@ -159,13 +173,11 @@ public class JXFindBar extends JXFindPanel {
     @Override
     protected void bind() {
         super.bind();
-        searchField
-                .addActionListener(getAction(JXDialog.EXECUTE_ACTION_COMMAND));
+        searchField.addActionListener(getAction(JXDialog.EXECUTE_ACTION_COMMAND));
         findNext.setAction(getAction(FIND_NEXT_ACTION_COMMAND));
         findPrevious.setAction(getAction(FIND_PREVIOUS_ACTION_COMMAND));
         KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
-        getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(stroke,
-                JXDialog.CLOSE_ACTION_COMMAND);
+        getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(stroke, JXDialog.CLOSE_ACTION_COMMAND);
     }
 
     @Override
@@ -174,6 +186,7 @@ public class JXFindBar extends JXFindPanel {
         add(searchLabel);
         add(new JLabel(":"));
         add(new JLabel("  "));
+        searchField.setBackground(UIManager.getColor("textHighlight"));
         add(searchField);
         add(findNext);
         add(findPrevious);
