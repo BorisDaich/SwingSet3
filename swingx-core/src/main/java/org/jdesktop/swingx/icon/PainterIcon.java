@@ -23,13 +23,53 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.Icon;
 import javax.swing.Painter;
 
-public class PainterIcon implements Icon, SizingConstants {
+/**
+ * Impelmentation of <a href="https://jdesktop.wordpress.com/2022/11/09/jxicon/">JXIcon interface</a>
+ * 
+ * @author EUG https://github.com/homebeaver (rotation + point/axis reflection)
+ */
+public class PainterIcon implements JXIcon {
 	
     private int width;
     private int height;
+    
+	// implement point/axis reflection
+    private int rsfx = 1, rsfy = 1;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setReflection(boolean horizontal, boolean vertical) {
+    	this.rsfx = vertical ? -1 : 1;
+    	this.rsfy = horizontal ? -1 : 1;
+    }
+    /**
+     * override the default defined in JXIcon (no reflection)
+     * @return true if there is any reflection, point reflection or mirroring
+     */
+    @Override
+    public boolean isReflection() {
+		return rsfx==-1 || rsfy==-1;
+	}
+    
+    // implement rotation
+    private double theta = 0;
+    /**
+     * {@inheritDoc}
+     */
+    public void setRotation(double theta) {
+    	this.theta = theta;
+    }    
+    /**
+     * override the constant default (no rotation) defined in JXIcon
+     * @return the angle of rotation in radians
+     */
+    @Override
+    public double getRotation() {
+		return theta;
+	}
     
     // we accept JComponent and Component, but not Container
     private Painter<? extends Component> painter;
@@ -58,15 +98,24 @@ public class PainterIcon implements Icon, SizingConstants {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (getPainter() != null && g instanceof Graphics2D) {
-            g = g.create();
-            
+        	Graphics2D g2d = (Graphics2D) g.create();
+
+        	if(getRotation()!=0) {
+                g2d.rotate(getRotation(), x+width/2, y+height/2);
+            }
+            if(isReflection()) {
+            	g2d.translate(x+width/2, y+height/2);
+            	g2d.scale(this.rsfx, this.rsfy);
+            	g2d.translate(-x-width/2, -y-height/2);
+            }
+
             try {
-                g.translate(x, y);
+            	g2d.translate(x, y);
                 Painter<Component> p = (Painter<Component>)getPainter();
-                p.paint((Graphics2D) g, c, width, height);
-                g.translate(-x, -y);
+                p.paint(g2d, c, width, height);
+                g2d.translate(-x, -y);
             } finally {
-                g.dispose();
+            	g2d.dispose();
             }
         }
     }
