@@ -26,12 +26,13 @@ import java.awt.Graphics2D;
 import javax.swing.Icon;
 import javax.swing.Painter;
 
-public class PainterIcon implements Icon {
+public class PainterIcon implements Icon, SizingConstants {
 	
     private int width;
     private int height;
     
-    private Painter<Component> painter;
+    // we accept JComponent and Component, but not Container
+    private Painter<? extends Component> painter;
     
     public PainterIcon(int width, int height) {
         this.width = width;
@@ -42,18 +43,18 @@ public class PainterIcon implements Icon {
     	this(Double.valueOf(size.getWidth()).intValue(), Double.valueOf(size.getHeight()).intValue());
     }
 
-    public Painter<Component> getPainter() {
+    public Painter<? extends Component> getPainter() {
         return painter;
     }
 
-    public void setPainter(Painter<Component> painter) {
+    public void setPainter(Painter<? extends Component> painter) {
         this.painter = painter;
     }
    
     /**
      * {@inheritDoc}
      */
-    // implements interface Icon:
+    // implements interface Icon: paintIcon(Component c, Graphics g, int x, int y);
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (getPainter() != null && g instanceof Graphics2D) {
@@ -61,7 +62,8 @@ public class PainterIcon implements Icon {
             
             try {
                 g.translate(x, y);
-                getPainter().paint((Graphics2D) g, c, width, height);
+                Painter<Component> p = (Painter<Component>)getPainter();
+                p.paint((Graphics2D) g, c, width, height);
                 g.translate(-x, -y);
             } finally {
                 g.dispose();
