@@ -39,7 +39,7 @@ public class MyOptionPanePainter extends AbstractRegionPainter {
 	
 	private static final Logger LOG = Logger.getLogger(MyOptionPanePainter.class.getName());
 
-    static Painter<JComponent> factory(int state) {
+    public static Painter<JComponent> factory(int state) {
     	PaintContext ctx = new PaintContext
     			( new Insets(0, 0, 0, 0), new Dimension(48, 48)
     			, false
@@ -48,20 +48,24 @@ public class MyOptionPanePainter extends AbstractRegionPainter {
     	return new MyOptionPanePainter(ctx, state);
     }
 
+    static final Color BROWN           = new Color(0xA52A2A);
+    static final Color NIMBUS_RED      = new Color(0xA92E22); // approx BROWN
     static final Color CERULEAN_BLUE   = new Color(0x2A52BE);
-    static final Color NIMBUSINFOBLUE  = new Color(0x2F5CB4); // approx CERULEAN_BLUE
+    static final Color NIMBUS_INFOBLUE = new Color(0x2F5CB4); // approx CERULEAN_BLUE
+    static final Color TURBO           = new Color(0xF5CC23);
+    static final Color NIMBUS_ALERTYELLOW = new Color(0xFFDC23); // approx TURBO
 
- // copy final class OptionPanePainter extends AbstractRegionPainter :
+// copy final class OptionPanePainter extends AbstractRegionPainter :
 
     //package private integers representing the available states that
     //this painter will paint. These are used when creating a new instance
     //of OptionPanePainter to determine which region/state is being painted
     //by that instance.
     static final int BACKGROUND_ENABLED = 1;
-    static final int ERRORICON_ENABLED = 2;
-    static final int INFORMATIONICON_ENABLED = 3;
-    static final int QUESTIONICON_ENABLED = 4;
-    static final int WARNINGICON_ENABLED = 5;
+    public static final int ERRORICON_ENABLED = 2;
+    public static final int INFORMATIONICON_ENABLED = 3;
+    public static final int QUESTIONICON_ENABLED = 4;
+    public static final int WARNINGICON_ENABLED = 5;
 
 
     private int state; //refers to one of the static final ints above
@@ -76,24 +80,24 @@ public class MyOptionPanePainter extends AbstractRegionPainter {
     //All Colors used for painting are stored here. Ideally, only those colors being used
     //by a particular instance of OptionPanePainter would be created. For the moment at least,
     //however, all are created for each instance.
-    private Color color1 = decodeColor("nimbusRed", -0.014814814f, 0.18384242f, 0.015686274f, 0);
-    private Color color2 = decodeColor("nimbusRed", -0.014814814f, -0.403261f, 0.21960783f, 0);
-    private Color color3 = decodeColor("nimbusRed", -0.014814814f, -0.07154381f, 0.11372548f, 0);
-    private Color color4 = decodeColor("nimbusRed", -0.014814814f, 0.110274374f, 0.07058823f, 0);
-    private Color color5 = decodeColor("nimbusRed", -0.014814814f, -0.05413574f, 0.2588235f, 0);
+    private Color color1 = MyPaintContext.decodeColor(NIMBUS_RED, "nimbusRed", -0.014814814f, 0.18384242f, 0.015686274f, 0);
+    private Color color2 = MyPaintContext.decodeColor(NIMBUS_RED, "nimbusRed", -0.014814814f, -0.403261f, 0.21960783f, 0);
+    private Color color3 = MyPaintContext.decodeColor(NIMBUS_RED, "nimbusRed", -0.014814814f, -0.07154381f, 0.11372548f, 0);
+    private Color color4 = MyPaintContext.decodeColor(NIMBUS_RED, "nimbusRed", -0.014814814f, 0.110274374f, 0.07058823f, 0);
+    private Color color5 = MyPaintContext.decodeColor(NIMBUS_RED, "nimbusRed", -0.014814814f, -0.05413574f, 0.2588235f, 0);
     private Color color6 = new Color(250, 250, 250, 255);
-    private Color color7 = decodeColor("nimbusRed", 0.0f, -0.79881656f, 0.33725488f, -187);
+    private Color color7 = MyPaintContext.decodeColor(NIMBUS_RED, "nimbusRed", 0.0f, -0.79881656f, 0.33725488f, -187);
     private Color color8 = new Color(255, 200, 0, 255);
-    private Color color9 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", 0.0f, 0.06231594f, -0.054901958f, 0);
-    private Color color10 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", 3.1620264E-4f, 0.07790506f, -0.19215685f, 0);
-    private Color color11 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", -8.2296133E-4f, -0.44631243f, 0.19215685f, 0);
-    private Color color12 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", 0.0012729168f, -0.0739674f, 0.043137252f, 0);
-    private Color color13 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", 8.354187E-4f, -0.14148629f, 0.19999999f, 0);
-    private Color color14 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", -0.0014793873f, -0.41456455f, 0.16470587f, 0);
-    private Color color15 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", 3.437996E-4f, -0.14726585f, 0.043137252f, 0);
-    private Color color16 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", -4.271865E-4f, -0.0055555105f, 0.0f, 0);
-    private Color color17 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", 0.0f, 0.0f, 0.0f, 0);
-    private Color color18 = MyPaintContext.decodeColor(NIMBUSINFOBLUE, "nimbusInfoBlue", -7.866621E-4f, -0.12728173f, 0.17254901f, 0);
+    private Color color9 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", 0.0f, 0.06231594f, -0.054901958f, 0);
+    private Color color10 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", 3.1620264E-4f, 0.07790506f, -0.19215685f, 0);
+    private Color color11 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", -8.2296133E-4f, -0.44631243f, 0.19215685f, 0);
+    private Color color12 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", 0.0012729168f, -0.0739674f, 0.043137252f, 0);
+    private Color color13 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", 8.354187E-4f, -0.14148629f, 0.19999999f, 0);
+    private Color color14 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", -0.0014793873f, -0.41456455f, 0.16470587f, 0);
+    private Color color15 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", 3.437996E-4f, -0.14726585f, 0.043137252f, 0);
+    private Color color16 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", -4.271865E-4f, -0.0055555105f, 0.0f, 0);
+    private Color color17 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", 0.0f, 0.0f, 0.0f, 0);
+    private Color color18 = MyPaintContext.decodeColor(NIMBUS_INFOBLUE, "nimbusInfoBlue", -7.866621E-4f, -0.12728173f, 0.17254901f, 0);
     private Color color19 = new Color(115, 120, 126, 255);
     private Color color20 = new Color(26, 34, 43, 255);
     private Color color21 = new Color(168, 173, 178, 255);
@@ -103,13 +107,13 @@ public class MyOptionPanePainter extends AbstractRegionPainter {
     private Color color25 = new Color(96, 104, 112, 255);
     private Color color26 = new Color(118, 128, 138, 255);
     private Color color27 = new Color(255, 255, 255, 255);
-    private Color color28 = decodeColor("nimbusAlertYellow", -4.9102306E-4f, 0.1372549f, -0.15294117f, 0);
-    private Color color29 = decodeColor("nimbusAlertYellow", -0.0015973002f, 0.1372549f, -0.3490196f, 0);
-    private Color color30 = decodeColor("nimbusAlertYellow", 6.530881E-4f, -0.40784314f, 0.0f, 0);
-    private Color color31 = decodeColor("nimbusAlertYellow", -3.9456785E-4f, -0.109803915f, 0.0f, 0);
-    private Color color32 = decodeColor("nimbusAlertYellow", 0.0f, 0.0f, 0.0f, 0);
-    private Color color33 = decodeColor("nimbusAlertYellow", 0.008085668f, -0.04705882f, 0.0f, 0);
-    private Color color34 = decodeColor("nimbusAlertYellow", 0.026515156f, -0.18431371f, 0.0f, 0);
+    private Color color28 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", -4.9102306E-4f, 0.1372549f, -0.15294117f, 0);
+    private Color color29 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", -0.0015973002f, 0.1372549f, -0.3490196f, 0);
+    private Color color30 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", 6.530881E-4f, -0.40784314f, 0.0f, 0);
+    private Color color31 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", -3.9456785E-4f, -0.109803915f, 0.0f, 0);
+    private Color color32 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", 0.0f, 0.0f, 0.0f, 0);
+    private Color color33 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", 0.008085668f, -0.04705882f, 0.0f, 0);
+    private Color color34 = MyPaintContext.decodeColor(NIMBUS_ALERTYELLOW, "nimbusAlertYellow", 0.026515156f, -0.18431371f, 0.0f, 0);
     private Color color35 = new Color(69, 69, 69, 255);
     private Color color36 = new Color(0, 0, 0, 255);
     private Color color37 = new Color(16, 16, 16, 255);

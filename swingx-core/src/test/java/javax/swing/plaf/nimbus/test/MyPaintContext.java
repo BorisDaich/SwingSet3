@@ -40,8 +40,34 @@ public class MyPaintContext extends AbstractRegionPainter {
 		} else {
 			LOG.warning(key+" - can not give a right answer as painter sould not be used outside of nimbus laf" 
 					+", but do the best we can");
-			return hint.getHSBColor(hOffset,sOffset,bOffset);
+			// EUG: wie in class javax.swing.plaf.nimbus.DerivedColor#rederiveColor
+			float[] tmp = Color.RGBtoHSB(hint.getRed(), hint.getGreen(), hint.getBlue(), null);
+            // apply offsets
+            tmp[0] = tmp[0] + hOffset;
+            tmp[1] = clamp(tmp[1] + sOffset);
+            tmp[2] = clamp(tmp[2] + bOffset);
+            int alpha = clamp(hint.getAlpha() + aOffset);
+            int argbValue = (Color.HSBtoRGB(tmp[0], tmp[1], tmp[2]) & 0xFFFFFF) | (alpha << 24);
+            return new Color(argbValue);
 		}
+    }
+    // EUG: see class javax.swing.plaf.nimbus.DerivedColor
+    private static float clamp(float value) {
+        if (value < 0) {
+            value = 0;
+        } else if (value > 1) {
+            value = 1;
+        }
+        return value;
+    }
+
+    private static int clamp(int value) {
+        if (value < 0) {
+            value = 0;
+        } else if (value > 255) {
+            value = 255;
+        }
+        return value;
     }
 
 	@Override
