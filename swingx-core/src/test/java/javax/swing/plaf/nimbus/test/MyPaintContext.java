@@ -38,7 +38,7 @@ public class MyPaintContext extends AbstractRegionPainter {
 			MyPaintContext p = new MyPaintContext();
 			return p.decodeColor(key, hOffset, sOffset, bOffset, aOffset); // final
 		} else {
-			LOG.warning(key+" - can not give a right answer as painter sould not be used outside of nimbus laf" 
+			LOG.fine(key+" - can not give a right answer as painter sould not be used outside of nimbus laf" 
 					+", but do the best we can");
 			// EUG: wie in class javax.swing.plaf.nimbus.DerivedColor#rederiveColor
 			float[] tmp = Color.RGBtoHSB(hint.getRed(), hint.getGreen(), hint.getBlue(), null);
@@ -82,4 +82,7 @@ public class MyPaintContext extends AbstractRegionPainter {
 		
 	}
 
+//	public boolean isInstanceOf(Object o) {
+//		return o instanceof javax.swing.plaf.nimbus.NimbusIcon; // type javax.swing.plaf.nimbus.NimbusIcon is not visible
+//	}
 }

@@ -5,7 +5,7 @@
  */
 /*
 
-Die nimbus implementierungen sind in package javax.swing.plaf.nimbus und als final und nicht public definiert. 
+Die nimbus implementierungen sind in package javax.swing.plaf.nimbus final und nicht public definiert. 
 Beispiele:
 
 public abstract class AbstractRegionPainter implements Painter<JComponent> { ...
