@@ -24,13 +24,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.search.SearchFactory;
@@ -164,10 +166,8 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @return a configured, packed and located JXFrame.
      */
     public JXFrame wrapInFrame(JComponent component, String title) {
-        JXFrame frame = new JXFrame(title, false);
-        JToolBar toolbar = new JToolBar();
-        frame.getRootPaneExt().setToolBar(toolbar);
-        frame.getContentPane().add(BorderLayout.CENTER, component);
+        JXFrame frame = new JXFrame(title, false); // no exit on close
+        frame = wrapInFrame(frame, component);
         frame.setLocation(frameLocation);
         if (frameLocation.x == 0) {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -469,36 +469,73 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @return the menu to use for plaf switching.
      */
     protected JMenu createPlafMenu(Window target) {
+    	return makePlafMenu(target, null);
+    }
+    public static JXFrame wrapInFrame(JXFrame frame, JComponent component) {
+        JToolBar toolbar = new JToolBar();
+        frame.getRootPaneExt().setToolBar(toolbar);
+        // add the component with its name or with "CENTER" as name
+        frame.getContentPane().add(component.getName()==null ? BorderLayout.CENTER : component.getName(), component);
+        JMenuBar bar = new JMenuBar();
+        bar.add(makePlafMenu(frame, component));
+        frame.setJMenuBar(bar);
+        return frame;
+    }
+    private static JMenu makePlafMenu(Window window, JComponent root) {
         LookAndFeelInfo[] plafs = UIManager.getInstalledLookAndFeels();
         JMenu menu = new JMenu("Set L&F");
         
+        ButtonGroup group = new ButtonGroup();
         for (LookAndFeelInfo info : plafs) {
-//            LOG.info(info.getName()+" "+info.getClassName()+" "+target);
-            menu.add(createPlafAction(info.getName(), info.getClassName(), target));
+            LOG.config(info.getName()+" "+info.getClassName()+" Window:"+window);
+            menu.add(createLafMenuItem(info, group, window, root));
         }
         return menu;
     }
+    private static JMenuItem createLafMenuItem(UIManager.LookAndFeelInfo info, ButtonGroup group, Window window, JComponent root) {
+    	SetPlafAction action = new SetPlafAction(info.getName(), info.getClassName(), group, window, root);
+    	JMenuItem mi = new JRadioButtonMenuItem(action);
+    	if(info.getClassName().equals(UIManager.getLookAndFeel().getClass().getName())) {
+    		mi.setSelected(true);
+    	}
+    	group.add(mi);
+    	return mi;
+    }
+
 
     // ---------------------- laf
 
     /**
      * 
      * Sets the lookAndFeel which has a name containing the given snippet.
-     * Does not update any component/-tree, just bare
-     * setting. May fail silently (Logging with level FINE) if there is no
+     * Does not update any component/-tree, just bare setting. 
+     * May fail silently (Logging with level FINE) if there is no
      * installed LAF with the name or the setting fails for other reasons.
      * 
      * @param nameSnippet part of the name as published by the LAF.
+     * @return true if the LAF is changed
      */
-    public static void setLAF(String nameSnippet) {
-        String laf = getLookAndFeelClassName(nameSnippet);
-        if (laf != null) {
-            try {
-                UIManager.setLookAndFeel(laf);
-            } catch (Exception e) {
-                LOG.log(Level.FINE, "problem in setting laf: " + laf, e);
-            }
-        }
+    public static boolean setLAF(String nameSnippet) {
+    	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
+    	if(currentClassName.contains(nameSnippet)) {
+    		LOG.warning("current Laf is "+currentClassName);
+    	}
+    	UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
+    	for (LookAndFeelInfo info : lafInfo) {
+    		String lafClassName = info.getClassName();
+    		if(lafClassName.contains(nameSnippet)) {
+    			try {
+    	    		LOG.info("switch to laf ClassName="+lafClassName + " from "+UIManager.getLookAndFeel());
+					UIManager.setLookAndFeel(lafClassName);
+					return !lafClassName.equals(currentClassName);
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+						| UnsupportedLookAndFeelException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
+    	}
+    	return false;
     }
     /**
      * 
@@ -552,27 +589,19 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
     }
     
     protected static AbstractActionExt createPlafAction(String name, String plaf, Window toplevel) {
-    	return new SetPlafAction(name, plaf, toplevel);
+    	ButtonGroup group = new ButtonGroup();
+    	return new SetPlafAction(name, plaf, group, toplevel, null);
     }
     
     /**
-     * Action to toggle plaf and update all toplevel windows of the
-     * current application. Used to setup the plaf-menu.
+     * Action to toggle plaf and update all toplevel windows of the current application. 
+     * Used to setup the plaf-menu.
      */
     @SuppressWarnings("serial")
-	private static class SetPlafAction extends AbstractActionExt {
-
+    private static class SetPlafAction extends AbstractActionExt {
         private String plaf;
         private Window toplevel;
-        
-        @SuppressWarnings("unused")
-        public SetPlafAction(String name, String plaf) {
-            this(name, plaf, null, null);
-        }
-        
-        public SetPlafAction(String name, String plaf, Window toplevel) {
-            this(name, plaf, null, toplevel);
-        }
+        private JComponent root;
         /**
          * Instantiates an action which updates the toplevel window to the given LAF. 
          * 
@@ -582,32 +611,34 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
          * @param toplevel the window to update, may be null to indicate
          *   update of all application windows
          */
-        public SetPlafAction(String name, String plaf, ButtonGroup group, Window toplevel) {
+        public SetPlafAction(String name, String plaf, ButtonGroup group, Window toplevel, JComponent root) {
             super(name);
             super.setGroup(group);
             this.plaf = plaf;
             this.toplevel = toplevel;
+            this.root = root;
         }
         /**
          * {@inheritDoc}
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-//        	LOG.info("plaf:"+plaf +"\n,toplevel:"+toplevel +", ActionEvent:"+e);
+        	LOG.info("plaf:"+plaf +"\n, ActionEvent "+e +"\n, toplevel Window:"+toplevel);
             try {
-                UIManager.setLookAndFeel(plaf);
+                if(!InteractiveTestCase.setLAF(plaf)) {
+                	return; // LAF unchanged
+                };
                 if (toplevel != null) {
-                    SwingUtilities.updateComponentTreeUI(toplevel);
+                	SwingUtilities.updateComponentTreeUI(toplevel);
                 } else {
                     SwingXUtilities.updateAllComponentTreeUIs();
                 }
-                
             } catch (Exception e1) {
                 e1.printStackTrace();
-                LOG.log(Level.WARNING, "problem in setting laf: " + plaf, e1);
-            } 
+                LOG.log(Level.FINE, "problem in setting laf: " + plaf, e1);
+            }
+            
         }
-
     }
     
 
