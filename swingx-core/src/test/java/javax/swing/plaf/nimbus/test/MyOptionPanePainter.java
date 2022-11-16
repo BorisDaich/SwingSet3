@@ -35,7 +35,7 @@ d.put("OptionPane.warningIcon", new NimbusIcon("OptionPane", "warningIconPainter
 
 
  */
-public class MyOptionPanePainter extends AbstractRegionPainter {
+public class MyOptionPanePainter extends AbstractRegionPainter implements NimbusColors {
 	
 	private static final Logger LOG = Logger.getLogger(MyOptionPanePainter.class.getName());
 
@@ -47,13 +47,6 @@ public class MyOptionPanePainter extends AbstractRegionPainter {
     			, 1.0, 1.0);
     	return new MyOptionPanePainter(ctx, state);
     }
-
-    static final Color BROWN           = new Color(0xA52A2A);
-    static final Color NIMBUS_RED      = new Color(0xA92E22); // approx BROWN
-    static final Color CERULEAN_BLUE   = new Color(0x2A52BE);
-    static final Color NIMBUS_INFOBLUE = new Color(0x2F5CB4); // approx CERULEAN_BLUE
-    static final Color TURBO           = new Color(0xF5CC23);
-    static final Color NIMBUS_ALERTYELLOW = new Color(0xFFDC23); // approx TURBO
 
 // copy final class OptionPanePainter extends AbstractRegionPainter :
 

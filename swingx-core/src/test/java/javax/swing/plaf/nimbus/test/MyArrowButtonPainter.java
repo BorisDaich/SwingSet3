@@ -17,7 +17,7 @@ import javax.swing.plaf.nimbus.AbstractRegionPainter;
 // copy of final class javax.swing.plaf.nimbus.ArrowButtonPainter extends AbstractRegionPainter 
 //                                                                interface Painter<T>
 //                                         AbstractRegionPainter implements Painter<JComponent>
-public class MyArrowButtonPainter extends AbstractRegionPainter {
+public class MyArrowButtonPainter extends AbstractRegionPainter implements NimbusColors {
 
 	private static final Logger LOG = Logger.getLogger(MyArrowButtonPainter.class.getName());
 	
@@ -60,55 +60,6 @@ The following UIDefaults entries define three states for this button:
     	return new MyArrowButtonPainter(ctx, state);
     }
 
-    
-    static final Color ENDEAVOUR   = new Color(0x29598B);
-    static final Color NIMBUSBASE  = new Color(0x33628C); // approx ENDEAVOUR, fast schwarz, dunkler als NIGHT_RIDER
-    static final Color MISCHKA     = new Color(0xA5A9B2);
-    static final Color FG_DISABLED = new Color(0xA7ABB2); // approx MISCHKA, grau
-    static final Color NIGHT_RIDER = new Color(0x332E2E);
-    static final Color FG_ENABLED  = new Color(0x2D2D2D); // approx NIGHT_RIDER
-
-    /*
-
-in super ist decodeColor final, also können wir nicht überschreiben!
-Und die implementierung outside nimbus liefert nichts gutes
-
-"nimbusBase", 51, 98, 140, 255): approx ENDEAVOUR
-
-nicht definiert DerivedColor :
-"FG_DISABLED", "nimbusBase", 0.027408898f, -0.57391655f, 0.1490196f, 0): liefert Color(167,171,178) approx MISCHKA
-"FG_ENABLED", "nimbusBase", -0.57865167f, -0.6357143f, -0.37254906f, 0); liefert Color(45,45,45) approx NIGHT_RIDER
-
-     */
-//	protected Color decodeColor(Color hint, String key, float hOffset, float sOffset, float bOffset, int aOffset) {
-//		if (UIManager.getLookAndFeel() instanceof NimbusLookAndFeel) {
-//			NimbusLookAndFeel laf = (NimbusLookAndFeel) UIManager.getLookAndFeel();
-//			return super.decodeColor(key, hOffset, sOffset, bOffset, aOffset); // final
-//		} else {
-//			LOG.warning(key+" - can not give a right answer as painter sould not be used outside of nimbus laf" 
-//					+", but do the best we can");
-////			return Color.getHSBColor(hOffset, sOffset, bOffset);
-//			return hint;
-//		}
-//	}
-	
-//    // addColor(d, "nimbusBase", 51, 98, 140, 255); nimbus 2d2d2d==45,45,45 | a7abb2==167,171,178
-//	protected Color decodeColor(String key, float hOffset, float sOffset, float bOffset, int aOffset) {
-//		if (UIManager.getLookAndFeel() instanceof NimbusLookAndFeel) {
-//			NimbusLookAndFeel laf = (NimbusLookAndFeel) UIManager.getLookAndFeel();
-//			return laf.getDerivedColor(key, hOffset, sOffset, bOffset, aOffset, true);
-//		} else {
-//			LOG.warning(key+" - can not give a right answer as painter sould not be used outside of nimbus laf" 
-//					+", but do the best we can");
-////			return Color.getHSBColor(hOffset, sOffset, bOffset);
-////			return new Color(51, 98, 140, 255);
-//			DerivedColor derivedColor = new DerivedColor.UIResource(new Color(51, 98, 140, 255), key, hOffset, sOffset, bOffset, aOffset);
-//			LOG.info("Color:"+derivedColor);
-//			return derivedColor;
-//		}
-//	}
-
-//-----------------------------------------------------
 // copy of final class javax.swing.plaf.nimbus.ArrowButtonPainter extends AbstractRegionPainter starts here :
 
 	//package private integers representing the available states that
