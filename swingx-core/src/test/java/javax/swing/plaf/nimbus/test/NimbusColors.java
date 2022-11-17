@@ -16,5 +16,6 @@ public interface NimbusColors {
     static final Color NIMBUS_INFOBLUE = new Color(0x2F5CB4); // approx CERULEAN_BLUE
     static final Color TURBO              = new Color(0xF5CC23);
     static final Color NIMBUS_ALERTYELLOW = new Color(0xFFDC23); // approx TURBO
-
+    static final Color ASTRAL                     = new Color(0x376F89);
+    static final Color NIMBUS_SELECTIONBACKGROUND = new Color(0x39698A); // approx ASTRAL
 }
