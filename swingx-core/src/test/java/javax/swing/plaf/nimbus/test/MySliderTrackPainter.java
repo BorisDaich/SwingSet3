@@ -34,10 +34,12 @@ in NimbusDefaults:
         , false, AbstractRegionPainter.PaintContext.CacheMode.FIXED_SIZES, 1.0, 1.0));
      
  */
-	
+	public static Dimension canvasSize() {
+		return new Dimension(23, 17);
+	}
     public static Painter<JComponent> factory(int state) {
     	PaintContext ctx = new PaintContext
-    			( new Insets(6, 5, 6, 5), new Dimension(23, 17)
+    			( new Insets(6, 5, 6, 5), canvasSize()
     			, false
     			, MyPaintContext.PaintContext.FIXED_SIZES 
     			, 1.0, 1.0);

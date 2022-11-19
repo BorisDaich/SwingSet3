@@ -47,11 +47,11 @@ in NimbusDefaults:
      
  */
 	public static Dimension canvasSize() {
-		return new Dimension(16, 16);
+		return new Dimension(18, 7);
 	}
     public static Painter<JComponent> factory(int state) {
     	PaintContext ctx = new PaintContext
-    			( new Insets(5, 5, 5, 5), state>OPENICON_ENABLED ? new Dimension(18, 7) : canvasSize()
+    			( new Insets(5, 5, 5, 5), state>OPENICON_ENABLED ? canvasSize() : new Dimension(16, 16)
     			, false
     			, MyPaintContext.PaintContext.FIXED_SIZES 
     			, 1.0, 1.0);
