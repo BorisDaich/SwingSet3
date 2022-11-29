@@ -133,36 +133,36 @@ import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
  * @author Philip Milne
  * @author Shannon Hickey (drag and drop)
  */
-public class BasicXListUI  extends BasicListUI 
-{
-    private static final StringBuilder BASELINE_COMPONENT_KEY =
-        new StringBuilder("List.baselineComponent");
+public class BasicXListUI extends BasicListUI {
+	
+    private static final StringBuilder BASELINE_COMPONENT_KEY = new StringBuilder("List.baselineComponent");
 
-	/** TODO doc */
-    protected JXList list = null;
-	/** TODO doc */
+    /**
+     * The instance of {@code JXList}.
+     */
+    protected JXList<Object> list = null;
+    /**
+     * The instance of {@code CellRendererPane}.
+     */
     protected CellRendererPane rendererPane;
 
-    // Listeners that this UI attaches to the JList
-	/** TODO doc */
+    // Listeners that this UI attaches to the list
     protected FocusListener focusListener;
-	/** TODO doc */
     protected MouseInputListener mouseInputListener;
-	/** TODO doc */
     protected ListSelectionListener listSelectionListener;
-	/** TODO doc */
     protected ListDataListener listDataListener;
-	/** TODO doc */
     protected PropertyChangeListener propertyChangeListener;
     private Handler handler;
 
-	/** TODO doc */
+    /**
+     * The array of cells' height
+     */
     protected int[] cellHeights = null;
-	/** TODO doc */
     protected int cellHeight = -1;
-	/** TODO doc */
     protected int cellWidth = -1;
-	/** TODO doc */
+    /**
+     * The value represents changes to list model.
+     */
     protected int updateLayoutStateNeeded = modelChanged;
 
     /**
@@ -221,19 +221,12 @@ public class BasicXListUI  extends BasicListUI
      * maybeUpdateLayoutState.  Changes to the JLists model, e.g. the
      * models length changed, are handled similarly, see DataListener.
      */
-	/** TODO doc */
     protected final static int modelChanged = 1 << 0;
-	/** TODO doc */
     protected final static int selectionModelChanged = 1 << 1;
-	/** TODO doc */
     protected final static int fontChanged = 1 << 2;
-	/** TODO doc */
     protected final static int fixedCellWidthChanged = 1 << 3;
-	/** TODO doc */
     protected final static int fixedCellHeightChanged = 1 << 4;
-	/** TODO doc */
     protected final static int prototypeCellValueChanged = 1 << 5;
-	/** TODO doc */
     protected final static int cellRendererChanged = 1 << 6;
 
     private final static int layoutOrientationChanged = 1 << 7;
@@ -289,47 +282,48 @@ public class BasicXListUI  extends BasicListUI
 
 //-------------------- X-Wrapper
     
-    private ListModel modelX;
+    private ListModel<Object> modelX;
 
     private ListSortUI sortUI;
     /**
      * Compatibility Wrapper: a synthetic model which delegates to list api and throws
      * @return ListModel
      */
-    protected ListModel getViewModel() {
-        if (modelX == null) {
-         modelX = new ListModel() {
-            
-            @Override
-            public int getSize() {
-                return ((JXList) list).getElementCount();
-            }
-            
-            @Override
-            public Object getElementAt(int index) {
-                return ((JXList) list).getElementAt(index);
-            }
-            
-            @Override
-            public void addListDataListener(ListDataListener l) {
-               throw new UnsupportedOperationException("this is a synthetic model wrapper");
-            }
-            @Override
-            public void removeListDataListener(ListDataListener l) {
-                throw new UnsupportedOperationException("this is a synthetic model wrapper");
-                
-            }
-            
-        };
-        }
-        return modelX;
-    }
+	protected ListModel<Object> getViewModel() {
+		if (modelX == null) {
+			modelX = new ListModel<Object>() {
+
+				@Override
+				public int getSize() {
+					return list.getElementCount();
+				}
+
+				@Override
+				public Object getElementAt(int index) {
+					return list.getElementAt(index);
+				}
+
+				@Override
+				public void addListDataListener(ListDataListener l) {
+					throw new UnsupportedOperationException("this is a synthetic model wrapper");
+				}
+
+				@Override
+				public void removeListDataListener(ListDataListener l) {
+					throw new UnsupportedOperationException("this is a synthetic model wrapper");
+
+				}
+
+			};
+		}
+		return modelX;
+	}
 
     /**
      * @return no of elements
      */
     protected int getElementCount() {
-        return ((JXList) list).getElementCount();
+        return ((JXList<?>) list).getElementCount();
     }
 
     /**
@@ -338,7 +332,7 @@ public class BasicXListUI  extends BasicListUI
      * @return Object
      */
     protected Object getElementAt(int viewIndex) {
-        return ((JXList) list).getElementAt(viewIndex);
+        return list.getElementAt(viewIndex);
     }
 
     /**
@@ -367,7 +361,6 @@ public class BasicXListUI  extends BasicListUI
 //--------------- api to support/control sorting/filtering
     
     /**
-     * TODO doc
      * @return ListSortUI
      */
     protected ListSortUI getSortUI() {
@@ -461,8 +454,8 @@ public class BasicXListUI  extends BasicListUI
         Graphics g,
         int row,
         Rectangle rowBounds,
-        ListCellRenderer cellRenderer,
-        ListModel dataModel,
+        ListCellRenderer<Object> cellRenderer,
+        ListModel<Object> dataModel,
         ListSelectionModel selModel,
         int leadIndex)
     {
@@ -494,9 +487,9 @@ public class BasicXListUI  extends BasicListUI
 
 
     /**
-     * Paint the rows that intersect the Graphics objects clipRect.  This
-     * method calls paintCell as necessary.  Subclasses
-     * may want to override these methods.
+     * Paint the rows that intersect the Graphics objects clipRect.  
+     * This method calls paintCell as necessary.  
+     * Subclasses may want to override these methods.
      *
      * @see #paintCell
      */
@@ -508,8 +501,7 @@ public class BasicXListUI  extends BasicListUI
         paintDropLine(g);
     }
 
-    private void paintImpl(Graphics g, JComponent c)
-    {
+    private void paintImpl(Graphics g, JComponent c) {
         switch (layoutOrientation) {
         case JList.VERTICAL_WRAP:
             if (list.getHeight() != listHeight) {
@@ -528,8 +520,8 @@ public class BasicXListUI  extends BasicListUI
         }
         maybeUpdateLayoutState();
 
-        ListCellRenderer renderer = list.getCellRenderer();
-        ListModel dataModel = getViewModel();
+        ListCellRenderer<Object> renderer = list.getCellRenderer();
+        ListModel<Object> dataModel = getViewModel(); //list.getModel();
         ListSelectionModel selModel = list.getSelectionModel();
         int size;
 
@@ -560,8 +552,7 @@ public class BasicXListUI  extends BasicListUI
                            columnCount : 1;
 
 
-        for (int colCounter = startColumn; colCounter <= endColumn;
-             colCounter++) {
+        for (int colCounter = startColumn; colCounter <= endColumn; colCounter++) {
             // And then how many rows in this columnn
             int row = convertLocationToRowInColumn(paintBounds.y, colCounter);
             int rowCount = getRowCount(colCounter);
@@ -572,15 +563,11 @@ public class BasicXListUI  extends BasicListUI
                 // Not valid, bail!
                 return;
             }
-            while (row < rowCount && rowBounds.y < maxY &&
-                   index < size) {
+            while (row < rowCount && rowBounds.y < maxY && index < size) {
                 rowBounds.height = getHeight(colCounter, row);
-                g.setClip(rowBounds.x, rowBounds.y, rowBounds.width,
-                          rowBounds.height);
-                g.clipRect(paintBounds.x, paintBounds.y, paintBounds.width,
-                           paintBounds.height);
-                paintCell(g, index, rowBounds, renderer, dataModel, selModel,
-                          leadIndex);
+                g.setClip(rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height);
+                g.clipRect(paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height);
+                paintCell(g, index, rowBounds, renderer, dataModel, selModel, leadIndex);
                 rowBounds.y += rowBounds.height;
                 index += rowIncrement;
                 row++;
@@ -739,25 +726,23 @@ public class BasicXListUI  extends BasicListUI
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
      */
+    // modified code from javax.swing.plaf.basic.BasicListUI#getBaseline
     public int getBaseline(JComponent c, int width, int height) {
 //        super.getBaseline(c, width, height);
         checkBaselinePrecondition(c, width, height);
         int rowHeight = list.getFixedCellHeight();
         UIDefaults lafDefaults = UIManager.getLookAndFeelDefaults();
-        Component renderer = (Component)lafDefaults.get(
-                BASELINE_COMPONENT_KEY);
+        Component renderer = (Component)lafDefaults.get(BASELINE_COMPONENT_KEY);
         if (renderer == null) {
-            ListCellRenderer lcr = (ListCellRenderer)UIManager.get(
-                    "List.cellRenderer");
+            @SuppressWarnings("unchecked")
+            ListCellRenderer<Object> lcr = (ListCellRenderer<Object>)UIManager.get("List.cellRenderer");
 
             // fix for 6711072 some LAFs like Nimbus do not provide this
             // UIManager key and we should not through a NPE here because of it
             if (lcr == null) {
                 lcr = new DefaultListCellRenderer();
             }
-            
-            renderer = lcr.getListCellRendererComponent(
-                    list, "a", -1, false, false);
+            renderer = lcr.getListCellRendererComponent(list, "a", -1, false, false);
             lafDefaults.put(BASELINE_COMPONENT_KEY, renderer);
         }
         renderer.setFont(list.getFont());
@@ -771,8 +756,7 @@ public class BasicXListUI  extends BasicListUI
         if (rowHeight == -1) {
             rowHeight = renderer.getPreferredSize().height;
         }
-        return renderer.getBaseline(Integer.MAX_VALUE, rowHeight) +
-                list.getInsets().top;
+        return renderer.getBaseline(Integer.MAX_VALUE, rowHeight) + list.getInsets().top;
     }
 
     /**
@@ -789,7 +773,7 @@ public class BasicXListUI  extends BasicListUI
         return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
     }
 
-    /* TODO cannot build tabble with javadoc :
+    /* TODO cannot build table with javadoc :
      * <table>
      * <tr><th>Layout Orientation</th><th>Preferred Size</th></tr>
      * <tr>
@@ -917,21 +901,20 @@ public class BasicXListUI  extends BasicListUI
 
     /**
      * Registers the keyboard bindings on the <code>JList</code> that the
-     * <code>BasicXListUI</code> is associated with. This method is called at
-     * installUI() time.
+     * <code>BasicXListUI</code> is associated with. 
+     * This method is called at installUI() time.
      *
      * @see #installUI
      */
+    // modified code from javax.swing.plaf.basic.BasicListUI#installKeyboardActions
     protected void installKeyboardActions() {
         InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
-
-        SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED,
-                                           inputMap);
-
-        LazyActionMap.installLazyActionMap(list, BasicXListUI.class,
-                                           "XList.actionMap");
+        SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, inputMap);
+        LazyActionMap.installLazyActionMap(list, BasicXListUI.class, "XList.actionMap");
     }
 
+    // modified code from javax.swing.plaf.basic.BasicListUI#getInputMap
+    // intentionally private
     InputMap getInputMap(int condition) {
         if (condition == JComponent.WHEN_FOCUSED) {
             // PENDING JW: side-effect when reverting to ui manager? revisit!
@@ -1000,7 +983,7 @@ public class BasicXListUI  extends BasicListUI
         list.addPropertyChangeListener(propertyChangeListener);
         list.addKeyListener(getHandler());
         // JW: here we really want the model
-        ListModel model = list.getModel();
+        ListModel<Object> model = list.getModel();
         if (model != null) {
             model.addListDataListener(listDataListener);
         }
@@ -1029,7 +1012,7 @@ public class BasicXListUI  extends BasicListUI
         list.removePropertyChangeListener(propertyChangeListener);
         list.removeKeyListener(getHandler());
 
-        ListModel model = list.getModel();
+        ListModel<Object> model = list.getModel();
         if (model != null) {
             model.removeListDataListener(listDataListener);
         }
@@ -1070,7 +1053,9 @@ public class BasicXListUI  extends BasicListUI
         LookAndFeel.installProperty(list, "opaque", Boolean.TRUE);
 
         if (list.getCellRenderer() == null) {
-            list.setCellRenderer((ListCellRenderer)(UIManager.get("List.cellRenderer")));
+            @SuppressWarnings("unchecked")
+            ListCellRenderer<Object> tmp = (ListCellRenderer<Object>)(UIManager.get("List.cellRenderer"));
+            list.setCellRenderer(tmp);
         }
 
         Color sbg = list.getSelectionBackground();
@@ -1151,7 +1136,9 @@ public class BasicXListUI  extends BasicListUI
      */
     public void installUI(JComponent c)
     {
-        list = (JXList)c;
+        @SuppressWarnings("unchecked")
+		JXList<Object> tmp = (JXList<Object>)c;
+        list = tmp;
 
         layoutOrientation = list.getLayoutOrientation();
 
@@ -1213,7 +1200,7 @@ public class BasicXListUI  extends BasicListUI
      * {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
      */
-    public int locationToIndex(JList list, Point location) {
+    public int locationToIndex(JList<?> list, Point location) {
         maybeUpdateLayoutState();
         return convertLocationToModel(location.x, location.y);
     }
@@ -1222,7 +1209,7 @@ public class BasicXListUI  extends BasicListUI
     /**
      * {@inheritDoc}
      */
-    public Point indexToLocation(JList list, int index) {
+    public Point indexToLocation(JList<?> list, int index) {
         maybeUpdateLayoutState();
         Rectangle rect = getCellBounds(list, index, index);
 
@@ -1236,7 +1223,7 @@ public class BasicXListUI  extends BasicListUI
     /**
      * {@inheritDoc}
      */
-    public Rectangle getCellBounds(JList list, int index1, int index2) {
+    public Rectangle getCellBounds(JList<?> list, int index1, int index2) {
         maybeUpdateLayoutState();
 
         int minIndex = Math.min(index1, index2);
@@ -1280,7 +1267,7 @@ public class BasicXListUI  extends BasicListUI
      * Gets the bounds of the specified model index, returning the resulting
      * bounds, or null if <code>index</code> is not valid.
      */
-    private Rectangle getCellBounds(JList list, int index) {
+    private Rectangle getCellBounds(JList<?> list, int index) {
         maybeUpdateLayoutState();
 
         int row = convertModelToRow(index);
@@ -1639,9 +1626,9 @@ public class BasicXListUI  extends BasicListUI
 
         if ((fixedCellWidth == -1) || (fixedCellHeight == -1)) {
 
-            ListModel dataModel = getViewModel();
+            ListModel<Object> dataModel = getViewModel(); //list.getModel();
             int dataModelSize = dataModel.getSize();
-            ListCellRenderer renderer = list.getCellRenderer();
+            ListCellRenderer<Object> renderer = list.getCellRenderer();
 
             if (renderer != null) {
                 for(int index = 0; index < dataModelSize; index++) {
@@ -1848,7 +1835,9 @@ public class BasicXListUI  extends BasicListUI
      * Instantiate it only within subclasses of BasicTableUI.
      */
     public class FocusHandler implements FocusListener {
-    	/** TODO doc */
+        /**
+         * Repaints focused cells.
+         */
         protected void repaintCellFocus() {
             getHandler().repaintCellFocus();
         }
@@ -2127,7 +2116,8 @@ public class BasicXListUI  extends BasicListUI
         }
         public void actionPerformed(ActionEvent e) {
             String name = getName();
-            JList list = (JList)e.getSource();
+            @SuppressWarnings("unchecked")
+            JList<Object> list = (JList<Object>)e.getSource();
             BasicXListUI ui = (BasicXListUI)LookAndFeelUtils.getUIOfType(
                      list.getUI(), BasicXListUI.class);
 
@@ -2269,8 +2259,8 @@ public class BasicXListUI  extends BasicListUI
          * @param list
          * @return
          */
-        private int getElementCount(JList list) {
-            return ((JXList) list).getElementCount();
+        private int getElementCount(JList<?> list) {
+            return ((JXList<?>) list).getElementCount();
         }
 
         public boolean isEnabled(Object c) {
@@ -2286,18 +2276,18 @@ public class BasicXListUI  extends BasicListUI
 
                 // discontinuous selection actions are only enabled for
                 // DefaultListSelectionModel
-                return c != null && ((JList)c).getSelectionModel()
+                return c != null && ((JList<?>)c).getSelectionModel()
                                         instanceof DefaultListSelectionModel;
             }
 
             return true;
         }
 
-        private void clearSelection(JList list) {
+        private void clearSelection(JList<?> list) {
             list.clearSelection();
         }
 
-        private void selectAll(JList list) {
+        private void selectAll(JList<?> list) {
             int size = getElementCount(list);
             if (size > 0) {
                 ListSelectionModel lsm = list.getSelectionModel();
@@ -2326,7 +2316,7 @@ public class BasicXListUI  extends BasicListUI
             }
         }
 
-        private int getNextPageIndex(JList list, int direction) {
+        private int getNextPageIndex(JList<?> list, int direction) {
             if (getElementCount(list) == 0) {
                 return -1;
             }
@@ -2451,7 +2441,7 @@ public class BasicXListUI  extends BasicListUI
             return index;
         }
 
-        private void changeSelection(JList list, int type,
+        private void changeSelection(JList<?> list, int type,
                                      int index, int direction) {
             if (index >= 0 && index < getElementCount(list)) {
                 ListSelectionModel lsm = list.getSelectionModel();
@@ -2495,7 +2485,7 @@ public class BasicXListUI  extends BasicListUI
          * index. When scroll up makes selected index the first visible index.
          * Adjust visible rectangle respect to list's component orientation.
          */
-        private void adjustScrollPositionIfNecessary(JList list, int index,
+        private void adjustScrollPositionIfNecessary(JList<?> list, int index,
                                                      int direction) {
             if (direction == 0) {
                 return;
@@ -2583,7 +2573,7 @@ public class BasicXListUI  extends BasicListUI
             }
         }
 
-        private int getNextColumnIndex(JList list, BasicXListUI ui,
+        private int getNextColumnIndex(JList<?> list, BasicXListUI ui,
                                        int amount) {
             if (list.getLayoutOrientation() != JList.VERTICAL) {
                 int index = adjustIndex(list.getLeadSelectionIndex(), list);
@@ -2616,7 +2606,7 @@ public class BasicXListUI  extends BasicListUI
             return -1;
         }
 
-        private int getNextIndex(JList list, BasicXListUI ui, int amount) {
+        private int getNextIndex(JList<?> list, BasicXListUI ui, int amount) {
             int index = adjustIndex(list.getLeadSelectionIndex(), list);
             int size = getElementCount(list);
 
@@ -2669,7 +2659,7 @@ public class BasicXListUI  extends BasicListUI
          * of the same letters followed by first typed anothe letter.
          */
         public void keyTyped(KeyEvent e) {
-            JList src = (JList)e.getSource();
+            JList<?> src = (JList<?>)e.getSource();
 
             if (getElementCount() == 0 || e.isAltDown() || e.isControlDown() || e.isMetaDown() ||
                 isNavigationKey(e)) {
@@ -2764,8 +2754,8 @@ public class BasicXListUI  extends BasicListUI
              * listDataListener from the old model and add it to the new one.
              */
             if (propertyName == "model") {
-                ListModel oldModel = (ListModel)e.getOldValue();
-                ListModel newModel = (ListModel)e.getNewValue();
+                ListModel<?> oldModel = (ListModel<?>)e.getOldValue();
+                ListModel<?> newModel = (ListModel<?>)e.getNewValue();
                 if (oldModel != null) {
                     oldModel.removeListDataListener(listDataListener);
                 }
@@ -3130,12 +3120,13 @@ public class BasicXListUI  extends BasicListUI
         }
     }
 
-    private static int adjustIndex(int index, JList list) {
-        return index < ((JXList) list).getElementCount() ? index : -1;
+    private static int adjustIndex(int index, JList<?> list) {
+        return index < ((JXList<?>) list).getElementCount() ? index : -1;
     }
 
     private static final TransferHandler defaultTransferHandler = new ListTransferHandler();
 
+    @SuppressWarnings("serial") // Superclass is a JDK-implementation class
     static class ListTransferHandler extends TransferHandler implements UIResource {
 
         /**
@@ -3148,9 +3139,9 @@ public class BasicXListUI  extends BasicListUI
          *  
          */
         protected Transferable createTransferable(JComponent c) {
-            if (c instanceof JList) {
-                JList list = (JList) c;
-                List<Object> selValues = list.getSelectedValuesList();
+            if (c instanceof JList<?> list) {
+                @SuppressWarnings("unchecked")
+				List<Object> selValues = ((JList<Object>)list).getSelectedValuesList();
                 if(selValues.isEmpty()) {
                 	return null;
                 }
