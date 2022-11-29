@@ -240,10 +240,9 @@ public class JXList<E> extends JList<E> {
     private RolloverProducer rolloverProducer;
 
     /**
-     * RolloverController: listens to cell over events and repaints
-     * entered/exited rows.
+     * RolloverController: listens to cell over events and repaints entered/exited rows.
      */
-    private ListRolloverController<JXList<E>> linkController;
+    private ListRolloverController<JXList<E>> rolloverController;
 
     /** A wrapper around the default renderer enabling decoration. */
     private transient DelegatingRenderer delegatingRenderer;
@@ -457,7 +456,7 @@ public class JXList<E> extends JList<E> {
      *   functionality should be enabled.
      * 
      * @see #isRolloverEnabled()
-     * @see #getLinkController()
+     * @see #getRolloverController()
      * @see #createRolloverProducer()
      * @see org.jdesktop.swingx.rollover.RolloverRenderer  
      *    
@@ -469,11 +468,11 @@ public class JXList<E> extends JList<E> {
         if (rolloverEnabled) {
             rolloverProducer = createRolloverProducer();
             rolloverProducer.install(this);
-            getLinkController().install(this);
+            getRolloverController().install(this);
         } else {
             rolloverProducer.release(this);
             rolloverProducer = null;
-            getLinkController().release();
+            getRolloverController().release();
         }
         firePropertyChange("rolloverEnabled", old, isRolloverEnabled());
     }
@@ -494,19 +493,17 @@ public class JXList<E> extends JList<E> {
      * controller if necessary, that is the return value is guaranteed to be 
      * not null. <p>
      * 
-     * PENDING JW: rename to getRolloverController
-     * 
-     * @return the RolloverController for this tree, guaranteed to be not null.
+     * @return the RolloverController for this list, guaranteed to be not null.
      * 
      * @see #setRolloverEnabled(boolean)
-     * @see #createLinkController()
+     * @see #createRolloverController()
      * @see org.jdesktop.swingx.rollover.RolloverController
      */
-    protected ListRolloverController<JXList<E>> getLinkController() {
-        if (linkController == null) {
-            linkController = createLinkController();
+    protected ListRolloverController<JXList<E>> getRolloverController() {
+        if (rolloverController == null) {
+            rolloverController = createRolloverController();
         }
-        return linkController;
+        return rolloverController;
     }
 
     /**
@@ -514,18 +511,18 @@ public class JXList<E> extends JList<E> {
      * 
      * @return a RolloverController appropriate for this component.
      * 
-     * @see #getLinkController()
+     * @see #getRolloverController()
      * @see org.jdesktop.swingx.rollover.RolloverController
      */
-    protected ListRolloverController<JXList<E>> createLinkController() {
+    protected ListRolloverController<JXList<E>> createRolloverController() {
         return new ListRolloverController<JXList<E>>();
     }
 
 
     /**
-     * Creates and returns the RolloverProducer to use with this tree.
+     * Creates and returns the RolloverProducer to use with this list.
      * 
-     * @return <code>RolloverProducer</code> to use with this tree
+     * @return <code>RolloverProducer</code> to use with this list
      * 
      * @see #setRolloverEnabled(boolean)
      */
@@ -584,10 +581,9 @@ public class JXList<E> extends JList<E> {
     /**
      * Returns {@code true} if whenever the model changes, a new
      * {@code RowSorter} should be created and installed
-     * as the table's sorter; otherwise, returns {@code false}. 
+     * as the list's sorter; otherwise, returns {@code false}. 
      *
-     * @return true if a {@code RowSorter} should be created when
-     *         the model changes
+     * @return true if a {@code RowSorter} should be created when the model changes
      * @since 1.6
      */
     public boolean getAutoCreateRowSorter() {
@@ -692,8 +688,7 @@ public class JXList<E> extends JList<E> {
      * different from old SwingX style sorting.
      * 
      * @see TableColumnExt#isSortable()
-     * @param sortable boolean indicating whether or not this table supports
-     *        sortable columns
+     * @param sortable boolean indicating whether or not this component supports sortable columns
      */
     public void setSortable(boolean sortable) {
         boolean old = isSortable();
@@ -705,9 +700,9 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Returns the table's sortable property.
+     * Returns the list's sortable property.
      * 
-     * @return true if the table is sortable.
+     * @return true if the list is sortable.
      */
     public boolean isSortable() {
         return sortable;
@@ -742,7 +737,7 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Sets the sortorder cycle used when toggle sorting this table's columns. 
+     * Sets the sortorder cycle used when toggle sorting this list's columns. 
      * This property is propagated to the SortController
      * if controlsSorterProperties is true. 
      * 
@@ -760,8 +755,8 @@ public class JXList<E> extends JList<E> {
     }
     
     /**
-     * Returns the sortOrder cycle used when toggle sorting this table's columns, guaranteed
-     * to be not null.
+     * Returns the sortOrder cycle used when toggle sorting this list's columns, 
+     * guaranteed to be not null.
      *   
      * @return the sort order cycle used in toggle sort, not null 
      */
@@ -909,11 +904,10 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Returns a boolean indicating whether the table has a SortController.
-     * If true, the call to getSortController is guaranteed to return a not-null
-     * value.
+     * Returns a boolean indicating whether the list has a SortController.
+     * If true, the call to getSortController is guaranteed to return a not-null value.
      * 
-     * @return a boolean indicating whether the table has a SortController.
+     * @return a boolean indicating whether the list has a SortController.
      * 
      * @see #getSortController()
      */
@@ -922,19 +916,17 @@ public class JXList<E> extends JList<E> {
     }
     
     /**
-     * Returns a boolean indicating whether the table configures the sorter's
-     * properties. If true, guaranteed that table's and the columns' sort related 
+     * Returns a boolean indicating whether the list configures the sorter's
+     * properties. If true, guaranteed that list's and the columns' sort related 
      * properties are propagated to the sorter. If false, guaranteed to not
      * touch the sorter's configuration.<p>
      * 
      * This implementation returns true if the sorter is of type SortController.
      * 
-     * Note: the synchronization is unidirection from the table to the sorter. 
-     * Changing the sorter under the table's feet might lead to undefined
-     * behaviour.
+     * Note: the synchronization is unidirection from the list to the sorter. 
+     * Changing the sorter under the list's feet might lead to undefined behaviour.
      * 
-     * @return a boolean indicating whether the table configurers the sorter's
-     *  properties.
+     * @return a boolean indicating whether the list configurers the sorter's properties.
      */
     protected boolean getControlsSorterProperties() {
         return hasSortController() && getAutoCreateRowSorter();
@@ -1160,7 +1152,7 @@ public class JXList<E> extends JList<E> {
 
         /**
          * {@inheritDoc}
-         * This is implemented to query the table's StringValueRegistry for an appropriate
+         * This is implemented to query the list's StringValueRegistry for an appropriate
          * StringValue and use that for getting the string representation.
          */
         @Override
@@ -1224,7 +1216,7 @@ public class JXList<E> extends JList<E> {
 
     
     /**
-     * Sets the <code>Highlighter</code>s to the table, replacing any old settings.
+     * Sets the <code>Highlighter</code>s to the list, replacing any old settings.
      * None of the given Highlighters must be null.<p>
      * 
      * This is a bound property. <p> 
@@ -1247,10 +1239,10 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Returns the <code>Highlighter</code>s used by this table.
+     * Returns the <code>Highlighter</code>s used by this list.
      * Maybe empty, but guarantees to be never null.
      * 
-     * @return the Highlighters used by this table, guaranteed to never null.
+     * @return the Highlighters used by this list, guaranteed to never null.
      * @see #setHighlighters(Highlighter[])
      */
     public Highlighter[] getHighlighters() {
@@ -1288,10 +1280,10 @@ public class JXList<E> extends JList<E> {
     }
     
     /**
-     * Returns the CompoundHighlighter assigned to the table, null if none.
+     * Returns the CompoundHighlighter assigned to the list, null if none.
      * PENDING: open up for subclasses again?.
      * 
-     * @return the CompoundHighlighter assigned to the table.
+     * @return the CompoundHighlighter assigned to the list.
      */
     protected CompoundHighlighter getCompoundHighlighter() {
         if (compoundHighlighter == null) {
@@ -1318,7 +1310,7 @@ public class JXList<E> extends JList<E> {
     /**
      * Creates and returns the ChangeListener observing Highlighters.
      * <p>
-     * Here: repaints the table on receiving a stateChanged.
+     * Here: repaints the list on receiving a stateChanged.
      * 
      * @return the ChangeListener defining the reaction to changes of
      *         highlighters.
@@ -1334,7 +1326,7 @@ public class JXList<E> extends JList<E> {
 
     /**
      * Returns the StringValueRegistry which defines the string representation for
-     * each cells. This is strictly for internal use by the table, which has the 
+     * each cells. This is strictly for internal use by the list, which has the 
      * responsibility to keep in synch with registered renderers.<p>
      * 
      * Currently exposed for testing reasons, client code is recommended to not use nor override.
@@ -1363,13 +1355,11 @@ public class JXList<E> extends JList<E> {
      * Returns the string representation of the cell value at the given position. 
      * 
      * @param row the row index of the cell in view coordinates
-     * @return the string representation of the cell value as it will appear in the 
-     *   table. 
+     * @return the string representation of the cell value as it will appear in the list. 
      */
     public String getStringAt(int row) {
         // changed implementation to use StringValueRegistry
-        StringValue stringValue = getStringValueRegistry().getStringValue(
-                convertIndexToModel(row), 0);
+        StringValue stringValue = getStringValueRegistry().getStringValue(convertIndexToModel(row), 0);
         return stringValue.getString(getElementAt(row));
     }
 
@@ -1388,7 +1378,7 @@ public class JXList<E> extends JList<E> {
      * @return the default cell renderer to use with this list.
      */
     protected ListCellRenderer<E> createDefaultCellRenderer() {
-        return new DefaultListRenderer();
+        return new DefaultListRenderer<>();
     }
 
     /**
