@@ -52,8 +52,7 @@ public class LazyActionMap extends ActionMapUIResource {
      * @param defaultsKey Key to use to defaults table to check for
      *        existing map and what resulting Map will be registered on.
      */
-    public static void installLazyActionMap(JComponent c, Class loaderClass,
-                                     String defaultsKey) {
+    public static void installLazyActionMap(JComponent c, Class<?> loaderClass, String defaultsKey) {
         ActionMap map = (ActionMap)UIManager.get(defaultsKey);
         if (map == null) {
             map = new LazyActionMap(loaderClass);
@@ -75,8 +74,7 @@ public class LazyActionMap extends ActionMapUIResource {
      * @param defaultsKey Key to use to defaults table to check for
      *        existing map and what resulting Map will be registered on.
      */
-    static ActionMap getActionMap(Class loaderClass,
-                                  String defaultsKey) {
+    static ActionMap getActionMap(Class<?> loaderClass, String defaultsKey) {
         ActionMap map = (ActionMap)UIManager.get(defaultsKey);
         if (map == null) {
             map = new LazyActionMap(loaderClass);
@@ -86,7 +84,7 @@ public class LazyActionMap extends ActionMapUIResource {
     }
 
 
-    private LazyActionMap(Class loader) {
+    private LazyActionMap(Class<?> loader) {
         _loader = loader;
     }
 
@@ -139,23 +137,18 @@ public class LazyActionMap extends ActionMapUIResource {
             Object loader = _loader;
 
             _loader = null;
-            Class klass = (Class)loader;
+            Class<?> klass = (Class<?>)loader;
             try {
-                Method method = klass.getDeclaredMethod("loadActionMap",
-                                      new Class[] { LazyActionMap.class });
+                Method method = klass.getDeclaredMethod("loadActionMap",new Class[] { LazyActionMap.class });
                 method.invoke(klass, new Object[] { this });
             } catch (NoSuchMethodException nsme) {
-                assert false : "LazyActionMap unable to load actions " +
-                        klass;
+                assert false : "LazyActionMap unable to load actions " + klass;
             } catch (IllegalAccessException iae) {
-                assert false : "LazyActionMap unable to load actions " +
-                        iae;
+                assert false : "LazyActionMap unable to load actions " + iae;
             } catch (InvocationTargetException ite) {
-                assert false : "LazyActionMap unable to load actions " +
-                        ite;
+                assert false : "LazyActionMap unable to load actions " + ite;
             } catch (IllegalArgumentException iae) {
-                assert false : "LazyActionMap unable to load actions " +
-                        iae;
+                assert false : "LazyActionMap unable to load actions " + iae;
             }
         }
     }

@@ -36,8 +36,8 @@ import org.jdesktop.swingx.util.Contract;
  * ListSortUI provides support for managing the synchronization between
  * RowSorter, SelectionModel and ListModel if a JXList is sortable.<p>
  * 
- * This implementation is an adaption of JTable.SortManager fit to the
- * needs of a ListUI. In contrast to JTable tradition, the ui delegate has 
+ * This implementation is an adaption of JTable.SortManager fit to the needs of a ListUI. 
+ * In contrast to JTable tradition, the ui delegate has 
  * full control about listening to model/selection changes and updating
  * the list accordingly. So the role of this class is that of a helper to the ListUI
  * (vs. as a helper of the JTable). 
@@ -50,11 +50,10 @@ import org.jdesktop.swingx.util.Contract;
  * 
  */
 public final class ListSortUI { 
-    private RowSorter<? extends ListModel> sorter;
-    private JXList list;
+    private RowSorter<? extends ListModel<?>> sorter;
+    private JXList<?> list;
 
-    // Selection, in terms of the model. This is lazily created
-    // as needed.
+    // Selection, in terms of the model. This is lazily created as needed.
     private ListSelectionModel modelSelection;
     private int modelLeadIndex;
     // Set to true while in the process of changing the selection.
@@ -76,7 +75,7 @@ public final class ListSortUI {
      * @throws IllegalStateException if the sorter is not the sorter installed
      *   on the list
      */
-    public ListSortUI(JXList list, RowSorter<? extends ListModel> sorter) {
+    public ListSortUI(JXList<?> list, RowSorter<? extends ListModel<?>> sorter) {
         this.sorter = Contract.asNotNull(sorter, "RowSorter must not be null");
         this.list = Contract.asNotNull(list, "list must not be null");
         if (sorter != list.getRowSorter()) throw
@@ -491,7 +490,7 @@ public final class ListSortUI {
 
         public ModelChange(ListDataEvent e) {
             type = e.getType();
-            modelRowCount = ((ListModel) e.getSource()).getSize();
+            modelRowCount = ((ListModel<?>) e.getSource()).getSize();
             startModelIndex = e.getIndex0();
             endModelIndex = e.getIndex1();
             allRowsChanged = startModelIndex < 0;
