@@ -27,7 +27,6 @@ public final class TestUtils extends Assert {
     private TestUtils() {}
     
     /**
-     * maven-javadoc-plugin needs a comment : TODO
      * @param objects array of objects
      * @param clazz isAssignableFrom
      * @param count expected
@@ -72,7 +71,7 @@ public final class TestUtils extends Assert {
      */
     public static void assertPropertyChangeEvent(PropertyChangeReport report, String property, Object oldValue, Object newValue) {
         if (report.getEventCount() > 1) {
-            LOG.info("events: " + report.getEventNames());
+            LOG.info("events #"+report.getEventCount()+": " + report.getEventNames());
         }
         assertEquals("exactly one event", 1, report.getEventCount());
         assertEquals("property", property, report.getLastProperty());
@@ -93,7 +92,7 @@ public final class TestUtils extends Assert {
     public static void assertPropertyChangeEvent(PropertyChangeReport report, 
             String property, Object oldValue, Object newValue, boolean single) {
         if (report.getEventCount() > 1) {
-            LOG.info("events: " + report.getEventNames());
+            LOG.info("events #"+report.getEventCount()+": " + report.getEventNames());
         }
         if (single) {
             assertEquals("exactly one event", 1, report.getEventCount());
@@ -121,7 +120,7 @@ public final class TestUtils extends Assert {
     public static void assertPropertyChangeEvent(PropertyChangeReport report, 
             String property, Object oldValue, Object newValue, boolean single, boolean verifyArrayItems) {
         if (report.getEventCount() > 1) {
-            LOG.info("events: " + report.getEventNames());
+            LOG.info("events #"+report.getEventCount()+": " + report.getEventNames());
         }
         if (single) {
             assertEquals("exactly one event", 1, report.getEventCount());
@@ -189,7 +188,7 @@ public final class TestUtils extends Assert {
      */
     public static void assertPropertyChangeEvent(PropertyChangeReport report, String property, Object[] oldValue, Object[] newValue) {
         if (report.getEventCount() > 1) {
-            LOG.info("events: " + report.getEventNames());
+            LOG.info("events #"+report.getEventCount()+": " + report.getEventNames());
         }
         assertEquals("exactly one event", 1, report.getEventCount());
         assertEquals("property", property, report.getLastProperty());
