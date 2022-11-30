@@ -450,7 +450,7 @@ public class ComponentAdapterTest extends TestCase {
     @Test
     public void testListGetStringAtSorted() {
         JXListT list = new JXListT(AncientSwingTeam.createNamedColorListModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         list.toggleSortOrder();
         String text = sv.getString(list.getModel().getElementAt(2));
         ComponentAdapter adapter = list.getComponentAdapter(2);
@@ -465,7 +465,7 @@ public class ComponentAdapterTest extends TestCase {
     @Test
     public void testListGetStringAtUnsorted() {
         JXListT list = new JXListT(AncientSwingTeam.createNamedColorListModel());
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         String text = sv.getString(list.getElementAt(2));
         ComponentAdapter adapter = list.getComponentAdapter(2);
         assertEquals(text, adapter.getStringAt(2, 0));
@@ -479,7 +479,7 @@ public class ComponentAdapterTest extends TestCase {
     @Test
     public void testListGetString() {
         JXListT list = new JXListT(AncientSwingTeam.createNamedColorListModel());
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         String text = sv.getString(list.getElementAt(2));
         ComponentAdapter adapter = list.getComponentAdapter(2);
         assertEquals(text, adapter.getString());
@@ -493,7 +493,7 @@ public class ComponentAdapterTest extends TestCase {
     @Test
     public void testListGetFilteredString() {
         JXListT list = new JXListT(AncientSwingTeam.createNamedColorListModel());
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         String text = sv.getString(list.getElementAt(2));
         ComponentAdapter adapter = list.getComponentAdapter(2);
         assertEquals(text, adapter.getFilteredStringAt(2, 0));
@@ -507,7 +507,7 @@ public class ComponentAdapterTest extends TestCase {
     @Test
     public void testListGetStringColumn() {
         JXListT list = new JXListT(AncientSwingTeam.createNamedColorListModel());
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         String text = sv.getString(list.getElementAt(2));
         ComponentAdapter adapter = list.getComponentAdapter(2);
         assertEquals(text, adapter.getString(0));
@@ -517,12 +517,12 @@ public class ComponentAdapterTest extends TestCase {
      * Subclass to access ComponentAdapter.
      */
     @SuppressWarnings("serial")
-	public static class JXListT extends JXList {
+	public static class JXListT extends JXList<Object> {
 
-        public JXListT(ListModel model) {
+        public JXListT(ListModel<Object> model) {
             super(model);
         }
-        public JXListT(ListModel model, boolean autoCreateRowSorter) {
+        public JXListT(ListModel<Object> model, boolean autoCreateRowSorter) {
             super(model, autoCreateRowSorter);
         }
 
@@ -695,7 +695,8 @@ public class ComponentAdapterTest extends TestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {

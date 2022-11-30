@@ -7,6 +7,7 @@ package org.jdesktop.swingx;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
@@ -31,9 +32,9 @@ import javax.swing.text.Position.Bias;
 import org.jdesktop.swingx.JXList.DelegatingRenderer;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXListT;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.SearchPredicate;
-import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXListT;
 import org.jdesktop.swingx.hyperlink.LinkModel;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
@@ -66,16 +67,50 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class JXListTest extends InteractiveTestCase {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXListTest.class.getName());
+
+    @Before
+    public void setUpJ4() throws Exception {
+        setUp();
+    }
     
-    protected ListModel listModel;
-    protected DefaultListModel ascendingListModel;
+    @After
+    public void tearDownJ4() throws Exception {
+        tearDown();
+    }
+
+    @Override // Override junit.framework.TestCase : Sets up the fixture
+    protected void setUp() throws Exception {
+        super.setUp();
+        list = new JXList<Object>();
+        listModel = createListModel();
+        ascendingListModel = createAscendingListModel(0, 20);
+        sv = createColorStringValue();
+    }
+    
+    protected ListModel<Object> listModel;
+    protected DefaultListModel<Object> ascendingListModel;
     /** empty default list */
-    private JXList list;
+    private JXList<Object> list;
     private StringValue sv;
 
-    
+    public JXListTest() {
+        super("JXList Tests");
+    }
+
+    protected ListModel<Object> createListModel() {
+        JXList<?> list = new JXList<Object>();
+        return new DefaultComboBoxModel<Object>(list.getActionMap().allKeys());
+    }
+
+    protected DefaultListModel<Object> createAscendingListModel(int startRow, int count) {
+        DefaultListModel<Object> lm = new DefaultListModel<Object>();
+        for (int row = startRow; row < startRow  + count; row++) {
+            lm.addElement(Integer.valueOf(row));
+        }
+        return lm;
+    }
+
     /**
      * Issue #1563-swingx: find cell that was clicked for componentPopup
      * 
@@ -83,14 +118,17 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testPopupTriggerLocationAvailable() {
-        JXList table = new JXList(listModel);
-        MouseEvent event = new MouseEvent(table, 0,
-                0, 0, 40, 5, 0, false);
+    	LOG.config("listModel.Size="+listModel.getSize()
+    		+(listModel.getSize()>0 ? " first<E>:"+listModel.getElementAt(0) : "/ empty"));
+        JXList<Object> table = new JXList<Object>(listModel);
+        // x = 40 ; y = 5
+        MouseEvent event = new MouseEvent(table, 0, 0, 0, 40, 5, 0, false);
         PropertyChangeReport report = new PropertyChangeReport(table);
-        table.getPopupLocation(event);
+        Point p = table.getPopupLocation(event);
+        LOG.info("expected change of prop Point oldValue/newValue:"+p + " / "+event.getPoint());
         assertEquals(event.getPoint(), table.getPopupTriggerLocation());
-        TestUtils.assertPropertyChangeEvent(report, "popupTriggerLocation", 
-                null, event.getPoint());
+        // oldValue = null ; newValue = event.getPoint()
+        TestUtils.assertPropertyChangeEvent(report, "popupTriggerLocation", null, event.getPoint());
     }
     
     
@@ -101,10 +139,16 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testPopupTriggerCopy() {
-        JXList table = new JXList(listModel);
-        MouseEvent event = new MouseEvent(table, 0,
-                0, 0, 40, 5, 0, false);
+    	LOG.config("listModel.Size="+listModel.getSize()
+    		+(listModel.getSize()>0 ? " last<E>:"+listModel.getElementAt(listModel.getSize()-1) : "/ empty"));
+        JXList<Object> table = new JXList<Object>(listModel);
+        MouseEvent event = new MouseEvent(table, 0, 0, 0, 40, 5, 0, false);
         table.getPopupLocation(event);
+        if(table.getPopupTriggerLocation()==table.getPopupTriggerLocation()) {
+        	LOG.warning("Same!!!!!!!!");
+        } else {
+            LOG.info("assertNotSame instances but equal hashCode: "+table.getPopupTriggerLocation().hashCode() + " / "+table.getPopupTriggerLocation().hashCode());
+        }
         assertNotSame("trigger point must not be same", 
                 table.getPopupTriggerLocation(), table.getPopupTriggerLocation());
     }
@@ -116,12 +160,11 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testPopupTriggerKeyboard() {
-        JXList table = new JXList(listModel);
-        MouseEvent event = new MouseEvent(table, 0,
-                0, 0, 40, 5, 0, false);
+        JXList<Object> table = new JXList<Object>(listModel);
+        MouseEvent event = new MouseEvent(table, 0, 0, 0, 40, 5, 0, false);
         table.getPopupLocation(event);
         PropertyChangeReport report = new PropertyChangeReport(table);
-        table.getPopupLocation(null);
+        table.getPopupLocation(null); // null if the popup is not being shown as the result of a mouse event
         assertNull("trigger must null", 
                 table.getPopupTriggerLocation());
         TestUtils.assertPropertyChangeEvent(report, "popupTriggerLocation", 
@@ -134,7 +177,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testGetSelectedValue() {
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<String>();
         model.addElement("One");
         model.addElement("Two");
         model.addElement("Three");
@@ -142,20 +185,23 @@ public class JXListTest extends InteractiveTestCase {
         model.addElement("Five");
         model.addElement("Six");
         model.addElement("Seven");
-        JXList list = new JXList();
+    	LOG.fine("listModel.Size="+model.getSize());
+        JXList<String> list = new JXList<String>();
         list.setAutoCreateRowSorter(true);
         list.setModel(model);
         list.setSelectedIndex(2);
+    	LOG.fine("list.ElementCount="+list.getElementCount());
         assertEquals("Three", list.getSelectedValue());
-        list.setRowFilter(new RowFilter<ListModel, Integer>() {
+        list.setRowFilter(new RowFilter<ListModel<Object>, Integer>() {
 
-            @Override
-            public boolean include(Entry<? extends ListModel, ? extends Integer> entry) {
-                return entry.getStringValue(entry.getIdentifier()).contains("e");
-            }
+			@Override
+			public boolean include(Entry<? extends ListModel<Object>, ? extends Integer> entry) {
+				return entry.getStringValue(entry.getIdentifier()).contains("e");
+			}
 
         });
         assertEquals("Three", list.getSelectedValue());
+    	LOG.info("listModel.Size="+model.getSize() + " list.ElementCount without Two,Four,Six ="+list.getElementCount());
     }
 
     /**
@@ -163,7 +209,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testGetSelectedValues() {
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<String>();
         model.addElement("One");
         model.addElement("Two");
         model.addElement("Three");
@@ -171,21 +217,23 @@ public class JXListTest extends InteractiveTestCase {
         model.addElement("Five");
         model.addElement("Six");
         model.addElement("Seven");
-        JXList list = new JXList();
+        JXList<String> list = new JXList<String>();
         list.setAutoCreateRowSorter(true);
         list.setModel(model);
         list.setSelectedIndex(2);
         list.addSelectionInterval(0, 2);
         assertTrue(Arrays.deepEquals(new Object[] {"One", "Two", "Three"}, list.getSelectedValues()));
-        list.setRowFilter(new RowFilter<ListModel, Integer>() {
+        
+        list.setRowFilter(new RowFilter<ListModel<Object>, Integer>() {
 
-            @Override
-            public boolean include(Entry<? extends ListModel, ? extends Integer> entry) {
-                return entry.getStringValue(entry.getIdentifier()).contains("e");
-            }
+			@Override
+			public boolean include(Entry<? extends ListModel<Object>, ? extends Integer> entry) {
+				return entry.getStringValue(entry.getIdentifier()).contains("e");
+			}
 
         });
         assertTrue(Arrays.deepEquals(new Object[] {"One", "Three"}, list.getSelectedValues()));
+        
         list.clearSelection();
         list.addSelectionInterval(0, 2);
         assertTrue(Arrays.deepEquals(new Object[] {"One", "Three", "Five"}, list.getSelectedValues()));
@@ -196,7 +244,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testSetSelectedValue() {
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<String>();
         model.addElement("One");
         model.addElement("Two");
         model.addElement("Three");
@@ -204,17 +252,18 @@ public class JXListTest extends InteractiveTestCase {
         model.addElement("Five");
         model.addElement("Six");
         model.addElement("Seven");
-        JXList list = new JXList();
+        JXList<String> list = new JXList<String>();
         list.setAutoCreateRowSorter(true);
         list.setModel(model);
         list.setSelectedValue("Three", false);
         assertEquals(2, list.getSelectedIndex());
-        list.setRowFilter(new RowFilter<ListModel, Integer>() {
+        
+        list.setRowFilter(new RowFilter<ListModel<Object>, Integer>() {
 
-            @Override
-            public boolean include(Entry<? extends ListModel, ? extends Integer> entry) {
-                return entry.getStringValue(entry.getIdentifier()).contains("e");
-            }
+			@Override
+			public boolean include(Entry<? extends ListModel<Object>, ? extends Integer> entry) {
+				return entry.getStringValue(entry.getIdentifier()).contains("e");
+			}
 
         });
         assertEquals(1, list.getSelectedIndex());
@@ -229,20 +278,21 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testRendererNotification() {
-        JXList list = new JXList();
+        JXList<?> list = new JXList<Object>();
         assertNotNull("sanity: ", list.getCellRenderer());
         // very first setting: fires twice ... a bit annoying but ... waiting for complaints ;-)
-        list.setCellRenderer(new DefaultListRenderer());
+        list.setCellRenderer(new DefaultListRenderer<>());
         PropertyChangeReport report = new PropertyChangeReport(list);
-        list.setCellRenderer(new DefaultListRenderer());
+        list.setCellRenderer(new DefaultListRenderer<>());
         TestUtils.assertPropertyChangeEvent(report, "cellRenderer", null, list.getCellRenderer());
+        LOG.info("report.EventCount:"+report.getEventCount());
     }
     /**
      * Issue #1162-swingx: getNextMatch incorrect if sorted.
      */
     @Test
     public void testNextMatch() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
         int index = list.getNextMatch("b", 0, Bias.Forward);
         assertEquals(1, index);
         list.toggleSortOrder();
@@ -254,13 +304,14 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testNextMatchUseString() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         assertEquals("must not find a match for 'b', all start with 'r'", 
                 -1, list.getNextMatch("b", 0, Bias.Forward));
     }
     /**
      * Issue 1161-swingx: JXList not completely updated on setRowFilter
+     * see JXListVisualCheck.interactiveRevalidateOnSetRowFilter
      */
     @Test
     public void testRevalidateOnSetRowFilter() throws InterruptedException, InvocationTargetException {
@@ -269,13 +320,13 @@ public class JXListTest extends InteractiveTestCase {
             LOG.fine("cannot run ui test - headless environment");
             return;
         }
-        
-        final JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
+        LOG.config("run ui test");
+        final JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
         showWithScrollingInFrame(list, "");
         final Dimension size = list.getSize();
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
-                RowFilter<? super ListModel, ? super Integer> filter = RowFilters.regexFilter(Pattern.CASE_INSENSITIVE, "^b");
+                RowFilter<? super ListModel<Object>, ? super Integer> filter = RowFilters.regexFilter(Pattern.CASE_INSENSITIVE, "^b");
                 list.setRowFilter(filter);
             }
         });
@@ -298,8 +349,8 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testListGetStringUsedInPatternFilter() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         RowFilter<Object, Integer> filter = RowFilter.regexFilter("R/G/B: -2.*", 0);
         list.setRowFilter(filter);
         assertTrue(list.getElementCount() > 0);
@@ -314,7 +365,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testStringValueRegistry() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
         assertSame(list.getStringValueRegistry(), getSortController(list).getStringValueProvider());
     }
     
@@ -326,9 +377,9 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testStringValueRegistryFromRendererChange() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
         StringValueRegistry provider = list.getStringValueRegistry();
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         assertEquals(list.getWrappedCellRenderer(), provider.getStringValue(0, 0));
     }
 
@@ -341,12 +392,10 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testStringAtUseProvider() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         list.getStringValueRegistry().setStringValue(StringValues.TO_STRING, 0);
-        assertEquals(StringValues.TO_STRING.getString(list.getElementAt(0)),
-                list.getStringAt(0));
-        
+        assertEquals(StringValues.TO_STRING.getString(list.getElementAt(0)), list.getStringAt(0));      
     }
     /**
      * Issue #1152-swingx: re-enable filtering with single-string-representation.
@@ -358,40 +407,34 @@ public class JXListTest extends InteractiveTestCase {
     @Test
     public void testStringAtComponentAdapterUseProvider() {
         JXListT list = new JXListT(AncientSwingTeam.createNamedColorListModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        list.setCellRenderer(new DefaultListRenderer<>(sv));
         list.getStringValueRegistry().setStringValue(StringValues.TO_STRING, 0);
         ComponentAdapter adapter = list.getComponentAdapter();
-        assertEquals(StringValues.TO_STRING.getString(list.getElementAt(0)),
-                adapter.getStringAt(0, 0));
-        
+        assertEquals(StringValues.TO_STRING.getString(list.getElementAt(0)), adapter.getStringAt(0, 0));      
     }
     
 //----------------- sorter api on JXList
 
     /**
-     * JXList has responsibility to guarantee usage of 
-     * its comparator.
+     * JXList has responsibility to guarantee usage of its comparator.
      */
     @Test
     public void testSetComparatorToSortController() {
-        JXList list = new JXList(listModel, true);
+        JXList<Object> list = new JXList<Object>(listModel, true);
         list.setComparator(Collator.getInstance());
         assertSame(list.getComparator(), getSortController(list).getComparator(0));
     }
     
     /**
-     * added xtable.setSortOrder(int, SortOrder)
-     * 
+     * added setSortOrder(SortOrder)
      */
     @Test
     public void testSetSortOrder() {
-        JXList list = new JXList(ascendingListModel, true);
+        JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         list.setSortOrder(SortOrder.ASCENDING);
         assertSame("column must be sorted after setting sortOrder on ", SortOrder.ASCENDING, list.getSortOrder());
         assertSame(SortOrder.ASCENDING, getSortController(list).getSortOrder(0));
     }
-    
-
 
     /**
      * testing new sorter api: 
@@ -400,7 +443,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testToggleSortOrder() {
-        JXList list = new JXList(ascendingListModel, true);
+        JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         assertSame(SortOrder.UNSORTED, list.getSortOrder());
         list.toggleSortOrder();
         assertSame(SortOrder.ASCENDING, list.getSortOrder());
@@ -415,7 +458,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testSortController() {
-        JXList list = new JXList(ascendingListModel, true);
+        JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         assertNotNull("sortController must be initialized", list.getRowSorter());
     }
     
@@ -426,7 +469,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testSetModel() {
-        JXList list = new JXList(true);
+        JXList<Object> list = new JXList<Object>(true);
         list.setModel(listModel);
         assertEquals(listModel.getSize(), list.getElementCount());
         assertSame(listModel, list.getRowSorter().getModel());
@@ -436,9 +479,9 @@ public class JXListTest extends InteractiveTestCase {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testConvertToModelPreconditions() {
-        final JXList list = new JXList(ascendingListModel, true);
+        final JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         assertEquals(20, list.getElementCount());
-        RowFilter<ListModel, Integer> filter = RowFilters.regexFilter("0", 0);
+        RowFilter<ListModel<?>, Integer> filter = RowFilters.regexFilter("0", 0);
         list.setRowFilter(filter);
         assertEquals(2, list.getElementCount());
         list.convertIndexToModel(list.getElementCount());
@@ -447,9 +490,9 @@ public class JXListTest extends InteractiveTestCase {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testElementAtPreconditions() {
-        final JXList list = new JXList(ascendingListModel, true);
+        final JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         assertEquals(20, list.getElementCount());
-        RowFilter<ListModel, Integer> filter = RowFilters.regexFilter("0", 0);
+        RowFilter<ListModel<?>, Integer> filter = RowFilters.regexFilter("0", 0);
         list.setRowFilter(filter);
         assertEquals(2, list.getElementCount());
         list.getElementAt(list.getElementCount());
@@ -460,10 +503,10 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void testConvertToViewPreconditions() {
-        final JXList list = new JXList(ascendingListModel);
+        final JXList<Object> list = new JXList<Object>(ascendingListModel);
         list.setAutoCreateRowSorter(true);
         assertEquals(20, list.getElementCount());
-        RowFilter<ListModel, Integer> filter = RowFilters.regexFilter("0", 0);
+        RowFilter<ListModel<?>, Integer> filter = RowFilters.regexFilter("0", 0);
         list.setRowFilter(filter);
         assertEquals(2, list.getElementCount());
         list.convertIndexToView(ascendingListModel.getSize());
@@ -471,21 +514,21 @@ public class JXListTest extends InteractiveTestCase {
 
     @Test
     public void testNoSorter() {
-        JXList list = new JXList(ascendingListModel);
+        JXList<Object> list = new JXList<Object>(ascendingListModel);
         assertEquals(ascendingListModel.getSize(), list.getElementCount());
         assertEquals(ascendingListModel.getElementAt(0), list.getElementAt(0));
     }
     
     @Test
     public void testSorterNotSorted() {
-        JXList list = new JXList(ascendingListModel, true);
+        JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         assertEquals(ascendingListModel.getSize(), list.getElementCount());
         assertEquals(ascendingListModel.getElementAt(0), list.getElementAt(0));
     }
     
     @Test
     public void testSorterSorted() {
-        JXList list = new JXList(ascendingListModel, true);
+        JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         list.setSortOrder(SortOrder.DESCENDING);
         assertEquals(ascendingListModel.getSize(), list.getElementCount());
         assertEquals(ascendingListModel.getElementAt(0), list.getElementAt(list.getElementCount() - 1));
@@ -531,7 +574,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testTableRowFilterSynchedToController() {
-        JXList list = new JXList(true);
+        JXList<Object> list = new JXList<Object>(true);
         RowFilter<Object, Object> filter = RowFilters.regexFilter(".*");
         list.setRowFilter(filter);
         assertEquals(filter, getSortController(list).getRowFilter());
@@ -543,7 +586,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testSortOrderCycle() {
-        JXList list = new JXList(true);
+        JXList<Object> list = new JXList<Object>(true);
         SortOrder[] cycle = new SortOrder[] {SortOrder.DESCENDING, SortOrder.UNSORTED};
         PropertyChangeReport report = new PropertyChangeReport(list);
         list.setSortOrderCycle(cycle);
@@ -557,8 +600,8 @@ public class JXListTest extends InteractiveTestCase {
      * @param list
      * @return
      */
-    private ListSortController<? extends ListModel> getSortController(JXList list) {
-        return (ListSortController<? extends ListModel>) list.getRowSorter();
+    private ListSortController<? extends ListModel<?>> getSortController(JXList<?> list) {
+        return (ListSortController<? extends ListModel<?>>) list.getRowSorter();
     }
 
     //------------ rowSorter api
@@ -569,23 +612,23 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testConstructorAutoCreateSorter() {
-        assertAutoCreateRowSorter(new JXList(), false);
-        assertAutoCreateRowSorter(new JXList(new DefaultListModel()), false);
-        assertAutoCreateRowSorter(new JXList(new Vector<Object>()), false);
-        assertAutoCreateRowSorter(new JXList(new Object[] { }), false);
+        assertAutoCreateRowSorter(new JXList<>(), false);
+        assertAutoCreateRowSorter(new JXList<>(new DefaultListModel<>()), false);
+        assertAutoCreateRowSorter(new JXList<>(new Vector<Object>()), false);
+        assertAutoCreateRowSorter(new JXList<>(new Object[] { }), false);
         
-        assertAutoCreateRowSorter(new JXList(false), false);
-        assertAutoCreateRowSorter(new JXList(new DefaultListModel(), false), false);
-        assertAutoCreateRowSorter(new JXList(new Vector<Object>(), false), false);
-        assertAutoCreateRowSorter(new JXList(new Object[] { }, false), false);
+        assertAutoCreateRowSorter(new JXList<>(false), false);
+        assertAutoCreateRowSorter(new JXList<>(new DefaultListModel<>(), false), false);
+        assertAutoCreateRowSorter(new JXList<>(new Vector<Object>(), false), false);
+        assertAutoCreateRowSorter(new JXList<>(new Object[] { }, false), false);
 
-        assertAutoCreateRowSorter(new JXList(true), true);
-        assertAutoCreateRowSorter(new JXList(new DefaultListModel(), true), true);
-        assertAutoCreateRowSorter(new JXList(new Vector<Object>(), true), true);
-        assertAutoCreateRowSorter(new JXList(new Object[] { }, true), true);
+        assertAutoCreateRowSorter(new JXList<>(true), true);
+        assertAutoCreateRowSorter(new JXList<>(new DefaultListModel<>(), true), true);
+        assertAutoCreateRowSorter(new JXList<>(new Vector<Object>(), true), true);
+        assertAutoCreateRowSorter(new JXList<>(new Object[] { }, true), true);
     }
     
-    private void assertAutoCreateRowSorter(JXList list, boolean b) {
+    private void assertAutoCreateRowSorter(JXList<?> list, boolean b) {
         assertEquals(b, list.getAutoCreateRowSorter());
     }
     
@@ -616,7 +659,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testComponentAdapterCoordinates() {
-        JXList list = new JXList(ascendingListModel, true);
+        JXList<Object> list = new JXList<Object>(ascendingListModel, true);
         list.setComparator(TableSortController.COMPARABLE_COMPARATOR);
         Object originalFirstRowValue = list.getElementAt(0);
         Object originalLastRowValue = list.getElementAt(list.getElementCount() - 1);
@@ -652,8 +695,11 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappedRendererDefault() {
-        JXList list = new JXList();
-        DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
+        JXList<?> list = new JXList<>();
+        ListCellRenderer<?> lcr = list.getCellRenderer();
+        // XXX JXList.DelegatingRenderer is not row! but implements interface ListCellRenderer<E>
+        LOG.info("ListCellRenderer<?> lcr type "+lcr.getClass() +" is instanceof ListCellRenderer="+(lcr instanceof ListCellRenderer));
+        DelegatingRenderer renderer = (DelegatingRenderer)list.getCellRenderer();
         assertSame("wrapping renderer must use list's default on null", 
                  renderer.getDelegateRenderer(), list.getWrappedCellRenderer());
     }
@@ -664,9 +710,9 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappedRendererCustom() {
-        JXList list = new JXList();
+        JXList<Object> list = new JXList<Object>();
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
-        ListCellRenderer custom = new DefaultListRenderer();
+        ListCellRenderer<Object> custom = new DefaultListRenderer<Object>();
         list.setCellRenderer(custom);
         assertSame("wrapping renderer must use list's default on null", 
                  renderer.getDelegateRenderer(), list.getWrappedCellRenderer());
@@ -678,8 +724,8 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testDelegatingRendererUseDefaultSetNull() {
-        JXList list = new JXList();
-        ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
+        JXList<Object> list = new JXList<Object>();
+        ListCellRenderer<Object> defaultRenderer = list.createDefaultCellRenderer();
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
         list.setCellRenderer(null);
         assertEquals("wrapping renderer must use list's default on null", 
@@ -692,8 +738,8 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testDelegatingRendererUseDefault() {
-        JXList list = new JXList();
-        ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
+        JXList<Object> list = new JXList<Object>();
+        ListCellRenderer<Object> defaultRenderer = list.createDefaultCellRenderer();
         assertEquals("sanity: creates default", DefaultListRenderer.class, 
                 defaultRenderer.getClass());
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
@@ -727,15 +773,16 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testDelegatingRendererUseCustomDefault() {
-        JXList list = new JXList() {
+        @SuppressWarnings("serial")
+		JXList<Object> list = new JXList<>() {
 
             @Override
-            protected ListCellRenderer createDefaultCellRenderer() {
+            protected ListCellRenderer<Object> createDefaultCellRenderer() {
                 return new CustomDefaultRenderer();
             }
             
         };
-        ListCellRenderer defaultRenderer = list.createDefaultCellRenderer();
+        ListCellRenderer<Object> defaultRenderer = list.createDefaultCellRenderer();
         assertEquals("sanity: creates custom", CustomDefaultRenderer.class, 
                 defaultRenderer.getClass());
         DelegatingRenderer renderer = (DelegatingRenderer) list.getCellRenderer();
@@ -744,7 +791,8 @@ public class JXListTest extends InteractiveTestCase {
     /**
      * Dummy extension for testing - does nothing more as super.
      */
-    public static class CustomDefaultRenderer extends DefaultListCellRenderer {
+    @SuppressWarnings("serial")
+	public static class CustomDefaultRenderer extends DefaultListCellRenderer {
     }
     
     /**
@@ -754,8 +802,9 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testGetString() {
-        JXList list = new JXList(AncientSwingTeam.createNamedColorListModel());
-        StringValue sv = new StringValue() {
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel());
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {
@@ -766,7 +815,8 @@ public class JXListTest extends InteractiveTestCase {
             }
             
         };
-        list.setCellRenderer(new DefaultListRenderer(sv));
+        DefaultListRenderer<Object> renderer = new DefaultListRenderer<>(sv);
+        list.setCellRenderer(renderer);
         String text = list.getStringAt(0);
         assertEquals(sv.getString(list.getElementAt(0)), text);
     }
@@ -778,8 +828,8 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testDefaultListRenderer() {
-        JXList list = new JXList();
-        ListCellRenderer renderer = ((DelegatingRenderer) list.getCellRenderer()).getDelegateRenderer();
+        JXList<?> list = new JXList<>();
+        ListCellRenderer<Object> renderer = ((DelegatingRenderer)list.getCellRenderer()).getDelegateRenderer();
         assertTrue("default renderer expected to be DefaultListRenderer " +
                         "\n but is " + renderer.getClass(),
                 renderer instanceof DefaultListRenderer);
@@ -796,8 +846,8 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testIllegalNegativeListRowIndex() {
-        JXList list = new JXList(new Object[] {1, 2, 3});
-        ListCellRenderer renderer = list.getCellRenderer();
+        JXList<Object> list = new JXList<Object>(new Object[] {1, 2, 3});
+        ListCellRenderer<Object> renderer = list.getCellRenderer();
         renderer.getListCellRendererComponent(list, "dummy", -1, false, false);
         SearchPredicate predicate = new SearchPredicate("\\QNode\\E");
         Highlighter searchHighlighter = new ColorHighlighter(predicate, null, Color.RED);
@@ -816,8 +866,8 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testIllegalExceedingListRowIndex() {
-        JXList list = new JXList(new Object[] {1, 2, 3});
-        ListCellRenderer renderer = list.getCellRenderer();
+        JXList<Object> list = new JXList<Object>(new Object[] {1, 2, 3});
+        ListCellRenderer<Object> renderer = list.getCellRenderer();
         renderer.getListCellRendererComponent(list, "dummy", list.getElementCount(), false, false);
         SearchPredicate predicate = new SearchPredicate("\\QNode\\E");
         Highlighter searchHighlighter = new ColorHighlighter(predicate, null, Color.RED);
@@ -831,7 +881,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testConfiguredComponentAdapter() {
-        JXList list = new JXList(new Object[] {1, 2, 3});
+        JXList<Object> list = new JXList<Object>(new Object[] {1, 2, 3});
         ComponentAdapter adapter = list.getComponentAdapter();
         assertEquals(0, adapter.column);
         assertEquals(0, adapter.row);
@@ -851,7 +901,7 @@ public class JXListTest extends InteractiveTestCase {
     @Test
     public void testNullData() {
         try {
-            new JXList((ListModel) null);
+            new JXList<>((ListModel<?>) null);
             fail("JXList contructor must throw on null data");
         } catch (IllegalArgumentException e) {
             // expected
@@ -860,7 +910,7 @@ public class JXListTest extends InteractiveTestCase {
         }
         
         try {
-           new JXList((Vector<?>) null);
+           new JXList<>((Vector<?>) null);
             fail("JXList contructor must throw on null data");
         } catch (IllegalArgumentException e) {
             // expected
@@ -869,7 +919,7 @@ public class JXListTest extends InteractiveTestCase {
         }
         
         try {
-            new JXList((Object[]) null);
+            new JXList<Object>((Object[]) null);
              fail("JXList contructor must throw on null data");
          } catch (IllegalArgumentException e) {
              // expected
@@ -885,7 +935,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testComparator() {
-        JXList list = new JXList();
+        JXList<?> list = new JXList<>();
         assertNull(list.getComparator());
         Collator comparator = Collator.getInstance();
         PropertyChangeReport report = new PropertyChangeReport();
@@ -904,7 +954,7 @@ public class JXListTest extends InteractiveTestCase {
      */
     @Test
     public void testLinkControllerListening() {
-        JXList table = new JXList();
+        JXList<?> table = new JXList<>();
         table.setRolloverEnabled(true);
         assertNotNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.CLICKED_KEY));
         assertNotNull("LinkController must be listening", getLinkControllerAsPropertyChangeListener(table, RolloverProducer.ROLLOVER_KEY));
@@ -915,7 +965,7 @@ public class JXListTest extends InteractiveTestCase {
         assertNull("execute button action must be de-registered", table.getActionMap().get(JXList.EXECUTE_BUTTON_ACTIONCOMMAND));
     }
 
-    private PropertyChangeListener getLinkControllerAsPropertyChangeListener(JXList table, String propertyName) {
+    private PropertyChangeListener getLinkControllerAsPropertyChangeListener(JXList<?> table, String propertyName) {
         PropertyChangeListener[] listeners = table.getPropertyChangeListeners(propertyName);
         for (int i = 0; i < listeners.length; i++) {
             if (listeners[i] instanceof ListRolloverController<?>) {
@@ -926,20 +976,8 @@ public class JXListTest extends InteractiveTestCase {
     }
 
 
-    protected ListModel createListModel() {
-        JXList list = new JXList();
-        return new DefaultComboBoxModel(list.getActionMap().allKeys());
-    }
-
-    protected DefaultListModel createAscendingListModel(int startRow, int count) {
-        DefaultListModel l = new DefaultListModel();
-        for (int row = startRow; row < startRow  + count; row++) {
-            l.addElement(Integer.valueOf(row));
-        }
-        return l;
-    }
-    protected DefaultListModel createListModelWithLinks() {
-        DefaultListModel model = new DefaultListModel();
+    protected DefaultListModel<?> createListModelWithLinks() {
+        DefaultListModel<Object> model = new DefaultListModel<>();
         for (int i = 0; i < 20; i++) {
             try {
                 LinkModel link = new LinkModel("a link text " + i, null, new URL("http://some.dummy.url" + i));
@@ -965,7 +1003,8 @@ public class JXListTest extends InteractiveTestCase {
      * @return the StringValue for color.
      */
     private StringValue createColorStringValue() {
-        StringValue sv = new StringValue() {
+        @SuppressWarnings("serial")
+		StringValue sv = new StringValue() {
 
             public String getString(Object value) {
                 if (value instanceof Color) {
@@ -1006,29 +1045,6 @@ public class JXListTest extends InteractiveTestCase {
 //        return f;
 //    }
     
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        list = new JXList();
-        listModel = createListModel();
-        ascendingListModel = createAscendingListModel(0, 20);
-        sv = createColorStringValue();
-    }
-    public JXListTest() {
-        super("JXList Tests");
-    }
-
-    
-    @Before
-    public void setUpJ4() throws Exception {
-        setUp();
-    }
-    
-    @After
-    public void tearDownJ4() throws Exception {
-        tearDown();
-    }
-
 
     
 }

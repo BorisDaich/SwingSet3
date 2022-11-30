@@ -7,6 +7,7 @@ package org.jdesktop.swingx;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
@@ -54,28 +55,60 @@ import org.junit.Before;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
-    @SuppressWarnings("all")
+
     private static final Logger LOG = Logger.getLogger(JXListVisualCheck.class.getName());
+    
     public static void main(String[] args) {
         setSystemLF(true);
 //        LookAndFeel l;
 //        SynthConstants s;
         JXListVisualCheck test = new JXListVisualCheck();
-        try {
-//            NimbusLookAndFeel n;
-//            Region my = XRegion.XLIST;
-//            setLookAndFeel("Nimbus");
-//            new XRegion("XList", "XListUI", false);
-//          test.runInteractiveTests();
-//            test.runInteractive("RowFilter");
-//            test.runInteractive("Remove");
-            test.runInteractive("PopupTrigger");
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
+		try {
+//			javax.swing.plaf.nimbus.NimbusLookAndFeel n;
+//			javax.swing.plaf.synth.Region my = org.jdesktop.swingx.plaf.synth.XRegion.XLIST;
+//			setLookAndFeel("Nimbus");
+//			new org.jdesktop.swingx.plaf.synth.XRegion("XList", "XListUI", false, "XListUI", javax.swing.plaf.synth.Region.LIST);
+			test.runInteractiveTests();
+//			test.runInteractive("RevalidateOnSetRowFilter");
+//			test.runInteractive("RowFilter");
+//			test.runInteractive("CellHeight");
+//			test.runInteractive("CellBackground");		
+//			test.runInteractive("Remove");
+//			test.runInteractive("PopupTrigger");
+		} catch (Exception e) {
+			System.err.println("exception when executing interactive tests:");
+			e.printStackTrace();
+		}
     }
 
+    /**
+     * Issue 1161-swingx: JXList not completely updated on setRowFilter
+     */
+    public void interactiveRevalidateOnSetRowFilter() {
+        final JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel(), true);
+        ListModel<Object> listModel = list.getModel();
+        final Dimension size = list.getSize();
+        LOG.info("Dimension:"+size + " listModel.Size="+listModel.getSize()
+			+(listModel.getSize()>0 ? " last<E>:"+listModel.getElementAt(listModel.getSize()-1) : "/ empty"));
+        JXFrame frame = showWithScrollingInFrame(list, "RevalidateOnSetRowFilter");
+        RowFilter<? super ListModel<Object>, ? super Integer> filter = RowFilters.regexFilter(Pattern.CASE_INSENSITIVE, "^b");
+        list.setRowFilter(filter);
+        LOG.info("Dimension:"+list.getSize());
+        LOG.info("height must be adjusted to reduced number of rows("+list.getElementCount()+"/"+listModel.getSize()+"), " +
+        		"was (old/current): " + size.height + "/" + list.getSize().height);
+        
+        @SuppressWarnings("serial")
+		Action toggleFilter = new AbstractAction("toggleFilter") {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                list.setRowFilter(list.getRowFilter() != null ? null : filter);
+            }
+        };
+        addAction(frame, toggleFilter);
+
+    }
+    
     /**
      * Issue #1563-swingx: find cell that was clicked for componentPopup
      * 
@@ -86,7 +119,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     public void interactivePopupTriggerLocation() {
         JXList table = new JXList(createListModel());
         JPopupMenu popup = new JPopupMenu();
-        Action action = new AbstractAction("cell found in actionPerformed") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("cell found in actionPerformed") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,7 +139,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         };
         popup.add(action);
         
-        final Action onShowing = new AbstractAction("dynamic: ") {
+        @SuppressWarnings("serial")
+		final Action onShowing = new AbstractAction("dynamic: ") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -172,7 +207,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
             
         };
         JXFrame frame = wrapWithScrollingInFrame(list, "removeIndexSelectionInterval");
-        Action toggleSort = new AbstractAction("toggleSort") {
+        @SuppressWarnings("serial")
+		Action toggleSort = new AbstractAction("toggleSort") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -180,17 +216,19 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
             }
         };
         addAction(frame, toggleSort);
-        Action toggleFilter = new AbstractAction("filter") {
+        
+        @SuppressWarnings("serial")
+		Action toggleFilter = new AbstractAction("toggleFilter") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                list.setRowFilter(list.getRowFilter() != null ?
-                        null : filter
-                        );
+                list.setRowFilter(list.getRowFilter() != null ? null : filter);
             }
         };
         addAction(frame, toggleFilter);
-        Action remove = new AbstractAction("remove") {
+        
+        @SuppressWarnings("serial")
+		Action remove = new AbstractAction("remove") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -205,7 +243,9 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
     public void interactiveRowFilter() {
         final JXList list = new JXList(AncientSwingTeam.createNamedColorListModel(), true);
         JXFrame frame = wrapWithScrollingInFrame(list, "filter");
-        Action toggleFilter = new AbstractAction("toggleFilter") {
+        
+        @SuppressWarnings("serial")
+		Action toggleFilter = new AbstractAction("toggleFilter") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -214,11 +254,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
                     list.setRowFilter(new RowFilter<ListModel, Integer>() {
 
                         @Override
-                        public boolean include(
-                                Entry<? extends ListModel, ? extends Integer> entry) {
-                            boolean include = entry
-                                    .getStringValue(entry.getIdentifier())
-                                    .toLowerCase().contains("o");
+                        public boolean include(Entry<? extends ListModel, ? extends Integer> entry) {
+                            boolean include = entry.getStringValue(entry.getIdentifier()).toLowerCase().contains("o");
                             return include;
                         }
 
@@ -250,17 +287,16 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         final JXList list = new JXList(true);
         JXFrame frame = wrapWithScrollingInFrame(list, "filter after model");
         
-        final Action filterOnAction = new AbstractAction("filter on") {
+        @SuppressWarnings("serial")
+		final Action filterOnAction = new AbstractAction("filter on") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
                 list.setRowFilter(new RowFilter<ListModel, Integer>() {
 
                     @Override
-                    public boolean include(
-                            Entry<? extends ListModel, ? extends Integer> entry) {
-                        boolean include = entry.getStringValue(entry.getIdentifier())
-                                .toLowerCase().contains("o");
+                    public boolean include(Entry<? extends ListModel, ? extends Integer> entry) {
+                        boolean include = entry.getStringValue(entry.getIdentifier()).toLowerCase().contains("o");
                         return include;
                     }
 
@@ -270,7 +306,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         
 //        addAction(frame, filterOnAction);
         
-        Action modelAction = new AbstractAction("setModel") {
+        @SuppressWarnings("serial")
+		Action modelAction = new AbstractAction("setModel") {
             int count;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -286,15 +323,15 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         };
         addAction(frame, modelAction);
         
-        Action filterOffAction = new AbstractAction("filter off") {
+        @SuppressWarnings("serial")
+		Action filterOffAction = new AbstractAction("filter off") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
                 list.setRowFilter(new RowFilter<ListModel, Integer>() {
 
                     @Override
-                    public boolean include(
-                            Entry<? extends ListModel, ? extends Integer> entry) {
+                    public boolean include(Entry<? extends ListModel, ? extends Integer> entry) {
                         return true;
                     }
 
@@ -304,7 +341,8 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         
         addAction(frame, filterOffAction);
         
-        Action invalidateCacheAction = new AbstractAction("invalidateCache") {
+        @SuppressWarnings("serial")
+		Action invalidateCacheAction = new AbstractAction("invalidateCache") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -344,8 +382,11 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         };
         Highlighter hl = new FontHighlighter(selected, list.getFont().deriveFont(50f));
         list.addHighlighter(hl);
-        JXFrame frame = wrapWithScrollingInFrame(list, "big font on focus");
-        Action toggleSort = new AbstractAction("toggle sort") {
+        
+        JXFrame frame = wrapWithScrollingInFrame(list, "DynamicCellHeight: big font on focus");
+        
+        @SuppressWarnings("serial")
+		Action toggleSort = new AbstractAction("toggle sort") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -365,7 +406,9 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         final JXList list = new JXList(core.getModel(), true);
 //        list.toggleSortOrder();
         JXFrame frame = showWithScrollingInFrame(list, core, "x <-> core: nextMatch");
-        Action toggleFilter = new AbstractAction("toggleFilter") {
+        
+        @SuppressWarnings("serial")
+		Action toggleFilter = new AbstractAction("toggleFilter") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 RowFilter<Object, Object> filter = RowFilters.regexFilter(Pattern.CASE_INSENSITIVE, "^b");
@@ -373,7 +416,9 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
             }
         };
         addAction(frame, toggleFilter);
-        Action toggleSort = new AbstractAction("toggleSortOrder") {
+        
+        @SuppressWarnings("serial")
+		Action toggleSort = new AbstractAction("toggleSortOrder") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -390,9 +435,10 @@ public class JXListVisualCheck extends InteractiveTestCase { //JXListTest {
         final JList list = new JList(listModel);
 //        xlist.setBackground(bg);
 //        list.setBackground(bg);
-        JXFrame frame = wrapWithScrollingInFrame(xlist, list, 
-                "unselectedd focused background: JXList/JList");
-        Action toggle = new AbstractAction("toggle background") {
+        JXFrame frame = wrapWithScrollingInFrame(xlist, list, "CompareFocusedCellBackground: JXList/JList");
+
+        @SuppressWarnings("serial")
+		Action toggle = new AbstractAction("toggle background") {
             
             @Override
             public void actionPerformed(ActionEvent e) {
