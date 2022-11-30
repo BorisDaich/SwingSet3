@@ -999,7 +999,7 @@ public class JXList<E> extends JList<E> {
 
     /**
      * Returns an array of all the selected values, in increasing order based
-     * on their indices in the list and taking into account sourting and filtering.
+     * on their indices in the list and taking into account sorting and filtering.
      *
      * @return the selected values, or an empty array if nothing is selected
      * @see #isSelectedIndex
@@ -1016,7 +1016,8 @@ public class JXList<E> extends JList<E> {
         return selectedValues;
     }
 
-    /**     * Returns the number of elements in this list in view 
+    /**
+     * Returns the number of elements in this list in view 
      * coordinates. If filters are active this number might be
      * less than the number of elements in the underlying model.
      * 
@@ -1024,7 +1025,7 @@ public class JXList<E> extends JList<E> {
      */
     public int getElementCount() {
         return getRowSorter() != null ? 
-                getRowSorter().getViewRowCount(): getModel().getSize();
+                getRowSorter().getViewRowCount() : getModel().getSize();
     }
 
     /**
@@ -1037,7 +1038,7 @@ public class JXList<E> extends JList<E> {
      */
     public int convertIndexToModel(int viewIndex) {
         return getRowSorter() != null ? 
-                getRowSorter().convertRowIndexToModel(viewIndex):viewIndex;
+                getRowSorter().convertRowIndexToModel(viewIndex) : viewIndex;
     }
 
     /**
@@ -1050,8 +1051,8 @@ public class JXList<E> extends JList<E> {
      * 
      */
     public int convertIndexToView(int modelIndex) {
-        return getRowSorter() != null 
-            ? getRowSorter().convertRowIndexToView(modelIndex) : modelIndex;
+        return getRowSorter() != null ? 
+        		getRowSorter().convertRowIndexToView(modelIndex) : modelIndex;
     }
 
     /**
@@ -1106,8 +1107,7 @@ public class JXList<E> extends JList<E> {
         private final JXList<?> list;
 
         /**
-         * Constructs a <code>ListAdapter</code> for the specified target
-         * JXList.
+         * Constructs a <code>ListAdapter</code> for the specified target JXList.
          * 
          * @param component  the target list.
          */
@@ -1393,7 +1393,7 @@ public class JXList<E> extends JList<E> {
      */
     @Override
     public ListCellRenderer<E> getCellRenderer() {
-        // DelegatingRenderer implements ListCellRenderer<Object>
+        // inner class DelegatingRenderer implements ListCellRenderer<E>
         return getDelegatingRenderer();
     }
 
@@ -1404,26 +1404,25 @@ public class JXList<E> extends JList<E> {
      * @return the wrapped renderer.
      * @see #setCellRenderer(ListCellRenderer)
      */
-    public ListCellRenderer<E> getWrappedCellRenderer() {
+    public ListCellRenderer<? super E> getWrappedCellRenderer() {
         return getDelegatingRenderer().getDelegateRenderer();
     }
     
     /**
      * {@inheritDoc} <p>
      * 
-     * Overridden to wrap the given renderer in a DelegatingRenderer to support
-     * highlighting. <p>
+     * Overridden to wrap the given renderer in a DelegatingRenderer to support highlighting. <p>
      * 
      * Note: the wrapping implies that the renderer returned from the getCellRenderer
-     * is <b>not</b> the renderer as given here, but the wrapper. To access the original,
-     * use <code>getWrappedCellRenderer</code>.
+     * is <b>not</b> the renderer as given here, but the wrapper. 
+     * To access the original, use <code>getWrappedCellRenderer</code>.
      * 
      * @see #getWrappedCellRenderer()
      * @see #getCellRenderer()
      * 
      */
-    @Override // JList.setCellRenderer(ListCellRenderer<? super E> cellRenderer)
-    public void setCellRenderer(ListCellRenderer renderer) {
+    @Override
+    public void setCellRenderer(ListCellRenderer<? super E> renderer) {
         // PENDING JW: super fires for very first setting
         // as defaults are automatically set (by delegatingRenderer
         // using this list's factory method) there is no
@@ -1442,42 +1441,40 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * A decorator for the original ListCellRenderer. Needed to hook highlighters
-     * after messaging the delegate.<p>
+     * A decorator for the original ListCellRenderer. 
+     * Needed to hook highlighters after messaging the delegate.<p>
      * 
      * PENDING JW: formally implement UIDependent?
      */
     public class DelegatingRenderer implements ListCellRenderer<E>, RolloverRenderer {
 
-    	/** the delegate. */
-        private ListCellRenderer<E> delegateRenderer;
+    	/** the wrapped delegate. */
+        private ListCellRenderer<? super E> delegateRenderer;
 
         /**
-         * Instantiates a DelegatingRenderer with list's default renderer as delegate.
+         * Instantiates a DelegatingRenderer with default renderer as delegate.
          */
         public DelegatingRenderer() {
             this(null);
         }
         
         /**
-         * Instantiates a DelegatingRenderer with the given delegate. If the
-         * delegate is null, the default is created via the list's factory method.
+         * Instantiates a DelegatingRenderer with the given delegate. 
+         * If the delegate is null, the default is created via the factory method.
          * 
-         * @param delegate the delegate to use, if null the list's default is
-         *   created and used.
+         * @param delegate the delegate to use, if null the default is created and used.
          */
         public DelegatingRenderer(ListCellRenderer<E> delegate) {
             setDelegateRenderer(delegate);
         }
 
         /**
-         * Sets the delegate. If the
-         * delegate is null, the default is created via the list's factory method.
+         * Sets the delegate. 
+         * If the delegate is null, the default is created via the list's factory method.
          * 
-         * @param delegate the delegate to use, if null the list's default is
-         *   created and used.
+         * @param delegate the delegate to use, if null the default is created and used.
          */
-        public void setDelegateRenderer(ListCellRenderer<E> delegate) {
+        public void setDelegateRenderer(ListCellRenderer<? super E> delegate) {
             if (delegate == null) {
                 delegate = createDefaultCellRenderer();
             }
@@ -1487,10 +1484,9 @@ public class JXList<E> extends JList<E> {
         /**
          * Returns the delegate.
          * 
-         * @return the delegate renderer used by this renderer, guaranteed to
-         *   not-null.
+         * @return the delegate renderer used by this renderer, guaranteed to not-null.
          */
-        public ListCellRenderer<E> getDelegateRenderer() {
+        public ListCellRenderer<? super E> getDelegateRenderer() {
             return delegateRenderer;
         }
 
@@ -1505,7 +1501,7 @@ public class JXList<E> extends JList<E> {
           * 
           * @param renderer the renderer to update the ui of.
           */
-         private void updateRendererUI(ListCellRenderer<E> renderer) {
+         private void updateRendererUI(ListCellRenderer<? super E> renderer) {
              if (renderer == null) return;
              
              Component comp = null;
