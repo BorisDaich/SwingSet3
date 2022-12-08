@@ -22,6 +22,7 @@ package org.jdesktop.swingx.plaf.synth;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
+import javax.swing.plaf.synth.SynthConstants;
 import javax.swing.plaf.synth.SynthContext;
 
 /**
@@ -33,10 +34,33 @@ import javax.swing.plaf.synth.SynthContext;
  * 
  * @author Jeanette Winzenburg
  */
+/*
+EUG : @since 1.7 there is public interface javax.swing.plaf.synth.SynthUI extends SynthConstants
+	use it
+ */
+@Deprecated
 public interface SynthUI {
     
-    public SynthContext getContext(JComponent arg0);
+    /**
+     * Returns the Context for the specified component.
+     *
+     * @param c Component requesting SynthContext.
+     * @return SynthContext describing component.
+     */
+    public SynthContext getContext(JComponent c);
 
-	public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h);
+    /**
+     * Paints the border.
+     *
+     * @param context a component context
+     * @param g {@code Graphics} to paint on
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     * @param w width of the border
+     * @param h height of the border
+     */
+    public void paintBorder(SynthContext context, Graphics g, int x,
+                            int y, int w, int h);
+//	public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h);
 
 }

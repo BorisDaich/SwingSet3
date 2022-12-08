@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -27,10 +25,10 @@ import javax.swing.JList;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.synth.SynthContext;
+import javax.swing.plaf.synth.SynthUI;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXList;
-import org.jdesktop.swingx.plaf.synth.SynthUI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -44,12 +42,11 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class XListUIIssues extends InteractiveTestCase {
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(XListUIIssues.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(XListUIIssues.class.getName());
+    
     /**
-     * getContext(component) should throw if given component is not ours (for
-     * 1:1 delegate implemenations). 
+     * getContext(component) should throw if given component is not ours 
+     * (for 1:1 delegate implemenations). 
      * 
      * PENDING JW: moved out of XListUITest because server doesn't know Nimbus
      * back again if jdk version updated to u10+. Or: can we have conditions
@@ -62,19 +59,18 @@ public class XListUIIssues extends InteractiveTestCase {
         LookAndFeel lf = UIManager.getLookAndFeel();
         try {
             setLookAndFeel("Nimbus");
-            JXList list = new JXList();
+            JXList<?> list = new JXList<>();
             SynthUI ui = (SynthUI) list.getUI();
-            ui.getContext(new JXList());
+            ui.getContext(new JXList<>());
         } finally {
             UIManager.setLookAndFeel(lf);
         }
-        
     }
 
 
     /**
-     * getContext(component) should throw if given component is not ours (for
-     * 1:1 delegate implemenations). 
+     * getContext(component) should throw if given component is not ours 
+     * (for 1:1 delegate implemenations). 
      * @throws Exception 
      */
     @Test
@@ -82,10 +78,22 @@ public class XListUIIssues extends InteractiveTestCase {
         LookAndFeel lf = UIManager.getLookAndFeel();
         try {
             setLookAndFeel("Nimbus");
-            JList list = new JList();
+            JList<?> list = new JList<>();
             SynthUI ui = (SynthUI) list.getUI();
-            SynthContext context = ui.getContext(new JList());
+            SynthContext context = ui.getContext(new JList<>());
             assertEquals(list, context.getComponent());
+/*
+
+junit.framework.AssertionFailedError: expected:<javax.swing.JList[,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.plaf.synth.SynthBorder@1e1a0406,flags=33554728,maximumSize=,minimumSize=,preferredSize=,fixedCellHeight=-1,fixedCellWidth=-1,horizontalScrollIncrement=-1,selectionBackground=DerivedColor(color=57,105,138 parent=nimbusSelectionBackground offsets=0.0,0.0,0.0,0 pColor=57,105,138,selectionForeground=DerivedColor(color=255,255,255 parent=nimbusLightBackground offsets=0.0,0.0,0.0,0 pColor=255,255,255,visibleRowCount=8,layoutOrientation=0]> 
+                                       but was:<javax.swing.JList[,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.plaf.synth.SynthBorder@3cebbb30,flags=33554728,maximumSize=,minimumSize=,preferredSize=,fixedCellHeight=-1,fixedCellWidth=-1,horizontalScrollIncrement=-1,selectionBackground=DerivedColor(color=57,105,138 parent=nimbusSelectionBackground offsets=0.0,0.0,0.0,0 pColor=57,105,138,selectionForeground=DerivedColor(color=255,255,255 parent=nimbusLightBackground offsets=0.0,0.0,0.0,0 pColor=255,255,255,visibleRowCount=8,layoutOrientation=0]>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:246)
+	at org.jdesktop.swingx.plaf.basic.core.XListUIIssues.testSynthUICore(XListUIIssues.java:85)
+...
+ */
             setLookAndFeel("Metal");
             list.updateUI();
             setLookAndFeel("Nimbus");
@@ -100,8 +108,13 @@ public class XListUIIssues extends InteractiveTestCase {
      */
     @Test
     public void testDisabledExtendedClassID() {
-        JXList list = new JXList();
-        assertSame(new JList().getUIClassID(), list.getUIClassID());
+        JXList<?> list = new JXList<>();
+        assertSame(new JList<>().getUIClassID(), list.getUIClassID());
+/*
+
+junit.framework.AssertionFailedError: expected same:<ListUI> was not:<XListUI>
+
+ */
     }
 
     /**
@@ -109,10 +122,16 @@ public class XListUIIssues extends InteractiveTestCase {
      */
     @Test
     public void testDisabledExtendedUI() {
-        JXList list = new JXList();
-        assertFalse("xlist must have BasicXListUI instead of " + list.getUI().getClass().getSimpleName(),
-                list.getUI() instanceof BasicXListUI);
-        
+        JXList<?> xlist = new JXList<>();
+        Object ui = xlist.getUI();
+        LOG.info("list.getUI().getClass():"+ui.getClass());
+        assertFalse("xlist must have BasicXListUI instead of " + xlist.getUI().getClass().getSimpleName(),
+                xlist.getUI() instanceof BasicXListUI);
+/*
+
+junit.framework.AssertionFailedError: xlist must have BasicXListUI instead of BasicXListUI ????
+
+ */
     }
 
 }

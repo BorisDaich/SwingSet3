@@ -56,7 +56,7 @@ public class ListRendererTest extends InteractiveTestCase {
 
     private DefaultListCellRenderer coreListRenderer;
 
-    private DefaultListRenderer xListRenderer;
+    private DefaultListRenderer<Object> xListRenderer;
 
     private JList<Object> list;
     
@@ -74,18 +74,17 @@ public class ListRendererTest extends InteractiveTestCase {
     protected void setUp() throws Exception {
         list = new JList<Object>(new Object[] {1, 2, 3});
         coreListRenderer = new DefaultListCellRenderer();
-        xListRenderer = new DefaultListRenderer();
+        xListRenderer = new DefaultListRenderer<>();
     }
 
     /**
      * Test constructors: here convenience with alignment and converter
-     *
      */
     @Test
     public void testConstructor() {
         FormatStringValue sv = new FormatStringValue(DateFormat.getTimeInstance());
         int align = JLabel.RIGHT;
-        DefaultListRenderer renderer = new DefaultListRenderer(sv, align);
+        DefaultListRenderer<?> renderer = new DefaultListRenderer<>(sv, align);
         assertEquals(sv, renderer.componentController.getStringValue());
         assertEquals(align, renderer.componentController.getHorizontalAlignment());
     }
@@ -120,7 +119,7 @@ public class ListRendererTest extends InteractiveTestCase {
      */
     @Test
     public void testSerializeListRenderer() {
-        ListCellRenderer xListRenderer = new DefaultListRenderer();
+        ListCellRenderer<?> xListRenderer = new DefaultListRenderer<>();
         try {
             SerializableSupport.serialize(xListRenderer);
         } catch (Exception e) {
@@ -333,7 +332,7 @@ public class ListRendererTest extends InteractiveTestCase {
      */
     @Test
     public void testListRendererExt() {
-        DefaultListRenderer renderer = new DefaultListRenderer();
+        DefaultListRenderer<?> renderer = new DefaultListRenderer<>();
         assertTrue(renderer instanceof ListCellRenderer);
         assertTrue(renderer instanceof Serializable);
         

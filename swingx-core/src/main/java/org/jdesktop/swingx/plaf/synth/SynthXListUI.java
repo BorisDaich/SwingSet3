@@ -23,39 +23,45 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.synth.ColorType;
 import javax.swing.plaf.synth.Region;
-import javax.swing.plaf.synth.SynthConstants;
 import javax.swing.plaf.synth.SynthContext;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import javax.swing.plaf.synth.SynthStyle;
+import javax.swing.plaf.synth.SynthUI;
 
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.basic.core.BasicXListUI;
 
 /**
- * Extends BasicXListUI for synth
+ * Extends BasicXListUI for synth,
+ * copied from javax.swing.plaf.synth.SynthListUI, which extends BasicListUI
  * 
  * @author Jeanette Winzenburg
  */
-public class SynthXListUI extends BasicXListUI 
-    // PENDING JW: SynthUI is sun package (here: used by c&p'ed SynthBorder) - replace?
-    // maybe not: SynthLookUp looks up styles from delegates of type SynthUI only
-    implements SynthConstants,  SynthUI  /*, PropertyChangeListener */{
+public class SynthXListUI extends BasicXListUI implements PropertyChangeListener, SynthUI {
 
     private SynthStyle style;
-    @SuppressWarnings("unused")
+//    @SuppressWarnings("unused")
     private boolean useListColors;
-    @SuppressWarnings("unused")
+//    @SuppressWarnings("unused")
     private boolean useUIBorder;
 
+	private static final Logger LOG = Logger.getLogger(SynthXListUI.class.getName());
+
+    public SynthXListUI() {
+    	LOG.info("------------------ ctor");
+    }
+
     /**
-     * Returns a new instance of SynthXListUI.  SynthXListUI delegates are
-     * allocated one per JList.
+     * Factory: Returns a new instance of SynthXListUI.  
+     * SynthXListUI delegates are allocated one per JList.
      *
      * @return A new ListUI implementation for the Synth look and feel.
      */
@@ -69,11 +75,62 @@ public class SynthXListUI extends BasicXListUI
      */
     @Override
     public void update(Graphics g, JComponent c) {
+/* in ComponentUI:
+        if (c.isOpaque()) {
+            g.setColor(c.getBackground());
+            g.fillRect(0, 0, c.getWidth(),c.getHeight());
+        }
+        paint(g, c);
+   ------------------------------
+original javax.swing.plaf.synth.SynthListUI:
         SynthContext context = getContext(c);
+
+        SynthLookAndFeel.update(context, g);
+        context.getPainter().paintListBackground(context,
+                          g, 0, 0, c.getWidth(), c.getHeight());
+        paint(g, c);
+
+ */
+        SynthContext context = getContext(c);
+        SynthStyle style = context.getStyle();
+        LOG.info("???? c.isOpaque()="+c.isOpaque() + "style color BACKGROUND:"+style.getColor(context, ColorType.BACKGROUND));
+        // painting of the background :
+        // TODO tut nicht
         SynthUtils.update(context, g);
         paintBorder(context, g, 0, 0, c.getWidth(), c.getHeight());
         paint(g, c);
     }
+
+    /**
+     * Paints border with the context's style's painter.
+     * Implemented for SynthUI interface.
+     */
+    @Override
+    public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
+        SynthUtils.getPainter(context).paintListBorder(context, g, x, y, w, h);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+        list.addPropertyChangeListener(this);
+    }
+
+	@Override // implements PropertyChangeListener
+	public void propertyChange(PropertyChangeEvent evt) {
+/*
+original javax.swing.plaf.synth.SynthListUI:
+        if (SynthLookAndFeel.shouldUpdateStyle(e)) { // method not visible
+            updateStyle((JList)e.getSource());
+        }
+ */
+        if (SynthUtils.shouldUpdateStyle(evt)) {
+            updateStyle();
+        }
+	}
 
 
     /**
@@ -108,7 +165,17 @@ public class SynthXListUI extends BasicXListUI
 //                 (list.getCellRenderer() instanceof UIResource)) {
 //            list.setCellRenderer(new SynthListCellRenderer());
 //        }
-        updateStyle();
+    	
+        updateStyle(); // wird updateStyle nach hinten verschonen, bleiben die Zellen weiss!!!
+        
+		// TODO damit werden ABER nur die Zellen bemalt
+		Color bg = list.getBackground();
+		if (bg == null || bg instanceof UIResource) {
+			LOG.info("reset List.background:" + bg + " with " + UIManager.getColor("List.background"));
+			list.setBackground(UIManager.getColor("List.background"));
+//          list.repaint(); // nicht notwendig - wird in setBackground gemacht
+		}
+
     }
 
     private void updateStyle() {
@@ -119,6 +186,7 @@ public class SynthXListUI extends BasicXListUI
         // if from later updates, need to cleanup old
         boolean refresh = style != null;
         if (refresh) {
+        	LOG.info("--------------refresh style--");
             style.uninstallDefaults(getContext(ENABLED));
         }
         // update local reference
@@ -176,16 +244,6 @@ public class SynthXListUI extends BasicXListUI
 
     
     /**
-     * Paints border with the context's style's painter.
-     * Implemented for SynthUI interface.
-     */
-    @Override
-    public void paintBorder(SynthContext context, Graphics g, int x, int y,
-            int w, int h) {
-        SynthUtils.getPainter(context).paintListBorder(context, g, x, y, w, h);
-    }
-
-    /**
      * {@inheritDoc} <p>
      * 
      * Returns a context for the component's current state.
@@ -199,23 +257,7 @@ public class SynthXListUI extends BasicXListUI
     @Override
     public SynthContext getContext(JComponent c) {
         if (c != list) throw new IllegalArgumentException("must be ui-delegate for component");
-        return getContext();
-    }
-
-    /**
-     * Returns the context based on current state.
-     * @return
-     */
-    private SynthContext getContext() {
-        return getContext(getComponentState());
-    }
-    
-    /**
-     * Returns the current component state for the controlled list.
-     * @return
-     */
-    private int getComponentState() {
-        return SynthUtils.getComponentState(list);
+        return getContext(SynthUtils.getComponentState(list));
     }
 
     /**
@@ -238,9 +280,9 @@ public class SynthXListUI extends BasicXListUI
      * @return
      */
     private SynthStyle getStyle() {
+    	LOG.info("get style from the style factory for "+list);
         return SynthLookAndFeel.getStyleFactory().getStyle(list, getRegion());
     }
-
 
 //    private class SynthListCellRenderer extends DefaultListCellRenderer.UIResource {
 //        public String getName() {

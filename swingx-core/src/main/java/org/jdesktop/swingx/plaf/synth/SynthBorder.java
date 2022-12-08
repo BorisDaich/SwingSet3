@@ -35,12 +35,13 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.synth.SynthContext;
 import javax.swing.plaf.synth.SynthStyle;
+import javax.swing.plaf.synth.SynthUI;
 
 /**
  * SynthBorder is a border that delegates to a Painter. The Insets
  * are determined at construction time.<p>
  * 
- * Copied from core
+ * Copied from core javax.swing.plaf.synth.SynthBorder (is not visible)
  *
  * @version 1.15, 11/30/06
  * @author Scott Violet
