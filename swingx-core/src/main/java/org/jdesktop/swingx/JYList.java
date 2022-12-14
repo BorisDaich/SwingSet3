@@ -292,7 +292,7 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
      * Sets the {@code ListUI}, the look and feel object that
      * renders this component.
      *
-     * @param ui  the <code>ListUI</code> object
+     * @param newUI  the <code>ListUI</code> object
      * @see UIDefaults#getUI
      */
     @BeanProperty(hidden = true, visualUpdate = true, description
