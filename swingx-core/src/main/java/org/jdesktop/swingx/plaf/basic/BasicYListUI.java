@@ -42,11 +42,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.BasicListUI;
 import javax.swing.text.Position;
 
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.LookAndFeelUtils;
+import org.jdesktop.swingx.plaf.YListUI;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
@@ -79,15 +79,22 @@ YListUI ----------------- abstract class ListUI
 BasicYListUI SynthYListUI  symetrisch zu BasicListUI
 
 es ist einfacher direkt von javax.swing.plaf.basic.BasicListUI ableiten und das meiste abkopieren
+TODO: doch von YListUI ableiten ==> alles (auch die protected!, nicht nur das meiste) abkopieren ???
+ in abstract class ListUI :
+    protected ListUI() {}
+    public abstract int locationToIndex(JList<?> list, Point location);
+    public abstract Point indexToLocation(JList<?> list, int index);
+    public abstract Rectangle getCellBounds(JList<?> list, int index1, int index2);
+
  */
-public class BasicYListUI // extends YListUI, einfacher:
-     extends BasicListUI {
+public class BasicYListUI extends YListUI {
+//, einfacher, aber nicht besser: extends BasicListUI {
 
     private static final Logger LOG = Logger.getLogger(BasicYListUI.class.getName());
 
 	// factory
     public static ComponentUI createUI(JComponent c) {
-    	LOG.info("factory unused JComponent:"+c);
+    	LOG.info("UI factory for JComponent:"+c);
         return new BasicYListUI(c);
     }
     
@@ -182,7 +189,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // copied from super with no change XXX can we use method from super ?
+    // copied from javax.swing.plaf.basic.BasicListUI
 	protected void paintCell(Graphics g, int row, Rectangle rowBounds, ListCellRenderer<Object> cellRenderer,
 			ListModel<Object> dataModel, ListSelectionModel selModel, int leadIndex) {
         Object value = dataModel.getElementAt(row);
@@ -543,7 +550,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+//    @Override // exact copy from super with no change XXX can we use method from super ?
     protected void selectPreviousIndex() {
         int s = list.getSelectedIndex();
         if(s > 0) {
@@ -556,7 +563,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+//    @Override // exact copy from super with no change XXX can we use method from super ?
     protected void selectNextIndex() {
         int s = list.getSelectedIndex();
         if((s + 1) < list.getModel().getSize()) {
@@ -570,7 +577,7 @@ public class BasicYListUI // extends YListUI, einfacher:
      * {@inheritDoc} <p>
      * getInputMap is not visible, this method is called at installUI() time.
      */
-    @Override
+//    @Override
     protected void installKeyboardActions() {
         InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
         SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, inputMap);
@@ -598,7 +605,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+//    @Override // exact copy from super with no change XXX can we use method from super ?
     protected void uninstallKeyboardActions() {
         SwingUtilities.replaceUIActionMap(list, null);
         SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, null);
@@ -608,7 +615,7 @@ public class BasicYListUI // extends YListUI, einfacher:
      * {@inheritDoc} <p>
      * this method is called at installUI() time.
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+//    @Override // exact copy from super with no change XXX can we use method from super ?
     protected void installListeners() {
         TransferHandler th = list.getTransferHandler();
         if (th == null || th instanceof UIResource) {
@@ -646,7 +653,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+//    @Override // exact copy from super with no change XXX can we use method from super ?
     protected void uninstallListeners() {
         list.removeFocusListener(focusListener);
         list.removeMouseListener(mouseInputListener);
@@ -676,7 +683,7 @@ public class BasicYListUI // extends YListUI, einfacher:
      * {@inheritDoc} <p>
      * this method is called at installUI() time.
      */
-    @Override // copied from super to log
+//    @Override // copied from super to log
     protected void installDefaults() {
 //    	LOG.info("----------> do it in super ? ...");
         list.setLayout(null);
@@ -707,7 +714,7 @@ public class BasicYListUI // extends YListUI, einfacher:
         timeFactor = (l!=null) ? l.longValue() : 1000L; // timeFactor is private
 
         updateIsFileList(); // private
-    	super.installDefaults();
+//    	super.installDefaults();
     }
 
     // copied from super
@@ -728,7 +735,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+//    @Override // exact copy from super with no change XXX can we use method from super ?
     protected void uninstallDefaults() {
         LookAndFeel.uninstallBorder(list);
         if (list.getFont() instanceof UIResource) {
@@ -929,7 +936,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
+//    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
     protected int convertYToRow(int y0) {
         return convertLocationToRow(0, y0, false);
     }
@@ -937,9 +944,8 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
-    protected int convertRowToY(int row)
-    {
+//    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
+    protected int convertRowToY(int row) {
         if (row >= getRowCount(0) || row < 0) {
             return -1;
         }
@@ -1381,7 +1387,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // copied from super
+//    @Override // copied from super
     protected MouseInputListener createMouseInputListener() {
         return getHandler();
     }
@@ -1417,7 +1423,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // copied from super
+//    @Override // copied from super
     protected FocusListener createFocusListener() {
         return getHandler();
     }
@@ -1437,7 +1443,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // copied from super
+//    @Override // copied from super
     protected ListSelectionListener createListSelectionListener() {
         return getHandler();
     }
@@ -1473,7 +1479,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // copied from super
+//    @Override // copied from super
     protected ListDataListener createListDataListener() {
         return getHandler();
     }
@@ -1493,7 +1499,7 @@ public class BasicYListUI // extends YListUI, einfacher:
     /**
      * {@inheritDoc}
      */
-    @Override // copied from super
+//    @Override // copied from super
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
     }

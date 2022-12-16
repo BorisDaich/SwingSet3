@@ -39,6 +39,22 @@ public class JYList<E> extends JList<E> {
      * @see #getUIClassID
      * @see #readObject
      */
+/*
+
+Die systematische/symetrische Ableitung wäre:
+
+                                         ComponentUI
+                                          |
+YListUI ----------------- abstract class ListUI
+ |                                        |
+ +------------+                           |
+ |            |                           |
+BasicYListUI SynthYListUI  symetrisch zu BasicListUI
+
+Durch die "Vereinfachung" BasicYListUI direkt von javax.swing.plaf.basic.BasicListUI ableiten
+ist diese Information hier falsch: daher doch YListUI implementieren
+
+ */
     public static final String uiClassID = "YListUI";
 
     /**
@@ -49,6 +65,16 @@ public class JYList<E> extends JList<E> {
      * @return the string {@code uiClassID}
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
+     */
+    /*
+     * JComponent#getUIClassID : Subclasses of JComponent that support pluggable look and feel 
+     * should override this method to return a UIDefaults key that maps to the ComponentUI subclass 
+     * that defines their look and feel.
+     * 
+     * UIDefaults#getUI(JComponent target) : Creates an ComponentUI implementation for the specified component. 
+     * In other words create the look and feel specific delegate object for target.This is done in two steps: 
+     * • Look up the name of the ComponentUI implementation class under the value returned by target.getUIClassID().
+     * • Use the implementation classes static createUI() method to construct a look and feel delegate. 
      */
     @BeanProperty(bound = false)
     public String getUIClassID() {
@@ -188,7 +214,7 @@ INFORMATION: value=Jane Doe   ,index=3,isSelected=false,cellHasFocus=false
         }
         protected void paintBorder(Graphics g) {
             Border border = getBorder();
-            LOG.info("-----DO "+this.getText()+" border.paintBorder "+border);
+            LOG.fine("-----DO "+this.getText()+" border.paintBorder "+border);
             if (border != null) {
                 border.paintBorder(this, g, 0, 0, getWidth(), getHeight());
             }
@@ -203,7 +229,7 @@ INFORMATION: value=Jane Doe   ,index=3,isSelected=false,cellHasFocus=false
     private int fixedCellWidth = -1;
     private int fixedCellHeight = -1;
     public ListCellRenderer<? super E> getCellRenderer() {
-    	LOG.info("cellRenderer "+cellRenderer);
+    	LOG.config("cellRenderer "+cellRenderer);
 /* Dez. 11, 2022 9:49:51 AM org.jdesktop.swingx.JYList getCellRenderer
 // INFORMATION: cellRenderer org.jdesktop.swingx.JYList$YListCellRenderer[List.cellRenderer,-87,-20,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.border.EtchedBorder@2446c1df,flags=25165832,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,horizontalAlignment=LEADING,horizontalTextPosition=TRAILING,iconTextGap=4,labelFor=,text=Alan Chung,verticalAlignment=CENTER,verticalTextPosition=CENTER]
 INFORMATION: cellRenderer org.jdesktop.swingx.JYList
@@ -258,6 +284,10 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
     }
 
     private transient boolean updateInProgress;
+    /**
+     * {@inheritDoc} <p>
+     * copied from super to call private paintImpl
+     */
     public void updateUI() {
     	if (getUIClassID() == super.getUIClassID()) {
     		LOG.info("JList super.updateUI()");
@@ -267,13 +297,13 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
     	LOG.info("getUIClassID():"+getUIClassID());
     	/*
     	 * BasicYListUI : wg. EtchedBorder, BG tut auch ohne
-    	 * SynthYListUI : tut nix
+    	 * SynthYListUI : tut nix TODO
     	 */
     	setCellRenderer(new YListCellRenderer()); // für SynthYListUI, bei BasicYListUI nicht notwendig
         if (!updateInProgress) {
             updateInProgress = true;
             try {
-            	// expectedUIClass ListUI
+            	// expectedUIClass: ListUI
             	ComponentUI ui = LookAndFeelAddons.getUI(this, ListUI.class);
             	LOG.info("ui:"+ui);
                 setUI((ListUI)ui);
@@ -298,7 +328,7 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
     @BeanProperty(hidden = true, visualUpdate = true, description
             = "The UI object that implements the Component's LookAndFeel.")
     public void setUI(ListUI newUI) {
-    	LOG.info("ui:"+newUI);
+    	LOG.config("newUI:"+newUI);
 //        super.setUI(ui); // wird bis JComponent.setUI(ComponentUI newUI) weitergeleitet,
         // dort: protected transient ComponentUI ui
     	if(ui==newUI) return;
