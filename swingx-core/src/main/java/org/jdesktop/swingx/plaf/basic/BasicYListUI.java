@@ -78,9 +78,9 @@ YListUI ----------------- abstract class ListUI
  |            |                           |
 BasicYListUI SynthYListUI  symetrisch zu BasicListUI
 
-es ist einfacher direkt von javax.swing.plaf.basic.BasicListUI ableiten und das meiste abkopieren
-TODO: doch von YListUI ableiten ==> alles (auch die protected!, nicht nur das meiste) abkopieren ???
- in abstract class ListUI :
+es ist einfacher direkt von javax.swing.plaf.basic.BasicListUI ableiten und das meiste abkopieren.
+Also doch von YListUI ableiten ==> alles (auch die protected!, nicht nur das meiste) abkopieren ???
+ in abstract class ListUI : implementation in super YListUI
     protected ListUI() {}
     public abstract int locationToIndex(JList<?> list, Point location);
     public abstract Point indexToLocation(JList<?> list, int index);
@@ -88,7 +88,6 @@ TODO: doch von YListUI ableiten ==> alles (auch die protected!, nicht nur das me
 
  */
 public class BasicYListUI extends YListUI {
-//, einfacher, aber nicht besser: extends BasicListUI {
 
     private static final Logger LOG = Logger.getLogger(BasicYListUI.class.getName());
 
@@ -105,84 +104,12 @@ public class BasicYListUI extends YListUI {
 		super.list = (JList<Object>) tmp;
 	}
 
-	// in super:
+	// vars in super:
 //    protected JList<Object> list = null;
-//    protected CellRendererPane rendererPane;
-//    protected FocusListener focusListener;
-//    protected MouseInputListener mouseInputListener;
-//    protected ListSelectionListener listSelectionListener;
-//    protected ListDataListener listDataListener;
-//    protected PropertyChangeListener propertyChangeListener;
-//    protected int[] cellHeights = null;
-//    protected int cellHeight = -1;
-//    protected int cellWidth = -1;
-//    protected int updateLayoutStateNeeded = modelChanged;
+// ...
 
-	// private var like in super:
+	// private var like in javax.swing.plaf.basic.BasicListUI:
 	private Handler handler;
-
-    /**
-     * Height of the list. When asked to paint, if the current size of
-     * the list differs, this will update the layout state.
-     */
-    private int listHeight;
-
-    /**
-     * Width of the list. When asked to paint, if the current size of
-     * the list differs, this will update the layout state.
-     */
-    private int listWidth;
-
-    /**
-     * The layout orientation of the list.
-     */
-    private int layoutOrientation;
-
-    // Following ivars are used if the list is laying out horizontally
-
-    /**
-     * Number of columns to create.
-     */
-    private int columnCount;
-    /**
-     * Preferred height to make the list, this is only used if the
-     * the list is layed out horizontally.
-     */
-    private int preferredHeight;
-    /**
-     * Number of rows per column. This is only used if the row height is
-     * fixed.
-     */
-    private int rowsPerColumn;
-
-    /**
-     * The time factor to treate the series of typed alphanumeric key
-     * as prefix for first letter navigation.
-     */
-    private long timeFactor = 1000L;
-
-    /**
-     * Local cache of JList's client property "List.isFileList"
-     */
-    private boolean isFileList = false;
-
-    /**
-     * Local cache of JList's component orientation property
-     */
-    private boolean isLeftToRight = true;
-
-    /* The bits below define JList property changes that affect layout.
-     * When one of these properties changes we set a bit in
-     * updateLayoutStateNeeded.  The change is dealt with lazily, see
-     * maybeUpdateLayoutState.  Changes to the JLists model, e.g. the
-     * models length changed, are handled similarly, see DataListener.
-     */
-//    protected static final int modelChanged = 1 << 0;
-// ... 
-    private static final int layoutOrientationChanged = 1 << 7;
-    private static final int heightChanged = 1 << 8;
-    private static final int widthChanged = 1 << 9;
-    private static final int componentOrientationChanged = 1 << 10;
 
     private static final int DROP_LINE_THICKNESS = 2;
 
@@ -229,11 +156,11 @@ public class BasicYListUI extends YListUI {
 
     /**
      * {@inheritDoc} <p>
-     * copied from super to call private paintImpl
+     * copied from javax.swing.plaf.basic.BasicListUI to call private paintImpl
      */
-    @Override // copied from super
+    @Override // defined in ComponentUI
     public void paint(Graphics g, JComponent c) {
-    	LOG.info("JComponent:"+c);
+    	LOG.fine("JComponent:"+c);
         Shape clip = g.getClip();
         paintImpl(g, c);
         g.setClip(clip);
@@ -241,7 +168,7 @@ public class BasicYListUI extends YListUI {
         paintDropLine(g);
     }
 
-    // exact copy from super + LOGs
+    // exact copy from javax.swing.plaf.basic.BasicListUI + LOGs
     private void paintImpl(Graphics g, JComponent c) {
     	LOG.info("layoutOrientation="+layoutOrientation);
         switch (layoutOrientation) {
@@ -324,7 +251,7 @@ public class BasicYListUI extends YListUI {
         rendererPane.removeAll();
     }
 
-    // copied from super with change
+    // copied from javax.swing.plaf.basic.BasicListUI with change
 	private void paintDropLine(Graphics g) {
 		JList.DropLocation loc = list.getDropLocation();
 		if (loc == null || !loc.isInsert()) {
@@ -340,7 +267,7 @@ public class BasicYListUI extends YListUI {
 		}
 	}
 
-    // exact copy from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     private Rectangle getDropLineRect(JList.DropLocation loc) {
         int size = list.getModel().getSize();
 
@@ -469,7 +396,7 @@ public class BasicYListUI extends YListUI {
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use super.getBaseline(c, width, height) ?
+    @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
     public int getBaseline(JComponent c, int width, int height) {
         super.getBaseline(c, width, height);
         int rowHeight = list.getFixedCellHeight();
@@ -478,7 +405,7 @@ public class BasicYListUI extends YListUI {
                 BASELINE_COMPONENT_KEY);
         if (renderer == null) {
             @SuppressWarnings("unchecked")
-            ListCellRenderer<Object> lcr = (ListCellRenderer)UIManager.get(
+            ListCellRenderer<Object> lcr = (ListCellRenderer<Object>)UIManager.get(
                     "List.cellRenderer");
 
             // fix for 6711072 some LAFs like Nimbus do not provide this
@@ -508,7 +435,7 @@ public class BasicYListUI extends YListUI {
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+    @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
     public Component.BaselineResizeBehavior getBaselineResizeBehavior(
             JComponent c) {
         super.getBaselineResizeBehavior(c);
@@ -518,7 +445,7 @@ public class BasicYListUI extends YListUI {
     /**
      * {@inheritDoc}
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
+    @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
     public Dimension getPreferredSize(JComponent c) {
         maybeUpdateLayoutState();
 
@@ -547,10 +474,7 @@ public class BasicYListUI extends YListUI {
         return new Dimension(width, height);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change XXX can we use method from super ?
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void selectPreviousIndex() {
         int s = list.getSelectedIndex();
         if(s > 0) {
@@ -560,10 +484,7 @@ public class BasicYListUI extends YListUI {
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change XXX can we use method from super ?
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void selectNextIndex() {
         int s = list.getSelectedIndex();
         if((s + 1) < list.getModel().getSize()) {
@@ -574,10 +495,11 @@ public class BasicYListUI extends YListUI {
     }
 
     /**
-     * {@inheritDoc} <p>
-     * getInputMap is not visible, this method is called at installUI() time.
+     * this method is called at installUI() time.
+     * 
+     * @see javax.swing.plaf.basic.BasicListUI#installKeyboardActions
      */
-//    @Override
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void installKeyboardActions() {
         InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
         SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, inputMap);
@@ -585,7 +507,7 @@ public class BasicYListUI extends YListUI {
         LazyActionMap.installLazyActionMap(list, BasicYListUI.class, "YList.actionMap");
     }
 
-    // super.getInputMap is private in another package and therefore not visible
+    // copy from javax.swing.plaf.basic.BasicListUI with some changes
     InputMap getInputMap(int condition) {
         if (condition == JComponent.WHEN_FOCUSED) {
 //            InputMap keyMap = (InputMap)DefaultLookup.get(list, this, "List.focusInputMap");
@@ -602,20 +524,18 @@ public class BasicYListUI extends YListUI {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change XXX can we use method from super ?
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void uninstallKeyboardActions() {
         SwingUtilities.replaceUIActionMap(list, null);
         SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, null);
     }
 
     /**
-     * {@inheritDoc} <p>
      * this method is called at installUI() time.
+     * 
+     * @see javax.swing.plaf.basic.BasicListUI#installListeners
      */
-//    @Override // exact copy from super with no change XXX can we use method from super ?
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void installListeners() {
         TransferHandler th = list.getTransferHandler();
         if (th == null || th instanceof UIResource) {
@@ -650,10 +570,7 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change XXX can we use method from super ?
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void uninstallListeners() {
         list.removeFocusListener(focusListener);
         list.removeMouseListener(mouseInputListener);
@@ -680,10 +597,11 @@ public class BasicYListUI extends YListUI {
     }
 
     /**
-     * {@inheritDoc} <p>
      * this method is called at installUI() time.
+     * 
+     * @see javax.swing.plaf.basic.BasicListUI#installDefaults
      */
-//    @Override // copied from super to log
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void installDefaults() {
 //    	LOG.info("----------> do it in super ? ...");
         list.setLayout(null);
@@ -696,7 +614,7 @@ public class BasicYListUI extends YListUI {
 
         if (list.getCellRenderer() == null) {
             @SuppressWarnings("unchecked")
-            ListCellRenderer<Object> tmp = (ListCellRenderer)(UIManager.get("List.cellRenderer"));
+            ListCellRenderer<Object> tmp = (ListCellRenderer<Object>)(UIManager.get("List.cellRenderer"));
             list.setCellRenderer(tmp);
         }
 
@@ -714,10 +632,9 @@ public class BasicYListUI extends YListUI {
         timeFactor = (l!=null) ? l.longValue() : 1000L; // timeFactor is private
 
         updateIsFileList(); // private
-//    	super.installDefaults();
     }
 
-    // copied from super
+    // copied from javax.swing.plaf.basic.BasicListUI
     private void updateIsFileList() {
         boolean b = Boolean.TRUE.equals(list.getClientProperty("List.isFileList"));
         if (b != isFileList) {
@@ -732,10 +649,7 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change XXX can we use method from super ?
+    // copied from javax.swing.plaf.basic.BasicListUI
     protected void uninstallDefaults() {
         LookAndFeel.uninstallBorder(list);
         if (list.getFont() instanceof UIResource) {
@@ -771,37 +685,14 @@ public class BasicYListUI extends YListUI {
     @Override // call it from super
     public void installUI(JComponent c) {
     	LOG.info("---------->JComponent:"+c);
-//        @SuppressWarnings("unchecked")
-//        JList<Object> tmp = (JList)c;
-//        list = tmp;
-//
-//        layoutOrientation = list.getLayoutOrientation();
-//
-//        rendererPane = new CellRendererPane();
-//        list.add(rendererPane);
-//
-//        columnCount = 1;
-//
-//        updateLayoutStateNeeded = modelChanged;
-//        isLeftToRight = list.getComponentOrientation().isLeftToRight();
-//
-//        installDefaults();
-//        installListeners();
-//        installKeyboardActions();
     	super.installUI(c);
     	assert super.list == c;
-    	// rendererPane is protected CellRendererPane in super
-    	// dto updateLayoutStateNeeded
-    	// now set the private vars:
-        layoutOrientation = list.getLayoutOrientation();
-        columnCount = 1;
-        isLeftToRight = list.getComponentOrientation().isLeftToRight();
     }
     
     /**
      * {@inheritDoc}
      */
-    @Override // cannot call it from super because listWidth is private
+    @Override // cannot call it from super because listWidth is private // TODO move to super
     public void uninstallUI(JComponent c) {
         uninstallListeners();
         uninstallDefaults();
@@ -818,208 +709,15 @@ public class BasicYListUI extends YListUI {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc} <p>
+     * with LOG
      */
-    @Override // exact copy from super with no change XXX can we use method from super ?
-    public int locationToIndex(JList<?> list, Point location) {
-        maybeUpdateLayoutState();
-        return convertLocationToModel(location.x, location.y);
+    @Override
+	protected Rectangle getCellBounds(JList<?> list, int index) {
+    	LOG.info("super.getCellBounds(superJList<?> list, int index="+index);
+        return super.getCellBounds(list, index);
     }
 
-    /* in super:
-    public Point indexToLocation(JList<?> list, int index) {
-     */
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override // exact copy from super with no change XXX can we use method from super ?
-    public Rectangle getCellBounds(JList<?> list, int index1, int index2) {
-        maybeUpdateLayoutState();
-
-        int minIndex = Math.min(index1, index2);
-        int maxIndex = Math.max(index1, index2);
-
-        if (minIndex >= list.getModel().getSize()) {
-            return null;
-        }
-
-        Rectangle minBounds = getCellBounds(list, minIndex);
-
-        if (minBounds == null) {
-            return null;
-        }
-        if (minIndex == maxIndex) {
-            return minBounds;
-        }
-        Rectangle maxBounds = getCellBounds(list, maxIndex);
-
-        if (maxBounds != null) {
-            if (layoutOrientation == JList.HORIZONTAL_WRAP) {
-                int minRow = convertModelToRow(minIndex);
-                int maxRow = convertModelToRow(maxIndex);
-
-                if (minRow != maxRow) {
-                    minBounds.x = 0;
-                    minBounds.width = list.getWidth();
-                }
-            }
-            else if (minBounds.x != maxBounds.x) {
-                // Different columns
-                minBounds.y = 0;
-                minBounds.height = list.getHeight();
-            }
-            minBounds.add(maxBounds);
-        }
-        return minBounds;
-    }
-
-    /**
-     * Gets the bounds of the specified model index, returning the resulting
-     * bounds, or null if <code>index</code> is not valid.
-     */
-    // exact copy from super
-    private Rectangle getCellBounds(JList<?> list, int index) {
-        maybeUpdateLayoutState();
-
-        int row = convertModelToRow(index);
-        int column = convertModelToColumn(index);
-
-        if (row == -1 || column == -1) {
-            return null;
-        }
-
-        Insets insets = list.getInsets();
-        int x;
-        int w = cellWidth;
-        int y = insets.top;
-        int h;
-        switch (layoutOrientation) {
-        case JList.VERTICAL_WRAP:
-        case JList.HORIZONTAL_WRAP:
-            if (isLeftToRight) {
-                x = insets.left + column * cellWidth;
-            } else {
-                x = list.getWidth() - insets.right - (column+1) * cellWidth;
-            }
-            y += cellHeight * row;
-            h = cellHeight;
-            break;
-        default:
-            x = insets.left;
-            if (cellHeights == null) {
-                y += (cellHeight * row);
-            }
-            else if (row >= cellHeights.length) {
-                y = 0;
-            }
-            else {
-                for(int i = 0; i < row; i++) {
-                    y += cellHeights[i];
-                }
-            }
-            w = list.getWidth() - (insets.left + insets.right);
-            h = getRowHeight(index);
-            break;
-        }
-        return new Rectangle(x, y, w, h);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
-    protected int getRowHeight(int row) {
-        return getHeight(0, row);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
-    protected int convertYToRow(int y0) {
-        return convertLocationToRow(0, y0, false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // exact copy from super with no change we can use method from super! BUT this is simpler:
-    protected int convertRowToY(int row) {
-        if (row >= getRowCount(0) || row < 0) {
-            return -1;
-        }
-        Rectangle bounds = getCellBounds(list, row, row);
-        return bounds.y;
-    }
-
-    /**
-     * Returns the height of the cell at the passed in location.
-     */
-    // exact copy from super
-    private int getHeight(int column, int row) {
-        if (column < 0 || column > columnCount || row < 0) {
-            return -1;
-        }
-        if (layoutOrientation != JList.VERTICAL) {
-            return cellHeight;
-        }
-        if (row >= list.getModel().getSize()) {
-            return -1;
-        }
-        return (cellHeights == null) ? cellHeight :
-                           ((row < cellHeights.length) ? cellHeights[row] : -1);
-    }
-    
-    /**
-     * Returns the row at location x/y.
-     *
-     * @param closest If true and the location doesn't exactly match a
-     *                particular location, this will return the closest row.
-     */
-    // exact copy from super
-    private int convertLocationToRow(int x, int y0, boolean closest) {
-        int size = list.getModel().getSize();
-
-        if (size <= 0) {
-            return -1;
-        }
-        Insets insets = list.getInsets();
-        if (cellHeights == null) {
-            int row = (cellHeight == 0) ? 0 :
-                           ((y0 - insets.top) / cellHeight);
-            if (closest) {
-                if (row < 0) {
-                    row = 0;
-                }
-                else if (row >= size) {
-                    row = size - 1;
-                }
-            }
-            return row;
-        }
-        else if (size > cellHeights.length) {
-            return -1;
-        }
-        else {
-            int y = insets.top;
-            int row = 0;
-
-            if (closest && y0 < y) {
-                return 0;
-            }
-            int i;
-            for (i = 0; i < size; i++) {
-                if ((y0 >= y) && (y0 < y + cellHeights[i])) {
-                    return row;
-                }
-                y += cellHeights[i];
-                row += 1;
-            }
-            return i - 1;
-        }
-    }
-    
     /**
      * Returns the closest row that starts at the specified y-location
      * in the passed in column.
@@ -1038,307 +736,6 @@ public class BasicYListUI extends YListUI {
         return convertLocationToRow(x, y, true);
     }
     
-    /**
-     * Returns the closest location to the model index of the passed in
-     * location.
-     */
-    // exact copy from super
-    private int convertLocationToModel(int x, int y) {
-        int row = convertLocationToRow(x, y, true);
-        int column = convertLocationToColumn(x, y);
-
-        if (row >= 0 && column >= 0) {
-            return getModelIndex(column, row);
-        }
-        return -1;
-    }
-
-    /**
-     * Returns the number of rows in the given column.
-     */
-    // exact copy from super
-    private int getRowCount(int column) {
-        if (column < 0 || column >= columnCount) {
-            return -1;
-        }
-        if (layoutOrientation == JList.VERTICAL ||
-                  (column == 0 && columnCount == 1)) {
-            return list.getModel().getSize();
-        }
-        if (column >= columnCount) {
-            return -1;
-        }
-        if (layoutOrientation == JList.VERTICAL_WRAP) {
-            if (column < (columnCount - 1)) {
-                return rowsPerColumn;
-            }
-            return list.getModel().getSize() - (columnCount - 1) *
-                        rowsPerColumn;
-        }
-        // JList.HORIZONTAL_WRAP
-        int diff = columnCount - (columnCount * rowsPerColumn -
-                                  list.getModel().getSize());
-
-        if (column >= diff) {
-            return Math.max(0, rowsPerColumn - 1);
-        }
-        return rowsPerColumn;
-    }
-
-    /**
-     * Returns the model index for the specified display location.
-     * If <code>column</code>x<code>row</code> is beyond the length of the
-     * model, this will return the model size - 1.
-     */
-    // exact copy from super
-    private int getModelIndex(int column, int row) {
-        switch (layoutOrientation) {
-        case JList.VERTICAL_WRAP:
-            return Math.min(list.getModel().getSize() - 1, rowsPerColumn *
-                            column + Math.min(row, rowsPerColumn-1));
-        case JList.HORIZONTAL_WRAP:
-            return Math.min(list.getModel().getSize() - 1, row * columnCount +
-                            column);
-        default:
-            return row;
-        }
-    }
-
-    /**
-     * Returns the closest column to the passed in location.
-     */
-    // exact copy from super
-    private int convertLocationToColumn(int x, int y) {
-        if (cellWidth > 0) {
-            if (layoutOrientation == JList.VERTICAL) {
-                return 0;
-            }
-            Insets insets = list.getInsets();
-            int col;
-            if (isLeftToRight) {
-                col = (x - insets.left) / cellWidth;
-            } else {
-                col = (list.getWidth() - x - insets.right - 1) / cellWidth;
-            }
-            if (col < 0) {
-                return 0;
-            }
-            else if (col >= columnCount) {
-                return columnCount - 1;
-            }
-            return col;
-        }
-        return 0;
-    }
-
-    /**
-     * Returns the row that the model index <code>index</code> will be
-     * displayed in..
-     */
-    // exact copy from super
-    private int convertModelToRow(int index) {
-        int size = list.getModel().getSize();
-
-        if ((index < 0) || (index >= size)) {
-            return -1;
-        }
-
-        if (layoutOrientation != JList.VERTICAL && columnCount > 1 &&
-                                                   rowsPerColumn > 0) {
-            if (layoutOrientation == JList.VERTICAL_WRAP) {
-                return index % rowsPerColumn;
-            }
-            return index / columnCount;
-        }
-        return index;
-    }
-    
-    /**
-     * Returns the column that the model index <code>index</code> will be
-     * displayed in.
-     */
-    // exact copy from super
-    private int convertModelToColumn(int index) {
-        int size = list.getModel().getSize();
-
-        if ((index < 0) || (index >= size)) {
-            return -1;
-        }
-
-        if (layoutOrientation != JList.VERTICAL && rowsPerColumn > 0 &&
-                                                   columnCount > 1) {
-            if (layoutOrientation == JList.VERTICAL_WRAP) {
-                return index / rowsPerColumn;
-            }
-            return index % columnCount;
-        }
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override // exact copy from super with no change XXX can we use method from super ?
-    protected void maybeUpdateLayoutState() {
-        if (updateLayoutStateNeeded != 0) {
-            updateLayoutState();
-            updateLayoutStateNeeded = 0;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override // exact copy from super with no change XXX can we use method from super ?
-    protected void updateLayoutState() {
-        /* If both JList fixedCellWidth and fixedCellHeight have been
-         * set, then initialize cellWidth and cellHeight, and set
-         * cellHeights to null.
-         */
-
-        int fixedCellHeight = list.getFixedCellHeight();
-        int fixedCellWidth = list.getFixedCellWidth();
-
-        cellWidth = (fixedCellWidth != -1) ? fixedCellWidth : -1;
-
-        if (fixedCellHeight != -1) {
-            cellHeight = fixedCellHeight;
-            cellHeights = null;
-        }
-        else {
-            cellHeight = -1;
-            cellHeights = new int[list.getModel().getSize()];
-        }
-
-        /* If either of  JList fixedCellWidth and fixedCellHeight haven't
-         * been set, then initialize cellWidth and cellHeights by
-         * scanning through the entire model.  Note: if the renderer is
-         * null, we just set cellWidth and cellHeights[*] to zero,
-         * if they're not set already.
-         */
-
-        if ((fixedCellWidth == -1) || (fixedCellHeight == -1)) {
-
-            ListModel<Object> dataModel = list.getModel();
-            int dataModelSize = dataModel.getSize();
-            ListCellRenderer<Object> renderer = list.getCellRenderer();
-
-            if (renderer != null) {
-                for(int index = 0; index < dataModelSize; index++) {
-                    Object value = dataModel.getElementAt(index);
-                    Component c = renderer.getListCellRendererComponent(list, value, index, false, false);
-                    rendererPane.add(c);
-                    Dimension cellSize = c.getPreferredSize();
-                    if (fixedCellWidth == -1) {
-                        cellWidth = Math.max(cellSize.width, cellWidth);
-                    }
-                    if (fixedCellHeight == -1) {
-                        cellHeights[index] = cellSize.height;
-                    }
-                }
-            }
-            else {
-                if (cellWidth == -1) {
-                    cellWidth = 0;
-                }
-                if (cellHeights == null) {
-                    cellHeights = new int[dataModelSize];
-                }
-                for(int index = 0; index < dataModelSize; index++) {
-                    cellHeights[index] = 0;
-                }
-            }
-        }
-
-        columnCount = 1;
-        if (layoutOrientation != JList.VERTICAL) {
-            updateHorizontalLayoutState(fixedCellWidth, fixedCellHeight);
-        }
-    }
-
-    /**
-     * Invoked when the list is layed out horizontally to determine how
-     * many columns to create.
-     * <p>
-     * This updates the <code>rowsPerColumn, </code><code>columnCount</code>,
-     * <code>preferredHeight</code> and potentially <code>cellHeight</code>
-     * instance variables.
-     */
-    // exact copy from super
-    private void updateHorizontalLayoutState(int fixedCellWidth,
-                                             int fixedCellHeight) {
-        int visRows = list.getVisibleRowCount();
-        int dataModelSize = list.getModel().getSize();
-        Insets insets = list.getInsets();
-
-        listHeight = list.getHeight();
-        listWidth = list.getWidth();
-
-        if (dataModelSize == 0) {
-            rowsPerColumn = columnCount = 0;
-            preferredHeight = insets.top + insets.bottom;
-            return;
-        }
-
-        int height;
-
-        if (fixedCellHeight != -1) {
-            height = fixedCellHeight;
-        }
-        else {
-            // Determine the max of the renderer heights.
-            int maxHeight = 0;
-            if (cellHeights.length > 0) {
-                maxHeight = cellHeights[cellHeights.length - 1];
-                for (int counter = cellHeights.length - 2;
-                     counter >= 0; counter--) {
-                    maxHeight = Math.max(maxHeight, cellHeights[counter]);
-                }
-            }
-            height = cellHeight = maxHeight;
-            cellHeights = null;
-        }
-        // The number of rows is either determined by the visible row
-        // count, or by the height of the list.
-        rowsPerColumn = dataModelSize;
-        if (visRows > 0) {
-            rowsPerColumn = visRows;
-            columnCount = Math.max(1, dataModelSize / rowsPerColumn);
-            if (dataModelSize > 0 && dataModelSize > rowsPerColumn &&
-                dataModelSize % rowsPerColumn != 0) {
-                columnCount++;
-            }
-            if (layoutOrientation == JList.HORIZONTAL_WRAP) {
-                // Because HORIZONTAL_WRAP flows differently, the
-                // rowsPerColumn needs to be adjusted.
-                rowsPerColumn = (dataModelSize / columnCount);
-                if (dataModelSize % columnCount > 0) {
-                    rowsPerColumn++;
-                }
-            }
-        }
-        else if (layoutOrientation == JList.VERTICAL_WRAP && height != 0) {
-            rowsPerColumn = Math.max(1, (listHeight - insets.top -
-                                         insets.bottom) / height);
-            columnCount = Math.max(1, dataModelSize / rowsPerColumn);
-            if (dataModelSize > 0 && dataModelSize > rowsPerColumn &&
-                dataModelSize % rowsPerColumn != 0) {
-                columnCount++;
-            }
-        }
-        else if (layoutOrientation == JList.HORIZONTAL_WRAP && cellWidth > 0 &&
-                 listWidth > 0) {
-            columnCount = Math.max(1, (listWidth - insets.left -
-                                       insets.right) / cellWidth);
-            rowsPerColumn = dataModelSize / columnCount;
-            if (dataModelSize % columnCount > 0) {
-                rowsPerColumn++;
-            }
-        }
-        preferredHeight = rowsPerColumn * cellHeight + insets.top +
-                              insets.bottom;
-    }
-
     // exact copy from super
     private Handler getHandler() {
         if (handler == null) {

@@ -45,27 +45,26 @@ public abstract class YListUI extends ListUI {
     protected static final int fixedCellHeightChanged = 1 << 4;
     protected static final int prototypeCellValueChanged = 1 << 5;
     protected static final int cellRendererChanged = 1 << 6;
-    private static final int layoutOrientationChanged = 1 << 7;
-    private static final int heightChanged = 1 << 8;
-    private static final int widthChanged = 1 << 9;
-    private static final int componentOrientationChanged = 1 << 10;
+    protected static final int layoutOrientationChanged = 1 << 7;
+    protected static final int heightChanged = 1 << 8;
+    protected static final int widthChanged = 1 << 9;
+    protected static final int componentOrientationChanged = 1 << 10;
     
 	protected int updateLayoutStateNeeded = modelChanged;
 
     // like javax.swing.plaf.basic.BasicListUI :
-    int layoutOrientation;
-    int listHeight;
-    int listWidth;
-//    int layoutOrientation;
+	protected int layoutOrientation;
+	protected int listHeight;
+	protected int listWidth;
 
     // Following ivars are used if the list is laying out horizontally
-    int columnCount;
-    int preferredHeight;
-    int rowsPerColumn;
+	protected int columnCount;
+	protected int preferredHeight;
+	protected int rowsPerColumn;
 
-    long timeFactor = 1000L;
-    boolean isFileList = false;
-    boolean isLeftToRight = true;
+	protected long timeFactor = 1000L;
+    protected boolean isFileList = false;
+    protected boolean isLeftToRight = true;
 
     /**
      * {@inheritDoc}
@@ -145,7 +144,7 @@ public abstract class YListUI extends ListUI {
     public void installUI(JComponent c) {
 //    	LOG.info("---------->JComponent:"+c);
         @SuppressWarnings("unchecked")
-        JList<Object> tmp = (JList)c;
+        JList<Object> tmp = (JList<Object>)c;
         list = tmp;
 
         layoutOrientation = list.getLayoutOrientation();
@@ -173,11 +172,14 @@ public abstract class YListUI extends ListUI {
     }
 
     /**
-     * Gets the bounds of the specified model index, returning the resulting
-     * bounds, or null if <code>index</code> is not valid.
+     * Gets the bounds of the specified model index, returning the resulting bounds, 
+     * or null if <code>index</code> is not valid.
+     * @param list JList
+     * @param index int
+     * @return Rectangle
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    Rectangle getCellBounds(JList<?> list, int index) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visiblility
+    protected Rectangle getCellBounds(JList<?> list, int index) {
         maybeUpdateLayoutState();
 
         int row = convertModelToRow(index);
@@ -225,8 +227,11 @@ public abstract class YListUI extends ListUI {
 
     /**
      * Returns the closest location to the model index of the passed in location.
+     * @param x int
+     * @param y int
+     * @return model index
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => package visibility
     int convertLocationToModel(int x, int y) {
         int row = convertLocationToRow(x, y, true);
         int column = convertLocationToColumn(x, y);
@@ -239,11 +244,14 @@ public abstract class YListUI extends ListUI {
     /**
      * Returns the row at location x/y.
      *
+     * @param x int
+     * @param y0 int
      * @param closest If true and the location doesn't exactly match a
      *                particular location, this will return the closest row.
+     * @return int row at location x/y
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    int convertLocationToRow(int x, int y0, boolean closest) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    protected int convertLocationToRow(int x, int y0, boolean closest) {
         int size = list.getModel().getSize();
 
         if (size <= 0) {
@@ -287,8 +295,8 @@ public abstract class YListUI extends ListUI {
     /**
      * Returns the closest column to the passed in location.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    int convertLocationToColumn(int x, int y) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    protected int convertLocationToColumn(int x, int y) {
         if (cellWidth > 0) {
             if (layoutOrientation == JList.VERTICAL) {
                 return 0;
@@ -312,11 +320,11 @@ public abstract class YListUI extends ListUI {
     }
     /**
      * Returns the model index for the specified display location.
-     * If <code>column</code>x<code>row</code> is beyond the length of the
-     * model, this will return the model size - 1.
+     * If <code>column</code>x<code>row</code> is beyond the length of the model, 
+     * this will return the model size - 1.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    int getModelIndex(int column, int row) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    protected int getModelIndex(int column, int row) {
         switch (layoutOrientation) {
         case JList.VERTICAL_WRAP:
             return Math.min(list.getModel().getSize() - 1, rowsPerColumn *
@@ -330,11 +338,10 @@ public abstract class YListUI extends ListUI {
     }
 
     /**
-     * Returns the row that the model index <code>index</code> will be
-     * displayed in..
+     * Returns the row that the model index <code>index</code> will be displayed in.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    int convertModelToRow(int index) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    protected int convertModelToRow(int index) {
         int size = list.getModel().getSize();
 
         if ((index < 0) || (index >= size)) {
@@ -352,11 +359,10 @@ public abstract class YListUI extends ListUI {
     }
     
     /**
-     * Returns the column that the model index <code>index</code> will be
-     * displayed in.
+     * Returns the column that the model index <code>index</code> will be displayed in.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    int convertModelToColumn(int index) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    protected int convertModelToColumn(int index) {
         int size = list.getModel().getSize();
 
         if ((index < 0) || (index >= size)) {
@@ -376,8 +382,8 @@ public abstract class YListUI extends ListUI {
     /**
      * Returns the height of the cell at the passed in location.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private
-    int getHeight(int column, int row) {
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    protected int getHeight(int column, int row) {
         if (column < 0 || column > columnCount || row < 0) {
             return -1;
         }
@@ -405,11 +411,6 @@ public abstract class YListUI extends ListUI {
             updateLayoutState();
             updateLayoutStateNeeded = 0;
         }
-    }
-
-    // exact copy from javax.swing.plaf.basic.BasicListUI
-    protected int getRowHeight(int row) {
-        return getHeight(0, row);
     }
 
     // exact copy from javax.swing.plaf.basic.BasicListUI
@@ -479,6 +480,77 @@ public abstract class YListUI extends ListUI {
         }
     }
 
+    /**
+     * Returns the height of the specified row based on the current layout.
+     *
+     * @param row a row
+     * @return the specified row height or -1 if row isn't valid
+     * @see #convertYToRow
+     * @see #convertRowToY
+     * @see #updateLayoutState
+     */
+    // exact copy from javax.swing.plaf.basic.BasicListUI
+    private int getRowHeight(int row) {
+        return getHeight(0, row);
+    }
+
+    /**
+     * @see javax.swing.plaf.basic.BasicListUI#convertYToRow(int)
+     */
+    protected int convertYToRow(int y0) {
+        return convertLocationToRow(0, y0, false);
+    }
+    /**
+     * @see javax.swing.plaf.basic.BasicListUI#convertYToRow(int)
+     */
+    protected int convertRowToY(int row) {
+        if (row >= getRowCount(0) || row < 0) {
+            return -1;
+        }
+        Rectangle bounds = getCellBounds(list, row, row);
+        return bounds.y;
+    }
+
+    /**
+     * Returns the number of rows in the given column.
+     */
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visiblility
+    protected int getRowCount(int column) {
+        if (column < 0 || column >= columnCount) {
+            return -1;
+        }
+        if (layoutOrientation == JList.VERTICAL ||
+                  (column == 0 && columnCount == 1)) {
+            return list.getModel().getSize();
+        }
+        if (column >= columnCount) {
+            return -1;
+        }
+        if (layoutOrientation == JList.VERTICAL_WRAP) {
+            if (column < (columnCount - 1)) {
+                return rowsPerColumn;
+            }
+            return list.getModel().getSize() - (columnCount - 1) *
+                        rowsPerColumn;
+        }
+        // JList.HORIZONTAL_WRAP
+        int diff = columnCount - (columnCount * rowsPerColumn -
+                                  list.getModel().getSize());
+
+        if (column >= diff) {
+            return Math.max(0, rowsPerColumn - 1);
+        }
+        return rowsPerColumn;
+    }
+
+    /**
+     * Invoked when the list is layed out horizontally to determine how
+     * many columns to create.
+     * <p>
+     * This updates the <code>rowsPerColumn, </code><code>columnCount</code>,
+     * <code>preferredHeight</code> and potentially <code>cellHeight</code>
+     * instance variables.
+     */
     // exact copy from javax.swing.plaf.basic.BasicListUI
     private void updateHorizontalLayoutState(int fixedCellWidth,
                                              int fixedCellHeight) {
