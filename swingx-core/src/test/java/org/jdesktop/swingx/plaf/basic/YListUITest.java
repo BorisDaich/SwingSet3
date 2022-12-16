@@ -116,11 +116,11 @@ public class YListUITest extends InteractiveTestCase {
         JYList<Object> list = new JYList<Object>();
         JList<Object> core = new JList<Object>();
         ActionMap map = list.getActionMap();
-        LOG.info("list ActionMap.size="+map.size() + " ActionMap.parent="+map.getParent());
+        LOG.info("core list ActionMap.size="+core.getActionMap().size() + " list ActionMap.size="+list.getActionMap().size());
         ActionMap parentMap = map.getParent();
         if(parentMap instanceof LazyActionMap lam) {
 //        	Object[] keys = lam.keys();
-            LOG.info("========================list ActionMap.parent.size="+lam.size());
+            LOG.info("list ActionMap.parent.size="+lam.size());
         }
         Object key = list.getActionMap().getParent().keys()[0];
         assertTrue("sanity: key contained in core actionMap " + key, Arrays.asList(core.getActionMap().allKeys()).contains(key));
@@ -137,6 +137,5 @@ public class YListUITest extends InteractiveTestCase {
         assertNotNull(list.getActionMap().getParent());
         assertSame(list.getActionMap().getParent(), new JYList<Object>().getActionMap().getParent());
     }
-
     
 }

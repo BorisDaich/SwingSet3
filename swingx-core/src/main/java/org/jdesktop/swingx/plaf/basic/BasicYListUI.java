@@ -754,7 +754,7 @@ public class BasicYListUI extends YListUI {
      */
     @Override
 	protected Rectangle getCellBounds(JList<?> list, int index) {
-    	LOG.info("super.getCellBounds(superJList<?> list, int index="+index);
+    	LOG.fine("super.getCellBounds(superJList<?> list, int index="+index);
         return super.getCellBounds(list, index);
     }
 

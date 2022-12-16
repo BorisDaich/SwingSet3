@@ -95,10 +95,6 @@ ist diese Information hier falsch: daher doch YListUI implementieren
     }
 
     public static Border getBorder(JComponent c, ComponentUI ui, String key) {
-//        return getBorder(c, ui, key, null); // in sun.swing.DefaultLookup 
-//    }
-//    public static Border getBorder(JComponent c, ComponentUI ui, String key, Border defaultValue) {
-        //Object iValue = get(c, ui, key);
     	Object iValue = UIManager.get(key, c.getLocale());
         if (iValue == null || !(iValue instanceof Border)) {
             return null;
@@ -113,21 +109,6 @@ ist diese Information hier falsch: daher doch YListUI implementieren
         return (Color)iValue;
     }
 
-/*
-
-in org.jdesktop.swingx.renderer gibt es noch
-public class DefaultListRenderer<E> extends AbstractRenderer implements ListCellRenderer<E>
-mit
-public abstract class AbstractRenderer implements RolloverRenderer, StringValue, Serializable, UIDependent
-zum Vergleich:
-public class javax.swing.DefaultListCellRenderer extends JLabel implements ListCellRenderer<Object>, Serializable
-
-dort gibt es protected ListCellContext cellContext - ListCellContext extends CellContext gedacht für (Table-, List-, Tree-)
-        cellContext.installContext(list, value, index, 0, isSelected, cellHasFocus, true, true);
-    public void installContext(JList<?> component, Object value, int row, int column,
-            boolean selected, boolean focused, boolean expanded, boolean leaf) {
-
- */
     public class YListCellRenderer extends DefaultListCellRenderer {
         public YListCellRenderer() {
             super();
@@ -144,7 +125,7 @@ dort gibt es protected ListCellContext cellContext - ListCellContext extends Cel
         // original in super: not accessible: sun.swing.DefaultLookup 
 		public Component getListCellRendererComponent(JList<?> list, Object value
 				, int index, boolean isSelected, boolean cellHasFocus) {
-//        	LOG.info("value="+value + ",index="+index + ",isSelected="+isSelected + ",cellHasFocus="+cellHasFocus);
+        	LOG.info("index="+index + ",isSelected="+isSelected + ",cellHasFocus="+cellHasFocus+",value="+value);
 /*
 INFORMATION: value=Jane Doe   ,index=0,isSelected=true ,cellHasFocus=false
 INFORMATION: value=John Smith ,index=1,isSelected=false,cellHasFocus=false
