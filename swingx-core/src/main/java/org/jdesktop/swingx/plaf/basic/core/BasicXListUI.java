@@ -39,6 +39,7 @@ import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.CellRendererPane;
@@ -134,8 +135,73 @@ import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
  * @author Shannon Hickey (drag and drop)
  */
 public class BasicXListUI extends BasicListUI {
-	
+
+    private static final Logger LOG = Logger.getLogger(BasicXListUI.class.getName());
+
     private static final StringBuilder BASELINE_COMPONENT_KEY = new StringBuilder("List.baselineComponent");
+
+    /**
+     * Factory. Returns a new instance of BasicXListUI.  
+     * BasicXListUI delegates are allocated one per JList.
+     *
+     * @param c JComponent
+     * @return A new ListUI implementation for the Windows look and feel.
+     */
+    public static ComponentUI createUI(JComponent c) {
+    	LOG.config("UI factory for JComponent:"+c);
+        return new BasicXListUI(c);
+    }
+
+    /**
+     * FIXME - JW LazyActionMap copy is in different package ... move here?
+     * @param map LazyActionMap
+     */
+    public static void loadActionMap(LazyActionMap map) {
+        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_EXTEND));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_NEXT_COLUMN));
+        map.put(new Actions(Actions.SELECT_NEXT_COLUMN_EXTEND));
+        map.put(new Actions(Actions.SELECT_NEXT_COLUMN_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_NEXT_ROW));
+        map.put(new Actions(Actions.SELECT_NEXT_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_NEXT_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_FIRST_ROW));
+        map.put(new Actions(Actions.SELECT_FIRST_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_FIRST_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_LAST_ROW));
+        map.put(new Actions(Actions.SELECT_LAST_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_LAST_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SCROLL_UP));
+        map.put(new Actions(Actions.SCROLL_UP_EXTEND));
+        map.put(new Actions(Actions.SCROLL_UP_CHANGE_LEAD));
+        map.put(new Actions(Actions.SCROLL_DOWN));
+        map.put(new Actions(Actions.SCROLL_DOWN_EXTEND));
+        map.put(new Actions(Actions.SCROLL_DOWN_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_ALL));
+        map.put(new Actions(Actions.CLEAR_SELECTION));
+        map.put(new Actions(Actions.ADD_TO_SELECTION));
+        map.put(new Actions(Actions.TOGGLE_AND_ANCHOR));
+        map.put(new Actions(Actions.EXTEND_TO));
+        map.put(new Actions(Actions.MOVE_SELECTION_TO));
+
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
+                TransferHandler.getCutAction());
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
+                TransferHandler.getCopyAction());
+        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
+                TransferHandler.getPasteAction());
+    }
+
+	@SuppressWarnings("unchecked")
+	public BasicXListUI(JComponent c) {
+		super();
+		JXList<?> tmp = (JXList<?>) c;
+		this.list = (JXList<Object>) tmp;
+	}
 
     /**
      * The instance of {@code JXList}.
@@ -235,50 +301,6 @@ public class BasicXListUI extends BasicListUI {
     private final static int componentOrientationChanged = 1 << 10;
 
     private static final int DROP_LINE_THICKNESS = 2;
-
-    /**
-     * FIXME - JW LazyActionMap copy is in different package ... move here?
-     * @param map LazyActionMap
-     */
-    public static void loadActionMap(LazyActionMap map) {
-        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN));
-        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_EXTEND));
-        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_CHANGE_LEAD));
-        map.put(new Actions(Actions.SELECT_NEXT_COLUMN));
-        map.put(new Actions(Actions.SELECT_NEXT_COLUMN_EXTEND));
-        map.put(new Actions(Actions.SELECT_NEXT_COLUMN_CHANGE_LEAD));
-        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW));
-        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW_EXTEND));
-        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW_CHANGE_LEAD));
-        map.put(new Actions(Actions.SELECT_NEXT_ROW));
-        map.put(new Actions(Actions.SELECT_NEXT_ROW_EXTEND));
-        map.put(new Actions(Actions.SELECT_NEXT_ROW_CHANGE_LEAD));
-        map.put(new Actions(Actions.SELECT_FIRST_ROW));
-        map.put(new Actions(Actions.SELECT_FIRST_ROW_EXTEND));
-        map.put(new Actions(Actions.SELECT_FIRST_ROW_CHANGE_LEAD));
-        map.put(new Actions(Actions.SELECT_LAST_ROW));
-        map.put(new Actions(Actions.SELECT_LAST_ROW_EXTEND));
-        map.put(new Actions(Actions.SELECT_LAST_ROW_CHANGE_LEAD));
-        map.put(new Actions(Actions.SCROLL_UP));
-        map.put(new Actions(Actions.SCROLL_UP_EXTEND));
-        map.put(new Actions(Actions.SCROLL_UP_CHANGE_LEAD));
-        map.put(new Actions(Actions.SCROLL_DOWN));
-        map.put(new Actions(Actions.SCROLL_DOWN_EXTEND));
-        map.put(new Actions(Actions.SCROLL_DOWN_CHANGE_LEAD));
-        map.put(new Actions(Actions.SELECT_ALL));
-        map.put(new Actions(Actions.CLEAR_SELECTION));
-        map.put(new Actions(Actions.ADD_TO_SELECTION));
-        map.put(new Actions(Actions.TOGGLE_AND_ANCHOR));
-        map.put(new Actions(Actions.EXTEND_TO));
-        map.put(new Actions(Actions.MOVE_SELECTION_TO));
-
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
-                TransferHandler.getCutAction());
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
-                TransferHandler.getCopyAction());
-        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
-                TransferHandler.getPasteAction());
-    }
 
 //-------------------- X-Wrapper
     
@@ -1184,16 +1206,6 @@ public class BasicXListUI extends BasicListUI {
     }
 
 
-    /**
-     * Returns a new instance of BasicXListUI.  
-     * BasicXListUI delegates are allocated one per JList.
-     *
-     * @param list JComponent
-     * @return A new ListUI implementation for the Windows look and feel.
-     */
-    public static ComponentUI createUI(JComponent list) {
-        return new BasicXListUI();
-    }
 
 
     /**
