@@ -21,6 +21,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
+import javax.swing.Action;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
@@ -97,7 +98,48 @@ public class BasicYListUI extends YListUI {
     	LOG.info("UI factory for JComponent:"+c);
         return new BasicYListUI(c);
     }
-    
+
+    // like in BasicListUI
+    public static void loadActionMap(LazyActionMap map) {
+        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_EXTEND));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_COLUMN_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_NEXT_COLUMN));
+        map.put(new Actions(Actions.SELECT_NEXT_COLUMN_EXTEND));
+        map.put(new Actions(Actions.SELECT_NEXT_COLUMN_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_NEXT_ROW));
+        map.put(new Actions(Actions.SELECT_NEXT_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_NEXT_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_FIRST_ROW));
+        map.put(new Actions(Actions.SELECT_FIRST_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_FIRST_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_LAST_ROW));
+        map.put(new Actions(Actions.SELECT_LAST_ROW_EXTEND));
+        map.put(new Actions(Actions.SELECT_LAST_ROW_CHANGE_LEAD));
+        map.put(new Actions(Actions.SCROLL_UP));
+        map.put(new Actions(Actions.SCROLL_UP_EXTEND));
+        map.put(new Actions(Actions.SCROLL_UP_CHANGE_LEAD));
+        map.put(new Actions(Actions.SCROLL_DOWN));
+        map.put(new Actions(Actions.SCROLL_DOWN_EXTEND));
+        map.put(new Actions(Actions.SCROLL_DOWN_CHANGE_LEAD));
+        map.put(new Actions(Actions.SELECT_ALL));
+        map.put(new Actions(Actions.CLEAR_SELECTION));
+        map.put(new Actions(Actions.ADD_TO_SELECTION));
+        map.put(new Actions(Actions.TOGGLE_AND_ANCHOR));
+        map.put(new Actions(Actions.EXTEND_TO));
+        map.put(new Actions(Actions.MOVE_SELECTION_TO));
+
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
+                TransferHandler.getCutAction());
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
+                TransferHandler.getCopyAction());
+        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
+                TransferHandler.getPasteAction());
+    }
+
 	@SuppressWarnings("unchecked")
 	public BasicYListUI(JComponent c) {
 		super();
@@ -504,17 +546,14 @@ public class BasicYListUI extends YListUI {
     protected void installKeyboardActions() {
         InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
         SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, inputMap);
-//        LazyActionMap.installLazyActionMap(list, BasicListUI.class, "List.actionMap");
         LazyActionMap.installLazyActionMap(list, BasicYListUI.class, "YList.actionMap");
     }
 
     // copy from javax.swing.plaf.basic.BasicListUI with some changes
     InputMap getInputMap(int condition) {
         if (condition == JComponent.WHEN_FOCUSED) {
-//            InputMap keyMap = (InputMap)DefaultLookup.get(list, this, "List.focusInputMap");
             InputMap keyMap = (InputMap) UIManager.get("List.focusInputMap");
             InputMap rtlKeyMap;
-//          if (isLeftToRight || ((rtlKeyMap = (InputMap)DefaultLookup.get(list, this, "List.focusInputMap.RightToLeft")) == null)) {
             if (isLeftToRight || ((rtlKeyMap = (InputMap) UIManager.get("List.focusInputMap.RightToLeft")) == null)) {
                 return keyMap;
             } else {
