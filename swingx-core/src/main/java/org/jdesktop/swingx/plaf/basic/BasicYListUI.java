@@ -47,6 +47,7 @@ import javax.swing.text.Position;
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.LookAndFeelUtils;
 import org.jdesktop.swingx.plaf.YListUI;
+import org.jdesktop.swingx.plaf.basic.core.BasicTransferable;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
@@ -2060,8 +2061,7 @@ public class BasicYListUI extends YListUI {
                 htmlStr.append("</ul>\n</body>\n</html>");
 
                 // Class sun.datatransfer.DataFlavorUtil.BasicTransferable is not visible
-                // TODO use org.jdesktop.swingx.plaf.basic.core.BasicTransferable
-                return null; // new BasicTransferable(plainStr.toString(), htmlStr.toString());
+                return new BasicTransferable(plainStr.toString(), htmlStr.toString());
             }
 
             return null;
