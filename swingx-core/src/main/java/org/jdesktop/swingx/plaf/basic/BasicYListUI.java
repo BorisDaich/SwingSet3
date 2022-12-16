@@ -76,9 +76,9 @@ Die systematische/symetrische Ableitung wäre:
                                           |
 YListUI ----------------- abstract class ListUI
  |                                        |
- +------------+                           |
- |            |                           |
-BasicYListUI SynthYListUI  symetrisch zu BasicListUI
+BasicYListUI               symetrisch zu BasicListUI
+ |                                        |
+SynthYListUI               symetrisch zu SynthListUI
 
 es ist einfacher direkt von javax.swing.plaf.basic.BasicListUI ableiten und das meiste abkopieren.
 Also doch von YListUI ableiten ==> alles (auch die protected!, nicht nur das meiste) abkopieren ???
@@ -212,7 +212,7 @@ public class BasicYListUI extends YListUI {
     }
 
     // exact copy from javax.swing.plaf.basic.BasicListUI + LOGs
-    private void paintImpl(Graphics g, JComponent c) {
+    protected void paintImpl(Graphics g, JComponent c) {
     	LOG.info("layoutOrientation="+layoutOrientation);
         switch (layoutOrientation) {
         case JList.VERTICAL_WRAP:
@@ -295,7 +295,7 @@ public class BasicYListUI extends YListUI {
     }
 
     // copied from javax.swing.plaf.basic.BasicListUI with change
-	private void paintDropLine(Graphics g) {
+	protected void paintDropLine(Graphics g) {
 		JList.DropLocation loc = list.getDropLocation();
 		if (loc == null || !loc.isInsert()) {
 			return;
@@ -311,7 +311,7 @@ public class BasicYListUI extends YListUI {
 	}
 
     // exact copy from javax.swing.plaf.basic.BasicListUI
-    private Rectangle getDropLineRect(JList.DropLocation loc) {
+    protected Rectangle getDropLineRect(JList.DropLocation loc) {
         int size = list.getModel().getSize();
 
         if (size == 0) {
