@@ -47,17 +47,7 @@ import org.jdesktop.swingx.plaf.basic.core.BasicXListUI;
  */
 public class SynthXListUI extends BasicXListUI implements PropertyChangeListener, SynthUI {
 
-    private SynthStyle style;
-//    @SuppressWarnings("unused")
-    private boolean useListColors;
-//    @SuppressWarnings("unused")
-    private boolean useUIBorder;
-
 	private static final Logger LOG = Logger.getLogger(SynthXListUI.class.getName());
-
-    public SynthXListUI() {
-    	LOG.info("------------------ ctor");
-    }
 
     /**
      * Factory: Returns a new instance of SynthXListUI.  
@@ -65,8 +55,19 @@ public class SynthXListUI extends BasicXListUI implements PropertyChangeListener
      *
      * @return A new ListUI implementation for the Synth look and feel.
      */
-    public static ComponentUI createUI(JComponent list) {
-        return new SynthXListUI();
+    public static ComponentUI createUI(JComponent c) {
+        return new SynthXListUI(c);
+    }
+
+
+    private SynthStyle style;
+//    @SuppressWarnings("unused")
+    private boolean useListColors;
+//    @SuppressWarnings("unused")
+    private boolean useUIBorder;
+
+    public SynthXListUI(JComponent c) {
+    	super(c);
     }
 
     /**
