@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -43,16 +41,14 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class XListUITest extends InteractiveTestCase {
     
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(XListUITest.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(XListUITest.class.getName());
     
     /**
      * Issue #1495-swingx: NPE in getBaseline()
      */
     @Test
     public void testBaselineNPE() {
-        JXList list = new JXList();
+        JXList<Object> list = new JXList<Object>();
         list.getUI().getBaseline(list, 1, 1);
     }
     
@@ -61,7 +57,7 @@ public class XListUITest extends InteractiveTestCase {
      */
     @Test (expected = NullPointerException.class)
     public void testBaselineNPEFixThrowsOnNullComponent() {
-        JXList list = new JXList();
+        JXList<Object> list = new JXList<Object>();
         list.getUI().getBaseline(null, 1, 1);
     }
 
@@ -73,10 +69,10 @@ public class XListUITest extends InteractiveTestCase {
      */
     @Test
     public void testSortUIUpdateOnSetModel() {
-        JXList list = new JXList(true);
+        JXList<Object> list = new JXList<Object>(true);
         BasicXListUI ui = (BasicXListUI) list.getUI();
         ListSortUI sortUI = ui.getSortUI();
-        list.setModel(new DefaultListModel());
+        list.setModel(new DefaultListModel<Object>());
         assertNotSame(sortUI, ui.getSortUI());
     }
     /**
@@ -86,7 +82,7 @@ public class XListUITest extends InteractiveTestCase {
      */
     @Test
     public void testSortUIInstalled() {
-        JXList list = new JXList(true);
+        JXList<Object> list = new JXList<Object>(true);
         BasicXListUI ui = (BasicXListUI) list.getUI();
         assertNotNull(ui.getSortUI());
     }
@@ -112,7 +108,7 @@ public class XListUITest extends InteractiveTestCase {
         LookAndFeel lf = UIManager.getLookAndFeel();
         try {
             setLookAndFeel("Nimbus");
-            JXList list = new JXList();
+            JXList<Object> list = new JXList<Object>();
             setLookAndFeel("Metal");
             list.updateUI();
             setLookAndFeel("Nimbus");
@@ -124,13 +120,13 @@ public class XListUITest extends InteractiveTestCase {
 
     @Test
     public void testExtendedClassID() {
-        JXList list = new JXList();
+        JXList<Object> list = new JXList<Object>();
         assertSame(JXList.uiClassID, list.getUIClassID());
     }
     
     @Test
     public void testHasExtendedUI() {
-        JXList list = new JXList();
+        JXList<Object> list = new JXList<Object>();
         assertTrue("xlist must have BasicXListUI instead of " + list.getUI().getClass().getSimpleName(),
                 list.getUI() instanceof BasicXListUI);
         
@@ -141,11 +137,11 @@ public class XListUITest extends InteractiveTestCase {
      */
     @Test
     public void testActionMaps() {
-        JXList list = new JXList();
-        JList core = new JList();
+        JXList<Object> list = new JXList<Object>();
+        JList<Object> core = new JList<Object>();
         Object key = list.getActionMap().getParent().keys()[0];
         assertTrue("sanity: key contained in core actionMap " + key, Arrays.asList(core.getActionMap().allKeys()).contains(key));
-        assertSame("sanity: xlist share actions", list.getActionMap().get(key), new JXList().getActionMap().get(key));
+        assertSame("sanity: xlist share actions", list.getActionMap().get(key), new JXList<Object>().getActionMap().get(key));
         assertNotSame("core has different action", list.getActionMap().get(key), core.getActionMap().get(key));
     }
     
@@ -154,9 +150,9 @@ public class XListUITest extends InteractiveTestCase {
      */
     @Test
     public void testSharedActionMaps() {
-        JXList list = new JXList();
+        JXList<Object> list = new JXList<Object>();
         assertNotNull(list.getActionMap().getParent());
-        assertSame(list.getActionMap().getParent(), new JXList().getActionMap().getParent());
+        assertSame(list.getActionMap().getParent(), new JXList<Object>().getActionMap().getParent());
     }
 
     
