@@ -542,7 +542,7 @@ public class BasicYListUI extends YListUI {
      * 
      * @see javax.swing.plaf.basic.BasicListUI#installKeyboardActions
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI
+    @Override // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void installKeyboardActions() {
         InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
         SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, inputMap);
@@ -575,7 +575,7 @@ public class BasicYListUI extends YListUI {
      * 
      * @see javax.swing.plaf.basic.BasicListUI#installListeners
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI
+    @Override // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void installListeners() {
         TransferHandler th = list.getTransferHandler();
         if (th == null || th instanceof UIResource) {
@@ -641,9 +641,8 @@ public class BasicYListUI extends YListUI {
      * 
      * @see javax.swing.plaf.basic.BasicListUI#installDefaults
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI
+    @Override // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void installDefaults() {
-//    	LOG.info("----------> do it in super ? ...");
         list.setLayout(null);
 
         LookAndFeel.installBorder(list, "List.border");
