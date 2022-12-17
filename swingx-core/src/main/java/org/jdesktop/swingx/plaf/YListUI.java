@@ -142,7 +142,6 @@ public abstract class YListUI extends ListUI {
      */
     @Override // overrides javax.swing.plaf.ComponentUI.installUI
     public void installUI(JComponent c) {
-//    	LOG.info("---------->JComponent:"+c);
         @SuppressWarnings("unchecked")
         JList<Object> tmp = (JList<Object>)c;
         list = tmp;
@@ -162,13 +161,13 @@ public abstract class YListUI extends ListUI {
         installKeyboardActions();
     }
     protected void installDefaults() {
-    	// TODO to be implemented in subclass
+    	// to be implemented in subclass
     }
     protected void installListeners() {
-    	// TODO to be implemented in subclass
+    	// to be implemented in subclass
     }
     protected void installKeyboardActions() {
-    	// TODO to be implemented in subclass
+    	// to be implemented in subclass
     }
 
     /**

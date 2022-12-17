@@ -66,6 +66,7 @@ import javax.swing.ListCellRenderer;
 public class DefaultListRenderer<E> extends AbstractRenderer implements ListCellRenderer<E> {
 
 	private static final long serialVersionUID = -6697507974102370474L;
+//    private static final Logger LOG = Logger.getLogger(DefaultListRenderer.class.getName());
 	
 	protected ListCellContext cellContext;
 
@@ -155,8 +156,7 @@ public class DefaultListRenderer<E> extends AbstractRenderer implements ListCell
     // -------------- implements javax.swing.table.ListCellRenderer
     /**
      * 
-     * Returns a configured component, appropriate to render the given
-     * list cell.  <p>
+     * Returns a configured component, appropriate to render the given list cell.  <p>
      * 
      * Note: The component's name is set to "List.cellRenderer" for the sake
      * of Synth-based LAFs.

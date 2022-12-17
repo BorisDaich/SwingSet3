@@ -9,7 +9,6 @@ import java.beans.BeanProperty;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -45,11 +44,11 @@ Die systematische/symetrische Ableitung wäre:
 
                                          ComponentUI
                                           |
-YListUI ----------------- abstract class ListUI
+YListUI ----------------> abstract class ListUI
  |                                        |
- +------------+                           |
- |            |                           |
-BasicYListUI SynthYListUI  symetrisch zu BasicListUI
+BasicYListUI               symetrisch zu BasicListUI
+ |                                        |
+SynthYListUI               symetrisch zu SynthListUI
 
 Durch die "Vereinfachung" BasicYListUI direkt von javax.swing.plaf.basic.BasicListUI ableiten
 ist diese Information hier falsch: daher doch YListUI implementieren
@@ -116,16 +115,33 @@ ist diese Information hier falsch: daher doch YListUI implementieren
             setBorder(getNoFocusBorder());
             setName("List.cellRenderer");
         }
+        /* in super ist diese Methode private:
+    private Border getNoFocusBorder() {
+        Border border = DefaultLookup.getBorder(this, ui, "List.cellNoFocusBorder");
+        if (System.getSecurityManager() != null) {
+            if (border != null) return border;
+            return SAFE_NO_FOCUS_BORDER;
+        } else {
+            if (border != null &&
+                    (noFocusBorder == null ||
+                    noFocusBorder == DEFAULT_NO_FOCUS_BORDER)) {
+                return border;
+            }
+            return noFocusBorder;
+        }
+    }
+    protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
+         */
         private Border getNoFocusBorder() {
-        	//LOG.info("use EtchedBorder ...");
-        	return //new EmptyBorder(1, 1, 1, 1); 
-        			BorderFactory.createEtchedBorder();
+        	Border border = JYList.getBorder(this, ui, "List.cellNoFocusBorder");
+        	if (border != null) return border;
+        	return DefaultListCellRenderer.noFocusBorder;
         }
         @Override // implements public interface ListCellRenderer<E>
         // original in super: not accessible: sun.swing.DefaultLookup 
 		public Component getListCellRendererComponent(JList<?> list, Object value
 				, int index, boolean isSelected, boolean cellHasFocus) {
-        	LOG.info("index="+index + ",isSelected="+isSelected + ",cellHasFocus="+cellHasFocus+",value="+value);
+        	LOG.finer("index="+index + ",isSelected="+isSelected + ",cellHasFocus="+cellHasFocus+",value="+value);
 /*
 INFORMATION: value=Jane Doe   ,index=0,isSelected=true ,cellHasFocus=false
 INFORMATION: value=John Smith ,index=1,isSelected=false,cellHasFocus=false
@@ -228,7 +244,7 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
     }
     public void setCellRenderer(ListCellRenderer<? super E> cellRenderer) {
         ListCellRenderer<? super E> oldValue = this.cellRenderer;
-        LOG.info("cellRenderer old "+this.cellRenderer + " new "+cellRenderer);
+        LOG.config("cellRenderer old "+this.cellRenderer + " new "+cellRenderer);
         this.cellRenderer = cellRenderer;
 
         /* If the cellRenderer has changed and prototypeCellValue
@@ -271,22 +287,19 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
      */
     public void updateUI() {
     	if (getUIClassID() == super.getUIClassID()) {
-    		LOG.info("JList super.updateUI()");
+    		LOG.info("call method from super JList.updateUI()");
     		super.updateUI();
     		return;
     	}
     	LOG.info("getUIClassID():"+getUIClassID());
-    	/*
-    	 * BasicYListUI : wg. EtchedBorder, BG tut auch ohne
-    	 * SynthYListUI : tut nix TODO
-    	 */
-    	setCellRenderer(new YListCellRenderer()); // für SynthYListUI, bei BasicYListUI nicht notwendig
+
+    	setCellRenderer(new YListCellRenderer());
         if (!updateInProgress) {
             updateInProgress = true;
             try {
             	// expectedUIClass: ListUI
             	ComponentUI ui = LookAndFeelAddons.getUI(this, ListUI.class);
-            	LOG.info("ui:"+ui);
+            	LOG.config("ui:"+ui);
                 setUI((ListUI)ui);
 
                 ListCellRenderer<? super E> renderer = getCellRenderer();
@@ -310,20 +323,17 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
             = "The UI object that implements the Component's LookAndFeel.")
     public void setUI(ListUI newUI) {
     	LOG.config("newUI:"+newUI);
-//        super.setUI(ui); // wird bis JComponent.setUI(ComponentUI newUI) weitergeleitet,
-        // dort: protected transient ComponentUI ui
     	if(ui==newUI) return;
         ComponentUI oldUI = ui;
         ui = newUI;
         if (ui != null) {
-            ui.installUI(this);
+            ui.installUI(this); // calls BasicYListUI#installUI resp. SynthYListUI#installUI
         }
         firePropertyChange("UI", oldUI, newUI);
         revalidate();
         repaint();
     }
     public ListUI getUI() {
-    	//LOG.info("?????ui:"+ui);
         return (ListUI)ui;
     }
 
