@@ -199,7 +199,7 @@ public class BasicYListUI extends YListUI {
 
     /**
      * {@inheritDoc} <p>
-     * copied from javax.swing.plaf.basic.BasicListUI to call private paintImpl
+     * copied from javax.swing.plaf.basic.BasicListUI to call paintImpl
      */
     @Override // defined in ComponentUI
     public void paint(Graphics g, JComponent c) {
@@ -213,7 +213,7 @@ public class BasicYListUI extends YListUI {
 
     // exact copy from javax.swing.plaf.basic.BasicListUI + LOGs
     protected void paintImpl(Graphics g, JComponent c) {
-    	LOG.info("layoutOrientation="+layoutOrientation);
+//    	LOG.info("layoutOrientation="+layoutOrientation);
         switch (layoutOrientation) {
         case JList.VERTICAL_WRAP:
             if (list.getHeight() != listHeight) {
@@ -263,7 +263,7 @@ public class BasicYListUI extends YListUI {
         int rowIncrement = (layoutOrientation == JList.HORIZONTAL_WRAP) ?
                            columnCount : 1;
 
-        LOG.info("how many columns we need to paint? startColumn="+startColumn+",endColumn="+endColumn);
+        LOG.config("how many columns we need to paint? startColumn="+startColumn+",endColumn="+endColumn);
         for (int colCounter = startColumn; colCounter <= endColumn;
              colCounter++) {
             // And then how many rows in this columnn
@@ -271,7 +271,7 @@ public class BasicYListUI extends YListUI {
             int rowCount = getRowCount(colCounter);
             int index = getModelIndex(colCounter, row);
             Rectangle rowBounds = getCellBounds(list, index, index);
-            LOG.info("how many rows in "+colCounter+" columnn? row="+row+",rowCount="+rowCount+",index="+index+",rowIncrement="+rowIncrement);
+            LOG.config("how many rows in "+colCounter+" columnn? row="+row+",rowCount="+rowCount+",index="+index+",rowIncrement="+rowIncrement);
             if (rowBounds == null) {
                 // Not valid, bail!
                 return;
@@ -1583,7 +1583,7 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    // inner class copied from super with small modifications
+    // inner class copied from javax.swing.plaf.basic.BasicListUI with small modifications
     private class Handler 
     implements FocusListener
     		 , KeyListener
@@ -1986,6 +1986,7 @@ public class BasicYListUI extends YListUI {
 		}
 
 		public void mouseDragged(MouseEvent e) {
+//			LOG.info("<<<<<<<<<<<<<<<MouseEvent "+e);
 //			if (SwingUtilities2.shouldIgnore(e, list)) {
 			if (SwingXUtilities.shouldIgnore(e, list)) {
 				return;
