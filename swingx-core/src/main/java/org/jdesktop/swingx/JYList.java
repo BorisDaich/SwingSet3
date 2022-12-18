@@ -25,6 +25,22 @@ import javax.swing.plaf.ListUI;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.YListAddon;
 
+/*
+
+Die systematische/symetrische Ableitung wäre:
+
+                                         JComponentUI
+                                          |
+YListUI ----------------> abstract class ListUI
+ |                                        |
+BasicYListUI               symetrisch zu BasicListUI
+ |                                        |
+SynthYListUI               symetrisch zu SynthListUI
+
+Durch die "Vereinfachung" BasicYListUI direkt von javax.swing.plaf.basic.BasicListUI ableiten
+wärw die Information in uiClassID falsch: daher doch YListUI implementieren
+
+ */
 @SuppressWarnings("serial")
 public class JYList<E> extends JList<E> {
 
@@ -38,22 +54,6 @@ public class JYList<E> extends JList<E> {
      * @see #getUIClassID
      * @see #readObject
      */
-/*
-
-Die systematische/symetrische Ableitung wäre:
-
-                                         ComponentUI
-                                          |
-YListUI ----------------> abstract class ListUI
- |                                        |
-BasicYListUI               symetrisch zu BasicListUI
- |                                        |
-SynthYListUI               symetrisch zu SynthListUI
-
-Durch die "Vereinfachung" BasicYListUI direkt von javax.swing.plaf.basic.BasicListUI ableiten
-ist diese Information hier falsch: daher doch YListUI implementieren
-
- */
     public static final String uiClassID = "YListUI";
 
     /**
@@ -115,22 +115,20 @@ ist diese Information hier falsch: daher doch YListUI implementieren
             setBorder(getNoFocusBorder());
             setName("List.cellRenderer");
         }
-        /* in super ist diese Methode private:
+        /* in (super) DefaultListCellRenderer ist die Methode getNoFocusBorder private:
+    protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
     private Border getNoFocusBorder() {
         Border border = DefaultLookup.getBorder(this, ui, "List.cellNoFocusBorder");
         if (System.getSecurityManager() != null) {
             if (border != null) return border;
             return SAFE_NO_FOCUS_BORDER;
         } else {
-            if (border != null &&
-                    (noFocusBorder == null ||
-                    noFocusBorder == DEFAULT_NO_FOCUS_BORDER)) {
+            if (border != null && (noFocusBorder == null || noFocusBorder == DEFAULT_NO_FOCUS_BORDER)) {
                 return border;
             }
             return noFocusBorder;
         }
     }
-    protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
          */
         private Border getNoFocusBorder() {
         	Border border = JYList.getBorder(this, ui, "List.cellNoFocusBorder");
@@ -142,7 +140,7 @@ ist diese Information hier falsch: daher doch YListUI implementieren
 		public Component getListCellRendererComponent(JList<?> list, Object value
 				, int index, boolean isSelected, boolean cellHasFocus) {
         	LOG.finer("index="+index + ",isSelected="+isSelected + ",cellHasFocus="+cellHasFocus+",value="+value);
-/*
+/* Bsp:
 INFORMATION: value=Jane Doe   ,index=0,isSelected=true ,cellHasFocus=false
 INFORMATION: value=John Smith ,index=1,isSelected=false,cellHasFocus=false
 INFORMATION: value=Hans Muller,index=2,isSelected=false,cellHasFocus=false
@@ -183,25 +181,21 @@ INFORMATION: value=Jane Doe   ,index=3,isSelected=false,cellHasFocus=false
 
             setEnabled(list.isEnabled());
             setFont(list.getFont());
-//			Component comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-//			LOG.info(">>>>>>>>>>>>"+comp);
 			Border border = null;
 			if (cellHasFocus) {
 				if (isSelected) {
-//					LOG.info("cellHasFocus+isSelected >>>>>TODO"); //TODO "List.focusSelectedCellHighlightBorder"
 					border = JYList.getBorder(this, ui, "List.focusSelectedCellHighlightBorder");
 					LOG.info("cellHasFocus+isSelected border:"+border);
 				}
-//				LOG.info("cellHasFocus+isNOTSelected >>>>>TODO"); //TODO "List.focusCellHighlightBorder"
 				border = JYList.getBorder(this, ui, "List.focusCellHighlightBorder");
 				LOG.info("cellHasFocus+isNOTSelected border:"+border);
 			} else {
 				border = getNoFocusBorder();
 			}
 			setBorder(border);
-//			LOG.info("return "+this);
 			return this;
 		}
+// for info: JComponent#paint     
 //        public void paint(Graphics g) {
 //        	// JComponent.paint delegates to paintComponent, paintBorder, paintChildren
 //        	super.paint(g);
@@ -217,9 +211,6 @@ INFORMATION: value=Jane Doe   ,index=3,isSelected=false,cellHasFocus=false
             }
 
         }
-//        protected void paintChildren(Graphics g) {
-//        	
-//        }
     }
     
     private ListCellRenderer<? super E> cellRenderer;
