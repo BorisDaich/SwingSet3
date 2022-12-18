@@ -541,15 +541,20 @@ public final class SwingXUtilities {
         }
     }
 
-    public static boolean shouldIgnore(MouseEvent mouseEvent,
-            JComponent component) {
+    /**
+     * Ignore mouse events if the component is null, not enabled, the event
+     * is not associated with the left mouse button, or the event has been
+     * consumed.
+     */
+    // like sun.swing.SwingUtilities2#shouldIgnore
+    public static boolean shouldIgnore(MouseEvent mouseEvent, JComponent component) {
         return ((component == null) || (!(component.isEnabled()))
                 || (!(SwingUtilities.isLeftMouseButton(mouseEvent))) 
                 || (mouseEvent.isConsumed()));
     }
 
     
-    public static int loc2IndexFileList(JList list, Point point) {
+    public static int loc2IndexFileList(JList<?> list, Point point) {
         int i = list.locationToIndex(point);
         if (i != -1) {
             Object localObject = list.getClientProperty("List.isFileList");
