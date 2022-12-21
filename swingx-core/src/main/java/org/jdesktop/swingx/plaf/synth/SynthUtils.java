@@ -41,6 +41,8 @@ import javax.swing.plaf.synth.SynthStyle;
  */
 public class SynthUtils {
 
+//    private static final Logger LOG = Logger.getLogger(SynthUtils.class.getName());
+
 //----------------------- context-related
     
     /**
@@ -148,6 +150,7 @@ public class SynthUtils {
 //--------------- component related
     
     public static int getComponentState(JComponent c) {
+//    	LOG.info((c.isEnabled()?("ENABLED"+"FocusOwner="+c.isFocusOwner()):"DISABLED")+"JComponent "+c);
         if (c.isEnabled()) {
             if (c.isFocusOwner()) {
                 return SynthConstants.ENABLED | SynthConstants.FOCUSED;
@@ -205,4 +208,3 @@ public class SynthUtils {
     }
 
 }
-
