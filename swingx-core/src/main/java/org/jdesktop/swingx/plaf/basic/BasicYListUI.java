@@ -55,33 +55,33 @@ import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
 
 /*
 
-abgeschrieben von public class BasicTaskPaneUI extends TaskPaneUI {
-??? wieso nicht in package org.jdesktop.swingx.plaf.basic.core ?
-wie public class BasicXListUI extends BasicListUI
-
 JList hierarchie:
                  public abstract class javax.swing.plaf.ListUI extends ComponentUI
                                                           |
 public class javax.swing.plaf.basic.BasicListUI extends ListUI
 
 Instanziert wird die Klasse über die factory createUI, 
-ähnlich zu org.jdesktop.swingx.plaf.basic.core.BasicXListUI extends BasicListUI
+ähnlich zu ursprünglichem Ansatz: org.jdesktop.swingx.plaf.basic.core.BasicXListUI extends BasicListUI
 Im Gegensatz zu BasicXListUI will ich mit BasicYListUI keine Erweiterungen vornehmen. Es soll lediglich
 - Color "List.background" durch secondary3 Color der CurrentTheme ersetzt werden
-- und NoFocusBorder geändert
+- und NoFocusBorder geändert werden
+Ziel ist, BasicXListUI von BasicYListUI abzuleiten. 
+Dann gibt es eine klare Trennung der neuen features (sorting/filtering)
 
-Die systematische/symetrische Ableitung wäre:
+Die systematische/symetrische Ableitung wäre dann:
 
                                          ComponentUI
                                           |
 YListUI ----------------- abstract class ListUI
  |                                        |
 BasicYListUI               symetrisch zu BasicListUI
- |                                        |
-SynthYListUI               symetrisch zu SynthListUI
+ |  |                                     |
+ | BasicXListUI                           |
+SynthYListUI |              symetrisch zu SynthListUI
+   BasicXListUI
 
-es ist einfacher direkt von javax.swing.plaf.basic.BasicListUI ableiten und das meiste abkopieren.
-Also doch von YListUI ableiten ==> alles (auch die protected!, nicht nur das meiste) abkopieren ???
+es ist nur scheinbar einfacher, direkt von javax.swing.plaf.basic.BasicListUI ableiten. Es wird unbersichtlich!
+Also doch von YListUI ableiten ==> alles fast 1:1 von BasicListUI abkopieren
  in abstract class ListUI : implementation in super YListUI
     protected ListUI() {}
     public abstract int locationToIndex(JList<?> list, Point location);
@@ -154,7 +154,8 @@ public class BasicYListUI extends YListUI {
 	// private var like in javax.swing.plaf.basic.BasicListUI:
 	private Handler handler;
 
-    private static final int DROP_LINE_THICKNESS = 2;
+    protected static final int DROP_LINE_THICKNESS = 2;
+    protected static final StringBuilder BASELINE_COMPONENT_KEY = new StringBuilder("List.baselineComponent");
 
     /**
      * {@inheritDoc}
@@ -264,8 +265,7 @@ public class BasicYListUI extends YListUI {
                            columnCount : 1;
 
         LOG.config("how many columns we need to paint? startColumn="+startColumn+",endColumn="+endColumn);
-        for (int colCounter = startColumn; colCounter <= endColumn;
-             colCounter++) {
+        for (int colCounter = startColumn; colCounter <= endColumn; colCounter++) {
             // And then how many rows in this columnn
             int row = convertLocationToRowInColumn(paintBounds.y, colCounter);
             int rowCount = getRowCount(colCounter);
@@ -276,15 +276,11 @@ public class BasicYListUI extends YListUI {
                 // Not valid, bail!
                 return;
             }
-            while (row < rowCount && rowBounds.y < maxY &&
-                   index < size) {
+            while (row < rowCount && rowBounds.y < maxY && index < size) {
                 rowBounds.height = getHeight(colCounter, row);
-                g.setClip(rowBounds.x, rowBounds.y, rowBounds.width,
-                          rowBounds.height);
-                g.clipRect(paintBounds.x, paintBounds.y, paintBounds.width,
-                           paintBounds.height);
-                paintCell(g, index, rowBounds, renderer, dataModel, selModel,
-                          leadIndex);
+                g.setClip(rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height);
+                g.clipRect(paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height);
+                paintCell(g, index, rowBounds, renderer, dataModel, selModel, leadIndex);
                 rowBounds.y += rowBounds.height;
                 index += rowIncrement;
                 row++;
@@ -300,8 +296,7 @@ public class BasicYListUI extends YListUI {
 		if (loc == null || !loc.isInsert()) {
 			return;
 		}
-
-//      Color c = DefaultLookup.getColor(list, this, "List.dropLineColor", null);
+        // PENDING JW: revisit ... side-effects?
 		Color c = UIManager.getColor("List.dropLineColor");
 		if (c != null) {
 			g.setColor(c);
@@ -435,29 +430,26 @@ public class BasicYListUI extends YListUI {
         return rect;
     }
 
-    private static final StringBuilder BASELINE_COMPONENT_KEY = new StringBuilder("List.baselineComponent");
     /**
      * {@inheritDoc}
      */
     @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
     public int getBaseline(JComponent c, int width, int height) {
         super.getBaseline(c, width, height);
+        checkBaselinePrecondition(c, width, height);
         int rowHeight = list.getFixedCellHeight();
         UIDefaults lafDefaults = UIManager.getLookAndFeelDefaults();
-        Component renderer = (Component)lafDefaults.get(
-                BASELINE_COMPONENT_KEY);
+        Component renderer = (Component)lafDefaults.get(BASELINE_COMPONENT_KEY);
         if (renderer == null) {
             @SuppressWarnings("unchecked")
-            ListCellRenderer<Object> lcr = (ListCellRenderer<Object>)UIManager.get(
-                    "List.cellRenderer");
+            ListCellRenderer<Object> lcr = (ListCellRenderer<Object>)UIManager.get("List.cellRenderer");
 
             // fix for 6711072 some LAFs like Nimbus do not provide this
             // UIManager key and we should not through a NPE here because of it
             if (lcr == null) {
                 lcr = new DefaultListCellRenderer();
             }
-            renderer = lcr.getListCellRendererComponent(
-                    list, "a", -1, false, false);
+            renderer = lcr.getListCellRendererComponent(list, "a", -1, false, false);
             lafDefaults.put(BASELINE_COMPONENT_KEY, renderer);
         }
         renderer.setFont(list.getFont());
@@ -471,16 +463,37 @@ public class BasicYListUI extends YListUI {
         if (rowHeight == -1) {
             rowHeight = renderer.getPreferredSize().height;
         }
-        return renderer.getBaseline(Integer.MAX_VALUE, rowHeight) +
-                list.getInsets().top;
+        return renderer.getBaseline(Integer.MAX_VALUE, rowHeight) + list.getInsets().top;
     }
-    
+
+    /**
+     * Fix for Issue #1495: NPE on getBaseline.
+     * 
+     * As per contract, that methods needs to throw Exceptions on illegal
+     * parameters. As we by-pass super, need to do the check and throw
+     * ouerselves.
+     * 
+     * @param c JComponent
+     * @param width expected &ge; 0
+     * @param height expected &ge; 0
+     * 
+     * @throws IllegalArgumentException if width or height &lt; 0
+     * @throws NullPointerException if c == null
+     */
+    protected void checkBaselinePrecondition(JComponent c, int width, int height) {
+        if (c == null) {
+            throw new NullPointerException("Component must be non-null");
+        }
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("Width and height must be >= 0");
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior(
-            JComponent c) {
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior(JComponent c) {
         super.getBaselineResizeBehavior(c);
         return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
     }
@@ -668,13 +681,13 @@ public class BasicYListUI extends YListUI {
         }
 
         Long l = (Long)UIManager.get("List.timeFactor");
-        timeFactor = (l!=null) ? l.longValue() : 1000L; // timeFactor is private
+        timeFactor = (l!=null) ? l.longValue() : 1000L;
 
-        updateIsFileList(); // private
+        updateIsFileList();
     }
 
     // copied from javax.swing.plaf.basic.BasicListUI
-    private void updateIsFileList() {
+    protected void updateIsFileList() {
         boolean b = Boolean.TRUE.equals(list.getClientProperty("List.isFileList"));
         if (b != isFileList) {
             isFileList = b;
@@ -731,7 +744,7 @@ public class BasicYListUI extends YListUI {
     /**
      * {@inheritDoc}
      */
-    @Override // cannot call it from super because listWidth is private // TODO move to super
+    @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
     public void uninstallUI(JComponent c) {
         uninstallListeners();
         uninstallDefaults();
@@ -761,7 +774,7 @@ public class BasicYListUI extends YListUI {
      * Returns the closest row that starts at the specified y-location
      * in the passed in column.
      */
-    // exact copy from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     private int convertLocationToRowInColumn(int y, int column) {
         int x = 0;
 
@@ -775,16 +788,15 @@ public class BasicYListUI extends YListUI {
         return convertLocationToRow(x, y, true);
     }
     
-    // exact copy from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     private Handler getHandler() {
         if (handler == null) {
-//        	LOG.info(">>>>>>>>>>>>>>>>> create new Handler()");
             handler = new Handler();
         }
         return handler;
     }
 
-    // inner class copied from super
+    // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class MouseInputHandler implements MouseInputListener {
         /**
          * Constructs a {@code MouseInputHandler}.
@@ -820,15 +832,12 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // copied from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected MouseInputListener createMouseInputListener() {
         return getHandler();
     }
 
-    // inner class copied from super
+    // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class FocusHandler implements FocusListener {
         /**
          * Constructs a {@code FocusHandler}.
@@ -856,15 +865,12 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // copied from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected FocusListener createFocusListener() {
         return getHandler();
     }
 
-    // inner class copied from super
+    // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class ListSelectionHandler implements ListSelectionListener {
         /**
          * Constructs a {@code ListSelectionHandler}.
@@ -876,10 +882,7 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // copied from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected ListSelectionListener createListSelectionListener() {
         return getHandler();
     }
@@ -889,7 +892,7 @@ public class BasicYListUI extends YListUI {
         list.repaint();
     }
 
-    // inner class copied from super
+    // inner class copied javax.swing.plaf.basic.BasicListUI
     public class ListDataHandler implements ListDataListener {
         /**
          * Constructs a {@code ListDataHandler}.
@@ -912,15 +915,12 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // copied from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected ListDataListener createListDataListener() {
         return getHandler();
     }
 
-    // inner class copied from super
+    // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class PropertyChangeHandler implements PropertyChangeListener {
         /**
          * Constructs a {@code PropertyChangeHandler}.
@@ -932,85 +932,84 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-//    @Override // copied from super
+    // exact copy from javax.swing.plaf.basic.BasicListUI
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
     }
 
-    // copied from super
+    // copied from javax.swing.plaf.basic.BasicListUI
     private static final int CHANGE_LEAD = 0;
     private static final int CHANGE_SELECTION = 1;
     private static final int EXTEND_SELECTION = 2;
     
-    // inner class copied from super with small modifications
-    private static class Actions extends org.jdesktop.swingx.plaf.UIAction {
-        private static final String SELECT_PREVIOUS_COLUMN =
+    // inner class copied from javax.swing.plaf.basic.BasicListUI with small modifications
+    protected static class Actions extends org.jdesktop.swingx.plaf.UIAction {
+        protected int getElementCount(JList<?> list) {
+        	return list.getModel().getSize();
+        }
+        protected static final String SELECT_PREVIOUS_COLUMN =
                                     "selectPreviousColumn";
-        private static final String SELECT_PREVIOUS_COLUMN_EXTEND =
+        protected static final String SELECT_PREVIOUS_COLUMN_EXTEND =
                                     "selectPreviousColumnExtendSelection";
-        private static final String SELECT_PREVIOUS_COLUMN_CHANGE_LEAD =
+        protected static final String SELECT_PREVIOUS_COLUMN_CHANGE_LEAD =
                                     "selectPreviousColumnChangeLead";
-        private static final String SELECT_NEXT_COLUMN = "selectNextColumn";
-        private static final String SELECT_NEXT_COLUMN_EXTEND =
+        protected static final String SELECT_NEXT_COLUMN = "selectNextColumn";
+        protected static final String SELECT_NEXT_COLUMN_EXTEND =
                                     "selectNextColumnExtendSelection";
-        private static final String SELECT_NEXT_COLUMN_CHANGE_LEAD =
+        protected static final String SELECT_NEXT_COLUMN_CHANGE_LEAD =
                                     "selectNextColumnChangeLead";
-        private static final String SELECT_PREVIOUS_ROW = "selectPreviousRow";
-        private static final String SELECT_PREVIOUS_ROW_EXTEND =
+        protected static final String SELECT_PREVIOUS_ROW = "selectPreviousRow";
+        protected static final String SELECT_PREVIOUS_ROW_EXTEND =
                                      "selectPreviousRowExtendSelection";
-        private static final String SELECT_PREVIOUS_ROW_CHANGE_LEAD =
+        protected static final String SELECT_PREVIOUS_ROW_CHANGE_LEAD =
                                      "selectPreviousRowChangeLead";
-        private static final String SELECT_NEXT_ROW = "selectNextRow";
-        private static final String SELECT_NEXT_ROW_EXTEND =
+        protected static final String SELECT_NEXT_ROW = "selectNextRow";
+        protected static final String SELECT_NEXT_ROW_EXTEND =
                                      "selectNextRowExtendSelection";
-        private static final String SELECT_NEXT_ROW_CHANGE_LEAD =
+        protected static final String SELECT_NEXT_ROW_CHANGE_LEAD =
                                      "selectNextRowChangeLead";
-        private static final String SELECT_FIRST_ROW = "selectFirstRow";
-        private static final String SELECT_FIRST_ROW_EXTEND =
+        protected static final String SELECT_FIRST_ROW = "selectFirstRow";
+        protected static final String SELECT_FIRST_ROW_EXTEND =
                                      "selectFirstRowExtendSelection";
-        private static final String SELECT_FIRST_ROW_CHANGE_LEAD =
+        protected static final String SELECT_FIRST_ROW_CHANGE_LEAD =
                                      "selectFirstRowChangeLead";
-        private static final String SELECT_LAST_ROW = "selectLastRow";
-        private static final String SELECT_LAST_ROW_EXTEND =
+        protected static final String SELECT_LAST_ROW = "selectLastRow";
+        protected static final String SELECT_LAST_ROW_EXTEND =
                                      "selectLastRowExtendSelection";
-        private static final String SELECT_LAST_ROW_CHANGE_LEAD =
+        protected static final String SELECT_LAST_ROW_CHANGE_LEAD =
                                      "selectLastRowChangeLead";
-        private static final String SCROLL_UP = "scrollUp";
-        private static final String SCROLL_UP_EXTEND =
+        protected static final String SCROLL_UP = "scrollUp";
+        protected static final String SCROLL_UP_EXTEND =
                                      "scrollUpExtendSelection";
-        private static final String SCROLL_UP_CHANGE_LEAD =
+        protected static final String SCROLL_UP_CHANGE_LEAD =
                                      "scrollUpChangeLead";
-        private static final String SCROLL_DOWN = "scrollDown";
-        private static final String SCROLL_DOWN_EXTEND =
+        protected static final String SCROLL_DOWN = "scrollDown";
+        protected static final String SCROLL_DOWN_EXTEND =
                                      "scrollDownExtendSelection";
-        private static final String SCROLL_DOWN_CHANGE_LEAD =
+        protected static final String SCROLL_DOWN_CHANGE_LEAD =
                                      "scrollDownChangeLead";
-        private static final String SELECT_ALL = "selectAll";
-        private static final String CLEAR_SELECTION = "clearSelection";
+        protected static final String SELECT_ALL = "selectAll";
+        protected static final String CLEAR_SELECTION = "clearSelection";
 
         // add the lead item to the selection without changing lead or anchor
-        private static final String ADD_TO_SELECTION = "addToSelection";
+        protected static final String ADD_TO_SELECTION = "addToSelection";
 
         // toggle the selected state of the lead item and move the anchor to it
-        private static final String TOGGLE_AND_ANCHOR = "toggleAndAnchor";
+        protected static final String TOGGLE_AND_ANCHOR = "toggleAndAnchor";
 
         // extend the selection to the lead item
-        private static final String EXTEND_TO = "extendTo";
+        protected static final String EXTEND_TO = "extendTo";
 
         // move the anchor to the lead and ensure only that item is selected
-        private static final String MOVE_SELECTION_TO = "moveSelectionTo";
+        protected static final String MOVE_SELECTION_TO = "moveSelectionTo";
 
-        Actions(String name) {
+        protected Actions(String name) {
             super(name);
         }
         public void actionPerformed(ActionEvent e) {
             String name = getName();
             @SuppressWarnings("unchecked")
             JList<Object> list = (JList<Object>)e.getSource();
-//            BasicListUI ui = (BasicListUI)BasicLookAndFeel.getUIOfType(list.getUI(), BasicListUI.class);
             BasicYListUI ui = (BasicYListUI)LookAndFeelUtils.getUIOfType(list.getUI(), BasicYListUI.class);
 
             if (name == SELECT_PREVIOUS_COLUMN) {
@@ -1071,16 +1070,13 @@ public class BasicYListUI extends YListUI {
                 changeSelection(list, CHANGE_LEAD, 0, -1);
             }
             else if (name == SELECT_LAST_ROW) {
-                changeSelection(list, CHANGE_SELECTION,
-                                list.getModel().getSize() - 1, 1);
+                changeSelection(list, CHANGE_SELECTION, getElementCount(list) - 1, 1);
             }
-            else if (name == SELECT_LAST_ROW_EXTEND) {
-                changeSelection(list, EXTEND_SELECTION,
-                                list.getModel().getSize() - 1, 1);
+            else if (name == SELECT_LAST_ROW_EXTEND) { 
+            	changeSelection(list, EXTEND_SELECTION, getElementCount(list) - 1, 1);
             }
             else if (name == SELECT_LAST_ROW_CHANGE_LEAD) {
-                changeSelection(list, CHANGE_LEAD,
-                                list.getModel().getSize() - 1, 1);
+                changeSelection(list, CHANGE_LEAD, getElementCount(list) - 1, 1);
             }
             else if (name == SCROLL_UP) {
                 changeSelection(list, CHANGE_SELECTION,
@@ -1169,12 +1165,12 @@ public class BasicYListUI extends YListUI {
             return true;
         }
 
-        private void clearSelection(JList<?> list) {
+        protected void clearSelection(JList<?> list) {
             list.clearSelection();
         }
 
-        private void selectAll(JList<?> list) {
-            int size = list.getModel().getSize();
+        protected void selectAll(JList<?> list) {
+            int size = getElementCount(list);
             if (size > 0) {
                 ListSelectionModel lsm = list.getSelectionModel();
                 int lead = adjustIndex(lsm.getLeadSelectionIndex(), list);
@@ -1195,7 +1191,6 @@ public class BasicYListUI extends YListUI {
                     list.setSelectionInterval(0, size - 1);
 
                     // this is done to restore the anchor and lead
-//                  SwingUtilities2.setLeadAnchorWithoutSelection(lsm, anchor, lead);
                     SwingXUtilities.setLeadAnchorWithoutSelection(lsm, anchor, lead);
 
                     list.setValueIsAdjusting(false);
@@ -1203,8 +1198,8 @@ public class BasicYListUI extends YListUI {
             }
         }
 
-        private int getNextPageIndex(JList<?> list, int direction) {
-            if (list.getModel().getSize() == 0) {
+        protected int getNextPageIndex(JList<?> list, int direction) {
+            if (getElementCount(list) == 0) {
                 return -1;
             }
 
@@ -1366,9 +1361,9 @@ public class BasicYListUI extends YListUI {
             return index;
         }
 
-        private void changeSelection(JList<?> list, int type,
+        protected void changeSelection(JList<?> list, int type,
                                      int index, int direction) {
-            if (index >= 0 && index < list.getModel().getSize()) {
+            if (index >= 0 && index < getElementCount(list)) {
                 ListSelectionModel lsm = list.getSelectionModel();
 
                 // CHANGE_LEAD is only valid with multiple interval selection
@@ -1399,7 +1394,8 @@ public class BasicYListUI extends YListUI {
                 else {
                     // casting should be safe since the action is only enabled
                     // for DefaultListSelectionModel
-                    ((DefaultListSelectionModel)lsm).moveLeadSelectionIndex(index);
+                    if (lsm instanceof DefaultListSelectionModel dlsm)
+                    	dlsm.moveLeadSelectionIndex(index);
                 }
             }
         }
@@ -1409,7 +1405,7 @@ public class BasicYListUI extends YListUI {
          * index. When scroll up makes selected index the first visible index.
          * Adjust visible rectangle respect to list's component orientation.
          */
-        private void adjustScrollPositionIfNecessary(JList<?> list, int index,
+        protected void adjustScrollPositionIfNecessary(JList<?> list, int index,
                                                      int direction) {
             if (direction == 0) {
                 return;
@@ -1557,7 +1553,7 @@ public class BasicYListUI extends YListUI {
 
         private int getNextIndex(JList<?> list, BasicYListUI ui, int amount) {
             int index = adjustIndex(list.getLeadSelectionIndex(), list);
-            int size = list.getModel().getSize();
+            int size = getElementCount(list);
 
             if (index == -1) {
                 if (size > 0) {
@@ -1583,8 +1579,8 @@ public class BasicYListUI extends YListUI {
         }
     }
 
-    // inner class copied from javax.swing.plaf.basic.BasicListUI with small modifications
-    private class Handler 
+    // inner class copied from private javax.swing.plaf.basic.BasicListUI with small modifications
+    protected class Handler 
     implements FocusListener
     		 , KeyListener
     		 , ListDataListener
@@ -1600,6 +1596,9 @@ public class BasicYListUI extends YListUI {
         private String typedString = "";
         private long lastTime = 0L;
 
+        protected int getElementCount(JList<?> list) {
+        	return list.getModel().getSize();
+        }
 		/**
 		 * Invoked when a key has been typed.
 		 *
@@ -1613,12 +1612,9 @@ public class BasicYListUI extends YListUI {
 		 */
 		public void keyTyped(KeyEvent e) {
 			JList<?> src = (JList<?>) e.getSource();
-			ListModel<?> model = src.getModel();
+			int elementCount = getElementCount(src);
 
-			// isMenuShortcutKeyDown not visible:
-//			if (model.getSize() == 0 || e.isAltDown() || BasicGraphicsUtils.isMenuShortcutKeyDown(e) || isNavigationKey(e)) {
-			// daher ähnlich zu BasicXListUI:
-			if (model.getSize() == 0 || e.isAltDown() || e.isControlDown() || e.isMetaDown() || isNavigationKey(e)) {
+			if(elementCount == 0 || e.isAltDown() || e.isControlDown() || e.isMetaDown() || isNavigationKey(e)) {
 				// Nothing to select
 				return;
 			}
@@ -1644,7 +1640,7 @@ public class BasicYListUI extends YListUI {
 			}
 			lastTime = time;
 
-			if (startIndex < 0 || startIndex >= model.getSize()) {
+			if (startIndex < 0 || startIndex >= elementCount) {
 				startingFromSelection = false;
 				startIndex = 0;
 			}
@@ -1708,9 +1704,7 @@ public class BasicYListUI extends YListUI {
              * listDataListener from the old model and add it to the new one.
 			 */
 			if (propertyName == "model") {
-//				@SuppressWarnings("unchecked")
 				ListModel<?> oldModel = (ListModel<?>) e.getOldValue();
-//				@SuppressWarnings("unchecked")
 				ListModel<?> newModel = (ListModel<?>) e.getNewValue();
 				if (oldModel != null) {
 					oldModel.removeListDataListener(listDataListener);
@@ -1752,6 +1746,9 @@ public class BasicYListUI extends YListUI {
 			} else if (propertyName == "fixedCellWidth") {
 				updateLayoutStateNeeded |= fixedCellWidthChanged;
 				redrawList();
+            } else if (propertyName == "cellRenderer") {
+                updateLayoutStateNeeded |= cellRendererChanged;
+                redrawList();
 			} else if (propertyName == "selectionForeground") {
 				list.repaint();
 			} else if (propertyName == "selectionBackground") {
@@ -1853,8 +1850,7 @@ public class BasicYListUI extends YListUI {
         //
 		public void valueChanged(ListSelectionEvent e) {
 			maybeUpdateLayoutState();
-
-			int size = list.getModel().getSize();
+			int size = getElementCount(list);
 			int firstIndex = Math.min(size - 1, Math.max(e.getFirstIndex(), 0));
 			int lastIndex = Math.min(size - 1, Math.max(e.getLastIndex(), 0));
 
@@ -1883,7 +1879,6 @@ public class BasicYListUI extends YListUI {
         private boolean dragPressDidSelection;
 
 		public void mousePressed(MouseEvent e) {
-//			if (SwingUtilities2.shouldIgnore(e, list)) {
 			if (SwingXUtilities.shouldIgnore(e, list)) {
 				return;
 			}
@@ -1893,13 +1888,12 @@ public class BasicYListUI extends YListUI {
 
 			// different behavior if drag is enabled
 			if (dragEnabled) {
-//				int row = SwingUtilities2.loc2IndexFileList(list, e.getPoint());
+                // PENDING JW: this isn't aware of sorting/filtering - fix!
 				int row = SwingXUtilities.loc2IndexFileList(list, e.getPoint());
 				// if we have a valid row and this is a drag initiating event
 				if (row != -1 && DragRecognitionSupport.mousePressed(e)) {
 					dragPressDidSelection = false;
 
-//					if (BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
 					if (e.isControlDown()) {
 						// do nothing for control - will be handled on release
 						// or when drag starts
@@ -1924,7 +1918,6 @@ public class BasicYListUI extends YListUI {
 			}
 
 			if (grabFocus) {
-//				SwingUtilities2.adjustFocus(list);
 				SwingXUtilities.adjustFocus(list);
 			}
 
@@ -1932,7 +1925,7 @@ public class BasicYListUI extends YListUI {
 		}
 
 		private void adjustSelection(MouseEvent e) {
-//			int row = SwingUtilities2.loc2IndexFileList(list, e.getPoint());
+            // PENDING JW: this isn't aware of sorting/filtering - fix!
 			int row = SwingXUtilities.loc2IndexFileList(list, e.getPoint());
 			if (row < 0) {
 // If shift is down in multi-select, we should do nothing.
@@ -1979,15 +1972,13 @@ public class BasicYListUI extends YListUI {
 		public void dragStarting(MouseEvent me) {
 //			if (BasicGraphicsUtils.isMenuShortcutKeyDown(me)) {
 			if (me.isControlDown()) {
-//				int row = SwingUtilities2.loc2IndexFileList(list, me.getPoint());
+                // PENDING JW: this isn't aware of sorting/filtering - fix!
 				int row = SwingXUtilities.loc2IndexFileList(list, me.getPoint());
 				list.addSelectionInterval(row, row);
 			}
 		}
 
 		public void mouseDragged(MouseEvent e) {
-//			LOG.info("<<<<<<<<<<<<<<<MouseEvent "+e);
-//			if (SwingUtilities2.shouldIgnore(e, list)) {
 			if (SwingXUtilities.shouldIgnore(e, list)) {
 				return;
 			}
@@ -2020,7 +2011,6 @@ public class BasicYListUI extends YListUI {
 		}
 
 		public void mouseReleased(MouseEvent e) {
-//			if (SwingUtilities2.shouldIgnore(e, list)) {
 			if (SwingXUtilities.shouldIgnore(e, list)) {
 				return;
 			}
@@ -2028,7 +2018,6 @@ public class BasicYListUI extends YListUI {
 			if (list.getDragEnabled()) {
 				MouseEvent me = DragRecognitionSupport.mouseReleased(e);
 				if (me != null) {
-//					SwingUtilities2.adjustFocus(list);
 					SwingXUtilities.adjustFocus(list);
 					if (!dragPressDidSelection) {
 						adjustSelection(me);
@@ -2042,7 +2031,7 @@ public class BasicYListUI extends YListUI {
         //
         // FocusListener
         //
-		protected void repaintCellFocus() {
+		public void repaintCellFocus() {
 			int leadIndex = adjustIndex(list.getLeadSelectionIndex(), list);
 			if (leadIndex != -1) {
 				Rectangle r = getCellBounds(list, leadIndex, leadIndex);

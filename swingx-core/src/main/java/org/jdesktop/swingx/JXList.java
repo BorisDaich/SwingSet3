@@ -205,7 +205,6 @@ import org.jdesktop.swingx.table.TableColumnExt;
 @SuppressWarnings("serial") // Superclass is not serializable across versions
 public class JXList<E> extends JList<E> {
 
-    @SuppressWarnings("all")
     private static final Logger LOG = Logger.getLogger(JXList.class.getName());
     
     /**
@@ -657,6 +656,7 @@ public class JXList<E> extends JList<E> {
      *        sorting off
      */
     public void setRowSorter(RowSorter<? extends ListModel<E>> sorter) {
+    	LOG.info("sorter:"+sorter);
         RowSorter<? extends ListModel<E>> oldRowSorter = getRowSorter();
         this.rowSorter = sorter;
         configureSorterProperties();
