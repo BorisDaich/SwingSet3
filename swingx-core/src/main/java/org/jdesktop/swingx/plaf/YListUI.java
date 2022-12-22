@@ -18,10 +18,20 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ListUI;
 
-public abstract class YListUI extends ListUI {
+/**
+ * Similar to {@code javax.swing.plaf.basic.ListUI} this abstract class
+ * defines a pluggable look and feel delegate for {@code JYList} and {@code JXList}.
+ * 
+ * Most of the implementation is like in {@code javax.swing.plaf.basic.BasicListUI}
+ * 
+ * @see org.jdesktop.swingx.JYList
+ * @see org.jdesktop.swingx.JXList
+ */
+public class YListUI extends ListUI {
 
 	protected JList<Object> list = null;
 	protected CellRendererPane rendererPane;
+    // Listeners that this UI attaches to the JList
 	protected FocusListener focusListener; // interface FocusListener extends EventListener
 	protected MouseInputListener mouseInputListener;
 	protected ListSelectionListener listSelectionListener;
@@ -133,6 +143,13 @@ public abstract class YListUI extends ListUI {
         return minBounds;
     }
 
+    protected ListModel<Object> getViewModel() {
+    	return list.getModel();
+    }
+    protected int getElementCount() {
+    	return list.getModel().getSize();
+    }
+    
     /**
      * {@inheritDoc} <p>
      * Initializes <code>super.list</code> with <code>JComponent c</code> by calling
@@ -412,7 +429,14 @@ public abstract class YListUI extends ListUI {
         }
     }
 
-    // exact copy from javax.swing.plaf.basic.BasicListUI
+    /**
+     * Recompute the value of cellHeight or cellHeights based
+     * and cellWidth, based on the current font and the current
+     * values of fixedCellWidth, fixedCellHeight, and prototypeCellValue.
+     *
+     * @see javax.swing.plaf.basic.BasicListUI#updateLayoutState
+     */
+    // copy from javax.swing.plaf.basic.BasicListUI + protected
     protected void updateLayoutState() {
         /* If both JList fixedCellWidth and fixedCellHeight have been
          * set, then initialize cellWidth and cellHeight, and set
@@ -430,7 +454,7 @@ public abstract class YListUI extends ListUI {
         }
         else {
             cellHeight = -1;
-            cellHeights = new int[list.getModel().getSize()];
+            cellHeights = new int[getElementCount()];
         }
 
         /* If either of  JList fixedCellWidth and fixedCellHeight haven't
@@ -442,7 +466,7 @@ public abstract class YListUI extends ListUI {
 
         if ((fixedCellWidth == -1) || (fixedCellHeight == -1)) {
 
-            ListModel<Object> dataModel = list.getModel();
+            ListModel<Object> dataModel = getViewModel();
             int dataModelSize = dataModel.getSize();
             ListCellRenderer<Object> renderer = list.getCellRenderer();
 
@@ -513,7 +537,7 @@ public abstract class YListUI extends ListUI {
     /**
      * Returns the number of rows in the given column.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visiblility
+    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
     protected int getRowCount(int column) {
         if (column < 0 || column >= columnCount) {
             return -1;
@@ -543,16 +567,15 @@ public abstract class YListUI extends ListUI {
     }
 
     /**
-     * Invoked when the list is layed out horizontally to determine how
-     * many columns to create.
+     * Invoked when the list is layed out horizontally (VERTICAL_WRAP or HORIZONTAL_WRAP) 
+     * to determine how many columns to create.
      * <p>
      * This updates the <code>rowsPerColumn, </code><code>columnCount</code>,
      * <code>preferredHeight</code> and potentially <code>cellHeight</code>
      * instance variables.
      */
     // exact copy from javax.swing.plaf.basic.BasicListUI
-    private void updateHorizontalLayoutState(int fixedCellWidth,
-                                             int fixedCellHeight) {
+    private void updateHorizontalLayoutState(int fixedCellWidth, int fixedCellHeight) {
         int visRows = list.getVisibleRowCount();
         int dataModelSize = list.getModel().getSize();
         Insets insets = list.getInsets();
