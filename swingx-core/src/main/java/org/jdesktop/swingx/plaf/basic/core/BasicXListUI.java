@@ -28,7 +28,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -37,7 +36,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.CellRendererPane;
@@ -329,44 +327,6 @@ public class BasicXListUI extends BasicYListUI {
     }
 
 //---------------------  core copy
-    
-
-    /**
-     * Paint one List cell: compute the relevant state, get the "rubber stamp"
-     * cell renderer component, and then use the CellRendererPane to paint it.
-     * Subclasses may want to override this method rather than paint().
-     *
-     * @see #paint
-     */
-    // copied from javax.swing.plaf.basic.BasicListUI
-//	protected void paintCell(Graphics g, int row, Rectangle rowBounds, ListCellRenderer<Object> cellRenderer,
-//			ListModel<Object> dataModel, ListSelectionModel selModel, int leadIndex) {
-//        Object value = dataModel.getElementAt(row);
-//        boolean cellHasFocus = list.hasFocus() && (row == leadIndex);
-//        boolean isSelected = selModel.isSelectedIndex(row);
-//
-//        Component rendererComponent =
-//            cellRenderer.getListCellRendererComponent(list, value, row, isSelected, cellHasFocus);
-//
-//        int cx = rowBounds.x;
-//        int cy = rowBounds.y;
-//        int cw = rowBounds.width;
-//        int ch = rowBounds.height;
-//
-//        if (isFileList) {
-//            // Shrink renderer to preferred size. This is mostly used on Windows
-//            // where selection is only shown around the file name, instead of
-//            // across the whole list cell.
-//            int w = Math.min(cw, rendererComponent.getPreferredSize().width + 4);
-//            if (!isLeftToRight) {
-//                cx += (cw - w);
-//            }
-//            cw = w;
-//        }
-//
-//        rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
-//    }
-
 
     /**
      * Paint the rows that intersect the Graphics objects clipRect.  
@@ -639,29 +599,6 @@ public class BasicXListUI extends BasicYListUI {
         }
         return renderer.getBaseline(Integer.MAX_VALUE, rowHeight) + list.getInsets().top;
     }
-
-    /**
-     * Fix for Issue #1495: NPE on getBaseline.
-     * 
-     * As per contract, that methods needs to throw Exceptions on illegal
-     * parameters. As we by-pass super, need to do the check and throw
-     * ouerselves.
-     * 
-     * @param c JComponent
-     * @param width expected &ge; 0
-     * @param height expected &ge; 0
-     * 
-     * @throws IllegalArgumentException if width or height &lt; 0
-     * @throws NullPointerException if c == null
-     * /
-    protected void checkBaselinePrecondition(JComponent c, int width, int height) {
-        if (c == null) {
-            throw new NullPointerException("Component must be non-null");
-        }
-        if (width < 0 || height < 0) {
-            throw new IllegalArgumentException("Width and height must be >= 0");
-        }
-    } */
 
     /**
      * Returns an enum indicating how the baseline of the component
@@ -1017,90 +954,23 @@ public class BasicXListUI extends BasicYListUI {
         }
     }
 
-
     /**
-     * Initializes <code>this.list</code> by calling <code>installDefaults()</code>,
-     * <code>installListeners()</code>, and <code>installKeyboardActions()</code>
-     * in order.
-     *
-     * @see #installDefaults
-     * @see #installListeners
-     * @see #installKeyboardActions
+     * {@inheritDoc} <p>
+     * Also installs <code>ListSortUI()</code>
      */
     public void installUI(JComponent c) {
-//        @SuppressWarnings("unchecked")
-//		JXList<Object> tmp = (JXList<Object>)c;
-//        list = tmp;
-//
-//        layoutOrientation = list.getLayoutOrientation();
-//
-//        rendererPane = new CellRendererPane();
-//        list.add(rendererPane);
-//
-//        columnCount = 1;
-//
-//        updateLayoutStateNeeded = modelChanged;
-//        isLeftToRight = list.getComponentOrientation().isLeftToRight();
-//
-//        installDefaults();
-//        installListeners();
-//        installKeyboardActions();
     	super.installUI(c);
         installSortUI();
     }
 
-
     /**
-     * Uninitializes <code>this.list</code> by calling <code>uninstallListeners()</code>,
-     * <code>uninstallKeyboardActions()</code>, and <code>uninstallDefaults()</code>
-     * in order.  Sets this.list to null.
-     *
-     * @see #uninstallListeners
-     * @see #uninstallKeyboardActions
-     * @see #uninstallDefaults
+     * {@inheritDoc} <p>
+     * Also uninstalls <code>ListSortUI()</code>
      */
     public void uninstallUI(JComponent c) {
         uninstallSortUI();
         super.uninstallUI(c);
-//        uninstallListeners();
-//        uninstallDefaults();
-//        uninstallKeyboardActions();
-//
-//        cellWidth = cellHeight = -1;
-//        cellHeights = null;
-//
-//        listWidth = listHeight = -1;
-//
-//        list.remove(rendererPane);
-//        rendererPane = null;
-//        list = null;
     }
-
-
-    /**
-     * {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     */
-//  use it from super YListUI
-//    public int locationToIndex(JList<?> list, Point location) {
-//        maybeUpdateLayoutState();
-//        return convertLocationToModel(location.x, location.y);
-//    }
-
-    /**
-     * {@inheritDoc}
-     */
-//  use it from super YListUI
-//    public Point indexToLocation(JList<?> list, int index) {
-//        maybeUpdateLayoutState();
-//        Rectangle rect = getCellBounds(list, index, index);
-//
-//        if (rect != null) {
-//            return new Point(rect.x, rect.y);
-//        }
-//        return null;
-//    }
-
 
     /**
      * Returns the height of the specified row based on the current layout.
@@ -1129,43 +999,6 @@ public class BasicXListUI extends BasicYListUI {
     {
         return convertLocationToRow(0, y0, false);
     }
-
-
-    /**
-     * Return the JList relative Y coordinate of the origin of the specified
-     * row or -1 if row isn't valid.
-     *
-     * @return The Y coordinate of the origin of row, or -1.
-     * @see #getRowHeight
-     * @see #updateLayoutState
-     */
-//  use it from super YListUI
-//    protected int convertRowToY(int row)
-//    {
-//        if (row >= getRowCount(0) || row < 0) {
-//            return -1;
-//        }
-//        Rectangle bounds = getCellBounds(list, row, row);
-//        return bounds.y;
-//    }
-
-    /**
-     * Returns the height of the cell at the passed in location.
-     */
-//  use it from super YListUI
-//    protected int getHeight(int column, int row) {
-//        if (column < 0 || column > columnCount || row < 0) {
-//            return -1;
-//        }
-//        if (layoutOrientation != JList.VERTICAL) {
-//            return cellHeight;
-//        }
-//        if (row >= getElementCount()) {
-//            return -1;
-//        }
-//        return (cellHeights == null) ? cellHeight :
-//                           ((row < cellHeights.length) ? cellHeights[row] : -1);
-//    }
 
     /**
      * Returns the row at location x/y.
@@ -1233,20 +1066,6 @@ public class BasicXListUI extends BasicYListUI {
         }
         return convertLocationToRow(x, y, true);
     }
-
-    /**
-     * Returns the closest location to the model index of the passed in
-     * location.
-     */
-//    private int convertLocationToModel(int x, int y) {
-//        int row = convertLocationToRow(x, y, true);
-//        int column = convertLocationToColumn(x, y);
-//
-//        if (row >= 0 && column >= 0) {
-//            return getModelIndex(column, row);
-//        }
-//        return -1;
-//    }
 
     /**
      * Returns the number of rows in the given column.
@@ -1553,13 +1372,6 @@ public class BasicXListUI extends BasicYListUI {
         return new ListSelectionHandler();
     }
 
-
-    private void redrawList() {
-        list.revalidate();
-        list.repaint();
-    }
-
-
     /**
      * The ListDataListener that's added to the JLists model at
      * installUI time, and whenever the JList.model property changes.
@@ -1846,23 +1658,6 @@ public class BasicXListUI extends BasicYListUI {
 
         @Override
         public boolean isEnabled(Object c) {
-//            Object name = getName();
-//            if (name == SELECT_PREVIOUS_COLUMN_CHANGE_LEAD ||
-//                    name == SELECT_NEXT_COLUMN_CHANGE_LEAD ||
-//                    name == SELECT_PREVIOUS_ROW_CHANGE_LEAD ||
-//                    name == SELECT_NEXT_ROW_CHANGE_LEAD ||
-//                    name == SELECT_FIRST_ROW_CHANGE_LEAD ||
-//                    name == SELECT_LAST_ROW_CHANGE_LEAD ||
-//                    name == SCROLL_UP_CHANGE_LEAD ||
-//                    name == SCROLL_DOWN_CHANGE_LEAD) {
-//
-//                // discontinuous selection actions are only enabled for
-//                // DefaultListSelectionModel
-//                return c != null && ((JList<?>)c).getSelectionModel()
-//                                        instanceof DefaultListSelectionModel;
-//            }
-//
-//            return true;
         	return accept(c);
         }
 
@@ -2166,53 +1961,4 @@ public class BasicXListUI extends BasicYListUI {
         return index < ((JXList<?>) list).getElementCount() ? index : -1;
     }
 
-    private static final TransferHandler defaultTransferHandler = new ListTransferHandler();
-
-    @SuppressWarnings("serial") // Superclass is a JDK-implementation class
-    static class ListTransferHandler extends TransferHandler implements UIResource {
-
-        /**
-         * Create a Transferable to use as the source for a data transfer.
-         *
-         * @param c  The component holding the data to be transfered.  This
-         *  argument is provided to enable sharing of TransferHandlers by
-         *  multiple components.
-         * @return  The representation of the data to be transfered. 
-         *  
-         */
-        protected Transferable createTransferable(JComponent c) {
-            if (c instanceof JList<?> list) {
-                @SuppressWarnings("unchecked")
-				List<Object> selValues = ((JList<Object>)list).getSelectedValuesList();
-                if(selValues.isEmpty()) {
-                	return null;
-                }
-                
-                StringBuffer plainBuf = new StringBuffer();
-                StringBuffer htmlBuf = new StringBuffer();
-                
-                htmlBuf.append("<html>\n<body>\n<ul>\n");
-
-                for (int i = 0; i < selValues.size(); i++) {
-                    Object obj = selValues.get(i);
-                    String val = ((obj == null) ? "" : obj.toString());
-                    plainBuf.append(val + "\n");
-                    htmlBuf.append("  <li>" + val + "\n");
-                }
-                
-                // remove the last newline
-                plainBuf.deleteCharAt(plainBuf.length() - 1);
-                htmlBuf.append("</ul>\n</body>\n</html>");
-                
-                return new BasicTransferable(plainBuf.toString(), htmlBuf.toString());
-            }
-
-            return null;
-        }
-
-        public int getSourceActions(JComponent c) {
-            return COPY;
-        }
-
-    }
 }
