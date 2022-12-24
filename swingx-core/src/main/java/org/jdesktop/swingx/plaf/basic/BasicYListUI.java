@@ -95,7 +95,7 @@ public class BasicYListUI extends YListUI {
 
 	// factory
     public static ComponentUI createUI(JComponent c) {
-    	LOG.info("UI factory for JComponent:"+c);
+    	LOG.config("UI factory for JComponent:"+c);
         return new BasicYListUI(c);
     }
 
@@ -151,8 +151,8 @@ public class BasicYListUI extends YListUI {
 //    protected JList<Object> list = null;
 // ...
 
-	// private var like in javax.swing.plaf.basic.BasicListUI:
-	private Handler handler;
+	// var like in javax.swing.plaf.basic.BasicListUI:
+	protected Handler handler;
 
     protected static final int DROP_LINE_THICKNESS = 2;
     protected static final StringBuilder BASELINE_COMPONENT_KEY = new StringBuilder("List.baselineComponent");
@@ -789,7 +789,7 @@ public class BasicYListUI extends YListUI {
     }
     
     // exact copy from javax.swing.plaf.basic.BasicListUI
-    private Handler getHandler() {
+    protected Handler getHandler() {
         if (handler == null) {
             handler = new Handler();
         }

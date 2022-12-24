@@ -174,8 +174,6 @@ public class BasicXListUI extends BasicYListUI {
 	// vars in (super) BasicYListUI:
 //  protected JList<Object> list = null; // defined in YListUI
 //...
-	// private var like in javax.swing.plaf.basic.BasicListUI:
-	private Handler handler;
 
 //-------------------- X-Wrapper
     
@@ -1388,7 +1386,7 @@ public class BasicXListUI extends BasicYListUI {
         }
     }
 
-    private Handler getHandler() {
+    protected BasicYListUI.Handler getHandler() {
         if (handler == null) {
             handler = new Handler();
         }
@@ -2156,7 +2154,6 @@ public class BasicXListUI extends BasicYListUI {
     		 , PropertyChangeListener
     		 , BeforeDrag 
     {
-
         protected int getElementCount(JList<?> list) {
         	if(list instanceof JXList<?> xlist) {
         		return xlist.getElementCount();
