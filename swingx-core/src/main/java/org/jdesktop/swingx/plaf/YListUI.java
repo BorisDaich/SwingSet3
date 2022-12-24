@@ -268,7 +268,7 @@ public class YListUI extends ListUI {
      */
     // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
     protected int convertLocationToRow(int x, int y0, boolean closest) {
-        int size = list.getModel().getSize();
+        int size = getElementCount();
 
         if (size <= 0) {
             return -1;

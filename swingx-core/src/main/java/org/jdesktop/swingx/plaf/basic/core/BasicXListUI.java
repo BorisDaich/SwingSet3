@@ -971,68 +971,6 @@ public class BasicXListUI extends BasicYListUI {
     }
 
     /**
-     * Returns the height of the specified row based on the current layout.
-     *
-     * @return The specified row height or -1 if row isn't valid.
-     * @see #convertYToRow
-     * @see #convertRowToY
-     * @see #updateLayoutState
-     */
-    protected int getRowHeight(int row)
-    {
-        return getHeight(0, row);
-    }
-
-    /**
-     * Returns the row at location x/y.
-     *
-     * @param closest If true and the location doesn't exactly match a
-     *                particular location, this will return the closest row.
-     */
-//  use it from super YListUI TODO
-    protected int convertLocationToRow(int x, int y0, boolean closest) {
-        int size = getElementCount();
-
-        if (size <= 0) {
-            return -1;
-        }
-        Insets insets = list.getInsets();
-        if (cellHeights == null) {
-            int row = (cellHeight == 0) ? 0 :
-                           ((y0 - insets.top) / cellHeight);
-            if (closest) {
-                if (row < 0) {
-                    row = 0;
-                }
-                else if (row >= size) {
-                    row = size - 1;
-                }
-            }
-            return row;
-        }
-        else if (size > cellHeights.length) {
-            return -1;
-        }
-        else {
-            int y = insets.top;
-            int row = 0;
-
-            if (closest && y0 < y) {
-                return 0;
-            }
-            int i;
-            for (i = 0; i < size; i++) {
-                if ((y0 >= y) && (y0 < y + cellHeights[i])) {
-                    return row;
-                }
-                y += cellHeights[i];
-                row += 1;
-            }
-            return i - 1;
-        }
-    }
-
-    /**
      * Returns the closest row that starts at the specified y-location
      * in the passed in column.
      */
