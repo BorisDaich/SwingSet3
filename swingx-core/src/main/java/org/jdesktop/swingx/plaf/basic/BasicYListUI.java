@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.Action;
@@ -796,6 +797,16 @@ public class BasicYListUI extends YListUI {
         return handler;
     }
 
+    /**
+     * Mouse input, and focus handling for JList.  An instance of this
+     * class is added to the appropriate java.awt.Component lists
+     * at installUI() time.  Note keyboard input is handled with JComponent
+     * KeyboardActions, see installKeyboardActions().
+     *
+     * @see #createMouseInputListener
+     * @see #installKeyboardActions
+     * @see #installUI
+     */
     // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class MouseInputHandler implements MouseInputListener {
         /**
@@ -832,11 +843,38 @@ public class BasicYListUI extends YListUI {
         }
     }
 
+    /**
+     * Creates a delegate that implements {@code MouseInputListener}.
+     * The delegate is added to the corresponding {@code java.awt.Component} listener
+     * lists at {@code installUI()} time. Subclasses can override this method to return
+     * a custom {@code MouseInputListener}, e.g.
+     * <pre>
+     * class MyListUI extends BasicListUI {
+     *    protected MouseInputListener <b>createMouseInputListener</b>() {
+     *        return new MyMouseInputHandler();
+     *    }
+     *    public class MyMouseInputHandler extends MouseInputHandler {
+     *        public void mouseMoved(MouseEvent e) {
+     *            // do some extra work when the mouse moves
+     *            super.mouseMoved(e);
+     *        }
+     *    }
+     * }
+     * </pre>
+     *
+     * @return an instance of {@code MouseInputListener}
+     * @see MouseInputHandler
+     * @see #installUI
+     */
     // exact copy from javax.swing.plaf.basic.BasicListUI
     protected MouseInputListener createMouseInputListener() {
         return getHandler();
     }
 
+    /**
+     * This class should be treated as a &quot;protected&quot; inner class.
+     * Instantiate it only within subclasses.
+     */
     // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class FocusHandler implements FocusListener {
         /**
@@ -870,6 +908,15 @@ public class BasicYListUI extends YListUI {
         return getHandler();
     }
 
+    /**
+     * The ListSelectionListener that's added to the JLists selection
+     * model at installUI time, and whenever the JList.selectionModel property
+     * changes.  When the selection changes we repaint the affected rows.
+     *
+     * @see #createListSelectionListener
+     * @see #getCellBounds
+     * @see #installUI
+     */
     // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class ListSelectionHandler implements ListSelectionListener {
         /**
@@ -882,16 +929,47 @@ public class BasicYListUI extends YListUI {
         }
     }
 
+    /**
+     * Creates an instance of {@code ListSelectionHandler} that's added to
+     * the {@code JLists} by selectionModel as needed.  Subclasses can override
+     * this method to return a custom {@code ListSelectionListener}, e.g.
+     * <pre>
+     * class MyListUI extends BasicListUI {
+     *    protected ListSelectionListener <b>createListSelectionListener</b>() {
+     *        return new MySelectionListener();
+     *    }
+     *    public class MySelectionListener extends ListSelectionHandler {
+     *        public void valueChanged(ListSelectionEvent e) {
+     *            // do some extra work when the selection changes
+     *            super.valueChange(e);
+     *        }
+     *    }
+     * }
+     * </pre>
+     *
+     * @return an instance of {@code ListSelectionHandler}
+     * @see ListSelectionHandler
+     * @see #installUI
+     */
     // exact copy from javax.swing.plaf.basic.BasicListUI
     protected ListSelectionListener createListSelectionListener() {
         return getHandler();
     }
 
-    private void redrawList() {
+    protected void redrawList() {
         list.revalidate();
         list.repaint();
     }
 
+    /**
+     * The {@code ListDataListener} that's added to the {@code JLists} model at
+     * {@code installUI time}, and whenever the JList.model property changes.
+     *
+     * @see JList#getModel
+     * @see #maybeUpdateLayoutState
+     * @see #createListDataListener
+     * @see #installUI
+     */
     // inner class copied javax.swing.plaf.basic.BasicListUI
     public class ListDataHandler implements ListDataListener {
         /**
@@ -915,11 +993,45 @@ public class BasicYListUI extends YListUI {
         }
     }
 
+    /**
+     * Creates an instance of {@code ListDataListener} that's added to
+     * the {@code JLists} by model as needed. Subclasses can override
+     * this method to return a custom {@code ListDataListener}, e.g.
+     * <pre>
+     * class MyListUI extends BasicListUI {
+     *    protected ListDataListener <b>createListDataListener</b>() {
+     *        return new MyListDataListener();
+     *    }
+     *    public class MyListDataListener extends ListDataHandler {
+     *        public void contentsChanged(ListDataEvent e) {
+     *            // do some extra work when the models contents change
+     *            super.contentsChange(e);
+     *        }
+     *    }
+     * }
+     * </pre>
+     *
+     * @return an instance of {@code ListDataListener}
+     * @see ListDataListener
+     * @see JList#getModel
+     * @see #installUI
+     */
     // exact copy from javax.swing.plaf.basic.BasicListUI
     protected ListDataListener createListDataListener() {
         return getHandler();
     }
 
+    /**
+     * The PropertyChangeListener that's added to the JList at
+     * installUI time.  When the value of a JList property that
+     * affects layout changes, we set a bit in updateLayoutStateNeeded.
+     * If the JLists model changes we additionally remove our listeners
+     * from the old model.  Likewise for the JList selectionModel.
+     *
+     * @see #maybeUpdateLayoutState
+     * @see #createPropertyChangeListener
+     * @see #installUI
+     */
     // inner class copied from javax.swing.plaf.basic.BasicListUI
     public class PropertyChangeHandler implements PropertyChangeListener {
         /**
@@ -932,6 +1044,30 @@ public class BasicYListUI extends YListUI {
         }
     }
 
+    /**
+     * Creates an instance of {@code PropertyChangeHandler} that's added to
+     * the {@code JList} by {@code installUI()}. Subclasses can override this method
+     * to return a custom {@code PropertyChangeListener}, e.g.
+     * <pre>
+     * class MyListUI extends BasicListUI {
+     *    protected PropertyChangeListener <b>createPropertyChangeListener</b>() {
+     *        return new MyPropertyChangeListener();
+     *    }
+     *    public class MyPropertyChangeListener extends PropertyChangeHandler {
+     *        public void propertyChange(PropertyChangeEvent e) {
+     *            if (e.getPropertyName().equals("model")) {
+     *                // do some extra work when the model changes
+     *            }
+     *            super.propertyChange(e);
+     *        }
+     *    }
+     * }
+     * </pre>
+     *
+     * @return an instance of {@code PropertyChangeHandler}
+     * @see PropertyChangeListener
+     * @see #installUI
+     */
     // exact copy from javax.swing.plaf.basic.BasicListUI
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
@@ -2054,22 +2190,21 @@ public class BasicYListUI extends YListUI {
 		}
 	}
 
-    // copied from super
+    // copied from javax.swing.plaf.basic.BasicListUI
     private static int adjustIndex(int index, JList<?> list) {
         return index < list.getModel().getSize() ? index : -1;
     }
 
-    // copied from super
-    private static final TransferHandler defaultTransferHandler = new ListTransferHandler();
+    // copied from javax.swing.plaf.basic.BasicListUI
+    protected static final TransferHandler defaultTransferHandler = new ListTransferHandler();
 
-    static class ListTransferHandler extends TransferHandler implements UIResource {
+    @SuppressWarnings("serial")
+	static class ListTransferHandler extends TransferHandler implements UIResource {
         protected Transferable createTransferable(JComponent c) {
-            if (c instanceof JList) {
-                JList<?> list = (JList) c;
-                Object[] values = list.getSelectedValues();
-
-                if (values == null || values.length == 0) {
-                    return null;
+            if (c instanceof JList<?> list) {
+				List<?> selValues = list.getSelectedValuesList();
+                if(selValues.isEmpty()) {
+                	return null;
                 }
 
                 StringBuilder plainStr = new StringBuilder();
@@ -2077,8 +2212,8 @@ public class BasicYListUI extends YListUI {
 
                 htmlStr.append("<html>\n<body>\n<ul>\n");
 
-                for (int i = 0; i < values.length; i++) {
-                    Object obj = values[i];
+                for (int i = 0; i < selValues.size(); i++) {
+                	Object obj = selValues.get(i);
                     String val = ((obj == null) ? "" : obj.toString());
                     plainStr.append(val).append('\n');
                     htmlStr.append("  <li>").append(val).append('\n');
