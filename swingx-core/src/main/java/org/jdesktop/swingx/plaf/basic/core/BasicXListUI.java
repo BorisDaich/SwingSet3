@@ -29,10 +29,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -985,21 +983,6 @@ public class BasicXListUI extends BasicYListUI {
         return getHeight(0, row);
     }
 
-
-    /**
-     * Convert the JList relative coordinate to the row that contains it,
-     * based on the current layout.  If y0 doesn't fall within any row,
-     * return -1.
-     *
-     * @return The row that contains y0, or -1.
-     * @see #getRowHeight
-     * @see #updateLayoutState
-     */
-    protected int convertYToRow(int y0)
-    {
-        return convertLocationToRow(0, y0, false);
-    }
-
     /**
      * Returns the row at location x/y.
      *
@@ -1212,288 +1195,47 @@ public class BasicXListUI extends BasicYListUI {
         return handler;
     }
 
-    /**
-     * Mouse input, and focus handling for JList.  An instance of this
-     * class is added to the appropriate java.awt.Component lists
-     * at installUI() time.  Note keyboard input is handled with JComponent
-     * KeyboardActions, see installKeyboardActions().
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  
-     * As of 1.4, support for long term storage of all JavaBeans
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @see #createMouseInputListener
-     * @see #installKeyboardActions
-     * @see #installUI
-     */
-    public class MouseInputHandler implements MouseInputListener
-    {
-        public void mouseClicked(MouseEvent e) {
-            getHandler().mouseClicked(e);
-        }
-
-        public void mouseEntered(MouseEvent e) {
-            getHandler().mouseEntered(e);
-        }
-
-        public void mouseExited(MouseEvent e) {
-            getHandler().mouseExited(e);
-        }
-
-        public void mousePressed(MouseEvent e) {
-            getHandler().mousePressed(e);
-        }
-
-        public void mouseDragged(MouseEvent e) {
-            getHandler().mouseDragged(e);
-        }
-
-        public void mouseMoved(MouseEvent e) {
-            getHandler().mouseMoved(e);
-        }
-
-        public void mouseReleased(MouseEvent e) {
-            getHandler().mouseReleased(e);
-        }
-    }
-
-
-    /**
-     * Creates a delegate that implements MouseInputListener.
-     * The delegate is added to the corresponding java.awt.Component listener 
-     * lists at installUI() time. Subclasses can override this method to return 
-     * a custom MouseInputListener, e.g.
-     * <pre>
-     * class MyListUI extends BasicXListUI {
-     *    protected MouseInputListener <b>createMouseInputListener</b>() {
-     *        return new MyMouseInputHandler();
-     *    }
-     *    public class MyMouseInputHandler extends MouseInputHandler {
-     *        public void mouseMoved(MouseEvent e) {
-     *            // do some extra work when the mouse moves
-     *            super.mouseMoved(e);
-     *        }
-     *    }
-     * }
-     * </pre>
-     *
-     * @see MouseInputHandler
-     * @see #installUI
-     */
-    protected MouseInputListener createMouseInputListener() {
-        return getHandler();
-    }
-
-    /**
-     * This inner class is marked &quot;public&quot; due to a compiler bug.
-     * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of BasicTableUI.
-     */
-    public class FocusHandler implements FocusListener {
-        /**
-         * Repaints focused cells.
-         */
-        protected void repaintCellFocus() {
-            getHandler().repaintCellFocus();
-        }
-
-        /* The focusGained() focusLost() methods run when the JList
-         * focus changes.
-         */
-
-        public void focusGained(FocusEvent e) {
-            getHandler().focusGained(e);
-        }
-
-        public void focusLost(FocusEvent e) {
-            getHandler().focusLost(e);
-        }
-    }
-
-    protected FocusListener createFocusListener() {
-        return getHandler();
-    }
-
-    /**
-     * The ListSelectionListener that's added to the JLists selection
-     * model at installUI time, and whenever the JList.selectionModel property
-     * changes.  When the selection changes we repaint the affected rows.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  
-     * As of 1.4, support for long term storage of all JavaBeans
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @see #createListSelectionListener
-     * @see #getCellBounds
-     * @see #installUI
-     */
-    public class ListSelectionHandler implements ListSelectionListener
-    {
-        public void valueChanged(ListSelectionEvent e)
-        {
-            if (processedBySortUI(e)) return;
-            getHandler().valueChanged(e);
-        }
-    }
-
-
-    /**
-     * Creates an instance of ListSelectionHandler that's added to
-     * the JLists by selectionModel as needed.  Subclasses can override
-     * this method to return a custom ListSelectionListener, e.g.
-     * <pre>
-     * class MyListUI extends BasicXListUI {
-     *    protected ListSelectionListener <b>createListSelectionListener</b>() {
-     *        return new MySelectionListener();
-     *    }
-     *    public class MySelectionListener extends ListSelectionHandler {
-     *        public void valueChanged(ListSelectionEvent e) {
-     *            // do some extra work when the selection changes
-     *            super.valueChange(e);
-     *        }
-     *    }
-     * }
-     * </pre>
-     *
-     * @see ListSelectionHandler
-     * @see #installUI
-     */
+    @Override
     protected ListSelectionListener createListSelectionListener() {
-        return new ListSelectionHandler();
+        return new ListSelectionHandler() {
+        	@Override
+        	public void valueChanged(ListSelectionEvent e) {
+        		if (processedBySortUI(e)) return;
+        		getHandler().valueChanged(e);
+        	}
+        };
     }
 
-    /**
-     * The ListDataListener that's added to the JLists model at
-     * installUI time, and whenever the JList.model property changes.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  
-     * As of 1.4, support for long term storage of all JavaBeans
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @see JList#getModel
-     * @see #maybeUpdateLayoutState
-     * @see #createListDataListener
-     * @see #installUI
-     */
-    public class ListDataHandler implements ListDataListener
-    {
-        public void intervalAdded(ListDataEvent e) {
-            if (processedBySortUI(e))
-                return;
-            getHandler().intervalAdded(e);
-        }
-
-
-        public void intervalRemoved(ListDataEvent e) {
-            if (processedBySortUI(e))
-                return;
-            getHandler().intervalRemoved(e);
-        }
-
-
-        public void contentsChanged(ListDataEvent e) {
-            if (processedBySortUI(e))
-                return;
-            getHandler().contentsChanged(e);
-        }
-    }
-
-
-    /**
-     * Creates an instance of ListDataListener that's added to
-     * the JLists by model as needed.  Subclasses can override
-     * this method to return a custom ListDataListener, e.g.
-     * <pre>
-     * class MyListUI extends BasicXListUI {
-     *    protected ListDataListener <b>createListDataListener</b>() {
-     *        return new MyListDataListener();
-     *    }
-     *    public class MyListDataListener extends ListDataHandler {
-     *        public void contentsChanged(ListDataEvent e) {
-     *            // do some extra work when the models contents change
-     *            super.contentsChange(e);
-     *        }
-     *    }
-     * }
-     * </pre>
-     *
-     * @see ListDataListener
-     * @see JList#getModel
-     * @see #installUI
-     */
+    @Override
     protected ListDataListener createListDataListener() {
-        return new ListDataHandler();
+        return new ListDataHandler() {
+            @Override
+            public void intervalAdded(ListDataEvent e) {
+                if (processedBySortUI(e)) return;
+                getHandler().intervalAdded(e);
+            }
+            @Override
+            public void intervalRemoved(ListDataEvent e) {
+                if (processedBySortUI(e)) return;
+                getHandler().intervalRemoved(e);
+            }
+            @Override
+            public void contentsChanged(ListDataEvent e) {
+                if (processedBySortUI(e)) return;
+                getHandler().contentsChanged(e);
+            }
+        };
     }
 
-
-    /**
-     * The PropertyChangeListener that's added to the JList at
-     * installUI time.  When the value of a JList property that
-     * affects layout changes, we set a bit in updateLayoutStateNeeded.
-     * If the JLists model changes we additionally remove our listeners
-     * from the old model.  Likewise for the JList selectionModel.
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  
-     * As of 1.4, support for long term storage of all JavaBeans
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @see #maybeUpdateLayoutState
-     * @see #createPropertyChangeListener
-     * @see #installUI
-     */
-    public class PropertyChangeHandler implements PropertyChangeListener
-    {
-        public void propertyChange(PropertyChangeEvent e) {
-            getHandler().propertyChange(e);
-            updateSortUI(e.getPropertyName());
-        }
-    }
-
-    /**
-     * Creates an instance of PropertyChangeHandler that's added to
-     * the JList by installUI().  Subclasses can override this method
-     * to return a custom PropertyChangeListener, e.g.
-     * <pre>
-     * class MyListUI extends BasicXListUI {
-     *    protected PropertyChangeListener <b>createPropertyChangeListener</b>() {
-     *        return new MyPropertyChangeListener();
-     *    }
-     *    public class MyPropertyChangeListener extends PropertyChangeHandler {
-     *        public void propertyChange(PropertyChangeEvent e) {
-     *            if (e.getPropertyName().equals("model")) {
-     *                // do some extra work when the model changes
-     *            }
-     *            super.propertyChange(e);
-     *        }
-     *    }
-     * }
-     * </pre>
-     *
-     * @see PropertyChangeListener
-     * @see #installUI
-     */
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
-        return new PropertyChangeHandler();
+        return new PropertyChangeHandler() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                getHandler().propertyChange(e);
+                updateSortUI(e.getPropertyName());
+            }
+        };
     }
 
     /** Used by IncrementLeadSelectionAction. Indicates the action should
