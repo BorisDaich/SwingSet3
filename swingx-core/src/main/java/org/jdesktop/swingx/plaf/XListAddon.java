@@ -49,13 +49,15 @@ public class XListAddon extends AbstractComponentAddon {
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         defaults.add(JXList.uiClassID, "org.jdesktop.swingx.plaf.basic.core.BasicXListUI");
         
+        UIManager.getLookAndFeelDefaults().put("List.dropLineColor", Color.YELLOW);
+
         /*
          * key "List.background" is defined in javax.swing.plaf.basic.BasicLookAndFeel
          * replace the value with secondary3 Color
          */
         UIManager.getLookAndFeelDefaults().put("List.background", MetalLookAndFeel.getCurrentTheme().getControl());
 
-        Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
+        Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.RED);
         UIManager.getLookAndFeelDefaults().put("List.focusSelectedCellHighlightBorder", border);
         UIManager.getLookAndFeelDefaults().put("List.focusCellHighlightBorder", BorderFactory.createBevelBorder(BevelBorder.RAISED));
         UIManager.getLookAndFeelDefaults().put("List.cellNoFocusBorder", BorderFactory.createEtchedBorder());

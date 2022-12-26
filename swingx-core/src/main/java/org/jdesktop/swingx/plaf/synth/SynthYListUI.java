@@ -44,22 +44,15 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
 
 	@Override // implement SynthUI#paintBorder
 	public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
-		// in SynthListUI:
-//        context.getPainter().paintListBorder(context, g, x, y, w, h);		
         SynthUtils.getPainter(context).paintListBorder(context, g, x, y, w, h);
 	}
 
 	@Override // implement PropertyChangeListener#propertyChange AND SynthUI#propertyChange
 	public void propertyChange(PropertyChangeEvent evt) {
 		LOG.info("evt:"+evt);
-		// in SynthListUI:
-//        if (SynthLookAndFeel.shouldUpdateStyle(e)) {
-//            updateStyle((JList)e.getSource());
-//        }
         if (SynthUtils.shouldUpdateStyle(evt)) {
             updateStyle(this.list);
-        }
-		
+        }	
 	}
 
     /**
@@ -79,13 +72,6 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
      * 
      * @see javax.swing.plaf.synth.SynthListUI#installDefaults
      */
-/* javax.swing.plaf.synth.SynthListUI#installDefaults :
-        if (list.getCellRenderer() == null ||
-                 (list.getCellRenderer() instanceof UIResource)) {
-            list.setCellRenderer(new SynthListCellRenderer());
-        }
-        updateStyle(list);
- */
     @Override
     protected void installDefaults() {
     	LOG.info("####### list:"+list);
@@ -96,21 +82,15 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
     		LOG.info("CellRenderer:"+list.getCellRenderer()+" --- list.setCellRenderer(new SynthListCellRenderer()); // not visible");
     		// private inner class javax.swing.plaf.synth.SynthListUI.SynthListCellRenderer
     		list.setCellRenderer(new SynthListCellRenderer());
-    	} // nur so: else new SynthListCellRenderer();
+    	}
     	updateStyle(list);
     }
-    
+
     /**
      * this method is called at installUI() time.
      * 
      * @see javax.swing.plaf.synth.SynthListUI#installListeners
      */
-/* javax.swing.plaf.synth.SynthListUI#installListeners :
-    protected void installListeners() {
-        super.installListeners();
-        list.addPropertyChangeListener(this);
-    }
- */
     @Override
     protected void installListeners() {
         super.installListeners();
@@ -120,21 +100,13 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
     /**
      * this method is called at installUI() time.
      * 
-     * 
      * @see javax.swing.plaf.basic.BasicListUI#installKeyboardActions
      */
-/* no method in javax.swing.plaf.synth.SynthListUI#installKeyboardActions
- * javax.swing.plaf.basic.BasicListUI#installKeyboardActions :
-    protected void installKeyboardActions() {
-        InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
-        SwingUtilities.replaceUIInputMap(list, JComponent.WHEN_FOCUSED, inputMap);
-        LazyActionMap.installLazyActionMap(list, BasicListUI.class, "List.actionMap");
-    }
- */
     @Override
     protected void installKeyboardActions() {
         super.installKeyboardActions();    	
     }
+    
     /**
      * Returns the style for this component from the style factory.
      * @return
@@ -239,7 +211,6 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
 
     @Override
     public SynthContext getContext(JComponent c) {
-//        return getContext(c, getComponentState(c));
         if (c != list) throw new IllegalArgumentException("must be ui-delegate for component");
         return getContext(SynthUtils.getComponentState(list));
     }
@@ -248,17 +219,9 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
         return SynthUtils.getContext(list, getRegion(), style, state);
     }
 
-//    private SynthContext getContext(JComponent c, int state) {
-//        return SynthContext.getContext(c, style, state); // original not visible
-//    }
-
     private Region getRegion() {
         return YRegion.getYRegion(list, true);
     }
-
-//    private int getComponentState(JComponent c) {
-//        return SynthLookAndFeel.getComponentState(c);
-//    }
 
     /**
      * The {@code DefaultListCellRenderer} installed by the UI.
@@ -293,7 +256,7 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
             }
             else {
 //                SynthLookAndFeel.resetSelectedUI(); // not visible
-            	LOG.info("then...");
+            	LOG.info("else...");
             }
 
             super.getListCellRendererComponent(list, value, index,

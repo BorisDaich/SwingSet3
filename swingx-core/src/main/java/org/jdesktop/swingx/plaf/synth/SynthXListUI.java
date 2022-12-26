@@ -20,13 +20,17 @@
 package org.jdesktop.swingx.plaf.synth;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.synth.ColorType;
@@ -56,130 +60,98 @@ public class SynthXListUI extends BasicXListUI implements PropertyChangeListener
      * @return A new ListUI implementation for the Synth look and feel.
      */
     public static ComponentUI createUI(JComponent c) {
+    	LOG.config("UI factory for JComponent:"+c);
         return new SynthXListUI(c);
     }
 
-
     private SynthStyle style;
-//    @SuppressWarnings("unused")
     private boolean useListColors;
-//    @SuppressWarnings("unused")
     private boolean useUIBorder;
 
     public SynthXListUI(JComponent c) {
     	super(c);
     }
 
-    /**
-     * {@inheritDoc} <p>
-     * Overridden to fill background, Synth-style.
-     */
-    @Override
-    public void update(Graphics g, JComponent c) {
-/* in ComponentUI:
-        if (c.isOpaque()) {
-            g.setColor(c.getBackground());
-            g.fillRect(0, 0, c.getWidth(),c.getHeight());
-        }
-        paint(g, c);
-   ------------------------------
-original javax.swing.plaf.synth.SynthListUI:
-        SynthContext context = getContext(c);
-
-        SynthLookAndFeel.update(context, g);
-        context.getPainter().paintListBackground(context,
-                          g, 0, 0, c.getWidth(), c.getHeight());
-        paint(g, c);
-
- */
-        SynthContext context = getContext(c);
-        SynthStyle style = context.getStyle();
-        LOG.info("???? c.isOpaque()="+c.isOpaque() + "style color BACKGROUND:"+style.getColor(context, ColorType.BACKGROUND));
-        // painting of the background :
-        // TODO tut nicht
-        SynthUtils.update(context, g);
-        paintBorder(context, g, 0, 0, c.getWidth(), c.getHeight());
-        paint(g, c);
-    }
-
-    /**
-     * Paints border with the context's style's painter.
-     * Implemented for SynthUI interface.
-     */
-    @Override
-    public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
+	@Override // implement SynthUI#paintBorder
+	public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
         SynthUtils.getPainter(context).paintListBorder(context, g, x, y, w, h);
-    }
+	}
+
+	@Override // implement PropertyChangeListener#propertyChange AND SynthUI#propertyChange
+	public void propertyChange(PropertyChangeEvent evt) {
+//		LOG.info("PropertyChangeEvent:"+evt);
+        if (SynthUtils.shouldUpdateStyle(evt)) {
+            updateStyle(this.list);
+        }	
+	}
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void installListeners() {
-        super.installListeners();
-        list.addPropertyChangeListener(this);
-    }
-
-	@Override // implements PropertyChangeListener
-	public void propertyChange(PropertyChangeEvent evt) {
-/*
-original javax.swing.plaf.synth.SynthListUI:
-        if (SynthLookAndFeel.shouldUpdateStyle(e)) { // method not visible
-            updateStyle((JList)e.getSource());
-        }
- */
-        if (SynthUtils.shouldUpdateStyle(evt)) {
-            updateStyle();
-        }
-	}
-
-
-    /**
-     * {@inheritDoc} <p>
-     * Overridden to update style if appropriate.
-     */
-    @Override
-    protected PropertyChangeListener createPropertyChangeListener() {
-        PropertyChangeListener l = new PropertyChangeHandler() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent e) {
-                if (SynthUtils.shouldUpdateStyle(e)) {
-                    updateStyle();
-                }
-                super.propertyChange(e);
-            }
-            
-        };
-        return l;
+    @Override // overrides to LOG
+    public void installUI(JComponent c) {
+    	super.installUI(c);
+//        installDefaults();
+//        installListeners();
+//        installKeyboardActions();
     }
 
     /**
-     * {@inheritDoc} <p>
-     * Overridden to install properties, Synth-style.
+     * this method is called at installUI() time.
+     * 
+     * @see javax.swing.plaf.synth.SynthListUI#installDefaults
      */
     @Override
     protected void installDefaults() {
-        // never happens - the delegate renderer is always not-null and
-        // not a ui-resource
-//        if (list.getCellRenderer() == null ||
-//                 (list.getCellRenderer() instanceof UIResource)) {
-//            list.setCellRenderer(new SynthListCellRenderer());
-//        }
-    	
-        updateStyle(); // wird updateStyle nach hinten verschonen, bleiben die Zellen weiss!!!
-        
-		// TODO damit werden ABER nur die Zellen bemalt
-		Color bg = list.getBackground();
-		if (bg == null || bg instanceof UIResource) {
-			LOG.info("reset List.background:" + bg + " with " + UIManager.getColor("List.background"));
-			list.setBackground(UIManager.getColor("List.background"));
-//          list.repaint(); // nicht notwendig - wird in setBackground gemacht
-		}
-
+//    	LOG.info("####### list:"+list);
+    	if (list.getCellRenderer() == null || (list.getCellRenderer() instanceof UIResource)) {
+    		LOG.info("CellRenderer:"+list.getCellRenderer()+" --- list.setCellRenderer(new SynthListCellRenderer()); // not visible");
+    		// private inner class javax.swing.plaf.synth.SynthListUI.SynthListCellRenderer
+    		list.setCellRenderer(new SynthListCellRenderer());
+    	}
+    	updateStyle(list);
     }
 
-    private void updateStyle() {
+    /**
+     * this method is called at installUI() time.
+     * 
+     * @see javax.swing.plaf.synth.SynthListUI#installListeners
+     */
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+        list.addPropertyChangeListener(this); // see propertyChange method
+    }
+
+    /**
+     * this method is called at installUI() time.
+     * 
+     * @see javax.swing.plaf.basic.BasicListUI#installKeyboardActions
+     */
+    @Override
+    protected void installKeyboardActions() {
+        super.installKeyboardActions();    	
+    }
+    
+    /**
+     * Returns the style for this component from the style factory.
+     * @return
+     */
+    private SynthStyle getStyle() {
+    	LOG.config("get style from the style factory \n for "+list+" \n and Region:"+getRegion());
+        return SynthLookAndFeel.getStyleFactory().getStyle(list, getRegion());
+    }
+
+    /**
+     * Installs a SynthBorder from the current style, if ui-installable.
+     */
+    protected void installSynthBorder() {
+        if (SwingXUtilities.isUIInstallable(list.getBorder())) {
+            list.setBorder(new SynthBorder(this, style.getInsets(getContext(ENABLED), null)));
+        }
+    }
+
+    private void updateStyle(JComponent c) {
         // compare local reference to style from factory
         // nothing to do if same
         if (style == getStyle()) return;
@@ -198,6 +170,13 @@ original javax.swing.plaf.synth.SynthListUI:
         style.installDefaults(getContext(ENABLED));
         // install selected properties
         SynthContext selectedContext = getContext(SELECTED);
+//        ----------------------------
+		Color bg = list.getBackground();
+//		LOG.info("--------"+(bg instanceof UIResource)+"---------- bg:"+bg); // pColor=255,255,255
+        if (bg == null || bg instanceof UIResource) {
+            list.setBackground(UIManager.getColor("List.background"));
+        }
+//      ----------------------------
         Color sbg = list.getSelectionBackground();
         if (sbg == null || sbg instanceof UIResource) {
             list.setSelectionBackground(style.getColor(selectedContext, ColorType.TEXT_BACKGROUND));
@@ -223,100 +202,64 @@ original javax.swing.plaf.synth.SynthListUI:
         
     }
 
-    /**
-     * Installs a SynthBorder from the current style, if ui-installable.
-     */
-    protected void installSynthBorder() {
-        if (SwingXUtilities.isUIInstallable(list.getBorder())) {
-            list.setBorder(new SynthBorder(this, style.getInsets(getContext(ENABLED), null)));
-        }
-    }
-
-    /**
-     * {@inheritDoc} <p>
-     * Overridden to uninstall properties, Synth-style, after calling super.
-     */
-    @Override
-    protected void uninstallDefaults() {
-        super.uninstallDefaults();
-        style.uninstallDefaults(getContext(ENABLED));
-        style = null;
-    }
-
-    
-    /**
-     * {@inheritDoc} <p>
-     * 
-     * Returns a context for the component's current state.
-     * Implemented for SynthUI interface. <p>
-     * 
-     * PENDING JW: not entirely sure if allowed ... but need to replace SynthUI anyway?.
-     * 
-     * @throws IllegalArgumentException if the component is not controlled by this 
-     *    delegate
-     */
     @Override
     public SynthContext getContext(JComponent c) {
         if (c != list) throw new IllegalArgumentException("must be ui-delegate for component");
         return getContext(SynthUtils.getComponentState(list));
     }
 
-    /**
-     * Returns a Context with the given component state.
-     * 
-     * @param state
-     * @return
-     */
     private SynthContext getContext(int state) {
         return SynthUtils.getContext(list, getRegion(), style, state);
     }
-    
+
     private Region getRegion() {
         return XRegion.getXRegion(list, true);
     }
 
-
     /**
-     * Returns the style for this component from the style factory.
-     * @return
+     * The {@code DefaultListCellRenderer} installed by the UI.
      */
-    private SynthStyle getStyle() {
-    	LOG.info("get style from the style factory for "+list);
-        return SynthLookAndFeel.getStyleFactory().getStyle(list, getRegion());
-    }
+    @SuppressWarnings("serial") // Superclass is not serializable across versions
+    class SynthListCellRenderer extends DefaultListCellRenderer.UIResource {
+    	
+    	public SynthListCellRenderer() {
+    		super();
+    		LOG.info("ctor done");
+    	}
+        @Override 
+        public String getName() {
+            return "List.cellRenderer";
+        }
 
-//    private class SynthListCellRenderer extends DefaultListCellRenderer.UIResource {
-//        public String getName() {
-//            return "List.cellRenderer";
-//        }
-//
-//        public void setBorder(Border b) {
-//            if (useUIBorder || b instanceof SynthBorder) {
-//                super.setBorder(b);
-//            }
-//        }
-//
-//        public Component getListCellRendererComponent(JList list, Object value,
-//                  int index, boolean isSelected, boolean cellHasFocus) {
-//            if (!useListColors && (isSelected || cellHasFocus)) {
+        @Override 
+        public void setBorder(Border b) {
+            if (useUIBorder || b instanceof SynthBorder) {
+                super.setBorder(b);
+            }
+        }
+
+        @Override 
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                  int index, boolean isSelected, boolean cellHasFocus) {
+            if (!useListColors && (isSelected || cellHasFocus)) {
+            	LOG.info("then...");
 //                SynthLookAndFeel.setSelectedUI((SynthLabelUI)SynthLookAndFeel.
 //                             getUIOfType(getUI(), SynthLabelUI.class),
 //                                   isSelected, cellHasFocus, list.isEnabled(), false);
-//            }
-//            else {
-//                SynthLookAndFeel.resetSelectedUI();
-//            }
-//            
-//            super.getListCellRendererComponent(list, value, index,
-//                                               isSelected, cellHasFocus);
-//            return this;
-//        }
-//
-//        public void paint(Graphics g) {
-//            super.paint(g);
-//            SynthLookAndFeel.resetSelectedUI();
-//        }
-//    }
+            }
+            else {
+//                SynthLookAndFeel.resetSelectedUI(); // not visible
+            	LOG.info("else...");
+            }
 
+            super.getListCellRendererComponent(list, value, index,
+                                               isSelected, cellHasFocus);
+            return this;
+        }
 
+        @Override public void paint(Graphics g) {
+            super.paint(g);
+//            SynthLookAndFeel.resetSelectedUI(); // not visible
+        }
+    }
 }

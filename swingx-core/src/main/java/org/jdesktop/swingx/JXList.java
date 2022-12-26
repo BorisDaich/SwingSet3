@@ -656,7 +656,7 @@ public class JXList<E> extends JList<E> {
      *        sorting off
      */
     public void setRowSorter(RowSorter<? extends ListModel<E>> sorter) {
-    	LOG.info("sorter:"+sorter);
+    	LOG.config("sorter:"+sorter);
         RowSorter<? extends ListModel<E>> oldRowSorter = getRowSorter();
         this.rowSorter = sorter;
         configureSorterProperties();

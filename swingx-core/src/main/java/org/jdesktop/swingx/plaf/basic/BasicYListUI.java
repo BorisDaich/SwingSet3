@@ -159,7 +159,18 @@ public class BasicYListUI extends YListUI {
     protected static final StringBuilder BASELINE_COMPONENT_KEY = new StringBuilder("List.baselineComponent");
 
     /**
-     * {@inheritDoc}
+     * Paint one List cell: compute the relevant state, get the "rubber stamp"
+     * cell renderer component, and then use the {@code CellRendererPane} to paint it.
+     * Subclasses may want to override this method rather than {@code paint()}.
+     *
+     * @param g an instance of {@code Graphics}
+     * @param row a row
+     * @param rowBounds a bounding rectangle to render to
+     * @param cellRenderer a list of {@code ListCellRenderer}
+     * @param dataModel a list model
+     * @param selModel a selection model
+     * @param leadIndex a lead index
+     * @see #paint
      */
     // copied from javax.swing.plaf.basic.BasicListUI
 	protected void paintCell(Graphics g, int row, Rectangle rowBounds, ListCellRenderer<Object> cellRenderer,
@@ -306,9 +317,9 @@ public class BasicYListUI extends YListUI {
 		}
 	}
 
-    // exact copy from javax.swing.plaf.basic.BasicListUI
+    // copied from javax.swing.plaf.basic.BasicListUI
     protected Rectangle getDropLineRect(JList.DropLocation loc) {
-        int size = list.getModel().getSize();
+        int size = getElementCount();
 
         if (size == 0) {
             Insets insets = list.getInsets();
@@ -737,7 +748,7 @@ public class BasicYListUI extends YListUI {
      */
     @Override // call it from super
     public void installUI(JComponent c) {
-    	LOG.info("---------->JComponent:"+c);
+//    	LOG.info("---------->JComponent:"+c);
     	super.installUI(c);
     	assert super.list == c;
     }
