@@ -417,61 +417,6 @@ public class BasicXListUI extends BasicYListUI {
         rendererPane.removeAll();
     }
 
-    /**
-     * Returns the baseline.
-     *
-     * @throws NullPointerException {@inheritDoc}
-     * @throws IllegalArgumentException {@inheritDoc}
-     * @see javax.swing.JComponent#getBaseline(int, int)
-     * @since 1.6
-     */
-    // modified code from javax.swing.plaf.basic.BasicListUI#getBaseline
-    public int getBaseline(JComponent c, int width, int height) {
-//        super.getBaseline(c, width, height);
-        checkBaselinePrecondition(c, width, height);
-        int rowHeight = list.getFixedCellHeight();
-        UIDefaults lafDefaults = UIManager.getLookAndFeelDefaults();
-        Component renderer = (Component)lafDefaults.get(BASELINE_COMPONENT_KEY);
-        if (renderer == null) {
-            @SuppressWarnings("unchecked")
-            ListCellRenderer<Object> lcr = (ListCellRenderer<Object>)UIManager.get("List.cellRenderer");
-
-            // fix for 6711072 some LAFs like Nimbus do not provide this
-            // UIManager key and we should not through a NPE here because of it
-            if (lcr == null) {
-                lcr = new DefaultListCellRenderer();
-            }
-            renderer = lcr.getListCellRendererComponent(list, "a", -1, false, false);
-            lafDefaults.put(BASELINE_COMPONENT_KEY, renderer);
-        }
-        renderer.setFont(list.getFont());
-        // JList actually has much more complex behavior here.
-        // If rowHeight != -1 the rowHeight is either the max of all cell
-        // heights (layout orientation != VERTICAL), or is variable depending
-        // upon the cell.  We assume a default size.
-        // We could theoretically query the real renderer, but that would
-        // not work for an empty model and the results may vary with 
-        // the content.
-        if (rowHeight == -1) {
-            rowHeight = renderer.getPreferredSize().height;
-        }
-        return renderer.getBaseline(Integer.MAX_VALUE, rowHeight) + list.getInsets().top;
-    }
-
-    /**
-     * Returns an enum indicating how the baseline of the component
-     * changes as the size changes.
-     *
-     * @throws NullPointerException {@inheritDoc}
-     * @see javax.swing.JComponent#getBaseline(int, int)
-     * @since 1.6
-     */
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior(
-            JComponent c) {
-        super.getBaselineResizeBehavior(c);
-        return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
-    }
-
     /* TODO cannot build table with javadoc :
      * <table>
      * <tr><th>Layout Orientation</th><th>Preferred Size</th></tr>
