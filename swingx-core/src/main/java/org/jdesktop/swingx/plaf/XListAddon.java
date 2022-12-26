@@ -49,6 +49,9 @@ public class XListAddon extends AbstractComponentAddon {
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         defaults.add(JXList.uiClassID, "org.jdesktop.swingx.plaf.basic.core.BasicXListUI");
         
+        /*
+         * key "List.dropLineColor" is defined in javax.swing.plaf.basic.BasicLookAndFeel with controlShadow Color
+         */     
         UIManager.getLookAndFeelDefaults().put("List.dropLineColor", Color.YELLOW);
 
         /*
