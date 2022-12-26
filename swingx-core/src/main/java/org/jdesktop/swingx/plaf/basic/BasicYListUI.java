@@ -511,13 +511,17 @@ public class BasicYListUI extends YListUI {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc} <p>
+     * The preferredSize of the list depends upon the layout orientation. 
+     * Threre are 3 layouts {@code VERTICAL}, {@code HORIZONTAL_WRAP}, and {@code VERTICAL_WRAP}
+     * 
+     * @see javax.swing.JList#setLayoutOrientation(int)
      */
-    @Override // defined in ComponentUI , exact copy from javax.swing.plaf.basic.BasicListUI
+    @Override // defined in ComponentUI , copied from javax.swing.plaf.basic.BasicListUI
     public Dimension getPreferredSize(JComponent c) {
         maybeUpdateLayoutState();
 
-        int lastRow = list.getModel().getSize() - 1;
+        int lastRow = getElementCount() - 1;
         if (lastRow < 0) {
             return new Dimension(0, 0);
         }
