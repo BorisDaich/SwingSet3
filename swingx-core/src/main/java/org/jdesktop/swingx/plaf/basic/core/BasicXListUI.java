@@ -20,8 +20,6 @@
 package org.jdesktop.swingx.plaf.basic.core;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -31,13 +29,11 @@ import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
-import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import javax.swing.CellRendererPane;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -47,7 +43,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -416,38 +411,6 @@ public class BasicXListUI extends BasicYListUI {
         // Empty out the renderer pane, allowing renderers to be gc'ed.
         rendererPane.removeAll();
     }
-
-
-    /**
-     * Selected the previous row and force it to be visible.
-     *
-     * @see JList#ensureIndexIsVisible
-     */
-    protected void selectPreviousIndex() {
-        int s = list.getSelectedIndex();
-        if(s > 0) {
-            s -= 1;
-            list.setSelectedIndex(s);
-            list.ensureIndexIsVisible(s);
-        }
-    }
-
-
-    /**
-     * Selected the previous row and force it to be visible.
-     *
-     * @see JList#ensureIndexIsVisible
-     */
-    protected void selectNextIndex()
-    {
-        int s = list.getSelectedIndex();
-        if((s + 1) < getElementCount()) {
-            s += 1;
-            list.setSelectedIndex(s);
-            list.ensureIndexIsVisible(s);
-        }
-    }
-
 
     /**
      * Registers the keyboard bindings on the <code>JList</code> that the

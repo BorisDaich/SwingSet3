@@ -546,6 +546,11 @@ public class BasicYListUI extends YListUI {
         return new Dimension(width, height);
     }
 
+    /**
+     * Select the previous row and force it to be visible.
+     *
+     * @see javax.swing.JList#ensureIndexIsVisible
+     */
     // exact copy from javax.swing.plaf.basic.BasicListUI
     protected void selectPreviousIndex() {
         int s = list.getSelectedIndex();
@@ -556,10 +561,15 @@ public class BasicYListUI extends YListUI {
         }
     }
     
-    // exact copy from javax.swing.plaf.basic.BasicListUI
+    /**
+     * Select the next row and force it to be visible.
+     *
+     * @see javax.swing.JList#ensureIndexIsVisible
+     */
+    // copy from javax.swing.plaf.basic.BasicListUI
     protected void selectNextIndex() {
         int s = list.getSelectedIndex();
-        if((s + 1) < list.getModel().getSize()) {
+        if((s + 1) < getElementCount()) {
             s += 1;
             list.setSelectedIndex(s);
             list.ensureIndexIsVisible(s);
