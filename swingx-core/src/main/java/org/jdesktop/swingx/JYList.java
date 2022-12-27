@@ -51,8 +51,9 @@ public class JYList<E> extends JList<E> {
     }
 
     /**
+     * UI Class ID
      * @see #getUIClassID
-     * @see #readObject
+     * @see javax.swing.JComponent#readObject
      */
     public static final String uiClassID = "YListUI";
 

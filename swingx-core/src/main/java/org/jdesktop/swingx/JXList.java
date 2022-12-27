@@ -212,6 +212,8 @@ public class JXList<E> extends JList<E> {
     
     /**
      * UI Class ID
+     * @see #getUIClassID
+     * @see javax.swing.JComponent#readObject
      */
     public final static String uiClassID = "XListUI";
     
@@ -1626,6 +1628,10 @@ public class JXList<E> extends JList<E> {
         updateHighlighterUI();
     }
 
+    /**
+     * {@inheritDoc} <p>
+     * @return the custom uiClassID
+     */
     @Override
     public String getUIClassID() {
         // PENDING JW: temporary during dev to quickly switch between default and custom ui
