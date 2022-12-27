@@ -224,9 +224,8 @@ public class BasicYListUI extends YListUI {
         paintDropLine(g);
     }
 
-    // exact copy from javax.swing.plaf.basic.BasicListUI + LOGs
+    // copied from javax.swing.plaf.basic.BasicListUI + LOGs
     protected void paintImpl(Graphics g, JComponent c) {
-//    	LOG.info("layoutOrientation="+layoutOrientation);
         switch (layoutOrientation) {
         case JList.VERTICAL_WRAP:
             if (list.getHeight() != listHeight) {
@@ -246,7 +245,7 @@ public class BasicYListUI extends YListUI {
         maybeUpdateLayoutState();
 
         ListCellRenderer<Object> renderer = list.getCellRenderer();
-        ListModel<Object> dataModel = list.getModel();
+        ListModel<Object> dataModel = getViewModel();
         ListSelectionModel selModel = list.getSelectionModel();
         int size;
 
