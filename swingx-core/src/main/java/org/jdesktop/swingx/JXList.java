@@ -23,8 +23,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -998,15 +1001,10 @@ public class JXList<E> extends JList<E> {
     }
 
     /**
-     * Returns an array of all the selected values, in increasing order based
-     * on their indices in the list and taking into account sorting and filtering.
-     *
-     * @return the selected values, or an empty array if nothing is selected
-     * @see #isSelectedIndex
-     * @see #getModel
-     * @see #addListSelectionListener
+     * {@inheritDoc}
      */
     @Override
+    @Deprecated // use getSelectedValuesList
     public Object[] getSelectedValues() {
         int[] selectedIndexes = getSelectedIndices();
         Object[] selectedValues = new Object[selectedIndexes.length];
@@ -1014,6 +1012,37 @@ public class JXList<E> extends JList<E> {
             selectedValues[i] = getElementAt(selectedIndexes[i]);
         }
         return selectedValues;
+    }
+    /**
+     * {@inheritDoc} <p>
+     * use {@code SortController} as model
+     */
+    @Override
+    public List<E> getSelectedValuesList() {
+    	SortController<? extends ListModel<Object>> sc = getSortController();
+    	if(sc==null) return super.getSelectedValuesList();
+
+        int[] selectedIndices = getSelectedIndices();
+
+        if (selectedIndices.length > 0) {
+            int size = getElementCount();
+            if (selectedIndices[0] >= size) {
+                return Collections.emptyList();
+            }
+            List<E> selectedItems = new ArrayList<E>();
+            for (int i : selectedIndices) {
+                if (i >= size)
+                    break;
+                selectedItems.add(getElementAt(i));
+            }
+//            LOG.info("---------selectedItems.size="+selectedItems.size());
+//            selectedItems.forEach( e -> {
+//            	LOG.info("e:"+e);
+//            });
+            return selectedItems;
+        }
+        return Collections.emptyList();
+    	
     }
 
     /**
