@@ -339,15 +339,13 @@ public class YListUI extends ListUI {
      * If <code>column</code>x<code>row</code> is beyond the length of the model, 
      * this will return the model size - 1.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    // copied from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
     protected int getModelIndex(int column, int row) {
         switch (layoutOrientation) {
         case JList.VERTICAL_WRAP:
-            return Math.min(list.getModel().getSize() - 1, rowsPerColumn *
-                            column + Math.min(row, rowsPerColumn-1));
+            return Math.min(getElementCount() - 1, rowsPerColumn * column + Math.min(row, rowsPerColumn-1));
         case JList.HORIZONTAL_WRAP:
-            return Math.min(list.getModel().getSize() - 1, row * columnCount +
-                            column);
+            return Math.min(getElementCount() - 1, row * columnCount + column);
         default:
             return row;
         }
@@ -356,16 +354,15 @@ public class YListUI extends ListUI {
     /**
      * Returns the row that the model index <code>index</code> will be displayed in.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    // copied from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
     protected int convertModelToRow(int index) {
-        int size = list.getModel().getSize();
+        int size = getElementCount();
 
         if ((index < 0) || (index >= size)) {
             return -1;
         }
 
-        if (layoutOrientation != JList.VERTICAL && columnCount > 1 &&
-                                                   rowsPerColumn > 0) {
+        if (layoutOrientation != JList.VERTICAL && columnCount > 1 && rowsPerColumn > 0) {
             if (layoutOrientation == JList.VERTICAL_WRAP) {
                 return index % rowsPerColumn;
             }
@@ -377,16 +374,15 @@ public class YListUI extends ListUI {
     /**
      * Returns the column that the model index <code>index</code> will be displayed in.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    // copied from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
     protected int convertModelToColumn(int index) {
-        int size = list.getModel().getSize();
+        int size = getElementCount();
 
         if ((index < 0) || (index >= size)) {
             return -1;
         }
 
-        if (layoutOrientation != JList.VERTICAL && rowsPerColumn > 0 &&
-                                                   columnCount > 1) {
+        if (layoutOrientation != JList.VERTICAL && rowsPerColumn > 0 && columnCount > 1) {
             if (layoutOrientation == JList.VERTICAL_WRAP) {
                 return index / rowsPerColumn;
             }
@@ -537,14 +533,13 @@ public class YListUI extends ListUI {
     /**
      * Returns the number of rows in the given column.
      */
-    // exact copy from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
+    // copied from javax.swing.plaf.basic.BasicListUI , but not private => protected visibility
     protected int getRowCount(int column) {
         if (column < 0 || column >= columnCount) {
             return -1;
         }
-        if (layoutOrientation == JList.VERTICAL ||
-                  (column == 0 && columnCount == 1)) {
-            return list.getModel().getSize();
+        if (layoutOrientation == JList.VERTICAL || (column == 0 && columnCount == 1)) {
+            return getElementCount();
         }
         if (column >= columnCount) {
             return -1;
@@ -553,12 +548,10 @@ public class YListUI extends ListUI {
             if (column < (columnCount - 1)) {
                 return rowsPerColumn;
             }
-            return list.getModel().getSize() - (columnCount - 1) *
-                        rowsPerColumn;
+            return getElementCount() - (columnCount - 1) * rowsPerColumn;
         }
         // JList.HORIZONTAL_WRAP
-        int diff = columnCount - (columnCount * rowsPerColumn -
-                                  list.getModel().getSize());
+        int diff = columnCount - (columnCount * rowsPerColumn - getElementCount());
 
         if (column >= diff) {
             return Math.max(0, rowsPerColumn - 1);

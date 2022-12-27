@@ -21,11 +21,8 @@ package org.jdesktop.swingx.plaf.basic.core;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
@@ -551,146 +548,6 @@ public class BasicXListUI extends BasicYListUI {
     public void uninstallUI(JComponent c) {
         uninstallSortUI();
         super.uninstallUI(c);
-    }
-
-    /**
-     * Returns the closest row that starts at the specified y-location
-     * in the passed in column.
-     */
-    // TODO in super protected und nutzen
-    private int convertLocationToRowInColumn(int y, int column) {
-        int x = 0;
-
-        if (layoutOrientation != JList.VERTICAL) {
-            if (isLeftToRight) {
-                x = column * cellWidth;
-            } else {
-                x = list.getWidth() - (column+1)*cellWidth - list.getInsets().right;
-            } 
-        }
-        return convertLocationToRow(x, y, true);
-    }
-
-    /**
-     * Returns the number of rows in the given column.
-     */
-//  use it from super YListUI TODO
-    protected int getRowCount(int column) {
-        if (column < 0 || column >= columnCount) {
-            return -1;
-        }
-        if (layoutOrientation == JList.VERTICAL ||
-                  (column == 0 && columnCount == 1)) {
-            return getElementCount();
-        }
-        if (column >= columnCount) {
-            return -1;
-        }
-        if (layoutOrientation == JList.VERTICAL_WRAP) {
-            if (column < (columnCount - 1)) {
-                return rowsPerColumn;
-            }
-            return getElementCount() - (columnCount - 1) *
-                        rowsPerColumn;
-        }
-        // JList.HORIZONTAL_WRAP
-        int diff = columnCount - (columnCount * rowsPerColumn -
-                                  getElementCount());
-
-        if (column >= diff) {
-            return Math.max(0, rowsPerColumn - 1);
-        }
-        return rowsPerColumn;
-    }
-
-    /**
-     * Returns the model index for the specified display location.
-     * If <code>column</code>x<code>row</code> is beyond the length of the
-     * model, this will return the model size - 1.
-     */
-//  use it from super YListUI TODO
-    protected int getModelIndex(int column, int row) {
-        switch (layoutOrientation) {
-        case JList.VERTICAL_WRAP:
-            return Math.min(getElementCount() - 1, rowsPerColumn *
-                            column + Math.min(row, rowsPerColumn-1));
-        case JList.HORIZONTAL_WRAP:
-            return Math.min(getElementCount() - 1, row * columnCount +
-                            column);
-        default:
-            return row;
-        }
-    }
-
-    /**
-     * Returns the closest column to the passed in location.
-     */
-//  use it from super YListUI TODO
-    protected int convertLocationToColumn(int x, int y) {
-        if (cellWidth > 0) {
-            if (layoutOrientation == JList.VERTICAL) {
-                return 0;
-            }
-            Insets insets = list.getInsets();
-            int col;
-            if (isLeftToRight) {
-                col = (x - insets.left) / cellWidth;
-            } else { 
-                col = (list.getWidth() - x - insets.right - 1) / cellWidth;
-            }
-            if (col < 0) {
-                return 0;
-            }
-            else if (col >= columnCount) {
-                return columnCount - 1;
-            }
-            return col;
-        }
-        return 0;
-    }
-
-    /**
-     * Returns the row that the model index <code>index</code> will be
-     * displayed in..
-     */
-//  use it from super YListUI TODO
-    protected int convertModelToRow(int index) {
-        int size = getElementCount();
-
-        if ((index < 0) || (index >= size)) {
-            return -1;
-        }
-
-        if (layoutOrientation != JList.VERTICAL && columnCount > 1 &&
-                                                   rowsPerColumn > 0) {
-            if (layoutOrientation == JList.VERTICAL_WRAP) {
-                return index % rowsPerColumn;
-            }
-            return index / columnCount;
-        }
-        return index;
-    }
-
-    /**
-     * Returns the column that the model index <code>index</code> will be
-     * displayed in.
-     */
-//  use it from super YListUI TODO
-    protected int convertModelToColumn(int index) {
-        int size = getElementCount();
-
-        if ((index < 0) || (index >= size)) {
-            return -1;
-        }
-
-        if (layoutOrientation != JList.VERTICAL && rowsPerColumn > 0 &&
-                                                   columnCount > 1) {
-            if (layoutOrientation == JList.VERTICAL_WRAP) {
-                return index / rowsPerColumn;
-            }
-            return index % columnCount;
-        }
-        return 0;
     }
 
     /**
