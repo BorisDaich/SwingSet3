@@ -30,7 +30,7 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
 
 	// factory
     public static ComponentUI createUI(JComponent c) {
-    	LOG.info("UI factory for JComponent:"+c);
+    	LOG.config("UI factory for JComponent:"+c);
         return new SynthYListUI(c);
     }
 
@@ -49,7 +49,7 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
 
 	@Override // implement PropertyChangeListener#propertyChange AND SynthUI#propertyChange
 	public void propertyChange(PropertyChangeEvent evt) {
-		LOG.info("evt:"+evt);
+//		LOG.info("PropertyChangeEvent:"+evt);
         if (SynthUtils.shouldUpdateStyle(evt)) {
             updateStyle(this.list);
         }	
@@ -60,7 +60,6 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
      */
     @Override // overrides to LOG
     public void installUI(JComponent c) {
-//    	LOG.info("================---------->JComponent:"+c);
     	super.installUI(c);
 //        installDefaults();
 //        installListeners();
@@ -74,10 +73,7 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
      */
     @Override
     protected void installDefaults() {
-    	LOG.info("####### list:"+list);
-//    	if(list instanceof JYList ylist) {
-//    		LOG.info("?????CellRenderer:"+ylist.getCellRenderer());
-//    	}
+//    	LOG.info("####### list:"+list);
     	if (list.getCellRenderer() == null || (list.getCellRenderer() instanceof UIResource)) {
     		LOG.info("CellRenderer:"+list.getCellRenderer()+" --- list.setCellRenderer(new SynthListCellRenderer()); // not visible");
     		// private inner class javax.swing.plaf.synth.SynthListUI.SynthListCellRenderer
@@ -112,7 +108,7 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
      * @return
      */
     private SynthStyle getStyle() {
-    	LOG.info("get style from the style factory \n for "+list+" \n and Region:"+getRegion());
+    	LOG.config("get style from the style factory \n for "+list+" \n and Region:"+getRegion());
         return SynthLookAndFeel.getStyleFactory().getStyle(list, getRegion());
     }
 
@@ -146,10 +142,8 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
         SynthContext selectedContext = getContext(SELECTED);
 //        ----------------------------
 		Color bg = list.getBackground();
-		LOG.info("--------"+(bg instanceof UIResource)+"---------- bg:"+bg); // pColor=255,255,255
+//		LOG.info("--------"+(bg instanceof UIResource)+"---------- bg:"+bg); // pColor=255,255,255
         if (bg == null || bg instanceof UIResource) {
-        	// replace default white bg with property color:
-//            list.setBackground(style.getColor(selectedContext, ColorType.BACKGROUND));
             list.setBackground(UIManager.getColor("List.background"));
         }
 //      ----------------------------
@@ -176,37 +170,6 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
         useListColors = style.getBoolean(selectedContext, "List.rendererUseListColors", true);
         useUIBorder = style.getBoolean(selectedContext, "List.rendererUseUIBorder", true);
         
-/* original code:
-        SynthContext context = getContext(list, ENABLED); // method getContext is not visible
-        SynthStyle oldStyle = style;
-
-        style = SynthLookAndFeel.updateStyle(context, this); // method updateStyle is not visible
-
-        if (style != oldStyle) {
-            context.setComponentState(SELECTED); // method setComponentState is not visible
-            Color sbg = list.getSelectionBackground();
-            if (sbg == null || sbg instanceof UIResource) {
-                list.setSelectionBackground(style.getColor(context, ColorType.TEXT_BACKGROUND));
-            }
-
-            Color sfg = list.getSelectionForeground();
-            if (sfg == null || sfg instanceof UIResource) {
-                list.setSelectionForeground(style.getColor(context, ColorType.TEXT_FOREGROUND));
-            }
-
-            useListColors = style.getBoolean(context, "List.rendererUseListColors", true);
-            useUIBorder = style.getBoolean(context, "List.rendererUseUIBorder", true);
-
-            int height = style.getInt(context, "List.cellHeight", -1);
-            if (height != -1) {
-                list.setFixedCellHeight(height);
-            }
-            if (oldStyle != null) {
-                uninstallKeyboardActions();
-                installKeyboardActions();
-            }
-        }
- */
     }
 
     @Override
@@ -269,5 +232,4 @@ public class SynthYListUI extends BasicYListUI implements PropertyChangeListener
 //            SynthLookAndFeel.resetSelectedUI(); // not visible
         }
     }
-
 }
