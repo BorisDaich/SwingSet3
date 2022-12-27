@@ -25,21 +25,16 @@ import javax.swing.plaf.ListUI;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.YListAddon;
 
-/*
-
-Die systematische/symetrische Ableitung wäre:
-
-                                         JComponentUI
-                                          |
-YListUI ----------------> abstract class ListUI
- |                                        |
-BasicYListUI               symetrisch zu BasicListUI
- |                                        |
-SynthYListUI               symetrisch zu SynthListUI
-
-Durch die "Vereinfachung" BasicYListUI direkt von javax.swing.plaf.basic.BasicListUI ableiten
-wärw die Information in uiClassID falsch: daher doch YListUI implementieren
-
+/**
+ * JYList extends JList without extending features. The intent is to change
+ * - the Color "List.background" with secondary3 Color of the CurrentTheme
+ * - and use a Border for cells
+ * <p>
+ * JXList extends JYList with new features (sorting/filtering)
+ * 
+ * @author EUG https://github.com/homebeaver
+ *
+ * @param <E> the type of the elements of this list
  */
 @SuppressWarnings("serial")
 public class JYList<E> extends JList<E> {
