@@ -19,6 +19,8 @@
  */
 package org.jdesktop.swingx.tree;
 
+import java.util.logging.Logger;
+
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -36,6 +38,8 @@ import org.jdesktop.swingx.SwingXUtilities;
  */
 public class DefaultXTreeCellRenderer extends DefaultTreeCellRenderer {
 
+    private static final Logger LOG = Logger.getLogger(DefaultXTreeCellRenderer.class.getName());
+
     /**
      * {@inheritDoc} <p>
      * 
@@ -44,6 +48,7 @@ public class DefaultXTreeCellRenderer extends DefaultTreeCellRenderer {
     @Override
     public void updateUI() {
         super.updateUI();
+//        LOG.info("------ do updateIcons() + updateColors()");
         updateIcons();
         updateColors();
     }
@@ -52,6 +57,17 @@ public class DefaultXTreeCellRenderer extends DefaultTreeCellRenderer {
      * 
      */
     protected void updateColors() {
+    	LOG.fine("Colors:"
+    			+"\n Tree.background="+UIManager.getColor("Tree.background")
+// Tree.background=DerivedColor(color=255,255,255 parent=nimbusLightBackground offsets=0.0,0.0,0.0,0 pColor=255,255,255
+    			+"\n Tree.selectionForeground="+UIManager.getColor("Tree.selectionForeground")
+    			+"\n Tree.textForeground="+UIManager.getColor("Tree.textForeground")
+    			+"\n Tree.selectionBackground="+UIManager.getColor("Tree.selectionBackground")
+// Tree.selectionBackground=DerivedColor(color=57,105,138 parent=nimbusSelectionBackground offsets=0.0,0.0,0.0,0 pColor=57,105,138
+    			+"\n Tree.textBackground="+UIManager.getColor("Tree.textBackground")
+    			+"\n Tree.selectionBorderColor="+UIManager.getColor("Tree.selectionBorderColor")
+    			+"\n"
+    			);
         if (SwingXUtilities.isUIInstallable(getTextSelectionColor())) {
             setTextSelectionColor(UIManager.getColor("Tree.selectionForeground"));
         }

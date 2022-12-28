@@ -61,6 +61,8 @@ import org.jdesktop.beans.JavaBean;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.CompoundHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.plaf.LookAndFeelAddons;
+import org.jdesktop.swingx.plaf.XTreeAddon;
 import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.plaf.UIDependent;
 import org.jdesktop.swingx.renderer.StringValue;
@@ -196,12 +198,23 @@ import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
  * @see org.jdesktop.swingx.search.Searchable
  * 
  */
+@SuppressWarnings("serial")
 @JavaBean
 public class JXTree extends JTree {
-    @SuppressWarnings("unused")
+
     private static final Logger LOG = Logger.getLogger(JXTree.class.getName());
-    
-    
+
+    static {
+        LookAndFeelAddons.contribute(new XTreeAddon());
+    }
+
+    /**
+     * UI Class ID
+     * @see #getUIClassID
+     * @see javax.swing.JComponent#readObject
+     */
+    public final static String uiClassID = "XTreeUI";
+
     /** Empty int array used in getSelectedRows(). */
     private static final int[] EMPTY_INT_ARRAY = new int[0];
     /** Empty TreePath used in getSelectedPath() if selection empty. */
@@ -763,9 +776,9 @@ public class JXTree extends JTree {
 //------------------------ Rollover support
     
     /**
-     * Sets the property to enable/disable rollover support. If enabled, the list
+     * Sets the property to enable/disable rollover support. If enabled, the tree
      * fires property changes on per-cell mouse rollover state, i.e. 
-     * when the mouse enters/leaves a list cell. <p>
+     * when the mouse enters/leaves a tree cell. <p>
      * 
      * This can be enabled to show "live" rollover behaviour, f.i. the cursor over a cell 
      * rendered by a JXHyperlink.<p>
@@ -899,13 +912,13 @@ public class JXTree extends JTree {
 //----------------------- Highlighter api
     
     /**
-     * Sets the <code>Highlighter</code>s to the table, replacing any old settings.
+     * Sets the <code>Highlighter</code>s to the tree, replacing any old settings.
      * None of the given Highlighters must be null.<p>
      * 
      * This is a bound property. <p> 
      * 
-     * Note: as of version #1.257 the null constraint is enforced strictly. To remove
-     * all highlighters use this method without param.
+     * Note: as of version #1.257 the null constraint is enforced strictly. 
+     * To remove all highlighters use this method without param.
      * 
      * @param highlighters zero or more not null highlighters to use for renderer decoration.
      * @throws NullPointerException if array is null or array contains null values.
@@ -922,10 +935,10 @@ public class JXTree extends JTree {
     }
 
     /**
-     * Returns the <code>Highlighter</code>s used by this table.
+     * Returns the <code>Highlighter</code>s used by this tree.
      * Maybe empty, but guarantees to be never null.
      * 
-     * @return the Highlighters used by this table, guaranteed to never null.
+     * @return the Highlighters used by this tree, guaranteed to never null.
      * @see #setHighlighters(Highlighter[])
      */
     public Highlighter[] getHighlighters() {
@@ -933,9 +946,8 @@ public class JXTree extends JTree {
     }
     
     /**
-     * Appends a <code>Highlighter</code> to the end of the list of used
-     * <code>Highlighter</code>s. The argument must not be null. 
-     * <p>
+     * Appends a <code>Highlighter</code> to the end of the list of used <code>Highlighter</code>s. 
+     * The argument must not be null. <p>
      * 
      * @param highlighter the <code>Highlighter</code> to add, must not be null.
      * @throws NullPointerException if <code>Highlighter</code> is null.
@@ -965,10 +977,10 @@ public class JXTree extends JTree {
     }
     
     /**
-     * Returns the CompoundHighlighter assigned to the table, null if none.
+     * Returns the CompoundHighlighter assigned to the tree, null if none.
      * PENDING: open up for subclasses again?.
      * 
-     * @return the CompoundHighlighter assigned to the table.
+     * @return the CompoundHighlighter assigned to the tree.
      */
     protected CompoundHighlighter getCompoundHighlighter() {
         if (compoundHighlighter == null) {
@@ -979,8 +991,7 @@ public class JXTree extends JTree {
     }
 
     /**
-     * Returns the <code>ChangeListener</code> to use with highlighters. Lazily 
-     * creates the listener.
+     * Returns the <code>ChangeListener</code> to use with highlighters. Lazily creates the listener.
      * 
      * @return the ChangeListener for observing changes of highlighters, 
      *   guaranteed to be <code>not-null</code>
@@ -995,10 +1006,9 @@ public class JXTree extends JTree {
     /**
      * Creates and returns the ChangeListener observing Highlighters.
      * <p>
-     * Here: repaints the table on receiving a stateChanged.
+     * Here: repaints the tree on receiving a stateChanged.
      * 
-     * @return the ChangeListener defining the reaction to changes of
-     *         highlighters.
+     * @return the ChangeListener defining the reaction to changes of highlighters.
      */
     protected ChangeListener createHighlighterChangeListener() {
         return new ChangeListener() {
@@ -1087,6 +1097,30 @@ public class JXTree extends JTree {
         getDelegatingRenderer().setClosedIcon(closedIcon);
     }
     
+    /* from JComponent
+     * Sets the background color of this component. 
+     *  
+     * The background color is used only if the component is opaque, 
+     * and only by subclasses of <code>JComponent</code> or
+     * <code>ComponentUI</code> implementations.
+     * 
+     * Direct subclasses of
+     * <code>JComponent</code> must override
+     * <code>paintComponent</code> to honor this property.
+     * <p>
+     * It is up to the look and feel to honor this property, some may choose to ignore it.
+     *
+     * @param bg the desired background <code>Color</code>
+     * @see java.awt.Component#getBackground
+     * @see #setOpaque
+     */
+    public void setBackground(Color bg) {
+//    	if(!this.isOpaque()) {
+//        	LOG.warning("????XTREEE isOpaque="+this.isOpaque()+" The background color is used only if the component is opaque, ... "+bg);
+//    	}
+    	super.setBackground(bg);
+    }
+
     /**
      * Property to control whether per-tree icons should be 
      * copied to the renderer on setCellRenderer. <p>
@@ -1235,14 +1269,16 @@ public class JXTree extends JTree {
 
         /**
          * Instantiates a DelegatingRenderer with the given delegate. If the
-         * delegate is null, the default is created via the list's factory method.
+         * delegate is null, the default is created via the trees's factory method.
          * 
-         * @param delegate the delegate to use, if null the tree's default is
-         *   created and used.
+         * @param delegate the delegate to use, 
+         * 	if not instanceof DefaultTreeCellRenderer the tree's default is created and used.
+         * 
+         * <p> NOTE: the javax.swing.tree.DefaultTreeCellRenderer extends JLabel
          */
         public DelegatingRenderer(TreeCellRenderer delegate) {
             initIcons((DefaultTreeCellRenderer) (delegate instanceof DefaultTreeCellRenderer ? 
-                    delegate : new DefaultTreeCellRenderer()));
+                    delegate : new DefaultTreeCellRenderer())); // TODO DefaultXTreeCellRenderer
             setDelegateRenderer(delegate);
         }
 
@@ -1260,7 +1296,7 @@ public class JXTree extends JTree {
 
         /**
          * Sets the delegate. If the
-         * delegate is null, the default is created via the list's factory method.
+         * delegate is null, the default is created via the tree's factory method.
          * Updates the folder/leaf icons. 
          * 
          * THINK: how to update? always override with this.icons, only
@@ -1339,10 +1375,8 @@ public class JXTree extends JTree {
             Component result = delegate.getTreeCellRendererComponent(tree,
                     value, selected, expanded, leaf, row, hasFocus);
 
-            if ((compoundHighlighter != null) && (row < getRowCount())
-                    && (row >= 0)) {
-                result = compoundHighlighter.highlight(result,
-                        getComponentAdapter(row));
+            if ((compoundHighlighter != null) && (row < getRowCount()) && (row >= 0)) {
+                result = compoundHighlighter.highlight(result, getComponentAdapter(row));
             } 
             
             return result;
