@@ -81,7 +81,7 @@ BasicYListUI               symetrisch zu BasicListUI
 SynthYListUI |              symetrisch zu SynthListUI
    BasicXListUI
 
-es ist nur scheinbar einfacher, direkt von javax.swing.plaf.basic.BasicListUI ableiten. Es wird unbersichtlich!
+es ist nur scheinbar einfacher, direkt von javax.swing.plaf.basic.BasicListUI ableiten. Es wird unübersichtlich!
 Also doch von YListUI ableiten ==> alles fast 1:1 von BasicListUI abkopieren
  in abstract class ListUI : implementation in super YListUI
     protected ListUI() {}
