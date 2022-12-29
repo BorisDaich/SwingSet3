@@ -1463,8 +1463,7 @@ public class BasicYListUI extends YListUI {
                 else {
                     // down
                     // go to the last completely visible cell
-                    Point p = new Point(leadRect.x,
-                            visRect.y + visRect.height - 1);
+                    Point p = new Point(leadRect.x, visRect.y + visRect.height - 1);
                     index = list.locationToIndex(p);
                     if (index == -1) {
                         return index;
@@ -1472,10 +1471,8 @@ public class BasicYListUI extends YListUI {
                     Rectangle cellBounds = list.getCellBounds(index, index);
                     // go up one cell if last visible cell doesn't fit
                     // into visible rectangle
-                    if (cellBounds != null &&
-                            cellBounds.y + cellBounds.height >
-                            visRect.y + visRect.height)
-                    {
+                    if (cellBounds != null && 
+                    		cellBounds.y + cellBounds.height > visRect.y + visRect.height) {
                         p.y = cellBounds.y - 1;
                         index = list.locationToIndex(p);
                         if (index == -1) {
@@ -1497,10 +1494,8 @@ public class BasicYListUI extends YListUI {
                         cellBounds = list.getCellBounds(index, index);
                         // go one cell up if last visible cell doesn't fit
                         // into adjasted visible rectangle
-                        if (cellBounds != null &&
-                                cellBounds.y + cellBounds.height >
-                                visRect.y + visRect.height)
-                        {
+                        if (cellBounds != null && 
+                        		cellBounds.y + cellBounds.height > visRect.y + visRect.height) {
                             p.y = cellBounds.y - 1;
                             index = list.locationToIndex(p);
                             if (index == -1) {
@@ -1517,7 +1512,6 @@ public class BasicYListUI extends YListUI {
                     }
                 }
             }
-
             return index;
         }
 
