@@ -130,6 +130,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
     protected int alignment;
     /** the converter to use for string representation. */
     protected StringValue stringValue;
+    protected IconValue iconValue;
     
     /**
      * Instantiates a component provider with LEADING
@@ -221,6 +222,13 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
             formatter = StringValues.TO_STRING;
         }
         this.stringValue = formatter;
+    }
+
+    public void setIconValue(IconValue iv) {
+        if (iv == null) {
+        	iv = IconValues.NONE;
+        }
+        this.iconValue = iv;
     }
 
     /**

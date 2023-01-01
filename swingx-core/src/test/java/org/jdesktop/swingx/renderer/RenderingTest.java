@@ -70,7 +70,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class RenderingTest extends InteractiveTestCase {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(RenderingTest.class.getName());
 
     /**
@@ -80,11 +79,11 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testRenderingComponentNames() throws Exception {
-        ComponentProvider<?> provider = new LabelProvider();
+        ComponentProvider<JLabel> provider = new LabelProvider();
         assertEquals("default name expected null", null, provider.getRendererComponent(null).getName());
         // use the same provider for all types of renderers
         DefaultTableRenderer rendererTable = new DefaultTableRenderer(provider);
-        DefaultListRenderer rendererList = new DefaultListRenderer(provider);
+        DefaultListRenderer<Object> rendererList = new DefaultListRenderer<Object>(provider);
         DefaultTreeRenderer rendererTree = new DefaultTreeRenderer(provider);
         LookAndFeel old = UIManager.getLookAndFeel();
         try {
@@ -96,9 +95,10 @@ public class RenderingTest extends InteractiveTestCase {
             assertEquals("sanity: checking default name", "Table.cellRenderer", nameT);
             assertEquals(nameT, rendererTable.getTableCellRendererComponent(null, null, false, false, 0, 0).getName());
             // list
-            JList list = new JList();
-            ListCellRenderer listR = list.getCellRenderer();
+            JList<Object> list = new JList<>();
+            ListCellRenderer<Object> listR = list.getCellRenderer();
             String nameL = listR.getListCellRendererComponent(list, null, 0, false, false).getName();
+            LOG.info("list.getCellRenderer().getListCellRendererComponent(...).Name="+nameL);
             assertEquals("sanity: checking default name", "List.cellRenderer", nameL);
             assertEquals(nameL, rendererList.getListCellRendererComponent(list, null, 0, false, false).getName());
             // tree
@@ -604,6 +604,24 @@ public class RenderingTest extends InteractiveTestCase {
         assertEquals("default visual config must reset prefSize", prefSize, label.getPreferredSize());
     }
     
+    @Test
+    public void testLabelProviderXXXRespectStringValueNoIcon() { // TODO
+        ImageIcon icon = (ImageIcon) XTestUtils.loadDefaultIcon();
+        LOG.info(""+icon);
+        icon.setDescription("description");
+        LabelProvider provider = new LabelProvider(new MappedValue(StringValues.TO_STRING, IconValues.NONE));
+        
+        ListCellContext context = new ListCellContext();
+//        TableCellContext context = new TableCellContext();
+//        context.value = icon;
+//        JLabel label = provider.getRendererComponent(context);
+//        Icon i = label.getIcon();
+//        assertTrue("icon must be empty", i instanceof EmptyIcon);
+//        assertEquals("icon must have no width", 0, i.getIconWidth());
+//        assertEquals("icon must have no height", 0, i.getIconHeight());
+//        assertEquals("label text must be default to-string", StringValues.TO_STRING.getString(icon), label.getText());
+    }
+
     /**
      * Test provider respect converter. 
      * 
@@ -628,7 +646,7 @@ public class RenderingTest extends InteractiveTestCase {
         assertEquals("icon must have no height", 0, i.getIconHeight());
         assertEquals("label text must be default to-string", StringValues.TO_STRING.getString(icon), label.getText());
     }
-    
+
     /**
      * Test provider respect converter. 
      * 
@@ -1059,7 +1077,7 @@ public class RenderingTest extends InteractiveTestCase {
         assertTrue(renderer.componentController instanceof WrappingProvider);
         // wrong assumption - we are wrapping...
 //        assertSame(FormatStringValue.DATE_TO_STRING, renderer.componentController.formatter);
-        assertSame(StringValues.DATE_TO_STRING, ((WrappingProvider) renderer.componentController).wrappee.formatter);
+        assertSame(StringValues.DATE_TO_STRING, ((WrappingProvider) renderer.componentController).wrappee.stringValue);
         ComponentProvider<?> controller = new CheckBoxProvider();
         renderer = new DefaultTreeRenderer(controller);
         assertSame(controller, renderer.componentController);
@@ -1075,7 +1093,7 @@ public class RenderingTest extends InteractiveTestCase {
         assertTrue(renderer.componentController instanceof LabelProvider);
         renderer = new DefaultListRenderer(StringValues.DATE_TO_STRING);
         assertTrue(renderer.componentController instanceof LabelProvider);
-        assertSame(StringValues.DATE_TO_STRING, renderer.componentController.formatter);
+        assertSame(StringValues.DATE_TO_STRING, renderer.componentController.stringValue);
         ComponentProvider<?> controller = new CheckBoxProvider();
         renderer = new DefaultListRenderer(controller);
         assertSame(controller, renderer.componentController);
@@ -1129,7 +1147,7 @@ public class RenderingTest extends InteractiveTestCase {
         assertTrue(renderer.componentController instanceof LabelProvider);
         renderer = new DefaultTableRenderer(StringValues.DATE_TO_STRING);
         assertTrue(renderer.componentController instanceof LabelProvider);
-        assertSame(StringValues.DATE_TO_STRING, renderer.componentController.formatter);
+        assertSame(StringValues.DATE_TO_STRING, renderer.componentController.stringValue);
         ComponentProvider<?> controller = new CheckBoxProvider();
         renderer = new DefaultTableRenderer(controller);
         assertSame(controller, renderer.componentController);
