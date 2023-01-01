@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -54,10 +52,18 @@ import org.jdesktop.swingx.test.XTestUtils;
  */
 public class TreeRendererIssues extends InteractiveTestCase {
     
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(TreeRendererIssues.class
-            .getName());
-    
+    private static final Logger LOG = Logger.getLogger(TreeRendererIssues.class.getName());
+
+    public static void main(String[] args) {
+        TreeRendererIssues test = new TreeRendererIssues();
+        try {
+            test.runInteractiveTests();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     private JTree tree;
     private DefaultTreeCellRenderer coreTreeRenderer;
     private DefaultTreeRenderer xTreeRenderer;
@@ -70,7 +76,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
 //        setSystemLF(true);
 //        LOG.info("LF: " + UIManager.getLookAndFeel());
 //        LOG.info("Theme: " + ((MetalLookAndFeel) UIManager.getLookAndFeel()).getCurrentTheme());
-//        UIManager.put("Tree.drawsFocusBorderAroundIcon", Boolean.TRUE);
+        UIManager.put("Tree.drawsFocusBorderAroundIcon", Boolean.TRUE);
         // make sure we have the same default for each test
         defaultToSystemLF = false;
         setSystemLF(defaultToSystemLF);
@@ -78,16 +84,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
         coreTreeRenderer = new DefaultTreeCellRenderer();
         xTreeRenderer = new DefaultTreeRenderer();
     }
-    public static void main(String[] args) {
-        TreeRendererIssues test = new TreeRendererIssues();
-        try {
-            test.runInteractiveTests();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
+    
 
     public void interactiveTransparentRenderer() throws IOException {
         final JXTree tree = new JXTree(new ComponentTreeTableModel(new JXFrame()));
@@ -139,12 +136,13 @@ public class TreeRendererIssues extends InteractiveTestCase {
     /**
      * Sanity: icons updated on LF change.
      */
-    public void testTreeIconsUpdateUI() {
+    public void interactiveTreeIconsUpdateUI() {
         JXTree tree = new JXTree();
         DefaultTreeRenderer renderer = new DefaultTreeRenderer();
         tree.setCellRenderer(renderer);
         WrappingIconPanel before = (WrappingIconPanel) renderer.getTreeCellRendererComponent(tree, "", false, false, true, -1, false);
         Icon leaf = before.getIcon();
+        LOG.info("Icon leaf "+leaf);
         assertNotNull("sanity", leaf);
         assertEquals("sanity", UIManager.getIcon("Tree.leafIcon"), leaf);
         String lf = UIManager.getLookAndFeel().getName();
@@ -157,12 +155,13 @@ public class TreeRendererIssues extends InteractiveTestCase {
         WrappingIconPanel after = (WrappingIconPanel) renderer.getTreeCellRendererComponent(tree, "", false, false, true, -1, false);
         Icon leafAfter = after.getIcon();
         assertNotNull("sanity", leafAfter);
+        LOG.info("Icon leafAfter "+leafAfter);
         assertFalse("sanity", leaf.equals(leafAfter));
         assertEquals("icon must be updated", UIManager.getIcon("Tree.leafIcon"), leafAfter);
     }
     
     /**
-     * base interaction with list: renderer uses list's unselected  colors
+     * base interaction with tree: renderer uses list's unselected  colors
      * 
      * currently, this test fails because the assumptions are wrong! Core
      * renderer behaves slightly unexpected.
@@ -179,6 +178,11 @@ public class TreeRendererIssues extends InteractiveTestCase {
         assertNull(tree.getForeground());
         Color uiForeground = UIManager.getColor("Tree.textForeground");
         assertEquals(uiForeground, coreComponent.getForeground());
+/*
+
+Caused by: junit.framework.AssertionFailedError: expected:<javax.swing.plaf.ColorUIResource[r=0,g=0,b=0]> but was:<sun.swing.PrintColorUIResource[r=51,g=51,b=51]>
+
+ */
         // prepare extended
         Component xComponent = xTreeRenderer.getTreeCellRendererComponent(tree, null,
                 false, false, false, 0, false);
@@ -188,7 +192,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
     }
 
     /**
-     * base interaction with list: renderer uses list's unselected custom
+     * base interaction with tree: renderer uses list's unselected custom
      * colors.
      * 
      * currently, this test fails because the assumptions are wrong! Core
@@ -196,19 +200,23 @@ public class TreeRendererIssues extends InteractiveTestCase {
      * 
      */
     public void testTreeRendererExtTreeColors() {
-        Color background = Color.MAGENTA;
+        Color background = Color.MAGENTA; // Color[r=255,g=0,b=255]
         Color foreground = Color.YELLOW;
         tree.setBackground(background);
         tree.setForeground(foreground);
         coreTreeRenderer.setBackgroundNonSelectionColor(background);
         coreTreeRenderer.setTextNonSelectionColor(foreground);
         // prepare standard
-        Component coreComponent = coreTreeRenderer
-                .getTreeCellRendererComponent(tree, null, false, false, false,
-                        0, false);
+        Component coreComponent = coreTreeRenderer.getTreeCellRendererComponent(tree, 
+        		null, false, false, false, 0, false);
         // sanity: known standard behaviour
         // background is manually painted
         assertEquals(background, coreComponent.getBackground());
+/*
+
+Caused by: junit.framework.AssertionFailedError: expected:<java.awt.Color[r=255,g=0,b=255]> but was:<null>
+
+ */
         assertEquals(tree.getForeground(), coreComponent.getForeground());
         // prepare extended
         Component xComponent = xTreeRenderer.getTreeCellRendererComponent(tree,
