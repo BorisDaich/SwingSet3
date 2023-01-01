@@ -128,9 +128,8 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
     /** horizontal (text) alignment of component. 
      * PENDING: useful only for labels, buttons? */
     protected int alignment;
-    /** the converter to use for string representation. 
-     * PENDING: IconValue? */
-    protected StringValue formatter;
+    /** the converter to use for string representation. */
+    protected StringValue stringValue;
     
     /**
      * Instantiates a component provider with LEADING
@@ -221,7 +220,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
         if (formatter == null) {
             formatter = StringValues.TO_STRING;
         }
-        this.formatter = formatter;
+        this.stringValue = formatter;
     }
 
     /**
@@ -232,7 +231,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
      *   be not null.
      */
     public StringValue getStringValue() {
-        return formatter;
+        return stringValue;
     }
 
     /**
@@ -263,7 +262,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
      * @return a appropriate string representation of the cell's content.
      */
     public String getString(Object value) {
-        return formatter.getString(value);
+        return stringValue.getString(value);
     }
     
     /**
@@ -277,7 +276,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
      */
     protected String getValueAsString(CellContext context) {
         Object value = context.getValue();
-        return formatter.getString(value);
+        return stringValue.getString(value);
     }
 
     /**
@@ -293,8 +292,8 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
      */
     protected Icon getValueAsIcon(CellContext context) {
         Object value = context.getValue();
-        if (formatter instanceof IconValue) {
-            return ((IconValue) formatter).getIcon(value);
+        if (stringValue instanceof IconValue) {
+            return ((IconValue) stringValue).getIcon(value);
         }
         return null;
     }

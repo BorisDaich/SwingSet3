@@ -25,7 +25,7 @@ import javax.swing.Icon;
 import org.jdesktop.swingx.icon.EmptyIcon;
 
 /**
- * A simple converter to return a Icon representation of an Object.
+ * A simple converter to return an Icon representation of an Object.
  * <p>
  * 
  * This class is intended to be the "small coin" to configure/format icon cell

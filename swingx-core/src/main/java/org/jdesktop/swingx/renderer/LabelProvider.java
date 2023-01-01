@@ -21,8 +21,7 @@ package org.jdesktop.swingx.renderer;
 import javax.swing.JLabel;
 
 /**
- * A component provider which uses a <code>JLabel</code> as rendering
- * component. <p>
+ * A component provider which uses a <code>JLabel</code> as rendering component. <p>
  * 
  * It configures the Label's text and icon property from the  
  * StringValue.
