@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -23,18 +21,39 @@ package org.jdesktop.swingx.renderer;
 
 import java.io.File;
 
+import javax.swing.Icon;
+
 import junit.framework.TestCase;
 
+import org.jdesktop.swingx.icon.ArrowIcon;
+import org.jdesktop.swingx.test.XTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- *
  * @author Karl George Schaefer
+ * @author EUG https://github.com/homebeaver (reorg)
  */
 @RunWith(JUnit4.class)
 public class IconValuesTest extends TestCase {
+
+    @Test
+    public void testRadianceIcon() {
+        Icon icon = ArrowIcon.factory().createNewIcon();
+        
+        assertEquals(icon,
+                IconValues.ICON.getIcon(icon));
+    }
+    
+    @Test
+    public void testFileIcon() {
+        Icon icon = XTestUtils.loadDefaultIcon();
+        
+        assertEquals(icon,
+                IconValues.ICON.getIcon(icon));
+    }
+    
     @Test
     public void testFileIconWithNonFile() {
         Object o = new Object();
