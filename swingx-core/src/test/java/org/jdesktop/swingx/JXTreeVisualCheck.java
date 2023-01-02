@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -83,7 +81,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
       JXTreeVisualCheck test = new JXTreeVisualCheck();
       setLAF("Wind");
       try {
-//          test.runInteractiveTests();
+          test.runInteractiveTests();
 //          test.runInteractiveTests("interactive.*Renderer.*");
 //          test.runInteractiveTests("interactive.*RToL.*");
 //          test.runInteractiveTests("interactive.*Revalidate.*");
@@ -92,7 +90,7 @@ public class JXTreeVisualCheck extends JXTreeUnitTest {
 //          test.runInteractiveTests("interactive.*CellHeight.*");
 //        test.runInteractiveTests("interactive.*RendererSize.*");
 //          test.runInteractive("NextMatch");
-        test.runInteractive("PopupTrigger");
+//        test.runInteractive("PopupTrigger");
       } catch (Exception e) {
           System.err.println("exception when executing interactive tests:");
           e.printStackTrace();

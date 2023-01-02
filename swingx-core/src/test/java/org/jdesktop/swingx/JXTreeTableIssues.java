@@ -1104,7 +1104,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
                 // otherwise the WrappingProvider tries to be smart and replaces the node
                 // by the userObject before passing on to the wrappee! 
                 Object nodeValue = model.getValueAt(context.getValue(), 0);
-                return formatter.getString(nodeValue);            
+                return stringValue.getString(nodeValue);            
               }
 
           
