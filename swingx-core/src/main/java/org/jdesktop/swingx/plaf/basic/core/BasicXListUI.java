@@ -21,8 +21,6 @@ package org.jdesktop.swingx.plaf.basic.core;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
@@ -616,29 +614,19 @@ public class BasicXListUI extends BasicYListUI {
         };
     }
 
-    /** Used by IncrementLeadSelectionAction. Indicates the action should
-     * change the lead, and not select it. */
-    private static final int CHANGE_LEAD = 0;
-    /** Used by IncrementLeadSelectionAction. Indicates the action should
-     * change the selection and lead. */
-    private static final int CHANGE_SELECTION = 1;
-    /** Used by IncrementLeadSelectionAction. Indicates the action should
-     * extend the selection from the anchor to the next index. */
-    private static final int EXTEND_SELECTION = 2;
-
     // PENDING JW: this is not a complete replacement of sun.UIAction ...
     protected static class Actions extends BasicYListUI.Actions {
-        protected int getElementCount(JList<?> list) {
-        	if(list instanceof JXList<?> xlist) {
-        		return xlist.getElementCount();
-        	}
-        	return list.getModel().getSize();
-        }
-
         protected Actions(String name) {
             super(name);
         }
-        public void actionPerformed(ActionEvent e) {
+        protected int getElementCount(JList<?> list) {
+			if(list instanceof JXList<?> xlist) {
+				return xlist.getElementCount();
+			}
+			return list.getModel().getSize();
+		}
+
+		public void actionPerformed(ActionEvent e) {
             String name = getName();
             @SuppressWarnings("unchecked")
             JList<Object> list = (JList<Object>)e.getSource();
@@ -781,65 +769,6 @@ public class BasicXListUI extends BasicYListUI {
         	return accept(c);
         }
 
-        private int getNextColumnIndex(JList<?> list, BasicXListUI ui,
-                                       int amount) {
-            if (list.getLayoutOrientation() != JList.VERTICAL) {
-                int index = adjustIndex(list.getLeadSelectionIndex(), list);
-                int size = getElementCount(list);
-
-                if (index == -1) {
-                    return 0;
-                } else if (size == 1) {
-                    // there's only one item so we should select it
-                    return 0;
-                } else if (ui == null || ui.columnCount <= 1) {
-                    return -1;
-                }
-
-                int column = ui.convertModelToColumn(index);
-                int row = ui.convertModelToRow(index);
-
-                column += amount;
-                if (column >= ui.columnCount || column < 0) {
-                    // No wrapping.
-                    return -1;
-                }
-                int maxRowCount = ui.getRowCount(column);
-                if (row >= maxRowCount) {
-                    return -1;
-                }
-                return ui.getModelIndex(column, row);
-            }
-            // Won't change the selection.
-            return -1;
-        }
-
-        private int getNextIndex(JList<?> list, BasicXListUI ui, int amount) {
-            int index = adjustIndex(list.getLeadSelectionIndex(), list);
-            int size = getElementCount(list);
-
-            if (index == -1) {
-                if (size > 0) {
-                    if (amount > 0) {
-                        index = 0;
-                    }
-                    else {
-                        index = size - 1;
-                    }
-                }
-            } else if (size == 1) { 
-                // there's only one item so we should select it
-                index = 0; 
-            } else if (list.getLayoutOrientation() == JList.HORIZONTAL_WRAP) { 
-                if (ui != null) {
-                    index += ui.columnCount * amount;
-                }
-            } else {
-                index += amount;
-            }
-
-            return index;
-        }
     }
 
     protected class Handler extends BasicYListUI.Handler 

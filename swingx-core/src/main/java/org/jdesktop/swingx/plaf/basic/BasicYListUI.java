@@ -1097,16 +1097,19 @@ public class BasicYListUI extends YListUI {
         return getHandler();
     }
 
-    // copied from javax.swing.plaf.basic.BasicListUI
-    private static final int CHANGE_LEAD = 0;
-    private static final int CHANGE_SELECTION = 1;
-    private static final int EXTEND_SELECTION = 2;
+    // int constants copied from javax.swing.plaf.basic.BasicListUI
+    /** Used by IncrementLeadSelectionAction. Indicates the action should
+     * change the lead, and not select it. */
+    protected static final int CHANGE_LEAD = 0;
+    /** Used by IncrementLeadSelectionAction. Indicates the action should
+     * change the selection and lead. */
+    protected static final int CHANGE_SELECTION = 1;
+    /** Used by IncrementLeadSelectionAction. Indicates the action should
+     * extend the selection from the anchor to the next index. */
+    protected static final int EXTEND_SELECTION = 2;
     
     // inner class copied from javax.swing.plaf.basic.BasicListUI with small modifications
     protected static class Actions extends org.jdesktop.swingx.plaf.UIAction {
-        protected int getElementCount(JList<?> list) {
-        	return list.getModel().getSize();
-        }
         protected static final String SELECT_PREVIOUS_COLUMN =
                                     "selectPreviousColumn";
         protected static final String SELECT_PREVIOUS_COLUMN_EXTEND =
@@ -1166,7 +1169,10 @@ public class BasicYListUI extends YListUI {
         protected Actions(String name) {
             super(name);
         }
-        public void actionPerformed(ActionEvent e) {
+        protected int getElementCount(JList<?> list) {
+			return list.getModel().getSize();
+		}
+		public void actionPerformed(ActionEvent e) {
             String name = getName();
             @SuppressWarnings("unchecked")
             JList<Object> list = (JList<Object>)e.getSource();
@@ -1672,11 +1678,10 @@ public class BasicYListUI extends YListUI {
             }
         }
 
-        private int getNextColumnIndex(JList<?> list, BasicYListUI ui,
-                                       int amount) {
+        protected int getNextColumnIndex(JList<?> list, BasicYListUI ui, int amount) {
             if (list.getLayoutOrientation() != JList.VERTICAL) {
                 int index = adjustIndex(list.getLeadSelectionIndex(), list);
-                int size = list.getModel().getSize();
+                int size = getElementCount(list);
 
                 if (index == -1) {
                     return 0;
@@ -1705,7 +1710,7 @@ public class BasicYListUI extends YListUI {
             return -1;
         }
 
-        private int getNextIndex(JList<?> list, BasicYListUI ui, int amount) {
+        protected int getNextIndex(JList<?> list, BasicYListUI ui, int amount) {
             int index = adjustIndex(list.getLeadSelectionIndex(), list);
             int size = getElementCount(list);
 
@@ -1718,10 +1723,10 @@ public class BasicYListUI extends YListUI {
                         index = size - 1;
                     }
                 }
-            } else if (size == 1) {
+            } else if (size == 1) { 
                 // there's only one item so we should select it
-                index = 0;
-            } else if (list.getLayoutOrientation() == JList.HORIZONTAL_WRAP) {
+                index = 0; 
+            } else if (list.getLayoutOrientation() == JList.HORIZONTAL_WRAP) { 
                 if (ui != null) {
                     index += ui.columnCount * amount;
                 }
