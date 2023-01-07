@@ -87,12 +87,30 @@ public class ListRendererTest extends InteractiveTestCase {
         DefaultListRenderer<?> renderer = new DefaultListRenderer<>(sv, align);
         assertEquals(sv, renderer.componentController.getStringValue());
         assertEquals(align, renderer.componentController.getHorizontalAlignment());
+        
+        @SuppressWarnings("serial")
+		IconValue iv = new IconValue() {
+
+			@Override
+			public Icon getIcon(Object value) {
+		        Icon icon = XTestUtils.loadDefaultIcon();
+				return icon;
+			}
+        	
+        };
+        LOG.info("renderer with kleopatra IconValue iv:"+iv.getIcon(iv));
+        DefaultListRenderer<?> rendererWithIcon = new DefaultListRenderer<>(sv, iv);
+        // ??? why getStringValue() ?:
+        LOG.info("type of rendererWithIcon.componentController.getStringValue():"+rendererWithIcon.componentController.getStringValue().getClass());
+        assertEquals(org.jdesktop.swingx.renderer.MappedValue.class, rendererWithIcon.componentController.getStringValue().getClass());
+        if(rendererWithIcon.componentController.getStringValue() instanceof MappedValue mv) {
+        	assertEquals(iv.getIcon(iv).toString(), mv.getIcon(mv).toString());
+        }
     }
 
     /**
      * test if default icon/text handling in DefaultListRenderer 
      * is the same as core default. 
-      *
      */
     @Test
     public void testIcon() {
@@ -103,6 +121,8 @@ public class ListRendererTest extends InteractiveTestCase {
         JLabel label = (JLabel) xListRenderer.getListCellRendererComponent(null, icon, 0, false, false);
         assertEquals("sanity: core shows icon", icon, coreListRenderer.getIcon());
         assertEquals("sanity: core shows empty string", "", coreListRenderer.getText());
+        LOG.info("coreListRenderer shows empty string:"+coreListRenderer.getText()+". And icon "+coreListRenderer.getIcon());
+        
         assertEquals("swingx renderer same icon as core", coreListRenderer.getIcon(), label.getIcon());
         assertEquals("swingx renderer same text as core", coreListRenderer.getText(), label.getText());
         coreListRenderer.getListCellRendererComponent(list, text, 1, false, false);
