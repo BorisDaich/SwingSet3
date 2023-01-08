@@ -43,25 +43,23 @@ public final class ShapeUtils {
     }
 
     /**
-     * Generates a polygon shape with insideRadius = 0
-     * 
-     * @param sides
-     * @param outsideRadius
-     * @param normalize
-     * @return
+     * Generates a polygon with an inside radius of 0.
+     * @param sides number of sides
+     * @param outsideRadius the outside radius
+     * @param normalize normalize
+     * @return the generated shape
      */
     public static Shape generatePolygon(int sides, int outsideRadius, boolean normalize) {
         return generatePolygon(sides, outsideRadius, 0, normalize);
     }
 
     /**
-     * Generates a polygon shape
-     * 
-     * @param sides
-     * @param outsideRadius
-     * @param insideRadius
-     * @param normalize
-     * @return
+     * Generates a polygon
+     * @param sides number of sides
+     * @param outsideRadius the outside radius
+     * @param insideRadius the inside radius
+     * @param normalize normalize
+     * @return the generated shape
      */
     public static Shape generatePolygon(int sides, int outsideRadius, int insideRadius, boolean normalize) {
         Shape shape = generatePolygon(sides, outsideRadius, insideRadius);
@@ -74,12 +72,11 @@ public final class ShapeUtils {
     }
 
     /**
-     * Generates a polygon shape
-     * 
-     * @param sides
-     * @param outsideRadius
-     * @param insideRadius
-     * @return
+     * Generates a polygon
+     * @param sides number of sides
+     * @param outsideRadius the outside radius
+     * @param insideRadius the inside radius
+     * @return the generated shape
      */
     public static Shape generatePolygon(int sides, int outsideRadius, int insideRadius) {
         if (sides < 3) {
@@ -105,9 +102,9 @@ public final class ShapeUtils {
     /**
      * Generates a shape from char
      * 
-     * @param font Font
-     * @param ch char
-     * @return
+     * @param font the font
+     * @param ch a single character
+     * @return the shape
      */
     public static Shape generateShapeFromText(Font font, char ch) {
         return generateShapeFromText(font, String.valueOf(ch));
@@ -116,9 +113,9 @@ public final class ShapeUtils {
     /**
      * Generates a shape from String
      * 
-     * @param font
-     * @param string
-     * @return
+     * @param font the font
+     * @param string the text string
+     * @return the shape
      */
     public static Shape generateShapeFromText(Font font, String string) {
         BufferedImage img = GraphicsUtilities.createCompatibleTranslucentImage(1, 1);
