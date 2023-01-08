@@ -11,16 +11,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 
 /**
  * A file/folder-based cache
  */
 public class FileBasedLocalCache implements LocalCache {
 
-    private static final Log log = LogFactory.getLog(FileBasedLocalCache.class);
+//    private static final Log log = LogFactory.getLog(FileBasedLocalCache.class);
+	private static final Logger LOG = Logger.getLogger(FileBasedLocalCache.class.getName());
 
     private final File cacheDir;
     private final boolean checkForUpdates;
@@ -141,12 +143,14 @@ public class FileBasedLocalCache implements LocalCache {
         }
         catch (MalformedURLException ex)
         {
-            log.error("An exception occurred", ex);
+//            log.error("An exception occurred", ex);
+        	LOG.warning("An exception occurred:"+ ex);
             return false;
         }
         catch (IOException ex)
         {
-            log.error("An exception occurred", ex);
+//            log.error("An exception occurred", ex);
+        	LOG.warning("An exception occurred:"+ ex);
             return false;
         }
         if (!(conn instanceof HttpURLConnection))
@@ -168,6 +172,7 @@ public class FileBasedLocalCache implements LocalCache {
         catch (IOException ex)
         {
             // log.error("An exception occurred", ex);();
+        	LOG.warning("An exception occurred:"+ ex);
             return false;
         }
         finally
