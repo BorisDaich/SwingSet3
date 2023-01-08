@@ -97,6 +97,7 @@ public abstract class AbstractPainter<T> extends AbstractBean implements Painter
                 if (invalidCache) {
                     cache = GraphicsUtilities.createCompatibleTranslucentImage(width, height);
                 }
+//              if (cache != null) {
                 Graphics2D gfx = cache.createGraphics();
                 
                 try {
@@ -130,6 +131,7 @@ public abstract class AbstractPainter<T> extends AbstractBean implements Painter
                     cacheCleared = false;
                 }
             }
+//          }
 
             g.drawImage(cache, 0, 0, null);
         } else {
