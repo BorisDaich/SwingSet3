@@ -1,5 +1,5 @@
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -20,16 +20,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jxmapviewer.cache.LocalCache;
-import org.jxmapviewer.cache.NoOpLocalCache;
-import org.jxmapviewer.util.ProjectProperties;
-import org.jxmapviewer.viewer.util.GeoUtil;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+import org.jdesktop.jxmapviewer.cache.LocalCache;
+import org.jdesktop.jxmapviewer.cache.NoOpLocalCache;
+import org.jdesktop.jxmapviewer.util.ProjectProperties;
+import org.jdesktop.jxmapviewer.viewer.util.GeoUtil;
 
 /**
  * The <code>AbstractTileFactory</code> provides
@@ -37,7 +38,8 @@ import org.jxmapviewer.viewer.util.GeoUtil;
  */
 public abstract class AbstractTileFactory extends TileFactory
 {
-    private static final Log log = LogFactory.getLog(AbstractTileFactory.class);
+//    private static final Log log = LogFactory.getLog(AbstractTileFactory.class);
+	private static final Logger LOG = Logger.getLogger(AbstractTileFactory.class.getName());
 
     /**
      * Note that the name and version are actually set by Gradle
@@ -122,7 +124,8 @@ public abstract class AbstractTileFactory extends TileFactory
             //Remove the tile from the map if its loading failed. This will allow the factory to try
             //and re-load the tile when it is requested sometime in the future.
             if (tile.loadingFailed()) {
-                log.info("Removing from map: " + tile.getURL() + ", tile failed to load");
+//                log.info("Removing from map: " + tile.getURL() + ", tile failed to load");
+            	LOG.info("Removing from map: " + tile.getURL() + ", tile failed to load");
                 tileMap.remove(url);
             }
 
@@ -380,7 +383,8 @@ public abstract class AbstractTileFactory extends TileFactory
                     if (img == null)
                     {
                         // System.out.println("error loading: " + uri);
-                        log.info("Failed to load: " + uri);
+//                        log.info("Failed to load: " + uri);
+                    	LOG.info("Failed to load: " + uri);
                     }
                     else
                     {
@@ -403,7 +407,8 @@ public abstract class AbstractTileFactory extends TileFactory
                 }
                 catch (FileNotFoundException fnfe)  // relevant for local URLs such as JAR/ZIP files only
                 {
-                    log.error("Unable to load tile: " + fnfe.getMessage());
+//                    log.error("Unable to load tile: " + fnfe.getMessage());
+                	LOG.warning("Unable to load tile: " + fnfe.getMessage());
                     remainingAttempts = 0;
                     tile.setLoadingFailed(true);
                 }
@@ -411,12 +416,14 @@ public abstract class AbstractTileFactory extends TileFactory
                 {
                     if (remainingAttempts == 0)
                     {
-                        log.error("Failed to load a tile at URL: " + tile.getURL() + ", stopping", e);
+//                        log.error("Failed to load a tile at URL: " + tile.getURL() + ", stopping", e);
+                    	LOG.warning("Failed to load a tile at URL: " + tile.getURL() + ", stopping ..."+ e);
                         tile.setLoadingFailed(true);
                     }
                     else
                     {
-                        log.warn("Failed to load a tile at URL: " + tile.getURL() + ", retrying", e);
+//                        log.warn("Failed to load a tile at URL: " + tile.getURL() + ", retrying", e);
+                    	LOG.warning("Failed to load a tile at URL: " + tile.getURL() + ", retrying ..."+ e);
                     }
                 }
             }

@@ -7,11 +7,11 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.Graphics2D;
 
-import org.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.JXMapViewer;
 
 /**
  * A interface that draws waypoints. Implementations of WaypointRenderer can

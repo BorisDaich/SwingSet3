@@ -7,9 +7,11 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
-import org.jxmapviewer.beans.AbstractBean;
+import org.jdesktop.beans.AbstractBean;
+
+//import org.jxmapviewer.beans.AbstractBean;
 
 /**
  * @author joshy

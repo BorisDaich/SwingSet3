@@ -7,15 +7,15 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jxmapviewer.cache.LocalCache;
-import org.jxmapviewer.viewer.util.GeoUtil;
+import org.jdesktop.jxmapviewer.cache.LocalCache;
+import org.jdesktop.jxmapviewer.viewer.util.GeoUtil;
 
 /**
  * A class that can produce tiles and convert coordinates to pixels

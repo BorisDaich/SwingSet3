@@ -1,7 +1,7 @@
-package org.jxmapviewer;
+package org.jdesktop.jxmapviewer;
 
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.util.MercatorUtils;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.util.MercatorUtils;
 
 /**
  * @author Georgios Migdos

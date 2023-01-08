@@ -7,16 +7,16 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer.esri;
+package org.jdesktop.jxmapviewer.viewer.esri;
 
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.util.GeoUtil;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.util.GeoUtil;
 
 /**
  * @author rbair

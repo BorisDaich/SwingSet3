@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -15,9 +15,9 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jxmapviewer.JXMapViewer;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+import org.jdesktop.jxmapviewer.JXMapViewer;
 
 /**
  * This is a standard waypoint renderer.
@@ -25,7 +25,7 @@ import org.jxmapviewer.JXMapViewer;
  */
 public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint>
 {
-    private static final Log log = LogFactory.getLog(DefaultWaypointRenderer.class);
+//    private static final Log log = LogFactory.getLog(DefaultWaypointRenderer.class);
     
     private BufferedImage img = null;
 
@@ -40,7 +40,7 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint>
         }
         catch (Exception ex)
         {
-            log.warn("couldn't read standard_waypoint.png", ex);
+//            log.warn("couldn't read standard_waypoint.png", ex);
         }
     }
 

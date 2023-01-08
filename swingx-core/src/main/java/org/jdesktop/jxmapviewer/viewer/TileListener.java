@@ -1,5 +1,5 @@
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 /**
  * Notified when the status of a tile has changed

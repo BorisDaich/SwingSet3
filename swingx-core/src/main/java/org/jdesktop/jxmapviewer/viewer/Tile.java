@@ -7,12 +7,14 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
 import java.lang.ref.SoftReference;
 
-import org.jxmapviewer.beans.AbstractBean;
+import org.jdesktop.beans.AbstractBean;
+
+//import org.jxmapviewer.beans.AbstractBean;
 
 /**
  * The Tile class represents a particular square image piece of the world bitmap at a particular zoom level.

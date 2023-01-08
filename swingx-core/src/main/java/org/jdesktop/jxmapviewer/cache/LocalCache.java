@@ -1,4 +1,4 @@
-package org.jxmapviewer.cache;
+package org.jdesktop.jxmapviewer.cache;
 
 import java.io.IOException;
 import java.io.InputStream;

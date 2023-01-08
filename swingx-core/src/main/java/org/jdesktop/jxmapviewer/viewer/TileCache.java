@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -19,8 +19,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 
 /**
  * An implementation only class for now. For internal use only.
@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class TileCache
 {
-    private static final Log log = LogFactory.getLog(TileCache.class);
+//    private static final Log log = LogFactory.getLog(TileCache.class);
     
     private Map<URI, BufferedImage> imgmap = new HashMap<URI, BufferedImage>();
     private LinkedList<URI> imgmapAccessQueue = new LinkedList<URI>();
@@ -140,7 +140,7 @@ public class TileCache
 
     private void log(String string)
     {
-        log.debug(string);
+//        log.debug(string);
     }
 
 }

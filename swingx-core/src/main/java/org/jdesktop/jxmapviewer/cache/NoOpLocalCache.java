@@ -1,4 +1,4 @@
-package org.jxmapviewer.cache;
+package org.jdesktop.jxmapviewer.cache;
 
 import java.io.InputStream;
 import java.net.URL;

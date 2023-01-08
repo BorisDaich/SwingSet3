@@ -1,7 +1,7 @@
 
-package org.jxmapviewer.google;
+package org.jdesktop.jxmapviewer.google;
 
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * Uses Google Maps API - it has several glitches, so don't use it unless you know what you're doing.

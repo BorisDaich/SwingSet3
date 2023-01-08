@@ -1,5 +1,5 @@
 
-package org.jxmapviewer.input;
+package org.jdesktop.jxmapviewer.input;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -8,8 +8,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
 
 /**
  * Listens to single mouse clicks on the map and returns the GeoPosition

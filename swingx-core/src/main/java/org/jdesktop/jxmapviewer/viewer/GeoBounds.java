@@ -1,5 +1,5 @@
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Set;

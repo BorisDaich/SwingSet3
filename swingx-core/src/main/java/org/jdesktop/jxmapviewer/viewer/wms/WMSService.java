@@ -7,9 +7,9 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer.wms;
+package org.jdesktop.jxmapviewer.viewer.wms;
 
-import org.jxmapviewer.viewer.util.MercatorUtils;
+import org.jdesktop.jxmapviewer.viewer.util.MercatorUtils;
 
 /**
  * A class that represents a WMS mapping service. 

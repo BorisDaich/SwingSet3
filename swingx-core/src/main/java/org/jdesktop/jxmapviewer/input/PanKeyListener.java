@@ -1,12 +1,12 @@
 
-package org.jxmapviewer.input;
+package org.jdesktop.jxmapviewer.input;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 
-import org.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.JXMapViewer;
 
 /**
  * used to pan using the arrow keys

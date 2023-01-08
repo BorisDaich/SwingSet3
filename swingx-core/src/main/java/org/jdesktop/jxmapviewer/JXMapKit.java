@@ -4,7 +4,7 @@
  * Created on November 19, 2006, 3:52 AM
  */
 
-package org.jxmapviewer;
+package org.jdesktop.jxmapviewer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -24,23 +24,26 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.Painter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 
-import org.jxmapviewer.input.CenterMapListener;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
-import org.jxmapviewer.painter.AbstractPainter;
-import org.jxmapviewer.painter.CompoundPainter;
-import org.jxmapviewer.painter.Painter;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.DefaultWaypoint;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.Waypoint;
-import org.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.jxmapviewer.input.CenterMapListener;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+import org.jdesktop.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+//import org.jxmapviewer.painter.AbstractPainter;
+//import org.jxmapviewer.painter.CompoundPainter;
+//import org.jxmapviewer.painter.Painter;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.DefaultWaypoint;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactory;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.Waypoint;
+import org.jdesktop.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.swingx.painter.AbstractPainter;
+import org.jdesktop.swingx.painter.CompoundPainter;
 
 /**
  * <p>The JXMapKit is a pair of JXMapViewers preconfigured to be easy to use
@@ -301,8 +304,8 @@ public class JXMapKit extends JPanel
     {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        mainMap = new org.jxmapviewer.JXMapViewer();
-        miniMap = new org.jxmapviewer.JXMapViewer();
+        mainMap = new org.jdesktop.jxmapviewer.JXMapViewer();
+        miniMap = new org.jdesktop.jxmapviewer.JXMapViewer();
         jPanel1 = new javax.swing.JPanel();
         zoomInButton = new javax.swing.JButton();
         zoomOutButton = new javax.swing.JButton();
@@ -423,8 +426,8 @@ public class JXMapKit extends JPanel
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
-    private org.jxmapviewer.JXMapViewer mainMap;
-    private org.jxmapviewer.JXMapViewer miniMap;
+    private org.jdesktop.jxmapviewer.JXMapViewer mainMap;
+    private org.jdesktop.jxmapviewer.JXMapViewer miniMap;
     private javax.swing.JButton zoomInButton;
     private javax.swing.JButton zoomOutButton;
     private javax.swing.JSlider zoomSlider;

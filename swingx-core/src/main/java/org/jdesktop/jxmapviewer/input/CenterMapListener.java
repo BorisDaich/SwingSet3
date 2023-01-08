@@ -1,5 +1,5 @@
 
-package org.jxmapviewer.input;
+package org.jdesktop.jxmapviewer.input;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
 
-import org.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.JXMapViewer;
 
 /**
  * Centers the map on the mouse cursor

@@ -1,4 +1,4 @@
-package org.jxmapviewer.util;
+package org.jdesktop.jxmapviewer.util;
 
 import java.io.IOException;
 import java.io.InputStream;

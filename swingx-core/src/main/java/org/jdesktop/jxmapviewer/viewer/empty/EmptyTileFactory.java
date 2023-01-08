@@ -7,16 +7,16 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer.empty;
+package org.jdesktop.jxmapviewer.viewer.empty;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import org.jxmapviewer.viewer.Tile;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.Tile;
+import org.jdesktop.jxmapviewer.viewer.TileFactory;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * A null implementation of TileFactory. Draws empty areas.

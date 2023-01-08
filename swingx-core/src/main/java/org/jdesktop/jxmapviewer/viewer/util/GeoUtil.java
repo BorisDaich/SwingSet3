@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer.util;
+package org.jdesktop.jxmapviewer.viewer.util;
 
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
@@ -15,11 +15,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.GeoBounds;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.viewer.GeoBounds;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactory;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * These are math utilities for converting between pixels, tiles, and geographic coordinates. Implements a Google Maps

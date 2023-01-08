@@ -1,4 +1,4 @@
-package org.jxmapviewer.input;
+package org.jdesktop.jxmapviewer.input;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-import org.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.JXMapViewer;
 
 /**
  * Used to pan using press and drag mouse gestures

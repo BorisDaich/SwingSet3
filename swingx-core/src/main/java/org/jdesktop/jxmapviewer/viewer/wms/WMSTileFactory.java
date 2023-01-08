@@ -7,9 +7,9 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer.wms;
+package org.jdesktop.jxmapviewer.viewer.wms;
 
-import org.jxmapviewer.viewer.*;
+import org.jdesktop.jxmapviewer.viewer.*;
 
 /**
  * A tile factory that uses a WMS service.

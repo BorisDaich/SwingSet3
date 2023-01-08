@@ -1,5 +1,5 @@
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,10 +16,10 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jxmapviewer.cache.FileBasedLocalCache;
-import org.jxmapviewer.cache.LocalCache;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+import org.jdesktop.jxmapviewer.cache.FileBasedLocalCache;
+import org.jdesktop.jxmapviewer.cache.LocalCache;
 
 /**
  * @author joshy
@@ -27,7 +27,7 @@ import org.jxmapviewer.cache.LocalCache;
 @Deprecated
 public class LocalResponseCache extends ResponseCache
 {
-    private static final Log log = LogFactory.getLog(LocalResponseCache.class);
+//    private static final Log log = LogFactory.getLog(LocalResponseCache.class);
 
     private final String baseURL;
 
@@ -141,7 +141,7 @@ public class LocalResponseCache extends ResponseCache
             catch (FileNotFoundException ex)
             {
                 // should not happen if cache dir is valid
-                log.error("An exception occurred", ex);
+//                log.error("An exception occurred", ex);
             }
         }
 

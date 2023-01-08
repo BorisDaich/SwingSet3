@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer.util;
+package org.jdesktop.jxmapviewer.viewer.util;
 
 /**
  * A utility class of methods that help when 

@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer.viewer;
+package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -15,8 +15,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.painter.AbstractPainter;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+//import org.jxmapviewer.painter.AbstractPainter;
+import org.jdesktop.swingx.painter.AbstractPainter;
 
 /**
  * Paints waypoints on the JXMapViewer. This is an 

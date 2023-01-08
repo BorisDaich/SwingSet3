@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.jxmapviewer;
+package org.jdesktop.jxmapviewer;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,17 +27,19 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Painter;
 
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.painter.AbstractPainter;
-import org.jxmapviewer.painter.Painter;
-import org.jxmapviewer.viewer.GeoBounds;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Tile;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.TileListener;
-import org.jxmapviewer.viewer.empty.EmptyTileFactory;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+//import org.jxmapviewer.painter.AbstractPainter;
+//import org.jxmapviewer.painter.Painter;
+import org.jdesktop.jxmapviewer.viewer.GeoBounds;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.Tile;
+import org.jdesktop.jxmapviewer.viewer.TileFactory;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.TileListener;
+import org.jdesktop.jxmapviewer.viewer.empty.EmptyTileFactory;
+import org.jdesktop.swingx.painter.AbstractPainter;
 
 /**
  * A tile oriented map component that can easily be used with tile sources

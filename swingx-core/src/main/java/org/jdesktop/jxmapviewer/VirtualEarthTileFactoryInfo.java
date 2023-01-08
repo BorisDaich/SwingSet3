@@ -1,7 +1,7 @@
 
-package org.jxmapviewer;
+package org.jdesktop.jxmapviewer;
 
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /*******************************************************************************
  * http://www.viavirtualearth.com/vve/Articles/RollYourOwnTileServer.ashx
