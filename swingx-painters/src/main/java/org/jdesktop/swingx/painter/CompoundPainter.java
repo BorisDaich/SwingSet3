@@ -115,6 +115,8 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
     private Handler handler;
     
     private Painter[] painters = new Painter[0];
+    // TODO Painter[] ==> List<Painter<T>>
+//    private List<Painter<T>> painters = new CopyOnWriteArrayList<Painter<T>>();
     private AffineTransform transform;
     private boolean clipPreserved = false;
 
@@ -123,7 +125,8 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
     /** Creates a new instance of CompoundPainter */
     public CompoundPainter() {
         this((Painter[]) null);
-    }
+//        this((Painter<T>[]) null);
+   }
     
     /**
      * Convenience constructor for creating a CompoundPainter for an array
