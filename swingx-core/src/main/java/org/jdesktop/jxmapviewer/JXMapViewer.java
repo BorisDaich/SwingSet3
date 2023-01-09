@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jdesktop.jxmapviewer;
 
 import java.awt.Color;
@@ -24,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -65,6 +65,7 @@ import org.jdesktop.swingx.painter.AbstractPainter;
 public class JXMapViewer extends JPanel implements DesignMode
 {
     private static final long serialVersionUID = -3530746298586937321L;
+    private static final Logger LOG = Logger.getLogger(JXMapViewer.class.getName());
 
     /**
      * The zoom level. Generally a value between 1 and 15 (TODO Is this true for all the mapping worlds? What does this
@@ -129,11 +130,13 @@ public class JXMapViewer extends JPanel implements DesignMode
         // make a dummy loading image
         try
         {
-            URL url = JXMapViewer.class.getResource("/images/loading.png");
+            URL url = JXMapViewer.class.getResource("images/loading.png");
+            LOG.info("load 'loading.png' url:"+url);
             this.setLoadingImage(ImageIO.read(url));
         }
         catch (Exception ex)
         {
+        	LOG.warning("could not load 'loading.png'");
             System.out.println("could not load 'loading.png'");
             BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = img.createGraphics();
