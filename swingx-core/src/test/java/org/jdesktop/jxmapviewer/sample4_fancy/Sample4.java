@@ -1,4 +1,4 @@
-package sample4_fancy;
+package org.jdesktop.jxmapviewer.sample4_fancy;
 
 import java.awt.Color;
 import java.io.File;
@@ -9,17 +9,17 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.VirtualEarthTileFactoryInfo;
-import org.jxmapviewer.cache.FileBasedLocalCache;
-import org.jxmapviewer.input.CenterMapListener;
-import org.jxmapviewer.input.PanKeyListener;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.VirtualEarthTileFactoryInfo;
+import org.jdesktop.jxmapviewer.cache.FileBasedLocalCache;
+import org.jdesktop.jxmapviewer.input.CenterMapListener;
+import org.jdesktop.jxmapviewer.input.PanKeyListener;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+import org.jdesktop.jxmapviewer.input.ZoomMouseWheelListenerCenter;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.WaypointPainter;
 
 /**
  * A simple sample application that shows

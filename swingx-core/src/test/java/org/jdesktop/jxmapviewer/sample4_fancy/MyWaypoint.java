@@ -1,10 +1,10 @@
 
-package sample4_fancy;
+package org.jdesktop.jxmapviewer.sample4_fancy;
 
 import java.awt.Color;
 
-import org.jxmapviewer.viewer.DefaultWaypoint;
-import org.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.DefaultWaypoint;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
 
 /**
  * A waypoint that also has a color and a label

@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package sample4_fancy;
+package org.jdesktop.jxmapviewer.sample4_fancy;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -17,13 +17,15 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.WaypointRenderer;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.viewer.WaypointRenderer;
+import org.jdesktop.swingx.color.GradientTrackRenderer;
 
 /**
  * A fancy waypoint painter
@@ -31,7 +33,7 @@ import org.jxmapviewer.viewer.WaypointRenderer;
  */
 public class FancyWaypointRenderer implements WaypointRenderer<MyWaypoint>
 {
-    private static final Log log = LogFactory.getLog(FancyWaypointRenderer.class);
+    private static final Logger LOG = Logger.getLogger(FancyWaypointRenderer.class.getName());
 
     private final Map<Color, BufferedImage> map = new HashMap<Color, BufferedImage>();
 
@@ -52,7 +54,8 @@ public class FancyWaypointRenderer implements WaypointRenderer<MyWaypoint>
         }
         catch (Exception ex)
         {
-            log.warn("couldn't read waypoint_white.png", ex);
+//            log.warn("couldn't read waypoint_white.png", ex);
+        	LOG.warning("couldn't read waypoint_white.png "+ ex); 
         }
     }
 
