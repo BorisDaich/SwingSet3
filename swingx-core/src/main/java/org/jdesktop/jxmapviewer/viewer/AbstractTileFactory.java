@@ -1,4 +1,3 @@
-
 package org.jdesktop.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
@@ -25,8 +24,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
 import org.jdesktop.jxmapviewer.cache.LocalCache;
 import org.jdesktop.jxmapviewer.cache.NoOpLocalCache;
 import org.jdesktop.jxmapviewer.util.ProjectProperties;
@@ -38,7 +35,6 @@ import org.jdesktop.jxmapviewer.viewer.util.GeoUtil;
  */
 public abstract class AbstractTileFactory extends TileFactory
 {
-//    private static final Log log = LogFactory.getLog(AbstractTileFactory.class);
 	private static final Logger LOG = Logger.getLogger(AbstractTileFactory.class.getName());
 
     /**
@@ -66,6 +62,7 @@ public abstract class AbstractTileFactory extends TileFactory
     public AbstractTileFactory(TileFactoryInfo info)
     {
         super(info);
+        LOG.info("DEFAULT_USER_AGENT:"+DEFAULT_USER_AGENT);
     }
 
     /**
