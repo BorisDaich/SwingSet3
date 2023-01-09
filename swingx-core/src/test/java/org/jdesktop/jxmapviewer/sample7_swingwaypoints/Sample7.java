@@ -1,4 +1,4 @@
-package sample7_swingwaypoints;
+package org.jdesktop.jxmapviewer.sample7_swingwaypoints;
 
 import java.io.File;
 import java.util.Arrays;
@@ -8,17 +8,17 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.cache.FileBasedLocalCache;
-import org.jxmapviewer.input.CenterMapListener;
-import org.jxmapviewer.input.PanKeyListener;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.cache.FileBasedLocalCache;
+import org.jdesktop.jxmapviewer.input.CenterMapListener;
+import org.jdesktop.jxmapviewer.input.PanKeyListener;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+import org.jdesktop.jxmapviewer.input.ZoomMouseWheelListenerCenter;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.WaypointPainter;
 
 /**
  * A sample application demonstrating usage of Swing components as waypoints

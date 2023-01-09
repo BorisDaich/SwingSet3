@@ -1,7 +1,7 @@
-package sample7_swingwaypoints;
+package org.jdesktop.jxmapviewer.sample7_swingwaypoints;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.viewer.WaypointPainter;
 
 import javax.swing.*;
 import java.awt.*;
