@@ -1,5 +1,5 @@
 
-package sample2_waypoints;
+package org.jdesktop.jxmapviewer.sample2_waypoints;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -10,9 +10,11 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.painter.Painter;
+import javax.swing.Painter;
+
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+//import org.jxmapviewer.painter.Painter;
 
 /**
  * Paints a route

@@ -1,4 +1,4 @@
-package sample2_waypoints;
+package org.jdesktop.jxmapviewer.sample2_waypoints;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.Painter;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.painter.CompoundPainter;
-import org.jxmapviewer.painter.Painter;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.DefaultWaypoint;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.Waypoint;
-import org.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.DefaultWaypoint;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.Waypoint;
+import org.jdesktop.jxmapviewer.viewer.WaypointPainter;
+import org.jdesktop.swingx.painter.CompoundPainter;
 
 /**
  * A simple sample application that shows
