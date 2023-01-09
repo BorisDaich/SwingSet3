@@ -1,4 +1,4 @@
-package sample3_interaction;
+package org.jdesktop.jxmapviewer.sample3_interaction;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
@@ -10,16 +10,16 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import javax.swing.event.MouseInputListener;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.cache.FileBasedLocalCache;
-import org.jxmapviewer.input.CenterMapListener;
-import org.jxmapviewer.input.PanKeyListener;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.cache.FileBasedLocalCache;
+import org.jdesktop.jxmapviewer.input.CenterMapListener;
+import org.jdesktop.jxmapviewer.input.PanKeyListener;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+import org.jdesktop.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * A simple sample application that shows

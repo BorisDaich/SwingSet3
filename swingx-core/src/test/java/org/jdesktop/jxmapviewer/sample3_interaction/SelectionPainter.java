@@ -1,11 +1,11 @@
 
-package sample3_interaction;
+package org.jdesktop.jxmapviewer.sample3_interaction;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import org.jxmapviewer.painter.Painter;
+import javax.swing.Painter;
 
 /**
  * Paints a selection rectangle
