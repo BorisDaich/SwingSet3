@@ -116,8 +116,52 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
     private Handler handler;
     
     private Painter<?>[] painters = new Painter<?>[0];
-    // TODO Painter[] ==> List<Painter<T>>
+    /* TODO Painter[] ==> List<Painter<T>> - so ist es in jxmapviewer2 implementiert:
 //    private List<Painter<T>> painters = new CopyOnWriteArrayList<Painter<T>>();
+
+ich belasse es hier bei Painter<?>[] painters , 
+füge aber einen ctor mit List 
+und setPainters(List<? extends Painter<T>> painters) 
+hinzu, damit jxmapviewer2 es nutzen kann
+
+Ausserdem gibt es in jxmapviewer2
+- einen getter, der Collection liefert, getPainters hier liefert Array
+- addPainter und
+- removePainter ( beide werden in jxmapviewer2 nicht genutzt!? )
+
+    public final Collection<Painter<T>> getPainters() {
+        return Collections.unmodifiableCollection(painters);
+    }
+
+    public void addPainter(Painter<T> painter) {
+        Collection<Painter<T>> old = new ArrayList<Painter<T>>(getPainters());
+        
+        this.painters.add(painter);    
+        
+        if (painter instanceof AbstractPainter)
+        {
+            ((AbstractPainter<?>) painter).addPropertyChangeListener(handler);
+        }
+
+        setDirty(true);
+        firePropertyChange("painters", old, getPainters());
+    }
+
+    public void removePainter(Painter<T> painter) {
+        Collection<Painter<T>> old = new ArrayList<Painter<T>>(getPainters());
+        
+        this.painters.remove(painter);
+        
+        if (painter instanceof AbstractPainter)
+        {
+            ((AbstractPainter<?>) painter).removePropertyChangeListener(handler);
+        }
+
+        setDirty(true);
+        firePropertyChange("painters", old, getPainters());
+    }
+
+ */
     private AffineTransform transform;
     private boolean clipPreserved = false;
 
@@ -142,6 +186,10 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
         setPainters(painters);
     }
 
+    /**
+     * Convenience constructor for creating a CompoundPainter for a list of painters.
+     * @param painters list of painters
+     */
     public CompoundPainter(List<? extends Painter<T>> painters) {
         handler = new Handler(this);
 
@@ -179,9 +227,13 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
         setDirty(true);
         firePropertyChange("painters", old, getPainters());
     }
+    /**
+     * 
+     * @param painters in a list
+     */
     public void setPainters(List<? extends Painter<T>> painters) {
     	// TODO: besser
-//    	setPainters((Painter<?>[])painters.toArray());
+//    	setPainters((Painter<?>[]) painters.toArray()); // ABER: ClassCastException
     	// -------------
         Painter<?>[] old = getPainters();
         
