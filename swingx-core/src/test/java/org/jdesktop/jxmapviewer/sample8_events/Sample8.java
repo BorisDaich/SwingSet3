@@ -1,4 +1,4 @@
-package sample8_events;
+package org.jdesktop.jxmapviewer.sample8_events;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Tile;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-import org.jxmapviewer.viewer.TileListener;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.Tile;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.TileListener;
 
 /**
  * A simple sample application that shows

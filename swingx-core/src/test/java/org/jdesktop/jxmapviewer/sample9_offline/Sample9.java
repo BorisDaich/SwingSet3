@@ -1,4 +1,4 @@
-package sample9_offline;
+package org.jdesktop.jxmapviewer.sample9_offline;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -7,14 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.event.MouseInputListener;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+import org.jdesktop.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactory;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * A simple sample application that shows
@@ -32,7 +32,7 @@ public class Sample9
         // See https://docs.oracle.com/javase/8/docs/api/java/net/JarURLConnection.html for URL syntax details
         // You can create such a ZIP file by zipping the content of ${HOME}/.jxmapviewer2/tile.openstreetmap.org
         // The ZIP file should contain a list of folders (0, 1, 2, 3 ...) that represent the OSM path structure
-        TileFactoryInfo info = new OSMTileFactoryInfo("ZIP archive", "jar:file:/E:/Github/jxmapviewer2/openstreetmap.zip!");
+        TileFactoryInfo info = new OSMTileFactoryInfo("ZIP archive", "jar:file:/C:/tmp/jxmapviewer2/openstreetmap.zip!");
         TileFactory tileFactory = new DefaultTileFactory(info);
 
         // Setup JXMapViewer
