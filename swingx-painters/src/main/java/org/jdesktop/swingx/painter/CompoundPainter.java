@@ -23,6 +23,7 @@ import java.awt.geom.AffineTransform;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import javax.swing.Painter;
 
@@ -61,7 +62,6 @@ import org.jdesktop.beans.JavaBean;
  * @author rbair
  */
 @JavaBean
-//@SuppressWarnings("nls")
 public class CompoundPainter<T> extends AbstractPainter<T> {
 	
     /**
@@ -69,11 +69,12 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
      */
     @Override // implements the abstract method AbstractPainter.doPaint
 	protected void doPaint(Graphics2D g, T component, int width, int height) {
-		for (Painter<T> p : getPainters()) {
+		for (Painter<?> p : getPainters()) {
 			Graphics2D temp = (Graphics2D) g.create();
 
 			try {
-				p.paint(temp, component, width, height);
+				Painter<T> painter = (Painter<T>)p;
+				painter.paint(temp, component, width, height);
 				if (isClipPreserved()) {
 					g.setClip(temp.getClip());
 				}
@@ -114,7 +115,7 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
     
     private Handler handler;
     
-    private Painter[] painters = new Painter[0];
+    private Painter<?>[] painters = new Painter<?>[0];
     // TODO Painter[] ==> List<Painter<T>>
 //    private List<Painter<T>> painters = new CopyOnWriteArrayList<Painter<T>>();
     private AffineTransform transform;
@@ -135,12 +136,18 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
      *
      * @param painters array of painters, which will be painted in order
      */
-    public CompoundPainter(Painter... painters) {
+    public CompoundPainter(Painter<?>... painters) {
         handler = new Handler(this);
         
         setPainters(painters);
     }
-    
+
+    public CompoundPainter(List<? extends Painter<T>> painters) {
+        handler = new Handler(this);
+
+        setPainters(painters);
+    }
+
     /**
      * Sets the array of Painters to use. These painters will be executed in
      * order. A null value will be treated as an empty array. To prevent unexpected 
@@ -149,10 +156,10 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
      *
      * @param painters array of painters, which will be painted in order
      */
-    public void setPainters(Painter... painters) {
-        Painter[] old = getPainters();
+    public void setPainters(Painter<?>... painters) {
+        Painter<?>[] old = getPainters();
         
-        for (Painter p : old) {
+        for (Painter<?> p : old) {
             if (p instanceof AbstractPainter) {
                 ((AbstractPainter<?>) p).removePropertyChangeListener(handler);
             }
@@ -172,14 +179,40 @@ public class CompoundPainter<T> extends AbstractPainter<T> {
         setDirty(true);
         firePropertyChange("painters", old, getPainters());
     }
+    public void setPainters(List<? extends Painter<T>> painters) {
+    	// TODO: besser
+//    	setPainters((Painter<?>[])painters.toArray());
+    	// -------------
+        Painter<?>[] old = getPainters();
+        
+        for (Painter<?> p : old) {
+            if (p instanceof AbstractPainter) {
+                ((AbstractPainter<?>) p).removePropertyChangeListener(handler);
+            }
+        }
+
+        this.painters = new Painter[painters == null ? 0 : painters.size()];
+        if (painters != null) {
+            System.arraycopy(painters.toArray(), 0, this.painters, 0, this.painters.length);
+        }
+
+        for (Painter<?> p : this.painters) {
+            if (p instanceof AbstractPainter) {
+                ((AbstractPainter<?>) p).addPropertyChangeListener(handler);
+            }
+        }
+
+        setDirty(true);
+        firePropertyChange("painters", old, getPainters());
+    }
     
     /**
      * Gets the array of painters used by this CompoundPainter
      * @return a defensive copy of the painters used by this CompoundPainter.
      *         This will never be null.
      */
-    public final Painter[] getPainters() {
-        Painter[] results = new Painter[painters.length];
+    public final Painter<?>[] getPainters() {
+        Painter<?>[] results = new Painter<?>[painters.length];
         System.arraycopy(painters, 0, results, 0, results.length);
         return results;
     }
