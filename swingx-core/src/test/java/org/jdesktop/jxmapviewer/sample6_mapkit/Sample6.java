@@ -1,4 +1,4 @@
-package sample6_mapkit;
+package org.jdesktop.jxmapviewer.sample6_mapkit;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -9,12 +9,12 @@ import java.awt.geom.Point2D;
 import javax.swing.JFrame;
 import javax.swing.JToolTip;
 
-import org.jxmapviewer.JXMapKit;
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.JXMapKit;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * A simple sample application that uses JXMapKit

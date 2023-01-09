@@ -1,5 +1,4 @@
-
-package sample5_tilesets;
+package org.jdesktop.jxmapviewer.sample5_tilesets;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -18,15 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputListener;
 
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.VirtualEarthTileFactoryInfo;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jdesktop.jxmapviewer.JXMapViewer;
+import org.jdesktop.jxmapviewer.OSMTileFactoryInfo;
+import org.jdesktop.jxmapviewer.VirtualEarthTileFactoryInfo;
+import org.jdesktop.jxmapviewer.input.PanMouseInputListener;
+import org.jdesktop.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import org.jdesktop.jxmapviewer.viewer.DefaultTileFactory;
+import org.jdesktop.jxmapviewer.viewer.GeoPosition;
+import org.jdesktop.jxmapviewer.viewer.TileFactory;
+import org.jdesktop.jxmapviewer.viewer.TileFactoryInfo;
 
 /**
  * This example demonstrate the use of different {@link TileFactory} elements.
