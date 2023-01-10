@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -62,7 +60,6 @@ import junit.framework.TestCase;
 @RunWith(JUnit4.class)
 public abstract class AbstractTestHighlighterClient extends TestCase {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(AbstractTestHighlighterClient.class.getName());
     
     // ---- HighlighterClient
@@ -74,7 +71,7 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
      */
     protected abstract HighlighterClient createHighlighterClient();
     
-    
+	static final String STRIPING_BG = "UIColorHighlighter.stripingBackground";
     /**
      * Test that the client is messaged on change to a managed Highlighter.
      */
@@ -83,20 +80,21 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
         HighlighterClient client = createHighlighterClient();
         // force loading of striping colors
         ColorHighlighter colorHighlighter = (ColorHighlighter) HighlighterFactory.createSimpleStriping();
-        Color uiColor = UIManager.getColor("UIColorHighlighter.stripingBackground");
+        Color uiColor = UIManager.getColor(STRIPING_BG);
         if (uiColor == null) {
             LOG.info("cannot run test - no ui striping color");
             return;
         }
+        LOG.config("colorHighlighter "+colorHighlighter+ "\n with Background "+uiColor + " will be channged to RED.");
         assertSame("sanity", uiColor, colorHighlighter.getBackground());
         client.addHighlighter(colorHighlighter);
         Color changedUIColor = Color.RED;
-        UIManager.put("UIColorHighlighter.stripingBackground", changedUIColor);
+        UIManager.put(STRIPING_BG, changedUIColor);
         client.updateUI();
         try {
             assertSame("support must update ui color", changedUIColor, colorHighlighter.getBackground());
         } finally {
-            UIManager.put("UIColorHighlighter.stripingBackground", uiColor);
+            UIManager.put(STRIPING_BG, uiColor);
         }
     }
 
@@ -343,13 +341,11 @@ public abstract class AbstractTestHighlighterClient extends TestCase {
      * support for Highlighters. They must
      * 
      * <ul>
-     * <li> have a bound property "highlighters" denoting a collection of
-     * Highlighters
+     * <li> have a bound property "highlighters" denoting a collection of Highlighters
      * <li> have methods to modify the collection
      * <li> update the ui of contained Highlighters on LAF changes
      * <li> apply the highlighters as appropriate. This implies that it must
-     * listen to highlighter state changes to update itself (or related parties)
-     * accordingly.
+     * listen to highlighter state changes to update itself (or related parties) accordingly.
      * </ul>
      * 
      * The last bullet is a "vague" requirement in that it might vary
