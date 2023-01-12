@@ -68,7 +68,6 @@ public class JXMapKit extends JPanel
     private boolean zoomButtonsVisible = true;
     private final boolean sliderReversed = false;
 
-    @SuppressWarnings("javadoc")
     public enum DefaultProviders
     {
         OpenStreetMaps, Custom
@@ -631,7 +630,6 @@ public class JXMapKit extends JPanel
         return dataProviderCreditShown;
     }
 
-    @SuppressWarnings("unchecked")
     private void rebuildMainMapOverlay()
     {
         CompoundPainter<JXMapViewer> cp = new CompoundPainter<JXMapViewer>();
@@ -699,36 +697,4 @@ public class JXMapKit extends JPanel
         }
     };
 
-    /**
-     * @param args the program args
-     */
-    // TODO move it to test
-    public static void main(String... args)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                JXMapKit kit = new JXMapKit();
-                kit.setDefaultProvider(DefaultProviders.OpenStreetMaps);
-
-                TileFactoryInfo info = new OSMTileFactoryInfo();
-                TileFactory tf = new DefaultTileFactory(info);
-                kit.setTileFactory(tf);
-                kit.setZoom(14);
-                kit.setAddressLocation(new GeoPosition(51.5, 0));
-                kit.getMainMap().setDrawTileBorders(true);
-                kit.getMainMap().setRestrictOutsidePanning(true);
-                kit.getMainMap().setHorizontalWrapped(false);
-
-                ((DefaultTileFactory) kit.getMainMap().getTileFactory()).setThreadPoolSize(8);
-                JFrame frame = new JFrame("JXMapKit test");
-                frame.add(kit);
-                frame.pack();
-                frame.setSize(500, 300);
-                frame.setVisible(true);
-            }
-        });
-    }
 }
