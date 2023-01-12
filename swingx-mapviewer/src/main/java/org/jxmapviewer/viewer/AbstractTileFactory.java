@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
+import org.jxmapviewer.ProjectProperties;
 import org.jxmapviewer.cache.LocalCache;
 import org.jxmapviewer.cache.NoOpLocalCache;
-import org.jxmapviewer.util.ProjectProperties;
 import org.jxmapviewer.viewer.util.GeoUtil;
 
 /**
@@ -62,7 +62,7 @@ public abstract class AbstractTileFactory extends TileFactory
     public AbstractTileFactory(TileFactoryInfo info)
     {
         super(info);
-        LOG.info("DEFAULT_USER_AGENT:"+DEFAULT_USER_AGENT);
+        LOG.config("DEFAULT_USER_AGENT:"+DEFAULT_USER_AGENT);
     }
 
     /**
