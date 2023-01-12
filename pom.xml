@@ -15,6 +15,7 @@
     <module>swingx-action</module>
     <module>swingx-painters</module>
     <module>swingx-graphics</module>
+    <module>swingx-mapviewer</module>
     <module>swingx-plaf</module>
     <module>swingx-core</module>
     <module>swingx-beaninfo</module>
@@ -165,17 +166,6 @@
         </configuration>
       </plugin>
       
-      <!-- see https://central.sonatype.org/publish/publish-maven/#gpg-signed-components use v3.0.1 
-      
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-gpg-plugin:3.0.1:sign (sign-artifacts) on project swingset3: 
-Execution sign-artifacts of goal org.apache.maven.plugins:maven-gpg-plugin:3.0.1:sign failed: 
-Cannot invoke "org.apache.maven.plugins.gpg.GpgVersion.toString()" because "gpgVersion" is null -> [Help 1]
-      
-Alternative: https://www.simplify4u.org/sign-maven-plugin/
-[INFO] Sign - key not found - skip execution : 9EB560F2 hat nicht funktioniert
-Aber : 92806DD3 - wurde auf keys.openpgp.org registriert, keyId (16 stellig): 460F209C92806DD3
-      
-      -->
       <plugin>
         <groupId>org.simplify4u.plugins</groupId>
         <artifactId>sign-maven-plugin</artifactId>
