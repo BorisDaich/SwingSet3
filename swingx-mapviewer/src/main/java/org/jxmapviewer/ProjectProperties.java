@@ -1,4 +1,4 @@
-package org.jxmapviewer.util;
+package org.jxmapviewer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,22 +17,43 @@ public enum ProjectProperties {
      */
     INSTANCE;
 
-    private static final String PROPERTIES_FILE = "/project.properties";
+    private static final String PROPERTIES_FILE = "project.properties";
 
     private static final String PROP_VERSION = "version";
     private static final String PROP_NAME = "name";
 
-//	private static final Logger LOG = Logger.getLogger(ProjectProperties.class.getName());
     private final Properties props = new Properties();
 
+    private String resolveName(String name) {
+        if (!name.startsWith("/")) {
+            String baseName = ProjectProperties.class.getPackageName();
+            if (!baseName.isEmpty()) {
+                int len = baseName.length() + 1 + name.length();
+                StringBuilder sb = new StringBuilder(len);
+                name = sb.append(baseName.replace('.', '/'))
+                    .append('/')
+                    .append(name)
+                    .toString();
+            }
+        } else {
+            name = name.substring(1);
+        }
+        return name;
+    }
     private ProjectProperties() {
-    	Logger.getAnonymousLogger().info("Loading project properties..."+PROPERTIES_FILE);
-//    	LOG.info("Loading project properties..."+PROPERTIES_FILE);
+    	Logger.getAnonymousLogger().fine("Loading project properties... "+PROPERTIES_FILE+
+    		", resolveName:"+resolveName(PROPERTIES_FILE));
 
-        try (InputStream is = ProjectProperties.class.getResourceAsStream(PROPERTIES_FILE)) {
+        try {
+        	Class<?> type = ProjectProperties.class;
+        	InputStream is = type.getResourceAsStream(PROPERTIES_FILE);
+        	/*
+        	 * getResourceAsStream method returns null when the resource is anon-".class" resource 
+        	 * in a package that is not open to the caller's module. 
+        	 */
+//        	Logger.getAnonymousLogger().info("is:"+is);
             if (is != null) {
                 props.load(is);
-//                log.debug("Properties successfully loaded.");
             } else {
             	Logger.getAnonymousLogger().warning("Project properties file not found. Set default values.");
                 props.put(PROP_NAME, "JxMapViewer");
@@ -40,7 +61,7 @@ public enum ProjectProperties {
             }
         }
         catch (IOException e) {
-//            log.warn("Unable to read project properties.", e);
+        	Logger.getAnonymousLogger().warning("Unable to read project properties."+ e);
             props.put(PROP_NAME, "JxMapViewer");
             props.put(PROP_VERSION, "1.0");
         }
