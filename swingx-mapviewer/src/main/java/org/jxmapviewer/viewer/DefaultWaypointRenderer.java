@@ -6,12 +6,12 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jxmapviewer.viewer;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -23,7 +23,7 @@ import org.jxmapviewer.JXMapViewer;
  */
 public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint>
 {
-//    private static final Log log = LogFactory.getLog(DefaultWaypointRenderer.class);
+	private static final Logger LOG = Logger.getLogger(DefaultWaypointRenderer.class.getName());
     
     private BufferedImage img = null;
 
@@ -38,7 +38,7 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint>
         }
         catch (Exception ex)
         {
-//            log.warn("couldn't read standard_waypoint.png", ex);
+        	LOG.warning("couldn't read standard_waypoint.png "+ ex);
         }
     }
 

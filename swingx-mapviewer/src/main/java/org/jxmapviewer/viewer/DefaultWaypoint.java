@@ -6,12 +6,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jxmapviewer.viewer;
 
 import org.jdesktop.beans.AbstractBean;
-
-//import org.jxmapviewer.beans.AbstractBean;
 
 /**
  * @author joshy

@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
@@ -14,13 +13,10 @@ import java.lang.ref.SoftReference;
 
 import org.jdesktop.beans.AbstractBean;
 
-//import org.jxmapviewer.beans.AbstractBean;
-
 /**
  * The Tile class represents a particular square image piece of the world bitmap at a particular zoom level.
  * @author joshy
  */
-
 public class Tile extends AbstractBean
 {
     /**

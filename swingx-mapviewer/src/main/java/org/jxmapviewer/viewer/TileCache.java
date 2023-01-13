@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
@@ -16,11 +15,9 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
 
 /**
  * An implementation only class for now. For internal use only.
@@ -28,7 +25,7 @@ import javax.imageio.ImageIO;
  */
 public class TileCache
 {
-//    private static final Log log = LogFactory.getLog(TileCache.class);
+	private static final Logger LOG = Logger.getLogger(TileCache.class.getName());
     
     private Map<URI, BufferedImage> imgmap = new HashMap<URI, BufferedImage>();
     private LinkedList<URI> imgmapAccessQueue = new LinkedList<URI>();
@@ -60,7 +57,7 @@ public class TileCache
                 URI olduri = bytemapAccessQueue.removeFirst();
                 byte[] oldbimg = bytemap.remove(olduri);
                 bytesize -= oldbimg.length;
-                log("removed 1 img from byte cache");
+                LOG.fine("removed 1 img from byte cache");
             }
 
             bytemap.put(uri, bimg);
@@ -93,7 +90,7 @@ public class TileCache
         {
             if (bytemap.containsKey(uri))
             {
-                log("retrieving from bytes");
+            	LOG.fine("retrieving from bytes");
                 bytemapAccessQueue.remove(uri);
                 bytemapAccessQueue.addLast(uri);
                 BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytemap.get(uri)));
@@ -112,7 +109,7 @@ public class TileCache
     public void needMoreMemory()
     {
         imgmap.clear();
-        log("HACK! need more memory: freeing up memory");
+        LOG.info("HACK! need more memory: freeing up memory");
     }
 
     private void addToImageCache(final URI uri, final BufferedImage img)
@@ -125,22 +122,17 @@ public class TileCache
                                     URI olduri = imgmapAccessQueue.removeFirst();
                                     BufferedImage oldimg = imgmap.remove(olduri);
                                     imagesize -= oldimg.getWidth() * oldimg.getHeight() * 4;
-                                    log("removed 1 img from image cache");
+                                    LOG.fine("removed 1 img from image cache");
                             }
                             imgmap.put(uri, img);
                             imagesize += img.getWidth() * img.getHeight() * 4;
                             imgmapAccessQueue.addLast(uri);
                         } catch (Exception ex) {
-                            log("Failed to load tile at URL. Tile is null");
+                        	LOG.warning("Failed to load tile at URL. Tile is null");
                         }
         }
-        log("added to cache: " + " uncompressed = " + imgmap.keySet().size() + " / " + imagesize / 1000 + "k"
+        LOG.fine("added to cache: " + " uncompressed = " + imgmap.keySet().size() + " / " + imagesize / 1000 + "k"
                 + " compressed = " + bytemap.keySet().size() + " / " + bytesize / 1000 + "k");
-    }
-
-    private void log(String string)
-    {
-//        log.debug(string);
     }
 
 }

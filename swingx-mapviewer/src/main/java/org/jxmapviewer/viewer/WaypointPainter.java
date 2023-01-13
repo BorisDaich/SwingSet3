@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.jxmapviewer.viewer;
 
 import java.awt.Graphics2D;
@@ -15,7 +14,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-//import org.jxmapviewer.painter.AbstractPainter;
 import org.jdesktop.swingx.painter.AbstractPainter;
 import org.jxmapviewer.JXMapViewer;
 

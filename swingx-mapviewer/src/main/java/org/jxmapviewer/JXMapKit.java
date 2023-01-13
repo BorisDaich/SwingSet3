@@ -20,12 +20,10 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.Painter;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 
 import org.jdesktop.swingx.painter.AbstractPainter;
@@ -53,10 +51,7 @@ import org.jxmapviewer.viewer.WaypointPainter;
  * <PRE><CODE>jxMapKit.setMiniMapVisible(false);</CODE></PRE>
  *
  * <p>
- * The JXMapViewer is preconfigured to connect to maps.swinglabs.org which
- * serves up global satellite imagery from NASA's
- * <a href="http://earthobservatory.nasa.gov/Newsroom/BlueMarble/">Blue
- * Marble NG</a> image collection.
+ * The JXMapViewer is preconfigured to connect to OpenStreetMap.
  * </p>
  * @author joshy
  */
