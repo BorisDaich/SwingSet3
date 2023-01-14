@@ -418,12 +418,13 @@ public abstract class AbstractTileFactory extends TileFactory
                 {
                     if (remainingAttempts == 0)
                     {
-                    	LOG.warning("Failed to load a tile at URL: " + tile.getURL() + ", stopping ..."+ e);
+                    	LOG.warning("Failed to load a tile at URL: " + tile.getURL() + ", stopping ... "+ e);
                         tile.setLoadingFailed(true);
                     }
                     else
                     {
-                    	LOG.warning("Failed to load a tile at URL: " + tile.getURL() + ", retrying ..."+ e);
+                    	LOG.warning("Failed to load a tile at URL: " + tile.getURL() 
+                    	+ ", remainingAttempts="+remainingAttempts+" retrying ... "+ e.getMessage());
                     }
                 }
             }
