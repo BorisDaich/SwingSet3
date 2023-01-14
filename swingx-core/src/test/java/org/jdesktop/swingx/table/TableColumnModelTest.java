@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx.table;
 
 import static org.jdesktop.test.matchers.Matchers.property;
@@ -33,7 +30,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.ArgumentMatcher;
 
-
 /**
  * Skeleton to unit test DefaultTableColumnExt.
  * 
@@ -42,14 +38,12 @@ import org.mockito.ArgumentMatcher;
  *   behaviour when adding/removing invisible columns
  *   selection state
  * 
- * 
  * @author  Jeanette Winzenburg
  */
 @RunWith(JUnit4.class)
 public class TableColumnModelTest extends InteractiveTestCase {
-    @SuppressWarnings("all")
-    private static final Logger LOG = Logger
-            .getLogger(TableColumnModelTest.class.getName());
+
+    private static final Logger LOG = Logger.getLogger(TableColumnModelTest.class.getName());
     protected static final int COLUMN_COUNT = 3;
 
     /**

@@ -78,7 +78,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 public class JXTableHeader extends JTableHeader implements TableColumnModelExtListener {
 
-    @SuppressWarnings("unused")
+	private static final long serialVersionUID = 8074251172642461278L;
     private static final Logger LOG = Logger.getLogger(JXTableHeader.class.getName());
     
     static {
@@ -97,6 +97,7 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
      */
     public JXTableHeader() {
         super();
+        LOG.config("no TableColumnModel");
     }
 
     /**
@@ -110,6 +111,7 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
      */
     public JXTableHeader(TableColumnModel columnModel) {
         super(columnModel);
+        LOG.config("TableColumnModel:"+columnModel);
     }
 
 
@@ -178,7 +180,7 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
     @Override
     public void columnPropertyChange(PropertyChangeEvent event) {
        if (isColumnEvent(event)) return;
-       resizeAndRepaint(); 
+       resizeAndRepaint(); // in JTableHeader, calls revalidate() + repaint() from JComponent, resp. Component
     }
     
     
@@ -195,8 +197,8 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
      *   base columnModelEvent.
      */
     protected boolean isColumnEvent(PropertyChangeEvent event) {
-        return "width".equals(event.getPropertyName()) || 
-            "preferredWidth".equals(event.getPropertyName())
+        return "width".equals(event.getPropertyName()) 
+        	|| "preferredWidth".equals(event.getPropertyName())
             || "visible".equals(event.getPropertyName());
     }
 
@@ -619,7 +621,8 @@ public class JXTableHeader extends JTableHeader implements TableColumnModelExtLi
      * if the row sorter is of type SortController.
      * 
      */
-    private class HeaderListener implements MouseInputListener, Serializable {
+    @SuppressWarnings("serial")
+	private class HeaderListener implements MouseInputListener, Serializable {
         private TableColumn cachedResizingColumn;
         private SortOrder[] cachedSortOrderCycle;
         private int sortColumn = -1;
