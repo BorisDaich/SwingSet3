@@ -40,8 +40,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.jdesktop.swingx.action.BoundAction;
@@ -51,10 +53,14 @@ import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.table.TableColumnExt;
+import org.jdesktop.swingx.table.TableColumnModelExt;
 import org.jdesktop.test.AncientSwingTeam;
 import org.jdesktop.test.CellEditorReport;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.SerializableSupport;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * Test to exposed known issues of <code>JXTable</code>.
@@ -65,20 +71,21 @@ import org.jdesktop.test.SerializableSupport;
  * 
  * @author Jeanette Winzenburg
  */
+@RunWith(JUnit4.class)
 public class JXTableIssues extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(JXTableIssues.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(JXTableIssues.class.getName());
 
     public static void main(String args[]) {
         JXTableIssues test = new JXTableIssues();
         setSystemLF(true);
         try {
-//          test.runInteractiveTests();
-            test.runInteractiveTests("interactive.*Scroll.*");
-         //   test.runInteractiveTests("interactive.*Render.*");
-//          test.runInteractiveTests("interactive.*ExtendOnRemoveAdd.*");
-//            test.runInteractiveTests("interactive.*Extend.*");
-//            test.runInteractiveTests("interactive.*Repaint.*");
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactiveGetColumnExtInstanceofTableColumnModel");
+//			test.runInteractiveTests("interactive.*Scroll.*");
+//			test.runInteractiveTests("interactive.*Render.*");
+//			test.runInteractiveTests("interactive.*ExtendOnRemoveAdd.*");
+//			test.runInteractiveTests("interactive.*Extend.*");
+//			test.runInteractiveTests("interactive.*Repaint.*");
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
@@ -395,14 +402,41 @@ public class JXTableIssues extends InteractiveTestCase {
         frame.setVisible(true);
     }
 
-
+    /**
+     * test getColumnExt(Object identifier) for table with model not of type TableColumnModelExt
+     * TODO move to JXTableUnitTest
+     */
+    @Test
+    public void interactiveGetColumnExtInstanceofTableColumnModel() {
+    	TableModel tmodel = new AncientSwingTeam();
+        // createColumnModel
+        TableColumnModel cmodel = new DefaultTableColumnModel();
+        for (int i = 0; i < tmodel.getColumnCount(); i++) {
+            TableColumnExt column = new TableColumnExt(i);
+            column.setIdentifier(String.valueOf(i));
+            cmodel.addColumn(column);      
+        }
+    	
+        JXTable table = new JXTable(tmodel, cmodel);
+        if(table.getColumnModel() instanceof TableColumnModelExt) {
+        	LOG.info("nothing to test here");
+        	return;
+        }
+    	LOG.info("table.ColumnModel:"+table.getColumnModel());
+    	assertNotNull(table.getColumnModel());
+        LOG.info("Favorite Color: "+table.getColumnExt("Favorite Color")); // expected null
+    	assertNull(table.getColumnExt("Favorite Color"));
+        LOG.info("column 0 with identifier \"0\": "+table.getColumnExt("0").getModelIndex());
+        assertEquals(0, table.getColumnExt("0").getModelIndex());
+        assertNull(table.getColumnExt("-1")); // expected null : no TableColumn has this identifier
+    }
     /**
      * Match highlighter fails to display correctly if column-based highlighter alters background
      * color.
      */
     public void interactiveColumnHighlightingWithSearch() {
         JXTable table = new JXTable(new AncientSwingTeam());
-        
+
         table.getColumnExt("Favorite Color").setHighlighters(new AbstractHighlighter() {
             @Override
             protected Component doHighlight(Component renderer, ComponentAdapter adapter) {
@@ -560,5 +594,4 @@ public class JXTableIssues extends InteractiveTestCase {
         return model;
     }
     
-
 }

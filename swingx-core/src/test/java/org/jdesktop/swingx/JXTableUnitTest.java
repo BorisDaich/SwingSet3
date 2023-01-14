@@ -1347,9 +1347,9 @@ public class JXTableUnitTest extends InteractiveTestCase {
     @SuppressWarnings("serial")
 	public static class JXRTable extends JXTable {
         @Override
-        protected RowSorter<? extends TableModel> createDefaultRowSorter() {
+        protected RowSorter<? extends TableModel> createDefaultRowSorter(TableModel model) {
             XTableRowSorter<TableModel> sorter = new XTableRowSorter<TableModel>();
-            sorter.setModel(getModel());
+            sorter.setModel(model);
             return sorter;
         }
     }

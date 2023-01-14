@@ -380,9 +380,10 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
 @JavaBean
 public class JXTable extends JTable implements TableColumnModelExtListener {
 
-    public static final String FOCUS_PREVIOUS_COMPONENT = "focusPreviousComponent";
+	public static final String FOCUS_PREVIOUS_COMPONENT = "focusPreviousComponent";
     public static final String FOCUS_NEXT_COMPONENT = "focusNextComponent";
 
+	private static final long serialVersionUID = -9218879739656850062L;
     private static final Logger LOG = Logger.getLogger(JXTable.class.getName());
 
     /**
@@ -594,7 +595,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @param rowData Row data, as a Vector of Objects.
      * @param columnNames Column names, as a Vector of Strings.
      */
-    public JXTable(Vector<? extends Vector> rowData, Vector<?> columnNames) {
+    public JXTable(Vector<? extends Vector<?>> rowData, Vector<?> columnNames) {
         super(rowData, columnNames);
         init();
     }
@@ -1106,19 +1107,14 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
         ActionMap map = getActionMap();
         map.put("print", new Actions("print"));
         map.put("find", new Actions("find"));
-        // hack around core bug: cancel editing doesn't fire
-        // reported against SwingX as of #610-swingx
+        // hack around core bug: cancel editing doesn't fire reported against SwingX as of #610-swingx
         map.put("cancel", createCancelAction());
         map.put(PACKALL_ACTION_COMMAND, createPackAllAction());
         map.put(PACKSELECTED_ACTION_COMMAND, createPackSelectedAction());
-        map
-                .put(HORIZONTALSCROLL_ACTION_COMMAND,
-                        createHorizontalScrollAction());
+        map.put(HORIZONTALSCROLL_ACTION_COMMAND, createHorizontalScrollAction());
 
-        KeyStroke findStroke = SearchFactory.getInstance()
-                .getSearchAccelerator();
-        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-                findStroke, "find");
+        KeyStroke findStroke = SearchFactory.getInstance().getSearchAccelerator();
+        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(findStroke, "find");
     }
 
     /**
@@ -1154,8 +1150,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * horizontal scrollBar.
      */
     private Action createHorizontalScrollAction() {
-        BoundAction action = new BoundAction(null,
-                HORIZONTALSCROLL_ACTION_COMMAND);
+        BoundAction action = new BoundAction(null, HORIZONTALSCROLL_ACTION_COMMAND);
         action.setStateAction();
         action.registerCallback(this, "setHorizontalScrollEnabled");
         action.setSelected(isHorizontalScrollEnabled());
@@ -1358,8 +1353,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
         } else {
             setAutoResizeMode(oldAutoResizeMode);
         }
-        firePropertyChange("horizontalScrollEnabled", old,
-                isHorizontalScrollEnabled());
+        firePropertyChange("horizontalScrollEnabled", old, isHorizontalScrollEnabled());
     }
 
     /**
@@ -1401,11 +1395,9 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * enablement of enhanced auto-resize behaviour.
      */
     protected void updateHorizontalAction() {
-        Action showHorizontal = getActionMap().get(
-                HORIZONTALSCROLL_ACTION_COMMAND);
-        if (showHorizontal instanceof BoundAction) {
-            ((BoundAction) showHorizontal)
-                    .setSelected(isHorizontalScrollEnabled());
+        Action showHorizontal = getActionMap().get(HORIZONTALSCROLL_ACTION_COMMAND);
+        if (showHorizontal instanceof BoundAction showHorizontalBoundAction) {
+        	showHorizontalBoundAction.setSelected(isHorizontalScrollEnabled());
         }
     }
 
@@ -1441,8 +1433,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
     public void doLayout() {
         int resizeMode = getAutoResizeMode();
         // fool super...
-        if (isHorizontalScrollEnabled() && hasRealizedParent()
-                && hasExcessWidth()) {
+        if (isHorizontalScrollEnabled() && hasRealizedParent() && hasExcessWidth()) {
             autoResizeMode = oldAutoResizeMode;
         }
         inLayout = true;
@@ -1456,8 +1447,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @return boolean to indicate whether the table has a realized parent.
      */
     private boolean hasRealizedParent() {
-        return (getWidth() > 0) && (getParent() != null)
-                && (getParent().getWidth() > 0);
+        return (getWidth() > 0) && (getParent() != null) && (getParent().getWidth() > 0);
     }
 
     /**
@@ -1487,8 +1477,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
         TableColumn resizingColumn = getResizingColumn();
         // Need to do this here, before the parent's
         // layout manager calls getPreferredSize().
-        if (resizingColumn != null && autoResizeMode == AUTO_RESIZE_OFF
-                && !inLayout) {
+        if (resizingColumn != null && autoResizeMode == AUTO_RESIZE_OFF && !inLayout) {
             resizingColumn.setPreferredWidth(resizingColumn.getWidth());
         }
         resizeAndRepaint();
@@ -1702,7 +1691,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
             this.ignoreAddColumn = false;
         }
         if (getAutoCreateRowSorter()) {
-            setRowSorter(createDefaultRowSorter());
+            setRowSorter(createDefaultRowSorter(super.getModel()));
         }
         
     }
@@ -1734,10 +1723,9 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
         boolean oldValue = getAutoCreateRowSorter();
         this.autoCreateRowSorter = autoCreateRowSorter;
         if (autoCreateRowSorter) {
-            setRowSorter(createDefaultRowSorter());
+            setRowSorter(createDefaultRowSorter(super.getModel()));
         }
-        firePropertyChange("autoCreateRowSorter", oldValue,
-                           getAutoCreateRowSorter());
+        firePropertyChange("autoCreateRowSorter", oldValue, getAutoCreateRowSorter());
     }
 
     /**
@@ -1794,17 +1782,17 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * configured to the current TableModel - no api in the base class to set
      * the model? <p>
      * 
-     * PENDING JW: review method signature - better expose the need for the
-     * model by adding a parameter? 
-     * 
+     * @param model TableModel
      * @return the default RowSorter.
      */
-    protected RowSorter<? extends TableModel> createDefaultRowSorter() {
-//        return new TableRowSorter<TableModel>(getModel());
-        return new TableSortController<TableModel>(getModel());
+    protected RowSorter<? extends TableModel> createDefaultRowSorter(TableModel model) {
+        return new TableSortController<TableModel>(model);
     }
-
-
+    @Deprecated
+    protected RowSorter<? extends TableModel> createDefaultRowSorter() {
+//      return new TableRowSorter<TableModel>(getModel());
+      return new TableSortController<TableModel>(getModel());
+  }
 
     /**
      * Convenience method to detect dataChanged table event type.
@@ -1815,8 +1803,9 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
     protected boolean isDataChanged(TableModelEvent e) {
         if (e == null)
             return false;
-        return e.getType() == TableModelEvent.UPDATE && e.getFirstRow() == 0
-                && e.getLastRow() == Integer.MAX_VALUE;
+        return e.getType() == TableModelEvent.UPDATE 
+        	&& e.getFirstRow() == 0 
+        	&& e.getLastRow() == Integer.MAX_VALUE;
     }
 
     /**
@@ -1829,8 +1818,8 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
     protected boolean isUpdate(TableModelEvent e) {
         if (isStructureChanged(e))
             return false;
-        return e.getType() == TableModelEvent.UPDATE
-                && e.getLastRow() < Integer.MAX_VALUE;
+        return e.getType() == TableModelEvent.UPDATE 
+        	&& e.getLastRow() < Integer.MAX_VALUE;
     }
 
     /**
@@ -1976,7 +1965,6 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * 
      * @return the filter used in the sorter.
      */
-    @SuppressWarnings("unchecked")
     public RowFilter<?, ?> getRowFilter() {
         return hasSortController() ? getSortController().getRowFilter() : null;
     }
@@ -2356,8 +2344,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      */
     public int getColumnCount(boolean includeHidden) {
         if (getColumnModel() instanceof TableColumnModelExt) {
-            return ((TableColumnModelExt) getColumnModel())
-                    .getColumnCount(includeHidden);
+            return ((TableColumnModelExt) getColumnModel()).getColumnCount(includeHidden);
         }
         return getColumnCount();
     }
@@ -2385,8 +2372,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      */
     public List<TableColumn> getColumns(boolean includeHidden) {
         if (getColumnModel() instanceof TableColumnModelExt) {
-            return ((TableColumnModelExt) getColumnModel())
-                    .getColumns(includeHidden);
+            return ((TableColumnModelExt) getColumnModel()).getColumns(includeHidden);
         }
         return getColumns();
     }
@@ -2408,10 +2394,9 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      */
     public TableColumnExt getColumnExt(Object identifier) {
         if (getColumnModel() instanceof TableColumnModelExt) {
-            return ((TableColumnModelExt) getColumnModel())
-                    .getColumnExt(identifier);
+            return ((TableColumnModelExt) getColumnModel()).getColumnExt(identifier);
         } else {
-            // PENDING: not tested!
+            // tested! ==> JXTableIssues.interactiveGetColumnExtInstanceofTableColumnModel
             try {
                 TableColumn column = getColumn(identifier);
                 if (column instanceof TableColumnExt) {
