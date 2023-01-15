@@ -21,13 +21,25 @@ package org.jdesktop.swingx.plaf;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.jdesktop.swingx.icon.FileIcon;
+import org.jdesktop.swingx.icon.FolderIcon;
+import org.jdesktop.swingx.icon.FolderPlusIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
+
 public class XTreeAddon extends AbstractComponentAddon {
    
 //    private static final Logger LOG = Logger.getLogger(XTreeAddon.class.getName());
 
+	RadianceIcon openIcon;
+	RadianceIcon closedIcon;
+	RadianceIcon leafIcon;
+
     /** Creates a new instance of ErrorPaneAddon */
     public XTreeAddon() {
         super("JXTree");
+        openIcon =       FolderIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+        closedIcon = FolderPlusIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
+        leafIcon =         FileIcon.of(RadianceIcon.SMALL_ICON, RadianceIcon.SMALL_ICON);
     }
     
     /**
@@ -35,33 +47,38 @@ public class XTreeAddon extends AbstractComponentAddon {
      */
     @Override
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-//    	defaults.add(JXTree.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicXTreeUI");
-//    	LOG.info("?????????????????added key "+JXTree.uiClassID);
-            
         /*
          * keys are defined in javax.swing.plaf.basic.BasicLookAndFeel:
             "Tree.background", window,
             "Tree.textBackground", table.get("text"),
-         * replace the value with secondary3 Color
+         ==> replace the value with secondary3 Color
+         
+            "Tree.openIcon"  , SwingUtilities2.makeIcon(getClass(), BasicLookAndFeel.class, "icons/TreeOpen.gif"),
+            "Tree.closedIcon", SwingUtilities2.makeIcon(getClass(), BasicLookAndFeel.class, "icons/TreeClosed.gif"),
+            "Tree.leafIcon"  , SwingUtilities2.makeIcon(getClass(), BasicLookAndFeel.class, "icons/TreeLeaf.gif"),      
+         ==> replace with RadianceIcons
          */
         UIManager.getLookAndFeelDefaults().put("Tree.background", MetalLookAndFeel.getCurrentTheme().getControl());
         UIManager.getLookAndFeelDefaults().put("Tree.textBackground", MetalLookAndFeel.getCurrentTheme().getControl());
-        
+
+        UIManager.getLookAndFeelDefaults().put("Tree.openIcon", openIcon);
+        UIManager.getLookAndFeelDefaults().put("Tree.closedIcon", closedIcon);
+        UIManager.getLookAndFeelDefaults().put("Tree.leafIcon", leafIcon);        
     }
 
     protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
-//    	defaults.add(JXTree.uiClassID, "org.jdesktop.swingx.plaf.basic.SynthXTreeUI");
-//    	LOG.info("!!!!!!!!!!!!!!!added key "+JXTree.uiClassID);
-
 		/*
 		 * keys are defined in javax.swing.plaf.nimbus.NimbusDefaults:
         addColor(d, "Tree.textBackground", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);
         addColor(d, "Tree.background", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);
-		 * replace the value with "control" Color
+		==> replace the value with "control" Color
 		 */
 		UIManager.getLookAndFeelDefaults().put("Tree.textBackground", UIManager.getColor("control"));
 		UIManager.getLookAndFeelDefaults().put("Tree.background", UIManager.getColor("control"));
-
+		
+        UIManager.getLookAndFeelDefaults().put("Tree.openIcon", openIcon);
+        UIManager.getLookAndFeelDefaults().put("Tree.closedIcon", closedIcon);
+        UIManager.getLookAndFeelDefaults().put("Tree.leafIcon", leafIcon);
     }
 
 }

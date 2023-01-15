@@ -36,6 +36,7 @@ import org.jdesktop.swingx.SwingXUtilities;
  * 
  * @author Jeanette Winzenburg
  */
+@SuppressWarnings("serial")
 public class DefaultXTreeCellRenderer extends DefaultTreeCellRenderer {
 
     private static final Logger LOG = Logger.getLogger(DefaultXTreeCellRenderer.class.getName());
@@ -96,6 +97,8 @@ public class DefaultXTreeCellRenderer extends DefaultTreeCellRenderer {
      */
     protected void updateIcons() {
         if (SwingXUtilities.isUIInstallable(getLeafIcon())) {
+        	//  the given property "Tree.leafIcon" should be replacedby the UI's default value
+        	LOG.fine("Tree.leafIcon should be replacedby the UI's default value !!!!!!");
             setLeafIcon(UIManager.getIcon("Tree.leafIcon"));
         }
         if (SwingXUtilities.isUIInstallable(getClosedIcon())) {
@@ -106,7 +109,9 @@ public class DefaultXTreeCellRenderer extends DefaultTreeCellRenderer {
         }
 
     }
-    
-    
+
+//    public Icon getDefaultLeafIcon() {
+//        return DefaultLookup.getIcon(this, ui, "Tree.leafIcon");
+//    }
 
 }
