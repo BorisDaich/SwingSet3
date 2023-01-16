@@ -29,11 +29,11 @@ import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.JXMonthView;
 import org.jdesktop.swingx.action.AbstractActionExt;
-import org.jdesktop.swingx.icon.RadianceIcon;
 
 /**
  * Provides and wires a component appropriate as a calendar navigation header.
@@ -74,8 +74,8 @@ public abstract class CalendarHeaderHandler {
     public static final String uiControllerID = "CalendarHeaderHandler";
     protected JXMonthView monthView;
     private JComponent calendarHeader;
-    protected Icon monthDownImage;
-    protected Icon monthUpImage;
+    protected Icon monthDown;
+    protected Icon monthUp;
 
     private PropertyChangeListener monthViewPropertyChangeListener;
 
@@ -88,8 +88,8 @@ public abstract class CalendarHeaderHandler {
         this.monthView = monthView;
         // PENDING JW: remove here if rendererHandler takes over control completely
         // as is, some properties are duplicated
-        monthDownImage = BasicMonthViewUI.getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.WEST); // was "JXMonthView.monthDownFileName"
-        monthUpImage   = BasicMonthViewUI.getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.EAST); // was "JXMonthView.monthUpFileName"
+        monthDown = UIManager.getIcon("JXMonthView.monthDown");
+        monthUp = UIManager.getIcon("JXMonthView.monthUp");
         installNavigationActions();
         installListeners();
         componentOrientationChanged();
@@ -194,9 +194,9 @@ public abstract class CalendarHeaderHandler {
         getHeaderComponent().applyComponentOrientation(
                 monthView.getComponentOrientation());
         if (monthView.getComponentOrientation().isLeftToRight()) {
-            updateMonthNavigationIcons(monthDownImage, monthUpImage);
+            updateMonthNavigationIcons(monthDown, monthUp);
         } else {
-            updateMonthNavigationIcons(monthUpImage, monthDownImage);
+            updateMonthNavigationIcons(monthUp, monthDown);
         }
     }
 
@@ -237,12 +237,10 @@ public abstract class CalendarHeaderHandler {
      * them with the appropriate next/previous icons.
      */
     protected void installNavigationActions() {
-        installWrapper("scrollToPreviousMonth", "previousMonth", monthView
-                .getComponentOrientation().isLeftToRight() ? monthDownImage
-                : monthUpImage);
-        installWrapper("scrollToNextMonth", "nextMonth", monthView
-                .getComponentOrientation().isLeftToRight() ? monthUpImage
-                : monthDownImage);
+        installWrapper("scrollToPreviousMonth", "previousMonth", 
+        		monthView.getComponentOrientation().isLeftToRight() ? monthDown : monthUp);
+        installWrapper("scrollToNextMonth", "nextMonth", 
+        		monthView.getComponentOrientation().isLeftToRight() ? monthUp : monthDown);
     }
 
     /**

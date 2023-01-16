@@ -21,16 +21,30 @@ package org.jdesktop.swingx.plaf;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.LookAndFeel;
+import javax.swing.Icon;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 
 import org.jdesktop.swingx.JXMonthView;
+import org.jdesktop.swingx.icon.ChevronIcon;
+import org.jdesktop.swingx.icon.RadianceIcon;
+import org.jdesktop.swingx.icon.RadianceIconUIResource;
 
 public class MonthViewAddon extends AbstractComponentAddon {
 	
+    static RadianceIconUIResource getIcon(int size, int rotation) {
+    	RadianceIcon icon = ChevronIcon.of(size, size);
+    	icon.setRotation(rotation);
+    	return new RadianceIconUIResource(icon);
+    }
+    
+	Icon monthDown;
+	Icon monthUp;
+	
     public MonthViewAddon() {
         super("JXMonthView");
+        monthDown = getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.WEST);
+        monthUp = getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.EAST); 
     }
 
     /**
@@ -54,8 +68,10 @@ public class MonthViewAddon extends AbstractComponentAddon {
         defaults.add("JXMonthView.trailingDayForeground", new ColorUIResource(Color.LIGHT_GRAY));
         defaults.add("JXMonthView.font", UIManagerExt.getSafeFont("Button.font", new FontUIResource("Dialog", Font.PLAIN, 12)));
         // EUG: issue 37 - remove the png:
-        defaults.add("JXMonthView.monthDownFileName", LookAndFeel.makeIcon(MonthViewAddon.class, "basic/resources/month-down.png"));
-        defaults.add("JXMonthView.monthUpFileName", LookAndFeel.makeIcon(MonthViewAddon.class, "basic/resources/month-up.png"));
+//        defaults.add("JXMonthView.monthDownFileName", LookAndFeel.makeIcon(MonthViewAddon.class, "basic/resources/month-down.png"));
+//        defaults.add("JXMonthView.monthUpFileName", LookAndFeel.makeIcon(MonthViewAddon.class, "basic/resources/month-up.png"));
+        defaults.add("JXMonthView.monthDown", monthDown);
+        defaults.add("JXMonthView.monthUp", monthUp);
 
         defaults.add("JXMonthView.boxPaddingX", 3);
         defaults.add("JXMonthView.boxPaddingY", 3);

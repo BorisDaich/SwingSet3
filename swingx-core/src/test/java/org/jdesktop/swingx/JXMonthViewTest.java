@@ -50,8 +50,8 @@ import org.jdesktop.swingx.calendar.DaySelectionModel;
 import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 import org.jdesktop.swingx.event.DateSelectionEvent.EventType;
 import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
-import org.jdesktop.swingx.icon.ChevronIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
+import org.jdesktop.swingx.icon.RadianceIconUIResource;
 import org.jdesktop.swingx.test.DateSelectionReport;
 import org.jdesktop.test.ActionReport;
 import org.jdesktop.test.PropertyChangeReport;
@@ -294,7 +294,7 @@ public class JXMonthViewTest extends InteractiveTestCase {
      */
     @Test
     public void testNavigationIconsUpdatedWithCO() {
-		Class<?> expectedType = ChevronIcon.class;
+		Class<?> expectedType = RadianceIconUIResource.class;
 		Action action = monthView.getActionMap().get("nextMonth");
 		if (monthView.getComponentOrientation().isLeftToRight()) {
 			Icon icon = (Icon) action.getValue(Action.SMALL_ICON);

@@ -62,8 +62,6 @@ import org.jdesktop.swingx.calendar.DateSelectionModel;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.event.DateSelectionEvent;
 import org.jdesktop.swingx.event.DateSelectionListener;
-import org.jdesktop.swingx.icon.ChevronIcon;
-import org.jdesktop.swingx.icon.RadianceIcon;
 import org.jdesktop.swingx.plaf.MonthViewUI;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 
@@ -162,8 +160,8 @@ public class BasicMonthViewUI extends MonthViewUI {
     //------------------ visuals
 
     protected boolean isLeftToRight;
-    protected Icon monthUpImage;
-    protected Icon monthDownImage;   
+    protected Icon monthUp;
+    protected Icon monthDown;   
 
     /**
      * The padding for month traversal icons.
@@ -331,11 +329,6 @@ public class BasicMonthViewUI extends MonthViewUI {
         monthView.setBoxPaddingY(UIManagerExt.getInt("JXMonthView.boxPaddingY"));
     }
 
-    static Icon getIcon(int size, int rotation) {
-    	RadianceIcon icon = ChevronIcon.of(size, size);
-    	icon.setRotation(rotation);
-    	return icon;
-    }
     /**
      * Installs this ui delegate's properties.
      */
@@ -343,9 +336,9 @@ public class BasicMonthViewUI extends MonthViewUI {
         isLeftToRight = monthView.getComponentOrientation().isLeftToRight();
         // PENDING JW: remove here if rendererHandler takes over control completely
         // as is, some properties are duplicated
-        monthDownImage = getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.WEST); // was "JXMonthView.monthDownFileName"
-        monthUpImage = getIcon(RadianceIcon.SMALL_ICON, RadianceIcon.EAST);   // was "JXMonthView.monthUpFileName"
-        // install date related state
+        monthDown = UIManager.getIcon("JXMonthView.monthDown");
+        monthUp = UIManager.getIcon("JXMonthView.monthUp");
+      // install date related state
         setFirstDisplayedDay(monthView.getFirstDisplayedDay());
     }
 
@@ -905,11 +898,11 @@ public class BasicMonthViewUI extends MonthViewUI {
         headerBounds.setBounds(headerBounds.x + arrowPaddingX, y, 
                 headerBounds.width - 2 * arrowPaddingX, headerBounds.height);
         if (!headerBounds.contains(x, y)) return -1;
-        Rectangle hitArea = new Rectangle(headerBounds.x, headerBounds.y, monthUpImage.getIconWidth(), monthUpImage.getIconHeight());
+        Rectangle hitArea = new Rectangle(headerBounds.x, headerBounds.y, monthUp.getIconWidth(), monthUp.getIconHeight());
         if (hitArea.contains(x, y)) {
             return isLeftToRight ? MONTH_DOWN : MONTH_UP;
         }
-        hitArea.translate(headerBounds.width - monthUpImage.getIconWidth(), 0);
+        hitArea.translate(headerBounds.width - monthUp.getIconWidth(), 0);
         if (hitArea.contains(x, y)) {
             return isLeftToRight ? MONTH_UP : MONTH_DOWN;
         } 
