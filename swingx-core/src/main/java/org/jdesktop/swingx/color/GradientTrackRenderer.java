@@ -38,19 +38,22 @@ import org.jdesktop.swingx.multislider.TrackRenderer;
 import org.jdesktop.swingx.util.PaintUtils;
 
 /**
- * <p><b>Dependency</b>: Because this class relies on LinearGradientPaint and
- * RadialGradientPaint, it requires the optional MultipleGradientPaint.jar</p>
- * 
  * @author jm158417 Joshua Marinacci joshy
  */
 /*
+ * <p><b>Dependency</b>: Because this class relies on LinearGradientPaint and RadialGradientPaint, 
+ * it requires the optional MultipleGradientPaint.jar</p>
+ * 
  * MultipleGradientPaint.jar gibt es als com/kenai/swingjavabuilderext/swingjavabuilderext-swingx/1.0.3
  * von 2009-04-15 22:34
  * darin nur eine Klasse: org.javabuilders.swing.swingx.SwingXConfig
+ * 
+ * LinearGradientPaint and RadialGradientPaint are in package java.awt
  */
 public class GradientTrackRenderer extends JComponent implements TrackRenderer {
 	
-    private static final Logger LOG = Logger.getLogger(GradientTrackRenderer.class.getName());
+	private static final long serialVersionUID = 7151392283992668997L;
+	private static final Logger LOG = Logger.getLogger(GradientTrackRenderer.class.getName());
     private static final int SIZE = 20;
 
     /**
@@ -70,9 +73,9 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
     // Invoked by Swing to draw components. Overrides JComponent.paint
     @Override
     public void paint(Graphics g) {
-//        super.paint(g);
         paintComponent(g);
     }
+    
     // Overrides JComponent.paintComponent
     @Override
     protected void paintComponent(Graphics gfx) {
@@ -81,16 +84,6 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
         // get the list of colors
         List<Thumb<Color>> stops = slider.getModel().getSortedThumbs();
         int len = stops.size();
-
-        // set up the data for the gradient
-        float[] fractions = new float[len];
-        Color[] colors = new Color[len];
-        int i = 0;
-        for(Thumb<Color> thumb : stops) {
-            colors[i] = (Color)thumb.getObject();
-            fractions[i] = thumb.getPosition();
-            i++;
-        }
 
         // calculate the track area
         int thumb_width = 12;
@@ -105,12 +98,36 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
         // fill in the gradient
         Point2D start = new Point2D.Float(0,0);
         Point2D end = new Point2D.Float(track_width,0);
+
+        // set up the data for the gradient
+        float[] fractions = new float[len];       
+        Color[] colors = new Color[len];
+        int i = 0;
+        for(Thumb<Color> thumb : stops) {
+            colors[i] = (Color)thumb.getObject();
+            fractions[i] = thumb.getPosition();
+            if(i>0 && fractions[i-1]>=fractions[i]) {
+            	// fractions must be in strictly increasing order, see LinearGradientPaint ctor
+            	LOG.warning("fractions must be in strictly increasing order: fractions["+(i-1)+"]"+fractions[i-1] + " : fractions["+i+"]"+fractions[i]);
+            	return; // nothing to paint! avoid IllegalArgumentException @see https://github.com/homebeaver/SwingSet/issues/44
+            }
+            i++;
+        }
+
+/*
+LinearGradientPaint
+     * @throws IllegalArgumentException
+     * if start and end points are the same points,
+     * or {@code fractions.length != colors.length},
+     * or {@code colors} is less than 2 in size,
+     * or a {@code fractions} value is less than 0.0 or greater than 1.0,
+     * or the {@code fractions} are not provided in strictly increasing order
+
+ */
         MultipleGradientPaint paint = new LinearGradientPaint(
-                (float)start.getX(),
-                (float)start.getY(),
-                (float)end.getX(),
-                (float)end.getY(),
-                fractions,colors);
+                (float)start.getX(), (float)start.getY(),
+                (float)end.getX(), (float)end.getY(),
+                fractions, colors);
         g.setPaint(paint);
         g.fill(rect);
 
@@ -124,7 +141,7 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
      * {@inheritDoc}<p>
      * slider objects expected to be Color
      */
-    @Override
+    @Override // implements getRendererComponent
     public JComponent getRendererComponent(JXMultiThumbSlider<?> slider) {
     	if(slider!=null && slider.getModel().getThumbCount()>0) {
     		Object o = slider.getModel().getThumbAt(0).getObject();
@@ -137,8 +154,6 @@ public class GradientTrackRenderer extends JComponent implements TrackRenderer {
     		}
     	}
         this.slider = (JXMultiThumbSlider<Color>) slider;
-//        LOG.info("size:"+this.getHeight()+"/"+this.getWidth());
-//        LOG.info("this:"+this.toString());
         return this;
     }
 }
