@@ -12,6 +12,8 @@ public interface NimbusColors {
     static final Color NIMBUSFOCUS     = new Color(0x73A4D1); // approx JORDY_BLUE
     static final Color BROWN           = new Color(0xA52A2A);
     static final Color NIMBUS_RED      = new Color(0xA92E22); // approx BROWN
+    static final Color TENNE           = new Color(0xCD5700);
+    static final Color NIMBUS_ORANGE   = new Color(0xBF6204); // approx Tenne (Tawny)
     static final Color CERULEAN_BLUE   = new Color(0x2A52BE);
     static final Color NIMBUS_INFOBLUE = new Color(0x2F5CB4); // approx CERULEAN_BLUE
     static final Color TURBO              = new Color(0xF5CC23);
