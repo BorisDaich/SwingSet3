@@ -72,13 +72,19 @@ public class XTreeAddon extends AbstractComponentAddon {
         addColor(d, "Tree.textBackground", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);
         addColor(d, "Tree.background", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0);
 		==> replace the value with "control" Color
+		
+        d.put("Tree[Enabled].openIconPainter", new LazyPainter("javax.swing.plaf.nimbus.TreePainter", TreePainter.OPENICON_ENABLED, new Insets(5, 5, 5, 5), new Dimension(16, 16), false, AbstractRegionPainter.PaintContext.CacheMode.FIXED_SIZES, 1.0, 1.0));
+        d.put("Tree.openIcon", new NimbusIcon("Tree", "openIconPainter", 16, 16));
+		the implementation is in final class javax.swing.plaf.nimbus.TreePainter with state=OPENICON_ENABLED,
+		resp. CLOSEDICON_ENABLED , LEAFICON_ENABLED
+		see TreePainterVisualTest
 		 */
 		UIManager.getLookAndFeelDefaults().put("Tree.textBackground", UIManager.getColor("control"));
 		UIManager.getLookAndFeelDefaults().put("Tree.background", UIManager.getColor("control"));
 		
-        UIManager.getLookAndFeelDefaults().put("Tree.openIcon", openIcon);
-        UIManager.getLookAndFeelDefaults().put("Tree.closedIcon", closedIcon);
-        UIManager.getLookAndFeelDefaults().put("Tree.leafIcon", leafIcon);
+//        UIManager.getLookAndFeelDefaults().put("Tree.openIcon", openIcon);
+//        UIManager.getLookAndFeelDefaults().put("Tree.closedIcon", closedIcon);
+//        UIManager.getLookAndFeelDefaults().put("Tree.leafIcon", leafIcon);
     }
 
 }
