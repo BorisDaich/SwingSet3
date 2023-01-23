@@ -27,9 +27,10 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint> {
 	
 	private static final Logger LOG = Logger.getLogger(DefaultWaypointRenderer.class.getName());
     
-    private BufferedImage img = null;
-    private Icon iconImg = null;
-//    private Object iconImg = null;
+	/**
+	 * the type of iconImg is Icon or BufferedImage
+	 */
+    private Object iconImg = null;
 
     /**
      * 
@@ -45,13 +46,13 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint> {
     public DefaultWaypointRenderer(BufferedImage wpImage) {
     	if(wpImage==null) {
     		try {
-    			img = ImageIO.read(DefaultWaypointRenderer.class.getResource("images/standard_waypoint.png"));
+    			iconImg = ImageIO.read(DefaultWaypointRenderer.class.getResource("images/standard_waypoint.png"));
     		} catch (Exception ex) {
     			// this should not happen:
             	LOG.warning("couldn't read standard_waypoint.png "+ ex);
     		}
     	} else {
-    		img = wpImage;
+    		iconImg = wpImage;
     	}
     }
     /**
@@ -63,26 +64,26 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint> {
 
     @Override
     public void paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint w) {
-    	if(iconImg!=null) {
-            Point2D point = map.getTileFactory().geoToPixel(w.getPosition(), map.getZoom());
+        if(iconImg == null) return;
+        
+        Point2D point = map.getTileFactory().geoToPixel(w.getPosition(), map.getZoom());
+    	if(iconImg instanceof Icon icon) {           
+            // unterstellt, dass die Spitze auf [img.getWidth() / 2 , img.getHeight()] zeigt:
+            int x = (int)point.getX() -icon.getIconWidth() / 2;
+            int y = (int)point.getY() -icon.getIconHeight();
             
-            // unterstellt, dass die Spitze auf [img.getWidth() / 2 , img.getHeight()] ist:
-            int x = (int)point.getX() -iconImg.getIconWidth() / 2;
-            int y = (int)point.getY() -iconImg.getIconHeight();
-            
-            iconImg.paintIcon(map, g, x, y);
+            icon.paintIcon(map, g, x, y);
             return;
     	}
-    	
-        if (img == null)
-            return;
-
-        Point2D point = map.getTileFactory().geoToPixel(w.getPosition(), map.getZoom());
         
-        // unterstellt, dass die Spitze auf [img.getWidth() / 2 , img.getHeight()] ist:
-        int x = (int)point.getX() -img.getWidth() / 2;
-        int y = (int)point.getY() -img.getHeight();
-        
-        g.drawImage(img, x, y, null);
+    	if(iconImg instanceof BufferedImage img) {
+            // unterstellt, dass die Spitze auf [img.getWidth() / 2 , img.getHeight()] zeigt:
+            int x = (int)point.getX() -img.getWidth() / 2;
+            int y = (int)point.getY() -img.getHeight();
+            
+            g.drawImage(img, x, y, null);
+    	} else {
+        	LOG.warning("iconImg expected to be Icon or BufferedImage but is "+ iconImg.getClass().getName());
+    	}
     }
 }
