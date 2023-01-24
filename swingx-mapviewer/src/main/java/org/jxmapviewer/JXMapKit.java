@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -58,6 +59,8 @@ import org.jxmapviewer.viewer.WaypointPainter;
 public class JXMapKit extends JPanel
 {
     private static final long serialVersionUID = -8366577998349912380L;
+	private static final Logger LOG = Logger.getLogger(JXMapKit.class.getName());
+
     private boolean miniMapVisible = true;
     private boolean zoomSliderVisible = true;
     private boolean zoomButtonsVisible = true;
@@ -74,6 +77,30 @@ public class JXMapKit extends JPanel
 
     private boolean dataProviderCreditShown = true;
 
+    protected Icon setZoomOutIcon() {
+    	String resource = "images/minus.png";
+        return new ImageIcon(JXMapKit.class.getResource(resource));
+    }
+    protected Icon setZoomInIcon() {
+    	String resource = "images/plus.png";
+        return new ImageIcon(JXMapKit.class.getResource(resource));
+    }
+    private void initZoomButtons() {
+        try {
+        	this.zoomOutButton.setIcon(setZoomOutIcon());
+            this.zoomOutButton.setText("");
+        } catch (Throwable thr) {
+        	LOG.warning(thr.getMessage());
+            thr.printStackTrace();
+        }
+        try {
+        	this.zoomInButton.setIcon(setZoomInIcon());
+            this.zoomInButton.setText("");
+        } catch (Throwable thr) {
+        	LOG.warning(thr.getMessage());
+            thr.printStackTrace();
+        }
+    }
     /**
      * Creates a new JXMapKit
      */
@@ -83,20 +110,7 @@ public class JXMapKit extends JPanel
         setDataProviderCreditShown(false);
 
         zoomSlider.setOpaque(false);
-        try
-        {
-            Icon minusIcon = new ImageIcon(JXMapKit.class.getResource("images/minus.png"));
-            this.zoomOutButton.setIcon(minusIcon);
-            this.zoomOutButton.setText("");
-            Icon plusIcon = new ImageIcon(JXMapKit.class.getResource("images/plus.png"));
-            this.zoomInButton.setIcon(plusIcon);
-            this.zoomInButton.setText("");
-        }
-        catch (Throwable thr)
-        {
-            System.out.println("error: " + thr.getMessage());
-            thr.printStackTrace();
-        }
+        initZoomButtons();
 
         TileFactoryInfo info = new OSMTileFactoryInfo();
         TileFactory tileFactory = new DefaultTileFactory(info);
@@ -321,7 +335,7 @@ public class JXMapKit extends JPanel
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         zoomInButton.setAction(getZoomOutAction());
-        zoomInButton.setIcon(new ImageIcon(JXMapKit.class.getResource("images/plus.png")));
+        zoomInButton.setIcon(setZoomInIcon());
         zoomInButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
         zoomInButton.setMaximumSize(new java.awt.Dimension(20, 20));
         zoomInButton.setMinimumSize(new java.awt.Dimension(20, 20));
@@ -344,7 +358,7 @@ public class JXMapKit extends JPanel
         jPanel1.add(zoomInButton, gridBagConstraints);
 
         zoomOutButton.setAction(getZoomInAction());
-        zoomOutButton.setIcon(new ImageIcon(JXMapKit.class.getResource("images/minus.png")));
+        zoomOutButton.setIcon(setZoomOutIcon());
         zoomOutButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
         zoomOutButton.setMaximumSize(new java.awt.Dimension(20, 20));
         zoomOutButton.setMinimumSize(new java.awt.Dimension(20, 20));
