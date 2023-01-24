@@ -333,6 +333,7 @@ public class JXMapKit extends JPanel
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridBagLayout());
+//        jPanel1.setBorder(new BevelBorder(BevelBorder.LOWERED)); // to show the jPanel1
 
         zoomInButton.setAction(getZoomOutAction());
         zoomInButton.setIcon(setZoomInIcon());

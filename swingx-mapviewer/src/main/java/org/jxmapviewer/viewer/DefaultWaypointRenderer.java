@@ -31,12 +31,27 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint> {
 	 * the type of iconImg is Icon or BufferedImage
 	 */
     private Object iconImg = null;
+    private int adjustX = 0;
+    private int adjustY = 0;
 
     /**
-     * 
+     * WaypointRenderer with an icon pointing to a target at middle of the bottom border
      * @param wpIcon Waypoint icon to use
      */
     public DefaultWaypointRenderer(Icon wpIcon) {
+    	this(wpIcon==null ? 0 : wpIcon.getIconWidth() / 2  // assume adjustX in the middle of icon
+    		,wpIcon==null ? 0 : wpIcon.getIconHeight()     // assume adjustY on bottom border
+    		, wpIcon);
+    }
+    /**
+     * WaypointRenderer with an icon and hints how to adjust
+     * @param adjustx
+     * @param adjusty
+     * @param wpIcon Waypoint icon to use
+     */
+    public DefaultWaypointRenderer(int adjustx, int adjusty, Icon wpIcon) {
+    	this.adjustX = adjustx;
+    	this.adjustY = adjusty;
     	iconImg = wpIcon;
     }
     /**
@@ -68,16 +83,15 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint> {
         
         Point2D point = map.getTileFactory().geoToPixel(w.getPosition(), map.getZoom());
     	if(iconImg instanceof Icon icon) {           
-            // unterstellt, dass die Spitze auf [img.getWidth() / 2 , img.getHeight()] zeigt:
-            int x = (int)point.getX() -icon.getIconWidth() / 2;
-            int y = (int)point.getY() -icon.getIconHeight();
+            int x = (int)point.getX() -this.adjustX;
+            int y = (int)point.getY() -this.adjustY;
             
             icon.paintIcon(map, g, x, y);
             return;
     	}
         
     	if(iconImg instanceof BufferedImage img) {
-            // unterstellt, dass die Spitze auf [img.getWidth() / 2 , img.getHeight()] zeigt:
+            // assume the image points to [img.getWidth() / 2 , img.getHeight()]:
             int x = (int)point.getX() -img.getWidth() / 2;
             int y = (int)point.getY() -img.getHeight();
             
