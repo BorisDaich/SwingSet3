@@ -60,6 +60,7 @@ public class JXMapKit extends JPanel
 {
     private static final long serialVersionUID = -8366577998349912380L;
 	private static final Logger LOG = Logger.getLogger(JXMapKit.class.getName());
+	private static final int MINIMAP_ZOOMDIFF = 4;
 
     private boolean miniMapVisible = true;
     private boolean zoomSliderVisible = true;
@@ -166,14 +167,9 @@ public class JXMapKit extends JPanel
 
         //mainMap.addKeyListener(new PanKeyListener(mainMap));
 
-        mainMap.addPropertyChangeListener("zoom", new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                zoomSlider.setValue(mainMap.getZoom());
-                miniMap.setZoom(mainMap.getZoom() + 4);
-            }
+        mainMap.addPropertyChangeListener("zoom", propertyChangeEvent -> {
+            zoomSlider.setValue(mainMap.getZoom());
+            miniMap.setZoom(mainMap.getZoom() + MINIMAP_ZOOMDIFF);
         });
 
         // an overlay for the mini-map which shows a rectangle representing the main map
@@ -187,8 +183,8 @@ public class JXMapKit extends JPanel
 
                 // convert to Point2Ds
                 Point2D upperLeft2D = mainMapBounds.getLocation();
-                Point2D lowerRight2D = new Point2D.Double(upperLeft2D.getX() + mainMapBounds.getWidth(), upperLeft2D
-                        .getY() + mainMapBounds.getHeight());
+                Point2D lowerRight2D = new Point2D.Double(upperLeft2D.getX() + mainMapBounds.getWidth(), 
+                		upperLeft2D.getY() + mainMapBounds.getHeight());
 
                 // convert to GeoPostions
                 GeoPosition upperLeft = mainMap.getTileFactory().pixelToGeo(upperLeft2D, mainMap.getZoom());
@@ -241,7 +237,7 @@ public class JXMapKit extends JPanel
     {
         zoomChanging = true;
         mainMap.setZoom(zoom);
-        miniMap.setZoom(mainMap.getZoom() + 4);
+        miniMap.setZoom(mainMap.getZoom() + MINIMAP_ZOOMDIFF);
         if (sliderReversed)
         {
             zoomSlider.setValue(zoomSlider.getMaximum() - zoom);
@@ -381,13 +377,8 @@ public class JXMapKit extends JPanel
         zoomSlider.setSnapToTicks(true);
         zoomSlider.setMinimumSize(new java.awt.Dimension(35, 100));
         zoomSlider.setPreferredSize(new java.awt.Dimension(35, 190));
-        zoomSlider.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            @Override
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
-                zoomSliderStateChanged(evt);
-            }
+        zoomSlider.addChangeListener(changeEvent -> {
+        	zoomSliderStateChanged(changeEvent);
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
