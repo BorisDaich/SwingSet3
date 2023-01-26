@@ -14,5 +14,17 @@ than any released version of SwingX by [SwingLabs](https://en.wikipedia.org/wiki
 
 **This SwingSet3 fork** continues the work with [v1.6.6-1 jar](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.6-1) build for Java 8
 
-The goal of this fork is a SwingSet3 jar [v1.6.7](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.7), [v1.6.8](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.8)+ for [OpenJDK](https://en.wikipedia.org/wiki/OpenJDK), (Adoptium or Temurin)
+The goal of this fork is a SwingSet3 jar [v1.6.7](https://github.com/homebeaver/SwingSet3/releases/tag/v1.6.7), ... [v1.7.4](https://github.com/homebeaver/SwingSet3/releases/tag/v1.7.4)+ for [OpenJDK](https://en.wikipedia.org/wiki/OpenJDK), (Adoptium or Temurin)
 
+### Screenshots
+
+- see [SwingSet3-demos](https://github.com/homebeaver/SwingSet3-demos) demonstrating 
+the abilities of the library by displaying many of the components in a showcase application.
+
+v1.6.7: | v1.7.4 JXTree:
+------------ | -------------
+![v1.6.7](https://user-images.githubusercontent.com/3493126/143714738-8cb08e8e-bd73-4a08-a2fd-d48c3454e2c1.png) | ![v1.7.4](https://user-images.githubusercontent.com/3493126/210066303-107d3224-69f7-4d9d-9ee9-f1410a73d414.png)
+
+v1.7.4 JXMonthView: | v1.7.5 JXMapKit:
+------------ | -------------
+![JXMonthView](https://raw.githubusercontent.com/homebeaver/SwingSet3-demos/master/src/main/resources/org/jdesktop/swingxset/resources/images/SwingSet-demos-v1.7.4-JXMonthView.PNG) | ![JXMapKit](https://user-images.githubusercontent.com/3493126/214939770-a20c3525-b1fe-431f-acce-a38f7ed9be87.png)
