@@ -236,4 +236,5 @@
   	<connection>scm:git:https://github.com/homebeaver/SwingSet3.git</connection>
   	<developerConnection>scm:git:https://github.com/homebeaver/</developerConnection>
   </scm>
+  <inceptionYear>2007</inceptionYear>
 </project>
