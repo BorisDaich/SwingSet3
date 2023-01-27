@@ -68,17 +68,17 @@ in NimbusDefaults:
     //All Colors used for painting are stored here. Ideally, only those colors being used
     //by a particular instance of SliderTrackPainter would be created. For the moment at least,
     //however, all are created for each instance.
-    private Color color1 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0f, -0.110526316f, 0.25490195f, -245);
-    private Color color2 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0055555105f, -0.061265234f, 0.05098039f, 0);
-    private Color color3 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.01010108f, -0.059835073f, 0.10588235f, 0);
-    private Color color4 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", -0.01111114f, -0.061982628f, 0.062745094f, 0);
-    private Color color5 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", -0.00505054f, -0.058639523f, 0.086274505f, 0);
-    private Color color6 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0f, -0.110526316f, 0.25490195f, -111);
-    private Color color7 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0f, -0.034093194f, -0.12941176f, 0);
-    private Color color8 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.01111114f, -0.023821115f, -0.06666666f, 0);
-    private Color color9 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", -0.008547008f, -0.03314536f, -0.086274505f, 0);
-    private Color color10 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.004273474f, -0.040256046f, -0.019607842f, 0);
-    private Color color11 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0f, -0.03626889f, 0.04705882f, 0);
+    private Color color1 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0f, -0.110526316f, 0.25490195f, -245);
+    private Color color2 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0055555105f, -0.061265234f, 0.05098039f, 0);
+    private Color color3 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.01010108f, -0.059835073f, 0.10588235f, 0);
+    private Color color4 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", -0.01111114f, -0.061982628f, 0.062745094f, 0);
+    private Color color5 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", -0.00505054f, -0.058639523f, 0.086274505f, 0);
+    private Color color6 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0f, -0.110526316f, 0.25490195f, -111);
+    private Color color7 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0f, -0.034093194f, -0.12941176f, 0);
+    private Color color8 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.01111114f, -0.023821115f, -0.06666666f, 0);
+    private Color color9 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", -0.008547008f, -0.03314536f, -0.086274505f, 0);
+    private Color color10 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.004273474f, -0.040256046f, -0.019607842f, 0);
+    private Color color11 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0f, -0.03626889f, 0.04705882f, 0);
 
 
     //Array of current component colors, updated in each paint call

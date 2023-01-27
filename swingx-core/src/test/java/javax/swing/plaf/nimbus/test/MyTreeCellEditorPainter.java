@@ -73,7 +73,7 @@ in NimbusDefaults:        //Initialize \"Tree.cellEditor\"
     //All Colors used for painting are stored here. Ideally, only those colors being used
     //by a particular instance of TreeCellEditorPainter would be created. For the moment at least,
     //however, all are created for each instance.
-    private Color color1 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0f, -0.017358616f, -0.11372548f, 0);
+    private Color color1 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0f, -0.017358616f, -0.11372548f, 0);
     private Color color2 = MyPaintContext.decodeColor(NIMBUSFOCUS, "nimbusFocus", 0.0f, 0.0f, 0.0f, 0);
 
 

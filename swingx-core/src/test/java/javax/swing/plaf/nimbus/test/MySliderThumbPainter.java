@@ -97,7 +97,7 @@ in NimbusDefaults:
     private Color color3 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 0.021348298f, -0.5924243f, 0.35686272f, 0);
     private Color color4 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 0.021348298f, -0.56722116f, 0.3098039f, 0);
     private Color color5 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 0.021348298f, -0.56844974f, 0.32549018f, 0);
-    private Color color6 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", -0.003968239f, 0.0014736876f, -0.25490198f, -156);
+    private Color color6 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", -0.003968239f, 0.0014736876f, -0.25490198f, -156);
     private Color color7 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 5.1498413E-4f, -0.34585923f, -0.007843137f, 0);
     private Color color8 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", -0.0017285943f, -0.11571431f, -0.25490198f, 0);
     private Color color9 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", -0.023096085f, -0.6238095f, 0.43921566f, 0);
@@ -114,7 +114,7 @@ in NimbusDefaults:
     private Color color20 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 2.9569864E-4f, -0.44943976f, 0.25098038f, 0);
     private Color color21 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 0.0f, 0.0f, 0.0f, 0);
     private Color color22 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 8.9377165E-4f, -0.121094406f, 0.12156862f, 0);
-    private Color color23 = MyPaintContext.decodeColor(NIMBUSBLUEGRAY, "nimbusBlueGrey", 0.0f, -0.110526316f, 0.25490195f, -121);
+    private Color color23 = MyPaintContext.decodeColor(NIMBUS_BLUEGRAY, "nimbusBlueGrey", 0.0f, -0.110526316f, 0.25490195f, -121);
     private Color color24 = new Color(150, 156, 168, 146);
     private Color color25 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", -0.0033828616f, -0.40608466f, -0.019607842f, 0);
     private Color color26 = MyPaintContext.decodeColor(NIMBUSBASE, "nimbusBase", 5.1498413E-4f, -0.17594418f, -0.20784315f, 0);
