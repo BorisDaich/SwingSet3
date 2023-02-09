@@ -4,7 +4,7 @@
 		<groupId>io.github.homebeaver</groupId>
 		<artifactId>swingset3</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>1.7.5</version>
+		<version>1.7.6</version>
 	</parent>
 	
   <artifactId>swingx-testsupport</artifactId>
