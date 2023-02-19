@@ -2,12 +2,17 @@ package org.jdesktop.swingx.icon;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.nimbus.test.MyTreeCellEditorPainter;
 import javax.swing.plaf.nimbus.test.MyTreeCellPainter;
@@ -18,6 +23,21 @@ import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXFrame.StartPosition;
 import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.decorator.AbstractHighlighter;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.HighlightPredicate;
+import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.painter.AbstractAreaPainter;
+import org.jdesktop.swingx.painter.ImagePainter;
+import org.jdesktop.swingx.renderer.CheckBoxProvider;
+import org.jdesktop.swingx.renderer.ComponentProvider;
+import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
+import org.jdesktop.swingx.renderer.StringValues;
+import org.jdesktop.swingx.renderer.WrappingIconPanel;
+import org.jdesktop.swingx.renderer.WrappingProvider;
+
+import com.jhlabs.image.InvertFilter;
 
 @SuppressWarnings("serial")
 public class TreePainterVisualTest extends JXPanel {
@@ -28,7 +48,7 @@ public class TreePainterVisualTest extends JXPanel {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         SwingUtilities.invokeLater( () -> {
-        	InteractiveTestCase.setLAF("Nimbus");
+        	InteractiveTestCase.setLAF("Nimbus"); // start with nimbus
         	createAndShowGUI();
         });
     }
@@ -48,52 +68,27 @@ public class TreePainterVisualTest extends JXPanel {
     	frame.setVisible(true);
     }
 
-//    private static Dimension HGAP15 = new Dimension(15,1);
-//    private static Dimension VGAP15 = new Dimension(1,15);
-//    private static Dimension HGAP30 = new Dimension(30,1);
-//    private static Dimension VGAP30 = new Dimension(1,30);
-//    
-//    private PainterIcon fgEnabledIcon;
-//    private PainterIcon fgDisabledIcon;
+    private DefaultTreeRenderer sharedRenderer;
+    private ComponentProvider<?> provider;
 
     private TreePainterVisualTest() {
     	super(new BorderLayout());
-//    	frame.setTitle(getBundleString("frame.title", DESCRIPTION));
-//    	super.setPreferredSize(PREFERRED_SIZE);
     	super.setBorder(BorderFactory.createLoweredBevelBorder());
 
-//        JButton jButtonNORTH = new BasicArrowButton(SwingConstants.NORTH);
-//        JButton jButtonSOUTH = new BasicArrowButton(SwingConstants.SOUTH);
-//        JButton jButtonWEST  = new BasicArrowButton(SwingConstants.WEST);
-//        JButton jButtonEAST  = new BasicArrowButton(SwingConstants.EAST);
-//        super.add(jButtonNORTH, BorderLayout.NORTH);
-//        super.add(jButtonSOUTH, BorderLayout.SOUTH);
-//        super.add(jButtonWEST , BorderLayout.WEST);
-//        super.add(jButtonEAST , BorderLayout.EAST);
-//
-//        jButtonNORTH.addActionListener( ae -> {
-//        	LOG.info(""+ae);
-//            // the default is WEST, this rotates 90° right, the result is NORTH :
-//            fgEnabledIcon.setRotation(JXIcon.EAST); 
-//            fgDisabledIcon.setRotation(JXIcon.EAST);
-//            TreePainterVisualTest.this.updateUI();
-//        });
-//        jButtonEAST.addActionListener( ae -> {
-//            // the default is WEST, this rotates 180° right, the result is EAST
-//            fgEnabledIcon.setRotation(JXIcon.SOUTH); 
-//            fgDisabledIcon.setRotation(JXIcon.SOUTH);
-//            TreePainterVisualTest.this.updateUI();
-//        });
-//        jButtonSOUTH.addActionListener( ae -> {
-//            fgEnabledIcon.setRotation(JXIcon.WEST); 
-//            fgDisabledIcon.setRotation(JXIcon.WEST);
-//            TreePainterVisualTest.this.updateUI();
-//        });
-//        jButtonWEST.addActionListener( ae -> {
-//            fgEnabledIcon.setRotation(JXIcon.NORTH); 
-//            fgDisabledIcon.setRotation(JXIcon.NORTH);
-//            TreePainterVisualTest.this.updateUI();
-//        });
+        provider = new CheckBoxProvider(StringValues.TO_STRING);
+        sharedRenderer = new DefaultTreeRenderer(new WrappingProvider(provider));
+
+        JXTree tree = new JXTree();
+        tree.setCellRenderer(sharedRenderer);
+        JScrollPane scroller = new JScrollPane(tree);
+        
+        // <snip> JXTree rollover
+        // enable and register a highlighter
+        tree.setRolloverEnabled(true);
+        tree.addHighlighter(createRolloverIconHighlighter());
+        // </snip>
+        
+        super.add(scroller, BorderLayout.WEST);
 
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -160,9 +155,52 @@ public class TreePainterVisualTest extends JXPanel {
 		p.add(treeCellEditorBgEnabledFocusedButton);
     }
     
-    private Component createXButton(String propertyName) {
-    	Icon icon = DefaultIcons.getIcon(propertyName);  	
-    	return new JXButton(propertyName, icon);
+    // <snip> JXTree rollover
+    // custom implementation of Highlighter which highlights by changing the node icon on rollover
+    private Highlighter createRolloverIconHighlighter() {
+
+        AbstractHighlighter hl = new AbstractHighlighter(HighlightPredicate.ROLLOVER_CELL) {
+            /**
+             * {@inheritDoc} <p>
+             * 
+             * Implemented to highlight by setting the node icon.
+             */
+            @Override // muss implementiert werden
+            // JXTree tree : funktioniert es
+            // JXTreetable tree : nicht                                  ==> TODO testen
+            protected Component doHighlight(Component component, ComponentAdapter adapter) {
+            	Icon icon = ((WrappingIconPanel) component).getIcon();
+            	PainterIcon painterIcon = new PainterIcon(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
+            	BufferedImage image = null;
+            	if(icon instanceof RadianceIcon ri) {
+            		image = ri.toImage(1);
+            	} else if(icon instanceof ImageIcon ii) {
+            		image = (BufferedImage)ii.getImage();
+            	} else {
+            		LOG.warning("no highlighting for "+icon);
+            	}
+                AbstractAreaPainter<Component> delegate = new ImagePainter(image);
+                delegate.setFilters(new InvertFilter());
+                painterIcon.setPainter((Painter<Component>)delegate);
+                ((WrappingIconPanel) component).setIcon(painterIcon);
+                return component;
+            }
+            // </snip>
+            
+            /**
+             * {@inheritDoc} <p>
+             * 
+             * Implementated to return true if the component is a WrappingIconPanel,
+             * a panel implemenation specialized for rendering tree nodes.
+             * 
+             */
+            @Override
+            protected boolean canHighlight(Component component, ComponentAdapter adapter) {
+                return component instanceof WrappingIconPanel;
+            }
+            
+        };
+        return hl;
     }
     
 }
