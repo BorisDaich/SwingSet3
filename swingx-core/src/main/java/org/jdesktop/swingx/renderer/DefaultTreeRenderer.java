@@ -24,7 +24,8 @@ import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
 
 /**
- * Adapter to glue SwingX renderer support to core api.
+ * Adapter to glue SwingX renderer support to core api
+ * which implements TreeCellRenderer
  * 
  * @author Jeanette Winzenburg
  */
@@ -117,11 +118,10 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
     
     // -------------- implements javax.swing.table.TableCellRenderer
     /**
+     * {@inheritDoc}
+     * Returns a configured component, appropriate to render the given tree cell.
      * 
-     * Returns a configured component, appropriate to render the given tree
-     * cell.
-     * 
-     * @param tree the <code>JTree</code>
+     * @param tree the <code>JTree</code>, might be null
      * @param value the value to assign to the cell
      * @param selected true if cell is selected
      * @param expanded true if the cell is expanded
@@ -132,12 +132,14 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
      */
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value,
-            boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus) {
+            boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    	
         cellContext.installContext(tree, value, row, 0, selected, hasFocus, expanded, leaf);
         Component comp = componentController.getRendererComponent(cellContext);
+        
         // fix issue #1040-swingx: memory leak if value not released
         cellContext.replaceValue(null);
+        
         return comp;
     }
 
@@ -145,7 +147,7 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
     /**
      * {@inheritDoc}
      */ 
-    @Override
+    @Override // implements abstract AbstractRenderer method
     protected ComponentProvider<?> createDefaultComponentProvider() {
         return new WrappingProvider();
     }
