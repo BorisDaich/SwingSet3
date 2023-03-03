@@ -60,7 +60,7 @@ import junit.framework.TestCase;
 @RunWith(JUnit4.class)
 public abstract class AbstractTestHighlighterClient extends TestCase {
 
-    private static final Logger LOG = Logger.getLogger(AbstractTestHighlighterClient.class.getName());
+    static final Logger LOG = Logger.getLogger(AbstractTestHighlighterClient.class.getName());
     
     // ---- HighlighterClient
     

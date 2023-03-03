@@ -31,40 +31,44 @@ import org.jdesktop.swingx.JXList;
  */
 public class ListAsHighlighterClientTest extends AbstractTestHighlighterClient {
 
+	static String[] model = {"1", "2"}; // not empty model
+	
     @Override
     protected HighlighterClient createHighlighterClient() {
-        return createHighlighterClient(new JXList());
+    	JXList<Object> list = new JXList<>();
+    	LOG.config("model.size="+list.getModel().getSize()); // we test with empty list!
+        return createHighlighterClient(list);
     }
 
-    private HighlighterClient createHighlighterClient(final JXList table) {
+    private HighlighterClient createHighlighterClient(final JXList<?> list) {
         HighlighterClient client = new HighlighterClient() {
 
             public void addHighlighter(Highlighter highlighter) {
-                table.addHighlighter(highlighter);
+                list.addHighlighter(highlighter);
             }
 
             public void addPropertyChangeListener(PropertyChangeListener l) {
-                table.addPropertyChangeListener(l);
+                list.addPropertyChangeListener(l);
             }
 
             public Highlighter[] getHighlighters() {
-                return table.getHighlighters();
+                return list.getHighlighters();
             }
 
             public void removeHighlighter(Highlighter highlighter) {
-                table.removeHighlighter(highlighter);
+                list.removeHighlighter(highlighter);
             }
 
             public void removePropertyChangeListener(PropertyChangeListener l) {
-                table.removePropertyChangeListener(l);
+                list.removePropertyChangeListener(l);
             }
 
             public void setHighlighters(Highlighter... highlighters) {
-                table.setHighlighters(highlighters);
+                list.setHighlighters(highlighters);
             }
 
             public void updateUI() {
-                table.updateUI();
+                list.updateUI();
             }
             
         };
