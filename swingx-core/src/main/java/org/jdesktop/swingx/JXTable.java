@@ -617,6 +617,11 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * 
      */
     private void init() {
+    	/*
+    	 * effect of USE_DTCR_COLORMEMORY_HACK see
+    	 * org.jdesktop.swingx.decorator.HighlighterIssues
+    	 * and https://github.com/homebeaver/SwingSet/issues/49
+    	 */
         putClientProperty(USE_DTCR_COLORMEMORY_HACK, Boolean.TRUE);
         initDefaultStringValues();
         sortOrderCycle = DefaultSortController.getDefaultSortOrderCycle();
@@ -3676,7 +3681,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
         if (resetDefaultTableCellRendererHighlighter == null) {
             resetDefaultTableCellRendererHighlighter = new ResetDTCRColorHighlighter();
         }
-        // hacking around DefaultTableCellRenderer color memory.
+        // hacking around DefaultTableCellRenderer color memory. TODO
         resetDefaultTableCellRendererHighlighter.highlight(renderer, adapter);
     }
 

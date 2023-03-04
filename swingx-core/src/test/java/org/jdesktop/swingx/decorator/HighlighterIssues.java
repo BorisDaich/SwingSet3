@@ -37,6 +37,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
 		HighlighterIssues test = new HighlighterIssues();
 		try {
 			test.runInteractiveTests();
+//			test.runInteractiveTests("testLookupUIColor");
 //			test.runInteractiveTests("interactive.*Predicate.*");
 		} catch (Exception e) {
 			System.err.println("exception when executing interactive tests:");
@@ -107,8 +108,7 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
     /**
      * Issue #258-swingx: DefaultTableCellRenderer has memory. 
      * How to formulate as test?
-     * this is testing the hack (reset the memory in ResetDTCR to null), not
-     * any highlighter!
+     * this is testing the hack (reset the memory in ResetDTCR to null), not any highlighter!
      */
     public void testTableUnSelectedDoNothingHighlighter() {
         JXTable table = new JXTable(10, 2);
@@ -124,15 +124,14 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
     //---------------
  
     /**
-     * Issue #258-swingx: Background LegacyHighlighter must not change custom
-     * foreground.
+     * Issue #258-swingx: Background LegacyHighlighter must not change custom foreground.
      * <p>
      * 
      * Visualizing effect of hack: table-internally, a ResetDTCRColorHighlighter
      * tries to neutralize DefaultTableCellRenderer's color memory.
      * 
      * <ul>
-     * <li> a DTCR subclass with value-based custom foreground
+     * <li> a DefaultTableCellRenderer subclass with value-based custom foreground
      * <li> the renderer is shared between a table with background highlighter
      * (alternateRowHighlighter) and a table without highlighter
      * <li> the custom value-based foreground must show in both
@@ -145,17 +144,27 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
     public void interactiveTableCustomCoreRendererColorBasedOnValue() {
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
-        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+        
+        @SuppressWarnings("serial")
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+        	
+//            public void setForeground(Color c) {
+//                super.setForeground(c);
+//                LOG.info("Color === "+c);
+//            }
             @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value, boolean isSelected, boolean hasFocus,
-                    int row, int column) {
-                // TODO Auto-generated method stub
-                super.getTableCellRendererComponent(table, value, isSelected,
-                        hasFocus, row, column);
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+            		boolean isSelected, boolean hasFocus, int row, int column) {
+            	
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (!isSelected) {
                     if (getText().contains("y")) {
-                        setForeground(Color.RED);
+                    	/*
+                    	 * das das funktioniert NICHT, wenn USE_DTCR_COLORMEMORY_HACK TRUE ist, well
+                    	 * der Hack foreground wieder auf gruen setzt
+                    	 */
+                        setForeground(Color.RED); 
+//                        setText(getText()+"Y"); // das funktioniert 
                     } else {
                         setForeground(Color.GREEN);
                     }
@@ -166,8 +175,8 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
         };
         table.addHighlighter(
                 HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
-
         table.setDefaultRenderer(Object.class, renderer);
+        
         JXTable nohighlight = new JXTable(model);
         nohighlight.setDefaultRenderer(Object.class, renderer);
         showWithScrollingInFrame(table, nohighlight,
@@ -258,33 +267,34 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
 
     /**
      * Effect of background highlighters on list with custom background.
-     * 
      */
     public void interactiveColoredListWithAlternateRow() {
-        JXList list = new JXList(createListModel());
+        JXList<?> list = new JXList<>(createListModel());
         list.setBackground(ledger);
-        list.addHighlighter(
-                HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
+        // add the background highlighter:
+        list.addHighlighter(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
 
-        JXList nohighlight = new JXList(createListModel());
+        JXList<?> nohighlight = new JXList<>(createListModel());
         nohighlight.setBackground(ledger);
         showWithScrollingInFrame(list, nohighlight, "colored list with striping <--> without ");
     }
 
     /**
      * 
-     * Effect of background highlighters on tree with custom background. Note:
-     * background highlighters don't work at all with DefaultTreeCellRenderers.
+     * Effect of background highlighters on tree with custom background. 
+     * Note: background highlighters don't work at all with DefaultTreeCellRenderers.
+     * XXX there is no DefaultTreeCellRenderers! Do you mean DefaultTreeRenderer extends TreeCellRenderer
      */
     public void interactiveColoredTreeWithAlternateRow() {
-        JXTree coreRendering = new JXTree();
-        coreRendering.setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
-        coreRendering.setBackground(ledger);
+        JXTree core = new JXTree();
+        core.setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
+        core.setBackground(ledger);
+        
         JXTree tree = new JXTree();
         tree.setCellRenderer(new DefaultTreeRenderer()); 
         tree.setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
         tree.setBackground(ledger);
-        showWithScrollingInFrame(tree, coreRendering, "colored tree with striping: swingx <--> core");
+        showWithScrollingInFrame(tree, core, "colored tree with striping: swingx <--> core");
     }
     
 
@@ -337,8 +347,8 @@ public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {
 
 //------------------ helpers
     
-    private ListModel createListModel() {
-        DefaultListModel model = new DefaultListModel();
+    private ListModel<Object> createListModel() {
+        DefaultListModel<Object> model = new DefaultListModel<>();
         for (int i = 0; i < 10; i++) {
             model.add(i, i);
         }
