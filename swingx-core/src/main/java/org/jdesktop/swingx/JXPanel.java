@@ -590,6 +590,61 @@ public class JXPanel extends JPanel implements AlphaPaintable, BackgroundPaintab
         //short circuit painting if no transparency
         if (getAlpha() == 1f) {
             super.paint(g);
+/*
+  reproduce: 
+- open SwingSet Demos
+- switch to Nimbus
+- start XTree Demo
+//- move cursor to "Rock"
+- switch back to Metal (XTree Panel ist still Nimbus)
+- focus XTree Panel ===> exception
+  
+Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot invoke "java.awt.Font.hashCode()" because "font" is null
+	at java.desktop/sun.font.FontDesignMetrics$MetricsKey.init(FontDesignMetrics.java:219)
+	at java.desktop/sun.font.FontDesignMetrics.getMetrics(FontDesignMetrics.java:288)
+	at java.desktop/sun.swing.SwingUtilities2.getFontMetrics(SwingUtilities2.java:1242)
+	at java.desktop/javax.swing.JComponent.getFontMetrics(JComponent.java:1691)
+	at java.desktop/sun.swing.SwingUtilities2.getFontMetrics(SwingUtilities2.java:355)
+	at java.desktop/javax.swing.plaf.synth.SynthTabbedPaneUI.paintTab(SynthTabbedPaneUI.java:648)
+	at java.desktop/javax.swing.plaf.synth.SynthTabbedPaneUI.paintTabArea(SynthTabbedPaneUI.java:548)
+	at java.desktop/javax.swing.plaf.synth.SynthTabbedPaneUI.paint(SynthTabbedPaneUI.java:486)
+	at java.desktop/javax.swing.plaf.synth.SynthTabbedPaneUI.update(SynthTabbedPaneUI.java:384)
+	at java.desktop/javax.swing.JComponent.paintComponent(JComponent.java:842)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1119)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:952)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1128)
+	at org.jdesktop.swingx.JXPanel.paint(JXPanel.java:592) <===================
+	at java.desktop/javax.swing.JComponent.paintToOffscreen(JComponent.java:5311)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBufferedFPScales(RepaintManager.java:1721)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(RepaintManager.java:1630)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paint(RepaintManager.java:1570)
+	at java.desktop/javax.swing.RepaintManager.paint(RepaintManager.java:1337)
+	at java.desktop/javax.swing.JComponent._paintImmediately(JComponent.java:5259)
+	at java.desktop/javax.swing.JComponent.paintImmediately(JComponent.java:5069)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:879)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:862)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:862)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:835)
+	at java.desktop/javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:784)
+	at java.desktop/javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1898)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+  
+ */
         } else {
             //the component is translucent, so we need to render to
             //an intermediate image before painting
