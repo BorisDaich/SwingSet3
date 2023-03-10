@@ -62,9 +62,10 @@ import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.CompoundHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
-import org.jdesktop.swingx.plaf.XTreeAddon;
 import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.plaf.UIDependent;
+import org.jdesktop.swingx.plaf.XTreeAddon;
+import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.rollover.RolloverProducer;
@@ -957,6 +958,7 @@ public class JXTree extends JTree {
      */
     public void addHighlighter(Highlighter highlighter) {
         Highlighter[] old = getHighlighters();
+        LOG.config("# of Highlighters="+old.length + " add "+highlighter);
         getCompoundHighlighter().addHighlighter(highlighter);
         firePropertyChange("highlighters", old, getHighlighters());
     }
@@ -1201,7 +1203,11 @@ public class JXTree extends JTree {
     public TreeCellRenderer getCellRenderer() {
         // PENDING JW: something wrong here - why exactly can't we return super? 
         // not even if we force the initial setting in init?
-//        return super.getCellRenderer();
+    	//
+    	// EUG: interface TreeCellRenderer has method getTreeCellRendererComponent
+    	// DelegatingRenderer is a class which implements TreeCellRenderer 
+    	// And RolloverRenderer with methods isEnabled and doClick
+    	// ==> we need a Class which implements both interfaces !!!
         return getDelegatingRenderer();
     }
 
@@ -1252,19 +1258,27 @@ public class JXTree extends JTree {
      * PENDING JW: missing updateUI anyway (got lost when pasted from JXList ;-)
      * PENDING JW: missing override of updateUI in xtree ...
      */
-    public class DelegatingRenderer implements TreeCellRenderer, RolloverRenderer {
+    public class DelegatingRenderer extends DefaultTreeRenderer implements TreeCellRenderer, RolloverRenderer {
+    	// NB: 
+    	// public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRenderer
+    	// abstract class AbstractRenderer implements RolloverRenderer, StringValue, Serializable, UIDependent
         private Icon    closedIcon = null;
         private Icon    openIcon = null;
         private Icon    leafIcon = null;
        
         private TreeCellRenderer delegate;
+        // NB: in AbstractRenderer: protected ComponentProvider<?> componentController;
         
         /**
          * Instantiates a DelegatingRenderer with tree's default renderer as delegate.
          */
         public DelegatingRenderer() {
-            this(null);
-            initIcons(new DefaultTreeCellRenderer());
+            this(null, null);
+//            initIcons(new DefaultTreeCellRenderer());
+        }
+
+        public DelegatingRenderer(StringValue sv) {
+        	this(null, sv);
         }
 
         /**
@@ -1276,22 +1290,15 @@ public class JXTree extends JTree {
          * 
          * <p> NOTE: the javax.swing.tree.DefaultTreeCellRenderer extends JLabel
          */
-        public DelegatingRenderer(TreeCellRenderer delegate) {
-            initIcons((DefaultTreeCellRenderer) (delegate instanceof DefaultTreeCellRenderer ? 
-                    delegate : new DefaultTreeCellRenderer())); // TODO DefaultXTreeCellRenderer
-            setDelegateRenderer(delegate);
-        }
-
-        /**
-         * initially sets the icons to the defaults as given
-         * by a DefaultTreeCellRenderer.
-         * 
-         * @param renderer
-         */
-        private void initIcons(DefaultTreeCellRenderer renderer) {
-            closedIcon = renderer.getDefaultClosedIcon();
-            openIcon = renderer.getDefaultOpenIcon();
-            leafIcon = renderer.getDefaultLeafIcon();
+        public DelegatingRenderer(TreeCellRenderer delegate, StringValue sv) {
+        	super(sv);
+        	if(delegate instanceof DefaultTreeCellRenderer javaxDTCR) {
+        		initIcons(javaxDTCR);
+        	} else {
+//        		initIcons(new DefaultTreeCellRenderer());
+        		// EUG better DefaultXTreeCellRenderer extends DefaultTreeCellRenderer ?
+        		initIcons(new DefaultXTreeCellRenderer());
+        	}
         }
 
         /**
@@ -1314,6 +1321,18 @@ public class JXTree extends JTree {
             updateIcons();
         }
         
+        /**
+         * initially sets the icons to the defaults as given
+         * by a DefaultTreeCellRenderer.
+         * 
+         * @param renderer
+         */
+        private void initIcons(DefaultTreeCellRenderer renderer) {
+            closedIcon = renderer.getDefaultClosedIcon();
+            openIcon = renderer.getDefaultOpenIcon();
+            leafIcon = renderer.getDefaultLeafIcon();
+        }
+
         /**
          * tries to set the renderers icons. Can succeed only if the
          * delegate is a DefaultTreeCellRenderer.
@@ -1370,10 +1389,9 @@ public class JXTree extends JTree {
          */
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
-                boolean selected, boolean expanded, boolean leaf, int row,
-                boolean hasFocus) {
-            Component result = delegate.getTreeCellRendererComponent(tree,
-                    value, selected, expanded, leaf, row, hasFocus);
+                boolean selected, boolean expanded, boolean leaf, int row,boolean hasFocus) {
+            Component result = super.getTreeCellRendererComponent(tree, value, 
+            	selected, expanded, leaf, row, hasFocus);
 
             if ((compoundHighlighter != null) && (row < getRowCount()) && (row >= 0)) {
                 result = compoundHighlighter.highlight(result, getComponentAdapter(row));
