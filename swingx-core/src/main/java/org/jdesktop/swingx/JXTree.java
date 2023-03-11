@@ -66,6 +66,7 @@ import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.plaf.UIDependent;
 import org.jdesktop.swingx.plaf.XTreeAddon;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
+import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.rollover.RolloverProducer;
@@ -1273,25 +1274,28 @@ public class JXTree extends JTree {
          * Instantiates a DelegatingRenderer with tree's default renderer as delegate.
          */
         public DelegatingRenderer() {
-            this(null, null);
+            this(null, null, null);
 //            initIcons(new DefaultTreeCellRenderer());
         }
 
         public DelegatingRenderer(StringValue sv) {
-        	this(null, sv);
+        	this(null, null, sv);
+        }
+        public DelegatingRenderer(IconValue iv, StringValue sv) {
+        	this(null, iv, sv);
         }
 
         /**
-         * Instantiates a DelegatingRenderer with the given delegate. If the
-         * delegate is null, the default is created via the trees's factory method.
+         * Instantiates a DelegatingRenderer with the given delegate. 
+         * If the delegate is null, the default is created via the trees's factory method.
          * 
          * @param delegate the delegate to use, 
          * 	if not instanceof DefaultTreeCellRenderer the tree's default is created and used.
-         * 
-         * <p> NOTE: the javax.swing.tree.DefaultTreeCellRenderer extends JLabel
+	     * @param iv the IconValue to use for mapping a custom icon for a given value
+	     * @param sv the converter to use for mapping the content value to a String representation.
          */
-        public DelegatingRenderer(TreeCellRenderer delegate, StringValue sv) {
-        	super(sv);
+        public DelegatingRenderer(TreeCellRenderer delegate, IconValue iv, StringValue sv) {
+        	super(iv, sv);
         	if(delegate instanceof DefaultTreeCellRenderer javaxDTCR) {
         		initIcons(javaxDTCR);
         	} else {
