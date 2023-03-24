@@ -104,15 +104,15 @@ public class CompoundHighlighter extends AbstractHighlighter implements UIDepend
         highlighters.clear();
     }
 
-    /**
-     * Appends a highlighter to the pipeline.
-     *
-     * @param highlighter highlighter to add
-      * @throws NullPointerException if highlighter is null.
-    */
-    public void addHighlighter(Highlighter highlighter) {
-        addHighlighter(highlighter, false);
-    }
+	/**
+	 * Appends a highlighter to the pipeline.
+	 *
+	 * @param highlighter highlighter to add
+	 * @throws NullPointerException if highlighter is null.
+	 */
+	public void addHighlighter(Highlighter highlighter) {
+		addHighlighter(highlighter, false);
+	}
 
     /**
      * Adds a highlighter to the pipeline.
