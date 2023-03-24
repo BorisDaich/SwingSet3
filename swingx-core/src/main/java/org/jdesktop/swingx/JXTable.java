@@ -2205,13 +2205,11 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
         RowSorter<?> controller = getRowSorter();
         if (controller != null) {
             // PENDING JW: must use RowSorter?
-            SortKey sortKey = SortUtils.getFirstSortingKey(controller
-                    .getSortKeys());
+            SortKey sortKey = SortUtils.getFirstSortingKey(controller.getSortKeys());
             if (sortKey != null) {
                 int sorterColumn = sortKey.getColumn();
                 List<TableColumn> columns = getColumns(true);
-                for (Iterator<TableColumn> iter = columns.iterator(); iter
-                        .hasNext();) {
+                for (Iterator<TableColumn> iter = columns.iterator(); iter.hasNext();) {
                     TableColumn column = iter.next();
                     if (column.getModelIndex() == sorterColumn) {
                         return column;
@@ -3153,8 +3151,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
                         + getColumnCount() + " was: " + modelColumn);
             }
             List<TableColumn> columns = table.getColumns(true);
-            for (Iterator<TableColumn> iter = columns.iterator(); iter
-                    .hasNext();) {
+            for (Iterator<TableColumn> iter = columns.iterator(); iter.hasNext();) {
                 TableColumn column = iter.next();
                 if (column.getModelIndex() == modelColumn) {
                     return column;
@@ -3400,8 +3397,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
     protected CompoundHighlighter getCompoundHighlighter() {
         if (compoundHighlighter == null) {
             compoundHighlighter = new CompoundHighlighter();
-            compoundHighlighter
-                    .addChangeListener(getHighlighterChangeListener());
+            compoundHighlighter.addChangeListener(getHighlighterChangeListener());
         }
         return compoundHighlighter;
     }
@@ -3482,8 +3478,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @param tableColumn the column to update from
      * @param renderer the renderer potentially useful as StringValue.
      */
-    private void updateStringValueForColumn(TableColumn tableColumn,
-            TableCellRenderer renderer) {
+    private void updateStringValueForColumn(TableColumn tableColumn, TableCellRenderer renderer) {
         getStringValueRegistry().setStringValue(
                 renderer instanceof StringValue ? (StringValue) renderer : null, 
                         tableColumn.getModelIndex());
@@ -3516,8 +3511,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * the mapping is reset to default.
      */
     @Override
-    public void setDefaultRenderer(Class<?> columnClass,
-            TableCellRenderer renderer) {
+    public void setDefaultRenderer(Class<?> columnClass, TableCellRenderer renderer) {
         super.setDefaultRenderer(columnClass, renderer);
         getStringValueRegistry().setStringValue(
                 (renderer instanceof StringValue) ? (StringValue) renderer : null, 
@@ -3600,8 +3594,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @see org.jdesktop.swingx.decorator.Highlighter
      */
     @Override
-    public Component prepareRenderer(TableCellRenderer renderer, int row,
-            int column) {
+    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component stamp = super.prepareRenderer(renderer, row, column);
         // #145-swingx: default renderers don't respect componentOrientation.
         adjustComponentOrientation(stamp);
@@ -3673,8 +3666,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @see #USE_DTCR_COLORMEMORY_HACK
      * @see org.jdesktop.swingx.decorator.ResetDTCRColorHighlighter
      */
-    protected void resetDefaultTableCellRendererColors(Component renderer,
-            int row, int column) {
+    protected void resetDefaultTableCellRendererColors(Component renderer, int row, int column) {
         if (!Boolean.TRUE.equals(getClientProperty(USE_DTCR_COLORMEMORY_HACK)))
             return;
         ComponentAdapter adapter = getComponentAdapter(row, column);
