@@ -67,17 +67,15 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jdesktop.beans.JavaBean;
+import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.event.TreeExpansionBroadcaster;
 import org.jdesktop.swingx.plaf.UIAction;
-import org.jdesktop.swingx.renderer.StringValue;
-import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.renderer.WrappingProvider;
 import org.jdesktop.swingx.rollover.RolloverProducer;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableCellEditor;
 import org.jdesktop.swingx.treetable.TreeTableModel;
@@ -1468,17 +1466,25 @@ public class JXTreeTable extends JXTable {
         Component component = renderer.getTableCellRendererComponent(this, value,
         		isSelected, hasFocus, row, column);
 // TODO rmove LOG
-    	LOG.info("TODO TableCellRenderer:"+renderer 
-    			+ "\n Component="+component
-    			+ "\n ComponentAdapter="+adapter
-    			+ "\n for row="+row + " column="+column + " ValueAt="+value
-    			+ "\n"
-    			);
+//    	LOG.info("TODO TableCellRenderer:"+renderer 
+//    			+ "\n Component="+component
+//    			+ "\n ComponentAdapter="+adapter
+//    			+ "\n for row="+row + " column="+column + " ValueAt="+value
+//    			+ "\n"
+//    			);
         
         // override JXTable code:
         adjustComponentOrientation(component);
         resetDefaultTableCellRendererColors(component, row, column);
-        if (compoundHighlighter != null) {
+        if (compoundHighlighter != null) { // protected CompoundHighlighter compoundHighlighter in JXTable
+//        	if(adapter.isHierarchical()) {
+//        		for(Highlighter highlighter : compoundHighlighter.getHighlighters()) {
+//        			AbstractHighlighter ah = (AbstractHighlighter)highlighter;
+////        			boolean canh = // protected: ah.canHighlight(component, adapter);
+//        			boolean sbh = ah.getHighlightPredicate().isHighlighted(component, adapter);
+//            		LOG.warning("---------- component should behighlighted:"+sbh+ " by "+highlighter);
+//        		}
+//        	}
         	component = compoundHighlighter.highlight(component, adapter);
         }
         TableColumnExt columnExt = getColumnExt(column);
@@ -1491,7 +1497,8 @@ public class JXTreeTable extends JXTable {
     	LOG.info("TODO TableCellRenderer:"+renderer 
     			+ "\n Component="+component
     			+ "\n ComponentAdapter="+adapter
-    			+ "\n for row="+row + " column="+column + " ValueAt="+value
+    			+ "\n target Component="+adapter.getComponent()
+    			+ "\n for row="+row + (adapter.isHierarchical() ? " hierarchical-" : " ") +"column="+column + " ValueAt="+value
     			+ "\n"
     			);
 
@@ -1503,11 +1510,11 @@ public class JXTreeTable extends JXTable {
      * does nothing otherwise.
      * <p>
      * 
-     * Note: this is legacy glue if the treeCellRenderer is of type
-     * DefaultTreeCellRenderer. In that case the renderer's
+     * Note: this is legacy glue if the treeCellRenderer is of type DefaultTreeCellRenderer. 
+     * In that case the renderer's
      * background/foreground/Non/Selection colors are set to the tree's
-     * background/foreground depending on the adapter's selection state. Does
-     * nothing if the treeCellRenderer is backed by a ComponentProvider.
+     * background/foreground depending on the adapter's selection state. 
+     * Does nothing if the treeCellRenderer is backed by a ComponentProvider.
      * 
      * @param component the rendering component
      * @param adapter component data adapter
@@ -1530,6 +1537,7 @@ public class JXTreeTable extends JXTable {
                 tcr = dl.getDelegateRenderer();
             }
             if (tcr instanceof DefaultTreeCellRenderer dtcr) {
+            	// DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
                 // this effectively overwrites the dtcr settings
                 if (adapter.isSelected()) {
                     dtcr.setTextSelectionColor(component.getForeground());
@@ -2820,8 +2828,7 @@ TableModelListener management provided by AbstractTableModel superclass:
 // setCellRenderer(new DefaultTreeRenderer());
 //            setCellRenderer(new ClippedTreeCellRenderer());
 //            if(tcr==null) setCellRenderer(getCellRenderer());
-            LOG.warning("------------------# of PropertyChangeListeners="+
-            	super.getListeners(PropertyChangeListener.class).length);
+//            LOG.warning("------------------# of PropertyChangeListeners="+super.getListeners(PropertyChangeListener.class).length);
 //            addPropertyChangeListener(null);
         }
 
@@ -2850,7 +2857,7 @@ TableModelListener management provided by AbstractTableModel superclass:
         }
 
         public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        	LOG.info("PropertyChangeListener for "+propertyName);
+        	LOG.config("PropertyChangeListener for "+propertyName);
         	super.addPropertyChangeListener(propertyName, listener);
         }
         
@@ -3210,8 +3217,7 @@ TableModelListener management provided by AbstractTableModel superclass:
                 // still not satifying in all cases...
                 // RG: Now it satisfies (at least for the row margins)
                 // Still need to make similar adjustments for column margins...
-                border.paintBorder(this, g, 0, cellRect.y,
-                        getWidth(), cellRect.height);
+                border.paintBorder(this, g, 0, cellRect.y, getWidth(), cellRect.height);
             }
         }
         
@@ -3263,14 +3269,13 @@ TableModelListener management provided by AbstractTableModel superclass:
             // 
 //            setToolTipText(null);
             
-            if (isSelected) {
-                setBackground(table.getSelectionBackground());
-                setForeground(table.getSelectionForeground());
-            }
-            else {
-                setBackground(table.getBackground());
-               setForeground(table.getForeground());
-            }
+			if (isSelected) {
+				setBackground(table.getSelectionBackground());
+				setForeground(table.getSelectionForeground());
+			} else {
+				setBackground(table.getBackground());
+				setForeground(table.getForeground());
+			}
 
             highlightBorder = null;
             if (treeTable != null) {
@@ -3540,15 +3545,12 @@ TableModelListener management provided by AbstractTableModel superclass:
                     // had to change to query the hierarchicalString always
                     // could probably be done more elegantly, but ...
                 }
-//                return table.getHierarchicalStringAt(row);
-                TableModel dataModel = table.getModel();
-                if(dataModel instanceof JXTreeTable.TreeTableModelAdapter ttma) {
-                	return ttma.getValueAt(row, column).toString();
-                }
+                return table.getHierarchicalStringAt(row);
             }
             return super.getStringAt(row, column);
         }
         
+        @Override
         public Object getValueAt(int row, int column) {
             if (table.getTreeTableModel().getHierarchicalColumn() == column) {
                 if (convertColumnIndexToView(column) < 0) {
