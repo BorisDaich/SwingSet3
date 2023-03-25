@@ -527,16 +527,22 @@ public class JXTree extends JTree {
      * Returns the string representation of the cell value at the given position. 
      * 
      * @param path the TreePath representing the node.
-     * @return the string representation of the cell value as it will appear in the 
-     *   table, or null if the path is not visible. 
+     * @return the string representation of the cell value as it will appear 
+     * in the tree or table, or null if the path is not visible. 
      */
     public String getStringAt(TreePath path) {
         if (path == null) return null;
         TreeCellRenderer renderer = getDelegatingRenderer().getDelegateRenderer();
-        if (renderer instanceof StringValue) {
-            return ((StringValue) renderer).getString(path.getLastPathComponent());
+        if (renderer instanceof StringValue sv) {
+            return sv.getString(path.getLastPathComponent());
         }
-        return StringValues.TO_STRING.getString(path.getLastPathComponent());
+        // else: (to satisfy Test ComponentAdapterTest.testTreeTableGetStringAtHiddenHierarchicalColumn)
+        Object lpc = path.getLastPathComponent();
+        if(lpc instanceof JComponent comp) {
+            return comp.getName();
+        }
+        // else:
+        return StringValues.TO_STRING.getString(lpc);
     }
 
     
@@ -1654,6 +1660,7 @@ public class JXTree extends JTree {
      * PENDING JW: remove - that is an outdated approach?
      */
     @Override
+    @Deprecated
     public void setModel(TreeModel newModel) {
         super.setModel(newModel);
     }

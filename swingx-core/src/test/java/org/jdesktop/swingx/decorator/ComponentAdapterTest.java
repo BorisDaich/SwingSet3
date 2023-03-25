@@ -20,6 +20,7 @@
 package org.jdesktop.swingx.decorator;
 
 import java.awt.Color;
+import java.util.logging.Logger;
 
 import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
@@ -55,6 +56,8 @@ import junit.framework.TestCase;
 @RunWith(JUnit4.class)
 public class ComponentAdapterTest extends TestCase {
     
+    private static final Logger LOG = Logger.getLogger(ComponentAdapterTest.class.getName());
+
     /**
      * A custom StringValue for Color. Maps to a string composed of the
      * prefix "R/G/B: " and the Color's rgb value.
@@ -352,11 +355,30 @@ public class ComponentAdapterTest extends TestCase {
      */
     @Test
     public void testTreeTableGetStringAtHiddenHierarchicalColumn() {
-        JXTreeTableT table = new JXTreeTableT(AncientSwingTeam.createNamedColorTreeTableModel());
-        table.setTreeCellRenderer(new DefaultTreeRenderer(sv));
-        table.getColumnExt(0).setVisible(false);
-        String text = sv.getString(table.getModel().getValueAt(2, 0));
-        ComponentAdapter adapter = table.getComponentAdapter(2, 0);
+    	TreeTableModel model = AncientSwingTeam.createNamedColorTreeTableModel();
+        LOG.info("Root="+model.getRoot() + "\n with "+model.getChildCount(model.getRoot())+" childes"
+        		+" ColumnCount="+model.getColumnCount() + " HierarchicalColumn="+model.getHierarchicalColumn());
+        Object child = model.getChild(model.getRoot(), 2);
+        LOG.info("the 3rd child:"+child);
+        for(int i=0;i<model.getColumnCount();i++) {
+        	System.out.println(""+i+":"+model.getColumnName(i)+"\t"+model.getColumnClass(i) + "\t"+model.getValueAt(child, i));
+        }
+        assertEquals(2, model.getColumnCount()); // Color, LastName
+        assertEquals(0, model.getHierarchicalColumn());
+        assertEquals(21, model.getChildCount(model.getRoot()));
+
+//        LOG.info("sv.getString(Color.GREEN):"+sv.getString(Color.GREEN));
+//        NamedColor green = new NamedColor(Color.green, "Green");
+//        LOG.info("sv.getString(NamedColor green):"+sv.getString(green));
+//        assertEquals(sv.getString(Color.GREEN), sv.getString(green));
+        
+        JXTreeTableT treeTable = new JXTreeTableT(model);
+        treeTable.setTreeCellRenderer(new DefaultTreeRenderer(sv));
+        treeTable.getColumnExt(0).setVisible(false);
+        Object valueAt2 = treeTable.getModel().getValueAt(2, 0);
+        LOG.info("ValueAt(2, 0):"+valueAt2 + " sv.getString(valueAt2):" + sv.getString(valueAt2));
+        String text = sv.getString(treeTable.getModel().getValueAt(2, 0));
+        ComponentAdapter adapter = treeTable.getComponentAdapter(2, 0);
         assertEquals(text, adapter.getStringAt(2, 0));
     }
 
