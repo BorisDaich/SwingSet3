@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jdesktop.swingx.InteractiveTestCase;
@@ -32,6 +33,8 @@ import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.JXTreeTable;
+import org.jdesktop.swingx.JXTreeTable.TreeTableModelAdapter;
 import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXTableT;
 import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXTreeT;
 import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXTreeTableT;
@@ -60,7 +63,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ComponentAdapterClientTest extends InteractiveTestCase {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(ComponentAdapterClientTest.class.getName());
     
     public static void main(String[] args) {
@@ -172,10 +174,85 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         button.setName(buttonName);
         panel.add(button);
         TreeTableModel model = new ComponentTreeTableModel(panel);
+
+        LOG.info("Root="+model.getRoot() + "\n with "+model.getChildCount(model.getRoot())+" childes"
+        		+" ColumnCount="+model.getColumnCount() + " HierarchicalColumn="+model.getHierarchicalColumn());
+        Object child = model.getChild(model.getRoot(), 0);
+        LOG.info("the child:"+child);
+        for(int i=0;i<model.getColumnCount();i++) {
+        	System.out.println(""+i+":"+model.getColumnName(i)+"\t"+model.getColumnClass(i) + "\t"+model.getValueAt(child, i));
+        }
+        assertEquals(4, model.getColumnCount());
+        assertEquals(0, model.getHierarchicalColumn());
+        assertEquals(1, model.getChildCount(model.getRoot())); // root:panel - child:button
+
+        JXTree tree = new JXTree(model);
+        tree.setRootVisible(true);
+        tree.expandAll();
+        String treeStringAt1 = tree.getStringAt(1);
+        LOG.info("tree.getStringAt(1)="+treeStringAt1);
+        
+        
         JXTreeTableT table = new JXTreeTableT(model);
         table.setRootVisible(true);
         table.expandAll();
+//        LOG.info("    "+table.getTreeCellRenderer());
+//        LOG.info("    "+table.getModel());
+//        TableModel tm = table.getModel();
+//        if(tm instanceof JXTreeTable.TreeTableModelAdapter adapter) {
+//        	Object valueAt1 = adapter.getValueAt(1, 0);
+//            LOG.info(" model adapter.getValueAt(1, 0)="+valueAt1 + " type:"+valueAt1.getClass() );
+//        }
+//        ComponentAdapter ca = table.getComponentAdapter(1, 0);
+//        if(ca instanceof JXTreeTable.TreeTableDataAdapter adapter) {
+//        	Object valueAt1 = adapter.getValueAt(1, 0);
+//            LOG.info(" component adapter.getValueAt(1, 0)="+valueAt1 + " type:"+valueAt1.getClass() );
+//        }
+        
+        Object valueAt1 = table.getModel().getValueAt(1, 0);
+        LOG.info("expected table.getValueAt(1, 0)="+valueAt1 + " type:"+valueAt1.getClass()
+        	+ " table.getStringAt(1, 0)="+table.getStringAt(1, 0));
         assertEquals("string rep must be button name", table.getValueAt(1, 0),  table.getStringAt(1, 0));
+/*
+junit.framework.AssertionFailedError: string rep must be button name 
+expected:<buttonName> 
+ but was:<javax.swing.JButton[buttonName,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.5,border=javax.swing.plaf.BorderUIResource$CompoundBorderUIResource@1445d7f,flags=296,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,disabledSelectedIcon=,margin=javax.swing.plaf.InsetsUIResource[top=2,left=14,bottom=2,right=14],paintBorder=true,paintFocus=true,pressedIcon=,rolloverEnabled=true,rolloverIcon=,rolloverSelectedIcon=,selectedIcon=,text=,defaultCapable=true]>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.TestCase.assertEquals(TestCase.java:238)
+	at org.jdesktop.swingx.decorator.ComponentAdapterClientTest.testTreeTableGetStringAtClippedTextRenderer(ComponentAdapterClientTest.java:178)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
+
+
+ */
     }
     
     /**
