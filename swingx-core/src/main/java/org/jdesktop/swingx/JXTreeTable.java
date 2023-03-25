@@ -67,7 +67,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jdesktop.beans.JavaBean;
-import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.event.TreeExpansionBroadcaster;
@@ -203,23 +202,18 @@ public class JXTreeTable extends JXTable {
         super.setAutoCreateRowSorter(false);
         super.setRowSorter(null);
         // no grid
-        setShowGrid(false, false);
+        setShowGrid(false, false); // superclass default is "true"
 
         hierarchicalEditor = new TreeTableCellEditor(renderer);
         
-//        // No grid.
-//        setShowGrid(false); // superclass default is "true"
-//
-//        // Default intercell spacing
+//        // Default intercell spacing, @see javax.swing.JTable#setIntercellSpacing(Dimension)
 //        setIntercellSpacing(spacing); // for both row margin and column margin
-
     }
     
     /**
      * Initializes this JXTreeTable and permanently binds the specified renderer to it.
      *
-     * @param renderer private tree/renderer permanently and exclusively bound
-     * to this JXTreeTable.
+     * @param renderer private tree/renderer permanently and exclusively bound to this JXTreeTable.
      */
     private void init(TreeTableCellRenderer renderer) {
         this.renderer = renderer;
@@ -263,22 +257,20 @@ public class JXTreeTable extends JXTable {
      * A small class which dispatches actions.
      * TODO: Is there a way that we can make this static?
      */
-    private class Actions extends UIAction {
-        Actions(String name) {
-            super(name);
-        }
+	private class Actions extends UIAction {
+		Actions(String name) {
+			super(name);
+		}
 
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            if ("expand-all".equals(getName())) {
-        expandAll();
-            }
-            else if ("collapse-all".equals(getName())) {
-                collapseAll();
-            }
-        }
-    }
-    
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			if ("expand-all".equals(getName())) {
+				expandAll();
+			} else if ("collapse-all".equals(getName())) {
+				collapseAll();
+			}
+		}
+	}    
 
     /** 
      * {@inheritDoc} <p>
@@ -453,7 +445,6 @@ public class JXTreeTable extends JXTable {
         consumedOnPress = false;
         super.processMouseEvent(e);
     }
-    
 
     protected TreeTableHacker getTreeTableHacker() {
         if (treeTableHacker == null) {
@@ -696,10 +687,8 @@ public class JXTreeTable extends JXTable {
             int col = columnAtPoint(pt);
             if (col >= 0 && isHierarchical(col)) {
                 int row = rowAtPoint(pt);
-                // There will not be a check to see if the y coordinate is in
-                // range
-                // because the use of row = rowAtPoint(pt) will only return a
-                // row
+                // There will not be a check to see if the y coordinate is in range
+                // because the use of row = rowAtPoint(pt) will only return a row
                 // that has the y coordinates in the range of our point.
                 if (row >= 0) {
                     TreePath path = getPathForRow(row);
@@ -1465,26 +1454,11 @@ public class JXTreeTable extends JXTable {
 
         Component component = renderer.getTableCellRendererComponent(this, value,
         		isSelected, hasFocus, row, column);
-// TODO rmove LOG
-//    	LOG.info("TODO TableCellRenderer:"+renderer 
-//    			+ "\n Component="+component
-//    			+ "\n ComponentAdapter="+adapter
-//    			+ "\n for row="+row + " column="+column + " ValueAt="+value
-//    			+ "\n"
-//    			);
         
         // override JXTable code:
         adjustComponentOrientation(component);
         resetDefaultTableCellRendererColors(component, row, column);
         if (compoundHighlighter != null) { // protected CompoundHighlighter compoundHighlighter in JXTable
-//        	if(adapter.isHierarchical()) {
-//        		for(Highlighter highlighter : compoundHighlighter.getHighlighters()) {
-//        			AbstractHighlighter ah = (AbstractHighlighter)highlighter;
-////        			boolean canh = // protected: ah.canHighlight(component, adapter);
-//        			boolean sbh = ah.getHighlightPredicate().isHighlighted(component, adapter);
-//            		LOG.warning("---------- component should behighlighted:"+sbh+ " by "+highlighter);
-//        		}
-//        	}
         	component = compoundHighlighter.highlight(component, adapter);
         }
         TableColumnExt columnExt = getColumnExt(column);
@@ -1493,14 +1467,14 @@ public class JXTreeTable extends JXTable {
             	component = highlighter.highlight(component, adapter);
             }
         }
-     // TODO rmove LOG
-    	LOG.info("TODO TableCellRenderer:"+renderer 
-    			+ "\n Component="+component
-    			+ "\n ComponentAdapter="+adapter
-    			+ "\n target Component="+adapter.getComponent()
-    			+ "\n for row="+row + (adapter.isHierarchical() ? " hierarchical-" : " ") +"column="+column + " ValueAt="+value
-    			+ "\n"
-    			);
+     // TODO remove LOG
+//    	LOG.info("TODO TableCellRenderer:"+renderer 
+//    			+ "\n Component="+component
+//    			+ "\n ComponentAdapter="+adapter
+//    			+ "\n target Component="+adapter.getComponent()
+//    			+ "\n for row="+row + (adapter.isHierarchical() ? " hierarchical-" : " ") +"column="+column + " ValueAt="+value
+//    			+ "\n"
+//    			);
 
         return applyRenderer(component, adapter); 
     }
@@ -1779,11 +1753,9 @@ public class JXTreeTable extends JXTable {
      * not valid, this method will have no effect.
      */
     public void expandRow(int row) {
-//    	LOG.info("calling renderer.expandRow for row "+row);
         renderer.expandRow(row);
     }
 
-    
     /**
      * Returns true if the value identified by path is currently viewable, which
      * means it is either the root or all of its parents are expanded. Otherwise,
@@ -1844,7 +1816,6 @@ public class JXTreeTable extends JXTable {
         return renderer.isCollapsed(row);
     }
 
-    
     /**
      * Returns an <code>Enumeration</code> of the descendants of the
      * path <code>parent</code> that
@@ -1865,7 +1836,6 @@ public class JXTreeTable extends JXTable {
         return renderer.getExpandedDescendants(parent);
     }
 
-    
     /**
      * Returns the TreePath for a given x,y location.
      *
@@ -1886,11 +1856,10 @@ public class JXTreeTable extends JXTable {
      * Returns the TreePath for a given row.
      *
      * @param row
-     *
      * @return the <code>TreePath</code> for the given row.
      */
      public TreePath getPathForRow(int row) {
-        return renderer.getPathForRow(row); // TODO
+        return renderer.getPathForRow(row);
      }
 
      /**
@@ -1931,7 +1900,6 @@ public class JXTreeTable extends JXTable {
      public boolean isRootVisible() {
          return renderer.isRootVisible();
      }
-
 
     /**
      * Sets the value of the <code>scrollsOnExpand</code> property for the tree
@@ -1995,7 +1963,6 @@ public class JXTreeTable extends JXTable {
     public boolean getExpandsSelectedPaths() {
         return renderer.getExpandsSelectedPaths();
     }
-
 
     /**
      * Returns the number of mouse clicks needed to expand or close a node.
@@ -2117,8 +2084,7 @@ public class JXTreeTable extends JXTable {
     public void removeTreeWillExpandListener(TreeWillExpandListener tel) {
         renderer.removeTreeWillExpandListener(tel);
      }
- 
-    
+
     /**
      * Returns the selection model for the tree portion of the this treetable.
      *
@@ -2141,14 +2107,12 @@ public class JXTreeTable extends JXTable {
         super.sizeColumnsToFit(resizingColumn);
         // rg:changed
         if (getEditingColumn() != -1 && isHierarchical(editingColumn)) {
-            Rectangle cellRect = getCellRect(realEditingRow(),
-                getEditingColumn(), false);
+            Rectangle cellRect = getCellRect(realEditingRow(), getEditingColumn(), false);
             Component component = getEditorComponent();
             component.setBounds(cellRect);
             component.validate();
         }
     }
-
 
     /**
      * Determines if the specified column is defined as the hierarchical column.
@@ -2164,7 +2128,6 @@ public class JXTreeTable extends JXTable {
         if (column < 0 || column >= getColumnCount()) {
             throw new IllegalArgumentException("column must be valid, was" + column);
         }
-        
         return (getHierarchicalColumn() == column);
     }
 
@@ -2188,7 +2151,6 @@ public class JXTreeTable extends JXTable {
         if (isHierarchical(column)) {
             return renderer;
         }
-        
         return super.getCellRenderer(row, column);
     }
 
@@ -2200,7 +2162,6 @@ public class JXTreeTable extends JXTable {
         if (isHierarchical(column)) {
             return hierarchicalEditor;
         }
-        
         return super.getCellEditor(row, column);
     }
     
@@ -2249,7 +2210,7 @@ public class JXTreeTable extends JXTable {
     private String getHierarchicalStringAt(int row) {
     	if(renderer!=null) return renderer.getStringAt(row);
     	
-    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer="+renderer);
+    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer="+renderer); // TODO check it
     	TableModel tm = this.getModel();
     	if(tm instanceof TreeTableModelAdapter adapter) {
     		JTree t = adapter.getTree();
@@ -2879,7 +2840,6 @@ TableModelListener management provided by AbstractTableModel superclass:
             return shouldApplyDropHack() ? false : super.isVisible();
         }
 
-
         /**
          * Returns a boolean indicating whether the drop hack should be applied.
          * 
@@ -2888,7 +2848,6 @@ TableModelListener management provided by AbstractTableModel superclass:
         protected boolean shouldApplyDropHack() {
             return !Boolean.FALSE.equals(treeTable.getClientProperty(DROP_HACK_FLAG_KEY));
         }
-
 
         /**
          * Hack around #297-swingx: tooltips shown at wrong row.
@@ -2973,135 +2932,16 @@ TableModelListener management provided by AbstractTableModel superclass:
 
             if (this.treeTable == null) {
                 this.treeTable = treeTable;
-                // commented because still has issus
-//                bindRollover();
             }
             else {
                 throw new IllegalArgumentException("renderer already bound");
             }
         }
 
-//        /**
-//         * Install rollover support.
-//         * Not used - still has issues.
-//         * - not bidi-compliant
-//         * - no coordinate transformation for hierarchical column != 0
-//         * - method name clash enabled
-//         * - keyboard triggered click unreliable (triggers the treetable)
-//         * ...
-//         */
-//        private void bindRollover() {
-//            setRolloverEnabled(treeTable.isRolloverEnabled());
-//            treeTable.addPropertyChangeListener(getRolloverListener());
-//        }
-//
-//        
-//        /**
-//         * @return
-//         */
-//        private PropertyChangeListener getRolloverListener() {
-//            if (rolloverListener == null) {
-//                rolloverListener = createRolloverListener();
-//            }
-//            return rolloverListener;
-//        }
-//
-//        /**
-//         * Creates and returns a property change listener for 
-//         * table's rollover related properties. 
-//         * 
-//         * This implementation 
-//         * - Synchs the tree's rolloverEnabled 
-//         * - maps rollover cell from the table to the cell 
-//         *   (still incomplete: first column only)
-//         * 
-//         * @return
-//         */
-//        protected PropertyChangeListener createRolloverListener() {
-//            PropertyChangeListener l = new PropertyChangeListener() {
-//
-//                @Override
-//                public void propertyChange(PropertyChangeEvent evt) {
-//                    if ((treeTable == null) || (treeTable != evt.getSource()))
-//                        return;
-//                    if ("rolloverEnabled".equals(evt.getPropertyName())) {
-//                        setRolloverEnabled(((Boolean) evt.getNewValue()).booleanValue());
-//                    }
-//                    if (RolloverProducer.ROLLOVER_KEY.equals(evt.getPropertyName())){
-//                        rollover(evt);
-//                    } 
-//                }
-//
-//                private void rollover(PropertyChangeEvent evt) {
-//                    boolean isHierarchical = isHierarchical((Point)evt.getNewValue());
-//                    putClientProperty(evt.getPropertyName(), isHierarchical ? 
-//                           new Point((Point) evt.getNewValue()) : null);
-//                }
-//                
-//                private boolean isHierarchical(Point point) {
-//                    if (point != null) {
-//                        int column = point.x;
-//                        if (column >= 0) {
-//                            return treeTable.isHierarchical(column);
-//                        }
-//                    }
-//                   return false;
-//                }
-//                @SuppressWarnings("unused")
-//                Point rollover = new Point(-1, -1);
-//            };
-//            return l;
-//        }
-
         protected RolloverProducer createRolloverProducer() {
         	return super.createRolloverProducer();
         }
-//        /**
-//         * {@inheritDoc} <p>
-//         * 
-//         * Overridden to produce clicked client props only. The
-//         * rollover are produced by a propertyChangeListener to 
-//         * the table's corresponding prop.
-//         * 
-//         */
-//        @Override
-//        protected RolloverProducer createRolloverProducer() {
-//            return new RolloverProducer() {
-//
-//                /**
-//                 * Overridden to do nothing.
-//                 * 
-//                 * @param e
-//                 * @param property
-//                 */
-//                @Override
-//                protected void updateRollover(MouseEvent e, String property, boolean fireAlways) {
-//                    if (CLICKED_KEY.equals(property)) {
-//                        super.updateRollover(e, property, fireAlways);
-//                    }
-//                }
-//                @Override
-//                protected void updateRolloverPoint(JComponent component, Point mousePoint) {
-//                	LOG.info(">>>>>>>>>>>>>"+component);
-//                    JXTree tree = (JXTree) component;
-//                    int row = tree.getClosestRowForLocation(mousePoint.x, mousePoint.y);
-//                    Rectangle bounds = tree.getRowBounds(row);
-//                    if (bounds == null) {
-//                        row = -1;
-//                    } else {
-//                        if ((bounds.y + bounds.height < mousePoint.y) || bounds.x > mousePoint.x)   {
-//                               row = -1;
-//                           }
-//                    }
-//                    int col = row < 0 ? -1 : 0;
-//                    rollover.x = col;
-//                    rollover.y = row;
-//                }
-//                
-//            };
-//        }
 
-        
         @Override
         public void scrollRectToVisible(Rectangle aRect) {
             treeTable.scrollRectToVisible(aRect);
@@ -3167,11 +3007,9 @@ TableModelListener management provided by AbstractTableModel superclass:
             }
         }
 
-
         /**
          * This is overridden to set the location to (0, 0) and set
-         * the dimension to exactly fill the bounds of the hierarchical
-         * column.<p>
+         * the dimension to exactly fill the bounds of the hierarchical column.<p>
          */
         @Override
         public void setBounds(int x, int y, int w, int h) {
@@ -3240,34 +3078,23 @@ TableModelListener management provided by AbstractTableModel superclass:
             cellBorder = border;
         }
 
-
         public void doClick() {
             if ((getCellRenderer() instanceof RolloverRenderer)
                     && ((RolloverRenderer) getCellRenderer()).isEnabled()) {
                 ((RolloverRenderer) getCellRenderer()).doClick();
             }
-            
         }
 
-        
         @Override
         public boolean isRowSelected(int row) {
             if ((treeTable == null) || (treeTable.getHierarchicalColumn() <0)) return false;
             return treeTable.isCellSelected(row, treeTable.getHierarchicalColumn());
         }
 
-
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
             assert table == treeTable;
-            // Rendert nur TreeCell Spalte TODO LOG raus
-//            LOG.info("----- r/c:"+row+"/"+column +" value:"+value);
-            // JW: quick fix for the tooltip part of #794-swingx:
-            // visual properties must be reset in each cycle.
-            // reverted - otherwise tooltip per Highlighter doesn't work
-            // 
-//            setToolTipText(null);
             
 			if (isSelected) {
 				setBackground(table.getSelectionBackground());
@@ -3279,110 +3106,15 @@ TableModelListener management provided by AbstractTableModel superclass:
 
             highlightBorder = null;
             if (treeTable != null) {
-                if (treeTable.realEditingRow() == row &&
-                    treeTable.getEditingColumn() == column) {
-                }
-                else if (hasFocus) {
-                    highlightBorder = UIManager.getBorder(
-                        "Table.focusCellHighlightBorder");
+                if (treeTable.realEditingRow() == row && treeTable.getEditingColumn() == column) {
+                } else if (hasFocus) {
+                    highlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
                 }
             }
             
             visibleRow = row;
-
             return this;
         }
-
-//        private class ClippedTreeCellRenderer extends DefaultXTreeCellRenderer implements StringValue {
-//        	
-//            @Override // implements StringValue
-//            public String getString(Object node) {
-//            	LOG.info("node Object:"+node);
-////                int treeColumn = treeTable.getTreeTableModel().getHierarchicalColumn();
-////                if (treeColumn >= 0) {
-////                    return StringValues.TO_STRING.getString(treeTable.getTreeTableModel().getValueAt(value, treeColumn));
-////                }
-//                return StringValues.TO_STRING.getString(getHierarchicalTableValue(node));
-//            }
-//
-//            @SuppressWarnings("unused")
-//            private boolean inpainting;
-//            private String shortText;
-//            
-//            @Override
-//            public void paint(Graphics g) {
-//                String fullText = super.getText();
-//        
-//                 shortText = SwingUtilities.layoutCompoundLabel(
-//                    this, g.getFontMetrics(), fullText, getIcon(),
-//                    getVerticalAlignment(), getHorizontalAlignment(),
-//                    getVerticalTextPosition(), getHorizontalTextPosition(),
-//                    getItemRect(itemRect), iconRect, textRect,
-//                    getIconTextGap());
-//
-//                /** TODO: setText is more heavyweight than we want in this
-//                 * situation. Make JLabel.text protected instead of private.
-//         */
-//
-//                try {
-//                    inpainting = true;
-//                    // TODO JW: don't - override getText to return the short version
-//                    // during painting
-//                    setText(shortText); // temporarily truncate text
-//                    super.paint(g);
-//                } finally {
-//                    inpainting = false;
-//                    setText(fullText); // restore full text
-//                }
-//            }
-//
-//            
-//            private Rectangle getItemRect(Rectangle itemRect) {
-//                getBounds(itemRect);
-////                LOG.info("rect" + itemRect);
-//                itemRect.width = hierarchicalColumnWidth - itemRect.x;
-//                return itemRect;
-//            }
-//
-//            @Override
-//            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//                return super.getTreeCellRendererComponent(tree, getHierarchicalTableValue(value), sel, expanded, leaf,
-//                        row, hasFocus);
-//            }
-//
-//
-//            /**
-//             * 
-//             * @param node the node in the treeModel as passed into the TreeCellRenderer
-//             * @return the corresponding value of the hierarchical cell in the TreeTableModel
-//             */
-//            private Object getHierarchicalTableValue(Object node) {
-//                Object val = node;
-//                
-//                if (treeTable != null) {
-//                    int treeColumn = treeTable.getTreeTableModel().getHierarchicalColumn();
-//                    Object o = null; 
-//                    if (treeColumn >= 0) {
-//                        // following is unreliable during a paint cycle
-//                        // somehow interferes with BasicTreeUIs painting cache
-////                        o = treeTable.getValueAt(row, treeColumn);
-//                        // ask the model - that's always okay
-//                        // might blow if the TreeTableModel is strict in
-//                        // checking the containment of the value and 
-//                        // this renderer is called for sizing with a prototype
-//                        o = treeTable.getTreeTableModel().getValueAt(node, treeColumn);
-//                    }
-//                    val = o;
-//                }
-//                return val;
-//            }
-//
-//            // Rectangles filled in by SwingUtilities.layoutCompoundLabel();
-//            private final Rectangle iconRect = new Rectangle();
-//            private final Rectangle textRect = new Rectangle();
-//            // Rectangle filled in by this.getItemRect();
-//            private final Rectangle itemRect = new Rectangle();
-//        }
 
         /** 
          * Border to draw around the tree, if this is non-null, it will be painted. 
@@ -3391,7 +3123,7 @@ TableModelListener management provided by AbstractTableModel superclass:
         protected JXTreeTable treeTable = null;
         protected int visibleRow = 0;
 
-        // A JXTreeTable may not have more than one hierarchical column
+        // A JXTreeTable may not have more than one hierarchical column, Not used ==> remove?
         private int hierarchicalColumnWidth = 0;
 
     }
@@ -3433,30 +3165,6 @@ TableModelListener management provided by AbstractTableModel superclass:
         public TreeTableDataAdapter(JXTreeTable component) {
             super(component);
             table = component;
-//            TableModel dataModel = table.getModel();
-//            TreeCellRenderer tcr = null;
-//            TreeCellRenderer dtcr = table.getTreeCellRenderer();
-//            if(dtcr instanceof JXTree.DelegatingRenderer dr) {
-//                //DelegatingRenderer extends DefaultTreeRenderer implements TreeCellRenderer, RolloverRenderer {
-//            	tcr = dr.getDelegateRenderer();
-//            }
-//            LOG.info("------------------------------------"
-//                + "\n table:"+table
-//            	+ "\n dataModel:"+dataModel
-//            	+ "\n TreeCellRenderer:"+tcr
-//            	+ "\n ColumnCount="+getColumnCount()
-//            	+ "\n RowCount="+getRowCount()
-//            	+ "\n column="+column
-//            	+ "\n row="+row
-//            	);
-//            for(int c=0; c<getColumnCount(); c++) {
-//                int cm = convertColumnIndexToModel(c);
-//                int cv = convertColumnIndexToView(c);
-//            	LOG.info("c="+c +" cm="+cm +" cv="+cv+ ":"
-//            		+" "+getColumnIdentifierAt(c)
-//            		+" "+getColumnClass(c)+"/"+getColumnClass());
-//            	
-//            }          
         }
 
         public JXTreeTable getTreeTable() {
@@ -3564,7 +3272,6 @@ TableModelListener management provided by AbstractTableModel superclass:
             return super.getValueAt(row, column);
         }
 
-        
     }
 
 }
