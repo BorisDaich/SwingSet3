@@ -49,13 +49,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Testing clients of ComponentAdapter, mainly clients which rely on uniform string 
- * representation across functionality. Not the optimal location, but where would
- * that be? 
+ * representation across functionality. 
+ * Not the optimal location, but where would that be? 
  * 
  * @author Jeanette Winzenburg
+ * @author EUG https://github.com/homebeaver (reorg, use lambda for SAM interface StringValue)
  */
 @RunWith(JUnit4.class)
 public class ComponentAdapterClientTest extends InteractiveTestCase {
@@ -71,12 +71,6 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         }
     }
 
-    /**
-     * A custom StringValue for Color. Maps to a string composed of the
-     * prefix "R/G/B: " and the Color's rgb value.
-     */
-    private StringValue sv;
-
     @Before
     public void setUpJ4() throws Exception {
         setUp();
@@ -85,6 +79,34 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
     @After
     public void tearDownJ4() throws Exception {
         tearDown();
+    }
+
+    /**
+     * A custom StringValue for Color. 
+     * Maps to a string composed of the prefix "R/G/B: " and the Color's rgb value.
+     */
+    private StringValue sv;
+
+    @Override
+    protected void setUp() throws Exception {
+        sv = createColorStringValue();
+    }
+
+    /**
+     * Creates and returns a StringValue which maps a Color to it's R/G/B rep, 
+     * prepending "R/G/B: "
+     * 
+     * @return the StringValue for color.
+     */
+    private StringValue createColorStringValue() {
+    	StringValue sv = (Object value) -> {
+            if (value instanceof Color) {
+                Color color = (Color) value;
+                return "R/G/B: " + color.getRGB();
+            }
+            return StringValues.TO_STRING.getString(value);
+    	};
+        return sv;
     }
 
     /**
@@ -103,7 +125,6 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         
         show(frame);
     }
-
 
     /**
      * Issue #767-swingx: consistent string representation.
@@ -129,11 +150,11 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
      * used in find/highlight
      */
     public void interactiveListGetStringUsedInFind() {
-        JXList table = new JXList(AncientSwingTeam.createNamedColorListModel());
-        table.setCellRenderer(new DefaultListRenderer(sv));
+        JXList<Object> list = new JXList<Object>(AncientSwingTeam.createNamedColorListModel());
+        list.setCellRenderer(new DefaultListRenderer<Object>(sv));
         HighlightPredicate predicate = new PatternPredicate("R/G/B: -2", 2, 2);
-        table.addHighlighter(new ColorHighlighter(predicate, null, Color.RED));
-        JXFrame frame = wrapWithScrollingInFrame(table, "Find/Highlight use adapter string value");
+        list.addHighlighter(new ColorHighlighter(predicate, null, Color.RED));
+        JXFrame frame = wrapWithScrollingInFrame(list, "Find/Highlight use adapter string value");
         addSearchModeToggle(frame);
         addMessage(frame, "Press ctrl-F to open search widget");
         show(frame);
@@ -214,7 +235,6 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         assertEquals(2, matchRow);
     }
 
-
     /**
      * Issue #979-swingx: JXTreeTable broken string rep of hierarchical column
      * 
@@ -263,8 +283,6 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         assertEquals(2, matchRow);
     }
 
-
-
     /**
      * Issue #767-swingx: consistent string representation.
      * 
@@ -280,7 +298,6 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         assertEquals(2, matchRow);
     }
 
-
     /**
      * Issue #767-swingx: consistent string representation.
      * 
@@ -288,15 +305,13 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
      */
     @Test
     public void testListGetStringUsedInSearch() {
-        JXList table = new JXList(AncientSwingTeam.createNamedColorListModel());
-        table.setCellRenderer(new DefaultListRenderer(sv));
+        JXList<Object> table = new JXList<Object>(AncientSwingTeam.createNamedColorListModel());
+        table.setCellRenderer(new DefaultListRenderer<Object>(sv));
         String text = sv.getString(table.getElementAt(2));
         int matchRow = table.getSearchable().search(text);
         assertEquals(2, matchRow);
     }
 
-
-    
     /**
      * Issue #767-swingx: consistent string representation.
      * 
@@ -311,7 +326,6 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         assertEquals(2, matchRow);
     }
 
- 
     /**
      * Issue #767-swingx: consistent string representation.
      * 
@@ -346,32 +360,4 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         assertTrue(predicate.isHighlighted(null, adapter));
     }
 
-    /**
-     * Creates and returns a StringValue which maps a Color to it's R/G/B rep, 
-     * prepending "R/G/B: "
-     * 
-     * @return the StringValue for color.
-     */
-    private StringValue createColorStringValue() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Color) {
-                    Color color = (Color) value;
-                    return "R/G/B: " + color.getRGB();
-                }
-                return StringValues.TO_STRING.getString(value);
-            }
-            
-        };
-        return sv;
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        sv = createColorStringValue();
-    }
-    
-    
 }
