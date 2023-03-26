@@ -32,27 +32,21 @@ import java.io.Serializable;
  * custom StringValue and use it in a text rendering provider.
  * 
  * <pre><code>
- * StringValue stringValue = new StringValue() {
- * 
- *     public String getString(Object value) {
- *         if (!(value instanceof Contributor))
- *             return TO_STRING.getString(value);
- *         Contributor contributor = (Contributor) value;
- *         return contributor.lastName + &quot;, &quot; + contributor.firstName;
- *     }
- * 
+ * StringValue stringValue = (Object value) -> {
+ * 	if(value instanceof Contributor c) {
+ * 		return c.lastName + &quot;, &quot; + contributor.firstName;
+ * 	}
+ * 	return TO_STRING.getString(value);
  * };
  * 
  * ComponentProvider provider = new LabelProvider(stringValue);
- * table.setDefaultRenderer(Contributor.class, 
- *   new DefaultTableRenderer(provider));
+ * table.setDefaultRenderer(Contributor.class, new DefaultTableRenderer(provider));
  * </code></pre>
  * 
  * <p>
  * 
  * PENDING: use a full-fledged Format instead?
- * Would impose a higher burden onto implementors but could be re-used in
- * editors.
+ * Would impose a higher burden onto implementors but could be re-used in editors.
  * 
  * @author Jeanette Winzenburg
  * 
@@ -62,6 +56,19 @@ import java.io.Serializable;
  * @see DefaultListRenderer
  * @see DefaultTreeRenderer
  */
+/*
+Interfaces mit einer einzigen abstrakten Methode heißen neuerdings "Functional Interface Types" 
+oder auch "SAM Types". "SAM" steht für "Single Abstract Method". 
+Solche Interfaces können mit der Annotation @FunctionalInterface versehen werden 
+und haben für Lambdas eine besondere Bedeutung, 
+da sie die einzigen Typen sind, die als "Target-Typing-Zieltypen" in Frage kommen.
+
+siehe: https://www.torsten-horn.de/techdocs/java-lambdas.htm#SAM
+
+interface StringValue ist "SAM" !!!
+
+ */
+@FunctionalInterface
 public interface StringValue extends Serializable {
 
     /**
