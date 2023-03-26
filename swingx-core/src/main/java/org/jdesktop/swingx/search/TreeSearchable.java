@@ -28,8 +28,6 @@ import org.jdesktop.swingx.util.Contract;
 
 /**
  * A searchable targetting the visible rows of a JXTree.
- * 
- * 
  */
 public class TreeSearchable extends AbstractSearchable {
 
@@ -45,21 +43,18 @@ public class TreeSearchable extends AbstractSearchable {
     }
 
     @Override
-    protected void findMatchAndUpdateState(Pattern pattern, int startRow,
-            boolean backwards) {
+    protected void findMatchAndUpdateState(Pattern pattern, int startRow, boolean backwards) {
         SearchResult searchResult = null;
         if (backwards) {
             for (int index = startRow; index >= 0 && searchResult == null; index--) {
                 searchResult = findMatchAt(pattern, index);
             }
         } else {
-            for (int index = startRow; index < getSize()
-                    && searchResult == null; index++) {
+            for (int index = startRow; index < getSize() && searchResult == null; index++) {
                 searchResult = findMatchAt(pattern, index);
             }
         }
         updateState(searchResult);
-
     }
 
     @Override
@@ -114,8 +109,7 @@ public class TreeSearchable extends AbstractSearchable {
     }
 
     protected void moveMatchBySelection() {
-        // // the common behaviour (JXList, JXTable) is to not
-        // // move the selection if not found
+        // the common behaviour (JXList, JXTable) is to not move the selection if not found
         if (!hasMatch()) {
             return;
         }

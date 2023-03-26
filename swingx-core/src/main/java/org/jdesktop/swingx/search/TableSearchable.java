@@ -52,15 +52,13 @@ public class TableSearchable extends AbstractSearchable {
      * This implementation loops through the cells in a row to find a match.
      */
     @Override
-    protected void findMatchAndUpdateState(Pattern pattern, int startRow,
-            boolean backwards) {
+    protected void findMatchAndUpdateState(Pattern pattern, int startRow, boolean backwards) {
         SearchResult matchRow = null;
         if (backwards) {
             // CHECK: off-one end still needed?
             // Probably not - the findXX don't have side-effects any longer
             // hmmm... still needed: even without side-effects we need to
-            // guarantee calling the notfound update at the very end of the
-            // loop.
+            // guarantee calling the notfound update at the very end of the loop.
             for (int r = startRow; r >= -1 && matchRow == null; r--) {
                 matchRow = findMatchBackwardsInRow(pattern, r);
                 updateState(matchRow);
@@ -75,15 +73,13 @@ public class TableSearchable extends AbstractSearchable {
         // the alternative is to go one off in the loop. Hmm - which is
         // preferable?
         // updateState(matchRow);
-
     }
 
     /**
      * {@inheritDoc}
      * <p>
      * 
-     * Implemented to search for an extension in the cell given by row and
-     * foundColumn.
+     * Implemented to search for an extension in the cell given by row and foundColumn.
      */
     @Override
     protected SearchResult findExtendedMatch(Pattern pattern, int row) {
@@ -102,8 +98,7 @@ public class TableSearchable extends AbstractSearchable {
      *         found in this row or null if no match is found
      */
     private SearchResult findMatchForwardInRow(Pattern pattern, int row) {
-        int startColumn = (lastSearchResult.foundColumn < 0) ? 0
-                : lastSearchResult.foundColumn;
+        int startColumn = (lastSearchResult.foundColumn < 0) ? 0 : lastSearchResult.foundColumn;
         if (isValidIndex(row)) {
             for (int column = startColumn; column < table.getColumnCount(); column++) {
                 SearchResult result = findMatchAt(pattern, row, column);
@@ -126,8 +121,8 @@ public class TableSearchable extends AbstractSearchable {
      *         found in this row or null if no match is found
      */
     private SearchResult findMatchBackwardsInRow(Pattern pattern, int row) {
-        int startColumn = (lastSearchResult.foundColumn < 0) ? table
-                .getColumnCount() - 1 : lastSearchResult.foundColumn;
+        int startColumn = (lastSearchResult.foundColumn < 0) ? table.getColumnCount() - 1 
+        		: lastSearchResult.foundColumn;
         if (isValidIndex(row)) {
             for (int column = startColumn; column >= 0; column--) {
                 SearchResult result = findMatchAt(pattern, row, column);
@@ -202,8 +197,7 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected boolean isEqualStartIndex(final int startIndex) {
-        return super.isEqualStartIndex(startIndex)
-                && isValidColumn(lastSearchResult.foundColumn);
+        return super.isEqualStartIndex(startIndex) && isValidColumn(lastSearchResult.foundColumn);
     }
 
     /**
@@ -246,8 +240,7 @@ public class TableSearchable extends AbstractSearchable {
             return;
         } else {
             ensureInsertedSearchHighlighters(searchHL);
-            table.scrollCellToVisible(lastSearchResult.foundRow,
-                    lastSearchResult.foundColumn);
+            table.scrollCellToVisible(lastSearchResult.foundRow, lastSearchResult.foundColumn);
         }
     }
 
