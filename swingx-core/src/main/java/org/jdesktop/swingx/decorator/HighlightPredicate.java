@@ -280,12 +280,11 @@ public interface HighlightPredicate {
                 cellBounds.height -= insets.top + insets.bottom;
             }
             
-            String result = SwingUtilities.layoutCompoundLabel(c, renderer
-                    .getFontMetrics(renderer.getFont()), text, icon, verticalAlignment,
-                    horizontalAlignment, verticalTextPosition, horizontalTextPosition, cellBounds,
-                    new Rectangle(), new Rectangle(), gap);
-            
-            return !text.equals(result);
+            String result = SwingUtilities.layoutCompoundLabel(c, renderer.getFontMetrics(renderer.getFont()), 
+            		text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, 
+            		cellBounds, new Rectangle(), new Rectangle(), gap);
+            // text can be null!
+            return text==null ? result!=null : !text.equals(result);
         }
     };
     
