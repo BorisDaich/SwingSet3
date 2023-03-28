@@ -262,15 +262,14 @@ public abstract class AbstractSearchable implements Searchable {
      * @param backwards <code>true</code> if we should perform search towards the beginning
      * @return adjusted <code>startIndex</code>
      */
-    protected int moveStartPosition(int startIndex, boolean backwards) {
-        if (backwards) {
-                   startIndex--;
-           } else {
-                   startIndex++;
-           }
-        return startIndex;
-    }
-    
+	protected int moveStartPosition(int startIndex, boolean backwards) {
+		if (backwards) {
+			startIndex--;
+		} else {
+			startIndex++;
+		}
+		return startIndex;
+	}    
 
     /**
      * Checks if the given Pattern should be considered as the same as 
@@ -331,8 +330,7 @@ public abstract class AbstractSearchable implements Searchable {
      * @return newly created <code>SearchResult</code>
      */
     protected SearchResult createSearchResult(Matcher matcher, int row, int column) {
-        return new SearchResult(matcher.pattern(), 
-                matcher.toMatchResult(), row, column);
+        return new SearchResult(matcher.pattern(), matcher.toMatchResult(), row, column);
     }
 
    /** 
@@ -462,16 +460,15 @@ public abstract class AbstractSearchable implements Searchable {
     }
 
     /**
-     * Returns a boolean indicating whether a match should be marked with a
-     * Highlighter. Typically, if true, the match highlighter is used, otherwise
-     * a match is indicated by selection.
+     * Returns a boolean indicating whether a match should be marked with a Highlighter. 
+     * Typically, if true, the match highlighter is used, 
+     * otherwise a match is indicated by selection.
      * <p>
      * 
      * This implementation returns true if the target component has a client
-     * property for key MATCH_HIGHLIGHTER with value Boolean.TRUE, false
-     * otherwise. The SearchFactory sets that client property in incremental
-     * search mode, that is when triggering a search via the JXFindBar as
-     * installed by the factory. 
+     * property for key MATCH_HIGHLIGHTER with value Boolean.TRUE, false otherwise. 
+     * The SearchFactory sets that client property in incremental search mode, 
+     * that is when triggering a search via the JXFindBar as installed by the factory. 
      * 
      * @return a boolean indicating whether a match should be marked by a using
      *         a Highlighter.
@@ -479,8 +476,7 @@ public abstract class AbstractSearchable implements Searchable {
      * @see SearchFactory        
      */
     protected boolean markByHighlighter() {
-        return Boolean.TRUE.equals(getTarget().getClientProperty(
-                MATCH_HIGHLIGHTER));
+        return Boolean.TRUE.equals(getTarget().getClientProperty(MATCH_HIGHLIGHTER));
     }
 
     /**
@@ -515,9 +511,8 @@ public abstract class AbstractSearchable implements Searchable {
      * @return a highlighter used for matching
      */
     protected AbstractHighlighter createMatchHighlighter() {
-        return new ColorHighlighter(HighlightPredicate.NEVER, Color.YELLOW.brighter(), 
-                null, Color.YELLOW.brighter(), 
-                null);
+        return new ColorHighlighter(HighlightPredicate.NEVER, 
+        	Color.YELLOW.brighter(), null, Color.YELLOW.brighter(), null);
     }
 
     

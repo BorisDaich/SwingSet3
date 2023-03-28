@@ -19,19 +19,28 @@
 package org.jdesktop.swingx.search;
 
 import java.awt.Rectangle;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.tree.TreePath;
+
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.renderer.StringValue;
 
 /**
  * An Searchable implementation for use in JXTable.
  * 
  * @author Jeanette Winzenburg
+ * @author EUG https://github.com/homebeaver (use in JXTreeTable)
  */
 public class TableSearchable extends AbstractSearchable {
+
+    private static final Logger LOG = Logger.getLogger(TableSearchable.class.getName());
 
     /** The target JXTable. */
     protected JXTable table;
@@ -43,6 +52,9 @@ public class TableSearchable extends AbstractSearchable {
      */
     public TableSearchable(JXTable table) {
         this.table = table;
+        if(this.table instanceof JXTreeTable tt) {
+            LOG.config("searchable table:"+tt);
+        }
     }
 
     /**
@@ -143,10 +155,24 @@ public class TableSearchable extends AbstractSearchable {
      * @return an appropriate <code>SearchResult</code> if matching or null
      */
     protected SearchResult findMatchAt(Pattern pattern, int row, int column) {
-        String text = table.getStringAt(row, column);
+    	String text;
+    	if(table instanceof JXTreeTable tt) {
+    		text = tt.getStringAt(row, column);
+    		Object renderer = tt.getCellRenderer(row, column);
+    		if(renderer instanceof JXTree xTree) {
+    			// for hierarchical column
+    			StringValue sv = (StringValue)xTree.getCellRenderer();
+    			TreePath path = xTree.getPathForRow(row);
+    			text = sv.getString(path.getLastPathComponent());
+    			LOG.fine("hierarchical column "+column + " row="+row + " text="+text);
+    		}
+    	} else {
+            text = table.getStringAt(row, column);
+    	}
         if ((text != null) && (text.length() > 0)) {
             Matcher matcher = pattern.matcher(text);
             if (matcher.find()) {
+            	LOG.fine("matcher.find() is TRUE for column "+column+" row="+row);
                 return createSearchResult(matcher, row, column);
             }
         }
@@ -181,6 +207,11 @@ public class TableSearchable extends AbstractSearchable {
             }
         } else {
             lastSearchResult.foundColumn++;
+            // check tt.getColumnCount() == table.getColumnCount()
+//            if(table instanceof JXTreeTable tt) {
+//            	assert table.getColumnCount() == tt.getColumnCount();
+//            }
+
             if (lastSearchResult.foundColumn >= table.getColumnCount()) {
                 lastSearchResult.foundColumn = -1;
                 startRow++;
@@ -240,7 +271,11 @@ public class TableSearchable extends AbstractSearchable {
             return;
         } else {
             ensureInsertedSearchHighlighters(searchHL);
-            table.scrollCellToVisible(lastSearchResult.foundRow, lastSearchResult.foundColumn);
+            if(table instanceof JXTreeTable tt) {
+            	tt.scrollCellToVisible(lastSearchResult.foundRow, lastSearchResult.foundColumn);
+            } else {
+                table.scrollCellToVisible(lastSearchResult.foundRow, lastSearchResult.foundColumn);
+            }
         }
     }
 
@@ -273,12 +308,23 @@ public class TableSearchable extends AbstractSearchable {
         }
         int row = lastSearchResult.foundRow;
         int column = lastSearchResult.foundColumn;
-        table.changeSelection(row, column, false, false);
-        if (!table.getAutoscrolls()) {
-            // scrolling not handled by moving selection
-            Rectangle cellRect = table.getCellRect(row, column, true);
-            if (cellRect != null) {
-                table.scrollRectToVisible(cellRect);
+        if(table instanceof JXTreeTable tt) {
+            tt.changeSelection(row, column, false, false);
+            if (!tt.getAutoscrolls()) {
+                // scrolling not handled by moving selection
+                Rectangle cellRect = tt.getCellRect(row, column, true);
+                if (cellRect != null) {
+                    tt.scrollRectToVisible(cellRect);
+                }
+            }
+        } else {
+            table.changeSelection(row, column, false, false);
+            if (!table.getAutoscrolls()) {
+                // scrolling not handled by moving selection
+                Rectangle cellRect = table.getCellRect(row, column, true);
+                if (cellRect != null) {
+                    table.scrollRectToVisible(cellRect);
+                }
             }
         }
     }
@@ -302,7 +348,16 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected void removeHighlighter(Highlighter searchHighlighter) {
-        table.removeHighlighter(searchHighlighter);
+//    	LOG.info("TODO "+searchHighlighter);
+        if(table instanceof JXTreeTable tt) {
+        	Object renderer = tt.getTreeCellRenderer();
+        	if(renderer instanceof JXTree xTree) {
+        		xTree.removeHighlighter(searchHighlighter);
+        	}
+            tt.removeHighlighter(searchHighlighter);
+        } else {
+            table.removeHighlighter(searchHighlighter);
+        }
     }
 
     /**
@@ -311,7 +366,11 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected Highlighter[] getHighlighters() {
-        return table.getHighlighters();
+        if(table instanceof JXTreeTable tt) {
+            return tt.getHighlighters();
+        } else {
+            return table.getHighlighters();
+        }
     }
 
     /**
@@ -320,7 +379,16 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected void addHighlighter(Highlighter highlighter) {
-        table.addHighlighter(highlighter);
+//    	LOG.info("TODO "+highlighter);
+        if(table instanceof JXTreeTable tt) {
+        	Object renderer = tt.getTreeCellRenderer();
+        	if(renderer instanceof JXTree xTree) {
+        		xTree.addHighlighter(highlighter);
+        	}
+            tt.addHighlighter(highlighter);
+        } else {
+            table.addHighlighter(highlighter);        	
+        }
     }
 
 }
