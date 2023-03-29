@@ -100,6 +100,7 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
         for (int i = 0; i < methods.length; i++) {
             if (methods[i].getName().matches(regexPattern)) {
                 try {
+                	LOG.fine("invoke "+methods[i].getName() + " with "+this);
                     methods[i].invoke(this);
                 }
                 catch (Exception e) {
