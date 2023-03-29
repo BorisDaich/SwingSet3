@@ -26,12 +26,14 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXTableT;
 import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXTreeT;
 import org.jdesktop.swingx.decorator.ComponentAdapterTest.JXTreeTableT;
@@ -271,16 +273,50 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
 
     /**
      * Issue #821-swingx: JXTreeTable broken string rep of hierarchical column
-     * 
+     * see https://github.com/homebeaver/SwingSet/issues/53
      * here: test search
      */
     @Test
-    public void testTreeTableGetStringUsedInSearch() {
+    public void testBuggyTreeTableGetStringUsedInSearch() {
         JXTreeTableT table = new JXTreeTableT(AncientSwingTeam.createNamedColorTreeTableModel());
         table.setTreeCellRenderer(new DefaultTreeRenderer(sv));
+        Object objectAt2_0 = table.getValueAt(2, 0);
         String text = sv.getString(table.getValueAt(2, 0));
+        LOG.info("objectAt2_0="+objectAt2_0+" sv.getString at table.getValueAt(2, 0)="+text);
+        // table.getValueAt results to "R/G/B: -16711936" == text
+        // cannot find text, because renderer shows color name
+        text = "Green";
         int matchRow = table.getSearchable().search(text);
         assertEquals(2, matchRow);
+    }
+    /*
+     * see https://github.com/homebeaver/SwingSet/issues/53
+     * shows visible that hierarchical column is not rendered correctly
+     */
+    public void interactiveTreeTableGetStringUsedInSearch() {
+        JXTreeTableT table = new JXTreeTableT(AncientSwingTeam.createNamedColorTreeTableModel());
+        table.setTreeCellRenderer(new DefaultTreeRenderer(sv)); // the renter for table, not for hierarchical column
+        JXFrame frame = wrapWithScrollingInFrame(table, "** buggy interactiveTreeTableGetStringUsedInSearch");
+        addSearchModeToggle(frame);
+        addMessage(frame, "Press ctrl-F to open search widget");
+        show(frame);
+    }
+    /*
+     * see https://github.com/homebeaver/SwingSet/issues/53
+     * shows that renderer for hierarchical column ist set correctly
+     */
+    public void interactiveTreeTableGetStringUsedInSearch2() {
+		@SuppressWarnings("serial")
+		JXTreeTable.TreeTableCellRenderer renderer = new JXTreeTable.TreeTableCellRenderer(AncientSwingTeam.createNamedColorTreeTableModel()) {
+			public TreeCellRenderer getCellRenderer() {
+                return new JXTree.DelegatingRenderer(sv);
+		    }
+		};
+		JXTreeTableT table = new JXTreeTableT(renderer);
+        JXFrame frame = wrapWithScrollingInFrame(table, "** interactiveTreeTableGetStringUsedInSearch");
+        addSearchModeToggle(frame);
+        addMessage(frame, "Press ctrl-F to open search widget");
+        show(frame);
     }
 
     /**

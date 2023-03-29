@@ -691,6 +691,10 @@ public class ComponentAdapterTest extends TestCase {
         public JXTreeTableT(TreeTableModel model) {
             super(model);
         }
+        public JXTreeTableT(JXTreeTable.TreeTableCellRenderer renderer) {
+			super(renderer);
+			assert ((JXTreeTable.TreeTableModelAdapter) getModel()).getTree() == renderer;			
+		}
 
         @Override
         public ComponentAdapter getComponentAdapter(int row, int column) {

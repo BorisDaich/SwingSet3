@@ -78,15 +78,13 @@ public class AncientSwingTeam extends AbstractTableModel {
         final TableModel wrappee = new AncientSwingTeam();
         DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode("Named Colors");
         for (int i = 0; i < wrappee.getRowCount(); i++) {
-            MutableTreeTableNode node = createNamedColorTreeTableNode(wrappee,
-                    i);
+            MutableTreeTableNode node = createNamedColorTreeTableNode(wrappee, i);
             root.add(node);
         }
         return new DefaultTreeTableModel(root, Arrays.asList(new String[] { "Color", "LastName" }));
     }
 
-    private static MutableTreeTableNode createNamedColorTreeTableNode(
-            final TableModel wrappee, final int i) {
+    private static MutableTreeTableNode createNamedColorTreeTableNode( final TableModel wrappee, final int i) {
         MutableTreeTableNode node = new AbstractMutableTreeTableNode() {
 
             public int getColumnCount() {
@@ -118,9 +116,7 @@ public class AncientSwingTeam extends AbstractTableModel {
                 if (getUserObject() == null) return "";
                 return getUserObject().toString();
             }
-            
-            
-            
+
         };
         return node;
     };
