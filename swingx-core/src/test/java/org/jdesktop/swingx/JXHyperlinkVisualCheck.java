@@ -56,8 +56,8 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
 	public static void main(String[] args) throws Exception {
 		JXHyperlinkVisualCheck test = new JXHyperlinkVisualCheck();
 		try {
-//			test.runInteractiveTests();
-			test.runInteractiveTests("interactiveLink");
+			test.runInteractiveTests();
+//			test.runInteractiveTests("interactiveLink");
 //			test.runInteractiveTests("interactiveTreeLinkRendererSimpleText");
 //			test.runInteractiveTests("interactive.*Table.*");
 //			test.runInteractiveTests("interactive.*List.*");

@@ -1612,8 +1612,7 @@ public class JXTree extends JTree {
             }
             focusManager = current;
             if (focusManager != null) {
-                focusManager.addPropertyChangeListener("permanentFocusOwner",
-                        this);
+                focusManager.addPropertyChangeListener("permanentFocusOwner", this);
             }
 
         }

@@ -283,10 +283,8 @@ public class JXHyperlink extends JButton {
      * accordingly.
      */
     @Override
-    protected PropertyChangeListener createActionPropertyChangeListener(
-            final Action a) {
-        final PropertyChangeListener superListener = super
-                .createActionPropertyChangeListener(a);
+    protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
+        final PropertyChangeListener superListener = super.createActionPropertyChangeListener(a);
         // JW: need to do something better - only weak refs allowed!
         // no way to hook into super
         return new PropertyChangeListener() {
@@ -298,7 +296,6 @@ public class JXHyperlink extends JButton {
                 } else {
                     superListener.propertyChange(evt);
                 }
-
             }
 
         };
