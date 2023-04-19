@@ -56,7 +56,9 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
 	public static void main(String[] args) throws Exception {
 		JXHyperlinkVisualCheck test = new JXHyperlinkVisualCheck();
 		try {
-			test.runInteractiveTests();
+//			test.runInteractiveTests();
+			test.runInteractiveTests("interactiveLink");
+//			test.runInteractiveTests("interactiveTreeLinkRendererSimpleText");
 //			test.runInteractiveTests("interactive.*Table.*");
 //			test.runInteractiveTests("interactive.*List.*");
 //			test.runInteractiveTests("interactive.*Tree.*");
@@ -99,117 +101,15 @@ public class JXHyperlinkVisualCheck extends InteractiveTestCase {
      * underline is only under the last line. 
      */
     public void interactiveHtmlUnderlineWrapping() {
-        Action action = new AbstractAction("<html><b><i>Bold Italic Link and another loong way way out part of the text</i></b></html>") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("<html><b><i>Bold Italic Link and another loong way way out part of the text</i></b></html>") {
 
-/* BUG: when cursor over text
-Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: java.lang.IllegalAccessException: 
-class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 
-(in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
-
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:574)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.setFontAndColor(BasicHyperlinkUI.java:593)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.<init>(BasicHyperlinkUI.java:583)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicEditorKit.createDefaultDocument(BasicHyperlinkUI.java:503)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml.createHTMLView(BasicHyperlinkUI.java:426)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paintHTMLText(BasicHyperlinkUI.java:246)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paint(BasicHyperlinkUI.java:215)
-	at java.desktop/javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
-	at java.desktop/javax.swing.JComponent.paintComponent(JComponent.java:842)
-	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1119)
-	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:952)
-	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1128)
-	at org.jdesktop.swingx.JXPanel.paint(JXPanel.java:590)
-	at java.desktop/javax.swing.JComponent.paintToOffscreen(JComponent.java:5311)
-	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBufferedFPScales(RepaintManager.java:1721)
-	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(RepaintManager.java:1630)
-	at java.desktop/javax.swing.RepaintManager$PaintManager.paint(RepaintManager.java:1570)
-	at java.desktop/javax.swing.RepaintManager.paint(RepaintManager.java:1337)
-	at java.desktop/javax.swing.JComponent._paintImmediately(JComponent.java:5259)
-	at java.desktop/javax.swing.JComponent.paintImmediately(JComponent.java:5069)
-	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:879)
-	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:862)
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:862)
-	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:835)
-	at java.desktop/javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:784)
-	at java.desktop/javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1898)
-	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
-	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
-	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
-Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 (in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
-	at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:392)
-	at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:674)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:560)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:572)
-	... 40 more
-Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 (in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:574)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.setFontAndColor(BasicHyperlinkUI.java:593)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.<init>(BasicHyperlinkUI.java:583)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicEditorKit.createDefaultDocument(BasicHyperlinkUI.java:503)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml.createHTMLView(BasicHyperlinkUI.java:426)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paintHTMLText(BasicHyperlinkUI.java:246)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI.paint(BasicHyperlinkUI.java:215)
-	at java.desktop/javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
-	at java.desktop/javax.swing.JComponent.paintComponent(JComponent.java:842)
-	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1119)
-	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:952)
-	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1128)
-	at org.jdesktop.swingx.JXPanel.paint(JXPanel.java:590)
-	at java.desktop/javax.swing.JComponent.paintToOffscreen(JComponent.java:5311)
-	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBufferedFPScales(RepaintManager.java:1721)
-	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(RepaintManager.java:1630)
-	at java.desktop/javax.swing.RepaintManager$PaintManager.paint(RepaintManager.java:1570)
-	at java.desktop/javax.swing.RepaintManager.paint(RepaintManager.java:1337)
-	at java.desktop/javax.swing.JComponent._paintImmediately(JComponent.java:5259)
-	at java.desktop/javax.swing.JComponent.paintImmediately(JComponent.java:5069)
-	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:879)
-	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:862)
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:862)
-	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:835)
-	at java.desktop/javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:784)
-	at java.desktop/javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1898)
-	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
-	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
-	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
-Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument cannot access class sun.swing.SwingUtilities2 (in module java.desktop) because module java.desktop does not export sun.swing to unnamed module @3c46e67a
-	at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:392)
-	at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:674)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:560)
-	at org.jdesktop.swingx.plaf.basic.BasicHyperlinkUI$ULHtml$BasicDocument.displayPropertiesToCSS(BasicHyperlinkUI.java:572)
-	... 40 more
-
- */
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                LOG.info("interactiveHtmlUnderlineWrapping TODO");
+                LOG.info("Action in interactiveHtmlUnderlineWrapping performed - the event:\n"+e);
             }
             
         };
-        JXHyperlink hyperlink = new JXHyperlink(action );
+        JXHyperlink hyperlink = new JXHyperlink(action);
 //      hyperlink.setMargin(new Insets(10, 10, 10, 10));
         hyperlink.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JFrame frame = wrapInFrame(hyperlink, "show html underline ");
@@ -223,11 +123,11 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
      *
      */
     public void interactiveHtmlUnderlineButton() {
-        Action action = new AbstractAction("<html><b><i>Bold Italic Link</i></b></html>") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("<html><b><i>Bold Italic Link</i></b></html>") {
 
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                LOG.info("interactiveHtmlUnderlineButton TODO");
+                LOG.info("Action in interactiveHtmlUnderlineButton performed - the event:\n"+e);
             }
             
         };
@@ -259,11 +159,12 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
         overruleActionHyperlink.setOverrulesActionOnClick(true);
         box.add(overruleActionHyperlink);
         JXFrame frame = wrapInFrame(box, "compare clicked control");
-        frame.setVisible(true);
-        
+        frame.setVisible(true);       
     }
+    
     public void interactiveUnderlineButton() {
-        Action action = new AbstractAction("LinkModel@somewhere") {
+        @SuppressWarnings("serial")
+		Action action = new AbstractAction("LinkModel@somewhere") {
 
             public void actionPerformed(ActionEvent e) {
                 LOG.info("gotcha!");            
@@ -285,14 +186,23 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
     
  
     public void interactiveLink() throws Exception {
-        JXEditorPane pane = new JXEditorPane();
-        pane.setEditable(false);
-        EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor(pane);
+//        JXEditorPane pane = new JXEditorPane();
+//        pane.setEditable(false);
+//        LOG.info("JXEditorPane pane.ContentType:"+pane.getContentType());
+//        EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor(pane);
+        
+        // with DefaultEditorPane has same behavior :
+        EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
+        
         LinkModel localLink = new LinkModel("Click me! - local text", null, JXEditorPaneTest.class.getResource("resources/test.html"));
         LinkModelAction<?> localAction = new LinkModelAction<LinkModel>(localLink, visitor);
         JXHyperlink localHyperlink = new JXHyperlink(localAction);
         
-        LinkModel externalLink = new LinkModel("Click me! - external text", null, new URL("http://swingx.java.net"));
+        String swingx = "http://swingx.java.net"; // Error 404: couldn't show
+        // existing pages:
+        String swinglabs = "https://en.wikipedia.org/wiki/SwingLabs";
+        String htmlframes = "https://www.w3.org/TR/html401/present/frames.html";
+        LinkModel externalLink = new LinkModel("Click me! - external text", null, new URL(htmlframes));
         LinkModelAction<?> externalAction = new LinkModelAction<LinkModel>(externalLink, visitor);
         JXHyperlink externalHyperlink = new JXHyperlink(externalAction);
         JPanel panel = new JPanel(new BorderLayout());
@@ -302,17 +212,16 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
         panel.add(localHyperlink, BorderLayout.SOUTH);
         JFrame frame = wrapInFrame(panel, "simple hyperlink");
         frame.setSize(200, 200);
-        frame.setVisible(true);
-        
+        frame.setVisible(true);      
     }
 
 //---------------------- interactive test: JXTree
     public void interactiveTreeLinkRendererSimpleText() {
-        AbstractHyperlinkAction<Object> simpleAction = new AbstractHyperlinkAction<Object>(null) {
+        @SuppressWarnings("serial")
+		AbstractHyperlinkAction<Object> simpleAction = new AbstractHyperlinkAction<Object>(null) {
 
             public void actionPerformed(ActionEvent e) {
-                LOG.info("hit: " + getTarget());
-                
+                LOG.info("hit: " + getTarget());               
             }
             
         };
@@ -320,11 +229,10 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
         tree.setRolloverEnabled(true);
         HyperlinkProvider provider =  new HyperlinkProvider(simpleAction);
         tree.setCellRenderer(new DefaultTreeRenderer(provider));
-//        tree.setCellRenderer(new LinkRenderer(simpleAction));
-        tree.setHighlighters(HighlighterFactory.createSimpleStriping());
+        tree.setHighlighters(HighlighterFactory.createSimpleStriping()); // no striping in Metal
+//        tree.setHighlighters(HighlighterFactory.createAlternateStriping()); // ugly striping
         JFrame frame = wrapWithScrollingInFrame(tree, "tree and simple links");
-        frame.setVisible(true);
-        
+        frame.setVisible(true);      
     }
 
 
@@ -337,7 +245,8 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
     public void interactiveTableHyperlinkNoTooltip() {
         JXTable table = new JXTable(createModelWithLinks());
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
-        LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor) {
+        @SuppressWarnings("serial")
+		LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor) {
 
             @Override
             protected void updateFromTarget() {
@@ -346,10 +255,8 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
             }
             
         };
-        // set the default renderer for LinkModel - which is basically
-        // a bean wrapped around an URL
-        table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer
-                (new HyperlinkProvider(action, LinkModel.class)));
+        // set the default renderer for LinkModel - which is basically a bean wrapped around an URL
+        table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer(new HyperlinkProvider(action, LinkModel.class)));
         JXFrame frame = wrapWithScrollingInFrame(table, visitor.getOutputComponent(), "table and simple links");
         frame.setVisible(true);
     }
@@ -364,17 +271,18 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
         LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
         // set the default renderer for LinkModel - which is basically
         // a bean wrapped around an URL
-        table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer
-                (new HyperlinkProvider(action, LinkModel.class)));
+        table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer(new HyperlinkProvider(action, LinkModel.class)));
+        
         // JW: editor mis-use is not recommended but possible...
-        // the LinkRenderer in its role as editor is not yet deprecated but should
-        // soon. Without registering a specialized editor the column should
+        // the LinkRenderer in its role as editor is not yet deprecated but should soon. 
+        // Without registering a specialized editor the column should
         // not editable - otherwise the "normal" default editor would jump in
 //        LinkModelAction action2 = new LinkModelAction<LinkModel>(visitor);
-        // table.setDefaultEditor(LinkModel.class, new LinkRenderer(action2, LinkModel.class));
+//        table.setDefaultEditor(LinkModel.class, new LinkRenderer(action2, LinkModel.class));
 
         // simple activatable action on the target in the first column
-        AbstractHyperlinkAction<Object> simpleAction = new AbstractHyperlinkAction<Object>(null) {
+        @SuppressWarnings("serial")
+		AbstractHyperlinkAction<Object> simpleAction = new AbstractHyperlinkAction<Object>(null) {
             
             public void actionPerformed(ActionEvent e) {
                 LOG.info("hit: " + getTarget());
@@ -385,8 +293,7 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
         // the action will be activated only if the column is not-editable
         // here that's done in the model
         // TODO JW: revisit
-        table.getColumn(0).setCellRenderer(new DefaultTableRenderer(
-                new HyperlinkProvider(simpleAction)));
+        table.getColumn(0).setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider(simpleAction)));
 
         JXFrame frame = wrapWithScrollingInFrame(table, visitor.getOutputComponent(), "table and simple links");
         frame.setVisible(true);
@@ -407,7 +314,8 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
         table.setDefaultRenderer(LinkModel.class, new DefaultTableRenderer
                 (new HyperlinkProvider(action, LinkModel.class)));
         table.setHighlighters(HighlighterFactory.createSimpleStriping());
-        Action enabled = new AbstractAction("toggle table enabled") {
+        @SuppressWarnings("serial")
+		Action enabled = new AbstractAction("toggle table enabled") {
 
             public void actionPerformed(ActionEvent e) {
                 table.setEnabled(!table.isEnabled());
@@ -428,11 +336,11 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
      * Custom link target action in JXList.
      */
     public void interactiveListHyperlikPlayer() {
-        AbstractHyperlinkAction<Player> linkAction = new AbstractHyperlinkAction<Player>() {
+        @SuppressWarnings("serial")
+		AbstractHyperlinkAction<Player> linkAction = new AbstractHyperlinkAction<Player>() {
 
             public void actionPerformed(ActionEvent e) {
-                LOG.info("hit: " + getTarget());
-                
+                LOG.info("hit: " + getTarget());               
             }
             
             @Override
@@ -442,20 +350,18 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
             
         };
         
-        JXList list = new JXList(createPlayerModel(), true);
+        JXList<Player> list = new JXList<Player>(createPlayerModel(), true);
         list.setRolloverEnabled(true);
-        // descending order - check if the action is performed for the 
-        // correct value
+        // descending order - check if the action is performed for the correct value
         list.setSortOrder(SortOrder.DESCENDING);
-        list.setCellRenderer(new DefaultListRenderer(
-                new HyperlinkProvider(linkAction, Player.class)));
+        list.setCellRenderer(new DefaultListRenderer<>(new HyperlinkProvider(linkAction, Player.class)));
         JFrame frame = wrapWithScrollingInFrame(list, "show simple bean link renderer in list");
         frame.setVisible(true);
 
     }
     
-    private ListModel createPlayerModel() {
-        DefaultListModel model = new DefaultListModel();
+    private ListModel<Player> createPlayerModel() {
+        DefaultListModel<Player> model = new DefaultListModel<Player>();
         model.addElement(new Player("Henry", 10));
         model.addElement(new Player("Berta", 112));
         model.addElement(new Player("Dave", 20));
@@ -480,20 +386,19 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
      *
      */
     public void interactiveListHyperlinkSimpleText() {
-        AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
+        @SuppressWarnings("serial")
+		AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
 
             public void actionPerformed(ActionEvent e) {
                 LOG.info("hit: " + getTarget());
             }
             
         };
-        JXList list = new JXList(createTextOnlyListModel(20));
+        JXList<String> list = new JXList<String>(createTextOnlyListModel(20));
         list.setRolloverEnabled(true);
-        list.setCellRenderer(new DefaultListRenderer(
-                new HyperlinkProvider(linkAction)));
+        list.setCellRenderer(new DefaultListRenderer<>(new HyperlinkProvider(linkAction)));
         JFrame frame = wrapWithScrollingInFrame(list, "show simple link renderer in list");
         frame.setVisible(true);
-
     }
 
     /**
@@ -502,14 +407,12 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
      */
     public void interactiveListHyperlink() {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
-        JXList list = new JXList(createListModelWithLinks(20));
+        JXList<LinkModel> list = new JXList<LinkModel>(createListModelWithLinks(20));
         list.setRolloverEnabled(true);
         LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
-        list.setCellRenderer(new DefaultListRenderer(
-                new HyperlinkProvider(action, LinkModel.class)));
+        list.setCellRenderer(new DefaultListRenderer<>(new HyperlinkProvider(action, LinkModel.class)));
         JFrame frame = wrapWithScrollingInFrame(list, visitor.getOutputComponent(), "show link renderer in list");
         frame.setVisible(true);
-
     }
     
     /**
@@ -518,10 +421,9 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
      */
     public void interactiveListHyperlinkLFStripingHighlighter() {
         EditorPaneLinkVisitor visitor = new EditorPaneLinkVisitor();
-        JXList list = new JXList(createListModelWithLinks(20));
+        JXList<LinkModel> list = new JXList<LinkModel>(createListModelWithLinks(20));
         LinkModelAction<?> action = new LinkModelAction<LinkModel>(visitor);
-        list.setCellRenderer(new DefaultListRenderer(
-                new HyperlinkProvider(action, LinkModel.class)));
+        list.setCellRenderer(new DefaultListRenderer<>(new HyperlinkProvider(action, LinkModel.class)));
         list.setRolloverEnabled(true);
         list.setHighlighters(HighlighterFactory.createSimpleStriping());
         JFrame frame = wrapWithScrollingInFrame(list, visitor.getOutputComponent(), 
@@ -531,16 +433,16 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
     
 
 
-    private ListModel createTextOnlyListModel(int count) {
-        DefaultListModel model = new DefaultListModel();
+    private ListModel<String> createTextOnlyListModel(int count) {
+        DefaultListModel<String> model = new DefaultListModel<String>();
         for (int i = 0; i < count; i++) {
                 model.addElement("text #" + i);
         }
         return model;
     }
     
-    private ListModel createListModelWithLinks(int count) {
-        DefaultListModel model = new DefaultListModel();
+    private ListModel<LinkModel> createListModelWithLinks(int count) {
+        DefaultListModel<LinkModel> model = new DefaultListModel<LinkModel>();
         for (int i = 0; i < count; i++) {
             try {
                 LinkModel link = new LinkModel("a link text " + i, null, new URL("http://some.dummy.url" + i));
@@ -551,18 +453,17 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
                 }
                 model.addElement(link);
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
- 
+        } 
         return model;
     }
     
     private TableModel createModelWithLinks() {
         String[] columnNames = { "text - not-editable",  "Link not-editable", "Bool editable", "Bool not-editable" };
         
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+        @SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public Class<?> getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
@@ -584,7 +485,6 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
                 }
                 model.addRow(new Object[] {"text only " + i, link, Boolean.TRUE, Boolean.TRUE });
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -592,17 +492,16 @@ Caused by: java.lang.IllegalAccessException: class org.jdesktop.swingx.plaf.basi
     }
 
     
-    protected AbstractHyperlinkAction<Object> createEmptyLinkAction() {
-        AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
+	protected AbstractHyperlinkAction<Object> createEmptyLinkAction() {
+		@SuppressWarnings("serial")
+		AbstractHyperlinkAction<Object> linkAction = new AbstractHyperlinkAction<Object>(null) {
 
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
-               
-       };
-        return linkAction;
-    }
+			public void actionPerformed(ActionEvent e) {
+			}
+
+		};
+		return linkAction;
+	}
 
     protected AbstractHyperlinkAction<?> createEmptyLinkAction(String name) {
         AbstractHyperlinkAction<?> linkAction = createEmptyLinkAction();
