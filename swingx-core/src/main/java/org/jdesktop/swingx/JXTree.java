@@ -598,11 +598,33 @@ public class JXTree extends JTree {
     }
 
     /**
+     * Sets the selection model.
+     * 
+     * @param selectionMode mode which must be one of 
+     * TreeSelectionModel.SINGLE_TREE_SELECTION,
+     * TreeSelectionModel.CONTIGUOUS_TREE_SELECTION or TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION.
+     * 
+     * @see javax.swing.tree.TreeSelectionModel#setSelectionMode
+     */
+    public void setSelectionMode(int selectionMode) {
+    	getSelectionModel().setSelectionMode(selectionMode);
+    }
+    /**
+     * Returns the current selection model.
+     * 
+     * @return the selection model.
+     * 
+     * @see javax.swing.tree.TreeSelectionModel#getSelectionMode
+     */
+    public int getSelectionMode() {
+        return getSelectionModel().getSelectionMode();
+    }
+    
+    /**
      * {@inheritDoc}
      * <p>
      * 
-     * Overridden to always return a not-null array (following SwingX
-     * convention).
+     * Overridden to always return a not-null array (following SwingX convention).
      */
     @Override
     public int[] getSelectionRows() {
