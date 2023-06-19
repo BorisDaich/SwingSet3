@@ -66,11 +66,15 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
 
     private boolean isDragging;
     
+    protected boolean isDragging() {
+    	return isDragging;
+    }
+    
     /**
      * Installs all listeners, as required. 
      * 
-     * @param component target to install required listeners on, must
-     *   not be null.
+     * @param component target to install required listeners on, 
+     *   must not be null.
      */
     public void install(JComponent component) {
         component.addMouseListener(this);
@@ -309,8 +313,8 @@ public abstract class RolloverProducer implements MouseListener, MouseMotionList
 
     /**
      * Subclasses must implement to map the given mouse coordinates into
-     * appropriate client coordinates. The result must be stored in the 
-     * rollover field. 
+     * appropriate client coordinates. 
+     * The result must be stored in the rollover field. 
      * 
      * @param component the target component which received a mouse event
      * @param mousePoint the mouse position of the event, coordinates are 
