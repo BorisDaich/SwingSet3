@@ -38,17 +38,35 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class TreeUtilitiesTest extends InteractiveTestCase {
 
+    private static final Logger LOG = Logger.getLogger(TreeUtilitiesTest.class.getName());
+
 // traversal tests
 // all tests are against the corresponding traversals in DefaultMutableTreeNode
 // --> implicit assumption is that core has it correct    
     
     private TreeModel model;
     private DefaultMutableTreeNode root;
+    
     @Test
     public void testBreadthFirstNode() {
         Enumeration<?> coreEnum = root.breadthFirstEnumeration();
         Enumeration<?> xEnum = new BreadthFirstNodeEnumeration<DefaultMutableTreeNode>(root);
         assertSameEnumeration("BreadthFirstNode", coreEnum, xEnum);
+    }
+    
+    @Test
+    public void testDefaultSampleTreeModel() {
+        LOG.info("DefaultMutableTreeNode root"+root.getClass() + "/" + root 
+        		+ " with UserObject:" + root.getUserObject() + "/" + root.getUserObject().getClass());
+        assertEquals("JTree", root.getUserObject());
+        assertEquals(String.class, root.getUserObject().getClass());
+        
+        // The default sample tree model is set by protected static TreeModel javax.swing.JTree.getDefaultTreeModel()
+        // and contains 3 childs on root: colors, sports, food
+        
+        for(int i=0; i<root.getChildCount(); i++) {        	
+        	LOG.info("child "+i + ":"+model.getChild(root, i));
+        }
     }
     
     @Test
@@ -203,8 +221,4 @@ public class TreeUtilitiesTest extends InteractiveTestCase {
         return new String(c);
     }
 
-
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(TreeUtilitiesTest.class
-            .getName());
 }
