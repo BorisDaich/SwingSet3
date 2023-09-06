@@ -24,6 +24,19 @@ package org.jdesktop.swingx.plaf;
  * 
  * @author Jeanette Winzenburg
  */
+/*
+Interfaces mit einer einzigen abstrakten Methode heißen neuerdings "Functional Interface Types" 
+oder auch "SAM Types". "SAM" steht für "Single Abstract Method". 
+Solche Interfaces können mit der Annotation @FunctionalInterface versehen werden 
+und haben für Lambdas eine besondere Bedeutung, 
+da sie die einzigen Typen sind, die als "Target-Typing-Zieltypen" in Frage kommen.
+
+siehe: https://www.torsten-horn.de/techdocs/java-lambdas.htm#SAM
+
+interface UIDependent ist "SAM"-Type !!!
+
+ */
+@FunctionalInterface
 public interface UIDependent {
 	
     /**

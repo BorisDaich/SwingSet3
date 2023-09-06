@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.Serializable;
@@ -31,6 +32,7 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
@@ -53,12 +55,14 @@ import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.action.AbstractActionExt;
+import org.jdesktop.swingx.action.BoundAction;
 import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.hyperlink.LinkModel;
+import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.test.ActionMapTreeTableModel;
 import org.jdesktop.swingx.test.ComponentTreeTableModel;
 import org.jdesktop.swingx.treetable.FileSystemModel;
@@ -96,6 +100,8 @@ public class TreeRendererTest extends InteractiveTestCase {
         TreeRendererTest test = new TreeRendererTest();
         try {
             test.runInteractiveTests();
+//            test.runInteractiveTests("interactiveDefaultWrapper");
+//            test.runInteractiveTests("interactiveTreeButtonFormatting");
 //            test.runInteractiveTests("interactiveXTreeLabelFormattingHighlighter");
 //            test.runInteractiveTests(".*Wrapper.*");
         } catch (Exception e) {
@@ -234,18 +240,18 @@ public class TreeRendererTest extends InteractiveTestCase {
     
 
     /**
-     * Example for using arbitrary wrappee controllers. Here: a 
-     * checkbox representing entries in ActionMap.
-     * 
+     * Example for using arbitrary wrappee controllers. 
+     * Here: a checkbox representing entries in ActionMap.
      */
     public void interactiveTreeButtonFormatting() {
         TreeModel model = createActionTreeModel();
         JTree tree = new JTree(model);
-        CheckBoxProvider wrappee = createButtonProvider();
+
+        ComponentProvider<AbstractButton> wrappee = createButtonProvider();
         tree.setCellRenderer(new DefaultTreeRenderer(new WrappingProvider(wrappee)));
         
-        JList list = new JList(createActionListModel());
-        list.setCellRenderer(new DefaultListRenderer(wrappee)); 
+        JList<Action> list = new JList<Action>(createActionListModel());
+        list.setCellRenderer(new DefaultListRenderer<Action>(wrappee)); 
         final JXFrame frame = wrapWithScrollingInFrame(tree, list, "custom renderer - same in tree and list");
         frame.setVisible(true);
     }
@@ -258,22 +264,39 @@ public class TreeRendererTest extends InteractiveTestCase {
     public void interactiveXTreeLabelFormattingHighlighter() {
         TreeModel model = createComponentHierarchyModel();
         JTree tree = new JTree(model);
-        StringValue converter = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Component) {
-                    return "Name: " + ((Component) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
-            }
-            
+    	// StringValue is "Functional Interface" aka SAM Type
+    	StringValue sv = (Object value) -> {
+    		if (value instanceof Component c) {
+    			return "Name:" + c.getName() + "/"+c.getClass();
+    		}
+    		return StringValues.TO_STRING.getString(value);
+    	};
+    	DefaultTreeRenderer renderer = new DefaultTreeRenderer(sv);
+        tree.setCellRenderer(renderer);
+        
+        @SuppressWarnings("serial")
+		JXTree xtree = new JXTree(model) {
+        	public Insets getInsets() {
+        		return new Insets(5,5,5,5);
+        	}
+        	public TreeCellRenderer getCellRenderer() {
+        		return new JXTree.DelegatingRenderer(sv) {
+        	        public Component getTreeCellRendererComponent(JTree tree, Object value,
+        	                boolean selected, boolean expanded, boolean leaf, int row,boolean hasFocus) {
+        	        	Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        	        	LOG.fine("getTreeCellRendererComponent for "+(value==null?"":value.getClass())+" value "+value
+        	        		+ " componentController/Provider:"+getComponentProvider()
+        	        		+ "\n returns "+c);
+        	        	return c;
+        	        }
+        		};
+        	}
         };
-        tree.setCellRenderer(new DefaultTreeRenderer(converter));
-        JXTree xtree = new JXTree(model);
         xtree.setHighlighters(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, Color.RED, Color.YELLOW));
         xtree.setRolloverEnabled(true);
         // share renderer
         xtree.setCellRenderer(tree.getCellRenderer());
+//        xtree.setCellRenderer(renderer);
         final JXFrame frame = wrapWithScrollingInFrame(tree, xtree, "custom format - tree vs. xtree (+Rollover renderer)");
         frame.setVisible(true);
     }
@@ -341,26 +364,22 @@ public class TreeRendererTest extends InteractiveTestCase {
      */
     public void interactiveDefaultWrapper() {
         JTree xtree = new JTree(createComponentHierarchyModel());
-        StringValue componentFormat = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Component) {
-                    return ((Component) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
-            }};
+    	// StringValue is "Functional Interface" aka SAM Type
+    	StringValue componentFormat = (Object value) -> {
+    		if (value instanceof Component c) {
+    			return c.getName();
+    		}
+    		return StringValues.TO_STRING.getString(value);
+    	};
         xtree.setCellRenderer(new DefaultTreeRenderer(componentFormat));
         xtree.setEditable(true);
+        
         JTree tree = new JTree(new FileSystemModel());
-        StringValue format = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof File) {
-                    return ((File) value).getName();
-                }
-                return StringValues.TO_STRING.getString(value);
-            }
-            
+        StringValue format = (Object value) -> {
+        	if (value instanceof File file) {
+        		return file.getName();
+        	}
+        	return StringValues.TO_STRING.getString(value);
         };
         tree.setCellRenderer(new DefaultTreeRenderer(format));
         final JXFrame frame = wrapWithScrollingInFrame(xtree, tree, "wrapper and different models");
@@ -391,43 +410,47 @@ public class TreeRendererTest extends InteractiveTestCase {
      * @return a button controller specialized on ActionEntryNode.
      */
     private CheckBoxProvider createButtonProvider() {
-        StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Action) {
-                    return (String) ((Action) value).getValue(Action.NAME);
-                }
-                return "";
-            }
-            
-        };
-        BooleanValue bv = new BooleanValue() {
-
-            public boolean getBoolean(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).isSelected();
-                }
-                return false;
-            }
-            
+    	// StringValue and BooleanValue are "Functional Interface" or SAM Types
+    	StringValue sv = (Object value) -> {
+    		if (value instanceof Action action) {
+    			return (String)action.getValue(Action.NAME);
+    		}
+    		return "";
+    	};
+        BooleanValue bv = (Object value) -> {
+        	if (value instanceof AbstractActionExt aae) {
+        		return aae.isSelected();
+        	}
+        	return false;
         };
 
+        // CheckBoxProvider extends ComponentProvider<AbstractButton>
         CheckBoxProvider wrapper = new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
         return wrapper;
     }
 
 
     /**
-     * @return
+     * @return ListModel<Action>
      */
-    private ListModel createActionListModel() {
+    private ListModel<Action> createActionListModel() {
         JXTable table = new JXTable(10, 10);
         table.setHorizontalScrollEnabled(true);
         ActionMap map = table.getActionMap();
         Object[] keys = map.keys();
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<Action> model = new DefaultListModel<Action>();
         for (Object object : keys) {
-           model.addElement(map.get(object)); 
+        	Action action = map.get(object);
+        	if(action instanceof BoundAction ba) {
+        		// BoundAction extends AbstractActionExt extends AbstractAction, AbstractAction implements Action
+        		model.addElement(ba); 
+        	} else if(action instanceof UIAction uia) {
+        		// private JXTable$Actions extends UIAction, UIAction implements Action
+        		model.addElement(uia);
+        	} else {
+        		LOG.warning("key:"+object + " maps to action:"+action);
+        		model.addElement(action);
+        	}
         }
         return model;
     }

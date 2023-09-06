@@ -814,20 +814,12 @@ public class RenderingTest extends InteractiveTestCase {
         String identifier = "dummyID";
         final TableColumnExt column = new TableColumnExt();
         column.setTitle(identifier);
-        BooleanValue bv = new BooleanValue(){
-
-            public boolean getBoolean(Object value) {
-                return column.isVisible();
-            }
-            
+        // StringValue and BooleanValue are "Functional Interface" or SAM Types
+        BooleanValue bv = (Object value) -> {
+        	return column.isVisible();
         };
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return column.getTitle();
-            }
-            
+        StringValue sv = (Object value) -> {
+        	return column.getTitle();
         };
         CheckBoxProvider provider = new CheckBoxProvider(new MappedValue(sv, null, bv));
         TableCellContext context = new TableCellContext();

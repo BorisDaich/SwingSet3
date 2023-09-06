@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
@@ -104,7 +105,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
       PainterVisualCheck test = new PainterVisualCheck();
       try {
         test.runInteractiveTests();
-//        test.runInteractiveTests("interactiveTriangleRenderer");  
+//        test.runInteractiveTests("interactiveTableWithListColumnControl");
+//        test.runInteractiveTests("interactiveTriangleRenderer");
 //        test.runInteractiveTests("interactive.*ValueBased.*"); 
 //        test.runInteractiveTests("interactive.*Icon.*");
 //        test.runInteractiveTests("interactive.*Busy.*");
@@ -202,7 +204,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         String title = "checkbox list-renderer - striping and gradient";
         TableModel model = new AncientSwingTeam();
         JXTable table = new JXTable(model);
-        JXList list = new JXList();
+        JXList<AbstractButton> list = new JXList<AbstractButton>();
         Highlighter highlighter = HighlighterFactory.createSimpleStriping(HighlighterFactory.LINE_PRINTER);
         table.addHighlighter(highlighter);
         
@@ -212,26 +214,24 @@ public class PainterVisualCheck extends InteractiveTestCase {
         configureList(list, table, false);
         
         // a custom rendering button controller showing both checkbox and text
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-            public String getString(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).getName();
-                }
-                return "";
-            }           
+        // StringValue and BooleanValue are "Functional Interface" or SAM Types
+        StringValue sv = (Object value) -> {
+        	if (value instanceof AbstractActionExt aae) {
+        		return aae.getName();
+        	}
+        	return "";
         };
-        BooleanValue bv = new BooleanValue() {
-            public boolean getBoolean(Object value) {
-                if (value instanceof AbstractActionExt) {
-                    return ((AbstractActionExt) value).isSelected();
-                }
-                return false;
-            }        
-        };
-        CheckBoxProvider wrapper = new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
         
-        list.setCellRenderer(new DefaultListRenderer(wrapper));
+        BooleanValue bv = (Object value) -> {
+        	if (value instanceof AbstractActionExt aae) {
+        		return aae.isSelected();
+        	}
+        	return false;
+        };
+        // CheckBoxProvider extends ComponentProvider<AbstractButton>
+        ComponentProvider<AbstractButton> wrapper = new CheckBoxProvider(new MappedValue(sv, null, bv), JLabel.LEADING);
+        
+        list.setCellRenderer(new DefaultListRenderer<AbstractButton>(wrapper));
         JXFrame frame = showWithScrollingInFrame(table, list, title);
         addStatusMessage(frame, "fake editable list: space/doubleclick on selected item toggles column visibility");
         frame.pack();
@@ -277,6 +277,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
         
         ComponentProvider<JLabel> controller = new LabelProvider(JLabel.RIGHT);
         table.getColumn(0).setCellRenderer(new DefaultTableRenderer(controller));
+        // kleopatra image is the default:
         final ImagePainter imagePainter = new ImagePainter(XTestUtils.loadDefaultImage());
         HighlightPredicate predicate = new ColumnHighlightPredicate(0);
         Highlighter iconHighlighter = new PainterHighlighter(predicate, imagePainter );
@@ -285,11 +286,12 @@ public class PainterVisualCheck extends InteractiveTestCase {
         table.addHighlighter(iconHighlighter);
         
         // re-use component controller and highlighter in a JXList
-        JXList list = new JXList(createListNumberModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(controller));
+        JXList<Object> list = new JXList<Object>(createListNumberModel(), true);
+        list.setCellRenderer(new DefaultListRenderer<Object>(controller));
         list.addHighlighter(alternateRowHighlighter);
         list.addHighlighter(iconHighlighter);
-        list.toggleSortOrder();
+        // use same order in list and table
+        //list.toggleSortOrder();
         
         final JXFrame frame = showWithScrollingInFrame(table, list, title);
         frame.pack();
@@ -329,8 +331,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
         final RelativePainter<?> rpainter = new RelativePainter<JComponent>(imagePainter);
         RelativePainterHighlighter lHighlighter = new RelativePainterHighlighter(rpainter);
         lHighlighter.setRelativizer(new NumberRelativizer(100));
-        JXList list = new JXList(createListNumberModel(), true); // true: autoCreateRowSorter
-        list.setCellRenderer(new DefaultListRenderer(new LabelProvider(JLabel.RIGHT)));
+        JXList<Object> list = new JXList<Object>(createListNumberModel(), true); // true: autoCreateRowSorter
+        list.setCellRenderer(new DefaultListRenderer<Object>(new LabelProvider(JLabel.RIGHT)));
         list.addHighlighter(lHighlighter);
         list.setComparator(DefaultSortController.COMPARABLE_COMPARATOR);
         list.toggleSortOrder();
@@ -580,8 +582,8 @@ public class PainterVisualCheck extends InteractiveTestCase {
         
         // DO NOT re-use component controller and highlighter in a JXList, reuse imagePainter
         RelativePainterHighlighter rgpHighlighter = createRelativeGradientHighlighter(HorizontalAlignment.RIGHT, 100);
-        JXList list = new JXList(createListNumberModel(), true);
-        list.setCellRenderer(new DefaultListRenderer(controller));
+        JXList<Object> list = new JXList<Object>(createListNumberModel(), true);
+        list.setCellRenderer(new DefaultListRenderer<Object>(controller));
         list.addHighlighter(alternateRowHighlighter);
         list.addHighlighter(rgpHighlighter);
         list.toggleSortOrder();
@@ -610,9 +612,9 @@ public class PainterVisualCheck extends InteractiveTestCase {
         table.addHighlighter(gradientHighlighter);
         
         // re-use component controller and highlighter in a JXList
-        JXList list = new JXList(createListNumberModel(), true);
+        JXList<Object> list = new JXList<Object>(createListNumberModel(), true);
         list.setBackground(table.getBackground());
-        list.setCellRenderer(new DefaultListRenderer(controller));
+        list.setCellRenderer(new DefaultListRenderer<Object>(controller));
         list.addHighlighter(gradientHighlighter);
         list.toggleSortOrder();
         JXFrame frame = wrapWithScrollingInFrame(table, list, title);
@@ -690,7 +692,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
 
             public void actionPerformed(ActionEvent e) {
                 if (list.isSelectionEmpty()) return;
-                
+                LOG.info(">>>>>>>>>list.getSelectedValue():"+list.getSelectedValue() + "\n"+e);
                 AbstractActionExt selectedItem = (AbstractActionExt) list.getSelectedValue();
                 selectedItem.setSelected(!selectedItem.isSelected());
             }
@@ -700,8 +702,7 @@ public class PainterVisualCheck extends InteractiveTestCase {
             list.setRolloverEnabled(true);
         } else {
             // bind action to space
-            list.getInputMap().put(KeyStroke.getKeyStroke("SPACE"),
-                    "toggleSelectedActionState");
+            list.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "toggleSelectedActionState");
         }
         list.getActionMap().put("toggleSelectedActionState", toggleSelected);
         // bind action to double-click
