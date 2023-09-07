@@ -18,22 +18,22 @@
  */
 /**
  * Contains implementation of renderers used by JXTable, JXTreeTable and related classes.
-
-<pre><code>
-
-public abstract class AbstractRenderer 
-	implements RolloverRenderer, StringValue, Serializable, UIDependent ...
-	
-public class DefaultListRenderer<E> extends AbstractRenderer 
-	implements ListCellRenderer<E> ...
-	
-public class DefaultTreeRenderer extends AbstractRenderer 
-	implements TreeCellRenderer ...
-
-public class DefaultTableRenderer extends AbstractRenderer 
-	implements TableCellRenderer ...
-
-</code></pre>
-
  */
+//<pre><code>
+//
+//public abstract class AbstractRenderer 
+//	implements RolloverRenderer, StringValue, Serializable, UIDependent ...
+//	
+//public class DefaultListRenderer<E> extends AbstractRenderer 
+//	implements ListCellRenderer<E> ...
+//	
+//public class DefaultTreeRenderer extends AbstractRenderer 
+//	implements TreeCellRenderer ...
+//
+//public class DefaultTableRenderer extends AbstractRenderer 
+//	implements TableCellRenderer ...
+//
+//</code></pre>
+//
+// */
 package org.jdesktop.swingx.renderer;
