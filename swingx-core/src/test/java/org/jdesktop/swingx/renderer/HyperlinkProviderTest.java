@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
@@ -27,7 +25,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Test around hyperlink rendering.
  * 
@@ -38,13 +35,35 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class HyperlinkProviderTest extends InteractiveTestCase {
-    private static final Logger LOG = Logger.getLogger(HyperlinkProviderTest.class
-            .getName());
+	
+    private static final Logger LOG = Logger.getLogger(HyperlinkProviderTest.class.getName());
 
     private LinkModel link;
 
     // flag used in setup to explicitly choose LF
     private boolean defaultToSystemLF;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        URL url = getClass().getResource("resources/test.html");
+        link = new LinkModel("a resource", null, url);
+        // make sure we have the same default for each test
+        defaultToSystemLF = false;
+        setSystemLF(defaultToSystemLF);
+    }
+
+    public static void main(String[] args) throws Exception {
+        // setSystemLF(true);
+        HyperlinkProviderTest test = new HyperlinkProviderTest();
+        try {
+            test.runInteractiveTests();
+            // test.runInteractiveTests("interactive.*Table.*");
+        } catch (Exception e) {
+            System.err.println("exception when executing interactive tests:");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * renderers must cope with type mismatch.
@@ -56,7 +75,6 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         TableCellRenderer linkRenderer = new DefaultTableRenderer(
                 new HyperlinkProvider(action, LinkModel.class));
         linkRenderer.getTableCellRendererComponent(null, "stringonly", false, false, -1, -1);
-
     }
 
     /**
@@ -72,37 +90,35 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
             
         };
         renderer.getTableCellRendererComponent(null, link, false, false, -1, -1);
-
     }
 
     /**
-     * Issue #183-swingx. test if the selection background is updated on
-     * changing LF.
-     * 
+     * test if background is table selection background 
+     *  and if background is table background when not selected
      */
     @Test
     public void testSelectionBackground() {
         JXTable table = new JXTable(2, 2);
         TableCellRenderer linkRenderer = new DefaultTableRenderer(new HyperlinkProvider());
         table.getColumnModel().getColumn(0).setCellRenderer(linkRenderer);
+        // isSelected is true
         JXHyperlink hyperlink = (JXHyperlink) linkRenderer
                 .getTableCellRendererComponent(table, link, true, false, 1, 0);
-        // JW: asking any background without knowing transparency state is
-        // useless!
+        // JW: asking any background without knowing transparency state is useless!
         assertTrue("renderer comp must be opaque", hyperlink.isOpaque());
-        assertEquals("background must be table selection background", table
-                .getSelectionBackground(), hyperlink.getBackground());
+        
+        assertEquals("background must be table selection background", 
+        		table.getSelectionBackground(), hyperlink.getBackground());
+        
+        // isSelected is false
         hyperlink = (JXHyperlink) linkRenderer.getTableCellRendererComponent(
                 table, link, false, false, 1, 0);
-        assertEquals("background must be table background", table
-                .getBackground(), hyperlink.getBackground());
-
+        assertEquals("background must be table background", 
+        		table.getBackground(), hyperlink.getBackground());
     }
 
     /**
-     * Issue #183-swingx. test if the selection background is updated on
-     * changing LF.
-     * 
+     * test if the selection background is updated on changing LF.
      */
     @Test
     public void testRendererComponentPropertiesAfterLFChange() {
@@ -111,8 +127,7 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         table.getColumnModel().getColumn(0).setCellRenderer(linkRenderer);
         // sanity: same as set
         assertSame(linkRenderer, table.getCellRenderer(1, 0));
-        JXHyperlink hyperlink = (JXHyperlink) table.prepareRenderer(
-                linkRenderer, 1, 0);
+        JXHyperlink hyperlink = (JXHyperlink) table.prepareRenderer(linkRenderer, 1, 0);
         // KEEP to remember
         // - JW: asking for the background really doesn't make sense -
         // will not show if comp isn't opaque!
@@ -122,6 +137,7 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         // LinkRenderer
         assertTrue("renderer comp must be opaque", hyperlink.isOpaque());
         assertTrue("renderer must paint border", hyperlink.isBorderPainted());
+        
         String lf = UIManager.getLookAndFeel().getName();
         // switch LF
         setSystemLF(!defaultToSystemLF);
@@ -136,7 +152,6 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         // assert that the changed properties survived the LF switch
         assertTrue("renderer comp must be opaque", hyperlink.isOpaque());
         assertTrue("renderer must paint border", hyperlink.isBorderPainted());
-
     }
 
     @Test
@@ -146,18 +161,16 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         table.getColumnModel().getColumn(0).setCellRenderer(linkRenderer);
         JXHyperlink hyperlink = (JXHyperlink) linkRenderer
                 .getTableCellRendererComponent(table, link, false, false, 1, 0);
-        assertFalse("renderer must not be rollover", hyperlink.getModel()
-                .isRollover());
+        assertFalse("renderer must not be rollover", hyperlink.getModel().isRollover());
+        
         table.putClientProperty(RolloverProducer.ROLLOVER_KEY, new Point(0, 1));
         hyperlink = (JXHyperlink) linkRenderer.getTableCellRendererComponent(
                 table, link, false, false, 1, 0);
-        assertTrue("renderer must be rollover", hyperlink.getModel()
-                .isRollover());
+        assertTrue("renderer must be rollover", hyperlink.getModel().isRollover());
     }
 
     /**
-     * Issue #183-swingx. visual check if the selection background is updated on
-     * changing LF. 
+     * visual check if the selection background is updated on changing LF. 
      */
     public void interactiveTableSelectionBackgroundOnLF() {
         final JXTable table = new JXTable(new AncientSwingTeam());
@@ -166,28 +179,6 @@ public class HyperlinkProviderTest extends InteractiveTestCase {
         table.setRowSelectionInterval(1, 1);
         final JXFrame frame = wrapWithScrollingInFrame(table, "test background must change with LAF");
         frame.setVisible(true);
-
     }
 
-    public static void main(String[] args) throws Exception {
-        // setSystemLF(true);
-        HyperlinkProviderTest test = new HyperlinkProviderTest();
-        try {
-            test.runInteractiveTests();
-            // test.runInteractiveTests("interactive.*Table.*");
-        } catch (Exception e) {
-            System.err.println("exception when executing interactive tests:");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        URL url = getClass().getResource("resources/test.html");
-        link = new LinkModel("a resource", null, url);
-        // make sure we have the same default for each test
-        defaultToSystemLF = false;
-        setSystemLF(defaultToSystemLF);
-    }
 }
