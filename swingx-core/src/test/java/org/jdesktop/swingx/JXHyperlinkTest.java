@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-
 package org.jdesktop.swingx;
 
 import java.awt.GraphicsEnvironment;
@@ -28,7 +25,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * Test of JXHyperlink. Raw usage and as hyperlinkRenderer.
  * <p>
@@ -37,9 +33,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class JXHyperlinkTest extends TestCase {
-    @SuppressWarnings("all")
-    private static final Logger LOG = Logger.getLogger(JXHyperlinkTest.class
-            .getName());
+
+    private static final Logger LOG = Logger.getLogger(JXHyperlinkTest.class.getName());
     
     private PropertyChangeReport report;
 
@@ -51,6 +46,12 @@ public class JXHyperlinkTest extends TestCase {
     @After
     public void tearDownJ4() throws Exception {
         tearDown();
+    }
+    
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        report = new PropertyChangeReport();
     }
     
     @Test
@@ -93,8 +94,6 @@ public class JXHyperlinkTest extends TestCase {
      * test control of the clicked property.
      * 
      * Default behaviour
-     * 
-     *
      */
     @Test
     public void testAutoClicked() {
@@ -114,8 +113,7 @@ public class JXHyperlinkTest extends TestCase {
        hyperlink3.setOverrulesActionOnClick(true);
        hyperlink3.doClick();
        assertFalse(emptyAction.isVisited());
-       assertTrue("hyperlink overrules action", hyperlink3.isClicked());
-       
+       assertTrue("hyperlink overrules action", hyperlink3.isClicked());      
     }
     
     @Test
@@ -127,6 +125,7 @@ public class JXHyperlinkTest extends TestCase {
         assertTrue(hyperlink.getOverrulesActionOnClick()); 
         assertEquals(1, report.getEventCount("overrulesActionOnClick"));
     }
+    
     /**
      * sanity (duplicate of LinkActionTest method) to
      * guarantee that hyperlink is updated as expected.
@@ -142,6 +141,7 @@ public class JXHyperlinkTest extends TestCase {
         assertEquals(linkAction.getName(), hyperlink.getText());
         assertFalse(hyperlink.isClicked());
     }
+    
     /**
      * test that hyperlink.setClicked doesn't change action.isVisited();
      *
@@ -155,8 +155,7 @@ public class JXHyperlinkTest extends TestCase {
         assertTrue(hyperlink.isClicked());
         hyperlink.setClicked(false);
         // action state must be unchanged;
-        assertTrue(linkAction.isVisited());
-        
+        assertTrue(linkAction.isVisited());       
     }
     /**
      * test hyperlink's clicked property.
@@ -181,8 +180,7 @@ public class JXHyperlinkTest extends TestCase {
     @Test
     public void testInitNullAction() {
         JXHyperlink hyperlink = new JXHyperlink();
-        assertNull(hyperlink.getAction());
-        
+        assertNull(hyperlink.getAction());      
     }
 
     /**
@@ -199,6 +197,7 @@ public class JXHyperlinkTest extends TestCase {
         hyperlink.setAction(null);
         assertNull(hyperlink.getAction());
     }
+    
     /**
      * JXHyperlink must handle null action gracefully.
      * 
@@ -236,31 +235,30 @@ public class JXHyperlinkTest extends TestCase {
      * 
      * There was the usual "init" problem with the constructor.
      * Solved by chaining.
-     * 
      */
     @Test
-    public void testInitialVisitedSynched() {
-        AbstractHyperlinkAction<Object> linkAction = createEmptyLinkAction();
-       linkAction.setVisited(true);
-       // sanity: linkAction is changed to true
-       assertTrue(linkAction.isVisited());
-       JXHyperlink hyperlink = new JXHyperlink(linkAction);
-       assertEquals(linkAction.isVisited(), hyperlink.isClicked());
-    }
+	public void testInitialVisitedSynched() {
+		AbstractHyperlinkAction<Object> linkAction = createEmptyLinkAction();
+		linkAction.setVisited(true);
+		// sanity: linkAction is changed to true
+		assertTrue(linkAction.isVisited());
+		JXHyperlink hyperlink = new JXHyperlink(linkAction);
+		assertEquals(linkAction.isVisited(), hyperlink.isClicked());
+	}
 
-
-    public static class Player {
-        String name;
-        int score;
-        public Player(String name, int score) {
-            this.name = name;
-            this.score = score;
-        }
-        @Override
-        public String toString() {
-            return name + " has score: " + score;
-        }
-    }
+    // not used
+//    public static class Player {
+//        String name;
+//        int score;
+//        public Player(String name, int score) {
+//            this.name = name;
+//            this.score = score;
+//        }
+//        @Override
+//        public String toString() {
+//            return name + " has score: " + score;
+//        }
+//    }
 
     protected AbstractHyperlinkAction<Object> createEmptyLinkAction() {
         @SuppressWarnings("serial")
@@ -279,11 +277,6 @@ public class JXHyperlinkTest extends TestCase {
         AbstractHyperlinkAction<?> linkAction = createEmptyLinkAction();
         linkAction.setName(name);
         return linkAction;
-    }
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        report = new PropertyChangeReport();
     }
 
 }
