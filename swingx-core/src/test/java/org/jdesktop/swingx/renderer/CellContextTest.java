@@ -45,7 +45,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class CellContextTest extends InteractiveTestCase {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(CellContextTest.class.getName());
     
     @Test
