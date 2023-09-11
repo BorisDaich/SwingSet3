@@ -241,18 +241,20 @@ public class TreeRendererTest extends InteractiveTestCase {
 
     /**
      * Example for using arbitrary wrappee controllers. 
-     * Here: a checkbox representing entries in ActionMap.
+     * Here: a checkbox representing enabled entries in ActionMap.
      */
     public void interactiveTreeButtonFormatting() {
-        TreeModel model = createActionTreeModel();
+        TreeModel model = createActionTreeModel(); // model holds the ActionMap of a TreeTable
         JTree tree = new JTree(model);
 
         ComponentProvider<AbstractButton> wrappee = createButtonProvider();
         tree.setCellRenderer(new DefaultTreeRenderer(new WrappingProvider(wrappee)));
+//        tree.expandAll(); // not implemented in JTree
         
         JList<Action> list = new JList<Action>(createActionListModel());
         list.setCellRenderer(new DefaultListRenderer<Action>(wrappee)); 
-        final JXFrame frame = wrapWithScrollingInFrame(tree, list, "custom renderer - same in tree and list");
+        final JXFrame frame = wrapWithScrollingInFrame(tree, list
+        		, "custom renderer - same in tree (expand first child) and list");
         frame.setVisible(true);
     }
     

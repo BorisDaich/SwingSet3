@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2006 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -190,7 +188,7 @@ public class TreeModelSupportTest extends TestCase {
 
 //------------------------------ factory and housekeeping
     
-    //copied from JTree and modified to use TTNs
+    //copied from JTree and modified to use TreeTableNodes
     protected TreeTableModel getDefaultTreeTableModel() {
         DefaultMutableTreeTableNode root = new DefaultMutableTreeTableNode("JXTreeTable");
         DefaultMutableTreeTableNode parent;

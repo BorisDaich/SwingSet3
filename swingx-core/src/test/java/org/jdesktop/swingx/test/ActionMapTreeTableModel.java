@@ -1,11 +1,8 @@
 /*
- * $Id$
- *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
 package org.jdesktop.swingx.test;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +25,6 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
  */
 public class ActionMapTreeTableModel extends DefaultTreeTableModel {
 
-    
     public ActionMapTreeTableModel(JComponent comp) {
         super();
         setRoot(createRootNodeExt(comp));
@@ -39,11 +35,11 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
         setColumnIdentifiers(names);
     }
 
-
     private ActionEntryNode createRootNodeExt(JComponent comp) {
         ActionMap map = comp.getActionMap();
         if (map == null)
             throw new IllegalArgumentException("Component must have ActionMap");
+        
         List<ActionMap> actionMaps = new ArrayList<ActionMap>();
         actionMaps.add(map);
         while ((map = map.getParent()) != null) {
@@ -57,8 +53,7 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
         ActionEntryNode mapRoot = new ActionEntryNode("topLevel", topLevel, null);
         ActionEntryNode current = mapRoot;
         for (int i = 1; i < actionMaps.size(); i++) {
-            current = current.addActionMapAsChild("childMap " + i,
-                    (ActionMap) actionMaps.get(i));
+            current = current.addActionMapAsChild("childMap " + i, (ActionMap) actionMaps.get(i));
         }
         return mapRoot;
     }
@@ -67,9 +62,7 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
         ActionEntryNode parent;
         
         Object key;
-
         Action action;
-
         ActionMap actionMap;
 
         List<ActionEntryNode> children;
@@ -88,8 +81,7 @@ public class ActionMapTreeTableModel extends DefaultTreeTableModel {
             children = new ArrayList<ActionEntryNode>();
             Object[] keys = map.keys();
             for (int i = 0; i < keys.length; i++) {
-                children.add(new ActionEntryNode(keys[i], (Action) map
-                        .get(keys[i]), this));
+                children.add(new ActionEntryNode(keys[i], (Action) map.get(keys[i]), this));
             }
         }
 
