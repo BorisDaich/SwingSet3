@@ -45,10 +45,10 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
  * 
  * PENDING: ui specific focus rect variation (draw rect around icon) missing
  */
-public class WrappingProvider extends 
-    ComponentProvider<WrappingIconPanel>  implements RolloverRenderer {
+@SuppressWarnings("serial")
+public class WrappingProvider extends ComponentProvider<WrappingIconPanel>  implements RolloverRenderer {
 
-    protected ComponentProvider<?> wrappee;
+    protected ComponentProvider<?> delegate; // the wrappee
     private boolean unwrapUserObject;
 
     /**
@@ -131,7 +131,7 @@ public class WrappingProvider extends
      */
     public WrappingProvider(IconValue iv, ComponentProvider<?> delegate, boolean unwrapUserObject) {
         super(iv != null ? (new MappedValue(null, iv)) : StringValues.EMPTY);
-        setWrappee(delegate);
+        setDelegate(delegate);
         setUnwrapUserObject(unwrapUserObject);
     }
     
@@ -147,22 +147,20 @@ public class WrappingProvider extends
      */
     public WrappingProvider(IconValue iv, StringValue delegateStringValue, boolean unwrapUserObject) {
         this(iv, (ComponentProvider<?>) null, unwrapUserObject);
-        getWrappee().setStringValue(delegateStringValue);
+        getDelegate().setStringValue(delegateStringValue);
     }
     
     /**
      * Sets the given provider as delegate for the node content. 
      * If the delegate is null, a default LabelProvider is set.<p>
      * 
-     *  PENDING: rename to setDelegate?
-     *  
      * @param delegate the provider to use as delegate. 
      */
-    public void setWrappee(ComponentProvider<?> delegate) {
+    public void setDelegate(ComponentProvider<?> delegate) {
         if (delegate == null) {
             delegate = new LabelProvider();
         }
-        this.wrappee = delegate;
+        this.delegate = delegate;
     }
 
     /**
@@ -170,8 +168,8 @@ public class WrappingProvider extends
      * 
      * @return the provider used for rendering the node content.
      */
-    public ComponentProvider<?> getWrappee() {
-        return wrappee;
+    public ComponentProvider<?> getDelegate() {
+        return delegate;
     }
     
     /**
@@ -209,7 +207,6 @@ public class WrappingProvider extends
      * same unwrapping magic as in configuring the rendering component if the
      * unwrapUserObject property is true. <p>
      * 
-     * 
      * @param value the Object to get a String representation for.
      * 
      * @see #setUnwrapUserObject(boolean)
@@ -218,7 +215,7 @@ public class WrappingProvider extends
     @Override
     public String getString(Object value) {
         value = getUnwrappedValue(value);
-        return wrappee.getString(value);
+        return delegate.getString(value);
     }
 
     /**
@@ -274,15 +271,15 @@ public class WrappingProvider extends
     @Override
     public WrappingIconPanel getRendererComponent(CellContext context) {
         if (context != null) {
-            rendererComponent.setComponent(wrappee.rendererComponent);
+            rendererComponent.setComponent(delegate.rendererComponent);
             Object oldValue = adjustContextValue(context);
             // PENDING JW: sequence of config?
-            // A - first wrappee, then this allows to override configure/format methods
+            // A - first wrappee/delegate, then this allows to override configure/format methods
             // of this class and overrule the wrappee
-            // B - first this, then wrappee allows overrule by overriding getRendererComp
+            // B - first this, then wrappee/delegate allows overrule by overriding getRendererComp
             // would take control from wrappee (f.i. Hyperlink foreground)
             super.getRendererComponent(context);
-            wrappee.getRendererComponent(context);
+            delegate.getRendererComponent(context);
             restoreContextValue(context, oldValue);
             return rendererComponent;
         }
@@ -378,7 +375,7 @@ public class WrappingProvider extends
     @Override
     public void doClick() {
         if (isEnabled()) {
-            ((RolloverRenderer) wrappee).doClick(); 
+            ((RolloverRenderer) delegate).doClick(); 
         }
     }
 
@@ -387,8 +384,8 @@ public class WrappingProvider extends
      */
     @Override
     public boolean isEnabled() {
-        return (wrappee instanceof RolloverRenderer) && 
-           ((RolloverRenderer) wrappee).isEnabled();
+        return (delegate instanceof RolloverRenderer) && 
+           ((RolloverRenderer) delegate).isEnabled();
     }
 
 

@@ -297,12 +297,12 @@ public class RenderingTest extends InteractiveTestCase {
         context.replaceValue(new DefaultMutableTreeNode(p));
         WrappingProvider provider = new WrappingProvider(sv);
         provider.setUnwrapUserObject(false);
-        LabelProvider wrappee = (LabelProvider) provider.getWrappee();
+        LabelProvider labelProvider = (LabelProvider) provider.getDelegate();
         // configure 
         provider.getRendererComponent(context);
         assertEquals("must not unwrap the user object", 
                 sv.getString(context.getValue()), 
-                wrappee.rendererComponent.getText());
+                labelProvider.rendererComponent.getText());
     }
     
 
@@ -793,15 +793,14 @@ public class RenderingTest extends InteractiveTestCase {
 //            assertEquals(iv, ((MappedValue) provider.getStringValue()).iconDelegate);
         }
         if (delegate == null) {
-            assertTrue("default wrappee must be LabelProvider but was " + 
-                    provider.getWrappee().getClass(), 
-               provider.getWrappee() instanceof LabelProvider);
+            assertTrue("default delegate/wrappee must be LabelProvider but was "+provider.getDelegate().getClass(), 
+               provider.getDelegate() instanceof LabelProvider);
         } else {
-            assertEquals("wrappee must be set", delegate, provider.getWrappee());
+            assertEquals("wrappee must be set", delegate, provider.getDelegate());
         }
         if (sv != null) {
             assertEquals("wrappee's StringValue must be configured to given", 
-                    sv, provider.getWrappee().getStringValue());
+                    sv, provider.getDelegate().getStringValue());
         }
         assertEquals(unwrap, provider.getUnwrapUserObject());
     }
@@ -1034,7 +1033,6 @@ public class RenderingTest extends InteractiveTestCase {
     
     /**
      * Test if all collaborators can cope with null component on CellContext.
-     *
      */
     @Test
     public void testEmptyContext() {
@@ -1059,7 +1057,6 @@ public class RenderingTest extends InteractiveTestCase {
     }
     /**
      * Test doc'ed constructor behaviour of default tree renderer.
-     *
      */
     @Test
     public void testDefaultTreeRendererConstructors() {
@@ -1067,9 +1064,7 @@ public class RenderingTest extends InteractiveTestCase {
         assertTrue(renderer.componentController instanceof WrappingProvider);
         renderer = new DefaultTreeRenderer(StringValues.DATE_TO_STRING);
         assertTrue(renderer.componentController instanceof WrappingProvider);
-        // wrong assumption - we are wrapping...
-//        assertSame(FormatStringValue.DATE_TO_STRING, renderer.componentController.formatter);
-        assertSame(StringValues.DATE_TO_STRING, ((WrappingProvider) renderer.componentController).wrappee.stringValue);
+        assertSame(StringValues.DATE_TO_STRING, ((WrappingProvider) renderer.componentController).delegate.stringValue);
         ComponentProvider<?> controller = new CheckBoxProvider();
         renderer = new DefaultTreeRenderer(controller);
         assertSame(controller, renderer.componentController);

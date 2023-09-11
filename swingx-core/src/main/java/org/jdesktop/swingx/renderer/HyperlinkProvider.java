@@ -54,6 +54,7 @@ import org.jdesktop.swingx.rollover.RolloverRenderer;
  * 
  * @author Jeanette Winzenburg
  */
+@SuppressWarnings("serial")
 public class HyperlinkProvider extends ComponentProvider<JXHyperlink> implements RolloverRenderer {
 
 
@@ -157,8 +158,6 @@ public class HyperlinkProvider extends ComponentProvider<JXHyperlink> implements
         return targetClass.isAssignableFrom(target.getClass());
     }
 
-
-
     /** 
      * default action - does nothing... except showing the target.
      * 
@@ -170,7 +169,6 @@ public class HyperlinkProvider extends ComponentProvider<JXHyperlink> implements
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                
             }
             
         };
@@ -279,6 +277,5 @@ public class HyperlinkProvider extends ComponentProvider<JXHyperlink> implements
     protected JXHyperlink createRendererComponent() {
         return new JXRendererHyperlink();
     }
-
 
 }

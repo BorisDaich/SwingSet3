@@ -163,8 +163,8 @@ public class TreeRendererTest extends InteractiveTestCase {
         assertTrue(provider.getRendererComponent(null).isBackgroundSet());
         assertEquals(Color.RED, provider.getRendererComponent(null).getBackground());
         // sanity
-        assertTrue(provider.wrappee.getRendererComponent(null).isBackgroundSet());
-        assertEquals(Color.RED, provider.wrappee.getRendererComponent(null).getBackground());
+        assertTrue(provider.delegate.getRendererComponent(null).isBackgroundSet());
+        assertEquals(Color.RED, provider.delegate.getRendererComponent(null).getBackground());
     }
     
     /**
@@ -183,8 +183,8 @@ public class TreeRendererTest extends InteractiveTestCase {
         assertTrue(provider.getRendererComponent(null).isForegroundSet());
         assertEquals(Color.RED, provider.getRendererComponent(null).getForeground());
         // sanity
-        assertTrue(provider.wrappee.getRendererComponent(null).isForegroundSet());
-        assertEquals(Color.RED, provider.wrappee.getRendererComponent(null).getForeground());
+        assertTrue(provider.delegate.getRendererComponent(null).isForegroundSet());
+        assertEquals(Color.RED, provider.delegate.getRendererComponent(null).getForeground());
     }
 
 
