@@ -64,8 +64,7 @@ import org.jdesktop.swingx.plaf.UIDependent;
  *     }
  * 
  * };
- * table.setDefaultRenderer(Contributor.class, new DefaultTableRenderer(
- *         stringValue));
+ * table.setDefaultRenderer(Contributor.class, new DefaultTableRenderer(stringValue));
  * list.setCellRenderer(new DefaultListRenderer(stringValue));
  * tree.setCellRenderer(new DefaultTreeRenderer(stringValue));
  * 
@@ -132,6 +131,14 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
     protected StringValue stringValue;
     protected IconValue iconValue;
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override // implement Single Abstract Method of FunctionalInterface UIDependent
+    public void updateUI() {
+        SwingUtilities.updateComponentTreeUI(rendererComponent);
+    }
+
     /**
      * Instantiates a component provider with LEADING
      * horizontal alignment and default to-String converter.
@@ -375,11 +382,4 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
         return defaultVisuals;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateUI() {
-        SwingUtilities.updateComponentTreeUI(rendererComponent);
-    }
 }
