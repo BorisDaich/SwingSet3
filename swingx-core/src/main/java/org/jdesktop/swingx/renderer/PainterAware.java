@@ -27,6 +27,8 @@ import javax.swing.Painter;
  * 
  * @author Jeanette Winzenburg
  */
+// was meint kleopatra mit "enters main"
+@Deprecated
 public interface PainterAware {
 	
 	/**
