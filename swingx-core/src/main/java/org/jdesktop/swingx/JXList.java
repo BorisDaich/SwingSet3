@@ -206,7 +206,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 @JavaBean
 @SuppressWarnings("serial") // Superclass is not serializable across versions
-public class JXList<E> extends JList<E> {
+public class JXList<E> extends JYList<E> {
 
     private static final Logger LOG = Logger.getLogger(JXList.class.getName());
     

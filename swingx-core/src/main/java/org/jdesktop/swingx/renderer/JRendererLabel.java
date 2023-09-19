@@ -22,6 +22,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.Painter;
 import javax.swing.UIManager;
@@ -59,12 +60,11 @@ import javax.swing.UIManager;
 public class JRendererLabel extends JLabel implements PainterAware, IconAware {
 
 	/** Painter */
-    protected Painter<JLabel> painter; // XXX oder <JComponent> ???
+    protected Painter<?> painter;
 
     public JRendererLabel() {
         super();
-//        System.out.println("JRendererLabel.ctor <<<<<<<<<<<<"+ " size="+getSize().width+"x"+getSize().height);
-//        setOpaque(true);
+        setOpaque(true);
     }
 
     /**
@@ -72,7 +72,7 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
      */
     public void setPainter(Painter<?> painter) {
         Painter<?> old = getPainter();
-        this.painter = (Painter<JLabel>)painter;
+        this.painter = painter;
         firePropertyChange("painter", old, getPainter());
     }
 
@@ -82,7 +82,6 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
     public Painter<?> getPainter() {
         return painter;
     }
-    
     /**
      * {@inheritDoc} <p>
      * 
@@ -92,11 +91,6 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
      */
     @Override
     protected void paintComponent(Graphics g) {
-//    	System.out.println("JRendererLabel.paintComponent >>>>>>>>>>>"
-//    		+ " size="+getSize().width+"x"+getSize().height
-//    		+ " , painter:"+painter
-//    	);
-
         // JW: hack around for #1178-swingx (core issue) 
         // grab painting if Nimbus detected
         if ((painter != null) || isNimbus()) {
@@ -114,28 +108,9 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
             }
         } else {
             // nothing to worry about - delegate to super
-//            super.paintComponent(g); //copied here:
-//            if (ui != null) {
-//                Graphics scratchGraphics = (g == null) ? null : g.create();
-//                try {
-//                    ui.update(scratchGraphics, this);
-//                }
-//                finally {
-//                    scratchGraphics.dispose();
-//                }
-//            }
+            super.paintComponent(g);
         }
     }
-    
-//    @Override
-//    public void paint(Graphics g) {
-//    	System.out.println("JRendererLabel.paint >>>>>>>>>>>"
-//        		+ " size="+getSize().width+"x"+getSize().height
-//        		+ " PreferredSize:"+getPreferredSize()
-//        	);
-//        setPreferredSize(getSize()); // Update to current size
-//        super.paint(g);
-//    }
 
     /**
      * Hack around Nimbus not respecting background colors if UIResource.
@@ -163,7 +138,7 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
         // this differs from corresponding core implementation!
         Graphics2D scratch = (Graphics2D) g.create();
         try {
-            painter.paint(scratch, this, getWidth(), getHeight());
+        	((Painter<JComponent>)painter).paint(scratch, this, getWidth(), getHeight());
         }
         finally {
             scratch.dispose();
