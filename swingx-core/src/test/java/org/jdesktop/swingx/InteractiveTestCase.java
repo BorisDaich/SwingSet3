@@ -526,9 +526,12 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
     		String lafClassName = info.getClassName();
     		if(lafClassName.contains(nameSnippet)) {
     			try {
-    	    		LOG.info("switch to laf ClassName="+lafClassName + " from "+UIManager.getLookAndFeel());
 					UIManager.setLookAndFeel(lafClassName);
-					return !lafClassName.equals(currentClassName);
+					boolean unchanged = !lafClassName.equals(currentClassName);
+					if(!unchanged) {
+	    	    		LOG.info("switched to laf ClassName="+lafClassName + " from "+UIManager.getLookAndFeel());
+					}
+					return unchanged;
 				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 						| UnsupportedLookAndFeelException e) {
 					// TODO Auto-generated catch block
