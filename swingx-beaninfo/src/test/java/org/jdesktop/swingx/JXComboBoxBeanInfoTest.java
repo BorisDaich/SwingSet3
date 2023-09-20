@@ -4,10 +4,10 @@ import org.jdesktop.beans.AbstractBeanInfoTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class JXComboBoxBeanInfoTest extends AbstractBeanInfoTest<JXComboBox> {
+public class JXComboBoxBeanInfoTest extends AbstractBeanInfoTest<JXComboBox<?>> {
     @Override
-    protected JXComboBox createInstance() {
-        return new JXComboBox();
+    protected JXComboBox<?> createInstance() {
+        return new JXComboBox<>();
     }
     
     /**
