@@ -153,7 +153,6 @@ public class RenderingTest extends InteractiveTestCase {
         assertTrue("hyperlink as rendering comp must be PainterAware", provider.getRendererComponent(null) instanceof PainterAware);
     }
 
-    
     /**
      * Issue #863-swingx: SwingX renderering components must be PainterAware.
      * Here: test WrappingIconPanel
@@ -212,9 +211,7 @@ public class RenderingTest extends InteractiveTestCase {
         Object target = null;
         assertEquals("pref" + String.valueOf(target), provider.getString(target));
     }
-    
 
-    
     /**
      * Issue ?? swingx: support to configure the auto-unwrap of tree/table/xx/nodes.
      * 
@@ -226,6 +223,7 @@ public class RenderingTest extends InteractiveTestCase {
         WrappingProvider provider = new WrappingProvider(delegate, false);
         assertWrappingProviderState(provider, null, null, delegate, false);
     }
+    
     /**
      * Issue ?? swingx: support to configure the auto-unwrap of tree/table/xx/nodes.
      * 
@@ -255,17 +253,12 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectString() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Point) {
-                    return "x of Point: " + ((Point) value).x;
-                }
-                return StringValues.TO_STRING.getString(value);
+		StringValue sv = (Object value) -> {
+            if (value instanceof Point point) {
+                return "x of Point: " + point.x;
             }
-            
-        };
+            return StringValues.TO_STRING.getString(value);
+		};
         CellContext context =  new TableCellContext();
         Point p = new Point(10, 20);
         context.replaceValue(new DefaultMutableTreeNode(p));
@@ -281,17 +274,12 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectRenderer() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Point) {
-                    return "x of Point: " + ((Point) value).x;
-                }
-                return StringValues.TO_STRING.getString(value);
+		StringValue sv = (Object value) -> {
+            if (value instanceof Point point) {
+                return "x of Point: " + point.x;
             }
-            
-        };
+            return StringValues.TO_STRING.getString(value);
+		};
         CellContext context =  new TableCellContext();
         Point p = new Point(10, 20);
         context.replaceValue(new DefaultMutableTreeNode(p));
@@ -471,14 +459,9 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testLabelProviderGetString() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return "funnyconstant ... haha";
-            }
-            
-        };
+		StringValue sv = (Object value) -> {
+			return "funnyconstant ... haha";
+		};
         CellContext context =  new TableCellContext();
         ComponentProvider<JLabel> provider = new LabelProvider(sv);
         JLabel label = provider.getRendererComponent(context);
@@ -492,14 +475,9 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testButtonProviderGetString() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return "funnyconstant ... haha";
-            }
-            
-        };
+		StringValue sv = (Object value) -> {
+			return "funnyconstant ... haha";
+		};
         CellContext context =  new TableCellContext();
         ComponentProvider<AbstractButton> provider = new CheckBoxProvider(sv);
         AbstractButton label = provider.getRendererComponent(context);
@@ -513,14 +491,9 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetString() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return "funnyconstant ... haha";
-            }
-            
-        };
+		StringValue sv = (Object value) -> {
+			return "funnyconstant ... haha";
+		};
         CellContext context =  new TableCellContext();
         ComponentProvider<WrappingIconPanel> provider = new WrappingProvider(sv);
         assertEquals(sv.getString(context.getValue()), provider.getString(context.getValue()));
@@ -531,21 +504,16 @@ public class RenderingTest extends InteractiveTestCase {
      * Issue #768-swingx: cleanup access to string representation of provider.
      * 
      * WrappingProvider must do the same "unwrapping" magic in getString as in 
-     * getRendereringComponent.
+     * getRendereringComponent.  TODO
      */
     @Test
     public void testWrappingProviderGetStringFromNode() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                if (value instanceof Point) {
-                    return "x of Point: " + ((Point) value).x;
-                }
-                return StringValues.TO_STRING.getString(value);
+		StringValue sv = (Object value) -> {
+            if (value instanceof Point point) {
+                return "x of Point: " + point.x;
             }
-            
-        };
+            return StringValues.TO_STRING.getString(value);
+		};
         CellContext context =  new TableCellContext();
         Point p = new Point(10, 20);
         context.value = new DefaultMutableTreeNode(p);
@@ -559,14 +527,9 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testWrappingProviderGetStringNotNullValue() {
-        @SuppressWarnings("serial")
-		StringValue sv = new StringValue() {
-
-            public String getString(Object value) {
-                return String.valueOf(value) + "added ... ";
-            }
-            
-        };
+		StringValue sv = (Object value) -> {
+			return String.valueOf(value) + "added ... ";
+		};
         CellContext context =  new TableCellContext();
         context.value = "dummy";
         ComponentProvider<WrappingIconPanel> provider = new WrappingProvider(sv);
@@ -586,7 +549,6 @@ public class RenderingTest extends InteractiveTestCase {
        WrappingIconPanel comp = provider.getRendererComponent(context);
        assertEquals(null, comp.getIcon());
     }
-    
 
     /**
      * Added pref/min/max size to list of properties which 
@@ -691,11 +653,9 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderIcon() {
         final Icon icon = XTestUtils.loadDefaultIcon();
-        @SuppressWarnings("serial")
-		IconValue iv = new IconValue() {
-            public Icon getIcon(Object value) {
-                return icon;
-            }};
+		IconValue iv = (Object value) -> {
+			return icon;
+		};
         WrappingProvider provider = new WrappingProvider(iv);
         CellContext context = new TreeCellContext();
         WrappingIconPanel iconPanel = provider.getRendererComponent(context);
@@ -710,11 +670,9 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderIconAndContent() {
         final Icon icon = XTestUtils.loadDefaultIcon();
-        @SuppressWarnings("serial")
-		IconValue iv = new IconValue() {
-            public Icon getIcon(Object value) {
-                return icon;
-            }};
+		IconValue iv = (Object value) -> {
+			return icon;
+		};
             
         WrappingProvider provider = new WrappingProvider(iv, StringValues.DATE_TO_STRING);
         CellContext context = new TreeCellContext();
@@ -951,11 +909,10 @@ public class RenderingTest extends InteractiveTestCase {
         provider.getRendererComponent(context);
         assertEquals(provider.getHorizontalAlignment(), button.getHorizontalAlignment());
     }
+    
    /**
      * use convenience constructor where appropriate: 
      * test clients code (default renderers in JXTable).
-     * 
-     *
      */
     @Test
     public void testConstructorClients() {
@@ -1044,8 +1001,9 @@ public class RenderingTest extends InteractiveTestCase {
     }
     
     private void assertEmptyContext(ComponentProvider<?> provider) {
-        DefaultListRenderer renderer = new DefaultListRenderer(provider);
+        DefaultListRenderer<JComponent> renderer = new DefaultListRenderer<>(provider);
         renderer.getListCellRendererComponent(null, null, -1, false, false);
+        
         // treeRenderer - use the same provider, can't do in real life, 
         // the providers component is added to the wrapping provider's component.
         DefaultTreeRenderer treeRenderer = new DefaultTreeRenderer(provider);
@@ -1055,6 +1013,7 @@ public class RenderingTest extends InteractiveTestCase {
         // random test - the input parameters don't map to a legal state
         treeRenderer.getTreeCellRendererComponent(null, new Object(), false, true, false, 2, true);
     }
+    
     /**
      * Test doc'ed constructor behaviour of default tree renderer.
      */
@@ -1072,17 +1031,18 @@ public class RenderingTest extends InteractiveTestCase {
 
     /**
      * Test doc'ed constructor behaviour of default list renderer.
-     *
      */
     @Test
     public void testDefaultListRendererConstructors() {
-        DefaultListRenderer renderer = new DefaultListRenderer();
+        DefaultListRenderer<JComponent> renderer = new DefaultListRenderer<>();
         assertTrue(renderer.componentController instanceof LabelProvider);
-        renderer = new DefaultListRenderer(StringValues.DATE_TO_STRING);
+        
+        renderer = new DefaultListRenderer<>(StringValues.DATE_TO_STRING);
         assertTrue(renderer.componentController instanceof LabelProvider);
         assertSame(StringValues.DATE_TO_STRING, renderer.componentController.stringValue);
+        
         ComponentProvider<?> controller = new CheckBoxProvider();
-        renderer = new DefaultListRenderer(controller);
+        renderer = new DefaultListRenderer<>(controller);
         assertSame(controller, renderer.componentController);
     }
 
@@ -1093,7 +1053,7 @@ public class RenderingTest extends InteractiveTestCase {
      */
     @Test
     public void testDefaultListRendererConstructorWithIconValue() {
-        DefaultListRenderer renderer = new DefaultListRenderer(StringValues.TO_STRING, IconValues.ICON);
+        DefaultListRenderer<JComponent> renderer = new DefaultListRenderer<>(StringValues.TO_STRING, IconValues.ICON);
         assertTrue(renderer.componentController instanceof LabelProvider);
         LabelProvider provider = (LabelProvider) renderer.componentController;
         ImageIcon icon = (ImageIcon) XTestUtils.loadDefaultIcon();
@@ -1108,11 +1068,10 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * Issue #970-swingx: add convenience constructors with IconValues
      * Test doc'ed constructor behaviour of default list renderer.
-     *
      */
     @Test
     public void testDefaultListRendererConstructorWithIconValueAndAlign() {
-        DefaultListRenderer renderer = new DefaultListRenderer(StringValues.TO_STRING, IconValues.ICON, JLabel.TRAILING);
+        DefaultListRenderer<JComponent> renderer = new DefaultListRenderer<>(StringValues.TO_STRING, IconValues.ICON, JLabel.TRAILING);
         assertTrue(renderer.componentController instanceof LabelProvider);
         LabelProvider provider = (LabelProvider) renderer.componentController;
         ImageIcon icon = (ImageIcon) XTestUtils.loadDefaultIcon();
@@ -1143,7 +1102,6 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * Issue #970-swingx: text constructors with IconValues
      * Test doc'ed constructor behaviour of default table renderer.
-     *
      */
     @Test
     public void testDefaultTableRendererConstructorWithIconValue() {
@@ -1182,7 +1140,6 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * public methods of <code>ComponentProvider</code> must cope
      * with null context. Here: test getRenderingComponent in WrappingProvider.
-     *
      */
     @Test
     public void testGetWrappingComponentNullContext() {
@@ -1220,7 +1177,6 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * test doc'ed behaviour on defaultVisuals configure:
      * NPE on null component.
-     *
      */
     @Test
     public void testConfigureVisualsNullComponent() {
@@ -1238,7 +1194,6 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * RendererLabel NPE with null Graphics. 
      * Fail-fast NPE in label.paintComponentWithPainter.
-     *
      */
     @Test
     public void testLabelNPEPaintComponentOpaqueWithPainter() {
@@ -1254,6 +1209,7 @@ public class RenderingTest extends InteractiveTestCase {
             fail("unexpected exception invoke paintcomponent with null" + e);
         }
     }
+    
     /**
      * RendererLabel NPE with null Graphics. 
      * Fail-fast NPE in paintPainter.
@@ -1297,7 +1253,6 @@ public class RenderingTest extends InteractiveTestCase {
     /**
      * RendererCheckBox NPE with null Graphics. NPE in
      * label.paintComponentWithPainter finally block.
-     * 
      */
     @Test
     public void testButtonNPEPaintComponentWithPainter() {
