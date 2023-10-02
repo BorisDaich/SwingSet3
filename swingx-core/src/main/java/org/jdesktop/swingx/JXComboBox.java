@@ -74,8 +74,6 @@ public class JXComboBox<E> extends JComboBox<E> {
      * Needed to hook highlighters after messaging the delegate.
      */
     public class DelegatingRenderer implements ListCellRenderer<E>, RolloverRenderer, UIDependent {
-        /** the delegate. */
-        private ListCellRenderer<? super E> delegateRenderer;
         private JRendererPanel wrapper;
 
         /**
@@ -97,7 +95,10 @@ public class JXComboBox<E> extends JComboBox<E> {
             setDelegateRenderer(delegate);
         }
 
-        /**
+        /** the delegate. */
+		private ListCellRenderer<? super E> delegateRenderer;
+
+		/**
          * Sets the delegate. If the delegate is {@code null}, the default is created via the combo
          * box's factory method.
          * 
@@ -401,6 +402,26 @@ public class JXComboBox<E> extends JComboBox<E> {
         }
     }
 
+    /**
+     * Returns the PopupList of a comboBox.
+     * @param comboBox JComboBox
+     * @return JList of Objects
+     */
+    protected static JList<? extends Object> getPopupListFor(JComboBox<? extends Object> comboBox) {
+        int count = comboBox.getUI().getAccessibleChildrenCount(comboBox);
+
+        for (int i = 0; i < count; i++) {
+            Accessible a = comboBox.getUI().getAccessibleChild(comboBox, i);
+            
+            // interface ComboPopup with method public JList<Object> getList()
+            if (a instanceof ComboPopup) {
+                return ((ComboPopup) a).getList();
+            }
+        }
+
+        return null;
+    }
+
     private ComboBoxAdapter dataAdapter;
     
     private DelegatingRenderer delegatingRenderer;
@@ -480,26 +501,6 @@ public class JXComboBox<E> extends JComboBox<E> {
         }
     }
     
-    /**
-     * 
-     * @param comboBox JComboBox
-     * @return JList of Objects
-     */
-    protected static JList<? extends Object> getPopupListFor(JComboBox<? extends Object> comboBox) {
-        int count = comboBox.getUI().getAccessibleChildrenCount(comboBox);
-
-        for (int i = 0; i < count; i++) {
-            Accessible a = comboBox.getUI().getAccessibleChild(comboBox, i);
-            
-            // interface ComboPopup with method public JList<Object> getList()
-            if (a instanceof ComboPopup) {
-                return ((ComboPopup) a).getList();
-            }
-        }
-
-        return null;
-    }
-
     /**
      * {@inheritDoc}
      * <p>
@@ -648,17 +649,16 @@ public class JXComboBox<E> extends JComboBox<E> {
      * @see DelegatingRenderer
      */
     @Override
-    // super: public ListCellRenderer<? super E> getRenderer()
     public ListCellRenderer<? super E> getRenderer() {
-        // PENDING JW: something wrong here - why exactly can't we return super? 
-        // not even if we force the initial setting in init?
-//        return super.getCellRenderer();
-        return getDelegatingRenderer();
+        return super.getRenderer();
     }
 
     /**
      * Returns the renderer installed by client code or the default if none has
      * been set.
+     * <p>
+     * This is a shortcut for 
+     * <code>((JXComboBox.DelegatingRenderer)getRenderer()).getDelegateRenderer())</code>
      * 
      * @return the wrapped renderer.
      * @see #setRenderer(ListCellRenderer)
