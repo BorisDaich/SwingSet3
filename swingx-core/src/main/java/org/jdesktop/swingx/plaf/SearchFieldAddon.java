@@ -43,9 +43,9 @@ public class SearchFieldAddon extends AbstractComponentAddon {
 		RadianceIcon searchIcon = SearchIcon.of(ICON_SIZE, ICON_SIZE);
 		RadianceIcon searchIconRollover = SearchIcon.of(ICON_SIZE, ICON_SIZE);
 		searchIconRollover.setReflection(false, true); // vertical mirror
-		RadianceIcon searchIconpPessed = SearchIcon.of(ICON_SIZE, ICON_SIZE);
-		searchIconpPessed.setReflection(false, true); // vertical mirror
-		searchIconpPessed.setColorFilter(color -> Color.RED);
+		RadianceIcon searchIconPressed = SearchIcon.of(ICON_SIZE, ICON_SIZE);
+		searchIconPressed.setReflection(false, true); // vertical mirror
+		searchIconPressed.setColorFilter(color -> Color.RED);
 		
 		RadianceIcon deleteIcon = DeleteIcon.of(ICON_SIZE, ICON_SIZE);
 		RadianceIcon deleteIconRollover = DeleteIcon.of(ICON_SIZE, ICON_SIZE);
@@ -61,7 +61,7 @@ public class SearchFieldAddon extends AbstractComponentAddon {
 		
 		defaults.add("SearchField.icon",         new IconUIResource(searchIcon));
 		defaults.add("SearchField.rolloverIcon", new IconUIResource(searchIconRollover));
-		defaults.add("SearchField.pressedIcon",  new IconUIResource(searchIconpPessed));
+		defaults.add("SearchField.pressedIcon",  new IconUIResource(searchIconPressed));
 		
 		defaults.add("SearchField.popupIcon",         new IconUIResource(popupIcon));	
 //		IconUIResource popupIconUIR = new IconUIResource(popupIcon);
