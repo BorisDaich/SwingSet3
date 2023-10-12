@@ -3,7 +3,7 @@ package javax.swing.plaf.nimbus.test;
 import java.awt.Color;
 
 /* Nimbus Primary Colors
-defined in javax.swing.plaf.nimbus.initializeDefaults :
+defined in javax.swing.plaf.nimbus.NimbusDefaults.initializeDefaults :
 
         addColor(d, "text", 0, 0, 0, 255);
         addColor(d, "control", 214, 217, 223, 255); // 0xD6D9DF
