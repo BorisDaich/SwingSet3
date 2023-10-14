@@ -23,30 +23,43 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.beans.BeanProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import javax.accessibility.Accessible;
+import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ComboBoxUI;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.ComboPopup;
 
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.CompoundHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.UIDependent;
+import org.jdesktop.swingx.plaf.XComboBoxAddon;
+import org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.JRendererPanel;
 import org.jdesktop.swingx.renderer.StringValue;
@@ -69,11 +82,37 @@ import org.jdesktop.swingx.util.Contract;
 @SuppressWarnings("serial")
 public class JXComboBox<E> extends JComboBox<E> {
 	
+    static {
+        LookAndFeelAddons.contribute(new XComboBoxAddon());
+    }
+
+    /**
+     * UI Class ID
+     * @see #getUIClassID
+     * @see javax.swing.JComponent#readObject
+     */
+    public static final String uiClassID = "XComboBoxUI";
+
+    /**
+     * Returns {@code uiClassID}, the {@code UIDefaults} key used to look up 
+     * the name of the class that defines the look and feel for this component.
+     *
+     * @return the string {@code uiClassID}
+     * @see JComponent#getUIClassID
+     * @see UIDefaults#getUI
+     */
+    @BeanProperty(bound = false)
+    public String getUIClassID() {
+        return uiClassID;
+    }
+
     /**
      * A decorator for the original ListCellRenderer. 
      * Needed to hook highlighters after messaging the delegate.
      */
     public class DelegatingRenderer implements ListCellRenderer<E>, RolloverRenderer, UIDependent {
+        /** the delegate. */
+        private ListCellRenderer<? super E> delegateRenderer;
         private JRendererPanel wrapper;
 
         /**
@@ -95,10 +134,7 @@ public class JXComboBox<E> extends JComboBox<E> {
             setDelegateRenderer(delegate);
         }
 
-        /** the delegate. */
-		private ListCellRenderer<? super E> delegateRenderer;
-
-		/**
+        /**
          * Sets the delegate. If the delegate is {@code null}, the default is created via the combo
          * box's factory method.
          * 
@@ -128,17 +164,20 @@ public class JXComboBox<E> extends JComboBox<E> {
         public void updateUI() {
              wrapper.updateUI();
              
-             if (delegateRenderer instanceof UIDependent) {
-                 ((UIDependent) delegateRenderer).updateUI();
-             } else if (delegateRenderer instanceof Component) {
-                 SwingUtilities.updateComponentTreeUI((Component) delegateRenderer);
+             if (delegateRenderer instanceof UIDependent uiDelegateRenderer) {
+            	 uiDelegateRenderer.updateUI();
+             } else if (delegateRenderer instanceof Component comp) {
+                 SwingUtilities.updateComponentTreeUI(comp);
              } else if (delegateRenderer != null) {
             	 // ListCellRenderer<? super E> delegateRenderer, dh superclass von E
                  try {
+                	 // cast info
                 	 // JList<? extends Object> getPopupListFor
                 	 // interface : getListCellRendererComponent( JList<? extends E> list, E value, ...
-                	 JList lo = getPopupListFor(JXComboBox.this);
-                     Component comp = delegateRenderer.getListCellRendererComponent(lo, null, -1, false, false);
+                	 JList<? extends Object> lo = getPopupListFor(JXComboBox.this);
+                	 @SuppressWarnings("unchecked")
+					JList<? extends E> list = (JList<? extends E>)lo;
+                     Component comp = delegateRenderer.getListCellRendererComponent(list, null, -1, false, false);
                      SwingUtilities.updateComponentTreeUI(comp);
                  } catch (Exception e) {
                      // nothing to do - renderer barked on off-range row
@@ -414,8 +453,8 @@ public class JXComboBox<E> extends JComboBox<E> {
             Accessible a = comboBox.getUI().getAccessibleChild(comboBox, i);
             
             // interface ComboPopup with method public JList<Object> getList()
-            if (a instanceof ComboPopup) {
-                return ((ComboPopup) a).getList();
+            if (a instanceof ComboPopup popup) {
+                return popup.getList();
             }
         }
 
@@ -428,7 +467,7 @@ public class JXComboBox<E> extends JComboBox<E> {
     
     private StringValueRegistry stringValueRegistry;
 
-    private boolean useHighlightersForCurrentValue = true;
+    private boolean usingHighlightersForCurrentValue = true;
     
     private CompoundHighlighter compoundHighlighter;
 
@@ -512,12 +551,40 @@ public class JXComboBox<E> extends JComboBox<E> {
         return new StringValueKeySelectionManager();
     }
     
+    /*
+     * {@inheritDoc} from JComponent
+     * Overrides method in JCompobox
+     * 
+     * liefert true wenn es eine aktive zuordnung zu einer Aktion für die Taste gibt
+     */
     /**
-     * {@inheritDoc}
+     * Invoked to process the key bindings for <code>keyStroke</code> as the result
+     * of the <code>KeyEvent</code> <code>e</code>. 
+     * This obtains the appropriate <code>InputMap</code>,
+     * gets the binding, 
+     * gets the action from the <code>ActionMap</code>,
+     * and then (if the action is found and the component is enabled) 
+     * invokes <code>notifyAction</code> to notify the action.
+     *
+     * @param keyStroke the <code>KeyStroke</code> queried
+     * @param e the <code>KeyEvent</code>
+     * @param condition one of the following values:
+     * <ul>
+     * <li>JComponent.WHEN_FOCUSED = 0
+     * <li>JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT= 1
+     * <li>JComponent.WHEN_IN_FOCUSED_WINDOW = 2
+     * </ul>
+     * @param pressed true if the key is pressed
+     * @return true if there was a binding to an action, and the action was enabled
      */
     @Override
-    protected boolean processKeyBinding(KeyStroke ks, final KeyEvent e, int condition, boolean pressed) {
-        boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
+    protected boolean processKeyBinding(KeyStroke keyStroke, final KeyEvent e, int condition, boolean pressed) {
+        boolean retValue = super.processKeyBinding(keyStroke, e, condition, pressed);
+//    	System.out.println("JXComboBox.processKeyBinding superMethod("+keyStroke
+//    			+", KeyEvent="+KeyEvent.getKeyText(e.getKeyCode())
+//    			+", condition="+condition
+//    			+", the key is "+(pressed?"pressed":"released")
+//    		+")\n returns "+retValue);
 
         if (!retValue && editor != null) {
             if (isStartingCellEdit(e)) {
@@ -685,17 +752,19 @@ public class JXComboBox<E> extends JComboBox<E> {
         // PENDING: do something against recursive setting
         // == multiple delegation...
         ListCellRenderer<? super E> oldValue = super.getRenderer();
+        System.out.println("JXComboBox.setRenderer renderer:"+renderer + "\n oldValue:"+oldValue);
+        //super.setRenderer(renderer);
         getDelegatingRenderer().setDelegateRenderer(renderer);
         getStringValueRegistry().setStringValue(renderer instanceof StringValue ? (StringValue) renderer : null, 0);
         super.setRenderer(delegatingRenderer);
-        
-        if (oldValue == delegatingRenderer) {
-            firePropertyChange("renderer", null, delegatingRenderer);
-        }
+//        
+//        if (oldValue == delegatingRenderer) {
+//            firePropertyChange("renderer", null, delegatingRenderer);
+//        }
     }
 
     /**
-     * PENDING JW to KS: review method naming - doesn't sound like valid English to me (no 
+     * PENDING JW to KS (kschaefe): review method naming - doesn't sound like valid English to me (no 
      * native speaker of course :-). Options are to 
      * change the property name to usingHighlightersForCurrentValue (as we did in JXMonthView
      * after some debate) or stick to getXX. Thinking about it: maybe then the property should be
@@ -704,17 +773,17 @@ public class JXComboBox<E> extends JComboBox<E> {
      * 
      * @return {@code true} if the combo box decorates the current value with highlighters; {@code false} otherwise
      */
+    // TODO rename
     public boolean isUseHighlightersForCurrentValue() {
-        return useHighlightersForCurrentValue;
+        return usingHighlightersForCurrentValue;
     }
     
     /**
-     * 
-     * @param useHighlightersForCurrentValue boolean
+     * @param newValue for usingHighlightersForCurrentValue boolean property
      */
-    public void setUseHighlightersForCurrentValue(boolean useHighlightersForCurrentValue) {
+    public void setUseHighlightersForCurrentValue(boolean newValue) {
         boolean oldValue = isUseHighlightersForCurrentValue();
-        this.useHighlightersForCurrentValue = useHighlightersForCurrentValue;
+        this.usingHighlightersForCurrentValue = newValue;
         repaint();
         firePropertyChange("useHighlightersForCurrentValue", oldValue,
                 isUseHighlightersForCurrentValue());
@@ -871,24 +940,45 @@ public class JXComboBox<E> extends JComboBox<E> {
      * {@inheritDoc}
      * <p>
      * Overridden to update renderer and highlighters.
+
+    public void updateUI() {
+        if (!updateInProgress) {
+            updateInProgress = true;
+            try {
+                setUI((ComboBoxUI)UIManager.getUI(this));
+
+                ListCellRenderer<? super E> renderer = getRenderer();
+                if (renderer instanceof Component) {
+                    SwingUtilities.updateComponentTreeUI((Component)renderer);
+                }
+            } finally {
+                updateInProgress = false;
+            }
+        }
+    }
+
+
      */
     @Override
     public void updateUI() {
         updatingUI = true;
-        
+        System.out.println("JXComboBox.updateUI getUIClassID():"+getUIClassID());
         try {
-            super.updateUI();
+        	// expectedUIClass: ComboBoxUI
+        	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
+        	System.out.println("JXComboBox.updateUI ui:"+ui);
+        	setUI((ComboBoxUI)ui);
             
-            if (keySelectionManager instanceof UIDependent) {
-                ((UIDependent) keySelectionManager).updateUI();
+            if (keySelectionManager instanceof UIDependent uiKeySelectionManager) {
+            	uiKeySelectionManager.updateUI();
             }
             
             ListCellRenderer<? super E> renderer = getRenderer();
             
-            if (renderer instanceof UIDependent) {
-                ((UIDependent) renderer).updateUI();
-            } else if (renderer instanceof Component) {
-                SwingUtilities.updateComponentTreeUI((Component) renderer);
+            if (renderer instanceof UIDependent uiRenderer) {
+            	uiRenderer.updateUI();
+            } else if (renderer instanceof Component comp) {
+                SwingUtilities.updateComponentTreeUI(comp);
             }
             
             if (compoundHighlighter != null) {
@@ -898,4 +988,51 @@ public class JXComboBox<E> extends JComboBox<E> {
             updatingUI = false;
         }
     }
+    public void setUI(ComboBoxUI newUI) {
+    	System.out.println("JXComboBox.setUI ui:"+ui + " newUI:"+newUI);
+    	if(ui==newUI) return;
+        ComponentUI oldUI = ui;
+        ui = newUI;
+        if (ui != null) {
+            ui.installUI(this); // calls BasicXComboBoxUI#installUI resp. SynthXComboBoxUI#installUI
+        }
+        firePropertyChange("UI", oldUI, newUI);
+        revalidate();
+        repaint();
+    }
+    public ComboBoxEditor getEditor() {
+    	if(editor==null) {
+    		System.out.println("JXComboBox.getEditor() :!!!!!! ComboBoxEditor in super ==null isEditable="+isEditable);
+    		editor = new BasicComboBoxEditor() {
+    			protected JTextField createEditorComponent() {
+    				JTextField txtEditor = new JTextField(null, "", 9);// Document doc, String text, int columns
+    				return txtEditor;
+    			}
+    		};
+    	}
+        return editor;
+    }
+    public void setSelectedItem(Object anObject) {
+    	System.out.println("JXComboBox.setSelectedItem to anObject="+anObject);
+// BUG in JComboBox Z.603 getEditor liefert null
+//    	getEditor().setItem(anObject);
+
+    	super.setSelectedItem(anObject);
+    }
+    public void setComboBoxIcon(Icon icon) {
+    	setComboBoxIcon(icon, icon);
+    }
+    public void setComboBoxIcon(Icon icon, Icon isShowingPopupIcon) {
+		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon);
+    	UIManager.getLookAndFeelDefaults().put("ComboBox.icon", new IconUIResource(icon));
+    	UIManager.getLookAndFeelDefaults().put("ComboBox.isShowingPopupIcon", 
+    			isShowingPopupIcon==null ? null : new IconUIResource(isShowingPopupIcon));
+    	//updateUI(); // nein
+    	((BasicXComboBoxUI)getUI()).installUI(this);
+    }
+//    public void setPopupVisible(boolean v) {
+//		System.out.println("JXComboBox.setPopupVisible(:"+v);
+//        getUI().setPopupVisible(this, v);
+//    }
+
 }
