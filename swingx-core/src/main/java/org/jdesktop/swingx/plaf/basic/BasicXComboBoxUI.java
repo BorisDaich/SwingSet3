@@ -1127,18 +1127,6 @@ in BasicComboPopup gibt es
 
     // Used for calculating the default size.
     private static ListCellRenderer<Object> getDefaultListCellRenderer() {
-//        @SuppressWarnings("unchecked")
-//        ListCellRenderer<Object> renderer = (ListCellRenderer)AppContext.
-//                         getAppContext().get(COMBO_UI_LIST_CELL_RENDERER_KEY);
-//
-//        if (renderer == null) {
-//            renderer = new DefaultListCellRenderer();
-//            AppContext.getAppContext().put(COMBO_UI_LIST_CELL_RENDERER_KEY,
-//                                           new DefaultListCellRenderer());
-//        }
-//        return renderer;
-    	//return new DefaultListCellRenderer();
-    	// public class YListCellRenderer extends DefaultListCellRenderer {
     	return new YListCellRenderer();
     }
     /**
@@ -1151,7 +1139,7 @@ in BasicComboPopup gibt es
     protected Dimension getDefaultSize() {
         // Calculates the height and width using the default text renderer
         Component comp = getDefaultListCellRenderer().getListCellRendererComponent(listBox, " ", -1, false, false);
-        LOG.info("JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:"+comp);
+        LOG.info("Component to calculate size:"+comp);
         Dimension d = getSizeForComponent(comp);
 
         return new Dimension(d.width, d.height);
