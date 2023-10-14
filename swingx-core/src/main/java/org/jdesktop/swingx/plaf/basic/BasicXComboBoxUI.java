@@ -113,7 +113,6 @@ public class BasicXComboBoxUI extends ComboBoxUI {
      * - FocusListener,
      * - ListDataListener
      * and ActionListener
-     * Also MouseListener to toggle ArrowButton
      */
     private Handler handler;
     private Handler getHandler() {
@@ -466,13 +465,7 @@ INFORMATION: LookAndFeelDefaults
             }
         };		
  */
-    			return new JYList<Object>( comboBox.getModel() ) {
-    				
-    			};
-//    			JYList<Object> ylist = new JYList<Object>( comboBox.getModel() );
-//    			LOG.info("------------->>>>>>>>>>>>>"+ylist);
-//    			ylist.setCellRenderer(new DefaultListCellRenderer());
-//    			return ylist;
+    			return new JYList<Object>(comboBox.getModel());
     		}
 
 //    		protected void configureList() {
@@ -487,48 +480,25 @@ in BasicComboPopup gibt es
 
  */
     	    protected void togglePopup() {
-    	    	LOG.info("------------->>>>>>>>>>>>>isVisible()="+isVisible() +" popupVisible="+popupVisible);
-    	    	// BUG 57 isVisible() ist immer false XXX : popup != null ==> daher popupVisible
-    	    	// siehe auch setPopupVisible
+//    	    	LOG.info("------------->>>>>>>>>>>>>isVisible()="+isVisible() +" popupVisible="+popupVisible);
 //    	        if ( isVisible() ) {
+    	    	// BUG 57 isVisible() ist immer false XXX : popup != null ==> daher popupVisible
     	        if (popupVisible) {
     	            hide();
-//    	            popupVisible = isVisible();
-//    	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
-//        	            basicArrowButton.setDirection(BasicArrowButton.SOUTH);
-//    	            } else {
-//    	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.icon"));
-//    	            }
     	            setPopupVisible(comboBox, isVisible());
     	        }
     	        else {
     	            show();
-//    	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
-//        	            basicArrowButton.setDirection(BasicArrowButton.NORTH);
-//    	            } else {
-//    	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.isShowingPopupIcon"));
-//    	            }
     	            setPopupVisible(comboBox, popupVisible);
     	        }
     	    }
     	    public void show() {
-//    	        comboBox.firePopupMenuWillBecomeVisible();
-//    	        setListSelection(comboBox.getSelectedIndex()); // private
-//    	        Point location = getPopupLocation(); // private
-//    	        show( comboBox, location.x, location.y ); // aus JPopupMenu
     	    	super.show();
     	    }
     	    public void show(Component invoker, int x, int y) {
-    	    	LOG.info("// isVisible="+isVisible()+" x="+x+",y="+y+" aus JPopupMenu Component invoker:"+invoker);
-//    	    	if(invoker==comboBox) {
-////    	    		toggleArrowButton();
-//    	    		super.show(invoker, x, y);
-////    	    		setVisible(true);
-//    	    	} else {
-//        	    	LOG.info("// isVisible="+isVisible()+" invoker.type"+invoker.getClass());
-//    	    	}
+//    	    	LOG.info("// isVisible="+isVisible()+" x="+x+",y="+y+" aus JPopupMenu Component invoker:"+invoker);
     	    	super.show(invoker, x, y);
-    	    	LOG.info("// set popupVisible to isVisible()="+isVisible());
+//    	    	LOG.info("// set popupVisible to isVisible()="+isVisible());
     	    	popupVisible = isVisible(); // avoid rekusive call via setPopupVisible 
     	    }
 
@@ -619,58 +589,13 @@ in BasicComboPopup gibt es
         button.setName("ComboBox.arrowButton");
         return button;
     }
-/*
- * Diese Implementiertung war bevor der BUG BasicComboPopup.togglePopup.isVisible() ist immer false
- * 
-    private Icon arrowIcon = null;
-    private void toggleArrowButton() {
-    	if(arrowButton instanceof BasicArrowButton basicArrowButton) {
-    		if(basicArrowButton.getDirection()==BasicArrowButton.SOUTH) {
-        		basicArrowButton.setDirection(BasicArrowButton.NORTH);
-    		} else {
-//        		basicArrowButton.setDirection(BasicArrowButton.SOUTH);
-        		popup.hide();
-    		}
-    	} else {
-    		Icon icon = arrowButton.getIcon();
-    		if(icon == arrowIcon) {
-    			arrowButton.setIcon(UIManager.getIcon("ComboBox.isShowingPopupIcon"));
-    		} else {
-    			arrowButton.setIcon(arrowIcon);
-        		popup.hide();
-    		}
-    	}
-    }
- */
     
     private void configureArrowButton() {
         if ( arrowButton != null ) {
             arrowButton.setEnabled( comboBox.isEnabled() );
             arrowButton.setFocusable(comboBox.isFocusable());
             arrowButton.setRequestFocusEnabled(false);
-// TODO auskommentiertes Löschen            
-//            LOG.info(">>>>>>>>>>>popup.getMouseListener()::::"+popup.getMouseListener()); 
-//            //javax.swing.plaf.basic.BasicComboPopup$Handler - TODO der MouseListener ist ganz oben in Component
-//            // dort kann man den listener erfragen public <T extends EventListener> T[] getListeners(Class<T> listenerType) 
             arrowButton.addMouseListener( popup.getMouseListener() );
-//            MouseListener[] ml = arrowButton.getListeners(MouseListener.class);
-//            LOG.info(">>>>>>>>>>>MouseListeners::::#="+ml.length);
-            /*
-             * Beim Klick auf v-Button (arrowButton) klappt die Klappliste auf, 
-             * klappt aber nicht zu wenn man arrowButton nochmal klickt. >>>>>>>> wohl aber in JComboBox!!! 
-             * wg. BUG https://github.com/homebeaver/SwingSet/issues/57
-             * Sie klappt erst zu, wenn ein Listfeld ausgewählt wird.
-             * Ziel:
-             * 1. v-Button wird zu ^-Button und klappt zu bei nochmaligen Klick ==> BUG #57 umgangen
-             * 2. v-Button kann ersetzt werden
-             * 
-             * zu 1. : dazu handler um MouseListener erweitern und in arrowButton registrieren (hier)
-             * - in handler.mouseClicked call toggleArrowButton
-             * 
-             * zu 2. : JXComboBox.setComboBoxIcon
-             */
-//            arrowButton.addMouseListener(getHandler()); nicht mehr notwendig BUG #57 umgangen
-            
             arrowButton.addMouseMotionListener( popup.getMouseMotionListener() );
             arrowButton.resetKeyboardActions();
             arrowButton.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
@@ -685,16 +610,7 @@ in BasicComboPopup gibt es
         }
     }
 
-    /**
-     * This public method is implementation specific and should be private. TODO
-     * do not call or override. To implement a specific editor create a
-     * custom <code>ComboBoxEditor</code>
-     *
-     * @see #createEditor
-     * @see javax.swing.JComboBox#setEditor
-     * @see javax.swing.ComboBoxEditor
-     */
-    public void addEditor() {
+    private void addEditor() {
     	LOG.info("removeEditor currently "+editor);
         removeEditor();
         // in BasicComboBoxEditor EditorComponent is JTextField, a Component
@@ -797,11 +713,10 @@ in BasicComboPopup gibt es
 	}
 
     /**
-     * Hides the popup if visibilty is false
-     * @param c a {@code JComboBox}
+     * Shows or hides the popup depending on visibilty
+     * @param c a {@code JComboBox} (not used)
      * @param v a {@code boolean} determining the visibilty of the popup
      */
-    // copied from javax.swing.plaf.basic.BasicComboBoxUI
 	@Override
 	public void setPopupVisible(JComboBox<?> c, boolean v) {
         if (popup != null) {
@@ -1328,7 +1243,6 @@ in BasicComboPopup gibt es
     	, FocusListener
     	, ListDataListener
     	, ActionListener
-//    	, MouseListener
     {
         //
         // PropertyChangeListener
@@ -1639,28 +1553,6 @@ in BasicComboPopup gibt es
             }
         }
 
-        //
-        // MouseListener
-        //
-//		@Override
-//		public void mouseClicked(MouseEvent e) {
-//			LOG.info(".......isPopupVisible(comboBox)="+isPopupVisible(comboBox)
-//			+"... popup.isVisible()="+popup.isVisible()
-//			+"........."+e);
-//			toggleArrowButton();
-//		}
-//
-//		@Override
-//		public void mousePressed(MouseEvent e) {}
-//
-//		@Override
-//		public void mouseReleased(MouseEvent e) {}
-//
-//		@Override
-//		public void mouseEntered(MouseEvent e) {}
-//
-//		@Override
-//		public void mouseExited(MouseEvent e) {}
     }
 
     // inner class copied from private javax.swing.plaf.basic.BasicComboBoxUI with modifications
