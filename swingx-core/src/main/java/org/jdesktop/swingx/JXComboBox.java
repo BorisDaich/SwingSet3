@@ -939,34 +939,16 @@ public class JXComboBox<E> extends JComboBox<E> {
     /**
      * {@inheritDoc}
      * <p>
-     * Overridden to update renderer and highlighters.
-
-    public void updateUI() {
-        if (!updateInProgress) {
-            updateInProgress = true;
-            try {
-                setUI((ComboBoxUI)UIManager.getUI(this));
-
-                ListCellRenderer<? super E> renderer = getRenderer();
-                if (renderer instanceof Component) {
-                    SwingUtilities.updateComponentTreeUI((Component)renderer);
-                }
-            } finally {
-                updateInProgress = false;
-            }
-        }
-    }
-
-
+     * Overridden to update renderer
      */
     @Override
     public void updateUI() {
         updatingUI = true;
-        System.out.println("JXComboBox.updateUI getUIClassID():"+getUIClassID());
+//        System.out.println("JXComboBox.updateUI getUIClassID():"+getUIClassID());
         try {
-        	// expectedUIClass: ComboBoxUI
+        	// expected UIClass: ComboBoxUI
         	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
-        	System.out.println("JXComboBox.updateUI ui:"+ui);
+//        	System.out.println("JXComboBox.updateUI ui:"+ui);
         	setUI((ComboBoxUI)ui);
             
             if (keySelectionManager instanceof UIDependent uiKeySelectionManager) {
