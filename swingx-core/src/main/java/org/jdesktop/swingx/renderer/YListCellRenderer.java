@@ -11,7 +11,6 @@ import javax.swing.border.Border;
 
 import org.jdesktop.swingx.JYList;
 
-// bisher inner Class in JYList, dort muss es noch entfernt werden
 // es gibt noch den DefaultListRenderer !!! XXX dokumentieren
 @SuppressWarnings("serial")
 public class YListCellRenderer extends DefaultListCellRenderer {
@@ -29,6 +28,10 @@ public class YListCellRenderer extends DefaultListCellRenderer {
     	return DefaultListCellRenderer.noFocusBorder;
     }
 
+    /**
+     * {@inheritDoc} <p>
+     * @see javax.swing.ListCellRenderer#getListCellRendererComponent
+     */
     @Override // implements public interface ListCellRenderer<E>
     // original in super: not accessible: sun.swing.DefaultLookup 
 	public Component getListCellRendererComponent(JList<?> list, Object value

@@ -4,13 +4,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.beans.BeanProperty;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -103,140 +100,32 @@ public class JYList<E> extends JList<E> {
         }
         return (Color)iValue;
     }
-
-    // TODO entfernen, da separate Klasse erstellt
-//    public class YListCellRenderer extends DefaultListCellRenderer {
-//        public YListCellRenderer() {
-//            super();
-//            setOpaque(true);
-//            setBorder(getNoFocusBorder());
-//            setName("List.cellRenderer");
-//        }
-//        /* in (super) DefaultListCellRenderer ist die Methode getNoFocusBorder private:
-//    protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
-//    private Border getNoFocusBorder() {
-//        Border border = DefaultLookup.getBorder(this, ui, "List.cellNoFocusBorder");
-//        if (System.getSecurityManager() != null) {
-//            if (border != null) return border;
-//            return SAFE_NO_FOCUS_BORDER;
-//        } else {
-//            if (border != null && (noFocusBorder == null || noFocusBorder == DEFAULT_NO_FOCUS_BORDER)) {
-//                return border;
-//            }
-//            return noFocusBorder;
-//        }
-//    }
-//         */
-//        private Border getNoFocusBorder() {
-//        	Border border = JYList.getBorder(this, ui, "List.cellNoFocusBorder");
-//        	if (border != null) return border;
-//        	return DefaultListCellRenderer.noFocusBorder;
-//        }
-//        @Override // implements public interface ListCellRenderer<E>
-//        // original in super: not accessible: sun.swing.DefaultLookup 
-//		public Component getListCellRendererComponent(JList<?> list, Object value
-//				, int index, boolean isSelected, boolean cellHasFocus) {
-//        	LOG.finer("index="+index + ",isSelected="+isSelected + ",cellHasFocus="+cellHasFocus+",value="+value);
-///* Bsp:
-//INFORMATION: value=Jane Doe   ,index=0,isSelected=true ,cellHasFocus=false
-//INFORMATION: value=John Smith ,index=1,isSelected=false,cellHasFocus=false
-//INFORMATION: value=Hans Muller,index=2,isSelected=false,cellHasFocus=false
-//INFORMATION: value=Jane Doe   ,index=3,isSelected=false,cellHasFocus=false			
-// */
-//            setComponentOrientation(list.getComponentOrientation());
-//
-//            Color bg = null;
-//            Color fg = null;
-//
-//            JList.DropLocation dropLocation = list.getDropLocation();
-//            if (dropLocation != null
-//                    && !dropLocation.isInsert()
-//                    && dropLocation.getIndex() == index) {
-//
-//                bg = JYList.getColor(this, ui, "List.dropCellBackground");
-//                fg = JYList.getColor(this, ui, "List.dropCellForeground");
-//
-//                isSelected = true;
-//            }
-//            if (isSelected) {
-//                setBackground(bg == null ? list.getSelectionBackground() : bg);
-//                setForeground(fg == null ? list.getSelectionForeground() : fg);
-//            }
-//            else {
-//                setBackground(list.getBackground());
-//                setForeground(list.getForeground());
-//            }
-//
-//            if (value instanceof Icon) {
-//                setIcon((Icon)value);
-//                setText("");
-//            }
-//            else {
-//                setIcon(null);
-//                setText((value == null) ? "" : value.toString());
-//            }
-//
-//            setEnabled(list.isEnabled());
-//            setFont(list.getFont());
-//			Border border = null;
-//			if (cellHasFocus) {
-//				if (isSelected) {
-//					border = JYList.getBorder(this, ui, "List.focusSelectedCellHighlightBorder");
-//					LOG.info("cellHasFocus+isSelected border:"+border);
-//				}
-//				border = JYList.getBorder(this, ui, "List.focusCellHighlightBorder");
-//				LOG.info("cellHasFocus+isNOTSelected border:"+border);
-//			} else {
-//				border = getNoFocusBorder();
-//			}
-//			setBorder(border);
-//			return this;
-//		}
-//// for info: JComponent#paint     
-////        public void paint(Graphics g) {
-////        	// JComponent.paint delegates to paintComponent, paintBorder, paintChildren
-////        	super.paint(g);
-////        }
-//        protected void paintComponent(Graphics g) {
-//        	super.paintComponent(g); // mit ui.update(scratchGraphics, this); ui ist MetallLabelUI
-//        }
-//        protected void paintBorder(Graphics g) {
-//            Border border = getBorder();
-//            LOG.fine("-----DO "+this.getText()+" border.paintBorder "+border);
-//            if (border != null) {
-//                border.paintBorder(this, g, 0, 0, getWidth(), getHeight());
-//            }
-//
-//        }
-//    }
     
+    // cannot use cellRenderer from super, it is private
     private ListCellRenderer<? super E> cellRenderer;
     private int fixedCellWidth = -1;
     private int fixedCellHeight = -1;
+    /**
+     * {@inheritDoc} <p>
+     * overridden to return private cellRenderer
+     */
+    @Override
     public ListCellRenderer<? super E> getCellRenderer() {
     	LOG.config("cellRenderer "+cellRenderer);
-/* Dez. 11, 2022 9:49:51 AM org.jdesktop.swingx.JYList getCellRenderer
-// INFORMATION: cellRenderer org.jdesktop.swingx.JYList$YListCellRenderer[List.cellRenderer,-87,-20,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.border.EtchedBorder@2446c1df,flags=25165832,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,horizontalAlignment=LEADING,horizontalTextPosition=TRAILING,iconTextGap=4,labelFor=,text=Alan Chung,verticalAlignment=CENTER,verticalTextPosition=CENTER]
-INFORMATION: cellRenderer org.jdesktop.swingx.JYList
-                                        ,The x position
-	$YListCellRenderer[List.cellRenderer,-87,-20,0x0,invalid
-	// ab hier von JComponent:
-	,alignmentX=0.0,alignmentY=0.0
-	,border=javax.swing.border.EtchedBorder@3dd8e12e
-	,flags=25165832,maximumSize=,minimumSize=,preferredSize=
-	// ab hier von JLabel:
-	,defaultIcon=,disabledIcon=,horizontalAlignment=LEADING,horizontalTextPosition=TRAILING
-	,iconTextGap=4,labelFor=,text=Alan Chung,verticalAlignment=CENTER,verticalTextPosition=CENTER]
- */
         return cellRenderer;
     }
+    /**
+     * {@inheritDoc} <p>
+     * overridden to set private cellRenderer
+     */
+    @Override
     public void setCellRenderer(ListCellRenderer<? super E> cellRenderer) {
         ListCellRenderer<? super E> oldValue = this.cellRenderer;
         LOG.config("cellRenderer old "+this.cellRenderer + " new "+cellRenderer);
         this.cellRenderer = cellRenderer;
 
-        /* If the cellRenderer has changed and prototypeCellValue
-         * was set, then recompute fixedCellWidth and fixedCellHeight.
+        /* If the cellRenderer has changed and prototypeCellValue was set, 
+         * then recompute fixedCellWidth and fixedCellHeight.
          */
         if ((cellRenderer != null) && !cellRenderer.equals(oldValue)) {
             updateFixedCellSize();
@@ -321,6 +210,11 @@ INFORMATION: cellRenderer org.jdesktop.swingx.JYList
         revalidate();
         repaint();
     }
+
+    /**
+     * {@inheritDoc} <p>
+     * returns the look and feel delegate for this component.
+     */
     public ListUI getUI() {
         return (ListUI)ui;
     }
