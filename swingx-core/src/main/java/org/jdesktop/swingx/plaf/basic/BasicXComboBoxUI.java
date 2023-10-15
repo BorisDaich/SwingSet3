@@ -177,6 +177,7 @@ public class BasicXComboBoxUI extends ComboBoxUI {
      */
     @Override // javax.swing.plaf.ComponentUI#installUI overridden
     public void installUI(JComponent c) {
+        assert c instanceof JComboBox;
     	isMinimumSizeDirty = true;
     	if(c instanceof JComboBox<?> jcb) {
     		comboBox = jcb;
@@ -314,7 +315,7 @@ comboBox JComboBox<?> :
      * Whenever possible, property values initialized by the client program should not be overridden. 
      */
     protected void installDefaults() {
-		LOG.info("LookAndFeelDefaults "
+		LOG.info("LookAndFeelDefaults "+UIManager.get(comboBox.getUIClassID())
 			+ "\n font "+UIManager.getLookAndFeelDefaults().get(FONT)
 			+ "\n background "+UIManager.getLookAndFeelDefaults().get(BACKGROUND)
 			+ "\n foreground "+UIManager.getLookAndFeelDefaults().get(FOREGROUND)
@@ -520,7 +521,7 @@ in BasicComboPopup gibt es
      * This method is called as part of the UI installation process <code>installUI</code>
      */
     protected void installComponents() {
-        arrowButton = createArrowButton();
+        arrowButton = createComboButton();
 
         if (arrowButton != null)  {
             comboBox.add(arrowButton);
@@ -573,17 +574,21 @@ in BasicComboPopup gibt es
 			BasicArrowButton extends JButton
 			Pfeil zeig nach unten : BasicArrowButton.SOUTH
 		 */
+    	JButton button = new BasicArrowButton(BasicArrowButton.SOUTH,
+                UIManager.getColor("ComboBox.buttonBackground"),
+                UIManager.getColor("ComboBox.buttonShadow"),
+                UIManager.getColor("ComboBox.buttonDarkShadow"),
+                UIManager.getColor("ComboBox.buttonHighlight"));
+        button.setName("ComboBox.arrowButton");
+        return button;
+    }
+    protected JButton createComboButton() {
     	Icon icon = UIManager.getIcon("ComboBox.icon");
     	JButton button;
     	if(icon==null) {
-            button = new BasicArrowButton(BasicArrowButton.SOUTH,
-                    UIManager.getColor("ComboBox.buttonBackground"),
-                    UIManager.getColor("ComboBox.buttonShadow"),
-                    UIManager.getColor("ComboBox.buttonDarkShadow"),
-                    UIManager.getColor("ComboBox.buttonHighlight"));
+    		button = createArrowButton();
     	} else {
     		button = new JButton(icon);
-//    		arrowIcon = icon;
     		button.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
     	}
         button.setName("ComboBox.arrowButton");
