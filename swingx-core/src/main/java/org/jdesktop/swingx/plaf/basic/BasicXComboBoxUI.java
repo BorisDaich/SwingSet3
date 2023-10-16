@@ -57,6 +57,7 @@ import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
 
 import org.jdesktop.swingx.JYList;
+import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
 import org.jdesktop.swingx.renderer.YListCellRenderer;
 
@@ -64,21 +65,27 @@ import org.jdesktop.swingx.renderer.YListCellRenderer;
 public abstract class ComboBoxUI extends ComponentUI // Pluggable look and feel interface for JComboBox
 Die systematische/symetrische Ableitung:
 
-                                         ComponentUI
+                          abstract class ComponentUI
                                           |
  +----------------------> abstract class ComboBoxUI
+abstract class XComboBoxUI                |
  |                                        |
 BasicXComboBoxUI           symetrisch zu BasicComboBoxUI
 
- in abstract class ComboBoxUI : implementation in super BasicComboBoxUI
+ in abstract class javax.swing.plaf.ComponentUI :
+    public ComponentUI() {}
+    ... weitere Methoden, keine davon abstract
+ in abstract class javax.swing.plaf.ComboBoxUI extends ComponentUI : implementation in BasicComboBoxUI
     protected ComboBoxUI() {}
     public abstract void setPopupVisible( JComboBox<?> c, boolean v );
     public abstract boolean isPopupVisible( JComboBox<?> c );
     public abstract boolean isFocusTraversable( JComboBox<?> c );
-
-
+public abstract class XComboBoxUI extends ComboBoxUI {
+	public abstract void installButton(Icon i);
+	public abstract void setIsShowingPopupIcon(Icon i);
+	public abstract void uninstallButton();
  */
-public class BasicXComboBoxUI extends ComboBoxUI {
+public class BasicXComboBoxUI extends XComboBoxUI {
 
     private static final Logger LOG = Logger.getLogger(BasicXComboBoxUI.class.getName());
 
@@ -97,7 +104,9 @@ public class BasicXComboBoxUI extends ComboBoxUI {
     protected boolean squareButton = true;
     protected Insets padding;
     protected CellRendererPane currentValuePane = new CellRendererPane();
-    protected JButton arrowButton;
+    protected Icon icon;
+    protected Icon isShowingPopupIcon;
+    protected JButton arrowButton; // vll JXButton TODO ???
     
     JComboBox.KeySelectionManager keySelectionManager;
 
@@ -521,12 +530,13 @@ in BasicComboPopup gibt es
      * This method is called as part of the UI installation process <code>installUI</code>
      */
     protected void installComponents() {
-        arrowButton = createComboButton();
-
-        if (arrowButton != null)  {
-            comboBox.add(arrowButton);
-            configureArrowButton();
-        }
+    	installButton(null);
+//        arrowButton = createComboButton();
+//
+//        if (arrowButton != null)  {
+//            comboBox.add(arrowButton);
+//            configureArrowButton();
+//        }
 
         if ( comboBox.isEditable() ) {
             addEditor();
@@ -534,21 +544,38 @@ in BasicComboPopup gibt es
 
         comboBox.add( currentValuePane );
     }
+    @Override
+    public void installButton(Icon i) {
+        arrowButton = createComboButton(i);
 
+        if (arrowButton != null)  {
+            comboBox.add(arrowButton);
+            configureArrowButton();
+        }
+    }
+    @Override
+    public void setIsShowingPopupIcon(Icon i) {
+    	isShowingPopupIcon = i;
+    }
     /**
      * The aggregate components which comprise the combo box are
      * unregistered and uninitialized. This method is called as part of the
      * UI uninstallation process.
      */
     protected void uninstallComponents() {
-        if ( arrowButton != null ) {
-            unconfigureArrowButton();
-        }
+    	uninstallButton();
         if ( editor != null ) {
             unconfigureEditor();
         }
         comboBox.removeAll(); // Just to be safe.
-        arrowButton = null;
+    }
+    @Override
+    public void uninstallButton() {
+        if ( arrowButton != null ) {
+            arrowButton.removeMouseListener( popup.getMouseListener() );
+            arrowButton.removeMouseMotionListener( popup.getMouseMotionListener() );
+            arrowButton = null;
+        }
     }
 
     /**
@@ -558,6 +585,23 @@ in BasicComboPopup gibt es
      * @return a button which represents the popup control
      */
     protected JButton createArrowButton() {
+/* aus MetalXComboBoxUI : 
+        boolean iconOnly = (comboBox.isEditable() || MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme);
+        Icon icon = new MetalComboBoxIcon();
+        JButton button = new MetalComboBoxButton( (JComboBox<Object>)comboBox,
+                                                  icon,
+                                                  iconOnly,
+                                                  currentValuePane,
+                                                  listBox );
+        button.setMargin( new Insets( 0, 1, 1, 3 ) );
+        if (MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme) {
+            // Disabled rollover effect.
+            button.putClientProperty("NoButtonRollover" //MetalBorders.NO_BUTTON_ROLLOVER,
+                                     ,Boolean.TRUE);
+        }
+//        updateButtonForOcean(button);
+        return button;
+ */
 		/*
     	LOG.info("------------"
 			+ "\n get buttonBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox.buttonBackground")
@@ -582,8 +626,8 @@ in BasicComboPopup gibt es
         button.setName("ComboBox.arrowButton");
         return button;
     }
-    protected JButton createComboButton() {
-    	Icon icon = UIManager.getIcon("ComboBox.icon");
+    protected JButton createComboButton(Icon i) {
+    	icon = i==null?UIManager.getIcon("ComboBox.icon"):i;
     	JButton button;
     	if(icon==null) {
     		button = createArrowButton();
@@ -605,13 +649,6 @@ in BasicComboPopup gibt es
             arrowButton.resetKeyboardActions();
             arrowButton.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
             arrowButton.setInheritsPopupMenu(true);
-        }
-    }
-
-    private void unconfigureArrowButton() {
-        if ( arrowButton != null ) {
-            arrowButton.removeMouseListener( popup.getMouseListener() );
-            arrowButton.removeMouseMotionListener( popup.getMouseMotionListener() );
         }
     }
 
@@ -732,7 +769,9 @@ in BasicComboPopup gibt es
 	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
     	            basicArrowButton.setDirection(BasicArrowButton.NORTH);
 	            } else {
-	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.isShowingPopupIcon"));
+	            	// das muss eine prop sein:
+//	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.isShowingPopupIcon"));
+	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
             } else {
                 popup.hide();
@@ -740,7 +779,9 @@ in BasicComboPopup gibt es
 	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
     	            basicArrowButton.setDirection(BasicArrowButton.SOUTH);
 	            } else {
-	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.icon"));
+	            	// das muss eine prop sein:
+//	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.icon"));
+	            	arrowButton.setIcon(icon);
 	            }
             }
         }
@@ -768,39 +809,6 @@ in BasicComboPopup gibt es
         }
         // Empty out the renderer pane, allowing renderers to be gc'ed.
         currentValuePane.removeAll();
-    }
-
-    @Override
-    public Dimension getPreferredSize( JComponent c ) {
-        return getMinimumSize(c);
-    }
-
-    protected boolean isMinimumSizeDirty = true;
-    protected Dimension cachedMinimumSize = new Dimension( 0, 0 );
-    @Override
-    public Dimension getMinimumSize( JComponent c ) {
-        if ( !isMinimumSizeDirty ) {
-            return new Dimension(cachedMinimumSize);
-        }
-        // The minimum size is the size of the display area plus insets plus the button.
-        Dimension size = getDisplaySize();
-        Insets insets = getInsets();
-        //calculate the width and height of the button
-        int buttonHeight = size.height;
-        int buttonWidth = squareButton ? buttonHeight : arrowButton.getPreferredSize().width;
-        //adjust the size based on the button width
-        size.height += insets.top + insets.bottom;
-        size.width +=  insets.left + insets.right + buttonWidth;
-
-        cachedMinimumSize.setSize( size.width, size.height );
-        isMinimumSizeDirty = false;
-
-        return new Dimension(size);
-    }
-
-    @Override
-    public Dimension getMaximumSize( JComponent c ) {
-        return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
     }
 
     private boolean sameBaseline;
@@ -1045,6 +1053,39 @@ in BasicComboPopup gibt es
     // begin Size Utility Methods
     //
 
+    @Override
+    public Dimension getPreferredSize( JComponent c ) {
+        return getMinimumSize(c);
+    }
+
+    protected boolean isMinimumSizeDirty = true;
+    protected Dimension cachedMinimumSize = new Dimension( 0, 0 );
+    @Override
+    public Dimension getMinimumSize( JComponent c ) {
+        if ( !isMinimumSizeDirty ) {
+            return new Dimension(cachedMinimumSize);
+        }
+        // The minimum size is the size of the display area plus insets plus the button.
+        Dimension size = getDisplaySize();
+        Insets insets = getInsets();
+        //calculate the width and height of the button
+        int buttonHeight = size.height;
+        int buttonWidth = squareButton ? buttonHeight : arrowButton.getPreferredSize().width;
+        //adjust the size based on the button width
+        size.height += insets.top + insets.bottom;
+        size.width +=  insets.left + insets.right + buttonWidth;
+
+        cachedMinimumSize.setSize( size.width, size.height );
+        isMinimumSizeDirty = false;
+
+        return new Dimension(size);
+    }
+
+    @Override
+    public Dimension getMaximumSize( JComponent c ) {
+        return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+    }
+    
     // Used for calculating the default size.
     private static ListCellRenderer<Object> getDefaultListCellRenderer() {
     	return new YListCellRenderer();

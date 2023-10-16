@@ -48,7 +48,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.ComboPopup;
@@ -59,7 +58,7 @@ import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.UIDependent;
 import org.jdesktop.swingx.plaf.XComboBoxAddon;
-import org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI;
+import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.JRendererPanel;
 import org.jdesktop.swingx.renderer.StringValue;
@@ -94,8 +93,7 @@ public class JXComboBox<E> extends JComboBox<E> {
     public static final String uiClassID = "XComboBoxUI";
 
     /**
-     * Returns {@code uiClassID}, the {@code UIDefaults} key used to look up 
-     * the name of the class that defines the look and feel for this component.
+     * Returns a string that specifies the name of the LaF class that renders this component.
      *
      * @return the string {@code uiClassID}
      * @see JComponent#getUIClassID
@@ -946,9 +944,14 @@ public class JXComboBox<E> extends JComboBox<E> {
         updatingUI = true;
 //        System.out.println("JXComboBox.updateUI getUIClassID():"+getUIClassID());
         try {
+        	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
         	// expected UIClass: ComboBoxUI
         	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
-//        	System.out.println("JXComboBox.updateUI ui:"+ui);
+/*
+bei LaF class=javax.swing.plaf.metal.MetalLookAndFeel
+wird BasicXComboBoxUI instanziert, nicht aber MetalXComboBoxUI TODO
+ */
+        	System.out.println("JXComboBox.updateUI current LaF class="+currentClassName+" setUI(ui:"+ui);
         	setUI((ComboBoxUI)ui);
             
             if (keySelectionManager instanceof UIDependent uiKeySelectionManager) {
@@ -977,6 +980,7 @@ public class JXComboBox<E> extends JComboBox<E> {
         ui = newUI;
         if (ui != null) {
             ui.installUI(this); // calls BasicXComboBoxUI#installUI resp. SynthXComboBoxUI#installUI
+            // und was ist mit MetalXComboBoxUI
         }
         firePropertyChange("UI", oldUI, newUI);
         revalidate();
@@ -1006,15 +1010,20 @@ public class JXComboBox<E> extends JComboBox<E> {
     }
     public void setComboBoxIcon(Icon icon, Icon isShowingPopupIcon) {
 		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon);
-    	UIManager.getLookAndFeelDefaults().put("ComboBox.icon", new IconUIResource(icon));
-    	UIManager.getLookAndFeelDefaults().put("ComboBox.isShowingPopupIcon", 
-    			isShowingPopupIcon==null ? null : new IconUIResource(isShowingPopupIcon));
-    	//updateUI(); // nein
-    	((BasicXComboBoxUI)getUI()).installUI(this);
+		// BUG TODO alle CBn sind betroffen, siehe swingset.ComboBoxDemo
+		// put wirkt auf alle Instanzen
+//    	UIManager.getLookAndFeelDefaults().put("ComboBox.icon", new IconUIResource(icon));
+//    	UIManager.getLookAndFeelDefaults().put("ComboBox.isShowingPopupIcon", 
+//    			isShowingPopupIcon==null ? null : new IconUIResource(isShowingPopupIcon));
+//    	((BasicXComboBoxUI)getUI()).installUI(this);
+		XComboBoxUI xui = (XComboBoxUI)getUI();
+    	xui.uninstallButton();
+    	xui.installButton(icon);
+    	xui.setIsShowingPopupIcon(isShowingPopupIcon);
+    	this.repaint();
     }
-//    public void setPopupVisible(boolean v) {
-//		System.out.println("JXComboBox.setPopupVisible(:"+v);
-//        getUI().setPopupVisible(this, v);
-//    }
+    public ComboBoxUI getUI() {
+        return (XComboBoxUI)super.getUI();
+    }
 
 }
