@@ -46,7 +46,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -527,27 +526,22 @@ in BasicComboPopup gibt es
     
     /**
      * Creates and initializes the components which make up the aggregate combo box. 
-     * This method is called as part of the UI installation process <code>installUI</code>
+     * This method is called as part of the UI installation process {@code installUI}.
      */
     protected void installComponents() {
     	installButton(null);
-//        arrowButton = createComboButton();
-//
-//        if (arrowButton != null)  {
-//            comboBox.add(arrowButton);
-//            configureArrowButton();
-//        }
-
         if ( comboBox.isEditable() ) {
             addEditor();
         }
-
-        comboBox.add( currentValuePane );
+        comboBox.add(currentValuePane);
     }
+    /**
+     * {@inheritDoc} <p>
+     * This method is called as part of the UI installation process {@code installUI}.
+     */
     @Override
     public void installButton(Icon i) {
         arrowButton = createComboButton(i);
-
         if (arrowButton != null)  {
             comboBox.add(arrowButton);
             configureArrowButton();
@@ -558,9 +552,8 @@ in BasicComboPopup gibt es
     	isShowingPopupIcon = i;
     }
     /**
-     * The aggregate components which comprise the combo box are
-     * unregistered and uninitialized. This method is called as part of the
-     * UI uninstallation process.
+     * The aggregate components which comprise the combo box are unregistered and uninitialized. 
+     * This method is called as part of the UI uninstallation process {@code uninstallUI}.
      */
     protected void uninstallComponents() {
     	uninstallButton();
@@ -569,6 +562,11 @@ in BasicComboPopup gibt es
         }
         comboBox.removeAll(); // Just to be safe.
     }
+    /**
+     * {@inheritDoc} <p>
+     * Removes the registered Listener.
+     * This method is called as part of the UI installation process {@code uninstallUI}.
+     */
     @Override
     public void uninstallButton() {
         if ( arrowButton != null ) {
@@ -581,27 +579,12 @@ in BasicComboPopup gibt es
     /**
      * Creates a button which will be used as the control to show or hide
      * the popup portion of the combo box.
+     * <br>
+     * In Metal this method is overridden.
      *
      * @return a button which represents the popup control
      */
     protected JButton createArrowButton() {
-/* aus MetalXComboBoxUI : 
-        boolean iconOnly = (comboBox.isEditable() || MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme);
-        Icon icon = new MetalComboBoxIcon();
-        JButton button = new MetalComboBoxButton( (JComboBox<Object>)comboBox,
-                                                  icon,
-                                                  iconOnly,
-                                                  currentValuePane,
-                                                  listBox );
-        button.setMargin( new Insets( 0, 1, 1, 3 ) );
-        if (MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme) {
-            // Disabled rollover effect.
-            button.putClientProperty("NoButtonRollover" //MetalBorders.NO_BUTTON_ROLLOVER,
-                                     ,Boolean.TRUE);
-        }
-//        updateButtonForOcean(button);
-        return button;
- */
 		/*
     	LOG.info("------------"
 			+ "\n get buttonBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox.buttonBackground")
@@ -762,15 +745,13 @@ in BasicComboPopup gibt es
 	@Override
 	public void setPopupVisible(JComboBox<?> c, boolean v) {
         if (popup != null) {
-        	LOG.info("popup "+(v?"show":"hide")+" for "+c);
+        	LOG.fine("popup "+(v?"show":"hide")+" for "+c);
             if (v) {
                 popup.show();
                 popupVisible = v;
 	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
     	            basicArrowButton.setDirection(BasicArrowButton.NORTH);
 	            } else {
-	            	// das muss eine prop sein:
-//	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.isShowingPopupIcon"));
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
             } else {
@@ -779,8 +760,6 @@ in BasicComboPopup gibt es
 	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
     	            basicArrowButton.setDirection(BasicArrowButton.SOUTH);
 	            } else {
-	            	// das muss eine prop sein:
-//	            	arrowButton.setIcon(UIManager.getIcon("ComboBox.icon"));
 	            	arrowButton.setIcon(icon);
 	            }
             }
@@ -1451,7 +1430,7 @@ in BasicComboPopup gibt es
         // The combo box listener hides the popup when the focus is lost.
         // It also repaints when focus is gained or lost.
         public void focusGained( FocusEvent e ) {
-        	LOG.info("FocusEvent "+e);
+        	LOG.fine("FocusEvent "+e);
             ComboBoxEditor comboBoxEditor = comboBox.getEditor();
 
             if ( (comboBoxEditor != null) &&
@@ -1466,7 +1445,7 @@ in BasicComboPopup gibt es
             }
         }
         public void focusLost( FocusEvent e ) {
-        	LOG.info("FocusEvent "+e);
+        	LOG.fine("FocusEvent "+e);
             ComboBoxEditor editor = comboBox.getEditor();
             if ( (editor != null) &&
                  (e.getSource() == editor.getEditorComponent()) ) {
@@ -1538,8 +1517,7 @@ in BasicComboPopup gibt es
         }
 
         public void layoutContainer(Container parent) {
-        	LOG.info("Container parent:"+parent);
-//            @SuppressWarnings("unchecked")
+        	LOG.fine("Container parent:"+parent);
             JComboBox<?> cb = (JComboBox<?>)parent;
             int width = cb.getWidth();
             int height = cb.getHeight();
@@ -1549,23 +1527,18 @@ in BasicComboPopup gibt es
             int buttonWidth = buttonHeight;
             if (arrowButton != null) {
                 Insets arrowInsets = arrowButton.getInsets();
-                buttonWidth = squareButton ?
-                    buttonHeight :
-                    arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+                buttonWidth = squareButton ? buttonHeight 
+                	: arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
             }
-            Rectangle cvb;
 
             if (arrowButton != null) {
-                //return c.getComponentOrientation().isLeftToRight();
-//                if (BasicGraphicsUtils.isLeftToRight(cb)) {
                 if (cb.getComponentOrientation().isLeftToRight()) {
-                    arrowButton.setBounds(width - (insets.right + buttonWidth),
-                            insets.top, buttonWidth, buttonHeight);
+                    arrowButton.setBounds(width-(insets.right+buttonWidth), insets.top, buttonWidth, buttonHeight);
                 } else {
-                    arrowButton.setBounds(insets.left, insets.top,
-                            buttonWidth, buttonHeight);
+                    arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
                 }
             }
+            Rectangle cvb;
             if ( editor != null ) {
                 cvb = rectangleForCurrentValue();
                 editor.setBounds(cvb);

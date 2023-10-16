@@ -63,11 +63,26 @@ public abstract class javax.swing.plaf.ComboBoxUI extends ComponentUI {
     public abstract boolean isFocusTraversable( JComboBox<?> c );
 
 ***
-erweitert die UI um Methoden zum ComboBox Button (aka arrowButton) Handling
+erweitert die UI um Methoden zum Handling von ComboBox Button (aka arrowButton) 
 
  */
 public abstract class XComboBoxUI extends ComboBoxUI {
+	
+	/**
+     * Creates and initializes the ComboBox Button (aka arrowButton).
+     * If no icon is provided, an UI depended dafault is created.
+	 * 
+	 * @param i optional Icon for the ComboBox Button
+	 */
 	public abstract void installButton(Icon i);
+	/**
+	 * Defines an icon for the ComboBox Button (aka arrowButton) that appears when popup is visible.
+	 * @param i
+	 */
 	public abstract void setIsShowingPopupIcon(Icon i);
+	/**
+	 * Unconfiger and uninstall the ComboBox Button (aka arrowButton).
+	 */
 	public abstract void uninstallButton();
+	
 }
