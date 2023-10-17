@@ -1,18 +1,13 @@
 package org.jdesktop.swingx.plaf;
 
-import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 import javax.swing.plaf.BorderUIResource;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.jdesktop.swingx.JXComboBox;
-import org.jdesktop.swingx.icon.ChevronIcon;
 import org.jdesktop.swingx.icon.RadianceIcon;
 
 public class XComboBoxAddon extends AbstractComponentAddon {
@@ -26,6 +21,7 @@ public class XComboBoxAddon extends AbstractComponentAddon {
 
     @Override
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+        super.addBasicDefaults(addon, defaults);
         defaults.add(JXComboBox.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI");
         
 		LOG.info("\n get background "+UIManager.getLookAndFeelDefaults().get("ComboBox.background")
@@ -61,7 +57,15 @@ public class XComboBoxAddon extends AbstractComponentAddon {
     }
 
     @Override
+    protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+        super.addMetalDefaults(addon, defaults);     
+        defaults.add(JXComboBox.uiClassID, "org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI");
+		LOG.info("added key "+JXComboBox.uiClassID);
+    }
+
+    @Override
 	protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
+        super.addNimbusDefaults(addon, defaults);
 		defaults.add(JXComboBox.uiClassID, "org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI");
 		LOG.info("added key "+JXComboBox.uiClassID);
 

@@ -947,10 +947,6 @@ public class JXComboBox<E> extends JComboBox<E> {
         	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
         	// expected UIClass: ComboBoxUI
         	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
-/*
-bei LaF class=javax.swing.plaf.metal.MetalLookAndFeel
-wird BasicXComboBoxUI instanziert, nicht aber MetalXComboBoxUI TODO
- */
         	System.out.println("JXComboBox.updateUI current LaF class="+currentClassName+" setUI(ui:"+ui);
         	setUI((ComboBoxUI)ui);
             
@@ -979,8 +975,7 @@ wird BasicXComboBoxUI instanziert, nicht aber MetalXComboBoxUI TODO
         ComponentUI oldUI = ui;
         ui = newUI;
         if (ui != null) {
-            ui.installUI(this); // calls BasicXComboBoxUI#installUI resp. SynthXComboBoxUI#installUI
-            // und was ist mit MetalXComboBoxUI
+            ui.installUI(this); // calls BasicXComboBoxUI#installUI, evtl via MetalXComboBoxUI resp. SynthXComboBoxUI#installUI
         }
         firePropertyChange("UI", oldUI, newUI);
         revalidate();
@@ -1010,16 +1005,10 @@ wird BasicXComboBoxUI instanziert, nicht aber MetalXComboBoxUI TODO
     }
     public void setComboBoxIcon(Icon icon, Icon isShowingPopupIcon) {
 		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon);
-		// BUG TODO alle CBn sind betroffen, siehe swingset.ComboBoxDemo
-		// put wirkt auf alle Instanzen
-//    	UIManager.getLookAndFeelDefaults().put("ComboBox.icon", new IconUIResource(icon));
-//    	UIManager.getLookAndFeelDefaults().put("ComboBox.isShowingPopupIcon", 
-//    			isShowingPopupIcon==null ? null : new IconUIResource(isShowingPopupIcon));
-//    	((BasicXComboBoxUI)getUI()).installUI(this);
-		XComboBoxUI xui = (XComboBoxUI)getUI();
-    	xui.uninstallButton();
-    	xui.installButton(icon);
-    	xui.setIsShowingPopupIcon(isShowingPopupIcon);
+		XComboBoxUI ui = (XComboBoxUI)getUI();
+    	ui.uninstallButton();
+    	ui.installButton(icon);
+    	ui.setIsShowingPopupIcon(isShowingPopupIcon);
     	this.repaint();
     }
     public ComboBoxUI getUI() {
