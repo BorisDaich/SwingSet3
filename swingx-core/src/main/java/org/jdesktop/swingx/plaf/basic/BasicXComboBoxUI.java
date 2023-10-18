@@ -309,7 +309,6 @@ comboBox JComboBox<?> :
                  }),
             "ComboBox.noActionOnKeyNavigation", Boolean.FALSE,
      */
-    // 
     private static final String PROPERTY_PREFIX = "ComboBox" + ".";
     private static final String FONT = PROPERTY_PREFIX + "font";
     private static final String BACKGROUND = PROPERTY_PREFIX + "background";
@@ -317,6 +316,11 @@ comboBox JComboBox<?> :
     private static final String BORDER = PROPERTY_PREFIX + "border";
     private static final String SELECTION_BG = PROPERTY_PREFIX + "selectionBackground";
     private static final String SELECTION_FG = PROPERTY_PREFIX + "selectionForeground";
+    private static final String TIME_FACTOR = PROPERTY_PREFIX + "timeFactor";
+    private static final String SQUARE_BUTTON = PROPERTY_PREFIX + "squareButton";
+    private static final String PADDING = PROPERTY_PREFIX + "padding";
+    private static final String DISABLED_BG = PROPERTY_PREFIX + "disabledBackground";
+    private static final String DISABLED_FG = PROPERTY_PREFIX + "disabledForeground";
     // usw. props TODO
     /**
      * Install default property values for color, fonts, borders, icons, opacity, etc. on the component. 
@@ -331,34 +335,53 @@ comboBox JComboBox<?> :
 			+ "\n property opaque "+UIManager.getLookAndFeelDefaults().get("opaque")
 			+ "\n selectionBackground "+UIManager.getLookAndFeelDefaults().get(SELECTION_BG)
 			+ "\n selectionForeground "+UIManager.getLookAndFeelDefaults().get(SELECTION_FG)
-			+ "\n property timeFactor "+UIManager.getLookAndFeelDefaults().get("ComboBox.timeFactor")
-			+ "\n property squareButton "+UIManager.getLookAndFeelDefaults().get("ComboBox.squareButton")
-			+ "\n padding "+UIManager.getLookAndFeelDefaults().get("ComboBox.padding"));
-/* results for Metal:
-INFORMATION: LookAndFeelDefaults 
+			+ "\n disabledBackground "+UIManager.getLookAndFeelDefaults().get(DISABLED_BG)
+			+ "\n disabledForeground "+UIManager.getLookAndFeelDefaults().get(DISABLED_FG)
+			+ "\n property timeFactor "+UIManager.getLookAndFeelDefaults().get(TIME_FACTOR)
+			+ "\n property squareButton "+UIManager.getLookAndFeelDefaults().get(SQUARE_BUTTON)
+			+ "\n padding "+UIManager.getLookAndFeelDefaults().get(PADDING));
+/* results for Metal/Steel:
+INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
  font javax.swing.plaf.FontUIResource[family=Dialog,name=Dialog,style=plain,size=12]
- background javax.swing.plaf.ColorUIResource[r=238,g=238,b=238]
- foreground sun.swing.PrintColorUIResource[r=51,g=51,b=51]
- border javax.swing.border.EtchedBorder@7856071a
+ background javax.swing.plaf.ColorUIResource[r=204,g=204,b=204] 0xCCCCCC secondary3
+ foreground sun.swing.PrintColorUIResource[r=51,g=51,b=51] 0x333333
+ border javax.swing.border.EtchedBorder@5a9f5d44
  property opaque null
- selectionBackground javax.swing.plaf.ColorUIResource[r=163,g=184,b=204]
- selectionForeground sun.swing.PrintColorUIResource[r=51,g=51,b=51]
+ selectionBackground javax.swing.plaf.ColorUIResource[r=163,g=184,b=204] 0xA3B8CC
+ selectionForeground sun.swing.PrintColorUIResource[r=51,g=51,b=51] 0x333333
+ disabledBackground javax.swing.plaf.ColorUIResource[r=238,g=238,b=238]
+ disabledForeground javax.swing.plaf.ColorUIResource[r=184,g=207,b=229]
+ property timeFactor 1000
+ property squareButton null
+ padding null
+
+  results for Metal/Ocean:
+INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
+ font javax.swing.plaf.FontUIResource[family=Dialog,name=Dialog,style=plain,size=12]
+ background javax.swing.plaf.ColorUIResource[r=238,g=238,b=238] 0xEEEEEE SECONDARY3
+ foreground sun.swing.PrintColorUIResource[r=51,g=51,b=51] 0x333333 CONTROL_TEXT_COLOR,OCEAN_BLACK
+ border javax.swing.border.EtchedBorder@5a9f5d44
+ property opaque null
+ selectionBackground javax.swing.plaf.ColorUIResource[r=163,g=184,b=204] 0xA3B8CC PRIMARY2
+ selectionForeground sun.swing.PrintColorUIResource[r=51,g=51,b=51] 0x333333 CONTROL_TEXT_COLOR,OCEAN_BLACK
+ disabledBackground javax.swing.plaf.ColorUIResource[r=238,g=238,b=238] 0xEEEEEE SECONDARY3
+ disabledForeground javax.swing.plaf.ColorUIResource[r=184,g=207,b=229] 0xB8CFE5 PRIMARY3 SECONDARY2
  property timeFactor 1000
  property squareButton null
  padding null
  */
         LookAndFeel.installColorsAndFont(comboBox, BACKGROUND, FOREGROUND, FONT);
         LookAndFeel.installBorder(comboBox, BORDER);
-        LookAndFeel.installProperty( comboBox, "opaque", Boolean.TRUE); // XXX warum nicht "ComboBox.opaque" ?
+        LookAndFeel.installProperty( comboBox, "opaque", Boolean.TRUE); // nicht "ComboBox.opaque" !
 
-        Long l = (Long)UIManager.get("ComboBox.timeFactor");
+        Long l = (Long)UIManager.get(TIME_FACTOR);
         timeFactor = l == null ? 1000L : l.longValue();
 
         //NOTE: this needs to default to true if not specified
-        Boolean b = (Boolean)UIManager.get("ComboBox.squareButton");
+        Boolean b = (Boolean)UIManager.get(SQUARE_BUTTON);
         squareButton = b == null ? true : b;
 
-        padding = UIManager.getInsets("ComboBox.padding"); // Insets for currently selected item
+        padding = UIManager.getInsets(PADDING); // Insets for currently selected item
     }
     protected void uninstallDefaults() {
         LookAndFeel.installColorsAndFont(comboBox, BACKGROUND, FOREGROUND, FONT);
@@ -610,7 +633,7 @@ in BasicComboPopup gibt es
         return button;
     }
     protected JButton createComboButton(Icon i) {
-    	icon = i==null?UIManager.getIcon("ComboBox.icon"):i;
+    	icon = i==null ? UIManager.getIcon("ComboBox.icon") : i;
     	JButton button;
     	if(icon==null) {
     		button = createArrowButton();
@@ -790,6 +813,29 @@ in BasicComboPopup gibt es
         currentValuePane.removeAll();
     }
 
+    /**
+     * @return the area that is reserved for drawing the currently selected item
+     */
+    protected Rectangle rectangleForCurrentValue() {
+        int width = comboBox.getWidth();
+        int height = comboBox.getHeight();
+        Insets insets = getInsets();
+        int buttonSize = height - (insets.top + insets.bottom);
+        if ( arrowButton != null ) {
+            buttonSize = arrowButton.getWidth();
+        }
+        if(comboBox.getComponentOrientation().isLeftToRight()) {
+            return new Rectangle(insets.left, insets.top,
+                             width - (insets.left + insets.right + buttonSize),
+                             height - (insets.top + insets.bottom));
+        }
+        else {
+            return new Rectangle(insets.left + buttonSize, insets.top,
+                             width - (insets.left + insets.right + buttonSize),
+                             height - (insets.top + insets.bottom));
+        }
+    }
+
     private boolean sameBaseline;
     /**
      * Returns the baseline.
@@ -946,19 +992,21 @@ in BasicComboPopup gibt es
         Component c;
 
         if ( hasFocus && !isPopupVisible(comboBox) ) {
+            LOG.info("this.hasFocus && Popup NOT Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
-                                                       true,
+                                                       true, // isSelected 
                                                        false );
         }
         else {
+            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
                                                        false,
                                                        false );
-            c.setBackground(UIManager.getColor("ComboBox.background"));
+            c.setBackground(UIManager.getColor(BACKGROUND));
         }
         c.setFont(comboBox.getFont());
         if ( hasFocus && !isPopupVisible(comboBox) ) {
@@ -971,13 +1019,8 @@ in BasicComboPopup gibt es
                 c.setBackground(comboBox.getBackground());
             }
             else {
-            	Color disabledForeground = UIManager.getColor("ComboBox.disabledForeground");
-            	c.setForeground(disabledForeground);
-            	c.setForeground(UIManager.getColor("ComboBox.disabledBackground"));
-//                c.setBackground(DefaultLookup.getColor(
-//                         comboBox, this, "ComboBox.disabledForeground", null));
-//                c.setBackground(DefaultLookup.getColor(
-//                         comboBox, this, "ComboBox.disabledBackground", null));
+            	c.setForeground(UIManager.getColor(DISABLED_FG));
+            	c.setBackground(UIManager.getColor(DISABLED_BG));
             }
         }
 
@@ -996,6 +1039,8 @@ in BasicComboPopup gibt es
         }
 
         currentValuePane.paintComponent(g,c,comboBox,x,y,w,h,shouldValidate);
+        LOG.exiting("BasicXComboBoxUI", "paintCurrentValue");
+        System.out.println("exiting BasicXComboBoxUI#paintCurrentValue");
     }
 
     /**
@@ -1005,14 +1050,15 @@ in BasicComboPopup gibt es
      * @param bounds a bounding rectangle to render to
      * @param hasFocus is focused
      */
-    public void paintCurrentValueBackground(Graphics g,Rectangle bounds,boolean hasFocus) {
+    public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
         Color t = g.getColor();
-//        if ( comboBox.isEnabled() )
-//            g.setColor(DefaultLookup.getColor(comboBox, this, "ComboBox.background", null));
-//        else
-//            g.setColor(DefaultLookup.getColor(comboBox, this, "ComboBox.disabledBackground", null));
-        g.setColor(UIManager.getColor(comboBox.isEnabled()?"ComboBox.background":"ComboBox.disabledBackground"));
-        g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height);
+        // TODO das funktioniert nicht oder man sieht die Wirkung nicht
+//        LOG.info(">>>>>>>>>>>>"+UIManager.getColor(comboBox.isEnabled() ? BACKGROUND : DISABLED_BG)+"<<<<<<<<<<<<<<");
+        g.setColor(UIManager.getColor(comboBox.isEnabled() ? BACKGROUND : DISABLED_BG));
+//        g.setColor(UIManager.getColor(comboBox.isEnabled() ? Color.BLUE : Color.RED));
+        // wieso wird hasFocus nicht genutzt ??? ist das vll gemeint:
+//        g.setColor(UIManager.getColor(hasFocus ? BACKGROUND : DISABLED_BG));
+        g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height); // Fills rectangle with bg color
         g.setColor(t);
     }
 
@@ -1128,12 +1174,11 @@ in BasicComboPopup gibt es
             Component cpn;
 
             if (modelSize > 0 ) {
+            	LOG.info("Calculates the maximum height and width based on the largest element modelSize="+modelSize);
                 for (int i = 0; i < modelSize ; i++ ) {
-                    // Calculates the maximum height and width based on the largest
-                    // element
+                    // Calculates the maximum height and width based on the largest element
                     Object value = model.getElementAt(i);
-                    Component c = renderer.getListCellRendererComponent(
-                            listBox, value, -1, false, false);
+                    Component c = renderer.getListCellRendererComponent(listBox, value, -1, false, false);
                     d = getSizeForComponent(c);
                     if (sameBaseline && value != null &&
                             (!(value instanceof String) || !"".equals(value))) {
@@ -1151,6 +1196,7 @@ in BasicComboPopup gibt es
                     result.width = Math.max(result.width,d.width);
                     result.height = Math.max(result.height,d.height);
                 }
+            	LOG.info("Calculates the maximum height and width based on the largest element result="+result);
             } else {
                 result = getDefaultSize();
                 if (comboBox.isEditable()) {
@@ -1212,10 +1258,11 @@ in BasicComboPopup gibt es
         }
         return null;
     }
+    // copied from javax.swing.plaf.basic.BasicComboBoxUI with modifications
     protected void installKeyboardActions() {
         InputMap km = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         SwingUtilities.replaceUIInputMap(comboBox, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, km);
-        LazyActionMap.installLazyActionMap(comboBox, BasicComboBoxUI.class,
+        LazyActionMap.installLazyActionMap(comboBox, BasicXComboBoxUI.class, // BasicComboBoxUI modified XXX
                                            "ComboBox.actionMap");
     }
     protected void uninstallKeyboardActions() {
@@ -1238,26 +1285,6 @@ in BasicComboPopup gibt es
             return true;
         }
         return false;
-    }
-
-    protected Rectangle rectangleForCurrentValue() {
-        int width = comboBox.getWidth();
-        int height = comboBox.getHeight();
-        Insets insets = getInsets();
-        int buttonSize = height - (insets.top + insets.bottom);
-        if ( arrowButton != null ) {
-            buttonSize = arrowButton.getWidth();
-        }
-        if(comboBox.getComponentOrientation().isLeftToRight()) {
-            return new Rectangle(insets.left, insets.top,
-                             width - (insets.left + insets.right + buttonSize),
-                             height - (insets.top + insets.bottom));
-        }
-        else {
-            return new Rectangle(insets.left + buttonSize, insets.top,
-                             width - (insets.left + insets.right + buttonSize),
-                             height - (insets.top + insets.bottom));
-        }
     }
 
     // inner class copied from private javax.swing.plaf.basic.BasicComboBoxUI with modifications
