@@ -869,9 +869,7 @@ in BasicComboPopup gibt es
                     // cells, if not, this needs to loop through all.
                     value = comboBox.getModel().getElementAt(0);
                 }
-                Component component = renderer.
-                        getListCellRendererComponent(listBox, value, -1,
-                                                     false, false);
+                Component component = renderer.getListCellRendererComponent(listBox, value, -1, false, false);
                 if (component instanceof JLabel) {
                     JLabel label = (JLabel) component;
                     String text = label.getText();
@@ -927,9 +925,7 @@ in BasicComboPopup gibt es
                 value = comboBox.getModel().getElementAt(0);
             }
             if (value != null) {
-                Component component = renderer.
-                        getListCellRendererComponent(listBox, value, -1,
-                                                     false, false);
+                Component component = renderer.getListCellRendererComponent(listBox, value, -1, false, false);
                 return component.getBaselineResizeBehavior();
             }
         }
@@ -997,7 +993,7 @@ in BasicComboPopup gibt es
                                                        comboBox.getSelectedItem(),
                                                        -1,
                                                        true, // isSelected 
-                                                       false );
+                                                       hasFocus ); // cellHasFocus
         }
         else {
             LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
@@ -1005,7 +1001,7 @@ in BasicComboPopup gibt es
                                                        comboBox.getSelectedItem(),
                                                        -1,
                                                        false,
-                                                       false );
+                                                       hasFocus );
             c.setBackground(UIManager.getColor(BACKGROUND));
         }
         c.setFont(comboBox.getFont());
@@ -1125,8 +1121,8 @@ in BasicComboPopup gibt es
     protected Dimension getDefaultSize() {
         // Calculates the height and width using the default text renderer
         Component comp = getDefaultListCellRenderer().getListCellRendererComponent(listBox, " ", -1, false, false);
-        LOG.info("Component to calculate size:"+comp);
         Dimension d = getSizeForComponent(comp);
+        LOG.info("DefaultSize is "+d+", Component to calculate size:"+comp);
 
         return new Dimension(d.width, d.height);
     }
@@ -1160,9 +1156,9 @@ in BasicComboPopup gibt es
         Object prototypeValue = comboBox.getPrototypeDisplayValue();
         if (prototypeValue != null)  {
             // Calculates the dimension based on the prototype value
-            result = getSizeForComponent(renderer.getListCellRendererComponent(listBox,
-                                                                               prototypeValue,
-                                                                               -1, false, false));
+            result = getSizeForComponent(
+            	renderer.getListCellRendererComponent(listBox, prototypeValue, -1, false, false)
+            	);
         } else {
             // Calculate the dimension by iterating over all the elements in the combo
             // box list.
@@ -1170,8 +1166,6 @@ in BasicComboPopup gibt es
             int modelSize = model.getSize();
             int baseline = -1;
             Dimension d;
-
-            Component cpn;
 
             if (modelSize > 0 ) {
             	LOG.info("Calculates the maximum height and width based on the largest element modelSize="+modelSize);
