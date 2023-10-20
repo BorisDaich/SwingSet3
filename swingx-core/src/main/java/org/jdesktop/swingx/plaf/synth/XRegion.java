@@ -33,6 +33,13 @@ import javax.swing.plaf.synth.Region;
 public class XRegion extends Region {
 
     static Map<String, XRegion> uiToXRegionMap = new HashMap<String, XRegion>();
+    /* XCOMBO_BOX is an Extended Region
+     * with Name "XComboBox" 
+     *    , this is not a subregion
+     *    , UIClassID "XComboBoxUI"
+     * the parent region is COMBO_BOX
+     */
+    public static final Region XCOMBO_BOX = new XRegion("XComboBox", null, false, "XComboBoxUI", COMBO_BOX);
     public static final Region XLIST = new XRegion("XList", null, false, "XListUI", LIST);
     
     /** the Region which identifies the base styles */
@@ -42,6 +49,7 @@ public class XRegion extends Region {
      * Creates a XRegion with the specified name.
      * 
      * @param name Name of the region
+     * @param dummyUI
      * @param subregion Whether or not this is a subregion.
      * @param realUI String that will be returned from
      *           <code>component.getUIClassID</code>. 

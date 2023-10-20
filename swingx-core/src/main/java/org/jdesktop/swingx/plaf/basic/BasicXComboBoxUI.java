@@ -310,17 +310,17 @@ comboBox JComboBox<?> :
             "ComboBox.noActionOnKeyNavigation", Boolean.FALSE,
      */
     private static final String PROPERTY_PREFIX = "ComboBox" + ".";
-    private static final String FONT = PROPERTY_PREFIX + "font";
-    private static final String BACKGROUND = PROPERTY_PREFIX + "background";
-    private static final String FOREGROUND = PROPERTY_PREFIX + "foreground";
-    private static final String BORDER = PROPERTY_PREFIX + "border";
-    private static final String SELECTION_BG = PROPERTY_PREFIX + "selectionBackground";
-    private static final String SELECTION_FG = PROPERTY_PREFIX + "selectionForeground";
-    private static final String TIME_FACTOR = PROPERTY_PREFIX + "timeFactor";
-    private static final String SQUARE_BUTTON = PROPERTY_PREFIX + "squareButton";
-    private static final String PADDING = PROPERTY_PREFIX + "padding";
-    private static final String DISABLED_BG = PROPERTY_PREFIX + "disabledBackground";
-    private static final String DISABLED_FG = PROPERTY_PREFIX + "disabledForeground";
+    protected static final String FONT = PROPERTY_PREFIX + "font";
+    protected static final String BACKGROUND = PROPERTY_PREFIX + "background";
+    protected static final String FOREGROUND = PROPERTY_PREFIX + "foreground";
+    protected static final String BORDER = PROPERTY_PREFIX + "border";
+    protected static final String SELECTION_BG = PROPERTY_PREFIX + "selectionBackground";
+    protected static final String SELECTION_FG = PROPERTY_PREFIX + "selectionForeground";
+    protected static final String TIME_FACTOR = PROPERTY_PREFIX + "timeFactor";
+    protected static final String SQUARE_BUTTON = PROPERTY_PREFIX + "squareButton";
+    protected static final String PADDING = PROPERTY_PREFIX + "padding";
+    protected static final String DISABLED_BG = PROPERTY_PREFIX + "disabledBackground";
+    protected static final String DISABLED_FG = PROPERTY_PREFIX + "disabledForeground";
     // usw. props TODO
     /**
      * Install default property values for color, fonts, borders, icons, opacity, etc. on the component. 
