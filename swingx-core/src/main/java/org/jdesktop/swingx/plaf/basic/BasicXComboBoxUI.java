@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.LookAndFeel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListDataEvent;
@@ -50,7 +51,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
@@ -624,7 +624,7 @@ in BasicComboPopup gibt es
 			BasicArrowButton extends JButton
 			Pfeil zeig nach unten : BasicArrowButton.SOUTH
 		 */
-    	JButton button = new BasicArrowButton(BasicArrowButton.SOUTH,
+    	JButton button = new BasicArrowButton(SwingConstants.SOUTH,
                 UIManager.getColor("ComboBox.buttonBackground"),
                 UIManager.getColor("ComboBox.buttonShadow"),
                 UIManager.getColor("ComboBox.buttonDarkShadow"),
@@ -773,7 +773,9 @@ in BasicComboPopup gibt es
                 popup.show();
                 popupVisible = v;
 	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
-    	            basicArrowButton.setDirection(BasicArrowButton.NORTH);
+    	            basicArrowButton.setDirection(SwingConstants.NORTH);
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton) {
+	            	synthArrowButton.setDirection(SwingConstants.NORTH);
 	            } else {
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
@@ -781,7 +783,9 @@ in BasicComboPopup gibt es
                 popup.hide();
                 popupVisible = v;
 	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
-    	            basicArrowButton.setDirection(BasicArrowButton.SOUTH);
+    	            basicArrowButton.setDirection(SwingConstants.SOUTH);
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton) {
+	            	synthArrowButton.setDirection(SwingConstants.SOUTH);
 	            } else {
 	            	arrowButton.setIcon(icon);
 	            }
