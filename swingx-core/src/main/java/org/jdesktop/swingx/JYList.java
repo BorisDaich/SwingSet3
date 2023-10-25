@@ -73,14 +73,14 @@ public class JYList<E> extends JList<E> {
         return uiClassID;
     }
 
-    public JYList(ListModel<E> dataModel) {
-    	super(dataModel);
+    public JYList(ListModel<E> model) {
+    	super(model);
     }
-    public JYList(final E[] listData) {
-    	super(listData);
+    public JYList(final E[] items) {
+    	super(items);
     }
-    public JYList(final Vector<? extends E> listData) {
-    	super(listData);
+    public JYList(final Vector<? extends E> items) {
+    	super(items);
     }
     public JYList() {
     	super();

@@ -281,37 +281,33 @@ public class JXList<E> extends JYList<E> {
      * Constructs a <code>JXList</code> that displays the elements in the
      * specified, non-<code>null</code> model and automatic creation of a RowSorter disabled.
      *
-     * @param dataModel   the data model for this list
-     * @exception IllegalArgumentException   if <code>dataModel</code>
-     *                                           is <code>null</code>
+     * @param model the data model for this list
+     * @exception IllegalArgumentException if <code>model</code> is <code>null</code>
      */                                           
-    public JXList(ListModel<E> dataModel) {
-        this(dataModel, false);
+    public JXList(ListModel<E> model) {
+        this(model, false);
     }
 
     /**
      * Constructs a <code>JXList</code> that displays the elements in
      * the specified array and automatic creation of a RowSorter disabled.
      *
-     * @param  listData  the array of Objects to be loaded into the data model
-     * @throws IllegalArgumentException   if <code>listData</code>
-     *                                          is <code>null</code>
+     * @param  items  the array of Objects to be loaded into the data model
+     * @throws IllegalArgumentException   if <code>items</code> is <code>null</code>
      */
-    public JXList(E[] listData) {
-        this(listData, false);
+    public JXList(E[] items) {
+        this(items, false);
     }
 
     /**
      * Constructs a <code>JXList</code> that displays the elements in
      * the specified <code>Vector</code> and automatic creation of a RowSorter disabled.
      *
-     * @param  listData  the <code>Vector</code> to be loaded into the
-     *          data model
-     * @throws IllegalArgumentException   if <code>listData</code>
-     *                                          is <code>null</code>
+     * @param  items  the <code>Vector</code> to be loaded into the data model
+     * @throws IllegalArgumentException if <code>items</code> is <code>null</code>
      */
-    public JXList(Vector<E> listData) {
-        this(listData, false);
+    public JXList(Vector<E> items) {
+        this(items, false);
     }
 
 
@@ -323,21 +319,21 @@ public class JXList<E> extends JYList<E> {
      *  a RowSorter should be created automatically.
      */
     public JXList(boolean autoCreateRowSorter) {
+    	super();
         init(autoCreateRowSorter);
     }
 
     /**
-     * Constructs a <code>JXList</code> with the specified model and
+     * Constructs a <code>JXList</code> with the specified data model and
      * automatic creation of a RowSorter as given.
      * 
-     * @param dataModel   the data model for this list
+     * @param model the data model for this list
      * @param autoCreateRowSorter <code>boolean</code> to determine if 
      *  a RowSorter should be created automatically.
-     * @throws IllegalArgumentException   if <code>dataModel</code>
-     *                                          is <code>null</code>
+     * @throws IllegalArgumentException if <code>model</code> is <code>null</code>
      */
-    public JXList(ListModel<E> dataModel, boolean autoCreateRowSorter) {
-        super((ListModel<E>)dataModel);
+    public JXList(ListModel<E> model, boolean autoCreateRowSorter) {
+        super((ListModel<E>)model);
         init(autoCreateRowSorter);
     }
 
@@ -345,16 +341,15 @@ public class JXList<E> extends JYList<E> {
      * Constructs a <code>JXList</code> that displays the elements in
      * the specified array and automatic creation of a RowSorter as given.
      *
-     * @param  listData  the array of Objects to be loaded into the data model
+     * @param items the array of Objects to be loaded into the data model
      * @param autoCreateRowSorter <code>boolean</code> to determine if 
      *  a RowSorter should be created automatically.
-     * @throws IllegalArgumentException   if <code>listData</code>
-     *                                          is <code>null</code>
+     * @throws IllegalArgumentException if <code>items</code> is <code>null</code>
      */
-    public JXList(E[] listData, boolean autoCreateRowSorter) {
-        super(listData);
-        if (listData == null) 
-           throw new IllegalArgumentException("listData must not be null");
+    public JXList(E[] items, boolean autoCreateRowSorter) {
+        super(items);
+        if (items == null) 
+           throw new IllegalArgumentException("items Array must not be null");
         init(autoCreateRowSorter);
     }
 
@@ -362,16 +357,15 @@ public class JXList<E> extends JYList<E> {
      * Constructs a <code>JXList</code> that displays the elements in
      * the specified <code>Vector</code> and filtersEnabled property.
      *
-     * @param  listData  the <code>Vector</code> to be loaded into the
-     *          data model
+     * @param items the <code>Vector</code> to be loaded into the data model
      * @param autoCreateRowSorter <code>boolean</code> to determine if 
      *  a RowSorter should be created automatically.
-     * @throws IllegalArgumentException if <code>listData</code> is <code>null</code>
+     * @throws IllegalArgumentException if <code>items</code> is <code>null</code>
      */
-    public JXList(Vector<E> listData, boolean autoCreateRowSorter) {
-        super(listData);
-        if (listData == null) 
-           throw new IllegalArgumentException("listData must not be null");
+    public JXList(Vector<E> items, boolean autoCreateRowSorter) {
+        super(items);
+        if (items == null) 
+           throw new IllegalArgumentException("items Vector must not be null");
         init(autoCreateRowSorter);
     }
 

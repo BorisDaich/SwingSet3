@@ -477,6 +477,28 @@ public class JXComboBox<E> extends JComboBox<E> {
 
     private boolean updatingUI;
 
+/*
+Vergleich ctor JXList JYList und JXComboBox :
+
+()           ()       ()       JXComboBox wie JYList
+this(false); super(); super();
+
+(boolean autoCreateRowSorter)                       // existiert in JYList nicht => auch nicht in JXComboBox
+(ListModel<E> model, boolean autoCreateRowSorter)   // dto
+(JXList(E[] items, boolean autoCreateRowSorter)     // dto
+(Vector<E> items, boolean autoCreateRowSorter)      // dto
+
+(ListModel<E> model)    | (ListModel<E> model)              | (ComboBoxModel<E> model) // JXComboBox wie JYList
+this(model, false);       super(model);                       super(model);
+
+(E[] items)             | (final E[] items)                 | (E[] items)              // JXComboBox wie JYList
+this(items, false);
+
+JXList(Vector<E> items) | (final Vector<? extends E> items) | (Vector<E> items)        // JXComboBox wie JYList
+this(items, false);
+
+ */
+    
     /**
      * Creates a <code>JXComboBox</code> with a default data model. The default data model is an
      * empty list of objects. Use <code>addItem</code> to add items. By default the first item in
