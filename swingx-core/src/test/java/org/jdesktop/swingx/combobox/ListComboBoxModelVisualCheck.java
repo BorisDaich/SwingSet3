@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -26,9 +24,9 @@ import java.util.Arrays;
 
 import javax.swing.AbstractAction;
 import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
 
 import org.jdesktop.swingx.InteractiveTestCase;
+import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXFrame;
 
 public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
@@ -43,8 +41,7 @@ public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
     }
 
     /**
-     * Creates a {@code ListComboBoxModel} of {@code Integer}s for use in
-     * visual checks.
+     * Creates a {@code ListComboBoxModel} of {@code Integer}s for use in visual checks.
      * 
      * @return a list of integers from 1 to 10
      */
@@ -56,10 +53,13 @@ public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
      * SwingX issue #670.  Fixed.
      * <p>
      * Ensure that programatically selecting an item from the list correctly updates the display.
+
+BUG: bei wechsel LaF zu nimbus!
+
      */
     public void interactiveSelectedItem() {
-        final ComboBoxModel model = createComboBoxModel();
-        JXFrame frame = wrapInFrame(new JComboBox(model), "programatically select item");
+        final ComboBoxModel<Integer> model = createComboBoxModel();
+        JXFrame frame = wrapInFrame(new JXComboBox<Integer>(model), "programatically select item");
         addAction(frame, new AbstractAction("Select 9") {
             public void actionPerformed(ActionEvent e) {
                 model.setSelectedItem(9);
