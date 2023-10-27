@@ -497,6 +497,12 @@ this(items, false);
 JXList(Vector<E> items) | (final Vector<? extends E> items) | (Vector<E> items)        // JXComboBox wie JYList
 this(items, false);
 
+Daraus folgt: JXComboBox müsste eigentlich JYComboBox heissen, da es keine sortiere items unterstützt
+Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in BasicXComboBoxUI.listBox definiert:
+protected JList<Object> listBox; // is type YList
+    	popup = createPopup();
+    	listBox = popup.getList();
+
  */
     
     /**
@@ -1026,8 +1032,8 @@ this(items, false);
     	setComboBoxIcon(icon, icon);
     }
     public void setComboBoxIcon(Icon icon, Icon isShowingPopupIcon) {
-		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon);
 		XComboBoxUI ui = (XComboBoxUI)getUI();
+		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon + " ui:"+ui);
     	ui.uninstallButton();
     	ui.installButton(icon);
     	ui.setIsShowingPopupIcon(isShowingPopupIcon);

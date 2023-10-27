@@ -68,6 +68,9 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
 		+ "\n property squareButton "+UIManager.getLookAndFeelDefaults().get(SQUARE_BUTTON)
 		+ "\n padding "+UIManager.getLookAndFeelDefaults().get(PADDING));
         updateStyle(comboBox);
+        
+        Boolean b = (Boolean)UIManager.get(SQUARE_BUTTON);
+        squareButton = b == null ? true : b;
     }
 
 	@Override // implements interface SynthUI

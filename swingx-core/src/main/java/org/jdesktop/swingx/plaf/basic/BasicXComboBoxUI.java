@@ -55,7 +55,9 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
 
+import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JYList;
+import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
 import org.jdesktop.swingx.renderer.YListCellRenderer;
@@ -100,7 +102,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     private boolean popupVisible = false; // wg. BUG #57
     protected JList<Object> listBox; // is type YList
     protected Component editor;
-    protected boolean squareButton = true;
+    protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
     protected Insets padding;
     protected CellRendererPane currentValuePane = new CellRendererPane();
     protected Icon icon;
@@ -210,7 +212,15 @@ comboBox JComboBox<?> :
  */
     	popup = createPopup();
     	listBox = popup.getList();
-    	if(listBox instanceof JYList<?> yListBox) {
+    	if(listBox instanceof JXList<?> xListBox) {
+        	LOG.info("----XXX---> UI delegate for "+c
+        			+ "\n interface ComboPopup:"+popup
+        			+ "\n popup.JList<Object>:"+xListBox
+        			);
+        	xListBox.setCellRenderer(new DefaultListCellRenderer());
+        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED));
+//        	xListBox.updateUI();
+    	} else if(listBox instanceof JYList<?> yListBox) {
         	LOG.info("----+++---> UI delegate for "+c
         			+ "\n interface ComboPopup:"+popup
         			+ "\n popup.JList<Object>:"+yListBox
@@ -464,6 +474,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
 
+    private boolean autoCreateRowSorter = true;
     protected ComboPopup createPopup() {
     	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
     	// protected JComboBox<?> comboBox
@@ -497,6 +508,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         };		
  */
+//    			return new JXList<Object>(comboBox.getModel(), autoCreateRowSorter);
     			return new JYList<Object>(comboBox.getModel());
     		}
 
@@ -634,6 +646,9 @@ in BasicComboPopup gibt es
     }
     protected JButton createComboButton(Icon i) {
     	icon = i==null ? UIManager.getIcon("ComboBox.icon") : i;
+    	// user defined button should be square
+    	if(i!=null) squareButton = true;
+
     	JButton button;
     	if(icon==null) {
     		button = createArrowButton();
