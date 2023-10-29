@@ -40,7 +40,7 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
     private boolean useUIBorder;
 
     // this ctor is implicit, used by factory
-    public SynthXComboBoxUI(JComponent c) {
+    protected SynthXComboBoxUI(JComponent c) {
     	super();
     	LOG.info("---------->ctor<:");
     }
@@ -49,6 +49,13 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
     @Override
     public void installUI(JComponent c) {
         buttonHandler = new ButtonHandler();
+        
+        /* super.installUI calls
+         * - installDefaults
+         * - comboBox.setLayout(createLayoutManager()); 
+         * - createPopup + configure listBox + installComponents
+         * - installListeners
+         */
         super.installUI(c);
     }
 

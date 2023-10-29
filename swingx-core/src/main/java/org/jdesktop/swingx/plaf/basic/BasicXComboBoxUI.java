@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.LookAndFeel;
+import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -55,6 +56,7 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
 
+import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JYList;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
@@ -100,7 +102,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     protected boolean hasFocus = false;
     protected ComboPopup popup;
     private boolean popupVisible = false; // wg. BUG #57
-    protected JList<Object> listBox; // is type YList
+    protected JList<Object> listBox; // actually of subtype JXList
     protected Component editor;
     protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
     protected Insets padding;
@@ -169,7 +171,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     static final StringBuffer HIDE_POPUP_KEY = new StringBuffer("HidePopupKey");
 
     // this ctor is implicit, used by factory
-	public BasicXComboBoxUI() {
+	protected BasicXComboBoxUI() {
 		super();
 //    	LOG.info("---------->ctor<:");
 	}
@@ -210,7 +212,7 @@ comboBox JComboBox<?> :
  - currentValuePane type class javax.swing.CellRendererPane extends Container implements Accessible
 
  */
-    	popup = createPopup();
+    	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList or JYList
     	listBox = popup.getList();
     	if(listBox instanceof JXList<?> xListBox) {
         	LOG.info("----XXX---> UI delegate for "+c
@@ -218,8 +220,12 @@ comboBox JComboBox<?> :
         			+ "\n popup.JList<Object>:"+xListBox
         			);
         	xListBox.setCellRenderer(new DefaultListCellRenderer());
-        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED));
+        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // funktioniert
+        	// funktioniert nicht:
+//        	xListBox.setRolloverEnabled(true);
+//        	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));
 //        	xListBox.updateUI();
+
     	} else if(listBox instanceof JYList<?> yListBox) {
         	LOG.info("----+++---> UI delegate for "+c
         			+ "\n interface ComboPopup:"+popup
@@ -474,8 +480,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
 
-    private boolean autoCreateRowSorter = true;
     protected ComboPopup createPopup() {
+		JXComboBox<?> xComboBox = (JXComboBox<?>)comboBox;
     	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
     	// protected JComboBox<?> comboBox
     	// ==> the cast is safe
@@ -483,6 +489,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
     	LOG.info(".... new BasicComboPopup for "+cb);
     	return new BasicComboPopup(cb) {
+    		@Override
     		protected JList<Object> createList() {
 /* code in BasicComboPopup:
         return new JList<Object>( comboBox.getModel() ) {
@@ -508,17 +515,17 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         };		
  */
-//    			return new JXList<Object>(comboBox.getModel(), autoCreateRowSorter);
-    			return new JYList<Object>(comboBox.getModel());
+    			// autoCreateRowSorter ist in JXComboBox zunächst false
+    			LOG.info("yyyyyyyyyyyyyyyyyy" //+xComboBox.getRowSorter().getClass()
+    					+ "\n AutoCreateRowSorter="+xComboBox.getAutoCreateRowSorter()
+    					);
+    			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox.getAutoCreateRowSorter());
+    			return list;
+
+//    			return new JYList<Object>(comboBox.getModel());
     		}
 
-//    		protected void configureList() {
-//    			super.configureList();
-//    			list.setBorder(BorderFactory.createEtchedBorder());
-//    			LOG.info("------------->>>>>>>>>>>>>"+list.getBorder() + "\n"+list);
-//    		}
 /*
-
 in BasicComboPopup gibt es 
 - private Handler handler von Typ inner private class Handler implements ... MouseListener
 
@@ -536,8 +543,33 @@ in BasicComboPopup gibt es
     	            setPopupVisible(comboBox, popupVisible);
     	        }
     	    }
+/* aus BasicComboPopup:
+    public void show() {
+        comboBox.firePopupMenuWillBecomeVisible();
+        setListSelection(comboBox.getSelectedIndex());
+        Point location = getPopupLocation();
+        show( comboBox, location.x, location.y );
+    }
+    private void setListSelection(int selectedIndex) {
+        if ( selectedIndex == -1 ) {
+            list.clearSelection();
+        }
+        else {
+            list.setSelectedIndex( selectedIndex );
+            list.ensureIndexIsVisible( selectedIndex );
+        }
+    }
+
+ */
     	    public void show() {
     	    	super.show();
+    	    	int i = xComboBox.getSelectedIndex();
+    	    	if(i != -1 && xComboBox.getAutoCreateRowSorter()) {
+    	    		int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
+        	    	LOG.info("//////////// SelectedIndex="+i + " ==> "+selectedIndex);
+        	    	list.setSelectedIndex( selectedIndex );
+        	    	list.ensureIndexIsVisible( selectedIndex );
+    	    	}
     	    }
     	    public void show(Component invoker, int x, int y) {
 //    	    	LOG.info("// isVisible="+isVisible()+" x="+x+",y="+y+" aus JPopupMenu Component invoker:"+invoker);
@@ -1324,7 +1356,7 @@ in BasicComboPopup gibt es
                     comboBox.revalidate();
                 }
             } else {
-                JComboBox<?> comboBox = (JComboBox<?>)e.getSource();
+        		JXComboBox<?> xComboBox = (JXComboBox<?>)e.getSource();
                 if ( propertyName == "model" ) {
                     ComboBoxModel<?> newModel = (ComboBoxModel<?>)e.getNewValue();
                     ComboBoxModel<?> oldModel = (ComboBoxModel<?>)e.getOldValue();
@@ -1338,58 +1370,69 @@ in BasicComboPopup gibt es
                     }
 
                     if ( editor != null ) {
-                        comboBox.configureEditor( comboBox.getEditor(), comboBox.getSelectedItem() );
+                    	xComboBox.configureEditor( xComboBox.getEditor(), xComboBox.getSelectedItem() );
                     }
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
-                    comboBox.revalidate();
-                    comboBox.repaint();
-                }
-                else if ( propertyName == "editor" && comboBox.isEditable() ) {
+                    xComboBox.revalidate();
+                    xComboBox.repaint();
+                } else if ( propertyName == "autoCreateRowSorter" ) {
+                    // TODO
+//    				LOG.info("yyyyyyyyyyyyyyyyyy"+res.getRowSorter().getClass() // org.jdesktop.swingx.sort.ListSortController
+//+ "\n isSortable="+res.isSortable()
+//+ "\n SortOrderCycle:"+Arrays.asList(res.getSortOrderCycle())
+//+ "\n ViewRowCount="+res.getRowSorter().getViewRowCount()
+//+ "\n ModelRowCount="+res.getRowSorter().getModelRowCount()
+//+ "\n SortKeys:"+res.getRowSorter().getSortKeys()
+                    LOG.info("autoCreateRowSorter is set now "+xComboBox.getAutoCreateRowSorter()
+                    +"\n RowSorter Class "+xComboBox.getRowSorter().getClass()
+                    +"\n SortKeys:"+xComboBox.getRowSorter().getSortKeys()
+                    );
+                    if(listBox instanceof JXList<?> xlist) {
+                    	xlist.setAutoCreateRowSorter(xComboBox.getAutoCreateRowSorter());
+                    	RowSorter rs = xComboBox.getRowSorter();
+                    	xlist.setRowSorter(rs);
+                    }
+                } else if ( propertyName == "editor" && xComboBox.isEditable() ) {
                     addEditor();
-                    comboBox.revalidate();
-                }
-                else if ( propertyName == "editable" ) {
-                    if ( comboBox.isEditable() ) {
-                        comboBox.setRequestFocusEnabled( false );
+                    xComboBox.revalidate();
+                } else if ( propertyName == "editable" ) {
+                    if ( xComboBox.isEditable() ) {
+                    	xComboBox.setRequestFocusEnabled( false );
                         addEditor();
                     } else {
-                        comboBox.setRequestFocusEnabled( true );
+                    	xComboBox.setRequestFocusEnabled( true );
                         removeEditor();
                     }
                     synchronizeToolTipTextForChildren();
-                    comboBox.revalidate();
-                }
-                else if ( propertyName == "enabled" ) {
-                    boolean enabled = comboBox.isEnabled();
+                    xComboBox.revalidate();
+                } else if ( propertyName == "enabled" ) {
+                    boolean enabled = xComboBox.isEnabled();
                     if ( editor != null )
                         editor.setEnabled(enabled);
                     if ( arrowButton != null )
                         arrowButton.setEnabled(enabled);
-                    comboBox.repaint();
-                }
-                else if ( propertyName == "focusable" ) {
-                    boolean focusable = comboBox.isFocusable();
+                    xComboBox.repaint();
+                } else if ( propertyName == "focusable" ) {
+                    boolean focusable = xComboBox.isFocusable();
                     if ( editor != null )
                         editor.setFocusable(focusable);
                     if ( arrowButton != null )
                         arrowButton.setFocusable(focusable);
-                    comboBox.repaint();
-                }
-                else if ( propertyName == "maximumRowCount" ) {
-                    if ( isPopupVisible( comboBox ) ) {
-                        setPopupVisible(comboBox, false); // XXX was soll das?
-                        setPopupVisible(comboBox, true);
+                    xComboBox.repaint();
+                } else if ( propertyName == "maximumRowCount" ) {
+                    if ( isPopupVisible( xComboBox ) ) {
+                        setPopupVisible(xComboBox, false); // XXX was soll das?
+                        setPopupVisible(xComboBox, true);
                     }
-                }
-                else if ( propertyName == "font" ) {
-                    listBox.setFont( comboBox.getFont() );
+                } else if ( propertyName == "font" ) {
+                    listBox.setFont( xComboBox.getFont() );
                     if ( editor != null ) {
-                        editor.setFont( comboBox.getFont() );
+                        editor.setFont( xComboBox.getFont() );
                     }
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
-                    comboBox.validate();
+                    xComboBox.validate();
 //                } else if (SwingUtilities2.isScaleChanged(e)) {
 ///* TODO
 //sun.swing.SwingUtilities2 cannot be resolved
@@ -1402,27 +1445,24 @@ in BasicComboPopup gibt es
 // */
 //                    isMinimumSizeDirty = true;
 //                    isDisplaySizeDirty = true;
-//                    comboBox.validate();
+//                    xComboBox.validate();
                 } else if ( "graphicsConfiguration".equals(propertyName) ) {
                 	if(e.getOldValue()!=e.getNewValue()) {
                 		// TODO
                 	}               	
                 } else if ( propertyName == JComponent.TOOL_TIP_TEXT_KEY ) {
                     synchronizeToolTipTextForChildren();
-                }
-                else if ( propertyName == BasicXComboBoxUI.IS_TABLE_CELL_EDITOR ) {
+                } else if ( propertyName == BasicXComboBoxUI.IS_TABLE_CELL_EDITOR ) {
                     Boolean inTable = (Boolean)e.getNewValue();
                     isTableCellEditor = inTable.equals(Boolean.TRUE) ? true : false;
-                }
-                else if (propertyName == "prototypeDisplayValue") {
+                } else if (propertyName == "prototypeDisplayValue") {
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
-                    comboBox.revalidate();
-                }
-                else if (propertyName == "renderer") {
+                    xComboBox.revalidate();
+                } else if (propertyName == "renderer") {
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
-                    comboBox.revalidate();
+                    xComboBox.revalidate();
                 }
             }
         }

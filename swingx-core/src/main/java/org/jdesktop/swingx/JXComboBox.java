@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.beans.BeanProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -41,6 +42,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -63,6 +67,7 @@ import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.JRendererPanel;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
+import org.jdesktop.swingx.sort.ListSortController;
 import org.jdesktop.swingx.sort.StringValueRegistry;
 import org.jdesktop.swingx.util.Contract;
 
@@ -513,8 +518,12 @@ protected JList<Object> listBox; // is type YList
      * @see DefaultComboBoxModel
      */
     public JXComboBox() {
+        this(false);
+    }
+    public JXComboBox(boolean autoCreateRowSorter) {
         super();
         init();
+        this.setAutoCreateRowSorter(autoCreateRowSorter);
     }
 
     /**
@@ -528,8 +537,12 @@ protected JList<Object> listBox; // is type YList
      * @see DefaultComboBoxModel
      */
     public JXComboBox(ComboBoxModel<E> model) {
+        this(model, false);
+    }
+    public JXComboBox(ComboBoxModel<E> model, boolean autoCreateRowSorter) {
         super(model);
         init();
+        this.setAutoCreateRowSorter(autoCreateRowSorter);
     }
 
     /**
@@ -541,8 +554,12 @@ protected JList<Object> listBox; // is type YList
      * @see DefaultComboBoxModel
      */
     public JXComboBox(E[] items) {
+        this(items, false);
+    }
+    public JXComboBox(E[] items, boolean autoCreateRowSorter) {
         super(items);
         init();
+        this.setAutoCreateRowSorter(autoCreateRowSorter);
     }
 
     /**
@@ -554,8 +571,12 @@ protected JList<Object> listBox; // is type YList
      * @see DefaultComboBoxModel
      */
     public JXComboBox(Vector<E> items) {
+        this(items, false);
+    }
+    public JXComboBox(Vector<E> items, boolean autoCreateRowSorter) {
         super(items);
         init();
+        this.setAutoCreateRowSorter(autoCreateRowSorter);
     }
 
     private void init() {
@@ -997,6 +1018,7 @@ protected JList<Object> listBox; // is type YList
             updatingUI = false;
         }
     }
+    // ----------- ab hier meine Erweiterungen :
     public void setUI(ComboBoxUI newUI) {
     	System.out.println("JXComboBox.setUI ui:"+ui + " newUI:"+newUI);
     	if(ui==newUI) return;
@@ -1028,6 +1050,22 @@ protected JList<Object> listBox; // is type YList
 
     	super.setSelectedItem(anObject);
     }
+    public void setSelectedIndex(int anIndex) {
+		int modelIndex = anIndex; //xlist.getRowSorter().convertRowIndexToModel(e.getFirstIndex());
+    	if(getAutoCreateRowSorter()) {
+    		modelIndex = getRowSorter().convertRowIndexToModel(anIndex);
+    	}
+    	System.out.println("JXComboBox.setSelectedIndex to "+anIndex + " ==> modelIndex="+modelIndex);
+    	super.setSelectedIndex(modelIndex);
+    }
+//    public int getSelectedIndex() {
+//    	int i = super.getSelectedIndex();
+//    	if(getAutoCreateRowSorter()) {
+//    		return getRowSorter().convertRowIndexToView(i);
+//    	}
+//    	System.out.println("JXComboBox.getSelectedIndex returnd "+i);
+//    	return i;
+//    }
     public void setComboBoxIcon(Icon icon) {
     	setComboBoxIcon(icon, icon);
     }
@@ -1041,6 +1079,48 @@ protected JList<Object> listBox; // is type YList
     }
     public ComboBoxUI getUI() {
         return (XComboBoxUI)super.getUI();
+    }
+
+    // sort api: siehe JXList
+    private boolean autoCreateRowSorter;
+    private RowSorter<? extends ListModel<E>> rowSorter;
+    public boolean getAutoCreateRowSorter() {
+        return autoCreateRowSorter;
+    }
+    /* @beaninfo
+     *        bound: true
+     *    preferred: true
+     *  description: Whether or not to turn on sorting by default.
+     */
+    public void setAutoCreateRowSorter(boolean autoCreateRowSorter) {
+        if (getAutoCreateRowSorter() == autoCreateRowSorter) return;
+        boolean oldValue = getAutoCreateRowSorter();
+        this.autoCreateRowSorter = autoCreateRowSorter;
+        if (autoCreateRowSorter) {
+            setRowSorter(createDefaultRowSorter());
+        }
+        firePropertyChange("autoCreateRowSorter", oldValue, getAutoCreateRowSorter());
+    }
+    // DefaultRowSorter ist ListSortController <== es braucht keinen Controller, nur Model
+    // ==> die Namen ListSortController und DefaultSortController sind irritierend: Es sind keine UI elemente 
+    protected RowSorter<? extends ListModel<E>> createDefaultRowSorter() {
+        return new ListSortController<ListModel<E>>(getModel());
+    }
+    public RowSorter<? extends ListModel<E>> getRowSorter() {
+        return rowSorter;
+    }
+    public void setRowSorter(RowSorter<? extends ListModel<E>> sorter) {
+    	System.out.println("sorter:"+sorter);
+        RowSorter<? extends ListModel<E>> oldRowSorter = getRowSorter();
+        this.rowSorter = sorter;
+        
+        //configureSorterProperties();
+        if(getRowSorter()!=null) {
+    		RowSorter.SortKey sk = new RowSorter.SortKey(0, SortOrder.ASCENDING);
+    		getRowSorter().setSortKeys(Arrays.asList(sk));
+        }
+
+        firePropertyChange("rowSorter", oldRowSorter, sorter);
     }
 
 }
