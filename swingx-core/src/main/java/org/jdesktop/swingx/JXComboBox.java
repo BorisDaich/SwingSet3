@@ -78,10 +78,15 @@ import org.jdesktop.swingx.util.Contract;
  * A normal {@code JComboBox} fails to recognize the first key stroke when it has been
  * {@link org.jdesktop.swingx.autocomplete.AutoCompleteDecorator#decorate(JComboBox) decorated}.
  * <p>
- * Adds highlighting support.
+ * Adds highlighting support. <br>
+ * User defined ComboBoxIcon. <br>
+ * Add sort api: autoCreateRowSorter
+ * 
+ * @see org.jdesktop.swingx.JXList
  * 
  * @author Karl Schaefer
  * @author Jeanette Winzenburg
+ * @author EUG https://github.com/homebeaver
  */
 @SuppressWarnings("serial")
 public class JXComboBox<E> extends JComboBox<E> {
@@ -504,22 +509,28 @@ this(items, false);
 
 Daraus folgt: JXComboBox müsste eigentlich JYComboBox heissen, da es keine sortiere items unterstützt
 Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in BasicXComboBoxUI.listBox definiert:
-protected JList<Object> listBox; // is type YList
+	protected JList<Object> listBox; // actually of subtype JXList
     	popup = createPopup();
     	listBox = popup.getList();
 
  */
     
     /**
-     * Creates a <code>JXComboBox</code> with a default data model. The default data model is an
-     * empty list of objects. Use <code>addItem</code> to add items. By default the first item in
-     * the data model becomes selected.
+     * Creates a {@code JXComboBox} with a default data model. 
+     * The default data model is an empty list of objects. Use {@code addItem} to add items.
+     * <p> 
+     * By default the first item in the data model becomes selected.
      * 
      * @see DefaultComboBoxModel
      */
     public JXComboBox() {
         this(false);
     }
+    /**
+     * Creates a {@code JXComboBox} with a default data model. 
+     * @param autoCreateRowSorter {@code boolean} to determine if a {@code RowSorter} should be created automatically.
+     * @see #JXComboBox()
+     */
     public JXComboBox(boolean autoCreateRowSorter) {
         super();
         init();
@@ -527,18 +538,25 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Creates a <code>JXComboBox</code> that takes its items from an existing
-     * <code>ComboBoxModel</code>. Since the <code>ComboBoxModel</code> is provided, a combo box
-     * created using this constructor does not create a default combo box model and may impact how
-     * the insert, remove and add methods behave.
+     * Creates a {@code JXComboBox} that takes its items from an existing {@code ComboBoxModel}.
+     * Since the {@code ComboBoxModel} is provided, a combo box created using this constructor 
+     * does not create a default combo box model and may impact how the insert, remove and add methods behave.
      * 
      * @param model
-     *            the <code>ComboBoxModel</code> that provides the displayed list of items
-     * @see DefaultComboBoxModel
+     *            the {@code ComboBoxModel} that provides the displayed list of items
+     * @see ComboBoxModel
      */
     public JXComboBox(ComboBoxModel<E> model) {
         this(model, false);
     }
+    /**
+     * Creates a {@code JXComboBox} that takes its items from an existing {@code ComboBoxModel}.
+     * 
+     * @param model
+     *            the {@code ComboBoxModel} that provides the displayed list of items
+     * @param autoCreateRowSorter {@code boolean} to determine if a {@code RowSorter} should be created automatically.
+     * @see #JXComboBox(ComboBoxModel)
+     */
     public JXComboBox(ComboBoxModel<E> model, boolean autoCreateRowSorter) {
         super(model);
         init();
@@ -546,8 +564,8 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Creates a <code>JXComboBox</code> that contains the elements in the specified array. By
-     * default the first item in the array (and therefore the data model) becomes selected.
+     * Creates a {@code JXComboBox} that contains the elements in the specified array. 
+     * By default the first item in the array (and therefore the data model) becomes selected.
      * 
      * @param items
      *            an array of objects to insert into the combo box
@@ -556,6 +574,14 @@ protected JList<Object> listBox; // is type YList
     public JXComboBox(E[] items) {
         this(items, false);
     }
+    /**
+     * Creates a {@code JXComboBox} that contains the elements in the specified array. 
+     * If autoCreateRowSorter is set the first item in the array becomes selected,
+     * this element may not be the first shown in the dropdown box.
+     * 
+     * @param items an array of objects to insert into the combo box
+     * @param autoCreateRowSorter {@code boolean} to determine if a {@code RowSorter} should be created automatically.
+     */
     public JXComboBox(E[] items, boolean autoCreateRowSorter) {
         super(items);
         init();
@@ -563,12 +589,10 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Creates a <code>JXComboBox</code> that contains the elements in the specified Vector. By
-     * default the first item in the vector (and therefore the data model) becomes selected.
+     * Creates a {@code JXComboBox} that contains the elements in the specified Vector. 
+     * By default the first item in the vector (and therefore the data model) becomes selected.
      * 
-     * @param items
-     *            an array of vectors to insert into the combo box
-     * @see DefaultComboBoxModel
+     * @param items {@code Vector} with elements to insert into the combo box
      */
     public JXComboBox(Vector<E> items) {
         this(items, false);
@@ -605,16 +629,14 @@ protected JList<Object> listBox; // is type YList
      * liefert true wenn es eine aktive zuordnung zu einer Aktion für die Taste gibt
      */
     /**
-     * Invoked to process the key bindings for <code>keyStroke</code> as the result
-     * of the <code>KeyEvent</code> <code>e</code>. 
-     * This obtains the appropriate <code>InputMap</code>,
+     * Invoked to process the key bindings for {@code keyStroke} as the result of the {@code KeyEvent} {@code e}. 
+     * This obtains the appropriate {@code InputMap},
      * gets the binding, 
-     * gets the action from the <code>ActionMap</code>,
-     * and then (if the action is found and the component is enabled) 
-     * invokes <code>notifyAction</code> to notify the action.
+     * gets the action from the {@code ActionMap},
+     * and then (if the action is found and the component is enabled) invokes {@code notifyAction}.
      *
-     * @param keyStroke the <code>KeyStroke</code> queried
-     * @param e the <code>KeyEvent</code>
+     * @param keyStroke the {@code keyStroke} queried
+     * @param e the {@code KeyEvent}
      * @param condition one of the following values:
      * <ul>
      * <li>JComponent.WHEN_FOCUSED = 0
@@ -640,18 +662,15 @@ protected JList<Object> listBox; // is type YList
                 pendingEvents.add(e);
                 isDispatching = true;
 
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            for (KeyEvent event : pendingEvents) {
-                                editor.getEditorComponent().dispatchEvent(event);
-                            }
-
-                            pendingEvents.clear();
-                        } finally {
-                            isDispatching = false;
+                SwingUtilities.invokeLater( () -> {
+                    try {
+                        for (KeyEvent event : pendingEvents) {
+                            editor.getEditorComponent().dispatchEvent(event);
                         }
+
+                        pendingEvents.clear();
+                    } finally {
+                        isDispatching = false;
                     }
                 });
             }
@@ -698,8 +717,8 @@ protected JList<Object> listBox; // is type YList
     /**
      * Returns the StringValueRegistry which defines the string representation for
      * each cells. This is strictly for internal use by the table, which has the 
-     * responsibility to keep in synch with registered renderers.<p>
-     * 
+     * responsibility to keep in synch with registered renderers.
+     * <p>
      * Currently exposed for testing reasons, client code is recommended to not use nor override.
      * 
      * @return the current string value registry
@@ -721,11 +740,10 @@ protected JList<Object> listBox; // is type YList
     }
     
     /**
-     * Returns the string representation of the cell value at the given position. 
+     * Returns the string representation of the cell value at the given model position. 
      * 
-     * @param row the row index of the cell in view coordinates
-     * @return the string representation of the cell value as it will appear in the 
-     *   table. 
+     * @param row the row index of the item in model coordinates
+     * @return the string representation of the item value as it will appear in the combo box. 
      */
     public String getStringAt(int row) {
         // changed implementation to use StringValueRegistry
@@ -743,8 +761,8 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Creates and returns the default cell renderer to use. Subclasses
-     * may override to use a different type. Here: returns a <code>DefaultListRenderer</code>.
+     * Creates and returns the default cell renderer to use. 
+     * Subclasses may override to use a different type. Here: returns a {@code DefaultListRenderer}.
      * 
      * @return the default cell renderer to use with this list.
      */
@@ -768,8 +786,7 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Returns the renderer installed by client code or the default if none has
-     * been set.
+     * Returns the renderer installed by client code or the default if none has been set.
      * <p>
      * This is a shortcut for 
      * <code>((JXComboBox.DelegatingRenderer)getRenderer()).getDelegateRenderer())</code>
@@ -784,12 +801,11 @@ protected JList<Object> listBox; // is type YList
     /**
      * {@inheritDoc} <p>
      * 
-     * Overridden to wrap the given renderer in a DelegatingRenderer to support
-     * highlighting. <p>
-     * 
+     * Overridden to wrap the given renderer in a DelegatingRenderer to support highlighting.
+     *  <p>
      * Note: the wrapping implies that the renderer returned from the getCellRenderer
-     * is <b>not</b> the renderer as given here, but the wrapper. To access the original,
-     * use <code>getWrappedCellRenderer</code>.
+     * is <b>not</b> the renderer as given here, but the wrapper. 
+     * To access the original, use {@code getWrappedCellRenderer}.
      * 
      * @see #getWrappedRenderer()
      * @see #getRenderer()
@@ -837,8 +853,8 @@ protected JList<Object> listBox; // is type YList
     }
     
     /**
-     * Returns the CompoundHighlighter assigned to the table, null if none. PENDING: open up for
-     * subclasses again?.
+     * Returns the CompoundHighlighter assigned to the table, null if none. 
+     * PENDING: open up for subclasses again?.
      * 
      * @return the CompoundHighlighter assigned to the table.
      * @see #setCompoundHighlighter(CompoundHighlighter)
@@ -850,7 +866,6 @@ protected JList<Object> listBox; // is type YList
     /**
      * Assigns a CompoundHighlighter to the table, maybe null to remove all Highlighters.
      * <p>
-     * 
      * The default value is <code>null</code>.
      * <p>
      * 
@@ -878,8 +893,8 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Sets the <code>Highlighter</code>s to the column, replacing any old settings. None of the
-     * given Highlighters must be null.
+     * Sets the {@code Highlighter}s to the column, replacing any old settings. 
+     * None of the given Highlighters must be null.
      * 
      * @param highlighters
      *            zero or more not null highlighters to use for renderer decoration.
@@ -901,8 +916,7 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Returns the <code>Highlighter</code>s used by this column. Maybe empty, but guarantees to be
-     * never null.
+     * Returns the {@code Highlighter}s used by this column. Maybe empty, but guarantees to be never null.
      * 
      * @return the Highlighters used by this column, guaranteed to never null.
      * @see #setHighlighters(Highlighter[])
@@ -915,10 +929,8 @@ protected JList<Object> listBox; // is type YList
     /**
      * Adds a Highlighter. Appends to the end of the list of used Highlighters.
      * 
-     * @param highlighter
-     *            the <code>Highlighter</code> to add.
-     * @throws NullPointerException
-     *             if <code>Highlighter</code> is null.
+     * @param highlighter the {@code Highlighter} to add.
+     * @throws NullPointerException if {@code Highlighter} is null.
      * 
      * @see #removeHighlighter(Highlighter)
      * @see #setHighlighters(Highlighter[])
@@ -935,11 +947,10 @@ protected JList<Object> listBox; // is type YList
     /**
      * Removes the given Highlighter.
      * <p>
-     * 
      * Does nothing if the Highlighter is not contained.
      * 
-     * @param highlighter
-     *            the Highlighter to remove.
+     * @param highlighter the {@code Highlighter} to remove.
+     * 
      * @see #addHighlighter(Highlighter)
      * @see #setHighlighters(Highlighter...)
      */
@@ -951,11 +962,9 @@ protected JList<Object> listBox; // is type YList
     }
 
     /**
-     * Returns the <code>ChangeListener</code> to use with highlighters. Lazily creates the
-     * listener.
+     * Returns the {@code ChangeListener} to use with {@code Highlighter}s. Lazily creates the listener.
      * 
-     * @return the ChangeListener for observing changes of highlighters, guaranteed to be
-     *         <code>not-null</code>
+     * @return the ChangeListener for observing changes of highlighters, guaranteed to be {@code not-null}.
      */
     protected ChangeListener getHighlighterChangeListener() {
         if (highlighterChangeListener == null) {
@@ -996,7 +1005,7 @@ protected JList<Object> listBox; // is type YList
         	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
         	// expected UIClass: ComboBoxUI
         	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
-        	System.out.println("JXComboBox.updateUI current LaF class="+currentClassName+" setUI(ui:"+ui);
+//        	System.out.println("JXComboBox.updateUI current LaF class="+currentClassName+" setUI(ui:"+ui);
         	setUI((ComboBoxUI)ui);
             
             if (keySelectionManager instanceof UIDependent uiKeySelectionManager) {
@@ -1020,7 +1029,7 @@ protected JList<Object> listBox; // is type YList
     }
     // ----------- ab hier meine Erweiterungen :
     public void setUI(ComboBoxUI newUI) {
-    	System.out.println("JXComboBox.setUI ui:"+ui + " newUI:"+newUI);
+//    	System.out.println("JXComboBox.setUI ui:"+ui + " newUI:"+newUI);
     	if(ui==newUI) return;
         ComponentUI oldUI = ui;
         ui = newUI;
@@ -1042,7 +1051,7 @@ protected JList<Object> listBox; // is type YList
     		};
     	}
         return editor;
-    }
+    }    
     public void setSelectedItem(Object anObject) {
     	System.out.println("JXComboBox.setSelectedItem to anObject="+anObject);
 // BUG in JComboBox Z.603 getEditor liefert null
@@ -1050,28 +1059,29 @@ protected JList<Object> listBox; // is type YList
 
     	super.setSelectedItem(anObject);
     }
+    
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Overridden to respect sorted Dropdown List
+     * 
+     * @param anIndex an integer specifying the list item to select (for sorted lists not coercively the model index),
+     *                  where 0 specifies the first item in the list and -1 indicates no selection
+     */
     public void setSelectedIndex(int anIndex) {
-		int modelIndex = anIndex; //xlist.getRowSorter().convertRowIndexToModel(e.getFirstIndex());
-    	if(getAutoCreateRowSorter()) {
+		int modelIndex = anIndex;
+    	if(anIndex>-1 && getAutoCreateRowSorter()) {
     		modelIndex = getRowSorter().convertRowIndexToModel(anIndex);
     	}
-    	System.out.println("JXComboBox.setSelectedIndex to "+anIndex + " ==> modelIndex="+modelIndex);
+//    	System.out.println("JXComboBox.setSelectedIndex to "+anIndex + " ==> modelIndex="+modelIndex);
     	super.setSelectedIndex(modelIndex);
     }
-//    public int getSelectedIndex() {
-//    	int i = super.getSelectedIndex();
-//    	if(getAutoCreateRowSorter()) {
-//    		return getRowSorter().convertRowIndexToView(i);
-//    	}
-//    	System.out.println("JXComboBox.getSelectedIndex returnd "+i);
-//    	return i;
-//    }
     public void setComboBoxIcon(Icon icon) {
     	setComboBoxIcon(icon, icon);
     }
     public void setComboBoxIcon(Icon icon, Icon isShowingPopupIcon) {
 		XComboBoxUI ui = (XComboBoxUI)getUI();
-		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon + " ui:"+ui);
+//		System.out.println("JXComboBox.setComboBoxIcon() Icon:"+icon + " ui:"+ui);
     	ui.uninstallButton();
     	ui.installButton(icon);
     	ui.setIsShowingPopupIcon(isShowingPopupIcon);
@@ -1102,7 +1112,8 @@ protected JList<Object> listBox; // is type YList
         firePropertyChange("autoCreateRowSorter", oldValue, getAutoCreateRowSorter());
     }
     // DefaultRowSorter ist ListSortController <== es braucht keinen Controller, nur Model
-    // ==> die Namen ListSortController und DefaultSortController sind irritierend: Es sind keine UI elemente 
+    // ==> die Namen Controller in ListSortController und DefaultSortController sind irritierend: 
+    // Es sind keine UI elemente 
     protected RowSorter<? extends ListModel<E>> createDefaultRowSorter() {
         return new ListSortController<ListModel<E>>(getModel());
     }
@@ -1110,11 +1121,11 @@ protected JList<Object> listBox; // is type YList
         return rowSorter;
     }
     public void setRowSorter(RowSorter<? extends ListModel<E>> sorter) {
-    	System.out.println("sorter:"+sorter);
+//    	System.out.println("JXComboBox.setRowSorter RowSorter:"+sorter);
         RowSorter<? extends ListModel<E>> oldRowSorter = getRowSorter();
         this.rowSorter = sorter;
         
-        //configureSorterProperties();
+        //configureSorterProperties:
         if(getRowSorter()!=null) {
     		RowSorter.SortKey sk = new RowSorter.SortKey(0, SortOrder.ASCENDING);
     		getRowSorter().setSortKeys(Arrays.asList(sk));
