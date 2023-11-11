@@ -480,8 +480,11 @@ public class JXComboBox<E> extends JComboBox<E> {
 
     private boolean usingHighlightersForCurrentValue = true;
     
+    /**
+     * The pipeline holding the highlighters.
+     */
     private CompoundHighlighter compoundHighlighter;
-
+    /** listening to changeEvents from compoundHighlighter. */
     private ChangeListener highlighterChangeListener;
 
     private List<KeyEvent> pendingEvents;
@@ -865,47 +868,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     }
     
     /**
-     * Returns the CompoundHighlighter assigned to the table, null if none. 
-     * PENDING: open up for subclasses again?.
-     * 
-     * @return the CompoundHighlighter assigned to the table.
-     * @see #setCompoundHighlighter(CompoundHighlighter)
-     */
-    private CompoundHighlighter getCompoundHighlighter() {
-        return compoundHighlighter;
-    }
-
-    /**
-     * Assigns a CompoundHighlighter to the table, maybe null to remove all Highlighters.
-     * <p>
-     * The default value is <code>null</code>.
-     * <p>
-     * 
-     * PENDING: open up for subclasses again?.
-     * 
-     * @param pipeline
-     *            the CompoundHighlighter to use for renderer decoration.
-     * @see #getCompoundHighlighter()
-     * @see #addHighlighter(Highlighter)
-     * @see #removeHighlighter(Highlighter)
-     * 
-     */
-    private void setCompoundHighlighter(CompoundHighlighter pipeline) {
-        CompoundHighlighter old = getCompoundHighlighter();
-        if (old != null) {
-            old.removeChangeListener(getHighlighterChangeListener());
-        }
-        compoundHighlighter = pipeline;
-        if (compoundHighlighter != null) {
-            compoundHighlighter.addChangeListener(getHighlighterChangeListener());
-        }
-        // PENDING: wrong event - the property is either "compoundHighlighter"
-        // or "highlighters" with the old/new array as value
-        firePropertyChange("highlighters", old, getCompoundHighlighter());
-    }
-
-    /**
-     * Sets the {@code Highlighter}s to the column, replacing any old settings. 
+     * Sets the {@code Highlighter}s to the dropdown list, replacing any old settings. 
      * None of the given Highlighters must be null.
      * 
      * @param highlighters
@@ -918,28 +881,25 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
      */
     public void setHighlighters(Highlighter... highlighters) {
         Contract.asNotNull(highlighters, "highlighters cannot be null or contain null");
-
-        CompoundHighlighter pipeline = null;
-        if (highlighters.length > 0) {
-            pipeline = new CompoundHighlighter(highlighters);
-        }
-
-        setCompoundHighlighter(pipeline);
+        Highlighter[] old = getHighlighters();
+        getCompoundHighlighter().setHighlighters(highlighters);
+        firePropertyChange("highlighters", old, getHighlighters());
     }
 
     /**
-     * Returns the {@code Highlighter}s used by this column. Maybe empty, but guarantees to be never null.
+     * Returns the {@code Highlighter}s used by the dropdown list. 
+     * Maybe empty, but guarantees to be never null.
      * 
-     * @return the Highlighters used by this column, guaranteed to never null.
+     * @return the Highlighters used by this combobox.
      * @see #setHighlighters(Highlighter[])
      */
     public Highlighter[] getHighlighters() {
-        return getCompoundHighlighter() != null ? getCompoundHighlighter().getHighlighters()
-                : CompoundHighlighter.EMPTY_HIGHLIGHTERS;
+        return getCompoundHighlighter().getHighlighters();
     }
 
     /**
-     * Adds a Highlighter. Appends to the end of the list of used Highlighters.
+     * Appends a {@code Highlighter} to the end of the list of used {@code Highlighter}s. 
+     * The argument must not be null. 
      * 
      * @param highlighter the {@code Highlighter} to add.
      * @throws NullPointerException if {@code Highlighter} is null.
@@ -948,45 +908,50 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
      * @see #setHighlighters(Highlighter[])
      */
     public void addHighlighter(Highlighter highlighter) {
-        CompoundHighlighter pipeline = getCompoundHighlighter();
-        if (pipeline == null) {
-            setCompoundHighlighter(new CompoundHighlighter(highlighter));
-        } else {
-            pipeline.addHighlighter(highlighter);
-        }
-// JXList: public void addHighlighter(Highlighter highlighter) {
-//        Highlighter[] old = getHighlighters();
-//        getCompoundHighlighter().addHighlighter(highlighter);
-//        firePropertyChange("highlighters", old, getHighlighters());
+        Highlighter[] old = getHighlighters();
+        getCompoundHighlighter().addHighlighter(highlighter);
+        firePropertyChange("highlighters", old, getHighlighters());
     }
 
     /**
-     * Removes the given Highlighter.
-     * <p>
+     * Removes the given Highlighter. <p>
      * Does nothing if the Highlighter is not contained.
      * 
-     * @param highlighter the {@code Highlighter} to remove.
-     * 
+     * @param highlighter the Highlighter to remove.
      * @see #addHighlighter(Highlighter)
      * @see #setHighlighters(Highlighter...)
      */
     public void removeHighlighter(Highlighter highlighter) {
-        if ((getCompoundHighlighter() == null)) {
-            return;
-        }
+        Highlighter[] old = getHighlighters();
         getCompoundHighlighter().removeHighlighter(highlighter);
+        firePropertyChange("highlighters", old, getHighlighters());
+    }
+    
+    /**
+     * Returns the CompoundHighlighter assigned to the combo box, null if none. 
+     * 
+     * @return the CompoundHighlighter assigned to the table.
+     * @see #setCompoundHighlighter(CompoundHighlighter)
+     */
+    protected CompoundHighlighter getCompoundHighlighter() {
+        if (compoundHighlighter == null) {
+            compoundHighlighter = new CompoundHighlighter();
+            compoundHighlighter.addChangeListener(getHighlighterChangeListener());
+        }
+        return compoundHighlighter;
     }
 
     /**
-     * Returns the {@code ChangeListener} to use with {@code Highlighter}s. Lazily creates the listener.
+     * Returns the <code>ChangeListener</code> to use with {@code Highlighter. 
+     * Lazily creates the listener.
      * 
-     * @return the ChangeListener for observing changes of highlighters, guaranteed to be {@code not-null}.
+     * @return the ChangeListener for observing changes of highlighters, 
+     *   guaranteed to be <code>not-null</code>
      */
     protected ChangeListener getHighlighterChangeListener() {
         if (highlighterChangeListener == null) {
             highlighterChangeListener = createHighlighterChangeListener();
         }
-        
         return highlighterChangeListener;
     }
 

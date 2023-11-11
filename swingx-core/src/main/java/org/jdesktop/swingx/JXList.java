@@ -231,7 +231,6 @@ public class JXList<E> extends JYList<E> {
      * The pipeline holding the highlighters.
      */
     protected CompoundHighlighter compoundHighlighter;
-
     /** listening to changeEvents from compoundHighlighter. */
     private ChangeListener highlighterChangeListener;
 
@@ -1273,6 +1272,7 @@ public class JXList<E> extends JYList<E> {
     public Highlighter[] getHighlighters() {
         return getCompoundHighlighter().getHighlighters();
     }
+
     /**
      * Appends a <code>Highlighter</code> to the end of the list of used
      * <code>Highlighter</code>s. The argument must not be null. 
@@ -1306,7 +1306,6 @@ public class JXList<E> extends JYList<E> {
     
     /**
      * Returns the CompoundHighlighter assigned to the list, null if none.
-     * PENDING: open up for subclasses again?.
      * 
      * @return the CompoundHighlighter assigned to the list.
      */
@@ -1319,8 +1318,8 @@ public class JXList<E> extends JYList<E> {
     }
 
     /**
-     * Returns the <code>ChangeListener</code> to use with highlighters. Lazily 
-     * creates the listener.
+     * Returns the <code>ChangeListener</code> to use with highlighters. 
+     * Lazily creates the listener.
      * 
      * @return the ChangeListener for observing changes of highlighters, 
      *   guaranteed to be <code>not-null</code>
@@ -1337,8 +1336,7 @@ public class JXList<E> extends JYList<E> {
      * <p>
      * Here: repaints the list on receiving a stateChanged.
      * 
-     * @return the ChangeListener defining the reaction to changes of
-     *         highlighters.
+     * @return the ChangeListener defining the reaction to changes of highlighters.
      */
     protected ChangeListener createHighlighterChangeListener() {
         return new ChangeListener() {
