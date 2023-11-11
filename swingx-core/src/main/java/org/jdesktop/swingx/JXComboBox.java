@@ -19,6 +19,7 @@
 package org.jdesktop.swingx;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
@@ -27,6 +28,7 @@ import java.beans.BeanProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
@@ -68,6 +70,7 @@ import org.jdesktop.swingx.renderer.JRendererPanel;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
 import org.jdesktop.swingx.sort.ListSortController;
+import org.jdesktop.swingx.sort.SortController;
 import org.jdesktop.swingx.sort.StringValueRegistry;
 import org.jdesktop.swingx.util.Contract;
 
@@ -208,7 +211,7 @@ public class JXComboBox<E> extends JComboBox<E> {
             if (index == -1) {
                 comp = delegateRenderer.getListCellRendererComponent(list, value, getSelectedIndex(), isSelected, cellHasFocus);
                 
-                if (isUseHighlightersForCurrentValue() && compoundHighlighter != null && getSelectedIndex() != -1) {
+                if (isUsingHighlightersForCurrentValue() && compoundHighlighter != null && getSelectedIndex() != -1) {
                     comp = compoundHighlighter.highlight(comp, getComponentAdapter(getSelectedIndex()));
                     
                     // this is done to "trick" BasicComboBoxUI.paintCurrentValue which resets all of
@@ -534,7 +537,11 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     public JXComboBox(boolean autoCreateRowSorter) {
         super();
         init();
-        this.setAutoCreateRowSorter(autoCreateRowSorter);
+        if(autoCreateRowSorter) {
+        	setRowSorter(createDefaultRowSorter(), SortOrder.ASCENDING);
+        } else {
+            setRowSorter(null, null);
+        }
     }
 
     /**
@@ -560,7 +567,11 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     public JXComboBox(ComboBoxModel<E> model, boolean autoCreateRowSorter) {
         super(model);
         init();
-        this.setAutoCreateRowSorter(autoCreateRowSorter);
+        if(autoCreateRowSorter) {
+        	setRowSorter(createDefaultRowSorter(), SortOrder.ASCENDING);
+        } else {
+            setRowSorter(null, null);
+        }
     }
 
     /**
@@ -585,7 +596,11 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     public JXComboBox(E[] items, boolean autoCreateRowSorter) {
         super(items);
         init();
-        this.setAutoCreateRowSorter(autoCreateRowSorter);
+        if(autoCreateRowSorter) {
+        	setRowSorter(createDefaultRowSorter(), SortOrder.ASCENDING);
+        } else {
+            setRowSorter(null, null);
+        }
     }
 
     /**
@@ -600,7 +615,11 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     public JXComboBox(Vector<E> items, boolean autoCreateRowSorter) {
         super(items);
         init();
-        this.setAutoCreateRowSorter(autoCreateRowSorter);
+        if(autoCreateRowSorter) {
+        	setRowSorter(createDefaultRowSorter(), SortOrder.ASCENDING);
+        } else {
+            setRowSorter(null, null);
+        }
     }
 
     private void init() {
@@ -827,17 +846,10 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     }
 
     /**
-     * PENDING JW to KS (kschaefe): review method naming - doesn't sound like valid English to me (no 
-     * native speaker of course :-). Options are to 
-     * change the property name to usingHighlightersForCurrentValue (as we did in JXMonthView
-     * after some debate) or stick to getXX. Thinking about it: maybe then the property should be
-     * usesHighlightersXX, that is third person singular instead of imperative, 
-     * like in tracksVerticalViewport of JTable?
-     * 
-     * @return {@code true} if the combo box decorates the current value with highlighters; {@code false} otherwise
+     * @return {@code true} if the combo box decorates the current value with highlighters; 
+     * 	{@code false} otherwise
      */
-    // TODO rename
-    public boolean isUseHighlightersForCurrentValue() {
+    public boolean isUsingHighlightersForCurrentValue() {
         return usingHighlightersForCurrentValue;
     }
     
@@ -845,11 +857,11 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
      * @param newValue for usingHighlightersForCurrentValue boolean property
      */
     public void setUseHighlightersForCurrentValue(boolean newValue) {
-        boolean oldValue = isUseHighlightersForCurrentValue();
+        boolean oldValue = isUsingHighlightersForCurrentValue();
         this.usingHighlightersForCurrentValue = newValue;
         repaint();
         firePropertyChange("useHighlightersForCurrentValue", oldValue,
-                isUseHighlightersForCurrentValue());
+                isUsingHighlightersForCurrentValue());
     }
     
     /**
@@ -942,6 +954,10 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         } else {
             pipeline.addHighlighter(highlighter);
         }
+// JXList: public void addHighlighter(Highlighter highlighter) {
+//        Highlighter[] old = getHighlighters();
+//        getCompoundHighlighter().addHighlighter(highlighter);
+//        firePropertyChange("highlighters", old, getHighlighters());
     }
 
     /**
@@ -1070,7 +1086,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
      */
     public void setSelectedIndex(int anIndex) {
 		int modelIndex = anIndex;
-    	if(anIndex>-1 && getAutoCreateRowSorter()) {
+    	if(anIndex>-1 && isSorted()) {
     		modelIndex = getRowSorter().convertRowIndexToModel(anIndex);
     	}
 //    	System.out.println("JXComboBox.setSelectedIndex to "+anIndex + " ==> modelIndex="+modelIndex);
@@ -1090,26 +1106,46 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     public ComboBoxUI getUI() {
         return (XComboBoxUI)super.getUI();
     }
-
-    // sort api: siehe JXList
-    private boolean autoCreateRowSorter;
-    private RowSorter<? extends ListModel<E>> rowSorter;
-    public boolean getAutoCreateRowSorter() {
-        return autoCreateRowSorter;
+    
+    private Color selectionBackground;
+    public Color getSelectionBackground() {
+        return selectionBackground;
     }
     /* @beaninfo
-     *        bound: true
-     *    preferred: true
-     *  description: Whether or not to turn on sorting by default.
+     *       bound: true
+     *   attribute: visualUpdate true
+     * description: The background color of selected cells.
      */
-    public void setAutoCreateRowSorter(boolean autoCreateRowSorter) {
-        if (getAutoCreateRowSorter() == autoCreateRowSorter) return;
-        boolean oldValue = getAutoCreateRowSorter();
-        this.autoCreateRowSorter = autoCreateRowSorter;
-        if (autoCreateRowSorter) {
-            setRowSorter(createDefaultRowSorter());
-        }
-        firePropertyChange("autoCreateRowSorter", oldValue, getAutoCreateRowSorter());
+    public void setSelectionBackground(Color selectionBackground) {
+        Object oldValue = getSelectionBackground();
+        this.selectionBackground = selectionBackground;
+        firePropertyChange("selectionBackground", oldValue, getSelectionBackground());
+        repaint();
+    }
+
+    private Color selectionForeground;
+    public Color getSelectionForeground() {
+        return selectionForeground;
+    }
+    /* @beaninfo
+     *       bound: true
+     *   attribute: visualUpdate true
+     * description: The foreground color of selected cells.
+     */
+    public void setSelectionForeground(Color selectionForeground) {
+        Object oldValue = getSelectionForeground();
+        this.selectionForeground = selectionForeground;
+        firePropertyChange("selectionForeground", oldValue, getSelectionForeground());
+        repaint();
+    }
+
+    // sort api: siehe JXList
+    private RowSorter<? extends ListModel<E>> rowSorter;
+    public boolean isSorted() {
+    	return rowSorter != null;
+    }
+    public RowSorter<? extends ListModel<E>> getRowSorter() {
+        return rowSorter;
     }
     // DefaultRowSorter ist ListSortController <== es braucht keinen Controller, nur Model
     // ==> die Namen Controller in ListSortController und DefaultSortController sind irritierend: 
@@ -1117,21 +1153,59 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     protected RowSorter<? extends ListModel<E>> createDefaultRowSorter() {
         return new ListSortController<ListModel<E>>(getModel());
     }
-    public RowSorter<? extends ListModel<E>> getRowSorter() {
-        return rowSorter;
-    }
-    public void setRowSorter(RowSorter<? extends ListModel<E>> sorter) {
+    // in JXList ist diese Methode public und ohne SortOrder param
+    protected void setRowSorter(RowSorter<? extends ListModel<E>> sorter, SortOrder so) {
 //    	System.out.println("JXComboBox.setRowSorter RowSorter:"+sorter);
         RowSorter<? extends ListModel<E>> oldRowSorter = getRowSorter();
         this.rowSorter = sorter;
         
         //configureSorterProperties:
         if(getRowSorter()!=null) {
-    		RowSorter.SortKey sk = new RowSorter.SortKey(0, SortOrder.ASCENDING);
+    		RowSorter.SortKey sk = new RowSorter.SortKey(0, so);
     		getRowSorter().setSortKeys(Arrays.asList(sk));
         }
 
-        firePropertyChange("rowSorter", oldRowSorter, sorter);
+        firePropertyChange("rowSorter", oldRowSorter, getRowSorter());
     }
-
+    public SortOrder getSortOrder(SortOrder so) {
+    	if(!isSorted()) return null; // NOT sorted ==> rowSorter == null
+    	// getRowSorter() != null ==>
+    	return getRowSorter().getSortKeys().get(0).getSortOrder();
+    }
+    public void setSortOrder(SortOrder so) {
+    	if(so==null || so==SortOrder.UNSORTED) {
+    		setRowSorter(null, null);
+    	} else {
+        	setRowSorter(createDefaultRowSorter(), so);
+    	}
+    }
+    // TODO fehlt setComparator
+    private Comparator<?> comparator;
+    public Comparator<?> getComparator() {
+        return comparator;
+    }
+    public void setComparator(Comparator<?> comparator) {
+        Comparator<?> old = getComparator();
+        this.comparator = comparator;
+        updateSortAfterComparatorChange();
+        firePropertyChange("comparator", old, getComparator());
+    }
+    protected void updateSortAfterComparatorChange() {
+        if(getRowSorter() instanceof SortController<?>) {
+            getSortController().setComparator(0, getComparator());
+        }
+    }
+    @SuppressWarnings("unchecked")
+	// JW: the RowSorter is always of type <? extends ListModel> so the unchecked cast is safe
+	protected SortController<? extends ListModel<Object>> getSortController() {
+    	if(getRowSorter() instanceof SortController<?>) {
+    		return (SortController<? extends ListModel<Object>>) getRowSorter();
+    	}
+        return null;
+    }
+    public void toggleSortOrder() {
+    	if(getRowSorter() instanceof SortController<?>) {
+            getSortController().toggleSortOrder(0);
+    	}
+    }
 }

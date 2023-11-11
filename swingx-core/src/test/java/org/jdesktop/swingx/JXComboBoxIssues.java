@@ -95,7 +95,7 @@ public class JXComboBoxIssues extends InteractiveTestCase {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                combo.setUseHighlightersForCurrentValue(!combo.isUseHighlightersForCurrentValue());
+                combo.setUseHighlightersForCurrentValue(!combo.isUsingHighlightersForCurrentValue());
             }
         };
         addAction(frame, action);
