@@ -20,6 +20,7 @@ package org.jdesktop.swingx;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -27,10 +28,15 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
@@ -45,7 +51,7 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
     
     private static final Logger LOG = Logger.getLogger(JXComboBoxVisualCheck.class.getName());
     
-    private ComboBoxModel<Object> model;
+    private ComboBoxModel<Object> model; // used in interactiveTestComboBoxAlternateHighlighter1
     
     /**
      * {@inheritDoc}
@@ -53,6 +59,9 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
     @Override
     public void setUp() {
         model = new DefaultComboBoxModel<Object>(new JComboBox<Object>().getActionMap().allKeys());
+        for(int i=0; i<model.getSize(); i++) {
+        	LOG.info("model.ElementAt("+i+") :"+model.getElementAt(i));
+        }
     }
     
     public static void main(String[] args) {
@@ -113,7 +122,7 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
     	};
     JComboBox<String> cellsLayout;
     ComboBoxEditor ed;
-    EditorActionListener eal;
+    ActionListener eal;
     public class EditorActionListener implements ActionListener {
 
 		@Override
@@ -329,28 +338,121 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
 //		}
     	
     }
-    ComboBoxEditor colorEd; // = new ColorComboBoxEditor(Color.BLACK);
+    JComboBox<Color> colorcb;
+    ComboBoxEditor colorEd;
+    ActionListener ceal;
+    public class ColorEditorActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+//			LOG.info("editor actionEvent:"+actionEvent);
+			LOG.info("color ComboBoxEditor "+colorEd + " the edited item:"+ ed.getItem());
+			if(colorcb.getSelectedItem().equals(ed.getItem())) {
+				LOG.info("SelectedItem =============== edited Item");
+			} else {
+				Object editedItem = colorEd.getItem();
+            	LOG.info("\n the selected item:"+ colorcb.getSelectedItem().getClass() +" "+colorcb.getSelectedItem()
+            	+ "\n the edited item type:"+ editedItem.getClass() + " "+editedItem);
+            	// add editedItem to model
+            	ComboBoxModel<Color> m = colorcb.getModel();
+            	if(m instanceof DefaultComboBoxModel<Color> dm) {
+                	dm.addElement((Color)editedItem);
+                	dm.setSelectedItem(editedItem);
+            	}
+			}
+		}
+    	
+    }
+//    public static class UIResource extends BasicComboBoxRenderer implements javax.swing.plaf.UIResource {
+//    class ColorComboBoxRenderer extends JLabel implements ListCellRenderer<Integer> {
+    class ColorComboBoxRenderer extends BasicComboBoxRenderer {
+        protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+        public ColorComboBoxRenderer() {
+            super();
+            setOpaque(true);
+            setBorder(noFocusBorder);
+        }
+		public Dimension getPreferredSize() {
+			Dimension size;
+			if (this.getText() == null || this.getText().isEmpty()) {
+				setText(" ");
+				size = super.getPreferredSize();
+				setText("");
+			} else {
+				size = super.getPreferredSize();
+			}
+			return size;
+		}
+	    @Override
+		public Component getListCellRendererComponent(JList<?> list, Object value, 
+				int index, boolean isSelected, boolean cellHasFocus) {
+			if (isSelected) {
+				setBackground(list.getSelectionBackground());
+				setForeground(list.getSelectionForeground());
+			} else {
+				setBackground(list.getBackground());
+				setForeground(list.getForeground());
+			}
+			setFont(list.getFont());
+			if (value instanceof Icon icon) {
+				setIcon(icon);
+			} else if (value instanceof Color color) {
+				setBackground(color);
+				setText(color.toString());
+			} else {
+				setText((value == null) ? "" : value.toString());
+			}
+			return this;
+		}
+    	
+    }
     /**
      * a combo box editor for colors (the background is painted with the color selected)
      * you can change the edited item ==> then it is added to the combo box model
      */
     public void interactiveJXComboBoxColorEditing() {        
-    	JComboBox<Color> colorcb = new JXComboBox<Color>(colors);
+    	colorcb = new JXComboBox<Color>(colors);
         JXFrame frame = wrapInFrame(colorcb, "shows editable JXComboBox with Colors");
-        colorcb.setSelectedIndex(3);
-        colorcb.setEditor(new ColorComboBoxEditor(colors[3]));
         colorcb.setName("colorcb");
+        ColorComboBoxRenderer renderer= new ColorComboBoxRenderer();
+        renderer.setPreferredSize(new Dimension(200, 130));
+        colorcb.setRenderer(renderer);
+
+        colorcb.setSelectedIndex(1);
+        colorcb.setEditor(new ColorComboBoxEditor(colors[1]));
     	colorcb.addActionListener(ae -> {
-        	LOG.info("JComboBox ActionEvent "+ae);
-//        	colorcb.setSelectedIndex(colorcb.getSelectedIndex());
-        	colorcb.setSelectedItem(colorcb.getSelectedItem());
-//        	((ColorComboBoxEditor)colorEd).setEditorComponent(colorcb.getSelectedItem());
-        	LOG.info("ComboBoxEditor "+colorEd + " the edited item:"+ colorEd.getItem());
-//        	colorEd.setItem(colorcb.getSelectedItem());
+//        	LOG.info("JComboBox ActionEvent "+ae);
+        	int i = colorcb.getSelectedIndex();
+        	if(i>-1) {
+        		colorcb.setSelectedIndex(i);
+            	LOG.info("color ComboBoxEditor "+colorEd + " , the edited item("+i+")");
+            	if(i>=1) {
+            		colorcb.setEditable(true);
+            		colorEd = colorcb.getEditor();
+//            		LOG.info("# of editor ActionListeners "+colorEd.getActionListeners().length);
+            		//colorEd.removeActionListener(this);
+            		if(ceal==null) {
+            			ceal = new ColorEditorActionListener();
+            		} else {
+            			colorEd.removeActionListener(ceal);
+            		}
+            		colorEd.addActionListener(ceal);
+            		// mit Lambda kann ich kein removeActionListener machen
+            	} else {
+            		colorcb.setEditable(false);
+            		colorEd = null;
+            	}
+        	}
+//        	LOG.info("JComboBox ActionEvent "+ae);
+////        	colorcb.setSelectedIndex(colorcb.getSelectedIndex());
+//        	colorcb.setSelectedItem(colorcb.getSelectedItem());
+////        	((ColorComboBoxEditor)colorEd).setEditorComponent(colorcb.getSelectedItem());
+//        	LOG.info("ComboBoxEditor "+colorEd + " the edited item:"+ colorEd.getItem());
+////        	colorEd.setItem(colorcb.getSelectedItem());
         });
-    	colorcb.setEditable(true);
-    	colorEd = colorcb.getEditor(); // not updeted when switch LaF
-    	colorEd.addActionListener(ae -> {
+//    	colorcb.setEditable(true);
+//    	colorEd = colorcb.getEditor(); // not updeted when switch LaF
+/*    	colorEd.addActionListener(ae -> {
         	LOG.info("ComboBoxEditor ActionEvent "+ae);
         	Object item = colorEd.getItem();
         	LOG.info("??? ComboBoxEditor "+colorEd + " the edited item:"+ item);
@@ -374,7 +476,7 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
             		}
             	}
         	}
-    	});
+    	}); */
         addComponentOrientationToggle(frame);
         show(frame, 300, 300);
     }

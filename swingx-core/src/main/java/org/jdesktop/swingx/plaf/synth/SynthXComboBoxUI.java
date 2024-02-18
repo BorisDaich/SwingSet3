@@ -1,7 +1,9 @@
 package org.jdesktop.swingx.plaf.synth;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.LayoutManager;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,19 +11,30 @@ import java.util.logging.Logger;
 
 import javax.swing.DefaultButtonModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
+import javax.swing.plaf.synth.ColorType;
 import javax.swing.plaf.synth.Region;
 import javax.swing.plaf.synth.SynthContext;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import javax.swing.plaf.synth.SynthStyle;
 import javax.swing.plaf.synth.SynthUI;
 
+import org.jdesktop.swingx.JXComboBox;
+import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI;
 
@@ -31,7 +44,7 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
 
 	// factory
     public static ComponentUI createUI(JComponent c) {
-    	LOG.info("UI factory for JComponent:"+c); // c of type JXComboBox expected
+//    	LOG.info("UI factory for JComponent:"+c); // c of type JXComboBox expected
         return new SynthXComboBoxUI(c);
     }
     
@@ -42,7 +55,7 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
     // this ctor is implicit, used by factory
     protected SynthXComboBoxUI(JComponent c) {
     	super();
-    	LOG.info("---------->ctor<:");
+//    	LOG.info("---------->ctor< fertig:");
     }
     
     private ButtonHandler buttonHandler;
@@ -61,23 +74,205 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
 
     @Override
     protected void installDefaults() {
-		LOG.info("LookAndFeelDefaults "+UIManager.get(comboBox.getUIClassID())
-		+ "\n font "+UIManager.getLookAndFeelDefaults().get(FONT)
-		+ "\n background "+UIManager.getLookAndFeelDefaults().get(BACKGROUND)
-		+ "\n foreground "+UIManager.getLookAndFeelDefaults().get(FOREGROUND)
-		+ "\n border "+UIManager.getLookAndFeelDefaults().get(BORDER)
-		+ "\n property opaque "+UIManager.getLookAndFeelDefaults().get("opaque")
-		+ "\n selectionBackground "+UIManager.getLookAndFeelDefaults().get(SELECTION_BG)
-		+ "\n selectionForeground "+UIManager.getLookAndFeelDefaults().get(SELECTION_FG)
-		+ "\n disabledBackground "+UIManager.getLookAndFeelDefaults().get(DISABLED_BG)
-		+ "\n disabledForeground "+UIManager.getLookAndFeelDefaults().get(DISABLED_FG)
-		+ "\n property timeFactor "+UIManager.getLookAndFeelDefaults().get(TIME_FACTOR)
-		+ "\n property squareButton "+UIManager.getLookAndFeelDefaults().get(SQUARE_BUTTON)
-		+ "\n padding "+UIManager.getLookAndFeelDefaults().get(PADDING));
-        updateStyle(comboBox);
+    	super.installDefaults();
+/* results for Nimbus:
+INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI
+ font javax.swing.plaf.FontUIResource[family=SansSerif,name=sansserif,style=plain,size=12]
+ background javax.swing.plaf.ColorUIResource[r=238,g=238,b=238]                         --- überschrieben in updateStyle
+ foreground DerivedColor(color=0,0,0 parent=text offsets=0.0,0.0,0.0,0 pColor=0,0,0
+ border javax.swing.border.EtchedBorder@1101322d
+ property opaque null
+ selectionBackground javax.swing.plaf.ColorUIResource[r=57,g=105,b=138]
+ selectionForeground javax.swing.plaf.ColorUIResource[r=255,g=255,b=255]
+ disabledBackground null
+ disabledForeground null
+ property timeFactor null
+ property squareButton false
+ padding javax.swing.plaf.InsetsUIResource[top=3,left=3,bottom=3,right=3]
+ */
+//    	padding = null; keine Insets
+    	// update colors border , font , background , foreground
+    	updateStyle(comboBox);
+    }
+    
+    /*
+     * LayoutManager is implemented in superclass inner BasicXComboBoxUI.Handler
+     */
+    protected LayoutManager createLayoutManager() {
+        return super.createLayoutManager();
+    }   
+
+/*
+in super:
+protected ComboPopup createPopup() {
+	return new BasicComboPopup(cb) { // mit Überschreibungen:
+		protected JList<Object> createList() { ...
+		protected void togglePopup() { ...
+		public void show() { ...
+		public void show(Component invoker, int x, int y) { ...
+		protected void configureList() {
+ */
+    @Override
+    protected ComboPopup createPopup() {
+		JXComboBox<?> xComboBox = (JXComboBox<?>)comboBox;
+    	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
+    	// protected JComboBox<?> comboBox
+    	// ==> the cast is safe
+    	@SuppressWarnings("unchecked")
+		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
+    	// class SynthComboPopup extends BasicComboPopup is not visible
+//        SynthComboPopup p = new SynthComboPopup(comboBox);
+    	SynthXComboPopup p = new SynthXComboPopup(cb);
+        p.addPopupMenuListener(buttonHandler);
+        return p;
+    }
+    class SynthXComboPopup extends BasicComboPopup {
+        public SynthXComboPopup( JComboBox<Object> combo ) {
+            super(combo);
+        }
+        private JXComboBox xComboBox() {
+        	return (JXComboBox)comboBox;
+        }
+		@Override
+		protected JList<Object> createList() {
+			// autoCreateRowSorter ist in JXComboBox zunächst false
+//			LOG.info("nimbus nimbus" //+xComboBox.getRowSorter().getClass()
+//					+ "\n isSorted="+xComboBox().isSorted()
+//					);
+			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox().isSorted());
+			return list;
+		}
+	    protected void togglePopup() {
+//	    	LOG.info("------------->>>>>>>>>>>>>isVisible()="+isVisible() +" popupVisible="+popupVisible);
+//	        if ( isVisible() ) {
+	    	// BUG 57 isVisible() ist immer false XXX : popup != null ==> daher popupVisible
+	        if (popupVisible) {
+	            hide();
+	            setPopupVisible(comboBox, isVisible());
+	        }
+	        else {
+	            show();
+	            setPopupVisible(comboBox, popupVisible);
+	        }
+	    }
+	    @Override
+	    public void show() {
+	    	int i = xComboBox().getSelectedIndex();
+//	    	LOG.info("SelectedIndex="+i + " isSorted="+xComboBox().isSorted());
+	    	// in super.show() :
+	    	// - ist abgehandelt der Fall : i == -1 ==> list.clearSelection()
+	    	// - call show(Component invoker, int x, int y)
+	    	super.show();
+	    	if(i == -1 ) {
+	    		// bereits abgehandelt
+	    	} else {
+	    		int selectedIndex = xComboBox().isSorted() ? xComboBox().getRowSorter().convertRowIndexToView(i) : i;
+    	    	list.setSelectedIndex( selectedIndex );
+    	    	list.ensureIndexIsVisible( selectedIndex );
+	    	}
+	    }
+	    public void show(Component invoker, int x, int y) {
+//	    	LOG.info("// isVisible="+isVisible()+" x="+x+",y="+y+" aus JPopupMenu Component invoker:"+invoker);
+	    	super.show(invoker, x, y);
+//	    	LOG.info("// set popupVisible to isVisible()="+isVisible());
+	    	popupVisible = isVisible(); // avoid rekusive call via setPopupVisible 
+	    }
+	    protected void configureList() {
+	        list.setFont( comboBox.getFont() );
+	        list.setCellRenderer( comboBox.getRenderer() );
+	        list.setFocusable( false );
+	        list.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+//	        list.setSelectionBackground( new Color(57,105,138) ); // nimbusSelectionBackground OK, aber zu dunkel
+	        list.setSelectionBackground( new Color(115, 164, 209) ); // "nimbusFocus", approx JORDY_BLUE
+//	        list.setSelectionBackground( UIManager.getColor(SELECTION_BG) );
+//	    	LOG.info("=====?funktioniert nicht?=====" + " getSelectionBackground="+xComboBox().getSelectionBackground());
+//	        list.setSelectionBackground(xComboBox().getSelectionBackground());
+	        
+	        int i = comboBox.getSelectedIndex();
+	        if(i == -1 ) {
+	        	list.clearSelection();
+	    	} else {
+	    		int selectedIndex = xComboBox().isSorted() ? xComboBox().getRowSorter().convertRowIndexToView(i) : i;
+    	    	list.setSelectedIndex( selectedIndex );
+    	    	list.ensureIndexIsVisible( selectedIndex );
+	        }
+	        installListListeners();
+	    }
+	    protected void installListListeners() {
+	        if ((listMouseListener = createListMouseListener()) != null) {
+	            list.addMouseListener( listMouseListener );
+	        }
+	        if ((listMouseMotionListener = createListMouseMotionListener()) != null) {
+	            list.addMouseMotionListener( listMouseMotionListener );
+	        }
+	        if ((listSelectionListener = createListSelectionListener()) != null) {
+	            list.addListSelectionListener( listSelectionListener );
+	        }
+//	        list.addPropertyChangeListener(evt -> {
+//	    		LOG.info(">>>PropertyChangeEvent:"+evt);
+////	    		LOG.info(">>>"+propertyName+" PropertyChangeEvent:"+evt);
+//	        });
+	    }
+    }
+
+    private void updateStyle(JComponent c) {
+        // compare local reference to style from factory - nothing to do if same
+    	SynthStyle oldStyle = style;
+    	style = getStyle(); // style from factory
+    	if(oldStyle==style) return;
+    	
+        // check if this is called from init or from later update
+        // if from later updates, need to cleanup old
+        boolean refresh = oldStyle != null;
+        if (refresh) {
+//        	LOG.info("--------------refresh style--");
+        	oldStyle.uninstallDefaults(getContext(ENABLED));
+        }
+    	
+        // special case border
+        installSynthBorder();
+        // install defaults : font , background , foreground
+        style.installDefaults(getContext(ENABLED));
+//        ----------------------------
+		Color fg = comboBox.getForeground();
+//		LOG.info("--------"+(fg instanceof UIResource)+"---------- comboBox.fg:"+fg); 
+		Color bg = comboBox.getBackground();
+//		LOG.info("--------"+(bg instanceof UIResource)+"---------- comboBox.bg:"+bg); 
+		// DerivedColor(color=214,217,223 parent=control offsets=0.0,0.0,0.0,0 pColor=214,217,223
+        if (bg == null || bg instanceof UIResource) {
+//        	comboBox.setBackground(UIManager.getColor("ComboBox.background")); // "control" #d6d9df (214,217,223)
+//    		LOG.info("--------"+(bg instanceof UIResource)+"---------- bg:"+bg); 
+        }
+//      ----------------------------
+        // install selected properties
+        SynthContext selectedContext = getContext(SELECTED);
+//        LOG.info("--------"+style.getColor(selectedContext, ColorType.TEXT_BACKGROUND));
+        Color sbg = ((JXComboBox)comboBox).getSelectionBackground();
+        if (sbg == null || sbg instanceof UIResource) {
+//            LOG.info("--setSelectionBackground to "+style.getColor(selectedContext, ColorType.TEXT_BACKGROUND));
+        	((JXComboBox)comboBox).setSelectionBackground(style.getColor(selectedContext, ColorType.TEXT_BACKGROUND));
+        }
         
-        Boolean b = (Boolean)UIManager.get(SQUARE_BUTTON);
-        squareButton = b == null ? true : b;
+        Color sfg = ((JXComboBox)comboBox).getSelectionForeground();
+        if (sfg == null || sfg instanceof UIResource) {
+//            LOG.info("--setSelectionForeground to "+style.getColor(selectedContext, ColorType.TEXT_FOREGROUND));
+        	((JXComboBox)comboBox).setSelectionForeground(style.getColor(selectedContext, ColorType.TEXT_FOREGROUND));
+        }
+//        // install cell height
+//        int height = style.getInt(selectedContext, "List.cellHeight", -1);
+//        if (height != -1) {
+//            list.setFixedCellHeight(height);
+//        }
+        // we do this because ... ??
+        if (refresh) {
+//            uninstallKeyboardActions(); // in Basic*UI
+//            installKeyboardActions();
+        }
+        // install currently unused properties of this delegate
+        useListColors = style.getBoolean(selectedContext, "ComboBox.rendererUseListColors", true);
+//        LOG.info("--useListColors="+useListColors);
+//        useUIBorder = style.getBoolean(selectedContext, "List.rendererUseUIBorder", true);
+        
     }
 
 	@Override // implements interface SynthUI
@@ -95,13 +290,15 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
     }
     
     private SynthStyle getStyle() {
-    	LOG.info("get style from the style factory \n for "+comboBox+" \n and Region:"+getRegion());
+//    	LOG.info("get style from the style factory \n for "+comboBox+" \n and Region:"+getRegion());
         return SynthLookAndFeel.getStyleFactory().getStyle(comboBox, getRegion());
     }
 	
     protected void installSynthBorder() {
         if (SwingXUtilities.isUIInstallable(comboBox.getBorder())) {
-        	comboBox.setBorder(new SynthBorder(this, style.getInsets(getContext(ENABLED), null)));
+        	Border border = new SynthBorder(this, style.getInsets(getContext(ENABLED), null));
+        	LOG.info("property Border should be replaced by the UI's default value:"+border);
+        	comboBox.setBorder(border);
         }
     }
 
@@ -112,66 +309,12 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
 
 	@Override // implement PropertyChangeListener#propertyChange AND SynthUI#propertyChange
 	public void propertyChange(PropertyChangeEvent evt) {
-//		LOG.info("PropertyChangeEvent:"+evt);
+//        String propertyName = evt.getPropertyName();
+//		LOG.info(">>>"+propertyName+" PropertyChangeEvent:"+evt);
         if (SynthUtils.shouldUpdateStyle(evt)) {
             updateStyle(this.comboBox);
         }	
 	}
-
-    private void updateStyle(JComponent c) {
-        // compare local reference to style from factory - nothing to do if same
-        if (style == getStyle()) return;
-        
-        // check if this is called from init or from later update
-        // if from later updates, need to cleanup old
-        boolean refresh = style != null;
-        if (refresh) {
-        	LOG.info("--------------refresh style--");
-            style.uninstallDefaults(getContext(ENABLED));
-        }
-        // update local reference
-        style = getStyle();
-        // special case border
-        installSynthBorder();
-        // install defaults : font , background , foreground
-        style.installDefaults(getContext(ENABLED));
-        // install selected properties
-        SynthContext selectedContext = getContext(SELECTED);
-//        ----------------------------
-		Color fg = comboBox.getForeground();
-		LOG.info("--------"+(fg instanceof UIResource)+"---------- comboBox.fg:"+fg); 
-		Color bg = comboBox.getBackground();
-		LOG.info("--------"+(bg instanceof UIResource)+"---------- comboBox.bg:"+bg); 
-		// DerivedColor(color=214,217,223 parent=control offsets=0.0,0.0,0.0,0 pColor=214,217,223
-        if (bg == null || bg instanceof UIResource) {
-        	comboBox.setBackground(UIManager.getColor("ComboBox.background")); // "control" #d6d9df (214,217,223)
-//    		LOG.info("--------"+(bg instanceof UIResource)+"---------- bg:"+bg); 
-        }
-//      ----------------------------
-//        Color sbg = comboBox.getSelectionBackground();
-//        if (sbg == null || sbg instanceof UIResource) {
-//        	comboBox.setSelectionBackground(style.getColor(selectedContext, ColorType.TEXT_BACKGROUND));
-//        }
-//        
-//        Color sfg = list.getSelectionForeground();
-//        if (sfg == null || sfg instanceof UIResource) {
-//            list.setSelectionForeground(style.getColor(selectedContext, ColorType.TEXT_FOREGROUND));
-//        }
-//        // install cell height
-//        int height = style.getInt(selectedContext, "List.cellHeight", -1);
-//        if (height != -1) {
-//            list.setFixedCellHeight(height);
-//        }
-        // we do this because ... ??
-        if (refresh) {
-//            uninstallKeyboardActions(); // in Basic*UI
-//            installKeyboardActions();
-        }
-        // install currently unused properties of this delegate
-        useListColors = style.getBoolean(selectedContext, "ComboBox.rendererUseListColors", true);
-//        useUIBorder = style.getBoolean(selectedContext, "List.rendererUseUIBorder", true);
-        
-    }
 
     @Override
     protected void installListeners() {

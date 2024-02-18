@@ -41,6 +41,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
@@ -60,6 +61,7 @@ import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JYList;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
+import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
 import org.jdesktop.swingx.renderer.YListCellRenderer;
@@ -101,7 +103,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
 	protected JComboBox<?> comboBox;
     protected boolean hasFocus = false;
     protected ComboPopup popup;
-    private boolean popupVisible = false; // wg. BUG #57
+    protected boolean popupVisible = false; // wg. BUG #57
     protected JList<Object> listBox; // actually of subtype JXList
     protected Component editor;
     protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
@@ -163,7 +165,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     protected MouseMotionListener popupMouseMotionListener;
     protected KeyListener popupKeyListener;
     
-    private long timeFactor = 1000L;
+    protected long timeFactor = 1000L;
     private long lastTime = 0L;
     private long time = 0L;
     private boolean isTableCellEditor = false;
@@ -212,18 +214,18 @@ comboBox JComboBox<?> :
  - currentValuePane type class javax.swing.CellRendererPane extends Container implements Accessible
 
  */
-    	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList or JYList
+    	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList
     	listBox = popup.getList();
     	if(listBox instanceof JXList<?> xListBox) {
-        	LOG.info("----XXX---> UI delegate for "+c
-        			+ "\n interface ComboPopup:"+popup
-        			+ "\n popup.JList<Object>:"+xListBox
-        			);
+//        	LOG.info("----XXX---> UI delegate for "+c
+//        			+ "\n interface ComboPopup:"+popup
+//        			+ "\n popup.JList<Object>:"+xListBox
+//        			);
         	xListBox.setCellRenderer(new DefaultListCellRenderer());
-        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // funktioniert
-        	// funktioniert nicht:
-//        	xListBox.setRolloverEnabled(true);
-//        	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));
+//        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // funktioniert
+        	// funktioniert nicht: TODO möglicherweise in list.addPropertyChangeListener lösen
+        	xListBox.setRolloverEnabled(true);
+        	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));
 //        	xListBox.updateUI();
 
     	} else if(listBox instanceof JYList<?> yListBox) {
@@ -343,7 +345,7 @@ comboBox JComboBox<?> :
      * Whenever possible, property values initialized by the client program should not be overridden. 
      */
     protected void installDefaults() {
-		LOG.info("LookAndFeelDefaults "+UIManager.get(comboBox.getUIClassID())
+		LOG.fine("LookAndFeelDefaults "+UIManager.get(comboBox.getUIClassID())
 			+ "\n font "+UIManager.getLookAndFeelDefaults().get(FONT)
 			+ "\n background "+UIManager.getLookAndFeelDefaults().get(BACKGROUND)
 			+ "\n foreground "+UIManager.getLookAndFeelDefaults().get(FOREGROUND)
@@ -430,10 +432,10 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         if ( (focusListener = createFocusListener()) != null ) {
             comboBox.addFocusListener( focusListener );
         }
-        LOG.info("done register listeners propertyChangeListener:"+propertyChangeListener
-        		+(propertyChangeListener==keyListener ? " (dto keyListene)":" keyListener:"+keyListener)
-        		+(propertyChangeListener==focusListener ? " (dto focusListener)":" focusListener:"+focusListener)
-        		);
+//        LOG.info("done register listeners propertyChangeListener:"+propertyChangeListener
+//        		+(propertyChangeListener==keyListener ? " (dto keyListene)":" keyListener:"+keyListener)
+//        		+(propertyChangeListener==focusListener ? " (dto focusListener)":" focusListener:"+focusListener)
+//        		);
         
         if ((popupMouseListener = popup.getMouseListener()) != null) {
             comboBox.addMouseListener( popupMouseListener );
@@ -485,10 +487,10 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
     	// protected JComboBox<?> comboBox
     	// ==> the cast is safe
-    	@SuppressWarnings("unchecked")
-		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
-    	LOG.info(".... new BasicComboPopup for "+cb);
-    	return new BasicComboPopup(cb) {
+//    	@SuppressWarnings("unchecked")
+//		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
+//    	LOG.info(".... new BasicComboPopup for "+cb);
+    	return new BasicComboPopup((JComboBox<Object>) comboBox) {
     		@Override
     		protected JList<Object> createList() {
 /* code in BasicComboPopup:
@@ -515,11 +517,11 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         };		
  */
-    			// autoCreateRowSorter ist in JXComboBox zunächst false
-    			LOG.info("yyyyyyyyyyyyyyyyyy" //+xComboBox.getRowSorter().getClass()
-    					+ "\n AutoCreateRowSorter="+xComboBox.getAutoCreateRowSorter()
-    					);
-    			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox.getAutoCreateRowSorter());
+//    			// autoCreateRowSorter ist in JXComboBox zunächst false
+//    			LOG.info("yyyyyyyyyyyyyyyyyy" //+xComboBox.getRowSorter().getClass()
+//    					+ "\n isSorted="+xComboBox.isSorted()
+//    					);
+    			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox.isSorted());
     			return list;
 
 //    			return new JYList<Object>(comboBox.getModel());
@@ -562,11 +564,17 @@ in BasicComboPopup gibt es
 
  */
     	    public void show() {
-    	    	super.show();
     	    	int i = xComboBox.getSelectedIndex();
-    	    	if(i != -1 && xComboBox.getAutoCreateRowSorter()) {
-    	    		int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
-        	    	LOG.info("//////////// SelectedIndex="+i + " ==> "+selectedIndex);
+//    	    	LOG.info("SelectedIndex="+i);
+    	    	super.show();
+    	    	// in super.show() ist abgehandelt der Fall : i == -1 ==> list.clearSelection()
+    	    	if(i == -1 ) {
+    	    		// bereits abgehandelt
+//    	    	} else if(i != -1 && xComboBox.getAutoCreateRowSorter()) {
+//    	    		int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
+//        	    	LOG.info("//////////// SelectedIndex="+i + " ==> "+selectedIndex);
+    	    	} else {
+    	    		int selectedIndex = xComboBox.isSorted() ? xComboBox.getRowSorter().convertRowIndexToView(i) : i;
         	    	list.setSelectedIndex( selectedIndex );
         	    	list.ensureIndexIsVisible( selectedIndex );
     	    	}
@@ -577,7 +585,41 @@ in BasicComboPopup gibt es
 //    	    	LOG.info("// set popupVisible to isVisible()="+isVisible());
     	    	popupVisible = isVisible(); // avoid rekusive call via setPopupVisible 
     	    }
-
+    		@Override
+    		protected void configureList() {
+    	        list.setFont( comboBox.getFont() );
+    	        list.setForeground( comboBox.getForeground() );
+    	        list.setBackground( comboBox.getBackground() );
+    	        list.setSelectionForeground( UIManager.getColor(SELECTION_FG) );
+    	        list.setSelectionBackground( UIManager.getColor(SELECTION_BG) );
+    	        list.setBorder( null );
+    	        list.setCellRenderer( comboBox.getRenderer() );
+    	        list.setFocusable( false );
+    	        list.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+    	        // setListSelection(int) from the type BasicComboPopup is not visible
+    	        //setListSelection( comboBox.getSelectedIndex() );
+    	        int i = xComboBox.getSelectedIndex();
+//    			LOG.info("SelectedIndex="+i + " isSorted="+xComboBox.isSorted());
+    	        if(i != -1 && xComboBox.isSorted()) {
+    	        	int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
+    	        	list.setSelectedIndex( selectedIndex );
+    	        	list.ensureIndexIsVisible( selectedIndex );
+    	        } else if(i != -1 && !xComboBox.isSorted()) {
+    	        	list.setSelectedIndex( i );
+    	        	list.ensureIndexIsVisible( i );
+    	        } else if(i == -1) {
+    	        	list.clearSelection();
+    	        }
+    	        installListListeners();
+    		}
+    		@Override
+    	    protected void installListListeners() {
+    	    	super.installListListeners(); // dort create+add MouseListener,MouseMotionListener,ListSelectionListener
+    	    	// TODO hier Problem mit 
+//    	    	list.addPropertyChangeListener(evt -> {
+//    	    		LOG.info(">>>PropertyChangeEvent:"+evt);
+//    	    	});
+    	    }
     	};
     }
 
@@ -637,6 +679,7 @@ in BasicComboPopup gibt es
     @Override
     public void uninstallButton() {
         if ( arrowButton != null ) {
+        	comboBox.remove(arrowButton);
             arrowButton.removeMouseListener( popup.getMouseListener() );
             arrowButton.removeMouseMotionListener( popup.getMouseMotionListener() );
             arrowButton = null;
@@ -1039,7 +1082,7 @@ in BasicComboPopup gibt es
         Component c;
 
         if ( hasFocus && !isPopupVisible(comboBox) ) {
-            LOG.info("this.hasFocus && Popup NOT Visible renderer:"+renderer);
+//            LOG.info("this.hasFocus && Popup NOT Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
@@ -1047,7 +1090,7 @@ in BasicComboPopup gibt es
                                                        hasFocus ); // cellHasFocus
         }
         else {
-            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
+//            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
@@ -1087,7 +1130,7 @@ in BasicComboPopup gibt es
 
         currentValuePane.paintComponent(g,c,comboBox,x,y,w,h,shouldValidate);
         LOG.exiting("BasicXComboBoxUI", "paintCurrentValue");
-        System.out.println("exiting BasicXComboBoxUI#paintCurrentValue");
+//        System.out.println("exiting BasicXComboBoxUI#paintCurrentValue");
     }
 
     /**
@@ -1219,7 +1262,7 @@ in BasicComboPopup gibt es
             Dimension d;
 
             if (modelSize > 0 ) {
-            	LOG.info("Calculates the maximum height and width based on the largest element modelSize="+modelSize);
+            	LOG.fine("Calculates the maximum height and width based on the largest element modelSize="+modelSize);
                 for (int i = 0; i < modelSize ; i++ ) {
                     // Calculates the maximum height and width based on the largest element
                     Object value = model.getElementAt(i);
@@ -1241,7 +1284,7 @@ in BasicComboPopup gibt es
                     result.width = Math.max(result.width,d.width);
                     result.height = Math.max(result.height,d.height);
                 }
-            	LOG.info("Calculates the maximum height and width based on the largest element result="+result);
+            	LOG.fine("Calculates the maximum height and width based on the largest element result="+result);
             } else {
                 result = getDefaultSize();
                 if (comboBox.isEditable()) {
@@ -1376,7 +1419,7 @@ in BasicComboPopup gibt es
                     isDisplaySizeDirty = true;
                     xComboBox.revalidate();
                     xComboBox.repaint();
-                } else if ( propertyName == "autoCreateRowSorter" ) {
+                } else if ( propertyName == "rowSorter" ) {
                     // TODO
 //    				LOG.info("yyyyyyyyyyyyyyyyyy"+res.getRowSorter().getClass() // org.jdesktop.swingx.sort.ListSortController
 //+ "\n isSortable="+res.isSortable()
@@ -1384,12 +1427,12 @@ in BasicComboPopup gibt es
 //+ "\n ViewRowCount="+res.getRowSorter().getViewRowCount()
 //+ "\n ModelRowCount="+res.getRowSorter().getModelRowCount()
 //+ "\n SortKeys:"+res.getRowSorter().getSortKeys()
-                    LOG.info("autoCreateRowSorter is set now "+xComboBox.getAutoCreateRowSorter()
-                    +"\n RowSorter Class "+xComboBox.getRowSorter().getClass()
-                    +"\n SortKeys:"+xComboBox.getRowSorter().getSortKeys()
-                    );
+//                    LOG.info("isSorted is now "+xComboBox.isSorted()
+//                    +"\n RowSorter Class "+xComboBox.getRowSorter().getClass()
+//                    +"\n SortKeys:"+xComboBox.getRowSorter().getSortKeys()
+//                    );
                     if(listBox instanceof JXList<?> xlist) {
-                    	xlist.setAutoCreateRowSorter(xComboBox.getAutoCreateRowSorter());
+                    	xlist.setAutoCreateRowSorter(xComboBox.isSorted());
                     	RowSorter rs = xComboBox.getRowSorter();
                     	xlist.setRowSorter(rs);
                     }
@@ -1463,6 +1506,10 @@ in BasicComboPopup gibt es
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     xComboBox.revalidate();
+//                } else {
+//                	LOG.warning("NOT handled property "+propertyName );
+//                	xComboBox.getRowSorter();
+//                	+xComboBox.getAutoCreateRowSorter()
                 }
             }
         }

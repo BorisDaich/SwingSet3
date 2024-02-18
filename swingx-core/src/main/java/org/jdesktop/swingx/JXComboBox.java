@@ -836,8 +836,8 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     public void setRenderer(ListCellRenderer<? super E> renderer) {
         // PENDING: do something against recursive setting
         // == multiple delegation...
-        ListCellRenderer<? super E> oldValue = super.getRenderer();
-        System.out.println("JXComboBox.setRenderer renderer:"+renderer + "\n oldValue:"+oldValue);
+//        ListCellRenderer<? super E> oldValue = super.getRenderer();
+//        System.out.println("JXComboBox.setRenderer renderer:"+renderer + "\n oldValue:"+oldValue);
         //super.setRenderer(renderer);
         getDelegatingRenderer().setDelegateRenderer(renderer);
         getStringValueRegistry().setStringValue(renderer instanceof StringValue ? (StringValue) renderer : null, 0);
@@ -983,7 +983,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         updatingUI = true;
 //        System.out.println("JXComboBox.updateUI getUIClassID():"+getUIClassID());
         try {
-        	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
+//        	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
         	// expected UIClass: ComboBoxUI
         	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
 //        	System.out.println("JXComboBox.updateUI current LaF class="+currentClassName+" setUI(ui:"+ui);
@@ -1023,7 +1023,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     }
     public ComboBoxEditor getEditor() {
     	if(editor==null) {
-    		System.out.println("JXComboBox.getEditor() :!!!!!! ComboBoxEditor in super ==null isEditable="+isEditable);
+//    		System.out.println("JXComboBox.getEditor() :!!!!!! ComboBoxEditor in super ==null isEditable="+isEditable);
     		editor = new BasicComboBoxEditor() {
     			protected JTextField createEditorComponent() {
     				JTextField txtEditor = new JTextField(null, "", 9);// Document doc, String text, int columns
@@ -1034,7 +1034,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         return editor;
     }    
     public void setSelectedItem(Object anObject) {
-    	System.out.println("JXComboBox.setSelectedItem to anObject="+anObject);
+//    	System.out.println("JXComboBox.setSelectedItem to anObject="+anObject);
 // BUG in JComboBox Z.603 getEditor liefert null
 //    	getEditor().setItem(anObject);
 
@@ -1104,9 +1104,31 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         repaint();
     }
 
-    // sort api: siehe JXList
+    /* sort api: siehe JXList
+     * abstract class javax.swing.RowSorter<M> beinhaltet eine Liste SortKeys.
+     * Im allgemeinen Fall werden Tabellen sortiert, daher werden mehrere sort keys benötigt.
+     * Pro SortSpalte ein SortKey. Siehe public static class RowSorter.SortKey
+     * SortKey Attribute : int column und SortOrder sortOrder {ASCENDING, DESCENDING, UNSORTED}
+     * Die ComboBox Klappliste ist einspaltig, der column index also immer 0.
+     * Mit getRowSorter().getSortKeys().get(0).getSortOrder() bekommen wir das enum SortOrder.
+     * Die Elemente im Klapplistenmodell (eine Liste) werden im RowSorter nicht umsortiert.
+     * Sie behalten ihre Position in der Liste. Zwei Methoden liefern die ZeilenSortierung
+     *   int convertRowIndexToView(int index)
+     *   int convertRowIndexToModel(int index)
+     * bzw. das Inverse.
+     * 
+     * Es gib keinen public setter für rowSorter! Im ctor kann die Sortierung der Klappliste gewählt werden.
+     * Ist rowSorter erstmal gesetzt, so kann er nicht mehr auf null zurückgesetzt werden!
+     * Mit xcb.setSortOrder(SortOrder.UNSORTED) wird die Klappliste im urprünglichen Zustand angezeigt, 
+     * die Methode xcb.isSorted() liefert aber nachwievor true!
+     */
     private RowSorter<? extends ListModel<E>> rowSorter;
-    public boolean isSorted() {
+    /*
+     * liefert true, wenn autoCreateRowSorter im ctor angefordert wurde
+     * oder wenn rowSorter mit setSortOrder(SortOrder so) , so!=SortOrder.UNSORTED erstellt wurde.
+     * in JXList heisst diese Methode hasSortController ==> auch nicht optimal, da es ein UI-Element suggeriert
+     */
+    public boolean isSorted() { // verwirrender Name ==> TODO rename to hasRowSorter
     	return rowSorter != null;
     }
     public RowSorter<? extends ListModel<E>> getRowSorter() {
@@ -1132,19 +1154,54 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
 
         firePropertyChange("rowSorter", oldRowSorter, getRowSorter());
     }
-    public SortOrder getSortOrder(SortOrder so) {
+    public SortOrder getSortOrder() {
     	if(!isSorted()) return null; // NOT sorted ==> rowSorter == null
     	// getRowSorter() != null ==>
     	return getRowSorter().getSortKeys().get(0).getSortOrder();
     }
     public void setSortOrder(SortOrder so) {
-    	if(so==null || so==SortOrder.UNSORTED) {
-    		setRowSorter(null, null);
+    	if(isSorted()) {
+    		SortOrder old = getRowSorter().getSortKeys().get(0).getSortOrder();
+    		// unchanged:
+    		if(old==so || (so==null && old==SortOrder.UNSORTED)) return; 
+    		// changed:	
+    		if(so==null || so==SortOrder.UNSORTED) {
+//    			RowSorter.SortKey sk = new RowSorter.SortKey(0, SortOrder.UNSORTED);
+    			getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.UNSORTED)));
+    			return;
+    		}
+    		if(old==SortOrder.UNSORTED && so!=SortOrder.UNSORTED) {
+//    			RowSorter.SortKey sk = new RowSorter.SortKey(0, so);
+    			getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(0, so)));
+    			return;
+    		}
+    		toggleSortOrder();
     	} else {
-        	setRowSorter(createDefaultRowSorter(), so);
+    		setRowSorter(createDefaultRowSorter(), so==null ? SortOrder.UNSORTED : so);
     	}
+//    	if(so==null || so==SortOrder.UNSORTED) {
+////    		setRowSorter(null, null); // !!!!!! this.rowSorter nicht auf null setzen TODO
+//    		if(getRowSorter()!=null) {
+//    			RowSorter.SortKey sk = new RowSorter.SortKey(0, SortOrder.UNSORTED);
+//    			getRowSorter().setSortKeys(Arrays.asList(sk));
+//    		}
+//    	} else {
+////    		System.out.println("JXComboBox.setSortOrder ????????????? setSortOrder="+so);
+//    		if(getRowSorter()!=null) {
+//    			SortOrder old = getRowSorter().getSortKeys().get(0).getSortOrder();
+//            	if((old==SortOrder.ASCENDING && so==SortOrder.DESCENDING) 
+//                 ||(old==SortOrder.DESCENDING && so==SortOrder.ASCENDING)) {
+//                		toggleSortOrder();
+//                		return;
+//            	}
+//    			RowSorter.SortKey sk = new RowSorter.SortKey(0, so);
+//    			getRowSorter().setSortKeys(Arrays.asList(sk));
+//    		} else {
+//            	setRowSorter(createDefaultRowSorter(), so);
+//    		}
+//    	}
     }
-    // TODO fehlt setComparator
+    // Comparator to be passed to a sort function
     private Comparator<?> comparator;
     public Comparator<?> getComparator() {
         return comparator;

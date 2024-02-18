@@ -1,14 +1,14 @@
 package org.jdesktop.swingx.combobox;
 
-import javax.swing.JComboBox;
-
+import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXFrame;
 
 public class EnumComboBoxModelVisualCheck extends EnumComboBoxModelUnitTest {
     public static void main(String[] args) throws Exception {
-        EnumComboBoxModelUnitTest test = new EnumComboBoxModelUnitTest();
+        EnumComboBoxModelUnitTest test = new EnumComboBoxModelVisualCheck();
         try {
             test.runInteractiveTests();
+//            test.runInteractiveTests("interactiveSelectedItem");
         } catch (Exception e) {
             System.err.println("exception when executing interactive tests:");
             e.printStackTrace();
@@ -24,7 +24,7 @@ public class EnumComboBoxModelVisualCheck extends EnumComboBoxModelUnitTest {
     public void interactiveSelectedItem() {
         EnumComboBoxModel<MyEnum1> enumModel = new EnumComboBoxModel<MyEnum1>(
                 MyEnum1.class);
-        JComboBox box = new JComboBox(enumModel);
+        JXComboBox<MyEnum1> box = new JXComboBox<MyEnum1>(enumModel);
         box.setEditable(true);
         JXFrame frame = wrapInFrame(box, "enum combo");
         frame.setVisible(true);
@@ -39,7 +39,7 @@ public class EnumComboBoxModelVisualCheck extends EnumComboBoxModelUnitTest {
     public void interactiveSelectedItemWithCustomToString() {
         EnumComboBoxModel<MyEnum2> enumModel = new EnumComboBoxModel<MyEnum2>(
                 MyEnum2.class);
-        JComboBox box = new JComboBox(enumModel);
+        JXComboBox box = new JXComboBox(enumModel);
         box.setEditable(true);
         JXFrame frame = wrapInFrame(box, "enum with custom toString combo");
         frame.setVisible(true);

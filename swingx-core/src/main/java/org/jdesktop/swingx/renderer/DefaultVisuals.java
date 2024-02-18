@@ -25,14 +25,14 @@ import javax.swing.JComponent;
 
 /**
  * Encapsulates the default visual configuration of renderering components,
- * respecting the state of the passed-in <code>CellContext</code>. It's
- * basically re-usable across all types of renderees (JTable, JList, JTree).
+ * respecting the state of the passed-in <code>CellContext</code>. 
+ * It's basically re-usable across all types of renderees (JTable, JList, JTree).
  * <p>
  * 
- * Guarantees to completely configure the default visual properties (listed
- * below) of a given component. As a consequence, client code (f.i. in
- * <code>Highlighter</code>s) can safely change them without long-lasting
- * visual artefacts.
+ * Guarantees to completely configure 
+ * the default visual properties (listed below) of a given component. 
+ * As a consequence, client code (f.i. in <code>Highlighter</code>s) can safely change them 
+ * without long-lasting visual artefacts.
  * 
  * <ul>
  * <li> foreground and background, depending on selected and focused state
@@ -50,16 +50,20 @@ import javax.swing.JComponent;
  * place to change on introduction of new properties considered as belonging
  * to the "default visuals" of rendering components. <p>
  * 
- * PENDING: allow mutators for overruling the <code>CellContext</code>s
- * defaults? Would prefer not to, as in the context of SwingX visual config on
- * the renderer level is discouraged (the way to go are <code>Highlighter</code>s.<p>
+ * PENDING: allow mutators for overruling the <code>CellContext</code>s defaults? 
+ * Would prefer not to, as in the context of SwingX visual config on the renderer level is discouraged 
+ * (the way to go are <code>Highlighter</code>s.<p>
  * 
- * PENDING: not yet quite decided whether the toolTipText property belongs
- * into the visual default config. Doing so gives client code the choice to
- * set it either in a Highlighter or a custom ComponentProvider.
+ * PENDING: not yet quite decided whether the toolTipText property belongs into the visual default config. 
+ * Doing so gives client code the choice to set it either in a Highlighter or a custom ComponentProvider.
  * 
  * @author Jeanette Winzenburg
  * 
+ * @param <T> a generic renderingComponent (subclass of <code>JComponent</code>),
+ * for example <code>JRendererLabel</code> or <code>WrappingIconPanel</code>
+ * 
+ * @see JRendererLabel
+ * @see WrappingIconPanel
  * @see CellContext
  */
 public class DefaultVisuals<T extends JComponent> implements Serializable {
@@ -69,6 +73,10 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
 	private Color unselectedForeground;
 
     private Color unselectedBackground;
+    
+    DefaultVisuals() {
+//    	System.out.println("DefaultVisuals.ctor <<<<<<<<<<<<");
+    }
 
     /**
      * Sets the renderer's unselected-foreground color to the specified color.
@@ -117,10 +125,11 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
      * @param context the cell context to configure from, must not be null
      */
     protected void configurePainter(T renderingComponent, CellContext context) {
-        if (renderingComponent instanceof PainterAware) {
-            ((PainterAware) renderingComponent).setPainter(null);
-        }
-        
+        if (renderingComponent instanceof PainterAware pa) {
+        	// TODO PainterAware is deprecated
+        	System.out.println("DefaultVisuals.configurePainter renderingComponent is of deprecated type PainterAware!");
+            pa.setPainter(null);
+        }     
     }
 
     /**
@@ -128,15 +137,17 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
      * cell context.
      * <p>
      * 
-     * Here: synch <code>Font</code>, <code>ComponentOrientation</code> and
-     * <code>enabled</code> to context's component. Resets toolTipText to null.
-     * Calls configureSizes to reset xxSize if appropriate. Resets the component's
-     * name property.
+     * Here: synch <code>Font</code>, <code>ComponentOrientation</code> and <code>enabled</code> 
+     * to context's component. 
+     * Resets toolTipText to null.
+     * Calls configureSizes to reset xxSize if appropriate. 
+     * Resets the component's name property.
      * <p>
      * 
      * PENDING: not fully defined - "divers" means everything that's not 
      * <code>Color</code>s
-     * nor <code>Border</code> nor <code>Painter</code>.
+     * nor <code>Border</code> 
+     * nor <code>Painter</code>.
      *      
      * @param renderingComponent the component to configure, must not be null
      * @param context the cell context to configure from, must not be null
