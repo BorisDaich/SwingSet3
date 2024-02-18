@@ -482,15 +482,15 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
 
-    protected ComboPopup createPopup() {
+    @SuppressWarnings("serial")
+	protected ComboPopup createPopup() {
 		JXComboBox<?> xComboBox = (JXComboBox<?>)comboBox;
     	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
     	// protected JComboBox<?> comboBox
     	// ==> the cast is safe
-//    	@SuppressWarnings("unchecked")
-//		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
-//    	LOG.info(".... new BasicComboPopup for "+cb);
-    	return new BasicComboPopup((JComboBox<Object>) comboBox) {
+    	@SuppressWarnings("unchecked")
+		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
+    	return new BasicComboPopup(cb) {
     		@Override
     		protected JList<Object> createList() {
 /* code in BasicComboPopup:
@@ -517,14 +517,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         };		
  */
-//    			// autoCreateRowSorter ist in JXComboBox zunächst false
-//    			LOG.info("yyyyyyyyyyyyyyyyyy" //+xComboBox.getRowSorter().getClass()
-//    					+ "\n isSorted="+xComboBox.isSorted()
-//    					);
-    			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox.isSorted());
+    			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox.hasRowSorter());
     			return list;
-
-//    			return new JYList<Object>(comboBox.getModel());
     		}
 
 /*
@@ -574,7 +568,7 @@ in BasicComboPopup gibt es
 //    	    		int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
 //        	    	LOG.info("//////////// SelectedIndex="+i + " ==> "+selectedIndex);
     	    	} else {
-    	    		int selectedIndex = xComboBox.isSorted() ? xComboBox.getRowSorter().convertRowIndexToView(i) : i;
+    	    		int selectedIndex = xComboBox.hasRowSorter() ? xComboBox.getRowSorter().convertRowIndexToView(i) : i;
         	    	list.setSelectedIndex( selectedIndex );
         	    	list.ensureIndexIsVisible( selectedIndex );
     	    	}
@@ -600,11 +594,11 @@ in BasicComboPopup gibt es
     	        //setListSelection( comboBox.getSelectedIndex() );
     	        int i = xComboBox.getSelectedIndex();
 //    			LOG.info("SelectedIndex="+i + " isSorted="+xComboBox.isSorted());
-    	        if(i != -1 && xComboBox.isSorted()) {
+    	        if(i != -1 && xComboBox.hasRowSorter()) {
     	        	int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
     	        	list.setSelectedIndex( selectedIndex );
     	        	list.ensureIndexIsVisible( selectedIndex );
-    	        } else if(i != -1 && !xComboBox.isSorted()) {
+    	        } else if(i != -1 && !xComboBox.hasRowSorter()) {
     	        	list.setSelectedIndex( i );
     	        	list.ensureIndexIsVisible( i );
     	        } else if(i == -1) {
@@ -1432,7 +1426,7 @@ in BasicComboPopup gibt es
 //                    +"\n SortKeys:"+xComboBox.getRowSorter().getSortKeys()
 //                    );
                     if(listBox instanceof JXList<?> xlist) {
-                    	xlist.setAutoCreateRowSorter(xComboBox.isSorted());
+                    	xlist.setAutoCreateRowSorter(xComboBox.hasRowSorter());
                     	RowSorter rs = xComboBox.getRowSorter();
                     	xlist.setRowSorter(rs);
                     }
