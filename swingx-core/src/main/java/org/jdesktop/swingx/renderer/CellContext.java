@@ -68,7 +68,6 @@ import javax.swing.border.EmptyBorder;
  * that's probably a sign the api is lacking :-)
  * 
  * <ul>
- * 
  * <li>PENDING: still incomplete? how about Font?
  * <li>PENDING: protected methods? Probably need to open up - derived
  * properties should be accessible in client code.
@@ -83,47 +82,29 @@ public class CellContext implements Serializable {
 	/** the default border for unfocused cells. */
     protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
 
-    /** ?? the default border for unfocused cells. ?? */
-    private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-
     /**
      * Returns the shared border for unfocused cells.
-     * <p>
-     * PENDING: ?? copied from default renderers - why is it done like this?
      * 
      * @return the border for unfocused cells.
      */
     private static Border getNoFocusBorder() {
-    	// getSecurityManager Deprecated since="17" forRemoval
-        if (System.getSecurityManager() != null) {
-            return SAFE_NO_FOCUS_BORDER;
-        } else {
-            return noFocusBorder;
-        }
+    	return noFocusBorder;
     }
 
-    /** PENDING JW: maybe make this a WeakReference? Would be a more robust fix for Issue #1040-swingx. */
+    /* PENDING JW: maybe make this a WeakReference? Would be a more robust fix for Issue #1040-swingx. */
     protected transient JComponent component;
 
-    /** PENDING JW: maybe make this a WeakReference? Would be a more robust fix for Issue #1040-swingx. */
+    /* PENDING JW: maybe make this a WeakReference? Would be a more robust fix for Issue #1040-swingx. */
     protected transient Object value;
-	/** TODO doc */
     protected transient int row;
-	/** TODO doc */
     protected transient int column;
-	/** TODO doc */
     protected transient boolean selected;
-	/** TODO doc */
     protected transient boolean focused;
-	/** TODO doc */
     protected transient boolean expanded;
-	/** TODO doc */
     protected transient boolean leaf;
-	/** TODO doc */
     protected transient boolean dropOn;
     
     // --------------------------- install context
-
 
     /**
      * Sets the state of the cell's context. Convenience method for subclasses. 
@@ -191,8 +172,7 @@ public class CellContext implements Serializable {
     }
 
     /**
-     * Returns the cell's column index in view coordinates as set in the
-     * install.
+     * Returns the cell's column index in view coordinates as set in the install.
      * 
      * @return the cell's column index.
      */
@@ -238,8 +218,8 @@ public class CellContext implements Serializable {
 
     // -------------------- accessors for derived state
     /**
-     * Returns the cell's editability. Subclasses should override to return a
-     * reasonable cell-related state.
+     * Returns the cell's editability. 
+     * Subclasses should override to return a reasonable cell-related state.
      * <p>
      * 
      * Here: false.
@@ -251,8 +231,8 @@ public class CellContext implements Serializable {
     }
 
     /**
-     * Returns the icon. Subclasses should override to return a reasonable
-     * cell-related state.
+     * Returns the icon. 
+     * Subclasses should override to return a reasonable cell-related state.
      * <p>
      * 
      * Here: <code>null</code>.
@@ -264,8 +244,8 @@ public class CellContext implements Serializable {
     }
 
     /**
-     * Returns a boolean indicating if the cell is a drop location with any of the dropOn
-     * modes. It's up to subclasses to implement.
+     * Returns a boolean indicating if the cell is a drop location with any of the dropOn modes. 
+     * It's up to subclasses to implement.
      * <p>
      * 
      * Here: false.
@@ -338,8 +318,8 @@ public class CellContext implements Serializable {
     }
 
     /**
-     * Returns the default focus border of the renderered component. Typically,
-     * the border is LF specific.
+     * Returns the default focus border of the renderered component. 
+     * Typically, the border is LaF specific.
      * 
      * @return the focus border of the rendered component.
      */
@@ -374,7 +354,7 @@ public class CellContext implements Serializable {
 
     /**
      * Returns the default focused foreground color of the renderered component.
-     * Typically, the color is LF specific.
+     * Typically, the color is LaF specific.
      * 
      * @return the focused foreground color of the rendered component.
      */
@@ -384,7 +364,7 @@ public class CellContext implements Serializable {
 
     /**
      * Returns the default focused background color of the renderered component.
-     * Typically, the color is LF specific.
+     * Typically, the color is LaF specific.
      * 
      * @return the focused background color of the rendered component.
      */
@@ -410,8 +390,7 @@ public class CellContext implements Serializable {
     // ----------------------- convenience
 
     /**
-     * Convenience method to build a component type specific lookup key for the
-     * UIManager.
+     * Convenience method to build a component type specific lookup key for the UIManager.
      * 
      * @param key the general part of the key
      * @return a composed key build of a component type prefix and the input.
@@ -421,8 +400,8 @@ public class CellContext implements Serializable {
     }
 
     /**
-     * Returns the component type specific prefix of keys for lookup in the
-     * UIManager. Subclasses must override, here: returns the empty String.
+     * Returns the component type specific prefix of keys for lookup in the UIManager. 
+     * Subclasses must override, here: returns the empty String.
      * 
      * @return the component type specific prefix.
      */
