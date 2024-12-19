@@ -61,6 +61,11 @@ public class JXRendererHyperlink extends JXHyperlink implements PainterAware {
         return painter;
     }
     
+	@Override
+	public void paint(Graphics2D g, Object object, int width, int height) {
+		super.paint(g);
+	}
+
     @Override
     protected void paintComponent(Graphics g) {
         if (painter != null) {

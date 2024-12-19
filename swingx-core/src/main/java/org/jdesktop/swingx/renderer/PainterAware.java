@@ -20,7 +20,7 @@ package org.jdesktop.swingx.renderer;
 
 import javax.swing.Painter;
 
-/**
+/*
  * Temporary hook to allow painters in rendering. <p>
  * 
  * NOTE: this will be removed as soon as the painter_work enters main.
@@ -28,6 +28,7 @@ import javax.swing.Painter;
  * @author Jeanette Winzenburg
  */
 // was meint kleopatra mit "enters main"?
+// offenbar ist PainterAware nicht in java 1.7 angekommen, sondern nur die Klasse javax.swing.Painter<T>
 /*
 
 @since 1.7 existiert public interface javax.swing.Painter<T>
@@ -39,14 +40,14 @@ Klassen, die PainterAware implementieren:
 - WrappingIconPanel extends JXPanel
 
  */
-@Deprecated
-public interface PainterAware {
+//@Deprecated
+public interface PainterAware<T> extends Painter<T> {
 	
 	/**
-	 * TODO maven-javadoc-plugin 3.3.2 needs a doc here
 	 * @param painter Painter
 	 */
     void setPainter(Painter<?> painter);
+
     /**
      * 
      * @return Painter

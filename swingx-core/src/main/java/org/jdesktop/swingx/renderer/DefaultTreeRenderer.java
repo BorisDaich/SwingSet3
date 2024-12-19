@@ -33,7 +33,7 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
 
 	private static final long serialVersionUID = -7173650392149697228L;
 	
-	private TreeCellContext cellContext;
+	protected TreeCellContext cellContext;
     
     /**
      * Instantiates a default tree renderer with the default component provider. 
@@ -135,7 +135,12 @@ public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRen
             boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     	
         cellContext.installContext(tree, value, row, 0, selected, hasFocus, expanded, leaf);
+        // da cellContext!=null ist, wird im getRendererComponent(cellContext) configureVisuals gemacht
         Component comp = componentController.getRendererComponent(cellContext);
+        // comp ist WrappingIconPanel
+//        System.out.println("DefaultTreeRenderer.getTreeCellRendererComponent: "+row
+//        		+" componentController:"+componentController // WrappingProvider
+//        		+"\n comp:"+comp);
         
         // fix issue #1040-swingx: memory leak if value not released
         cellContext.replaceValue(null);

@@ -57,10 +57,12 @@ import javax.swing.UIManager;
  * @author Jeanette Winzenburg
  */
 @SuppressWarnings("serial")
-public class JRendererLabel extends JLabel implements PainterAware, IconAware {
+public class JRendererLabel extends JLabel implements PainterAware<Object>, IconAware {
 
-	/** Painter */
-    protected Painter<?> painter;
+	/* interface javax.swing.Painter<T> with
+	 *     public void paint(Graphics2D g, T object, int width, int height);
+	 */
+    protected Painter<JComponent> painter;
 
     public JRendererLabel() {
         super();
@@ -70,18 +72,27 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
     /**
      * {@inheritDoc}
      */
-    public void setPainter(Painter<?> painter) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void setPainter(Painter painter) {
         Painter<?> old = getPainter();
         this.painter = painter;
         firePropertyChange("painter", old, getPainter());
-    }
+	}
 
     /**
      * {@inheritDoc}
      */
+	@Override
     public Painter<?> getPainter() {
         return painter;
     }
+
+	@Override
+	public void paint(Graphics2D g, Object object, int width, int height) {
+		super.paint(g);
+	}
+
     /**
      * {@inheritDoc} <p>
      * 
@@ -94,6 +105,7 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
         // JW: hack around for #1178-swingx (core issue) 
         // grab painting if Nimbus detected
         if ((painter != null) || isNimbus()) {
+//        if (isNimbus()) {
             // we have a custom (background) painter
             // try to inject if possible
             // there's no guarantee - some LFs have their own background 
@@ -138,7 +150,7 @@ public class JRendererLabel extends JLabel implements PainterAware, IconAware {
         // this differs from corresponding core implementation!
         Graphics2D scratch = (Graphics2D) g.create();
         try {
-        	((Painter<JComponent>)painter).paint(scratch, this, getWidth(), getHeight());
+        	painter.paint(scratch, this, getWidth(), getHeight());
         }
         finally {
             scratch.dispose();

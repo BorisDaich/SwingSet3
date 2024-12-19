@@ -322,6 +322,7 @@ public abstract class ComponentProvider<T extends JComponent> implements Seriali
      * @see DefaultVisuals
      */
     protected void configureVisuals(CellContext context) {
+//    	System.out.println("ComponentProvider.configureVisuals rendererComponent T="+rendererComponent.getClass()+" defaultVisuals:"+defaultVisuals);
         defaultVisuals.configureVisuals(rendererComponent, context);
     }
 

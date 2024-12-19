@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -43,7 +44,8 @@ import org.jdesktop.swingx.JXPanel;
  * This implements the PainterAware by delegating to the delegate component if that
  * is of type PainterAware. Does nothing if not.
  */
-public class WrappingIconPanel extends JXPanel implements PainterAware, IconAware {
+@SuppressWarnings("serial")
+public class WrappingIconPanel extends JXPanel implements PainterAware<Object>, IconAware {
 	
     protected JComponent delegate;
     JLabel iconLabel;
@@ -243,7 +245,7 @@ public class WrappingIconPanel extends JXPanel implements PainterAware, IconAwar
     @Override
     public Painter<?> getPainter() {
         if (delegate instanceof PainterAware) {
-            return ((PainterAware) delegate).getPainter();
+            return ((PainterAware<?>) delegate).getPainter();
         }
         return null;
     }
@@ -257,11 +259,16 @@ public class WrappingIconPanel extends JXPanel implements PainterAware, IconAwar
     @Override
     public void setPainter(Painter<?> painter) {
         if (delegate instanceof PainterAware) {
-            ((PainterAware) delegate).setPainter(painter);
+            ((PainterAware<?>) delegate).setPainter(painter);
         }
         
     }
     
+	@Override
+	public void paint(Graphics2D g, Object object, int width, int height) {
+		super.paint(g);
+	}
+
     /**
      * 
      * Returns the bounds of the delegate component or null if the delegate is null.

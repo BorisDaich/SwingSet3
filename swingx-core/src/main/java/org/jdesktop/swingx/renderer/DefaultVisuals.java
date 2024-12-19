@@ -125,9 +125,9 @@ public class DefaultVisuals<T extends JComponent> implements Serializable {
      * @param context the cell context to configure from, must not be null
      */
     protected void configurePainter(T renderingComponent, CellContext context) {
-        if (renderingComponent instanceof PainterAware pa) {
-        	// TODO PainterAware is deprecated
-        	System.out.println("DefaultVisuals.configurePainter renderingComponent "+renderingComponent.getClass()+" is of deprecated type PainterAware!");
+        if (renderingComponent instanceof PainterAware<?> pa) {
+        	// TODO PainterAware is deprecated ??? oder doch nicht
+//        	System.out.println("DefaultVisuals.configurePainter renderingComponent "+renderingComponent.getClass()+" is of deprecated type PainterAware!");
             pa.setPainter(null);
         }     
     }

@@ -79,6 +79,11 @@ public class JRendererCheckBox extends JCheckBox implements PainterAware {
         firePropertyChange("painter", old, getPainter());
     }
 
+	@Override
+	public void paint(Graphics2D g, Object object, int width, int height) {
+		super.paint(g);
+	}
+
     /**
      * {@inheritDoc} <p>
      * 
