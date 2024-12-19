@@ -139,7 +139,7 @@ protected ComboPopup createPopup() {
 //			LOG.info("nimbus nimbus" //+xComboBox.getRowSorter().getClass()
 //					+ "\n isSorted="+xComboBox().isSorted()
 //					);
-			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox().isSorted());
+			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox().hasRowSorter());
 			return list;
 		}
 	    protected void togglePopup() {
@@ -166,7 +166,7 @@ protected ComboPopup createPopup() {
 	    	if(i == -1 ) {
 	    		// bereits abgehandelt
 	    	} else {
-	    		int selectedIndex = xComboBox().isSorted() ? xComboBox().getRowSorter().convertRowIndexToView(i) : i;
+	    		int selectedIndex = xComboBox().hasRowSorter() ? xComboBox().getRowSorter().convertRowIndexToView(i) : i;
     	    	list.setSelectedIndex( selectedIndex );
     	    	list.ensureIndexIsVisible( selectedIndex );
 	    	}
@@ -192,7 +192,7 @@ protected ComboPopup createPopup() {
 	        if(i == -1 ) {
 	        	list.clearSelection();
 	    	} else {
-	    		int selectedIndex = xComboBox().isSorted() ? xComboBox().getRowSorter().convertRowIndexToView(i) : i;
+	    		int selectedIndex = xComboBox().hasRowSorter() ? xComboBox().getRowSorter().convertRowIndexToView(i) : i;
     	    	list.setSelectedIndex( selectedIndex );
     	    	list.ensureIndexIsVisible( selectedIndex );
 	        }
