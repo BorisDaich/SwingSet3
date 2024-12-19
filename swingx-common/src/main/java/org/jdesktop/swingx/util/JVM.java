@@ -53,6 +53,8 @@ public class JVM {
   public final static int JDK_17 =17000;
   public final static int JDK_18 =18000;
   public final static int JDK_19 =19000;
+  public final static int JDK_20 =20000;
+  public final static int JDK_21 =21000;
 
   private static JVM current;
   static {
