@@ -96,11 +96,11 @@ public class JXTreeTableIssues extends InteractiveTestCase {
         setSystemLF(true);
         JXTreeTableIssues test = new JXTreeTableIssues();
         try {
-//            test.runInteractiveTests();
+            test.runInteractiveTests();
 //            test.runInteractiveTests(".*Combo.*");
 //            test.runInteractiveTests(".*Text.*");
             //test.runInteractiveTests(".*TreeExpand.*"); // testExpansionListenerSourceExpanded() removed 2007-08-08
-        	test.runInteractiveTests(".*ExpansionListener.*");
+//        	test.runInteractiveTests(".*ExpansionListener.*");
 //            test.runInteractiveTests("interactive.*EditWith.*");
 //            test.runInteractiveTests("interactive.*Clip.*");
 //            test.runInteractive("Prototype");
@@ -207,7 +207,8 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     @Test(expected = IllegalStateException.class)
     public void testTreeTableAdapterBind() {
         JXTreeTableA table = new JXTreeTableA(createActionTreeModel());
-        TreeTableModelAdapter model = table.createAdapter(new JTree()); 
+//        TreeTableModelAdapter model = table.createAdapter(new JTree()); 
+        TreeTableModelAdapter model = table.createAdapter(new JXTree()); 
         model.bind(table);
     }
    

@@ -65,10 +65,12 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.plaf.UIDependent;
 import org.jdesktop.swingx.plaf.XTreeAddon;
+import org.jdesktop.swingx.renderer.ComponentProvider;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
+import org.jdesktop.swingx.renderer.WrappingProvider;
 import org.jdesktop.swingx.rollover.RolloverProducer;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
 import org.jdesktop.swingx.rollover.TreeRolloverController;
@@ -1323,12 +1325,33 @@ public class JXTree extends JTree {
 	     * @param sv the converter to use for mapping the content value to a String representation.
          */
         public DelegatingRenderer(TreeCellRenderer delegate, IconValue iv, StringValue sv) {
-        	super(iv, sv);
+        	//super(iv, sv); 
+        	// gleichwertig mit ctor public DefaultTreeRenderer(ComponentProvider<?> componentProvider)
+        	super(new WrappingProvider(iv, sv));
+        	// das wiederum gleichwertig ist mit public ctor
+        	//  WrappingProvider(IconValue iv, StringValue sv, boolean unwrapUserObject)
+//        	super(new WrappingProvider(iv, sv, true));
+        	// XXX Test mit wrapUserObject:
+//        	super(new WrappingProvider(iv, sv, false));
+        	
         	if(delegate instanceof DefaultTreeCellRenderer javaxDTCR) {
         		initIcons(javaxDTCR);
         	} else {
 //        		initIcons(new DefaultTreeCellRenderer());
         		// EUG better DefaultXTreeCellRenderer extends DefaultTreeCellRenderer ?
+        		if(componentController instanceof WrappingProvider wrappingProvider) {
+        			ComponentProvider<?> cpd = wrappingProvider.getDelegate();
+            		LOG.info("TreeCellRenderer delegate was !!!!!! "+delegate 
+                			+ "\n componentController/Provider.delegate:"+cpd
+                			+ "\n cellContext:"+cellContext
+                			);
+            		if(cpd instanceof org.jdesktop.swingx.renderer.LabelProvider labelProvider) {
+//            			JLabel l = labelProvider.createRendererComponent(); // protected method is not visible
+//            			LOG.info("labelProvider.l.Parent:"+l.getParent()
+////            			l.getPreferredSize()+"/"+l.getMaximumSize()); // this.getParent().getWidth();
+//            					);
+            		}
+        		}
         		initIcons(new DefaultXTreeCellRenderer());
         	}
         }
@@ -1421,13 +1444,16 @@ public class JXTree extends JTree {
          */
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
-                boolean selected, boolean expanded, boolean leaf, int row,boolean hasFocus) {
+                boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             Component result = super.getTreeCellRendererComponent(tree, value, 
             	selected, expanded, leaf, row, hasFocus);
 
+//            boolean applyHighliter = false;
             if ((compoundHighlighter != null) && (row < getRowCount()) && (row >= 0)) {
                 result = compoundHighlighter.highlight(result, getComponentAdapter(row));
+//                applyHighliter = true;
             } 
+//            LOG.info("Component for "+row+" row value:"+value+" is "+(applyHighliter?"(highlighted) ":"")+result);
             
             return result;
         }
@@ -1436,8 +1462,11 @@ public class JXTree extends JTree {
 
         @Override
         public boolean isEnabled() {
-            return (delegate instanceof RolloverRenderer)
-                    && ((RolloverRenderer) delegate).isEnabled();
+//        	LOG.info(">>>>>>>>>>>"+delegate);
+        	if(delegate instanceof RolloverRenderer ror) {
+        		ror.isEnabled();
+        	}
+            return false;
         }
             
         @Override
@@ -1674,17 +1703,17 @@ public class JXTree extends JTree {
 
 // ------------------ oldish String conversion api, no longer recommended
     
-    /**
-     * {@inheritDoc} <p>
-     * 
-     * Overridden to initialize the String conversion method of the model, if any.<p>
-     * PENDING JW: remove - that is an outdated approach?
-     */
-    @Override
-    @Deprecated
-    public void setModel(TreeModel newModel) {
-        super.setModel(newModel);
-    }
+//    /**
+//     * {@inheritDoc} <p>
+//     * 
+//     * Overridden to initialize the String conversion method of the model, if any.<p>
+//     * PENDING JW: remove - that is an outdated approach?
+//     */
+//    @Override
+//    @Deprecated
+//    public void setModel(TreeModel newModel) {
+//        super.setModel(newModel);
+//    }
 
 
     

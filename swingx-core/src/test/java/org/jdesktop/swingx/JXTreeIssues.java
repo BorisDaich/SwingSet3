@@ -65,6 +65,9 @@ public class JXTreeIssues extends JXTreeUnitTest {
       JXTreeIssues test = new JXTreeIssues();
 		try {
 			test.runInteractiveTests();
+//			test.runInteractiveTests("interactiveUpdateUIRendererProvider");
+//			test.runInteractiveTests("interactiveUpdateUISharedProvider"); // list with shared provider
+//			
 //			test.runInteractiveTests("testRendererUsedInEditorAfterSet");
 //			test.runInteractiveTests("interactive.*UpdateUI.*");
 //			test.runInteractiveTests("interactive.*Icons.*");
@@ -136,7 +139,7 @@ public class JXTreeIssues extends JXTreeUnitTest {
      * Why is this renderer replaced on LAF-toggle?
      */
      public void interactiveUpdateUIRendererProvider() {
-        JXTree tree = new JXTree();
+        JTree tree = new JTree();
         tree.setCellRenderer(sharedRenderer);
         showWithScrollingInFrame(tree, "updateUI must update renderer??");
     }
@@ -145,8 +148,8 @@ public class JXTreeIssues extends JXTreeUnitTest {
      * share in list - okay.
      */
     public void interactiveUpdateUISharedProvider() {
-        JXList list = new JXList(new DefaultComboBoxModel(new String[] {"one", "two", "three"}));
-        list.setCellRenderer(new DefaultListRenderer(provider));
+        JXList<String> list = new JXList<String>(new DefaultComboBoxModel<String>(new String[] {"one", "two", "three"}));
+        list.setCellRenderer(new DefaultListRenderer<>(provider));
         showWithScrollingInFrame(list, "list with shared provider");
     }
     /**
