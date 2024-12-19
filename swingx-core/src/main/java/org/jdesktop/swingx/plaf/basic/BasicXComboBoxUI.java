@@ -44,6 +44,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
 import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -95,6 +96,11 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     private static final Logger LOG = Logger.getLogger(BasicXComboBoxUI.class.getName());
 
 	// factory
+    /**
+     * factory
+     * @param c JComponent the factory is for
+     * @return ComponentUI
+     */
     public static ComponentUI createUI(JComponent c) {
     	LOG.info("UI factory for JComponent:"+c); // c of type JXComboBox expected
         return new BasicXComboBoxUI();
@@ -191,7 +197,9 @@ public class BasicXComboBoxUI extends XComboBoxUI {
      */
     @Override // javax.swing.plaf.ComponentUI#installUI overridden
     public void installUI(JComponent c) {
+        // JVM disables assertion validation by default: use -enableassertions to enable!
         assert c instanceof JComboBox;
+        
     	isMinimumSizeDirty = true;
     	if(c instanceof JComboBox<?> jcb) {
     		comboBox = jcb;
@@ -217,15 +225,12 @@ comboBox JComboBox<?> :
     	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList
     	listBox = popup.getList();
     	if(listBox instanceof JXList<?> xListBox) {
-//        	LOG.info("----XXX---> UI delegate for "+c
-//        			+ "\n interface ComboPopup:"+popup
-//        			+ "\n popup.JList<Object>:"+xListBox
-//        			);
         	xListBox.setCellRenderer(new DefaultListCellRenderer());
-//        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // funktioniert
+//        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // cellBackground, cellForeground OK
+        	
         	// funktioniert nicht: TODO möglicherweise in list.addPropertyChangeListener lösen
         	xListBox.setRolloverEnabled(true);
-        	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));
+        	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));     	
 //        	xListBox.updateUI();
 
     	} else if(listBox instanceof JYList<?> yListBox) {
@@ -593,14 +598,15 @@ in BasicComboPopup gibt es
     	        // setListSelection(int) from the type BasicComboPopup is not visible
     	        //setListSelection( comboBox.getSelectedIndex() );
     	        int i = xComboBox.getSelectedIndex();
-//    			LOG.info("SelectedIndex="+i + " isSorted="+xComboBox.isSorted());
-    	        if(i != -1 && xComboBox.hasRowSorter()) {
-    	        	int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
-    	        	list.setSelectedIndex( selectedIndex );
-    	        	list.ensureIndexIsVisible( selectedIndex );
-    	        } else if(i != -1 && !xComboBox.hasRowSorter()) {
-    	        	list.setSelectedIndex( i );
-    	        	list.ensureIndexIsVisible( i );
+    			LOG.info("SelectedIndex="+i + " SortOrder="+xComboBox.getSortOrder()+ " hasRowSorter="+xComboBox.hasRowSorter());
+    			// TODO remove code
+    	        if(i != -1 && (xComboBox.getSortOrder()==null || xComboBox.getSortOrder()==SortOrder.UNSORTED) ) {
+//    	        	list.setSelectedIndex( i ); // <=== hier wird JRendererLabel initialisiert
+//    	        	list.ensureIndexIsVisible( i );   	
+    	        } else if(i != -1 && (xComboBox.getSortOrder()==SortOrder.ASCENDING || xComboBox.getSortOrder()==SortOrder.DESCENDING)) {
+//    	           	int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
+//    	        	list.setSelectedIndex( selectedIndex );
+//    	        	list.ensureIndexIsVisible( selectedIndex );
     	        } else if(i == -1) {
     	        	list.clearSelection();
     	        }
@@ -1228,6 +1234,10 @@ in BasicComboPopup gibt es
      */
     private boolean isDisplaySizeDirty = true;
     private Dimension cachedDisplaySize = new Dimension( 0, 0 );
+    /**
+     * TODO
+     * @return DisplaySize
+     */
     protected Dimension getDisplaySize() {
         if (!isDisplaySizeDirty)  {
             return new Dimension(cachedDisplaySize);

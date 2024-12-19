@@ -924,8 +924,8 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
      * Returns the CompoundHighlighter assigned to the combo box, null if none. 
      * 
      * @return the CompoundHighlighter assigned to the table.
-     * @see #setCompoundHighlighter(CompoundHighlighter)
      */
+//  * @see #setCompoundHighlighter(CompoundHighlighter)
     protected CompoundHighlighter getCompoundHighlighter() {
         if (compoundHighlighter == null) {
             compoundHighlighter = new CompoundHighlighter();
@@ -935,7 +935,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     }
 
     /**
-     * Returns the <code>ChangeListener</code> to use with {@code Highlighter. 
+     * Returns the <code>ChangeListener</code> to use with {@code Highlighter}. 
      * Lazily creates the listener.
      * 
      * @return the ChangeListener for observing changes of highlighters, 
