@@ -22,7 +22,7 @@ jobs:
 #            experimental: true        
     strategy:
       matrix:
-        java: [ 16, 17, 18, 21 ]
+        java: [ 16, 17, 21 ]
         
     steps:
     - uses: actions/checkout@v4
@@ -38,5 +38,5 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java }}
     - name: Build with Maven
-#      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress compile
-      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress install
+      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress test
+#      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress install
