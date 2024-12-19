@@ -25,7 +25,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.jdesktop.swingx.rollover.RolloverRenderer;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 
-
 /**
  * Wrapping ComponentProvider for usage in tree rendering. Handles the icon
  * itself, delegates the node content to the wrappee. Value-based icon and
@@ -46,7 +45,7 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
  * PENDING: ui specific focus rect variation (draw rect around icon) missing
  */
 @SuppressWarnings("serial")
-public class WrappingProvider extends ComponentProvider<WrappingIconPanel>  implements RolloverRenderer {
+public class WrappingProvider extends ComponentProvider<WrappingIconPanel> implements RolloverRenderer {
 
     protected ComponentProvider<?> delegate; // the wrappee
     private boolean unwrapUserObject;
@@ -60,15 +59,14 @@ public class WrappingProvider extends ComponentProvider<WrappingIconPanel>  impl
     }
 
     /**
-     * Instantiates a WrappingProvider with default wrappee, configured
-     * to use the wrappeeStringValue. Uses the 
-     * given IconValue to configure the icon. 
+     * Instantiates a WrappingProvider with default delegate, configured to use the stringValue. 
+     * Uses the given IconValue to configure the icon. 
      * 
      * @param iconValue the IconValue to use for configuring the icon.
-     * @param wrappeeStringValue the StringValue to use in the wrappee.
+     * @param stringValue the StringValue to use in the wrappee.
      */
-    public WrappingProvider(IconValue iconValue, StringValue wrappeeStringValue) {
-        this(iconValue, wrappeeStringValue, true);
+    public WrappingProvider(IconValue iconValue, StringValue stringValue) {
+        this(iconValue, stringValue, true);
     }
 
     /**
@@ -141,13 +139,13 @@ public class WrappingProvider extends ComponentProvider<WrappingIconPanel>  impl
      * If the delegate is null, a default LabelProvider will be used. 
      * 
      * @param iv the icon converter to use for this provider
-     * @param delegateStringValue the StringValue to use in the wrappee.
+     * @param sv the StringValue to use in the wrappee.
      * @param unwrapUserObject a flag indicating whether this provider
      *          should auto-unwrap the userObject from the context value. 
      */
-    public WrappingProvider(IconValue iv, StringValue delegateStringValue, boolean unwrapUserObject) {
+    public WrappingProvider(IconValue iv, StringValue sv, boolean unwrapUserObject) {
         this(iv, (ComponentProvider<?>) null, unwrapUserObject);
-        getDelegate().setStringValue(delegateStringValue);
+        getDelegate().setStringValue(sv);
     }
     
     /**
@@ -278,8 +276,8 @@ public class WrappingProvider extends ComponentProvider<WrappingIconPanel>  impl
             // of this class and overrule the wrappee
             // B - first this, then wrappee/delegate allows overrule by overriding getRendererComp
             // would take control from wrappee (f.i. Hyperlink foreground)
-            super.getRendererComponent(context);
-            delegate.getRendererComponent(context);
+            super.getRendererComponent(context); // hier wird configureVisuals(context) mit WrappingIconPanel
+            delegate.getRendererComponent(context); // hier wird configureVisuals(context) mit JRendererLabel ...
             restoreContextValue(context, oldValue);
             return rendererComponent;
         }

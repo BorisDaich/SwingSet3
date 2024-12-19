@@ -21,6 +21,7 @@ package org.jdesktop.swingx.tree;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -40,14 +41,14 @@ import org.jdesktop.swingx.plaf.UIDependent;
  * 
  * PENDING: any possibility to position the editorContainer? 
  * BasicTreeUI adds it to the tree and positions at the node location. 
- * That's not a problem in LToR, only
- * in RToL 
+ * That's not a problem in LToR, only in RToL 
  *
  * 
  * @author Jeanette Winzenburg
  */
 public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UIDependent {
 
+	private static final Logger LOG = Logger.getLogger(DefaultXTreeCellEditor.class.getName());
 	/**
 	 * ctor
 	 * @param tree JTree
@@ -68,7 +69,6 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
     }
 
     /**
-     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
      * @param renderer DefaultTreeCellRenderer
      */
     public void setRenderer(DefaultTreeCellRenderer renderer) {
@@ -76,7 +76,6 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
     }
     
     /**
-     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
      * @return renderer
      */
     public DefaultTreeCellRenderer getRenderer() {
@@ -86,14 +85,17 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
     /**
      * TODO maven-javadoc-plugin 3.3.2 needs a doc here
      */
-    public class XEditorContainer extends EditorContainer {
+    @SuppressWarnings("serial")
+	public class XEditorContainer extends DefaultTreeCellEditor.EditorContainer {
 
         @Override
         public Dimension getPreferredSize() {
+        	Dimension pSize = new Dimension(0, 0);
             if (isRightToLeft()) {
+            	// code copied from javax.swing.tree.DefaultTreeCellEditor$EditorContainer
                 if(editingComponent != null) {
-                    Dimension         pSize = editingComponent.getPreferredSize();
-    
+                    pSize = editingComponent.getPreferredSize();
+                	LOG.info("isRightToLeft : getPreferredSize="+pSize+" in editingComponent:"+editingComponent);
                     pSize.width += offset + 5;
     
                     Dimension         rSize = (renderer != null) ?
@@ -110,10 +112,12 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
     //                pSize.width = Math.max(pSize.width, 100);
                     return pSize;
                 }
-                return new Dimension(0, 0);
+                return pSize;
             }
-            return super.getPreferredSize();
-            
+            pSize = super.getPreferredSize();
+        	LOG.info("LeftToRight : PreferredSize="+pSize);
+//pSize.width=668-(offset+5+getInsets().left+getInsets().right); // TODO maximum berechnen, die 668 sind JScrollPane.getViewport().getWidth()
+            return pSize;
         }
 
         @Override
@@ -127,7 +131,8 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
                                            cSize.width - offset,
                                            cSize.height);
             } else {
-
+            	LOG.info("LeftToRight : offset="+offset+" realEditor:"+realEditor
+            		+" editingComponent:"+editingComponent);
                 super.doLayout();
             }
         }
@@ -152,7 +157,9 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
                 editingIcon = rememberIcon;
                 
             } else {
+            	LOG.info("super.paint: ... borderColor:"+getBorderSelectionColor()+" editingIcon:"+editingIcon+"\n");
                 super.paint(g);
+                // das paint geschieht in super.super.paint das ich hier nicht rufen kann
             }
         }
         
@@ -171,7 +178,7 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
     }
 
     /**
-     * TODO maven-javadoc-plugin 3.3.2 needs a doc here
+     * delegates to editingContainer
      */
     protected void applyComponentOrientation() {
         if (tree != null) {

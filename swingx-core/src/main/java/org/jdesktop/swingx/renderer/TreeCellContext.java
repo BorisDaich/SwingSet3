@@ -36,16 +36,17 @@ import org.jdesktop.swingx.JXTree;
  * Tree specific <code>CellContext</code>. 
  * 
  * <ul>
- * <li>PENDING: use focus border as returned from list or table instead of
- * rolling its own? The missing ui-border probably is a consequence of the
- * border hacking as implemented in core default renderer. SwingX has a
- * composite default which should use the "normal" border.
- * <li> PENDING: selection colors couple explicitly to SwingX - should we go JXTree as
- *   generic type?
+ * <li>PENDING: use focus border as returned from list or table instead of rolling its own? 
+ * The missing ui-border probably is a consequence of the border hacking as implemented 
+ * in core default renderer. SwingX has a composite default which should use the "normal" border.
+ * 
+ * <li> PENDING: selection colors couple explicitly to SwingX - should we go JXTree as generic type?
  * <li> PENDING: for a JXTree use the icons as returned by the xtree api?
  * </ul>
  */
+@SuppressWarnings("serial")
 public class TreeCellContext extends CellContext {
+	
     /** the icon to use for a leaf node. */
     protected Icon leafIcon;
 
@@ -166,8 +167,7 @@ public class TreeCellContext extends CellContext {
      * @return the icon to use for leaf cell.
      */
     protected Icon getLeafIcon() {
-        return leafIcon != null ? leafIcon : UIManager
-                .getIcon(getUIKey("leafIcon"));
+        return leafIcon != null ? leafIcon : UIManager.getIcon(getUIKey("leafIcon"));
     }
 
     /**
@@ -176,8 +176,7 @@ public class TreeCellContext extends CellContext {
      * @return the icon to use for open cell.
      */
     protected Icon getOpenIcon() {
-        return openIcon != null ? openIcon : UIManager
-                .getIcon(getUIKey("openIcon"));
+        return openIcon != null ? openIcon : UIManager.getIcon(getUIKey("openIcon"));
     }
 
     /**
@@ -186,8 +185,7 @@ public class TreeCellContext extends CellContext {
      * @return the icon to use for closed cell.
      */
     protected Icon getClosedIcon() {
-        return closedIcon != null ? closedIcon : UIManager
-                .getIcon(getUIKey("closedIcon"));
+        return closedIcon != null ? closedIcon : UIManager.getIcon(getUIKey("closedIcon"));
     }
 
     /**
@@ -235,8 +233,7 @@ public class TreeCellContext extends CellContext {
         }
 
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y,
-                int width, int height) {
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Color color = UIManager.getColor("Tree.selectionBorderColor");
             if (color != null) {
                 lineColor = color;
@@ -263,9 +260,7 @@ public class TreeCellContext extends CellContext {
          *   should be painted dashed style.
          */
         private boolean isDashed() {
-            return Boolean.TRUE.equals(UIManager
-                    .get("Tree.drawDashedFocusIndicator"));
-
+            return Boolean.TRUE.equals(UIManager.get("Tree.drawDashedFocusIndicator"));
         }
 
         /**

@@ -87,6 +87,10 @@ public class LabelProvider extends ComponentProvider<JLabel> {
      */
     @Override
     protected JLabel createRendererComponent() {
+//    	JRendererLabel jRendererLabel = new JRendererLabel();
+//    	System.out.println("LabelProvider.createRendererComponent Painter:"+jRendererLabel.getPainter()
+//    			+"\n jRendererLabel:"+jRendererLabel);
+//    	return jRendererLabel;
         return new JRendererLabel();
     }
 
