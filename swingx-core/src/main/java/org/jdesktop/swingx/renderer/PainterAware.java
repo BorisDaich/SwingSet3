@@ -27,7 +27,18 @@ import javax.swing.Painter;
  * 
  * @author Jeanette Winzenburg
  */
-// was meint kleopatra mit "enters main"
+// was meint kleopatra mit "enters main"?
+/*
+
+@since 1.7 existiert public interface javax.swing.Painter<T>
+mit Methode public void paint(Graphics2D g, T object, int width, int height);
+Klassen, die PainterAware implementieren:
+- JRendererCheckBox extends JCheckBox
+- JRendererLabel extends JLabel           ==> es gibt doch JXLabel mit JXLabel.Renderer
+- JXRendererHyperlink extends JXHyperlink
+- WrappingIconPanel extends JXPanel
+
+ */
 @Deprecated
 public interface PainterAware {
 	
