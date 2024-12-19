@@ -89,7 +89,11 @@ public class JVM {
    * @param p_JavaVersion String indicating version
    */
   public JVM(String p_JavaVersion) {
-		if (p_JavaVersion.startsWith("19")) {
+		if (p_JavaVersion.startsWith("21")) {
+			jdkVersion = JDK_21;
+		} else if (p_JavaVersion.startsWith("20")) {
+			jdkVersion = JDK_20;
+		} else if (p_JavaVersion.startsWith("19")) {
 			jdkVersion = JDK_19;
 		} else if (p_JavaVersion.startsWith("18")) {
 			jdkVersion = JDK_18;
