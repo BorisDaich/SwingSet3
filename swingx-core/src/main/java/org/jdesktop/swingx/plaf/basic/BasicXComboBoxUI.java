@@ -65,6 +65,7 @@ import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
+import org.jdesktop.swingx.renderer.DefaultComboBoxRenderer;
 import org.jdesktop.swingx.renderer.YListCellRenderer;
 
 /*
@@ -95,7 +96,6 @@ public class BasicXComboBoxUI extends XComboBoxUI {
 
     private static final Logger LOG = Logger.getLogger(BasicXComboBoxUI.class.getName());
 
-	// factory
     /**
      * factory
      * @param c JComponent the factory is for
@@ -487,7 +487,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
 
-    @SuppressWarnings("serial")
+    @SuppressWarnings("serial") // in return new BasicComboPopup(cb)
 	protected ComboPopup createPopup() {
 		JXComboBox<?> xComboBox = (JXComboBox<?>)comboBox;
     	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
@@ -624,9 +624,9 @@ in BasicComboPopup gibt es
     }
 
     protected ListCellRenderer<Object> createRenderer() {
-    	LOG.info("// TODO ??? DefaultComboBoxRenderer austauschen");
-        return new BasicComboBoxRenderer.UIResource(); // TODO ??? austauschen
-//    	return new DefaultComboBoxRenderer();
+//    	LOG.info("// TODO ??? DefaultComboBoxRenderer austauschen");
+//        return new BasicComboBoxRenderer.UIResource(); // TODO ??? austauschen
+    	return new DefaultComboBoxRenderer<>();
     }
 
     //===============================

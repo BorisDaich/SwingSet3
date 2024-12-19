@@ -763,6 +763,7 @@ public class BasicYListUI extends YListUI {
     public void installUI(JComponent c) {
 //    	LOG.info("---------->JComponent:"+c);
     	super.installUI(c);
+    	// JVM disables assertion validation by default: use -enableassertions to enable!
     	assert super.list == c;
     }
     

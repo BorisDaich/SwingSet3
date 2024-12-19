@@ -33,6 +33,7 @@ import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.JXComboBox.DelegatingRenderer;
 import org.jdesktop.swingx.JXListTest.CustomDefaultRenderer;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.renderer.DefaultComboBoxRenderer;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
@@ -91,8 +92,8 @@ public class JXComboBoxTest {
     	System.out.println("testDefaultListRenderer.wrapped renderer "+wrenderer);
     	// ist nicht , sondern BasicComboBoxRenderer extends JLabel
         //assertThat(wrenderer, CoreMatchers.is(instanceOf(DefaultListRenderer.class)));
-    	assertThat(wrenderer, CoreMatchers.is(instanceOf(BasicComboBoxRenderer.class)));
-//    	assertThat(wrenderer, CoreMatchers.is(instanceOf(DefaultComboBoxRenderer.class)));
+//    	assertThat(wrenderer, CoreMatchers.is(instanceOf(BasicComboBoxRenderer.class)));
+    	assertThat(wrenderer, CoreMatchers.is(instanceOf(DefaultComboBoxRenderer.class)));
     }
 
     /**

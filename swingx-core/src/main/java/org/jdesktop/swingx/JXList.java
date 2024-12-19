@@ -42,6 +42,7 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ListUI;
@@ -57,6 +58,7 @@ import org.jdesktop.swingx.plaf.XListAddon;
 import org.jdesktop.swingx.plaf.basic.core.BasicXListUI;
 import org.jdesktop.swingx.renderer.AbstractRenderer;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
+import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.rollover.ListRolloverController;
 import org.jdesktop.swingx.rollover.ListRolloverProducer;
@@ -1388,6 +1390,7 @@ public class JXList<E> extends JYList<E> {
 
     private DelegatingRenderer getDelegatingRenderer() {
         if (delegatingRenderer == null) {
+        	LOG.info(">>>>>>>>>>>>>> default ausfindig machen List.cellRendererp-prop="+   	UIManager.get("List.cellRenderer"));
             // only called once... to get hold of the default?
             delegatingRenderer = new DelegatingRenderer();
         }
@@ -1528,8 +1531,11 @@ public class JXList<E> extends JYList<E> {
              if (renderer == null) return;
              
              Component comp = null;
-             if (renderer instanceof AbstractRenderer) {
-                 comp = ((AbstractRenderer) renderer).getComponentProvider().getRendererComponent(null);
+             if (renderer instanceof AbstractRenderer abstractRenderer) {
+                 comp = abstractRenderer.getComponentProvider().getRendererComponent(null);
+                 // comp ist JRendererLabel
+            	 LOG.info("ComponentProvider:"+abstractRenderer.getComponentProvider()+"\n comp:"+comp);
+            	 if(comp instanceof JRendererLabel) comp=null;
              } else if (renderer instanceof Component) {
                  comp = (Component) renderer;
              } else {

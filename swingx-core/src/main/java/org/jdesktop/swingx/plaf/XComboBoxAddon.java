@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.jdesktop.swingx.JXComboBox;
@@ -19,6 +18,33 @@ public class XComboBoxAddon extends AbstractComponentAddon {
 		super("JXComboBox");
 	}
 
+	/**
+	 * keys are defined in javax.swing.plaf.basic.BasicLookAndFeel:
+            // *** ComboBox
+            "ComboBox.font", sansSerifPlain12,
+            "ComboBox.background", window,
+            "ComboBox.foreground", textText,
+            "ComboBox.buttonBackground", control,
+            "ComboBox.buttonShadow", controlShadow,
+            "ComboBox.buttonDarkShadow", controlDkShadow,
+            "ComboBox.buttonHighlight", controlLtHighlight,
+            "ComboBox.selectionBackground", textHighlight,
+            "ComboBox.selectionForeground", textHighlightText,
+            "ComboBox.disabledBackground", control,
+            "ComboBox.disabledForeground", textInactiveText,
+            "ComboBox.timeFactor", oneThousand,
+            "ComboBox.isEnterSelectablePopup", Boolean.FALSE,
+            "ComboBox.ancestorInputMap",
+               new UIDefaults.LazyInputMap(new Object[] {
+                      "ESCAPE", "hidePopup",
+                     "PAGE_UP", "pageUpPassThrough",
+                   "PAGE_DOWN", "pageDownPassThrough",
+                        "HOME", "homePassThrough",
+                         "END", "endPassThrough",
+                       "ENTER", "enterPressed"
+                 }),
+            "ComboBox.noActionOnKeyNavigation", Boolean.FALSE,
+	 */
     @Override
     protected void addBasicDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addBasicDefaults(addon, defaults);
@@ -26,13 +52,17 @@ public class XComboBoxAddon extends AbstractComponentAddon {
         
 		LOG.info("\n get background "+UIManager.getLookAndFeelDefaults().get("ComboBox.background")
 				+"\n get foreground "+UIManager.getLookAndFeelDefaults().get("ComboBox.foreground")
+				+"\n get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox.selectionBackground")
+				+"\n get selectionForeground "+UIManager.getLookAndFeelDefaults().get("ComboBox.selectionForeground")
 				);
         /*
          * key "ComboBox.background" is defined in javax.swing.plaf.basic.BasicLookAndFeel
          * replace the value with secondary3 Color
          */
         UIManager.getLookAndFeelDefaults().put("ComboBox.background", MetalLookAndFeel.getCurrentTheme().getControl());
-// TEST UIManager.getLookAndFeelDefaults().put("ComboBox.background", Color.red);
+        // TEST:
+//        UIManager.getLookAndFeelDefaults().put("ComboBox.selectionBackground", Color.YELLOW);
+//        UIManager.getLookAndFeelDefaults().put("ComboBox.selectionForeground", Color.RED);
 
 //        Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);
@@ -76,14 +106,23 @@ public class XComboBoxAddon extends AbstractComponentAddon {
 		 */
 		LOG.info("get background "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\".background"));
 		UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".background", UIManager.getColor("control"));
+//		LOG.info("get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\".selectionBackground"));
 //		UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".selectionBackground", UIManager.getColor("nimbusSelectionBackground"));
-		UIManager.getLookAndFeelDefaults().put("ComboBox.selectionBackground", UIManager.getColor("nimbusSelectionBackground"));
-		UIManager.getLookAndFeelDefaults().put("ComboBox.selectionForeground", UIManager.getColor("nimbusSelectedText"));
+		LOG.info("get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\"[Selected].background"));
+//        addColor(d, "ComboBox:\"ComboBox.listRenderer\"[Selected].textForeground", "nimbusSelectedText", 0.0f, 0.0f, 0.0f, 0);
+//        addColor(d, "ComboBox:\"ComboBox.listRenderer\"[Selected].background", "nimbusSelectionBackground", 0.0f, 0.0f, 0.0f, 0);
+		//UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".[Selected].background", UIManager.getColor("nimbusSelectionBackground"));
+//		UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".[Selected].background", Color.RED);
+//		UIManager.getLookAndFeelDefaults().put("ComboBox.selectionBackground", Color.RED);
+		//"nimbusSelectionBackground", 57, 105, 138, 255);
+//		UIManager.getLookAndFeelDefaults().put("ComboBox.selectionForeground", UIManager.getColor("nimbusSelectedText"));
 
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.border", new BorderUIResource.EtchedBorderUIResource(EtchedBorder.RAISED));
-		defaults.add("ComboBox.border", new BorderUIResource.EtchedBorderUIResource());
+//		defaults.add("ComboBox.border", new BorderUIResource.EtchedBorderUIResource());
 //		Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);       
+        UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createEtchedBorder());
+        UIManager.getLookAndFeelDefaults().put("ComboBox.padding", null);
 	}
 
 }
