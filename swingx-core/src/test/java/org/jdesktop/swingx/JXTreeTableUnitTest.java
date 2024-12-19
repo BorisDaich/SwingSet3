@@ -33,7 +33,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 import javax.swing.RowSorter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
@@ -215,7 +214,10 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
             super(model);
         }
         
-        public TreeTableModelAdapter createAdapter(JTree tree) {
+//        public TreeTableModelAdapter createAdapter(JTree tree) {
+//            return new TreeTableModelAdapter(tree);
+//        }
+        public TreeTableModelAdapter createAdapter(JXTree tree) {
             return new TreeTableModelAdapter(tree);
         }
     }
