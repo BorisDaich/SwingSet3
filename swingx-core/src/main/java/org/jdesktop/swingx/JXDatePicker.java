@@ -165,7 +165,8 @@ import org.jdesktop.swingx.util.Contract;
 @JavaBean
 public class JXDatePicker extends JComponent {
 	
-    private static final Logger LOG = Logger.getLogger(JXDatePicker.class.getName());
+	private static final long serialVersionUID = -3321136747296483636L;
+	private static final Logger LOG = Logger.getLogger(JXDatePicker.class.getName());
     
     static {
         LookAndFeelAddons.contribute(new DatePickerAddon());
@@ -358,7 +359,7 @@ public class JXDatePicker extends JComponent {
 
     private void initMonthView() {
         _monthView = new JXMonthView();
-        LOG.info("monthView.SelectionModel/Mode:"+_monthView.getSelectionModel()+"/"+_monthView.getSelectionMode());
+        LOG.config("monthView.SelectionModel/Mode:"+_monthView.getSelectionModel()+"/"+_monthView.getSelectionMode());
         _monthView.setTraversable(true);
         _monthView.addPropertyChangeListener(getMonthViewListener());
     }
