@@ -65,7 +65,6 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.plaf.UIDependent;
 import org.jdesktop.swingx.plaf.XTreeAddon;
-import org.jdesktop.swingx.renderer.ComponentProvider;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValue;
@@ -80,7 +79,6 @@ import org.jdesktop.swingx.search.Searchable;
 import org.jdesktop.swingx.search.TreeSearchable;
 import org.jdesktop.swingx.tree.DefaultXTreeCellEditor;
 import org.jdesktop.swingx.tree.DefaultXTreeCellRenderer;
-
 
 /**
  * Enhanced Tree component with support for SwingX rendering, highlighting,
@@ -387,8 +385,8 @@ public class JXTree extends JTree {
         // the default install in BasicTreeUI doesn't know about
         // the DelegatingRenderer and therefore can't see
         // the DefaultTreeCellRenderer type to delegate to. 
-        // As a consequence, the icons are lost in the default
-        // setup.
+        // As a consequence, the icons are lost in the default setup.
+        //
         // JW PENDING need to mimic ui-delegate default re-set?
         // JW PENDING alternatively, cleanup and use DefaultXXTreeCellEditor in incubator
         if (getWrappedCellRenderer() instanceof DefaultTreeCellRenderer) {
@@ -1197,7 +1195,13 @@ public class JXTree extends JTree {
     
     private DelegatingRenderer getDelegatingRenderer() {
         if (delegatingRenderer == null) {
-            // only called once... to get hold of the default?
+        	/* in BasicTreeUI.updateRenderer 2092 steht:
+            TreeCellRenderer      newCellRenderer;
+            newCellRenderer = tree.getCellRenderer();
+               was hierhin führt
+            Dh. das kommt im JXTree ctor dran
+        	 */
+            LOG.config("only called once (in ctor)... to get hold of the default?");
             delegatingRenderer = new DelegatingRenderer();
         }
         return delegatingRenderer;
@@ -1325,33 +1329,12 @@ public class JXTree extends JTree {
 	     * @param sv the converter to use for mapping the content value to a String representation.
          */
         public DelegatingRenderer(TreeCellRenderer delegate, IconValue iv, StringValue sv) {
-        	//super(iv, sv); 
-        	// gleichwertig mit ctor public DefaultTreeRenderer(ComponentProvider<?> componentProvider)
-        	super(new WrappingProvider(iv, sv));
-        	// das wiederum gleichwertig ist mit public ctor
-        	//  WrappingProvider(IconValue iv, StringValue sv, boolean unwrapUserObject)
-//        	super(new WrappingProvider(iv, sv, true));
-        	// XXX Test mit wrapUserObject:
-//        	super(new WrappingProvider(iv, sv, false));
-        	
+        	super(new WrappingProvider(iv, sv));        	
         	if(delegate instanceof DefaultTreeCellRenderer javaxDTCR) {
         		initIcons(javaxDTCR);
         	} else {
 //        		initIcons(new DefaultTreeCellRenderer());
         		// EUG better DefaultXTreeCellRenderer extends DefaultTreeCellRenderer ?
-        		if(componentController instanceof WrappingProvider wrappingProvider) {
-        			ComponentProvider<?> cpd = wrappingProvider.getDelegate();
-            		LOG.info("TreeCellRenderer delegate was !!!!!! "+delegate 
-                			+ "\n componentController/Provider.delegate:"+cpd
-                			+ "\n cellContext:"+cellContext
-                			);
-            		if(cpd instanceof org.jdesktop.swingx.renderer.LabelProvider labelProvider) {
-//            			JLabel l = labelProvider.createRendererComponent(); // protected method is not visible
-//            			LOG.info("labelProvider.l.Parent:"+l.getParent()
-////            			l.getPreferredSize()+"/"+l.getMaximumSize()); // this.getParent().getWidth();
-//            					);
-            		}
-        		}
         		initIcons(new DefaultXTreeCellRenderer());
         	}
         }
@@ -1701,22 +1684,6 @@ public class JXTree extends JTree {
         }
     }
 
-// ------------------ oldish String conversion api, no longer recommended
-    
-//    /**
-//     * {@inheritDoc} <p>
-//     * 
-//     * Overridden to initialize the String conversion method of the model, if any.<p>
-//     * PENDING JW: remove - that is an outdated approach?
-//     */
-//    @Override
-//    @Deprecated
-//    public void setModel(TreeModel newModel) {
-//        super.setModel(newModel);
-//    }
-
-
-    
 //------------------------------- ComponentAdapter    
     /**
      * @return the unconfigured ComponentAdapter.
