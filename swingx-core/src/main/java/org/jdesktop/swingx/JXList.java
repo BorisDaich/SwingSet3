@@ -1390,8 +1390,12 @@ public class JXList<E> extends JYList<E> {
 
     private DelegatingRenderer getDelegatingRenderer() {
         if (delegatingRenderer == null) {
-        	LOG.info(">>>>>>>>>>>>>> default ausfindig machen List.cellRendererp-prop="+   	UIManager.get("List.cellRenderer"));
-            // only called once... to get hold of the default?
+//        	LOG.info(">>>>>>>>>>>>>> default List.cellRenderer-prop="+UIManager.get("List.cellRenderer"));
+//javax.swing.DefaultListCellRenderer$UIResource[List.cellRenderer,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.0,
+// border=javax.swing.border.EtchedBorder@58a90037,flags=25165832,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,
+// horizontalAlignment=LEADING,horizontalTextPosition=TRAILING,iconTextGap=4,labelFor=,text=,verticalAlignment=CENTER,verticalTextPosition=CENTER]
+// ==>  createDefaultCellRenderer     	
+        	// only called once... to get hold of the default?
             delegatingRenderer = new DelegatingRenderer();
         }
         return delegatingRenderer;
@@ -1533,8 +1537,9 @@ public class JXList<E> extends JYList<E> {
              Component comp = null;
              if (renderer instanceof AbstractRenderer abstractRenderer) {
                  comp = abstractRenderer.getComponentProvider().getRendererComponent(null);
-                 // comp ist JRendererLabel
-            	 LOG.info("ComponentProvider:"+abstractRenderer.getComponentProvider()+"\n comp:"+comp);
+                 // comp ist JRendererLabel 
+                 // ComponentProvider:org.jdesktop.swingx.renderer.LabelProvider@184cf7cf
+            	 LOG.config("ComponentProvider:"+abstractRenderer.getComponentProvider()+"\n comp:"+comp);
             	 if(comp instanceof JRendererLabel) comp=null;
              } else if (renderer instanceof Component) {
                  comp = (Component) renderer;
