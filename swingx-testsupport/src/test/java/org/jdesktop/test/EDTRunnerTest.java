@@ -24,7 +24,7 @@ public class EDTRunnerTest {
     	// Show props:
     	LOG.info("java.version:"+System.getProperty("java.version"));
     	System.getProperties().forEach((p,v) -> {
-    		LOG.info("Property: "+p+":"+v);
+    		System.out.println("\n Property:Value "+p+":"+v);
     	});
     	
         assertThat(SwingUtilities.isEventDispatchThread(), CoreMatchers.is(true));
