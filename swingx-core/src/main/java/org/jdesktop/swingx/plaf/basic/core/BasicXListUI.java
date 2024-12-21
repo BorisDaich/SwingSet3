@@ -48,6 +48,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.JXList;
+import org.jdesktop.swingx.JXList.DelegatingRenderer;
 import org.jdesktop.swingx.plaf.LookAndFeelUtils;
 import org.jdesktop.swingx.plaf.basic.BasicYListUI;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
@@ -459,7 +460,16 @@ public class BasicXListUI extends BasicYListUI {
 
         LookAndFeel.installProperty(list, "opaque", Boolean.TRUE);
 
-        if (list.getCellRenderer() == null) {
+        if (list.getCellRenderer() == null) { 
+        	/* public ListCellRenderer<? super E> getCellRenderer()
+        	 * wird überschieben durch
+        	 * public ListCellRenderer<E> JXList.getCellRenderer()
+        	 * das wiederum ruft
+        	 * private DelegatingRenderer getDelegatingRenderer() {
+        	 * ... new DelegatingRenderer()
+        	 * in getDelegatingRenderer wird indirekt JRendererLabel instanziert
+        	 */
+        	// TODO dh list.getCellRenderer() ist nie null!!!!!!!!
             @SuppressWarnings("unchecked")
             ListCellRenderer<Object> tmp = (ListCellRenderer<Object>)(UIManager.get("List.cellRenderer"));
             list.setCellRenderer(tmp);
