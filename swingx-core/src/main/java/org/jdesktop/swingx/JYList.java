@@ -152,6 +152,7 @@ public class JYList<E> extends JList<E> {
             Dimension d = c.getPreferredSize();
             fixedCellWidth = d.width;
             fixedCellHeight = d.height;
+            // fixedCellWidth/fixedCellHeight are not used
 
             c.setFont(f);
         }
@@ -164,11 +165,11 @@ public class JYList<E> extends JList<E> {
      */
     public void updateUI() {
     	if (getUIClassID() == super.getUIClassID()) {
-    		LOG.info("call method from super JList.updateUI()");
+    		LOG.config("call method from super JList.updateUI()");
     		super.updateUI();
     		return;
     	}
-    	LOG.info("getUIClassID():"+getUIClassID());
+    	LOG.config("getUIClassID():"+getUIClassID());
 
     	setCellRenderer(new YListCellRenderer());
         if (!updateInProgress) {

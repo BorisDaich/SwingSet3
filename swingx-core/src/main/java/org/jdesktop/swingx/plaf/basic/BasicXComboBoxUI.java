@@ -53,7 +53,6 @@ import javax.swing.event.ListDataListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
@@ -598,7 +597,7 @@ in BasicComboPopup gibt es
     	        // setListSelection(int) from the type BasicComboPopup is not visible
     	        //setListSelection( comboBox.getSelectedIndex() );
     	        int i = xComboBox.getSelectedIndex();
-    			LOG.info("SelectedIndex="+i + " SortOrder="+xComboBox.getSortOrder()+ " hasRowSorter="+xComboBox.hasRowSorter());
+    			LOG.config("SelectedIndex="+i + " SortOrder="+xComboBox.getSortOrder()+ " hasRowSorter="+xComboBox.hasRowSorter());
     			// TODO remove code
     	        if(i != -1 && (xComboBox.getSortOrder()==null || xComboBox.getSortOrder()==SortOrder.UNSORTED) ) {
 //    	        	list.setSelectedIndex( i ); // <=== hier wird JRendererLabel initialisiert
@@ -624,8 +623,7 @@ in BasicComboPopup gibt es
     }
 
     protected ListCellRenderer<Object> createRenderer() {
-//    	LOG.info("// TODO ??? DefaultComboBoxRenderer austauschen");
-//        return new BasicComboBoxRenderer.UIResource(); // TODO ??? austauschen
+//        return new BasicComboBoxRenderer.UIResource(); // TODO ??? ausgetauscht
     	return new DefaultComboBoxRenderer<>();
     }
 
