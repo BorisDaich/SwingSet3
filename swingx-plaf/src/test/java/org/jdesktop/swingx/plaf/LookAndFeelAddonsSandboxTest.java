@@ -27,7 +27,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class LookAndFeelAddonsSandboxTest extends TestCase {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(LookAndFeelAddonsSandboxTest.class.getName());
     
     private static String OS = System.getProperty("os.name");    
@@ -47,26 +46,22 @@ public class LookAndFeelAddonsSandboxTest extends TestCase {
             assertTrue("sanity: addon is configured to update on LAF change", 
                     LookAndFeelAddons.isTrackingLookAndFeelChanges());
             setLookAndFeel("Nimbus");
-            LOG.info(OS+": currentAddon is "+LookAndFeelAddons.getAddon().toString());
-//            LookAndFeelAddons addon = LookAndFeelAddons.getAddon(); // this leads to AssertionFailedError on Windows!
+            LOG.config(OS+": currentAddon is "+LookAndFeelAddons.getAddon().toString());
             LookAndFeelAddons addon = new NimbusLookAndFeelAddons();
-            LOG.info(addon.toString() + " addon.matches():"+addon.matches());
+            LOG.config(addon.toString() + " addon.matches():"+addon.matches());
             assertTrue("addon must match Nimbus, but was: " + addon.toString(), addon.matches());
 /*
 Linux:
-[INFO] Running org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest
-javax.swing.plaf.metal.MetalLookAndFeel
-Oct 18, 2021 11:20:38 AM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
-INFO: currentAddon is org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@33a10788
-Oct 18, 2021 11:20:38 AM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
-INFO: org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@3aa9e816 addon.matches():true
+Dec 21, 2024 1:47:22 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
+INFO: Linux: currentAddon is [NimbusLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+Dec 21, 2024 1:47:22 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
+INFO: [NimbusLookAndFeelAddons, 0 contributedComponents, trackingChanges=true] addon.matches():true
  
 Windows:
-com.sun.java.swing.plaf.windows.WindowsLookAndFeel
-Okt 17, 2021 9:40:56 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
-INFORMATION: currentAddon is org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons@3a4afd8d
-Okt 17, 2021 9:40:56 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
-INFORMATION: org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@424c0bc4 addon.matches():true
+Dez. 21, 2024 4:48:11 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
+INFORMATION: Windows 10: currentAddon is [NimbusLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
+Dez. 21, 2024 4:48:11 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxTest testMatchingAddon
+INFORMATION: [NimbusLookAndFeelAddons, 0 contributedComponents, trackingChanges=true] addon.matches():true
  */
         } finally {
             UIManager.setLookAndFeel(old);
@@ -95,7 +90,7 @@ INFORMATION: org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeelAddons@424c0bc4 ad
     @BeforeClass
     public static void install() {
         String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-		LOG.info("systemLookAndFeelClassName="+systemLookAndFeelClassName);
+		LOG.config("systemLookAndFeelClassName="+systemLookAndFeelClassName);
         try {
 			UIManager.setLookAndFeel(systemLookAndFeelClassName);
         } catch (Exception e) {

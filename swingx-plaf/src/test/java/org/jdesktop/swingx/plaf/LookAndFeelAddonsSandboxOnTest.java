@@ -7,6 +7,7 @@ package org.jdesktop.swingx.plaf;
 import java.net.URL;
 import java.security.PrivilegedAction;
 import java.util.ServiceLoader;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
@@ -48,7 +49,7 @@ public class LookAndFeelAddonsSandboxOnTest extends LookAndFeelAddonsSandboxTest
     	
 		@Override
 		public URL run() {
-			LOG.info("services:"+services);
+			LOG.config("services:"+services);
 			ClassLoader classLoader = clazz.getClassLoader();
 			LOG.info("classLoader:"+classLoader);
 			return classLoader.getResource(services);
@@ -63,12 +64,10 @@ public class LookAndFeelAddonsSandboxOnTest extends LookAndFeelAddonsSandboxTest
     public void testAccessMetaInfPriviledged() {
         final Class<?> clazz = LookAndFeelAddons.class;
         // JW: just a reminder (to myself)
-        // class.getResource interprets path as relative without 
-        // leading slash
+        // class.getResource interprets path as relative without leading slash
         // classloader.getResource always absolute
         final String services = "META-INF/services/" + clazz.getName();
-        // using the classloader (just as ServiceLoader does)
-        // absolute path always
+        // using the classloader (just as ServiceLoader does) absolute path always
         PrivilegedAction<URL> privAction = new URLPrivilegedAction(clazz, services);
         URL url = privAction.run();
 		//URL url = AccessController.doPrivileged(privAction);
@@ -129,19 +128,24 @@ junit.framework.AssertionFailedError: services must be found
      */
     @Test
     public void testServiceLoaderIteratorPrivileged() {
+    	// ServiceLoader<S> ==> S==LookAndFeelAddons
         final ServiceLoader<LookAndFeelAddons> loader = ServiceLoader.load(LookAndFeelAddons.class);
-		LOG.info("ServiceLoader<LookAndFeelAddons>:"+loader);
-		loader.forEach(laf -> {
-			LOG.info("  LookAndFeelAddons:"+laf);
-		});
+        if ((LOG.getLevel()==null?LOG.getParent().getLevel().intValue():LOG.getLevel().intValue()) <= Level.INFO.intValue()) {
+    		LOG.info("ServiceLoader<LookAndFeelAddons>:"+loader);
+    		loader.forEach(lafAddon -> {
+    			System.out.println(" LookAndFeelAddons:"+lafAddon);
+    		});
+        }
         // need to access the iterator inside the (priviledge) action
         // probably because it's lazily loaded
 		IterableLAFAddonsPrivilegedAction action = new IterableLAFAddonsPrivilegedAction(loader);
 		Iterable<LookAndFeelAddons> iLoader = action.run();
         int count = 0;
-		LOG.info("iterate:");
+		LOG.config("iterate:");
         for (LookAndFeelAddons addons : iLoader) {
-    		LOG.info("count="+count + " addons:"+addons);
+            if ((LOG.getLevel()==null?LOG.getParent().getLevel().intValue():LOG.getLevel().intValue()) <= Level.CONFIG.intValue()) {
+            	System.out.println("count="+count + " addons:"+addons);
+            }
             count++;
         }
         int excpected = 7;
@@ -149,6 +153,8 @@ junit.framework.AssertionFailedError: services must be found
         	LOG.warning("excpected "+excpected+" addons but found "+count + "\n");
         }
 //        assertEquals("loader must have addons", 7, count); // EUG: wie kommt man auf die 7 addons?
+// sie sind in definiert in swingx-plaf/target/classes/META-INF/services/org.jdesktop.swingx.plaf.LookAndFeelAddons
+// bzw. in swingx-plaf/src/main/recources/META-INF/ usw
 /*
 INFORMATION: count=0 addons:[LinuxLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
 INFORMATION: count=1 addons:[MacOSXLookAndFeelAddons, 0 contributedComponents, trackingChanges=true]
@@ -188,7 +194,7 @@ INFORMATION: count=6 addons:[WindowsLookAndFeelAddons, 0 contributedComponents, 
     @Test
     public void testPropertySwingAddonDenied() {
         String propValue = System.getProperty("swing.addon", NOT_SPECIFIED);
-        LOG.info("swing.addon propValue:"+propValue);
+        LOG.config("swing.addon propValue:"+propValue);
     	assertEquals(NOT_SPECIFIED, propValue);
     }
     
@@ -200,7 +206,7 @@ INFORMATION: count=6 addons:[WindowsLookAndFeelAddons, 0 contributedComponents, 
     @Test
     public void testPropertySwingCrossplatformAddonDenied() {
     	String propValue = System.getProperty("swing.crossplatformlafaddon", "not specified");
-        LOG.info("swing.crossplatformlafaddon propValue:"+propValue);
+        LOG.config("swing.crossplatformlafaddon propValue:"+propValue);
     	assertEquals(NOT_SPECIFIED, propValue);
     }
     
@@ -223,41 +229,18 @@ INFORMATION: count=6 addons:[WindowsLookAndFeelAddons, 0 contributedComponents, 
      */
     @BeforeClass
     public static void install() {
-//		LOG.info("set setSecurityManager which is deprecated forRemoval since=17");
-        // A - install the default SecurityManager. 
-        // Doing so we are not allowed to reverse the install -
-        // which makes this testCase to a manual-run-only affair
-        // (the securityManager is not uninstalled when running 
-        // other test cases - in Eclipse, when running the 
-        // bulk "all tests" of a projects.
-		
-/*		deprecated forRemoval since="17"
-
-		The Security Manager is deprecated and subject to removal in a future release. 
-		There is no replacement for the Security Manager.See JEP 411 for discussion and alternatives.
-		https://openjdk.java.net/jeps/411
- */
-//        System.setSecurityManager(new SecurityManager());
-        
-        // B- if we install a SecurityManager we need to be sure
-        // that we are allowed to uninstall it.
-        // BUT: with this custom manager on, test running 
-        // fails with a rather weird stack-trace. Gave up for now...
-//        System.setSecurityManager(new SecurityManager() {
-//
-//            @Override
-//            public void checkPermission(Permission perm) {
-//                if ("setSecurityManager".equals(perm.getName())) return;
-//                super.checkPermission(perm);    
-//                //  java.security.AccessController.checkPermission(perm);
-//
-//            }
-//
-//        });
-              
         try {
         	String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
         	LOG.info("setLookAndFeel (LAF) to "+systemLookAndFeelClassName);
+/*
+linux:
+Dec 21, 2024 1:47:24 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxOnTest install
+INFO: setLookAndFeel (LAF) to javax.swing.plaf.metal.MetalLookAndFeel
+
+windows:
+Dez. 21, 2024 4:48:09 PM org.jdesktop.swingx.plaf.LookAndFeelAddonsSandboxOnTest install
+INFORMATION: setLookAndFeel (LAF) to com.sun.java.swing.plaf.windows.WindowsLookAndFeel
+ */
             UIManager.setLookAndFeel(systemLookAndFeelClassName);
         } catch (Exception e) {
             e.printStackTrace();
