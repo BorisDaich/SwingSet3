@@ -9,7 +9,7 @@
 	
   <artifactId>swingx-action</artifactId>
   <packaging>jar</packaging>
-  <name>Action Framework</name>
+  <name>SwingX Action Framework</name>
   <dependencies>
     <dependency>
         <groupId>${project.groupId}</groupId>
