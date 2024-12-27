@@ -5,7 +5,8 @@
   
   <groupId>io.github.homebeaver</groupId>
   <artifactId>swingset3</artifactId>
-  <version>1.7.7</version>
+  <version>1.7.8-SNAPSHOT</version>
+  
   <packaging>pom</packaging> <!-- multi-module project -->
   <modules>
     <module>swingx-mavensupport</module>
@@ -22,6 +23,12 @@
   </modules>
 
   <url>https://github.com/homebeaver/SwingSet3</url>
+  <scm>
+  	<url>${project.URL}</url>
+  	<connection>scm:git:${project.URL}.git</connection>
+  	<developerConnection>scm:git:https://github.com/homebeaver/</developerConnection>
+  </scm>
+  <inceptionYear>2007</inceptionYear>
   <developers>
 	<developer>
 		<name>Eugen H</name>
@@ -246,10 +253,4 @@ Key configuration can be provided by environment variables: SIGN_KEY, SIGN_KEY_I
     </dependencies>
   </dependencyManagement>
   
-  <scm>
-  	<url>https://github.com/homebeaver/SwingSet3</url>
-  	<connection>scm:git:https://github.com/homebeaver/SwingSet3.git</connection>
-  	<developerConnection>scm:git:https://github.com/homebeaver/</developerConnection>
-  </scm>
-  <inceptionYear>2007</inceptionYear>
 </project>
