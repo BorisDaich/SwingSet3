@@ -20,15 +20,9 @@ public @interface JavaBean {
     @Documented
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.SOURCE)
-    /**
-     * maven-javadoc-plugin needs a comment : TODO
-     */
     public static @interface Property {
         
     }
     
-    /**
-     * maven-javadoc-plugin needs a comment : TODO
-     */
     boolean value() default true;
 }
