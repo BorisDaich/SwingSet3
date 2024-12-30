@@ -9,7 +9,10 @@
   
   <packaging>pom</packaging> <!-- multi-module project -->
   <modules>
+<!-- removed in version 1.7.8 :
     <module>swingx-mavensupport</module>
+    <module>swingx-beaninfo</module>     do not build
+  -->
     <module>swingx-testsupport</module>
     <module>swingx-common</module>
     <module>swingx-autocomplete</module>
@@ -19,7 +22,6 @@
     <module>swingx-mapviewer</module>
     <module>swingx-plaf</module>
     <module>swingx-core</module>
-    <module>swingx-beaninfo</module>
   </modules>
 
   <url>https://github.com/homebeaver/SwingSet3</url>
@@ -222,35 +224,5 @@ Key configuration can be provided by environment variables: SIGN_KEY, SIGN_KEY_I
       <optional>true</optional>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.6</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.13.1</version>
-        <type>jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.jhlabs</groupId>
-        <artifactId>filters</artifactId>
-        <version>2.0.235</version>
-        <type>jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>2.25.0</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   
 </project>

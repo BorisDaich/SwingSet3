@@ -1,29 +1,56 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>io.github.homebeaver</groupId>
-		<artifactId>swingset3</artifactId>
-		<relativePath>../pom.xml</relativePath>
-		<version>1.7.7</version>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+	<groupId>io.github.homebeaver</groupId>
+	<artifactId>swingset3</artifactId>
+	<relativePath>../pom.xml</relativePath>
+	<version>1.7.8-SNAPSHOT</version>
+  </parent>
 	
-  <artifactId>swingx-core</artifactId>
   <packaging>jar</packaging>
+  
+  <artifactId>swingx-core</artifactId>
   <name>SwingX Core</name>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+<!-- TODO surefire in parent raus - version ist 2.22.2
+  -->  
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+              <manifestFile>${project.generatedAnnotations}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
   	<dependency>
   		<groupId>com.jhlabs</groupId>
   		<artifactId>filters</artifactId>
+  		<version>2.0.235</version>
   		<type>jar</type>
   		<scope>test</scope>
   	</dependency>
+<!-- 
   	<dependency>
   		<groupId>commons-lang</groupId>
   		<artifactId>commons-lang</artifactId>
+  		<version>2.6</version>
   		<type>jar</type>
   		<scope>test</scope>
   	</dependency>
+  -->
   	<dependency>
         <!-- only used by JXLoginPane -->
   		<groupId>${project.groupId}</groupId>
@@ -58,76 +85,10 @@
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
-  		<artifactId>swingx-mavensupport</artifactId>
-  		<version>${project.version}</version>
-  		<scope>compile</scope>
-  		<optional>true</optional>
-  	</dependency>
-  	<dependency>
-  		<groupId>${project.groupId}</groupId>
   		<artifactId>swingx-testsupport</artifactId>
   		<version>${project.version}</version>
   		<type>jar</type>
   		<scope>test</scope>
   	</dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <!--plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin-->
-      <!-- plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>emma-maven-plugin</artifactId>
-        <version>1.0-alpha-2</version>
-        <inherited>true</inherited>
-        <executions>
-          <execution>
-            <goals>
-              <goal>instrument</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin -->
-      <!-- plugin>
-        <groupId>net.sf.jmd</groupId>
-        <artifactId>maven-crap4j-plugin</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
-        <configuration>
-            <projectDir>${basedir}</projectDir>
-            <crap4jHome>lib/build-only/crap4j</crap4jHome>
-            <reportsCrap4j>target/site/crap4j-reports</reportsCrap4j>
-            <libClasspath>lib</libClasspath>
-        </configuration>
-        <executions>
-            <execution>
-                <phase>site</phase>
-                <goals>
-                    <goal>crap4j</goal>
-                    <goal>crap4jAnt</goal>
-                </goals>
-            </execution>
-        </executions>
-      </plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-              <manifestFile>${project.generatedAnnotations}/META-INF/MANIFEST.MF</manifestFile>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

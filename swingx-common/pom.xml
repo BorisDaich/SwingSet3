@@ -1,23 +1,55 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>io.github.homebeaver</groupId>
-		<artifactId>swingset3</artifactId>
-		<relativePath>../pom.xml</relativePath>
-		<version>1.7.7</version>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+	<groupId>io.github.homebeaver</groupId>
+	<artifactId>swingset3</artifactId>
+	<relativePath>../pom.xml</relativePath>
+	<version>1.7.8-SNAPSHOT</version>
+  </parent>
 	
-  <artifactId>swingx-common</artifactId>
   <packaging>jar</packaging>
+  
+  <artifactId>swingx-common</artifactId>
   <name>SwingX Commons</name>
   <description>Code common to all SwingX modules.</description>
+  
+  <build>
+    <plugins>
+<!-- 
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <release>16</release>
+        </configuration>
+      </plugin>
+ -->    
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+<!-- TODO surefire in parent raus - version ist 2.22.2
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.11.2</version>
+          </dependency>
+        </dependencies>
+  -->  
+      </plugin>
+    </plugins>
+
+  </build>
   <dependencies>
     <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>swingx-testsupport</artifactId>
         <version>${project.version}</version>
-        <type>jar</type>
         <scope>test</scope>
     </dependency>
   </dependencies>
+  
 </project>
