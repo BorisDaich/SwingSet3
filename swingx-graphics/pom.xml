@@ -16,41 +16,13 @@
   <name>SwingX Graphics</name>
   <description>Graphics Utilities and Libraries for working with Java2D.</description>
   
-  <build>
-    <plugins>
-<!-- 
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <release>16</release>
-        </configuration>
-      </plugin>
- -->    
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
-<!-- TODO surefire in parent raus - version ist 2.22.2
-        <dependencies>
-          <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.11.2</version>
-          </dependency>
-        </dependencies>
-  -->  
-      </plugin>
-    </plugins>
-
-  </build>
   <dependencies>
     <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>swingx-common</artifactId>
         <version>${project.version}</version>
-        <type>jar</type>
-        <scope>compile</scope>
     </dependency>
+    
     <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>swingx-testsupport</artifactId>
@@ -58,4 +30,5 @@
         <scope>test</scope>
     </dependency>
   </dependencies>
+  
 </project>

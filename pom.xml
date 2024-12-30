@@ -129,19 +129,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
-        <inherited>true</inherited>
-        <configuration>
-          <!-- parallel>classes</parallel -->
-          <!-- useSystemClassLoader>true</useSystemClassLoader -->
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-          <forkCount>1</forkCount>
-          <reuseForks>false</reuseForks>
-          <!--reportFormat>xml</reportFormat -->
-          <!--classesDirectory>${project.build.directory}/emma-classes</classesDirectory -->
-        </configuration>
+        <version>3.5.2</version>
       </plugin>
       
       <plugin>

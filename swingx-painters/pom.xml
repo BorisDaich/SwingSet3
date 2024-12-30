@@ -15,44 +15,13 @@
   <artifactId>swingx-painters</artifactId>
   <name>SwingX Painter Support</name>
   
-  <build>
-    <plugins>
-<!-- 
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <release>16</release>
-        </configuration>
-      </plugin>
- -->    
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
-      </plugin>
-
-    </plugins>
-
-  </build>
   <dependencies>
-<!-- 
-  	<dependency>
-  		<groupId>com.jhlabs</groupId>
-  		<artifactId>filters</artifactId>
-  		<type>jar</type>
-  		<scope>test</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>${project.groupId}</groupId>
-  		<artifactId>swingx-mavensupport</artifactId>
-  		<version>${project.version}</version>
-  	</dependency>
- -->
   	<dependency>
   		<groupId>${project.groupId}</groupId>
   		<artifactId>swingx-common</artifactId>
   		<version>${project.version}</version>
   	</dependency>
+  	
   	<dependency>
   		<groupId>${project.groupId}</groupId>
   		<artifactId>swingx-testsupport</artifactId>
@@ -61,28 +30,5 @@
   		<scope>test</scope>
   	</dependency>
   </dependencies>
-<!-- 
-  <build>
-    <plugins>
-        <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <inherited>true</inherited>
-            <configuration>
-                <includes>
-                    <include>**/*Test.java,org.jdesktop.swingx.painter.AbstractPainterTest.java</include>
-                </includes>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-                <archive>
-                    <manifestFile>${project.generatedAnnotations}/META-INF/MANIFEST.MF</manifestFile>
-                </archive>
-            </configuration>
-        </plugin>
-    </plugins>
-  </build>
- -->
+  
 </project>
