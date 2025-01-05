@@ -945,7 +945,8 @@ public class JXDatePicker extends JComponent {
     /**
      * Pes: added setLocale method to refresh link text on locale changes
      */
-    private final class TodayPanel extends JXPanel {
+    @SuppressWarnings("serial")
+	private final class TodayPanel extends JXPanel {
         private TodayAction todayAction;
         private JXHyperlink todayLink;
 
