@@ -9,7 +9,10 @@
   
   <packaging>pom</packaging> <!-- multi-module project -->
   <modules>
+<!-- removed in version 1.7.8 :
     <module>swingx-mavensupport</module>
+    <module>swingx-beaninfo</module>     do not build
+  -->
     <module>swingx-testsupport</module>
     <module>swingx-common</module>
     <module>swingx-autocomplete</module>
@@ -19,7 +22,6 @@
     <module>swingx-mapviewer</module>
     <module>swingx-plaf</module>
     <module>swingx-core</module>
-    <module>swingx-beaninfo</module>
   </modules>
 
   <url>https://github.com/homebeaver/SwingSet3</url>
@@ -115,10 +117,10 @@
         	Supported releases: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 -->
 	 	  <release>16</release>
 		  <!-- Provide source compatibility with the specified Java SE release. 
-				Supported releases: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17     -->
-          <source>8</source>
-          <!-- Generate class files suitable for the specified Java SE release. -->
-          <target>8</target>
+				Supported releases: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17     
+          <source>8</source>  -->
+          <!-- Generate class files suitable for the specified Java SE release. 
+          <target>8</target> -->
           <generatedSourcesDirectory>${project.generatedAnnotations}</generatedSourcesDirectory>
           <showWarnings>true</showWarnings>
         </configuration>
