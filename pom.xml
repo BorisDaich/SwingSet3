@@ -11,6 +11,7 @@
   <modules>
 <!-- removed in version 1.7.8 :
     <module>swingx-mavensupport</module>
+    <module>swingx-plaf</module>
     <module>swingx-beaninfo</module>     do not build
   -->
     <module>swingx-testsupport</module>
@@ -20,7 +21,6 @@
     <module>swingx-painters</module>
     <module>swingx-graphics</module>
     <module>swingx-mapviewer</module>
-    <module>swingx-plaf</module>
     <module>swingx-core</module>
   </modules>
 
@@ -156,22 +156,6 @@
           </archive>
         </configuration>
       </plugin>
-<!-- ohne gitflow versuchen
-      <plugin>
-        <groupId>com.amashchenko.maven.plugin</groupId>
-        <artifactId>gitflow-maven-plugin</artifactId>
-        <version>1.21.0</version>
-        <configuration>
-          <gitFlowConfig>
-            <developmentBranch>master</developmentBranch>
-            <featureBranchPrefix>feature/</featureBranchPrefix>
-            <releaseBranchPrefix>release/</releaseBranchPrefix>
-            <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-            <versionTagPrefix>v</versionTagPrefix>
-          </gitFlowConfig>
-        </configuration>
-      </plugin>
-  -->     
 <!-- see https://maven.apache.org/plugins/maven-gpg-plugin/usage.html
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -218,20 +202,15 @@ Key configuration can be provided by environment variables: SIGN_KEY, SIGN_KEY_I
         services across all modules -->
       <groupId>org.kohsuke.metainf-services</groupId>
       <artifactId>metainf-services</artifactId>
-      <version>1.8</version>
+      <version>1.11</version>
       <type>jar</type>
       <scope>compile</scope>
       <optional>true</optional>
     </dependency>
   </dependencies>
+  
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.6</version>
-        <scope>test</scope>
-      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
