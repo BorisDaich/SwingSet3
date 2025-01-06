@@ -24,6 +24,7 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -130,6 +131,8 @@ import java.beans.VetoableChangeSupport;
  */
 public abstract class AbstractBean {
 	
+	private static final Logger LOG = Logger.getLogger(AbstractBean.class.getName());
+	
     /**
      * Helper class that manages all the property change notification machinery.
      * PropertyChangeSupport cannot be extended directly because it requires
@@ -146,6 +149,7 @@ public abstract class AbstractBean {
     /** Creates a new instance of AbstractBean */
     protected AbstractBean() {
         pcs = new PropertyChangeSupport(this);
+//        LOG.finest("this:"+this+"   pcs=[" + pcs + "]");
         vcs = new VetoableChangeSupport(this);
     }
     
@@ -294,6 +298,12 @@ public abstract class AbstractBean {
      * @param newValue  The new value of the property.
      */
     protected final void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    	// in some cases pcs is null, then we do nothing
+    	// see org.jdesktop.swingx.painter.AbstractPainterTest with DummyPainter
+    	if(pcs==null) {
+    		LOG.warning("Cannot fire PropertyChange for "+propertyName + " because PropertyChangeSupport instance is null.");
+    		return;
+    	}
         pcs.firePropertyChange(propertyName, oldValue, newValue);
     }
 
