@@ -29,7 +29,7 @@ import org.kohsuke.MetaInfServices;
  * @author kschaefer
  */
 @MetaInfServices(Processor.class)
-@SupportedSourceVersion(SourceVersion.RELEASE_16)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class JavaBeanProcessor extends AbstractProcessor {
 	
     @Override
