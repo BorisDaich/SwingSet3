@@ -1,36 +1,44 @@
 /*
- * Created on 16.04.2009
+ * $Id$
  *
+ * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
+ * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-package org.jdesktop.test;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+
+package org.jdesktop.testtests;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FocusEventReport implements FocusListener {
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 
+/**
+ * A CellEditorListener that stores the received ChangeEvents.
+ * 
+ */
+public class CellEditorReport implements CellEditorListener {
     
     /**
      * Holds a list of all canceled events.
      */
-    protected List<FocusEvent> canceledEvents = Collections.synchronizedList(new LinkedList<FocusEvent>());
-    protected List<FocusEvent> stoppedEvents = Collections.synchronizedList(new LinkedList<FocusEvent>());
-    protected List<FocusEvent> allEvents = Collections.synchronizedList(new LinkedList<FocusEvent>());
+    protected List<ChangeEvent> canceledEvents = Collections.synchronizedList(new LinkedList<ChangeEvent>());
+    protected List<ChangeEvent> stoppedEvents = Collections.synchronizedList(new LinkedList<ChangeEvent>());
+    protected List<ChangeEvent> allEvents = Collections.synchronizedList(new LinkedList<ChangeEvent>());
     
     
-//------------------------ implement FocusListener
+//------------------------ implement CellEditorListener
 
     
-    public void focusGained(FocusEvent e) {
+    public void editingCanceled(ChangeEvent e) {
         canceledEvents.add(0, e);
         allEvents.add(0, e);
     }
     
     
-    public void focusLost(FocusEvent e) {
+    public void editingStopped(ChangeEvent e) {
         stoppedEvents.add(0, e);
         allEvents.add(0, e);
         
@@ -51,7 +59,7 @@ public class FocusEventReport implements FocusListener {
         return !allEvents.isEmpty();
     }
  
-    public FocusEvent getLastEvent() {
+    public ChangeEvent getLastEvent() {
         return allEvents.isEmpty()
             ? null
             : allEvents.get(0);
@@ -66,7 +74,7 @@ public class FocusEventReport implements FocusListener {
         return !canceledEvents.isEmpty();
     }
     
-    public FocusEvent getLastCanceledEvent() {
+    public ChangeEvent getLastCanceledEvent() {
         return canceledEvents.isEmpty()
         ? null
                 : canceledEvents.get(0);
@@ -82,10 +90,11 @@ public class FocusEventReport implements FocusListener {
         return !stoppedEvents.isEmpty();
     }
     
-    public FocusEvent getLastStoppedEvent() {
+    public ChangeEvent getLastStoppedEvent() {
         return stoppedEvents.isEmpty()
         ? null
                 : stoppedEvents.get(0);
     }
-
+    
+    
 }

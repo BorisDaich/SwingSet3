@@ -27,7 +27,7 @@ import org.jdesktop.swingx.sort.ListSortController;
 import org.jdesktop.swingx.sort.RowFilters;
 import org.jdesktop.swingx.sort.RowSorterWrapper;
 import org.jdesktop.swingx.sort.TableSortController;
-import org.jdesktop.test.ListSelectionReport;
+import org.jdesktop.testtests.ListSelectionReport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

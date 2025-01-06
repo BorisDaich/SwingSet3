@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdesktop.swingx.painter;
+package org.jdesktop.swingx.paintertests;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -38,6 +38,10 @@ import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.action.AbstractActionExt;
+import org.jdesktop.swingx.painter.AbstractPainter;
+import org.jdesktop.swingx.painter.AlphaPainter;
+import org.jdesktop.swingx.painter.CompoundPainter;
+import org.jdesktop.swingx.painter.ShapePainter;
 
 /**
  * Test to exposed known issues of <code>Painter</code>s.

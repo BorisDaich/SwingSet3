@@ -33,7 +33,7 @@ import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.search.SearchFactory;
 import org.jdesktop.swingx.test.ComponentTreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableModel;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 /**
  * Test to exposed known issues of <code>ComponentAdapter</code>.

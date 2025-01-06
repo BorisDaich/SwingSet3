@@ -2,7 +2,7 @@
  * Created on 14.02.2012
  *
  */
-package org.jdesktop.test;
+package org.jdesktop.testtests;
 
 import org.jdesktop.beans.AbstractBean;
 import org.junit.Test;

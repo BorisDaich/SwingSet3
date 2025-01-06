@@ -77,7 +77,7 @@ import org.jdesktop.swingx.calendar.DaySelectionModel;
 import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
-import org.jdesktop.test.VerticalLayoutPref;
+import org.jdesktop.testtests.VerticalLayoutPref;
 
 /**
  * Simple tests to ensure that the {@code JXDatePicker} can be instantiated and

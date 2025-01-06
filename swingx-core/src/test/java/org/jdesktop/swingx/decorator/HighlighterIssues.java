@@ -25,7 +25,7 @@ import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.decorator.HighlighterFactory.UIColorHighlighter;
 import org.jdesktop.swingx.hyperlink.LinkModel;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 
 public class HighlighterIssues extends org.jdesktop.swingx.InteractiveTestCase {

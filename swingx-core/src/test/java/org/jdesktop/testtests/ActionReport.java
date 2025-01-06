@@ -6,7 +6,7 @@
  */
 
 
-package org.jdesktop.test;
+package org.jdesktop.testtests;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

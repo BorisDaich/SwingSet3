@@ -29,7 +29,7 @@ import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.decorator.BorderHighlighter;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 /**
  * Interactive "test" methods for <code>JXTableHeader</code>.

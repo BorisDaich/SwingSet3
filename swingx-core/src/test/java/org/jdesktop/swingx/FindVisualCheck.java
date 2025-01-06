@@ -33,7 +33,7 @@ import org.jdesktop.swingx.search.FindTest.TestTableModel;
 import org.jdesktop.swingx.search.SearchFactory;
 import org.jdesktop.swingx.search.TableSearchable;
 import org.jdesktop.swingx.treetable.FileSystemModel;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 public class FindVisualCheck extends InteractiveTestCase {
 	

@@ -72,8 +72,8 @@ import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableNode;
-import org.jdesktop.test.TableModelReport;
-import org.jdesktop.test.TreeExpansionReport;
+import org.jdesktop.testtests.TableModelReport;
+import org.jdesktop.testtests.TreeExpansionReport;
 import org.junit.Test;
 
 /**

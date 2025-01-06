@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.jdesktop.swingx.action.AbstractActionExt;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 public class JXStatusBarVisualCheck extends InteractiveTestCase {
 	

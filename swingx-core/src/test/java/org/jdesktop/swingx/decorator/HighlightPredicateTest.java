@@ -31,7 +31,7 @@ import org.jdesktop.swingx.decorator.HighlightPredicate.OrHighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlightPredicate.RowGroupHighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlightPredicate.TypeHighlightPredicate;
 import org.jdesktop.swingx.rollover.RolloverProducer;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

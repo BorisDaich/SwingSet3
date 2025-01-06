@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ListModel;
 import javax.swing.RowFilter;
 
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

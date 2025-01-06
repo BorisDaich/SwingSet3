@@ -38,10 +38,10 @@ import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.sort.StringValueRegistry;
-import org.jdesktop.test.AncientSwingTeam;
 import org.jdesktop.test.EDTRunner;
 import org.jdesktop.test.PropertyChangeReport;
 import org.jdesktop.test.TestUtils;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

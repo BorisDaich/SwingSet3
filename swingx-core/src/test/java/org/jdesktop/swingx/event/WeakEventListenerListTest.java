@@ -25,7 +25,7 @@ import javax.swing.event.ChangeListener;
 
 import junit.framework.TestCase;
 
-import org.jdesktop.test.ChangeReport;
+import org.jdesktop.testtests.ChangeReport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

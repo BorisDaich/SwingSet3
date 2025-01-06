@@ -1,4 +1,4 @@
-package org.jdesktop.test;
+package org.jdesktop.testtests;
 
 import java.awt.Color;
 import java.util.Arrays;

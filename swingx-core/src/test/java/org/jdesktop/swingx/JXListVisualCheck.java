@@ -49,7 +49,7 @@ import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.HighlighterClientVisualCheck.FontHighlighter;
 import org.jdesktop.swingx.renderer.HyperlinkProvider;
 import org.jdesktop.swingx.sort.RowFilters;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.After;
 import org.junit.Before;
 

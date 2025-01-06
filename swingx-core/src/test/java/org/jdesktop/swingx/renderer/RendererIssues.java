@@ -84,7 +84,7 @@ import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jdesktop.swingx.util.PaintUtils;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 //import com.sun.java.swing.plaf.motif.MotifLookAndFeel; // deprecated and marked for removal
 
@@ -168,7 +168,7 @@ public class RendererIssues extends InteractiveTestCase {
      * 
      */
     public void interactiveCheckBoxAlpha() {
-        JXTable table = new JXTable(new org.jdesktop.test.AncientSwingTeam());
+        JXTable table = new JXTable(new org.jdesktop.testtests.AncientSwingTeam());
         table.setBackground(PaintUtils.setAlpha(Color.YELLOW, 100));
         table.setOpaque(false);
         table.addHighlighter(new RowHighlighter(new HighlightPredicate() {

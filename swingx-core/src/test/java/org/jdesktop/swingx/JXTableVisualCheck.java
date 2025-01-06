@@ -74,7 +74,7 @@ import org.jdesktop.swingx.table.ColumnFactory;
 import org.jdesktop.swingx.table.DatePickerCellEditor;
 import org.jdesktop.swingx.table.TableColumnExt;
 import org.jdesktop.swingx.treetable.FileSystemModel;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

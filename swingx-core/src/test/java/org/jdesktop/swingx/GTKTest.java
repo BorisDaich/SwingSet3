@@ -13,7 +13,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 
 import org.jdesktop.swingx.plaf.SafeBorder;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

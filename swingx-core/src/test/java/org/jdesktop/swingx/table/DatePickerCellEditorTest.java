@@ -27,7 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
-import org.jdesktop.test.CellEditorReport;
+import org.jdesktop.testtests.CellEditorReport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

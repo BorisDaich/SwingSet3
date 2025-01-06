@@ -69,7 +69,7 @@ import org.jdesktop.swingx.renderer.HighlighterClientVisualCheck.FontHighlighter
 import org.jdesktop.swingx.test.ActionMapTreeTableModel;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.treetable.TreeTableNode;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 public class JXTreeVisualCheck extends JXTreeUnitTest {
     @SuppressWarnings("all")

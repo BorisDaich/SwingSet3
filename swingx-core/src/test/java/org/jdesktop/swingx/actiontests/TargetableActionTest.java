@@ -2,7 +2,7 @@
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  */
-package org.jdesktop.swingx.action;
+package org.jdesktop.swingx.actiontests;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -33,6 +33,12 @@ import org.jdesktop.swingx.JXEditorPane;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.JXTreeTable;
+import org.jdesktop.swingx.action.ActionContainerFactory;
+import org.jdesktop.swingx.action.ActionFactory;
+import org.jdesktop.swingx.action.ActionManager;
+import org.jdesktop.swingx.action.TargetManager;
+import org.jdesktop.swingx.action.Targetable;
+import org.jdesktop.swingx.action.TargetableAction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

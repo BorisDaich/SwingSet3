@@ -2,11 +2,12 @@
  * Created on 14.02.2012
  *
  */
-package org.jdesktop.test;
+package org.jdesktop.testtests;
 
 import java.awt.Component;
 
 import org.jdesktop.beans.AbstractBean;
+import org.jdesktop.test.PropertyChangeReport;
 
 /**
  * Subclass as quick-fix for dependency issue.

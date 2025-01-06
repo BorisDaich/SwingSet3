@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableModel;
-import org.jdesktop.test.TreeModelReport;
+import org.jdesktop.testtests.TreeModelReport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

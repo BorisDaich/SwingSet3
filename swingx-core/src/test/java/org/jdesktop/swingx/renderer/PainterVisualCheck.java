@@ -83,7 +83,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
 import org.jdesktop.swingx.test.XTestUtils;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.util.PaintUtils;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 /**
  * Experiments with highlighters using painters.<p>

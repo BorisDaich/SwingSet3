@@ -32,7 +32,7 @@ import javax.swing.table.TableColumnModel;
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 public class JXTableHeaderIssues extends JXTableHeaderTest {
     @SuppressWarnings("all")

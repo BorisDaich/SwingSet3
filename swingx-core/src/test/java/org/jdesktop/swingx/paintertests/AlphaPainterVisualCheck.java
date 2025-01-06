@@ -1,4 +1,4 @@
-package org.jdesktop.swingx.painter;
+package org.jdesktop.swingx.paintertests;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -6,6 +6,9 @@ import java.awt.Dimension;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.painter.AlphaPainter;
+import org.jdesktop.swingx.painter.BusyPainter;
+import org.jdesktop.swingx.painter.PinstripePainter;
 
 /**
  *

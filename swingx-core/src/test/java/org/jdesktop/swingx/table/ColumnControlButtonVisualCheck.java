@@ -22,7 +22,7 @@ import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.table.ColumnControlPopup.ActionGrouper;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 public class ColumnControlButtonVisualCheck extends InteractiveTestCase {
 

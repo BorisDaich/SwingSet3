@@ -79,7 +79,7 @@ import org.jdesktop.swingx.rollover.RolloverProducer;
 import org.jdesktop.swingx.search.PatternMatcher;
 import org.jdesktop.swingx.treetable.FileSystemModel;
 import org.jdesktop.swingx.util.PaintUtils;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 /**
  * visual checks of highlighter clients. Mostly by example of JXTable.

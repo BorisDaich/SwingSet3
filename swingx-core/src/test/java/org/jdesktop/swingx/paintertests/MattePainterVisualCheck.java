@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jdesktop.swingx.painter;
+package org.jdesktop.swingx.paintertests;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,6 +24,7 @@ import java.awt.GradientPaint;
 
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.painter.MattePainter;
 
 /**
  *

@@ -50,7 +50,7 @@ import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTable.NumberEditor;
 import org.jdesktop.swingx.text.StrictNumberFormatter;
-import org.jdesktop.test.CellEditorReport;
+import org.jdesktop.testtests.CellEditorReport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

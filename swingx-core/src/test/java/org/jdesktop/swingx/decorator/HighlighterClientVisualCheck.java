@@ -37,7 +37,7 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.IconValue;
 import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.test.XTestUtils;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 

@@ -2,7 +2,7 @@
  * Created on 19.08.2005
  *
  */
-package org.jdesktop.swingx.util;
+package org.jdesktop.swingx.utiltests;
 
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 
 import org.jdesktop.swingx.InteractiveTestCase;
+import org.jdesktop.swingx.util.WindowUtils;
 import org.jdesktop.test.EDTRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;

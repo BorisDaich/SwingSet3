@@ -29,7 +29,7 @@ import org.jdesktop.swingx.MultiSplitLayout.Divider;
 import org.jdesktop.swingx.MultiSplitLayout.Node;
 import org.jdesktop.swingx.MultiSplitLayout.Split;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 
 public class JXMultiSplitPaneVisualIssues extends InteractiveTestCase {
     

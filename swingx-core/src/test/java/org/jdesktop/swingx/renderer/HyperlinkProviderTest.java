@@ -20,7 +20,7 @@ import org.jdesktop.swingx.hyperlink.EditorPaneLinkVisitor;
 import org.jdesktop.swingx.hyperlink.LinkModel;
 import org.jdesktop.swingx.hyperlink.LinkModelAction;
 import org.jdesktop.swingx.rollover.RolloverProducer;
-import org.jdesktop.test.AncientSwingTeam;
+import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
