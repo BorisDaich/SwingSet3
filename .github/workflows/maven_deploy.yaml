@@ -21,8 +21,8 @@ jobs:
           gpg-private-key: ${{ secrets.SIGN_KEY }} # has to be read directly from secrets
 #          gpg-passphrase: SIGN_KEY_PASS # deprecated default name used by maven-gpg-plugin
       - name: Publish package
-# deaktiviert:
-#        run: mvn --batch-mode deploy
+# aktiviert:
+         run: mvn --batch-mode deploy
 #        run: mvn -V --errors --show-version --batch-mode --no-transfer-progress -Ddoclint=all deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
