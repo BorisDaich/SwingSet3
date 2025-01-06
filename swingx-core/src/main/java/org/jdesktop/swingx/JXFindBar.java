@@ -20,7 +20,6 @@ package org.jdesktop.swingx;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.io.Serial;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -66,7 +65,6 @@ import org.jdesktop.swingx.search.Searchable;
 @JavaBean
 public class JXFindBar extends JXFindPanel {
 
-	@Serial
 	private static final long serialVersionUID = -5234235892786822041L;
 	private static final Logger LOG = Logger.getLogger(JXFindBar.class.getName());
 	

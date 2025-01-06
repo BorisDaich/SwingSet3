@@ -216,14 +216,16 @@ public class PainterVisualCheck extends InteractiveTestCase {
         // a custom rendering button controller showing both checkbox and text
         // StringValue and BooleanValue are "Functional Interface" or SAM Types
         StringValue sv = (Object value) -> {
-        	if (value instanceof AbstractActionExt aae) {
+        	if (value instanceof AbstractActionExt) {
+        		AbstractActionExt aae = (AbstractActionExt)value;
         		return aae.getName();
         	}
         	return "";
         };
         
         BooleanValue bv = (Object value) -> {
-        	if (value instanceof AbstractActionExt aae) {
+        	if (value instanceof AbstractActionExt) {
+        		AbstractActionExt aae = (AbstractActionExt)value;
         		return aae.isSelected();
         	}
         	return false;

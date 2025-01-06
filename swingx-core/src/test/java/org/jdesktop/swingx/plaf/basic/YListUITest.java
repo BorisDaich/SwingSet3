@@ -118,7 +118,8 @@ public class YListUITest extends InteractiveTestCase {
         ActionMap map = list.getActionMap();
         LOG.info("core list ActionMap.size="+core.getActionMap().size() + " list ActionMap.size="+list.getActionMap().size());
         ActionMap parentMap = map.getParent();
-        if(parentMap instanceof LazyActionMap lam) {
+        if(parentMap instanceof LazyActionMap) {
+        	LazyActionMap lam = (LazyActionMap)parentMap;
 //        	Object[] keys = lam.keys();
             LOG.info("list ActionMap.parent.size="+lam.size());
         }

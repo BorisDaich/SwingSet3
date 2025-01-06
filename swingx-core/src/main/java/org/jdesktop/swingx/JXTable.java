@@ -1401,7 +1401,8 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      */
     protected void updateHorizontalAction() {
         Action showHorizontal = getActionMap().get(HORIZONTALSCROLL_ACTION_COMMAND);
-        if (showHorizontal instanceof BoundAction showHorizontalBoundAction) {
+        if (showHorizontal instanceof BoundAction) {
+        	BoundAction showHorizontalBoundAction = (BoundAction)showHorizontal;
         	showHorizontalBoundAction.setSelected(isHorizontalScrollEnabled());
         }
     }

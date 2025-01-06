@@ -175,9 +175,11 @@ public class JXComboBox<E> extends JComboBox<E> {
         public void updateUI() {
              wrapper.updateUI();
              
-             if (delegateRenderer instanceof UIDependent uiDelegateRenderer) {
+             if (delegateRenderer instanceof UIDependent) {
+            	 UIDependent uiDelegateRenderer = (UIDependent)delegateRenderer;
             	 uiDelegateRenderer.updateUI();
-             } else if (delegateRenderer instanceof Component comp) {
+             } else if (delegateRenderer instanceof Component) {
+            	 Component comp = (Component)delegateRenderer;
                  SwingUtilities.updateComponentTreeUI(comp);
              } else if (delegateRenderer != null) {
             	 // ListCellRenderer<? super E> delegateRenderer, dh superclass von E
@@ -187,7 +189,7 @@ public class JXComboBox<E> extends JComboBox<E> {
                 	 // interface : getListCellRendererComponent( JList<? extends E> list, E value, ...
                 	 JList<? extends Object> lo = getPopupListFor(JXComboBox.this);
                 	 @SuppressWarnings("unchecked")
-					JList<? extends E> list = (JList<? extends E>)lo;
+					 JList<? extends E> list = (JList<? extends E>)lo;
                      Component comp = delegateRenderer.getListCellRendererComponent(list, null, -1, false, false);
                      SwingUtilities.updateComponentTreeUI(comp);
                  } catch (Exception e) {
@@ -464,7 +466,8 @@ public class JXComboBox<E> extends JComboBox<E> {
             Accessible a = comboBox.getUI().getAccessibleChild(comboBox, i);
             
             // interface ComboPopup with method public JList<Object> getList()
-            if (a instanceof ComboPopup popup) {
+            if (a instanceof ComboPopup) {
+            	ComboPopup popup = (ComboPopup)a;
                 return popup.getList();
             }
         }
@@ -979,15 +982,17 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         	ComponentUI ui = LookAndFeelAddons.getUI(this, ComboBoxUI.class);
         	setUI((ComboBoxUI)ui);
             
-            if (keySelectionManager instanceof UIDependent uiKeySelectionManager) {
+            if (keySelectionManager instanceof UIDependent) {
+            	UIDependent uiKeySelectionManager = (UIDependent)keySelectionManager;
             	uiKeySelectionManager.updateUI();
             }
             
-            ListCellRenderer<? super E> renderer = getRenderer();
-            
-            if (renderer instanceof UIDependent uiRenderer) {
+            ListCellRenderer<? super E> renderer = getRenderer();        
+            if (renderer instanceof UIDependent) {
+            	UIDependent uiRenderer = (UIDependent)renderer;
             	uiRenderer.updateUI();
-            } else if (renderer instanceof Component comp) {
+            } else if (renderer instanceof Component) {
+            	Component comp = (Component)renderer;
                 SwingUtilities.updateComponentTreeUI(comp);
             }
             

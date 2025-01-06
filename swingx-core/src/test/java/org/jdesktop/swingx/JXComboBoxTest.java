@@ -82,9 +82,8 @@ public class JXComboBoxTest {
         
         ListCellRenderer<? super Object> renderer = combo.getRenderer();
         assertThat(renderer, CoreMatchers.is(instanceOf(DelegatingRenderer.class)));
-    	//System.out.println("testDefaultListRenderer.renderer "+renderer);
-    	if(renderer instanceof DelegatingRenderer dr) {
-        	//System.out.println("testDefaultListRenderer.get ... "+dr.getDelegateRenderer());
+    	if(renderer instanceof DelegatingRenderer) {
+    		DelegatingRenderer dr = (DelegatingRenderer)renderer;
         	assertEquals(combo.getWrappedRenderer(), dr.getDelegateRenderer());
     	}
         

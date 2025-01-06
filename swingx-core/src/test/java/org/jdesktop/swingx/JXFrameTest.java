@@ -89,7 +89,7 @@ public class JXFrameTest extends InteractiveTestCase {
 
     @SuppressWarnings("serial")
 	public class WindowFrame extends JXFrame {
-    	private static int windowCounter = 0; // für windowNo, wird pro ctor hochgezählt
+    	private int windowCounter = 0; // für windowNo, wird pro ctor hochgezählt
     	private int windowNo;
     	RootFrame rootFrame; // mit FrameManager
     	public RootFrame getRootFrame() {
@@ -214,7 +214,7 @@ public class JXFrameTest extends InteractiveTestCase {
          * @return the frame's statusbar
          */
     	// aus InteractiveTestCase.getStatusBar
-        static JXStatusBar getStatusBar(JXFrame frame) {
+        JXStatusBar getStatusBar(JXFrame frame) {
             JXStatusBar statusBar = frame.getRootPaneExt().getStatusBar();
             if (statusBar == null) {
                 statusBar = new JXStatusBar();

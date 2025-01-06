@@ -80,7 +80,7 @@ public class TreeRendererIssues extends InteractiveTestCase {
         setSystemLF(true);
         LOG.info("LF: " + UIManager.getLookAndFeel());
         LookAndFeel laf = UIManager.getLookAndFeel();
-        if(laf instanceof MetalLookAndFeel metal) {
+        if(laf instanceof MetalLookAndFeel) {
         	LOG.info("Theme: " + MetalLookAndFeel.getCurrentTheme());
         }
         UIManager.put("Tree.drawsFocusBorderAroundIcon", Boolean.TRUE);

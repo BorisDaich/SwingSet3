@@ -18,7 +18,7 @@
  */
 package org.jdesktop.swingx;
 
-import java.applet.Applet;
+import java.applet.Applet; // Applet has been deprecated since version 9
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
@@ -421,7 +421,7 @@ public class JXTree extends JTree {
             
             //fixes SwingX bug #612
             if (path.getParentPath() == null && !isRootVisible() && isCollapsed(path)) {
-                //should this be wrapped in SwingUtilities.invokeLater?
+                //should this be wrapped in SwingUtilities.invokeLater? XXX
                 expandPath(path);
             }
             
@@ -533,12 +533,14 @@ public class JXTree extends JTree {
     public String getStringAt(TreePath path) {
         if (path == null) return null;
         TreeCellRenderer renderer = getDelegatingRenderer().getDelegateRenderer();
-        if (renderer instanceof StringValue sv) {
+        if (renderer instanceof StringValue) {
+        	StringValue sv = (StringValue)renderer;
             return sv.getString(path.getLastPathComponent());
         }
         // else: (to satisfy Test ComponentAdapterTest.testTreeTableGetStringAtHiddenHierarchicalColumn)
         Object lpc = path.getLastPathComponent();
-        if(lpc instanceof JComponent comp) {
+        if(lpc instanceof JComponent) {
+        	JComponent comp = (JComponent)lpc;
             return comp.getName();
         }
         // else:
@@ -1330,8 +1332,8 @@ public class JXTree extends JTree {
          */
         public DelegatingRenderer(TreeCellRenderer delegate, IconValue iv, StringValue sv) {
         	super(new WrappingProvider(iv, sv));        	
-        	if(delegate instanceof DefaultTreeCellRenderer javaxDTCR) {
-        		initIcons(javaxDTCR);
+        	if(delegate instanceof DefaultTreeCellRenderer) {
+        		initIcons((DefaultTreeCellRenderer)delegate);
         	} else {
 //        		initIcons(new DefaultTreeCellRenderer());
         		// EUG better DefaultXTreeCellRenderer extends DefaultTreeCellRenderer ?
@@ -1445,8 +1447,8 @@ public class JXTree extends JTree {
 
         @Override
         public boolean isEnabled() {
-//        	LOG.info(">>>>>>>>>>>"+delegate);
-        	if(delegate instanceof RolloverRenderer ror) {
+        	if(delegate instanceof RolloverRenderer) {
+        		RolloverRenderer ror = (RolloverRenderer)delegate;
         		ror.isEnabled();
         	}
             return false;
@@ -1816,7 +1818,7 @@ public class JXTree extends JTree {
          */
         @Override
         public boolean isCellEditable(int row, int column) {
-            return false;        /** TODO:  */
+            return false;        /** TODO: ? */
         }
     }
 

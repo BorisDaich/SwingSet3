@@ -2,7 +2,6 @@ package org.jdesktop.swingx.search;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.AccessControlException;  // deprecated
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,7 +69,7 @@ public class RecentSearches implements ActionListener {
 		if (prefs == null) {
 			try {
 				prefs = Preferences.userRoot();
-			} catch (AccessControlException ace) {
+			} catch (SecurityException ace) {
 				// disable persistency, if we aren't allowed to access preferences.
 				Logger.getLogger(getClass().getName()).warning("cannot acces preferences. persistency disabled.");
 			}
@@ -290,6 +289,7 @@ public class RecentSearches implements ActionListener {
 	 * The popup menu returned by
 	 * {@link RecentSearches#createPopupMenu(JXSearchField)}.
 	 */
+	@SuppressWarnings("serial")
 	public static class RecentSearchesPopup extends JPopupMenu implements ActionListener, ChangeListener {
 		private RecentSearches recentSearches;
 
@@ -305,7 +305,8 @@ public class RecentSearches implements ActionListener {
 		 * @param searchField
 		 */
 		public RecentSearchesPopup(RecentSearches recentSearches, JTextField searchField) {
-			if(searchField instanceof JXSearchField xsf) {
+			if(searchField instanceof JXSearchField) {
+				JXSearchField xsf = (JXSearchField)searchField;
 				LOG.fine("RecentSearches:"+recentSearches + " JXSearchField PopupButton.Icon:"+xsf.getPopupButton().getIcon());
 				// JXSearchField PopupButton.Icon is javax.swing.plaf.IconUIResource 
 				//   und kapselt private Icon delegate 

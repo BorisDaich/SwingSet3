@@ -42,7 +42,6 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ListUI;
@@ -1535,7 +1534,8 @@ public class JXList<E> extends JYList<E> {
              if (renderer == null) return;
              
              Component comp = null;
-             if (renderer instanceof AbstractRenderer abstractRenderer) {
+             if (renderer instanceof AbstractRenderer) {
+            	 AbstractRenderer abstractRenderer = (AbstractRenderer)renderer;
                  comp = abstractRenderer.getComponentProvider().getRendererComponent(null);
                  // comp ist JRendererLabel 
                  // ComponentProvider:org.jdesktop.swingx.renderer.LabelProvider@184cf7cf

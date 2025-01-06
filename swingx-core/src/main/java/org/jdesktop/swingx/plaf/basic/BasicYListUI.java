@@ -1555,8 +1555,10 @@ public class BasicYListUI extends YListUI {
                 else {
                     // casting should be safe since the action is only enabled
                     // for DefaultListSelectionModel
-                    if (lsm instanceof DefaultListSelectionModel dlsm)
+                    if (lsm instanceof DefaultListSelectionModel) {
+                    	DefaultListSelectionModel dlsm = (DefaultListSelectionModel)lsm;
                     	dlsm.moveLeadSelectionIndex(index);
+                    }
                 }
             }
         }
@@ -2225,7 +2227,8 @@ public class BasicYListUI extends YListUI {
     @SuppressWarnings("serial")
 	static class ListTransferHandler extends TransferHandler implements UIResource {
         protected Transferable createTransferable(JComponent c) {
-            if (c instanceof JList<?> list) {
+            if (c instanceof JList<?>) {
+    			JList<?> list = (JList<?>)c;
 				List<?> selValues = list.getSelectedValuesList();
                 if(selValues.isEmpty()) {
                 	return null;

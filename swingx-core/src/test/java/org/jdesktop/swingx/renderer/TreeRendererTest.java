@@ -268,7 +268,8 @@ public class TreeRendererTest extends InteractiveTestCase {
         JTree tree = new JTree(model);
     	// StringValue is "Functional Interface" aka SAM Type
     	StringValue sv = (Object value) -> {
-    		if (value instanceof Component c) {
+    		if (value instanceof Component) {
+    			Component c = (Component)value;
     			return "Name:" + c.getName() + "/"+c.getClass();
     		}
     		return StringValues.TO_STRING.getString(value);
@@ -368,7 +369,8 @@ public class TreeRendererTest extends InteractiveTestCase {
         JTree xtree = new JTree(createComponentHierarchyModel());
     	// StringValue is "Functional Interface" aka SAM Type
     	StringValue componentFormat = (Object value) -> {
-    		if (value instanceof Component c) {
+    		if (value instanceof Component) {
+    			Component c = (Component)value;
     			return c.getName();
     		}
     		return StringValues.TO_STRING.getString(value);
@@ -378,7 +380,8 @@ public class TreeRendererTest extends InteractiveTestCase {
         
         JTree tree = new JTree(new FileSystemModel());
         StringValue format = (Object value) -> {
-        	if (value instanceof File file) {
+        	if (value instanceof File) {
+        		File file = (File)value;
         		return file.getName();
         	}
         	return StringValues.TO_STRING.getString(value);
@@ -414,13 +417,15 @@ public class TreeRendererTest extends InteractiveTestCase {
     private CheckBoxProvider createButtonProvider() {
     	// StringValue and BooleanValue are "Functional Interface" or SAM Types
     	StringValue sv = (Object value) -> {
-    		if (value instanceof Action action) {
+    		if (value instanceof Action) {
+    			Action action = (Action)value;
     			return (String)action.getValue(Action.NAME);
     		}
     		return "";
     	};
         BooleanValue bv = (Object value) -> {
-        	if (value instanceof AbstractActionExt aae) {
+        	if (value instanceof AbstractActionExt) {
+        		AbstractActionExt aae = (AbstractActionExt)value;
         		return aae.isSelected();
         	}
         	return false;
@@ -443,12 +448,12 @@ public class TreeRendererTest extends InteractiveTestCase {
         DefaultListModel<Action> model = new DefaultListModel<Action>();
         for (Object object : keys) {
         	Action action = map.get(object);
-        	if(action instanceof BoundAction ba) {
+        	if(action instanceof BoundAction) {
         		// BoundAction extends AbstractActionExt extends AbstractAction, AbstractAction implements Action
-        		model.addElement(ba); 
-        	} else if(action instanceof UIAction uia) {
+        		model.addElement(action); 
+        	} else if(action instanceof UIAction) {
         		// private JXTable$Actions extends UIAction, UIAction implements Action
-        		model.addElement(uia);
+        		model.addElement(action);
         	} else {
         		LOG.warning("key:"+object + " maps to action:"+action);
         		model.addElement(action);

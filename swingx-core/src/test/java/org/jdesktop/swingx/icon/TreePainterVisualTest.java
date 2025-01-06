@@ -172,9 +172,11 @@ public class TreePainterVisualTest extends JXPanel {
             	Icon icon = ((WrappingIconPanel) component).getIcon();
             	PainterIcon painterIcon = new PainterIcon(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
             	BufferedImage image = null;
-            	if(icon instanceof RadianceIcon ri) {
+            	if(icon instanceof RadianceIcon) {
+            		RadianceIcon ri = (RadianceIcon)icon;
             		image = ri.toImage(1);
-            	} else if(icon instanceof ImageIcon ii) {
+            	} else if(icon instanceof ImageIcon) {
+            		ImageIcon ii = (ImageIcon)icon;
             		image = (BufferedImage)ii.getImage();
             	} else {
             		LOG.warning("no highlighting for "+icon);

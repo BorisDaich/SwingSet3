@@ -178,7 +178,8 @@ public class BasicXListUI extends BasicYListUI {
 
 				@Override
 				public int getSize() {
-					if(list instanceof JXList<?> xlist) {
+					if(list instanceof JXList<?>) {
+						JXList<?> xlist = (JXList<?>)list;
 						return xlist.getElementCount();
 					}
 					return list.getModel().getSize();
@@ -186,7 +187,8 @@ public class BasicXListUI extends BasicYListUI {
 
 				@Override
 				public Object getElementAt(int index) {
-					if(list instanceof JXList<?> xlist) {
+					if(list instanceof JXList<?>) {
+						JXList<?> xlist = (JXList<?>)list;
 						return xlist.getElementAt(index);
 					}
 					return list.getModel().getElementAt(index);
@@ -212,7 +214,8 @@ public class BasicXListUI extends BasicYListUI {
      * @return no of elements
      */
     protected int getElementCount() {
-    	if(list instanceof JXList<?> xlist) {
+    	if(list instanceof JXList<?>) {
+			JXList<?> xlist = (JXList<?>)list;
     		return xlist.getElementCount();
     	}
     	return list.getModel().getSize();
@@ -224,7 +227,8 @@ public class BasicXListUI extends BasicYListUI {
      * @return Object
      */
     protected Object getElementAt(int viewIndex) {
-		if(list instanceof JXList<?> xlist) {
+		if(list instanceof JXList<?>) {
+			JXList<?> xlist = (JXList<?>)list;
 			return xlist.getElementAt(viewIndex);
 		}
 		return list.getModel().getElementAt(viewIndex);
@@ -244,7 +248,8 @@ public class BasicXListUI extends BasicYListUI {
      * Installs SortUI if the list has a rowSorter. Does nothing if not.
      */
     protected void installSortUI() {
-		if(list instanceof JXList<?> xlist) {
+		if(list instanceof JXList<?>) {
+			JXList<?> xlist = (JXList<?>)list;
 	        if (xlist.getRowSorter() == null) return;
 	        sortUI = new ListSortUI(xlist, xlist.getRowSorter());
 		}
@@ -630,7 +635,8 @@ public class BasicXListUI extends BasicYListUI {
             super(name);
         }
         protected int getElementCount(JList<?> list) {
-			if(list instanceof JXList<?> xlist) {
+			if(list instanceof JXList<?>) {
+				JXList<?> xlist = (JXList<?>)list;
 				return xlist.getElementCount();
 			}
 			return list.getModel().getSize();
@@ -791,7 +797,8 @@ public class BasicXListUI extends BasicYListUI {
     		 , BeforeDrag 
     {
         protected int getElementCount(JList<?> list) {
-        	if(list instanceof JXList<?> xlist) {
+        	if(list instanceof JXList<?>) {
+    			JXList<?> xlist = (JXList<?>)list;
         		return xlist.getElementCount();
         	}
         	return list.getModel().getSize();

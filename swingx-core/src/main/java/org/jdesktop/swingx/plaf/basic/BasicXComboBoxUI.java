@@ -200,8 +200,8 @@ public class BasicXComboBoxUI extends XComboBoxUI {
         assert c instanceof JComboBox;
         
     	isMinimumSizeDirty = true;
-    	if(c instanceof JComboBox<?> jcb) {
-    		comboBox = jcb;
+    	if(c instanceof JComboBox<?>) {
+    		comboBox = (JComboBox<?>)c;
     	}
     	
     	// 1.Install default property values
@@ -223,7 +223,8 @@ comboBox JComboBox<?> :
  */
     	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList
     	listBox = popup.getList();
-    	if(listBox instanceof JXList<?> xListBox) {
+    	if(listBox instanceof JXList<?>) {
+    		JXList<?> xListBox = (JXList<?>)listBox;
         	xListBox.setCellRenderer(new DefaultListCellRenderer());
 //        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // cellBackground, cellForeground OK
         	
@@ -232,7 +233,8 @@ comboBox JComboBox<?> :
         	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));     	
 //        	xListBox.updateUI();
 
-    	} else if(listBox instanceof JYList<?> yListBox) {
+    	} else if(listBox instanceof JYList<?>) {
+    		JYList<?> yListBox = (JYList<?>)listBox;
         	LOG.info("----+++---> UI delegate for "+c
         			+ "\n interface ComboPopup:"+popup
         			+ "\n popup.JList<Object>:"+yListBox
@@ -283,7 +285,7 @@ comboBox JComboBox<?> :
         }
 
         ComboBoxEditor comboBoxEditor = comboBox.getEditor();
-        if (comboBoxEditor instanceof UIResource ) {
+        if (comboBoxEditor instanceof UIResource) {
             if (comboBoxEditor.getEditorComponent().hasFocus()) {
                 // Leave focus in JComboBox.
                 comboBox.requestFocusInWindow();
@@ -787,7 +789,8 @@ in BasicComboPopup gibt es
         comboBox.getEditor().addActionListener(getHandler()); // TODO 
         // wieso nicht editor.addActionListener(getHandler()); ? 
         // ==> Component editor ohne addActionListener, comboBox.getEditor() dagegen BasicComboBoxEditor implements ComboBoxEditor 
-        if(editor instanceof ComboBoxEditor cbe) {
+        if(editor instanceof ComboBoxEditor) {
+        	ComboBoxEditor cbe = (ComboBoxEditor)editor;
         	LOG.info("xxxxxxxxxx>>"+cbe);
 //        	cbe.addActionListener(getHandler());
 //        	// macht: anEditor.setItem(anItem):
@@ -798,7 +801,8 @@ in BasicComboPopup gibt es
         			);
         }
 
-        if(editor instanceof JComponent jc) {
+        if(editor instanceof JComponent) {
+        	JComponent jc = (JComponent)editor;
             jc.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
             jc.setInheritsPopupMenu(true);
         }
@@ -860,9 +864,11 @@ in BasicComboPopup gibt es
             if (v) {
                 popup.show();
                 popupVisible = v;
-	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
+	            if(arrowButton instanceof BasicArrowButton) {
+	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.NORTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton) {
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton) {
+	            	org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.NORTH);
 	            } else {
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
@@ -870,9 +876,11 @@ in BasicComboPopup gibt es
             } else {
                 popup.hide();
                 popupVisible = v;
-	            if(arrowButton instanceof BasicArrowButton basicArrowButton) {
+	            if(arrowButton instanceof BasicArrowButton) {
+	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton) {
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton) {
+	            	org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.SOUTH);
 	            } else {
 	            	arrowButton.setIcon(icon);
@@ -1422,18 +1430,8 @@ in BasicComboPopup gibt es
                     xComboBox.revalidate();
                     xComboBox.repaint();
                 } else if ( propertyName == "rowSorter" ) {
-                    // TODO
-//    				LOG.info("yyyyyyyyyyyyyyyyyy"+res.getRowSorter().getClass() // org.jdesktop.swingx.sort.ListSortController
-//+ "\n isSortable="+res.isSortable()
-//+ "\n SortOrderCycle:"+Arrays.asList(res.getSortOrderCycle())
-//+ "\n ViewRowCount="+res.getRowSorter().getViewRowCount()
-//+ "\n ModelRowCount="+res.getRowSorter().getModelRowCount()
-//+ "\n SortKeys:"+res.getRowSorter().getSortKeys()
-//                    LOG.info("isSorted is now "+xComboBox.isSorted()
-//                    +"\n RowSorter Class "+xComboBox.getRowSorter().getClass()
-//                    +"\n SortKeys:"+xComboBox.getRowSorter().getSortKeys()
-//                    );
-                    if(listBox instanceof JXList<?> xlist) {
+                    if(listBox instanceof JXList<?>) {
+                    	JXList<?> xlist = (JXList<?>)listBox;
                     	xlist.setAutoCreateRowSorter(xComboBox.hasRowSorter());
                     	RowSorter rs = xComboBox.getRowSorter();
                     	xlist.setRowSorter(rs);

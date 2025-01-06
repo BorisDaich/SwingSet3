@@ -103,7 +103,9 @@ public class ListRendererTest extends InteractiveTestCase {
         // ??? why getStringValue() ?:
         LOG.info("type of rendererWithIcon.componentController.getStringValue():"+rendererWithIcon.componentController.getStringValue().getClass());
         assertEquals(org.jdesktop.swingx.renderer.MappedValue.class, rendererWithIcon.componentController.getStringValue().getClass());
-        if(rendererWithIcon.componentController.getStringValue() instanceof MappedValue mv) {
+        StringValue msv = rendererWithIcon.componentController.getStringValue();
+        if(msv instanceof MappedValue) {
+        	MappedValue mv = (MappedValue)msv;
         	assertEquals(iv.getIcon(iv).toString(), mv.getIcon(mv).toString());
         }
     }

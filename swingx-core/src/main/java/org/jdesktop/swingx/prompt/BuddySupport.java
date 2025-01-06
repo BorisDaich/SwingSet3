@@ -160,8 +160,8 @@ public class BuddySupport {
 		if(o==null) {
 			return new ArrayList<Component>();
 		}
-//		LOG.info("textField.getClientProperty("+pos + " :"+o);
-		if(o instanceof List<?> l) {
+		if(o instanceof List<?>) {
+			List<?> l = (List<?>)o;
 			return (List<Component>)l;
 		}
 		LOG.warning(" DARF NICHT SEIN!!------------------------ getClientProperty("+pos + " :"+o);

@@ -137,7 +137,8 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
             	+ "\n the edited item type:"+ editedItem.getClass() + " "+editedItem);
             	// add editedItem to model
             	ComboBoxModel<String> m = cellsLayout.getModel();
-            	if(m instanceof DefaultComboBoxModel<String> dm) {
+            	if(m instanceof DefaultComboBoxModel<?>) {
+            		DefaultComboBoxModel<String> dm = (DefaultComboBoxModel<String>)m;
                 	dm.addElement((String)editedItem);
                 	dm.setSelectedItem(editedItem);
             	}
@@ -242,7 +243,8 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
         }
 
 		public Component setEditorComponent(Object o) {
-			if(o instanceof Color color) {
+			if(o instanceof Color) {
+				Color color = (Color)o;
 				editor.setText(color.toString());
 	            editor.setBackground(color);
 			} else {
@@ -259,7 +261,8 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
 		@Override
 		public void setItem(Object anObject) {
 			String text = "";
-			if(anObject instanceof Color color) {
+			if(anObject instanceof Color) {
+				Color color = (Color)anObject;
 		        if ( anObject != null )  {
 		            text = anObject.toString();
 		            if (text == null) {
@@ -355,7 +358,8 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
             	+ "\n the edited item type:"+ editedItem.getClass() + " "+editedItem);
             	// add editedItem to model
             	ComboBoxModel<Color> m = colorcb.getModel();
-            	if(m instanceof DefaultComboBoxModel<Color> dm) {
+            	if(m instanceof DefaultComboBoxModel<?>) {
+            		DefaultComboBoxModel<Color> dm = (DefaultComboBoxModel<Color>)m;
                 	dm.addElement((Color)editedItem);
                 	dm.setSelectedItem(editedItem);
             	}
@@ -366,7 +370,7 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
 //    public static class UIResource extends BasicComboBoxRenderer implements javax.swing.plaf.UIResource {
 //    class ColorComboBoxRenderer extends JLabel implements ListCellRenderer<Integer> {
     class ColorComboBoxRenderer extends BasicComboBoxRenderer {
-        protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+        protected Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
         public ColorComboBoxRenderer() {
             super();
             setOpaque(true);
@@ -394,9 +398,10 @@ public class JXComboBoxVisualCheck extends InteractiveTestCase {
 				setForeground(list.getForeground());
 			}
 			setFont(list.getFont());
-			if (value instanceof Icon icon) {
-				setIcon(icon);
-			} else if (value instanceof Color color) {
+			if (value instanceof Icon) {
+				setIcon((Icon)value);
+			} else if (value instanceof Color) {
+				Color color = (Color)value;
 				setBackground(color);
 				setText(color.toString());
 			} else {

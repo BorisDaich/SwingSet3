@@ -254,7 +254,8 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectString() {
 		StringValue sv = (Object value) -> {
-            if (value instanceof Point point) {
+            if (value instanceof Point) {
+            	Point point = (Point)value;
                 return "x of Point: " + point.x;
             }
             return StringValues.TO_STRING.getString(value);
@@ -275,7 +276,8 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderUserObjectUnwrapRespectRenderer() {
 		StringValue sv = (Object value) -> {
-            if (value instanceof Point point) {
+            if (value instanceof Point) {
+            	Point point = (Point)value;
                 return "x of Point: " + point.x;
             }
             return StringValues.TO_STRING.getString(value);
@@ -509,7 +511,8 @@ public class RenderingTest extends InteractiveTestCase {
     @Test
     public void testWrappingProviderGetStringFromNode() {
 		StringValue sv = (Object value) -> {
-            if (value instanceof Point point) {
+            if (value instanceof Point) {
+            	Point point = (Point)value;
                 return "x of Point: " + point.x;
             }
             return StringValues.TO_STRING.getString(value);

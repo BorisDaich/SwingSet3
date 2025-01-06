@@ -850,9 +850,8 @@ public class JXTreeTable extends JXTable {
                  * (drag system intercepts and consumes all other).
                  */
                 me = new MouseEvent((Component) me.getSource(),
-                        MouseEvent.MOUSE_PRESSED, me.getWhen(), me
-                                .getModifiers(), me.getX(), me.getY(), me
-                                .getClickCount(), me.isPopupTrigger());
+                        MouseEvent.MOUSE_PRESSED, me.getWhen(), me.getModifiersEx(), 
+                        me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger());
 
             }
             // If the modifiers are not 0 (or the left mouse button),
@@ -861,19 +860,17 @@ public class JXTreeTable extends JXTable {
             // selection remaining the same. To avoid this, we
             // only dispatch when the modifiers are 0 (or the left mouse
             // button).
-            if (me.getModifiers() == 0
-                    || me.getModifiers() == InputEvent.BUTTON1_MASK) {
-                MouseEvent pressed = new MouseEvent(renderer, me.getID(), me
-                        .getWhen(), me.getModifiers(), me.getX()
-                        - getCellRect(0, column, false).x, me.getY(), me
-                        .getClickCount(), me.isPopupTrigger());
+            if (me.getModifiersEx() == 0 || me.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
+                MouseEvent pressed = new MouseEvent(renderer, me.getID(), me.getWhen(), me.getModifiersEx(), 
+                		me.getX() - getCellRect(0, column, false).x, 
+                		me.getY(), me.getClickCount(), me.isPopupTrigger());
                 renderer.dispatchEvent(pressed);
                 // For Mac OS X, we need to dispatch a MOUSE_RELEASED as well
                 MouseEvent released = new MouseEvent(renderer,
-                        java.awt.event.MouseEvent.MOUSE_RELEASED, pressed
-                                .getWhen(), pressed.getModifiers(), pressed
-                                .getX(), pressed.getY(), pressed
-                                .getClickCount(), pressed.isPopupTrigger());
+                        java.awt.event.MouseEvent.MOUSE_RELEASED, 
+                        pressed.getWhen(), pressed.getModifiersEx(), 
+                        pressed.getX(), pressed.getY(), 
+                        pressed.getClickCount(), pressed.isPopupTrigger());
                 renderer.dispatchEvent(released);
                 if (expansionChangedFlag) {
                     changedExpansion = true;
@@ -956,9 +953,8 @@ public class JXTreeTable extends JXTable {
                  * (drag system intercepts and consumes all other).
                  */
                 me = new MouseEvent((Component) me.getSource(),
-                        MouseEvent.MOUSE_PRESSED, me.getWhen(), me
-                        .getModifiers(), me.getX(), me.getY(), me
-                        .getClickCount(), me.isPopupTrigger());
+                        MouseEvent.MOUSE_PRESSED, me.getWhen(), me.getModifiersEx(), 
+                        me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger());
             }
             // If the modifiers are not 0 (or the left mouse button),
             // tree may try and toggle the selection, and table
@@ -966,20 +962,17 @@ public class JXTreeTable extends JXTable {
             // selection remaining the same. To avoid this, we
             // only dispatch when the modifiers are 0 (or the left mouse
             // button).
-            if (me.getModifiers() == 0
-                    || me.getModifiers() == InputEvent.BUTTON1_MASK) {
+            if (me.getModifiersEx() == 0 || me.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
                 // compute where the mouse point is relative to the tree
                 // as renderer, that the x coordinate translated to be relative
                 // to the column x-position
                 Point treeMousePoint = getTreeMousePoint(column, me);
-                int treeRow = renderer.getRowForLocation(treeMousePoint.x,
-                        treeMousePoint.y);
+                int treeRow = renderer.getRowForLocation(treeMousePoint.x, treeMousePoint.y);
                 int row = 0;
                 // mouse location not inside the node content
                 if (treeRow < 0) {
                     // get the row for mouse location
-                    row = renderer.getClosestRowForLocation(treeMousePoint.x,
-                            treeMousePoint.y);
+                    row = renderer.getClosestRowForLocation(treeMousePoint.x, treeMousePoint.y);
                     // check against actual bounds of the row
                     Rectangle bounds = renderer.getRowBounds(row);
                     if (bounds == null) {
@@ -1016,17 +1009,14 @@ public class JXTreeTable extends JXTable {
                     // which either triggers a tree selection
                     // or expands/collapses a node
                     MouseEvent pressed = new MouseEvent(renderer, me.getID(),
-                            me.getWhen(), me.getModifiers(), treeMousePoint.x,
-                            treeMousePoint.y, me.getClickCount(), me
-                            .isPopupTrigger());
+                            me.getWhen(), me.getModifiersEx(), treeMousePoint.x,
+                            treeMousePoint.y, me.getClickCount(), me.isPopupTrigger());
                     renderer.dispatchEvent(pressed);
-                    // For Mac OS X, we need to dispatch a MOUSE_RELEASED as
-                    // well
+                    // For Mac OS X, we need to dispatch a MOUSE_RELEASED as well
                     MouseEvent released = new MouseEvent(renderer,
-                            java.awt.event.MouseEvent.MOUSE_RELEASED, pressed
-                            .getWhen(), pressed.getModifiers(), pressed
-                            .getX(), pressed.getY(), pressed
-                            .getClickCount(), pressed.isPopupTrigger());
+                            java.awt.event.MouseEvent.MOUSE_RELEASED, pressed.getWhen(), 
+                            pressed.getModifiersEx(), pressed.getX(), pressed.getY(), 
+                            pressed.getClickCount(), pressed.isPopupTrigger());
                     renderer.dispatchEvent(released);
                     // part of 561-swingx: if focus elsewhere and dispatching the
                     // mouseEvent the focus doesn't move from elsewhere
@@ -1061,8 +1051,7 @@ public class JXTreeTable extends JXTable {
          */
         protected Point getTreeMousePoint(int column, MouseEvent me) {
             // could inline as it wasn't the place to fix for broken RToL
-            return new Point(me.getX()
-                    - getCellRect(0, column, false).x, me.getY());
+            return new Point(me.getX() - getCellRect(0, column, false).x, me.getY());
         }
     }
     /**
@@ -1086,10 +1075,12 @@ public class JXTreeTable extends JXTable {
     public class TreeTableHackerExt3 extends TreeTableHackerExt2 {
         @Override
         protected boolean expandOrCollapseNode(int column, EventObject e) {
-            if (!isHierarchical(column))
+            if (!isHierarchical(column)) {
                 return false;
-            if (!mightBeExpansionTrigger(e))
+            }
+            if (!mightBeExpansionTrigger(e)) {
                 return false;
+            }
             boolean changedExpansion = false;
             MouseEvent me = (MouseEvent) e;
             // If the modifiers are not 0 (or the left mouse button),
@@ -1098,20 +1089,17 @@ public class JXTreeTable extends JXTable {
             // selection remaining the same. To avoid this, we
             // only dispatch when the modifiers are 0 (or the left mouse
             // button).
-            if (me.getModifiers() == 0
-                    || me.getModifiers() == InputEvent.BUTTON1_MASK) {
+            if (me.getModifiersEx() == 0 || me.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
                 // compute where the mouse point is relative to the tree
                 // as renderer, that the x coordinate translated to be relative
                 // to the column x-position
                 Point treeMousePoint = getTreeMousePoint(column, me);
-                int treeRow = renderer.getRowForLocation(treeMousePoint.x,
-                        treeMousePoint.y);
+                int treeRow = renderer.getRowForLocation(treeMousePoint.x, treeMousePoint.y);
                 int row = 0;
                 // mouse location not inside the node content
                 if (treeRow < 0) {
                     // get the row for mouse location
-                    row = renderer.getClosestRowForLocation(treeMousePoint.x,
-                            treeMousePoint.y);
+                    row = renderer.getClosestRowForLocation(treeMousePoint.x, treeMousePoint.y);
                     // check against actual bounds of the row
                     Rectangle bounds = renderer.getRowBounds(row);
                     if (bounds == null) {
@@ -1144,17 +1132,14 @@ public class JXTreeTable extends JXTable {
                     // which either triggers a tree selection
                     // or expands/collapses a node
                     MouseEvent pressed = new MouseEvent(renderer, me.getID(),
-                            me.getWhen(), me.getModifiers(), treeMousePoint.x,
-                            treeMousePoint.y, me.getClickCount(), me
-                                    .isPopupTrigger());
+                            me.getWhen(), me.getModifiersEx(), treeMousePoint.x,
+                            treeMousePoint.y, me.getClickCount(), me.isPopupTrigger());
                     renderer.dispatchEvent(pressed);
-                    // For Mac OS X, we need to dispatch a MOUSE_RELEASED as
-                    // well
+                    // For Mac OS X, we need to dispatch a MOUSE_RELEASED as well
                     MouseEvent released = new MouseEvent(renderer,
-                            java.awt.event.MouseEvent.MOUSE_RELEASED, pressed
-                                    .getWhen(), pressed.getModifiers(), pressed
-                                    .getX(), pressed.getY(), pressed
-                                    .getClickCount(), pressed.isPopupTrigger());
+                            java.awt.event.MouseEvent.MOUSE_RELEASED, pressed.getWhen(), 
+                            pressed.getModifiersEx(), pressed.getX(), pressed.getY(), 
+                            pressed.getClickCount(), pressed.isPopupTrigger());
                     renderer.dispatchEvent(released);
                     // part of 561-swingx: if focus elsewhere and dispatching the
                     // mouseEvent the focus doesn't move from elsewhere
@@ -1434,7 +1419,8 @@ public class JXTreeTable extends JXTable {
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
     	ComponentAdapter adapter = getComponentAdapter(row, column);
     	Object value = getValueAt(row, column);
-    	if(adapter instanceof TreeTableDataAdapter ttda)  {
+    	if(adapter instanceof TreeTableDataAdapter)  {
+    		TreeTableDataAdapter ttda = (TreeTableDataAdapter)adapter;
     		value = ttda.getValueAt(row, column);
     	}
 
@@ -1467,15 +1453,6 @@ public class JXTreeTable extends JXTable {
             	component = highlighter.highlight(component, adapter);
             }
         }
-     // TODO remove LOG
-//    	LOG.info("TODO TableCellRenderer:"+renderer 
-//    			+ "\n Component="+component
-//    			+ "\n ComponentAdapter="+adapter
-//    			+ "\n target Component="+adapter.getComponent()
-//    			+ "\n for row="+row + (adapter.isHierarchical() ? " hierarchical-" : " ") +"column="+column + " ValueAt="+value
-//    			+ "\n"
-//    			);
-
         return applyRenderer(component, adapter); 
     }
 
@@ -1507,10 +1484,12 @@ public class JXTreeTable extends JXTable {
             // attributes of the table cell renderer are applied to the
             // tree cell renderer before the hierarchical column is rendered!
             TreeCellRenderer tcr = renderer.getCellRenderer();   
-            if (tcr instanceof JXTree.DelegatingRenderer dl) {
+            if (tcr instanceof JXTree.DelegatingRenderer) {
+            	JXTree.DelegatingRenderer dl = (JXTree.DelegatingRenderer)tcr;
                 tcr = dl.getDelegateRenderer();
             }
-            if (tcr instanceof DefaultTreeCellRenderer dtcr) {
+            if (tcr instanceof DefaultTreeCellRenderer) {
+            	DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer)tcr;
             	// DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
                 // this effectively overwrites the dtcr settings
                 if (adapter.isSelected()) {
@@ -1537,13 +1516,16 @@ public class JXTreeTable extends JXTable {
     }
 
     public TreeCellRenderer getTreeCellRenderer() {
-    	// TODO EUG
-    	if(renderer!=null) return renderer.getCellRenderer();
-    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer="+renderer);
+    	if (renderer != null) {
+    		return renderer.getCellRenderer();
+    	}
+    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer is null ="+renderer);
     	TableModel tm = this.getModel();
-    	if(tm instanceof TreeTableModelAdapter adapter) {
+    	if(tm instanceof TreeTableModelAdapter) {
+    		TreeTableModelAdapter adapter = (TreeTableModelAdapter)tm;
     		JTree t = adapter.getTree();
-    		if(t instanceof JXTree xt) {
+    		if(t instanceof JXTree) {
+    			JXTree xt = (JXTree)t;
     	    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG got="+xt.getCellRenderer());
     			return xt.getCellRenderer();
     		}
@@ -2208,13 +2190,17 @@ public class JXTreeTable extends JXTable {
      * @see #getStringAt(int, int)
      */
     private String getHierarchicalStringAt(int row) {
-    	if(renderer!=null) return renderer.getStringAt(row);
+    	if (renderer != null) {
+    		return renderer.getStringAt(row);
+    	}
     	
-    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer="+renderer); // TODO check it
+    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer is null ="+renderer); // TODO check it
     	TableModel tm = this.getModel();
-    	if(tm instanceof TreeTableModelAdapter adapter) {
+    	if(tm instanceof TreeTableModelAdapter) {
+    		TreeTableModelAdapter adapter = (TreeTableModelAdapter)tm;
     		JTree t = adapter.getTree();
-    		if(t instanceof JXTree xt) {
+    		if(t instanceof JXTree) {
+    			JXTree xt = (JXTree)t;
     			JXTree.DelegatingRenderer r = (JXTree.DelegatingRenderer)xt.getCellRenderer();
     	    	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG got="+r);
     	    	WrappingProvider wp = (WrappingProvider)r.getComponentProvider();
@@ -2230,7 +2216,8 @@ public class JXTreeTable extends JXTable {
      * a change in the ListSelectionModel happens, the paths are updated
      * in the DefaultTreeSelectionModel.
      */
-    class ListToTreeSelectionModelWrapper extends DefaultTreeSelectionModel {
+    @SuppressWarnings("serial")
+	class ListToTreeSelectionModelWrapper extends DefaultTreeSelectionModel {
         /** Set to true when we are updating the ListSelectionModel. */
         protected boolean updatingListSelectionModel;
 
@@ -2335,7 +2322,8 @@ public class JXTreeTable extends JXTable {
      * Adapt TreeTableCellRenderer to TableModel 
      * used in ctor JXTreeTable(TreeTableCellRenderer renderer)
      */
-    public static class TreeTableModelAdapter extends AbstractTableModel implements TreeTableModelProvider {
+    @SuppressWarnings("serial")
+	public static class TreeTableModelAdapter extends AbstractTableModel implements TreeTableModelProvider {
         private TreeModelListener treeModelListener;
         
         private final JTree tree; // immutable
@@ -2346,7 +2334,8 @@ public class JXTreeTable extends JXTable {
         //     public static class TreeTableCellRenderer extends JXTree implements TableCellRenderer
         // JXTreeWithTableCellRenderer
         public TreeTableCellRenderer getXTreeCellRenderer() { // EUG testing
-        	if(tree instanceof JXTree xt) {
+        	if(tree instanceof JXTree) {
+        		JXTree xt = (JXTree)tree;
         		xt.getCellRenderer();
         	}
         	LOG.warning("NULL ****** NULL");
@@ -2978,14 +2967,14 @@ TableModelListener management provided by AbstractTableModel superclass:
             // unconditionally overwrite custom selection colors. 
             // Check for UIResources instead. 
             TreeCellRenderer tcr = getCellRenderer();
-            if (tcr instanceof DefaultTreeCellRenderer dtcr) {
-                // For 1.1 uncomment this, 1.2 has a bug that will cause an
-                // exception to be thrown if the border selection color is null.
+            if (tcr instanceof DefaultTreeCellRenderer) {
+            	DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer)tcr;
+                // For 1.1 uncomment this, 
+            	//     1.2 has a bug that will cause an exception to be thrown 
+            	//         if the border selection color is null.
                 dtcr.setBorderSelectionColor(null);
-                dtcr.setTextSelectionColor(
-                    UIManager.getColor("Table.selectionForeground"));
-                dtcr.setBackgroundSelectionColor(
-                    UIManager.getColor("Table.selectionBackground"));
+                dtcr.setTextSelectionColor(UIManager.getColor("Table.selectionForeground"));
+                dtcr.setBackgroundSelectionColor(UIManager.getColor("Table.selectionBackground"));
             }
         }
 
@@ -3265,7 +3254,8 @@ TableModelListener management provided by AbstractTableModel superclass:
                     // hidden hierarchical column, access directly
                 }
                 TableModel dataModel = table.getModel();
-                if(dataModel instanceof JXTreeTable.TreeTableModelAdapter ttma) {
+                if(dataModel instanceof JXTreeTable.TreeTableModelAdapter) {
+                	JXTreeTable.TreeTableModelAdapter ttma = (JXTreeTable.TreeTableModelAdapter)dataModel;
                 	return ttma.getValueAt(row, column);
                 }
             }

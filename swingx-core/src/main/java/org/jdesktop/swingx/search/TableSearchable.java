@@ -52,9 +52,6 @@ public class TableSearchable extends AbstractSearchable {
      */
     public TableSearchable(JXTable table) {
         this.table = table;
-        if(this.table instanceof JXTreeTable tt) {
-            LOG.config("searchable table:"+tt);
-        }
     }
 
     /**
@@ -156,10 +153,12 @@ public class TableSearchable extends AbstractSearchable {
      */
     protected SearchResult findMatchAt(Pattern pattern, int row, int column) {
     	String text;
-    	if(table instanceof JXTreeTable tt) {
+    	if(table instanceof JXTreeTable) {
+    		JXTreeTable tt = (JXTreeTable)table;
     		text = tt.getStringAt(row, column);
     		Object renderer = tt.getCellRenderer(row, column);
-    		if(renderer instanceof JXTree xTree) {
+    		if(renderer instanceof JXTree) {
+    			JXTree xTree = (JXTree)renderer;
     			// for hierarchical column
     			StringValue sv = (StringValue)xTree.getCellRenderer();
     			TreePath path = xTree.getPathForRow(row);
@@ -271,7 +270,8 @@ public class TableSearchable extends AbstractSearchable {
             return;
         } else {
             ensureInsertedSearchHighlighters(searchHL);
-            if(table instanceof JXTreeTable tt) {
+            if(table instanceof JXTreeTable) {
+            	JXTreeTable tt = (JXTreeTable)table;
             	tt.scrollCellToVisible(lastSearchResult.foundRow, lastSearchResult.foundColumn);
             } else {
                 table.scrollCellToVisible(lastSearchResult.foundRow, lastSearchResult.foundColumn);
@@ -308,7 +308,8 @@ public class TableSearchable extends AbstractSearchable {
         }
         int row = lastSearchResult.foundRow;
         int column = lastSearchResult.foundColumn;
-        if(table instanceof JXTreeTable tt) {
+        if(table instanceof JXTreeTable) {
+        	JXTreeTable tt = (JXTreeTable)table;
             tt.changeSelection(row, column, false, false);
             if (!tt.getAutoscrolls()) {
                 // scrolling not handled by moving selection
@@ -348,12 +349,15 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected void removeHighlighter(Highlighter searchHighlighter) {
-//    	LOG.info("TODO "+searchHighlighter);
-        if(table instanceof JXTreeTable tt) {
+        if(table instanceof JXTreeTable) {
+        	JXTreeTable tt = (JXTreeTable)table;
         	Object renderer = tt.getTreeCellRenderer();
-        	if(renderer instanceof JXTree xTree) {
-        		xTree.removeHighlighter(searchHighlighter);
-        	}
+        	// javax.swing.tree.TreeCellRenderer is an Interface
+        	// public class DefaultTreeRenderer ... implements TreeCellRenderer {
+// das kann nicht sein:
+//        	if(renderer instanceof JXTree xTree) {
+//        		xTree.removeHighlighter(searchHighlighter);
+//        	}
             tt.removeHighlighter(searchHighlighter);
         } else {
             table.removeHighlighter(searchHighlighter);
@@ -366,7 +370,8 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected Highlighter[] getHighlighters() {
-        if(table instanceof JXTreeTable tt) {
+        if(table instanceof JXTreeTable) {
+        	JXTreeTable tt = (JXTreeTable)table;
             return tt.getHighlighters();
         } else {
             return table.getHighlighters();
@@ -379,12 +384,13 @@ public class TableSearchable extends AbstractSearchable {
      */
     @Override
     protected void addHighlighter(Highlighter highlighter) {
-//    	LOG.info("TODO "+highlighter);
-        if(table instanceof JXTreeTable tt) {
+        if(table instanceof JXTreeTable) {
+        	JXTreeTable tt = (JXTreeTable)table;
         	Object renderer = tt.getTreeCellRenderer();
-        	if(renderer instanceof JXTree xTree) {
-        		xTree.addHighlighter(highlighter);
-        	}
+// das kann nicht sein (wie oben):
+//        	if(renderer instanceof JXTree xTree) {
+//        		xTree.addHighlighter(highlighter);
+//        	}
             tt.addHighlighter(highlighter);
         } else {
             table.addHighlighter(highlighter);        	
