@@ -114,8 +114,8 @@
         <configuration>
         <!-- Compile for the specified Java SE release. 
         	When changed adopte org.jdesktop.beans.JavaBeanProcessor
-        	Supported releases: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 -->
-	 	  <release>16</release>
+        	Supported releases: 7, 8, 9, 10, 11LTE, 12, 13, 14, 15, 16, 17LTE -->
+	 	  <release>11</release>
 		  <!-- Provide source compatibility with the specified Java SE release. 
 				Supported releases: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17     
           <source>8</source>  -->
