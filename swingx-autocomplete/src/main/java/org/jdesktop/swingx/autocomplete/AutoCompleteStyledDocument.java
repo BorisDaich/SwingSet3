@@ -34,14 +34,14 @@ import javax.swing.text.StyledDocument;
  */
 public class AutoCompleteStyledDocument extends AutoCompleteDocument implements StyledDocument {
 	
-    /**
+	/**
      * Creates a new AutoCompleteStyledDocument for the given AbstractAutoCompleteAdaptor.
-     * 
-     * @param adaptor AbstractAutoCompleteAdaptor
-     * @param strictMatching
-     * @param stringConverter ObjectToStringConverter
-     * @param delegate StyledDocument
-     */
+	 * 
+	 * @param adaptor AbstractAutoCompleteAdaptor
+	 * @param strictMatching boolean
+	 * @param stringConverter ObjectToStringConverter
+	 * @param delegate StyledDocument
+	 */
     public AutoCompleteStyledDocument(AbstractAutoCompleteAdaptor adaptor,
             boolean strictMatching, ObjectToStringConverter stringConverter,
             StyledDocument delegate) {

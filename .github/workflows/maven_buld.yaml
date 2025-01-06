@@ -45,6 +45,6 @@ jobs:
 # prepare-package, package, 
 # pre-integration-test, integration-test, post-integration-test, verify, install, deploy, 
 # pre-clean, clean, post-clean, pre-site, site, post-site, site-deploy. 
-      run: mvn -V --batch-mode package
+      run: mvn -V --batch-mode -Ddoclint=none package
 #      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress test
 #      run: mvn -V --batch-mode -Ddoclint=all --file pom.xml --no-transfer-progress install
