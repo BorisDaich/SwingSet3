@@ -82,18 +82,19 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint> {
         if(iconImg == null) return;
         
         Point2D point = map.getTileFactory().geoToPixel(w.getPosition(), map.getZoom());
-    	if(iconImg instanceof Icon icon) {           
-            int x = (int)point.getX() -this.adjustX;
-            int y = (int)point.getY() -this.adjustY;
-            
+    	if(iconImg instanceof Icon) {           
+            int x = (int)point.getX() - this.adjustX;
+            int y = (int)point.getY() - this.adjustY;
+            Icon icon = (Icon)iconImg;
             icon.paintIcon(map, g, x, y);
             return;
     	}
         
-    	if(iconImg instanceof BufferedImage img) {
+    	if(iconImg instanceof BufferedImage) {
+    		BufferedImage img = (BufferedImage)iconImg;
             // assume the image points to [img.getWidth() / 2 , img.getHeight()]:
-            int x = (int)point.getX() -img.getWidth() / 2;
-            int y = (int)point.getY() -img.getHeight();
+            int x = (int)point.getX() - img.getWidth() / 2;
+            int y = (int)point.getY() - img.getHeight();
             
             g.drawImage(img, x, y, null);
     	} else {
