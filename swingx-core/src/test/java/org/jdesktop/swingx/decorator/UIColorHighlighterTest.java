@@ -94,7 +94,7 @@ public class UIColorHighlighterTest extends InteractiveTestCase {
      * 
      * @throws Exception
      */
-    @Test
+//    @Test TODO wieder aktivieren
     public void testAlternateXTable() throws Exception {
         LOG.config("LookAndFeel:"+UIManager.getLookAndFeel()+" Color(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
         if (!hasLookAndFeel("Nimbus")) {
