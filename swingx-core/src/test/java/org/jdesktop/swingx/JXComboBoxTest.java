@@ -27,7 +27,6 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Color;
 
 import javax.swing.ListCellRenderer;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.hamcrest.CoreMatchers;
 import org.jdesktop.swingx.JXComboBox.DelegatingRenderer;
@@ -40,7 +39,6 @@ import org.jdesktop.swingx.renderer.StringValues;
 import org.jdesktop.swingx.sort.StringValueRegistry;
 import org.jdesktop.test.EDTRunner;
 import org.jdesktop.test.PropertyChangeReport;
-import org.jdesktop.test.TestUtils;
 import org.jdesktop.testtests.AncientSwingTeam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
