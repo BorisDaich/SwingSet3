@@ -138,7 +138,7 @@ public class AbstractPainterTest {
                 verify(p).doPaint(g, aButton, 10, 10);
             }
 		} catch (java.awt.HeadlessException e) {
-			LOG.info("ignore this test because of "+e);
+			LOG.config("ignore this test because of "+e);
         } 
     }
     

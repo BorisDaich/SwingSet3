@@ -195,13 +195,13 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         panel.add(button);
         TreeTableModel model = new ComponentTreeTableModel(panel);
 
-        LOG.info("Root="+model.getRoot() + "\n with "+model.getChildCount(model.getRoot())+" childes"
+        LOG.config("Root="+model.getRoot() + "\n with "+model.getChildCount(model.getRoot())+" childes"
         		+" ColumnCount="+model.getColumnCount() + " HierarchicalColumn="+model.getHierarchicalColumn());
         Object child = model.getChild(model.getRoot(), 0);
-        LOG.info("the child:"+child);
-        for(int i=0;i<model.getColumnCount();i++) {
-        	System.out.println(""+i+":"+model.getColumnName(i)+"\t"+model.getColumnClass(i) + "\t"+model.getValueAt(child, i));
-        }
+        LOG.config("the child:"+child);
+//        for(int i=0;i<model.getColumnCount();i++) {
+//        	System.out.println(""+i+":"+model.getColumnName(i)+"\t"+model.getColumnClass(i) + "\t"+model.getValueAt(child, i));
+//        }
         assertEquals(4, model.getColumnCount());
         assertEquals(0, model.getHierarchicalColumn());
         assertEquals(1, model.getChildCount(model.getRoot())); // root:panel - child:button
@@ -210,14 +210,14 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         tree.setRootVisible(true);
         tree.expandAll();
         String treeStringAt1 = tree.getStringAt(1);
-        LOG.info("JXTree tree.getStringAt(1)="+treeStringAt1);
+        LOG.config("JXTree tree.getStringAt(1)="+treeStringAt1);
         
         
         JXTreeTableT treeTable = new JXTreeTableT(model);
         treeTable.setRootVisible(true);
         treeTable.expandAll();
         Object valueAt1 = treeTable.getModel().getValueAt(1, 0);
-        LOG.info("expected ValueAt(1, 0)="+valueAt1 + " , type:"+valueAt1.getClass()
+        LOG.config("expected ValueAt(1, 0)="+valueAt1 + " , type:"+valueAt1.getClass()
         	+ "\n IS treeTable.getStringAt(1, 0)="+treeTable.getStringAt(1, 0));
         assertEquals("string rep must be button name", treeTable.getValueAt(1, 0), treeTable.getStringAt(1, 0));
     }
@@ -282,7 +282,7 @@ public class ComponentAdapterClientTest extends InteractiveTestCase {
         table.setTreeCellRenderer(new DefaultTreeRenderer(sv));
         Object objectAt2_0 = table.getValueAt(2, 0);
         String text = sv.getString(table.getValueAt(2, 0));
-        LOG.info("objectAt2_0="+objectAt2_0+" sv.getString at table.getValueAt(2, 0)="+text);
+        LOG.config("objectAt2_0="+objectAt2_0+" sv.getString at table.getValueAt(2, 0)="+text);
         // table.getValueAt results to "R/G/B: -16711936" == text
         // cannot find text, because renderer shows color name
         text = "Green";

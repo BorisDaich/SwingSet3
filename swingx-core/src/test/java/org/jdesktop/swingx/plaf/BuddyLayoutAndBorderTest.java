@@ -64,7 +64,7 @@ caretMargin addiert (=1 , DEFAULT_CARET_MARGIN)
 		Dimension dim = textField.getMinimumSize();
 
 		// PS: para textField wird in preferredLayoutSize gar nicht verwendet!!!
-		LOG.info("textField.MinimumSize="+dim+" assertSame: expected (txtWidth-caretMargin)="+txtWidth + " is="+blab.preferredLayoutSize(textField).width);
+		LOG.fine("textField.MinimumSize="+dim+" assertSame: expected (txtWidth-caretMargin)="+txtWidth + " is="+blab.preferredLayoutSize(textField).width);
 		assertSame(txtWidth, blab.preferredLayoutSize(textField).width);
 
 		BuddySupport.addLeft(btn, textField);

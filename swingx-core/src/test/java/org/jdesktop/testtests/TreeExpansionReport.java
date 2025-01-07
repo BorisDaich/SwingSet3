@@ -43,20 +43,20 @@ public class TreeExpansionReport implements TreeExpansionListener {
     public TreeExpansionReport(JXTreeTable tree) {
         if (tree != null) {
             tree.addTreeExpansionListener(this);
-    		LOG.info("registered as TreeExpansionListener to " + tree);
+    		LOG.config("registered as TreeExpansionListener to " + tree);
         }
     }
 
 //------------------------ implement CellEditorListener
 
 	public void treeExpanded(TreeExpansionEvent e) {
-		LOG.info("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
+		LOG.config("TreeExpansionEvent no " + (expandedEvents.size()+1) + " " + e);
 		expandedEvents.add(0, e);
 		allEvents.add(0, e);
 	}
 
 	public void treeCollapsed(TreeExpansionEvent e) {
-		LOG.info("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
+		LOG.config("TreeExpansionEvent no " + (collapsedEvents.size()+1) + " " + e);
 		collapsedEvents.add(0, e);
 		allEvents.add(0, e);
 	}
