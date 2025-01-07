@@ -8,6 +8,7 @@ module swingx.core {
 	exports org.jdesktop.swingx.plaf.basic;
 	exports org.jdesktop.swingx.plaf.basic.core;
 	exports org.jdesktop.swingx.plaf.metal;
+	exports org.jdesktop.swingx.plaf.misc;
 	exports org.jdesktop.swingx.plaf.nimbus;
 	exports org.jdesktop.swingx.plaf.synth;
 	
