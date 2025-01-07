@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.LayoutManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -139,7 +140,7 @@ import org.jdesktop.swingx.plaf.TaskPaneUI;
 @JavaBean
 public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsiblePaneContainer, Mnemonicable {
 
-//	private static final Logger LOG = Logger.getLogger(JXTaskPane.class.getName());
+	private static final Logger LOG = Logger.getLogger(JXTaskPane.class.getName());
 
 	/**
 	 * JXTaskPane pluggable UI key <i>swingx/TaskPaneUI</i>
@@ -557,6 +558,7 @@ public class JXTaskPane extends JPanel implements JXCollapsiblePane.CollapsibleP
 	 * @return a component built from the action
 	 */
 	public Component add(Action action) {
+		LOG.fine("ui:"+ui);
 		Component c = ((TaskPaneUI) ui).createAction(action);
 		add(c);
 		return c;
