@@ -63,6 +63,7 @@ public class ComboBoxContext extends CellContext {
         // test:
 //        getBackground();
 //        Color fg = getForeground();
+// TODO auskommentieren:		
     	System.out.println("ComboBoxContext installContext: BG="+getBackground() + " FG="+getForeground());
     }
 
