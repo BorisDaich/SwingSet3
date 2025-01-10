@@ -19,8 +19,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import javax.accessibility.Accessible;
@@ -41,10 +39,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
 import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -53,7 +49,6 @@ import javax.swing.event.ListDataListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
 
@@ -65,6 +60,7 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
 import org.jdesktop.swingx.renderer.DefaultComboBoxRenderer;
+import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.YListCellRenderer;
 
 /*
@@ -107,8 +103,8 @@ public class BasicXComboBoxUI extends XComboBoxUI {
 
 	protected JComboBox<?> comboBox;
     protected boolean hasFocus = false;
-    protected ComboPopup popup;
-    protected boolean popupVisible = false; // wg. BUG #57
+    protected ComboPopup popup; // interface ComboPopup
+//    protected boolean popupVisible = false; // wg. BUG #57
     protected JList<Object> listBox; // actually of subtype JXList
     protected Component editor;
     protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
@@ -146,10 +142,11 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     protected LayoutManager createLayoutManager() {
         return getHandler();
     }   
-    protected PropertyChangeListener propertyChangeListener;
-    protected PropertyChangeListener createPropertyChangeListener() {
-        return getHandler();
-    }
+// als lambda:
+//    protected PropertyChangeListener propertyChangeListener;
+//    protected PropertyChangeListener createPropertyChangeListener() {
+//        return getHandler();
+//    }
     protected KeyListener keyListener;
     protected KeyListener createKeyListener() {
         return getHandler();
@@ -175,12 +172,11 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     private long time = 0L;
     private boolean isTableCellEditor = false;
     private static final String IS_TABLE_CELL_EDITOR = "JComboBox.isTableCellEditor";
-    static final StringBuffer HIDE_POPUP_KEY = new StringBuffer("HidePopupKey");
+    static final String HIDE_POPUP_KEY = "HidePopupKey";
 
     // this ctor is implicit, used by factory
 	protected BasicXComboBoxUI() {
 		super();
-//    	LOG.info("---------->ctor<:");
 	}
 
     /*
@@ -223,9 +219,13 @@ comboBox JComboBox<?> :
  */
     	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList
     	listBox = popup.getList();
+    	LOG.info("listBox:"+listBox);
     	if(listBox instanceof JXList<?>) {
     		JXList<?> xListBox = (JXList<?>)listBox;
-        	xListBox.setCellRenderer(new DefaultListCellRenderer());
+//        	xListBox.setCellRenderer(new DefaultComboBoxRenderer());
+// XXX wieso nicht so? 
+        	xListBox.setCellRenderer(new DefaultListRenderer());
+        	
 //        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // cellBackground, cellForeground OK
         	
         	// funktioniert nicht: TODO möglicherweise in list.addPropertyChangeListener lösen
@@ -255,6 +255,123 @@ comboBox JComboBox<?> :
         installComponents();
 
         // 4.+5. install event listeners
+        comboBox.addPropertyChangeListener(e -> {
+            String propertyName = e.getPropertyName();
+        	LOG.info(propertyName+" Property ChangeEvent:"+e);
+            if (e.getSource() == editor){
+                // If the border of the editor changes then this can effect
+                // the size of the editor which can cause the combo's size to
+                // become invalid so we need to clear size caches
+                if ("border".equals(propertyName)){
+                    isMinimumSizeDirty = true;
+                    isDisplaySizeDirty = true;
+                    comboBox.revalidate();
+                }
+            } else {
+        		JXComboBox<?> xComboBox = (JXComboBox<?>)e.getSource();
+                if ( propertyName == "model" ) {
+                    ComboBoxModel<?> newModel = (ComboBoxModel<?>)e.getNewValue();
+                    ComboBoxModel<?> oldModel = (ComboBoxModel<?>)e.getOldValue();
+
+                    if ( oldModel != null && listDataListener != null ) {
+                        oldModel.removeListDataListener( listDataListener );
+                    }
+
+                    if ( newModel != null && listDataListener != null ) {
+                        newModel.addListDataListener( listDataListener );
+                    }
+
+                    if ( editor != null ) {
+                    	xComboBox.configureEditor( xComboBox.getEditor(), xComboBox.getSelectedItem() );
+                    }
+                    isMinimumSizeDirty = true;
+                    isDisplaySizeDirty = true;
+                    xComboBox.revalidate();
+                    xComboBox.repaint();
+                } else if ( propertyName == "rowSorter" ) {
+                    if(listBox instanceof JXList<?>) {
+                    	JXList<?> xlist = (JXList<?>)listBox;
+                    	xlist.setAutoCreateRowSorter(xComboBox.hasRowSorter());
+                    	RowSorter rs = xComboBox.getRowSorter();
+                    	xlist.setRowSorter(rs);
+                    }
+                } else if ( propertyName == "editor" && xComboBox.isEditable() ) {
+                    addEditor();
+                    xComboBox.revalidate();
+                } else if ( propertyName == "editable" ) {
+                    if ( xComboBox.isEditable() ) {
+                    	xComboBox.setRequestFocusEnabled( false );
+                        addEditor();
+                    } else {
+                    	xComboBox.setRequestFocusEnabled( true );
+                        removeEditor();
+                    }
+                    synchronizeToolTipTextForChildren();
+                    xComboBox.revalidate();
+                } else if ( propertyName == "enabled" ) {
+                    boolean enabled = xComboBox.isEnabled();
+                    if ( editor != null )
+                        editor.setEnabled(enabled);
+                    if ( arrowButton != null )
+                        arrowButton.setEnabled(enabled);
+                    xComboBox.repaint();
+                } else if ( propertyName == "focusable" ) {
+                    boolean focusable = xComboBox.isFocusable();
+                    if ( editor != null )
+                        editor.setFocusable(focusable);
+                    if ( arrowButton != null )
+                        arrowButton.setFocusable(focusable);
+                    xComboBox.repaint();
+                } else if ( propertyName == "maximumRowCount" ) {
+                    if ( isPopupVisible( xComboBox ) ) {
+                        setPopupVisible(xComboBox, false); // XXX was soll das?
+                        setPopupVisible(xComboBox, true);
+                    }
+                } else if ( propertyName == "font" ) {
+                    listBox.setFont( xComboBox.getFont() );
+                    if ( editor != null ) {
+                        editor.setFont( xComboBox.getFont() );
+                    }
+                    isMinimumSizeDirty = true;
+                    isDisplaySizeDirty = true;
+                    xComboBox.validate();
+//                } else if (SwingUtilities2.isScaleChanged(e)) {
+///* TODO
+//sun.swing.SwingUtilities2 cannot be resolved
+//
+//    public static boolean isScaleChanged(final PropertyChangeEvent ev) {
+//        return isScaleChanged(ev.getPropertyName(), ev.getOldValue(), ev.getNewValue());
+//    }
+//    // Returns whether or not the scale used by ev.getPropertyName()=="graphicsConfiguration" was changed.
+//
+// */
+//                    isMinimumSizeDirty = true;
+//                    isDisplaySizeDirty = true;
+//                    xComboBox.validate();
+                } else if ("graphicsConfiguration".equals(propertyName) ) {
+                	if(e.getOldValue()!=e.getNewValue()) {
+                		LOG.info(propertyName+" is set to "+e.getNewValue());
+                	}               	
+                } else if ( propertyName == JComponent.TOOL_TIP_TEXT_KEY ) {
+                    synchronizeToolTipTextForChildren();
+                } else if ( propertyName == BasicXComboBoxUI.IS_TABLE_CELL_EDITOR ) {
+                    Boolean newValue = (Boolean)e.getNewValue();
+                    isTableCellEditor = newValue.equals(Boolean.TRUE) ? true : false;
+                } else if (propertyName == "prototypeDisplayValue") {
+                    isMinimumSizeDirty = true;
+                    isDisplaySizeDirty = true;
+                    xComboBox.revalidate();
+                } else if (propertyName == "renderer") {
+                    isMinimumSizeDirty = true;
+                    isDisplaySizeDirty = true;
+                    xComboBox.revalidate();
+                } else {
+                	LOG.warning("NOT handled property "+propertyName );
+//                	xComboBox.getRowSorter();
+//                	+xComboBox.getAutoCreateRowSorter()
+                }
+            }
+        });
         installListeners();
         
         comboBox.setRequestFocusEnabled( true );
@@ -301,7 +418,7 @@ comboBox JComboBox<?> :
         keyListener = null;
         focusListener = null;
         listDataListener = null;
-        propertyChangeListener = null;
+//        propertyChangeListener = null;
         popup = null;
         listBox = null;
         comboBox = null;
@@ -428,20 +545,17 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             comboBox.addItemListener( itemListener );
         }
         
-        // alle drei sind in Handler implementiert:
-        if ( (propertyChangeListener = createPropertyChangeListener()) != null ) {
-            comboBox.addPropertyChangeListener( propertyChangeListener );
-        }
+        // die nächten drei sind in Handler implementiert:
+// als lambda implementiert
+//        if ( (propertyChangeListener = createPropertyChangeListener()) != null ) {
+//            comboBox.addPropertyChangeListener( propertyChangeListener );
+//        }
         if ( (keyListener = createKeyListener()) != null ) {
             comboBox.addKeyListener( keyListener );
         }
         if ( (focusListener = createFocusListener()) != null ) {
             comboBox.addFocusListener( focusListener );
         }
-//        LOG.info("done register listeners propertyChangeListener:"+propertyChangeListener
-//        		+(propertyChangeListener==keyListener ? " (dto keyListene)":" keyListener:"+keyListener)
-//        		+(propertyChangeListener==focusListener ? " (dto focusListener)":" focusListener:"+focusListener)
-//        		);
         
         if ((popupMouseListener = popup.getMouseListener()) != null) {
             comboBox.addMouseListener( popupMouseListener );
@@ -466,9 +580,9 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         if ( itemListener != null) {
             comboBox.removeItemListener( itemListener );
         }
-        if ( propertyChangeListener != null ) {
-            comboBox.removePropertyChangeListener( propertyChangeListener );
-        }
+//        if ( propertyChangeListener != null ) {
+//            comboBox.removePropertyChangeListener( propertyChangeListener );
+//        }
         if ( focusListener != null) {
             comboBox.removeFocusListener( focusListener );
         }
@@ -488,144 +602,14 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
 
-    @SuppressWarnings("serial") // in return new BasicComboPopup(cb)
-	protected ComboPopup createPopup() {
-		JXComboBox<?> xComboBox = (JXComboBox<?>)comboBox;
-    	// public javax.swing.plaf.basic.BasicComboPopup( JComboBox<Object> combo ) ...
-    	// protected JComboBox<?> comboBox
-    	// ==> the cast is safe
-    	@SuppressWarnings("unchecked")
-		JComboBox<Object> cb = (JComboBox<Object>) comboBox;
-    	return new BasicComboPopup(cb) {
-    		@Override
-    		protected JList<Object> createList() {
-/* code in BasicComboPopup:
-        return new JList<Object>( comboBox.getModel() ) {
-            public void processMouseEvent(MouseEvent e)  {
-                if (BasicGraphicsUtils.isMenuShortcutKeyDown(e))  {
-                    // Fix for 4234053. Filter out the Control Key from the list.
-                    // ie., don't allow CTRL key deselection.
-                    Toolkit toolkit = Toolkit.getDefaultToolkit();
-                    MouseEvent newEvent = new MouseEvent(
-                                       (Component)e.getSource(), e.getID(), e.getWhen(),
-                                       e.getModifiersEx() ^ toolkit.getMenuShortcutKeyMaskEx(),
-                                       e.getX(), e.getY(),
-                                       e.getXOnScreen(), e.getYOnScreen(),
-                                       e.getClickCount(),
-                                       e.isPopupTrigger(),
-                                       MouseEvent.NOBUTTON);
-                    MouseEventAccessor meAccessor = AWTAccessor.getMouseEventAccessor();
-                    meAccessor.setCausedByTouchEvent(newEvent,
-                        meAccessor.isCausedByTouchEvent(e));
-                    e = newEvent;
-                }
-                super.processMouseEvent(e);
-            }
-        };		
- */
-    			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox.hasRowSorter());
-    			return list;
-    		}
-
-/*
-in BasicComboPopup gibt es 
-- private Handler handler von Typ inner private class Handler implements ... MouseListener
-
- */
-    	    protected void togglePopup() {
-//    	    	LOG.info("------------->>>>>>>>>>>>>isVisible()="+isVisible() +" popupVisible="+popupVisible);
-//    	        if ( isVisible() ) {
-    	    	// BUG 57 isVisible() ist immer false XXX : popup != null ==> daher popupVisible
-    	        if (popupVisible) {
-    	            hide();
-    	            setPopupVisible(comboBox, isVisible());
-    	        }
-    	        else {
-    	            show();
-    	            setPopupVisible(comboBox, popupVisible);
-    	        }
-    	    }
-/* aus BasicComboPopup:
-    public void show() {
-        comboBox.firePopupMenuWillBecomeVisible();
-        setListSelection(comboBox.getSelectedIndex());
-        Point location = getPopupLocation();
-        show( comboBox, location.x, location.y );
-    }
-    private void setListSelection(int selectedIndex) {
-        if ( selectedIndex == -1 ) {
-            list.clearSelection();
-        }
-        else {
-            list.setSelectedIndex( selectedIndex );
-            list.ensureIndexIsVisible( selectedIndex );
-        }
-    }
-
- */
-    	    public void show() {
-    	    	int i = xComboBox.getSelectedIndex();
-//    	    	LOG.info("SelectedIndex="+i);
-    	    	super.show();
-    	    	// in super.show() ist abgehandelt der Fall : i == -1 ==> list.clearSelection()
-    	    	if(i == -1 ) {
-    	    		// bereits abgehandelt
-//    	    	} else if(i != -1 && xComboBox.getAutoCreateRowSorter()) {
-//    	    		int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
-//        	    	LOG.info("//////////// SelectedIndex="+i + " ==> "+selectedIndex);
-    	    	} else {
-    	    		int selectedIndex = xComboBox.hasRowSorter() ? xComboBox.getRowSorter().convertRowIndexToView(i) : i;
-        	    	list.setSelectedIndex( selectedIndex );
-        	    	list.ensureIndexIsVisible( selectedIndex );
-    	    	}
-    	    }
-    	    public void show(Component invoker, int x, int y) {
-//    	    	LOG.info("// isVisible="+isVisible()+" x="+x+",y="+y+" aus JPopupMenu Component invoker:"+invoker);
-    	    	super.show(invoker, x, y);
-//    	    	LOG.info("// set popupVisible to isVisible()="+isVisible());
-    	    	popupVisible = isVisible(); // avoid rekusive call via setPopupVisible 
-    	    }
-    		@Override
-    		protected void configureList() {
-    	        list.setFont( comboBox.getFont() );
-    	        list.setForeground( comboBox.getForeground() );
-    	        list.setBackground( comboBox.getBackground() );
-    	        list.setSelectionForeground( UIManager.getColor(SELECTION_FG) );
-    	        list.setSelectionBackground( UIManager.getColor(SELECTION_BG) );
-    	        list.setBorder( null );
-    	        list.setCellRenderer( comboBox.getRenderer() );
-    	        list.setFocusable( false );
-    	        list.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
-    	        // setListSelection(int) from the type BasicComboPopup is not visible
-    	        //setListSelection( comboBox.getSelectedIndex() );
-    	        int i = xComboBox.getSelectedIndex();
-    			LOG.config("SelectedIndex="+i + " SortOrder="+xComboBox.getSortOrder()+ " hasRowSorter="+xComboBox.hasRowSorter());
-    			// TODO remove code
-    	        if(i != -1 && (xComboBox.getSortOrder()==null || xComboBox.getSortOrder()==SortOrder.UNSORTED) ) {
-//    	        	list.setSelectedIndex( i ); // <=== hier wird JRendererLabel initialisiert
-//    	        	list.ensureIndexIsVisible( i );   	
-    	        } else if(i != -1 && (xComboBox.getSortOrder()==SortOrder.ASCENDING || xComboBox.getSortOrder()==SortOrder.DESCENDING)) {
-//    	           	int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
-//    	        	list.setSelectedIndex( selectedIndex );
-//    	        	list.ensureIndexIsVisible( selectedIndex );
-    	        } else if(i == -1) {
-    	        	list.clearSelection();
-    	        }
-    	        installListListeners();
-    		}
-    		@Override
-    	    protected void installListListeners() {
-    	    	super.installListListeners(); // dort create+add MouseListener,MouseMotionListener,ListSelectionListener
-    	    	// TODO hier Problem mit 
-//    	    	list.addPropertyChangeListener(evt -> {
-//    	    		LOG.info(">>>PropertyChangeEvent:"+evt);
-//    	    	});
-    	    }
-    	};
+    // used in subclass MetalXComboBoxUI and Synth*
+    protected ComboPopup createPopup() {
+    	return new BasicXComboPopup(comboBox);
     }
 
     protected ListCellRenderer<Object> createRenderer() {
-//        return new BasicComboBoxRenderer.UIResource(); // TODO ??? ausgetauscht
+    	LOG.info("statt BasicComboBoxRenderer.UIResource() new DefaultComboBoxRenderer<>()");
+//        return new BasicComboBoxRenderer.UIResource(); // XXX ausgetauscht
     	return new DefaultComboBoxRenderer<>();
     }
 
@@ -719,6 +703,7 @@ in BasicComboPopup gibt es
         button.setName("ComboBox.arrowButton");
         return button;
     }
+    // warum createComboButton und createArrowButton?
     protected JButton createComboButton(Icon i) {
     	icon = i==null ? UIManager.getIcon("ComboBox.icon") : i;
     	// user defined button should be square
@@ -810,7 +795,8 @@ in BasicComboPopup gibt es
         // macht: anEditor.setItem(anItem)
         comboBox.configureEditor(comboBox.getEditor(),comboBox.getSelectedItem());
 
-        editor.addPropertyChangeListener(propertyChangeListener);
+        // TODO muss lambda implementierung wieder rückgängig?
+//        editor.addPropertyChangeListener(propertyChangeListener);
     }
     /**
      * This protected method is implementation specific and should be private. TODO
@@ -823,7 +809,7 @@ in BasicComboPopup gibt es
             editor.removeFocusListener(focusListener);
         }
 
-        editor.removePropertyChangeListener(propertyChangeListener);
+//        editor.removePropertyChangeListener(propertyChangeListener);
         editor.removeFocusListener(getHandler());
         comboBox.getEditor().removeActionListener(getHandler());
     }
@@ -844,7 +830,7 @@ in BasicComboPopup gibt es
     }
 
     //================================
-    // begin ComboBoxUI Implementation
+    // begin XComboBoxUI Implementation
     //
 
 	@Override
@@ -860,10 +846,11 @@ in BasicComboPopup gibt es
 	@Override
 	public void setPopupVisible(JComboBox<?> c, boolean v) {
         if (popup != null) {
-        	LOG.fine("popup "+(v?"show":"hide")+" for "+c);
+        	LOG.info("popup "+(v?"show":"hide")+" for "+c);
             if (v) {
-                popup.show();
-                popupVisible = v;
+//                popup.show(); // muss das hier sein? TODO ist doch in setPopupVisible
+                //popupVisible = v;
+                ((BasicXComboPopup)popup).setPopupVisible(v);
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.NORTH);
@@ -874,8 +861,9 @@ in BasicComboPopup gibt es
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
             } else {
-                popup.hide();
-                popupVisible = v;
+//                popup.hide(); // TODO wie oben
+                //popupVisible = v;
+                ((BasicXComboPopup)popup).setPopupVisible(v);
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.SOUTH);
@@ -1088,7 +1076,7 @@ in BasicComboPopup gibt es
         Component c;
 
         if ( hasFocus && !isPopupVisible(comboBox) ) {
-//            LOG.info("this.hasFocus && Popup NOT Visible renderer:"+renderer);
+            LOG.info("this.hasFocus && Popup NOT Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
@@ -1096,7 +1084,7 @@ in BasicComboPopup gibt es
                                                        hasFocus ); // cellHasFocus
         }
         else {
-//            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
+            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
@@ -1108,19 +1096,18 @@ in BasicComboPopup gibt es
         if ( hasFocus && !isPopupVisible(comboBox) ) {
             c.setForeground(listBox.getSelectionForeground());
             c.setBackground(listBox.getSelectionBackground());
-        }
-        else {
+        } else {
             if ( comboBox.isEnabled() ) {
                 c.setForeground(comboBox.getForeground());
                 c.setBackground(comboBox.getBackground());
-            }
-            else {
+            } else {
             	c.setForeground(UIManager.getColor(DISABLED_FG));
             	c.setBackground(UIManager.getColor(DISABLED_BG));
             }
         }
 
         // Fix for 4238829: should lay out the JPanel.
+        LOG.info("!!!!!!!! c:"+c);
         boolean shouldValidate = false;
         if (c instanceof JPanel)  {
             shouldValidate = true;
@@ -1388,131 +1375,12 @@ in BasicComboPopup gibt es
     // inner class copied from private javax.swing.plaf.basic.BasicComboBoxUI with modifications
 	protected class Handler 
     implements LayoutManager
-    	, PropertyChangeListener
+//    	, PropertyChangeListener ==> als lambda
     	, KeyListener
     	, FocusListener
     	, ListDataListener
     	, ActionListener
     {
-        //
-        // PropertyChangeListener
-        //
-        public void propertyChange(PropertyChangeEvent e) {
-            String propertyName = e.getPropertyName();
-            if (e.getSource() == editor){
-                // If the border of the editor changes then this can effect
-                // the size of the editor which can cause the combo's size to
-                // become invalid so we need to clear size caches
-                if ("border".equals(propertyName)){
-                    isMinimumSizeDirty = true;
-                    isDisplaySizeDirty = true;
-                    comboBox.revalidate();
-                }
-            } else {
-        		JXComboBox<?> xComboBox = (JXComboBox<?>)e.getSource();
-                if ( propertyName == "model" ) {
-                    ComboBoxModel<?> newModel = (ComboBoxModel<?>)e.getNewValue();
-                    ComboBoxModel<?> oldModel = (ComboBoxModel<?>)e.getOldValue();
-
-                    if ( oldModel != null && listDataListener != null ) {
-                        oldModel.removeListDataListener( listDataListener );
-                    }
-
-                    if ( newModel != null && listDataListener != null ) {
-                        newModel.addListDataListener( listDataListener );
-                    }
-
-                    if ( editor != null ) {
-                    	xComboBox.configureEditor( xComboBox.getEditor(), xComboBox.getSelectedItem() );
-                    }
-                    isMinimumSizeDirty = true;
-                    isDisplaySizeDirty = true;
-                    xComboBox.revalidate();
-                    xComboBox.repaint();
-                } else if ( propertyName == "rowSorter" ) {
-                    if(listBox instanceof JXList<?>) {
-                    	JXList<?> xlist = (JXList<?>)listBox;
-                    	xlist.setAutoCreateRowSorter(xComboBox.hasRowSorter());
-                    	RowSorter rs = xComboBox.getRowSorter();
-                    	xlist.setRowSorter(rs);
-                    }
-                } else if ( propertyName == "editor" && xComboBox.isEditable() ) {
-                    addEditor();
-                    xComboBox.revalidate();
-                } else if ( propertyName == "editable" ) {
-                    if ( xComboBox.isEditable() ) {
-                    	xComboBox.setRequestFocusEnabled( false );
-                        addEditor();
-                    } else {
-                    	xComboBox.setRequestFocusEnabled( true );
-                        removeEditor();
-                    }
-                    synchronizeToolTipTextForChildren();
-                    xComboBox.revalidate();
-                } else if ( propertyName == "enabled" ) {
-                    boolean enabled = xComboBox.isEnabled();
-                    if ( editor != null )
-                        editor.setEnabled(enabled);
-                    if ( arrowButton != null )
-                        arrowButton.setEnabled(enabled);
-                    xComboBox.repaint();
-                } else if ( propertyName == "focusable" ) {
-                    boolean focusable = xComboBox.isFocusable();
-                    if ( editor != null )
-                        editor.setFocusable(focusable);
-                    if ( arrowButton != null )
-                        arrowButton.setFocusable(focusable);
-                    xComboBox.repaint();
-                } else if ( propertyName == "maximumRowCount" ) {
-                    if ( isPopupVisible( xComboBox ) ) {
-                        setPopupVisible(xComboBox, false); // XXX was soll das?
-                        setPopupVisible(xComboBox, true);
-                    }
-                } else if ( propertyName == "font" ) {
-                    listBox.setFont( xComboBox.getFont() );
-                    if ( editor != null ) {
-                        editor.setFont( xComboBox.getFont() );
-                    }
-                    isMinimumSizeDirty = true;
-                    isDisplaySizeDirty = true;
-                    xComboBox.validate();
-//                } else if (SwingUtilities2.isScaleChanged(e)) {
-///* TODO
-//sun.swing.SwingUtilities2 cannot be resolved
-//
-//    public static boolean isScaleChanged(final PropertyChangeEvent ev) {
-//        return isScaleChanged(ev.getPropertyName(), ev.getOldValue(), ev.getNewValue());
-//    }
-//    // Returns whether or not the scale used by ev.getPropertyName()=="graphicsConfiguration" was changed.
-//
-// */
-//                    isMinimumSizeDirty = true;
-//                    isDisplaySizeDirty = true;
-//                    xComboBox.validate();
-                } else if ( "graphicsConfiguration".equals(propertyName) ) {
-                	if(e.getOldValue()!=e.getNewValue()) {
-                		// TODO
-                	}               	
-                } else if ( propertyName == JComponent.TOOL_TIP_TEXT_KEY ) {
-                    synchronizeToolTipTextForChildren();
-                } else if ( propertyName == BasicXComboBoxUI.IS_TABLE_CELL_EDITOR ) {
-                    Boolean inTable = (Boolean)e.getNewValue();
-                    isTableCellEditor = inTable.equals(Boolean.TRUE) ? true : false;
-                } else if (propertyName == "prototypeDisplayValue") {
-                    isMinimumSizeDirty = true;
-                    isDisplaySizeDirty = true;
-                    xComboBox.revalidate();
-                } else if (propertyName == "renderer") {
-                    isMinimumSizeDirty = true;
-                    isDisplaySizeDirty = true;
-                    xComboBox.revalidate();
-//                } else {
-//                	LOG.warning("NOT handled property "+propertyName );
-//                	xComboBox.getRowSorter();
-//                	+xComboBox.getAutoCreateRowSorter()
-                }
-            }
-        }
     	
         //
         // KeyListener with keyPressed , keyTyped , keyReleased
@@ -1523,6 +1391,7 @@ in BasicComboPopup gibt es
          * so that it can do type-ahead.
          */
         public void keyPressed(KeyEvent e) {
+        	LOG.info("KeyEvent "+e);
             if ( isNavigationKey(e.getKeyCode(), e.getModifiersEx()) ) {
                 lastTime = 0L;
             } else if ( comboBox.isEnabled() && comboBox.getModel().getSize()!=0 &&
@@ -1557,7 +1426,7 @@ in BasicComboPopup gibt es
         // The combo box listener hides the popup when the focus is lost.
         // It also repaints when focus is gained or lost.
         public void focusGained( FocusEvent e ) {
-        	LOG.fine("FocusEvent "+e);
+        	LOG.info("FocusEvent "+e);
             ComboBoxEditor comboBoxEditor = comboBox.getEditor();
 
             if ( (comboBoxEditor != null) &&
@@ -1572,7 +1441,7 @@ in BasicComboPopup gibt es
             }
         }
         public void focusLost( FocusEvent e ) {
-        	LOG.fine("FocusEvent "+e);
+        	LOG.info("FocusEvent "+e);
             ComboBoxEditor editor = comboBox.getEditor();
             if ( (editor != null) &&
                  (e.getSource() == editor.getEditorComponent()) ) {
@@ -1682,6 +1551,7 @@ in BasicComboPopup gibt es
         // from the editor may be handled by the JComboBox in which case, the
         // enterPressed action will always be invoked.
         public void actionPerformed(ActionEvent evt) {
+        	LOG.info(">>>ActionEvent:"+evt);
             Object item = comboBox.getEditor().getItem();
             if (item != null) {
                 if (!comboBox.isPopupVisible() && !item.equals(comboBox.getSelectedItem())) {
