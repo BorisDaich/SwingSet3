@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.accessibility.Accessible;
 import javax.swing.ComboBoxEditor;
@@ -93,7 +94,9 @@ import org.jdesktop.swingx.util.Contract;
  */
 @SuppressWarnings("serial")
 public class JXComboBox<E> extends JComboBox<E> {
-	
+
+    private static final Logger LOG = Logger.getLogger(JXComboBox.class.getName());
+
     static {
         LookAndFeelAddons.contribute(new XComboBoxAddon());
     }
@@ -467,6 +470,7 @@ public class JXComboBox<E> extends JComboBox<E> {
             
             // interface ComboPopup with method public JList<Object> getList()
             if (a instanceof ComboPopup) {
+            	LOG.info("ComboPopup:"+a);
             	ComboPopup popup = (ComboPopup)a;
                 return popup.getList();
             }
@@ -1047,6 +1051,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
 		int modelIndex = anIndex;
     	if(anIndex>-1 && hasRowSorter()) {
     		modelIndex = getRowSorter().convertRowIndexToModel(anIndex);
+        	LOG.config("index="+anIndex+" new modelIndex="+modelIndex);
     	}
     	super.setSelectedIndex(modelIndex);
     }
@@ -1060,6 +1065,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     	ui.setIsShowingPopupIcon(isShowingPopupIcon);
     	this.repaint();
     }
+    @Override
     public ComboBoxUI getUI() {
         return (XComboBoxUI)super.getUI();
     }
