@@ -60,11 +60,6 @@ public class ComboBoxContext extends CellContext {
         this.leaf = leaf;
  */
         this.dropOn = checkDropOnState();
-        // test:
-//        getBackground();
-//        Color fg = getForeground();
-// TODO auskommentieren:		
-    	System.out.println("ComboBoxContext installContext: BG="+getBackground() + " FG="+getForeground());
     }
 
     /**
@@ -74,12 +69,6 @@ public class ComboBoxContext extends CellContext {
         if ((getComponent() == null)) {
             return false;
         }
-//        JList.DropLocation dropLocation = getComponent().getDropLocation();
-//        if (dropLocation != null
-//                && !dropLocation.isInsert()
-//                && dropLocation.getIndex() == row) {
-//            return true;
-//        }
         return false;
     }
 
@@ -92,11 +81,6 @@ public class ComboBoxContext extends CellContext {
         return (JComboBox<?>) super.getComponent();
     }
 
-//    protected Color getBackground() {
-//    	Color c = super.getBackground();
-//    	System.out.println("ComboBoxContext getBackground:"+c);
-//    	return c;
-//    }
     /**
      * {@inheritDoc}
      */
@@ -107,7 +91,6 @@ public class ComboBoxContext extends CellContext {
             selection = getDropCellBackground();
             if (selection != null) return selection;
         }
-//        return getComponent() != null ? getComponent().getSelectionBackground() : null;
         return selection;
     }
 
@@ -121,7 +104,6 @@ public class ComboBoxContext extends CellContext {
             selection = getDropCellForeground();
             if (selection != null) return selection;
         }
-//        return getComponent() != null ? getComponent().getSelectionForeground() : null;
         return selection;
     }
 
