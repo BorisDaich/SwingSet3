@@ -638,7 +638,23 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         if (keySelectionManager == null || keySelectionManager instanceof UIResource) {
             setKeySelectionManager(createDefaultKeySelectionManager());
         }
+        ComboBoxModel<E> m = getModel();
+        Object si = m.getSelectedItem();
+    	LOG.info("set DefaultListRenderer for "+si.getClass()+" StringValue");
+        if(si.getClass()==String.class) {
+        	LOG.info("----------------------"+getModel());
+        	StringValue sv = (Object value) -> {
+        		return value==null ? "" : value.toString();
+        	};
+        	setRenderer(new DefaultListRenderer<Object>(sv));
+        }
     }
+    /* z.B.
+     * StringValue sv = (Object value) -> {
+     *   return value==null ? "" : value.toString();
+     * };
+     * jxComboBox.setRenderer(new DefaultListRenderer<Object>(sv));
+     */
     
     /**
      * {@inheritDoc}
@@ -730,20 +746,6 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     }
 
     /**
-     * Convenience to access a configured ComponentAdapter.
-     * Note: the column index of the configured adapter is always 0.
-     * 
-     * @param index the row index in view coordinates, must be valid.
-     * @return the configured ComponentAdapter.
-     */
-    protected ComponentAdapter getComponentAdapter(int index) {
-        ComponentAdapter adapter = getComponentAdapter();
-        adapter.column = 0;
-        adapter.row = index;
-        return adapter;
-    }
-    
-    /**
      * Returns the StringValueRegistry which defines the string representation for
      * each cells. This is strictly for internal use by the table, which has the 
      * responsibility to keep in synch with registered renderers.
@@ -769,6 +771,19 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
     }
     
     /**
+	 * Convenience to access a configured ComponentAdapter.
+	 * Note: the column index of the configured adapter is always 0.
+	 * 
+	 * @param index the row index in view coordinates, must be valid.
+	 * @return the configured ComponentAdapter.
+	 */
+	protected ComponentAdapter getComponentAdapter(int index) {
+	    ComponentAdapter adapter = getComponentAdapter();
+	    adapter.column = 0;
+	    adapter.row = index;
+	    return adapter;
+	}
+	/**
      * Returns the string representation of the cell value at the given model position. 
      * 
      * @param row the row index of the item in model coordinates
@@ -838,6 +853,12 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
      * 
      * @see #getWrappedRenderer()
      * @see #getRenderer()
+     */
+    /* z.B.
+     * StringValue sv = (Object value) -> {
+     *   return value==null ? "" : value.toString();
+     * };
+     * jxComboBox.setRenderer(new DefaultListRenderer<Object>(sv));
      */
     @Override
     public void setRenderer(ListCellRenderer<? super E> renderer) {
