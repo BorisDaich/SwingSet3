@@ -640,9 +640,8 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         }
         ComboBoxModel<E> m = getModel();
         Object si = m.getSelectedItem();
-    	LOG.info("set DefaultListRenderer for "+si.getClass()+" StringValue");
-        if(si.getClass()==String.class) {
-        	LOG.info("----------------------"+getModel());
+        if(si!=null && si.getClass()==String.class) {
+        	LOG.info("set DefaultListRenderer for "+si.getClass()+" StringValue");
         	StringValue sv = (Object value) -> {
         		return value==null ? "" : value.toString();
         	};
