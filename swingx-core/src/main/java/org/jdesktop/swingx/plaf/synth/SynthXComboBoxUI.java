@@ -15,16 +15,12 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.synth.ColorType;
 import javax.swing.plaf.synth.Region;
@@ -37,6 +33,7 @@ import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.SwingXUtilities;
 import org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI;
+import org.jdesktop.swingx.plaf.basic.BasicXComboPopup;
 
 public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChangeListener, SynthUI {
 
@@ -126,7 +123,7 @@ protected ComboPopup createPopup() {
         p.addPopupMenuListener(buttonHandler);
         return p;
     }
-    class SynthXComboPopup extends BasicComboPopup {
+    class SynthXComboPopup extends BasicXComboPopup {
         public SynthXComboPopup( JComboBox<Object> combo ) {
             super(combo);
         }
@@ -142,19 +139,6 @@ protected ComboPopup createPopup() {
 			JXList<Object> list = new JXList<Object>(comboBox.getModel(), xComboBox().hasRowSorter());
 			return list;
 		}
-	    protected void togglePopup() {
-//	    	LOG.info("------------->>>>>>>>>>>>>isVisible()="+isVisible() +" popupVisible="+popupVisible);
-//	        if ( isVisible() ) {
-	    	// BUG 57 isVisible() ist immer false XXX : popup != null ==> daher popupVisible
-	        if (popupVisible) {
-	            hide();
-	            setPopupVisible(comboBox, isVisible());
-	        }
-	        else {
-	            show();
-	            setPopupVisible(comboBox, popupVisible);
-	        }
-	    }
 	    @Override
 	    public void show() {
 	    	int i = xComboBox().getSelectedIndex();
