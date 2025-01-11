@@ -39,9 +39,8 @@ import org.junit.runners.JUnit4;
  * no way to uncontribute.
  */
 @RunWith(JUnit4.class)
-public class UIColorHighlighterTest extends junit.framework.TestCase {
+public class UIColorHighlighterTest extends InteractiveTestCase {
     
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(UIColorHighlighterTest.class.getName());
     
     private static String OS = System.getProperty("os.name");
@@ -55,20 +54,20 @@ public class UIColorHighlighterTest extends junit.framework.TestCase {
      *  
      * @throws Exception
      */
-//    @Test
-//    public void testAlternateRaw() throws Exception {
-//        if (!hasLookAndFeel("Nimbus")) {
-//            LOG.fine("cant run - no Nimbus");
-//            return;
-//        }
-//        setLookAndFeel("Metal");
-//        assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
-//        setLookAndFeel("Nimbus");
-//        LOG.config(ALTERNATE_COLOR+" "+UIManager.getColor(ALTERNATE_COLOR));
-//        assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
-//        setLookAndFeel("Metal");
-//        assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
-//    }
+    @Test
+    public void testAlternateRaw() throws Exception {
+        if (!hasLookAndFeel("Nimbus")) {
+            LOG.fine("cant run - no Nimbus");
+            return;
+        }
+        setLookAndFeel("Metal");
+        assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
+        setLookAndFeel("Nimbus");
+        LOG.config(ALTERNATE_COLOR+" "+UIManager.getColor(ALTERNATE_COLOR));
+        assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
+        setLookAndFeel("Metal");
+        assertNull("alternateRowColor is null", UIManager.getColor(ALTERNATE_COLOR));
+    }
 
     /**
      * Test that UIColorHighlighter removes the alternate color installed 
@@ -77,31 +76,32 @@ public class UIColorHighlighterTest extends junit.framework.TestCase {
      * @throws Exception
      */
 //    @Test
-//    public void testAlternateUIColorHighlighter() throws Exception {
-//        if (!hasLookAndFeel("Nimbus")) {
-//            LOG.fine("cant run - no Nimbus");
-//            return;
-//        }
-//        setLookAndFeel("Nimbus");
-//        assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
+    public void testAlternateUIColorHighlighter() throws Exception {
+        if (!hasLookAndFeel("Nimbus")) {
+            LOG.fine("cant run - no Nimbus");
+            return;
+        }
+        setLookAndFeel("Nimbus");
+        assertNotNull("Nimbus without addon has alternate", UIManager.getColor(ALTERNATE_COLOR));
+// XXX es gibt keine Klasse UIColorHighlighter, daher TEST deaktiviert
 //        new UIColorHighlighter();
-//        assertNull("Nimbus with addon has alternate removed but was: \n " 
-//                + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
-//    }
+        assertNull("Nimbus with addon has alternate removed but was: \n " 
+                + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
+    }
     /**
      * Test that TableAddon removes the alternate color installed 
      * by Nimbus.
      * 
      * @throws Exception
      */
-    @Test
+//    @Test TODO siehe issue 63
     public void testAlternateXTable() throws Exception {
         LOG.info("LookAndFeel:"+UIManager.getLookAndFeel()+" Color(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
-//        if (!hasLookAndFeel("Nimbus")) {
-//            LOG.warning("cant run - no Nimbus");
-//            return;
-//        }
-//        setLookAndFeel("Nimbus");
+        if (!hasLookAndFeel("Nimbus")) {
+            LOG.warning("cant run - no Nimbus");
+            return;
+        }
+        setLookAndFeel("Nimbus");
         String laf = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
         UIManager.setLookAndFeel(laf);
         LOG.info("after setLAF to Nimbus:\nLookAndFeel:"+UIManager.getLookAndFeel()+" Color(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
@@ -111,6 +111,8 @@ public class UIColorHighlighterTest extends junit.framework.TestCase {
         LOG.info(OS + " after new JXTable(); LookAndFeel:"+UIManager.getLookAndFeel()+" Color(Table.alternateRowColor):"+UIManager.getColor(ALTERNATE_COLOR));
         assertNull("Nimbus with addon has alternate removed but was: \n " 
                 + UIManager.getColor(ALTERNATE_COLOR), UIManager.getColor(ALTERNATE_COLOR));
+// eclipse + linux : fail
+// win10 + mvn install : ok ??? XXX        
     }
 
     @Override
