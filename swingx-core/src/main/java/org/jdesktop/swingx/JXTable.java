@@ -420,6 +420,7 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
     static {
         // Hack: make sure the resource bundle is loaded
         LookAndFeelAddons.getAddon();
+        LOG.config("*** contribute(new TableAddon() ***");
         LookAndFeelAddons.contribute(new TableAddon());
     }
 
@@ -1132,7 +1133,8 @@ public class JXTable extends JTable implements TableColumnModelExtListener {
      * @return an Action which cancels an edit.
      */
     private Action createCancelAction() {
-        Action action = new AbstractActionExt() {
+        @SuppressWarnings("serial")
+		Action action = new AbstractActionExt() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
