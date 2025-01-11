@@ -257,7 +257,7 @@ comboBox JComboBox<?> :
         // 4.+5. install event listeners
         comboBox.addPropertyChangeListener(e -> {
             String propertyName = e.getPropertyName();
-        	LOG.info(propertyName+" Property ChangeEvent:"+e);
+        	LOG.fine(propertyName+" Property ChangeEvent:"+e);
             if (e.getSource() == editor){
                 // If the border of the editor changes then this can effect
                 // the size of the editor which can cause the combo's size to
@@ -269,68 +269,64 @@ comboBox JComboBox<?> :
                 }
             } else {
         		JXComboBox<?> xComboBox = (JXComboBox<?>)e.getSource();
-                if ( propertyName == "model" ) {
+                if (propertyName == "model") {
                     ComboBoxModel<?> newModel = (ComboBoxModel<?>)e.getNewValue();
                     ComboBoxModel<?> oldModel = (ComboBoxModel<?>)e.getOldValue();
 
-                    if ( oldModel != null && listDataListener != null ) {
-                        oldModel.removeListDataListener( listDataListener );
+                    if (oldModel != null && listDataListener != null) {
+                        oldModel.removeListDataListener(listDataListener);
                     }
 
-                    if ( newModel != null && listDataListener != null ) {
-                        newModel.addListDataListener( listDataListener );
+                    if (newModel != null && listDataListener != null) {
+                        newModel.addListDataListener(listDataListener);
                     }
 
-                    if ( editor != null ) {
+                    if (editor != null) {
                     	xComboBox.configureEditor( xComboBox.getEditor(), xComboBox.getSelectedItem() );
                     }
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     xComboBox.revalidate();
                     xComboBox.repaint();
-                } else if ( propertyName == "rowSorter" ) {
+                } else if( propertyName == "rowSorter") {
                     if(listBox instanceof JXList<?>) {
                     	JXList<?> xlist = (JXList<?>)listBox;
                     	xlist.setAutoCreateRowSorter(xComboBox.hasRowSorter());
                     	RowSorter rs = xComboBox.getRowSorter();
                     	xlist.setRowSorter(rs);
                     }
-                } else if ( propertyName == "editor" && xComboBox.isEditable() ) {
+                } else if (propertyName == "editor" && xComboBox.isEditable()) {
                     addEditor();
                     xComboBox.revalidate();
-                } else if ( propertyName == "editable" ) {
-                    if ( xComboBox.isEditable() ) {
-                    	xComboBox.setRequestFocusEnabled( false );
+                } else if (propertyName == "editable") {
+                    if (xComboBox.isEditable()) {
+                    	xComboBox.setRequestFocusEnabled(false);
                         addEditor();
                     } else {
-                    	xComboBox.setRequestFocusEnabled( true );
+                    	xComboBox.setRequestFocusEnabled(true);
                         removeEditor();
                     }
                     synchronizeToolTipTextForChildren();
                     xComboBox.revalidate();
-                } else if ( propertyName == "enabled" ) {
+                } else if (propertyName == "enabled") {
                     boolean enabled = xComboBox.isEnabled();
-                    if ( editor != null )
-                        editor.setEnabled(enabled);
-                    if ( arrowButton != null )
-                        arrowButton.setEnabled(enabled);
+                    if (editor != null) editor.setEnabled(enabled);
+                    if (arrowButton != null) arrowButton.setEnabled(enabled);
                     xComboBox.repaint();
-                } else if ( propertyName == "focusable" ) {
+                } else if (propertyName == "focusable") {
                     boolean focusable = xComboBox.isFocusable();
-                    if ( editor != null )
-                        editor.setFocusable(focusable);
-                    if ( arrowButton != null )
-                        arrowButton.setFocusable(focusable);
+                    if (editor != null) editor.setFocusable(focusable);
+                    if (arrowButton != null) arrowButton.setFocusable(focusable);
                     xComboBox.repaint();
-                } else if ( propertyName == "maximumRowCount" ) {
-                    if ( isPopupVisible( xComboBox ) ) {
+                } else if (propertyName == "maximumRowCount") {
+                    if (isPopupVisible(xComboBox)) {
                         setPopupVisible(xComboBox, false); // XXX was soll das?
                         setPopupVisible(xComboBox, true);
                     }
-                } else if ( propertyName == "font" ) {
-                    listBox.setFont( xComboBox.getFont() );
-                    if ( editor != null ) {
-                        editor.setFont( xComboBox.getFont() );
+                } else if (propertyName == "font") {
+                    listBox.setFont(xComboBox.getFont());
+                    if (editor != null) {
+                        editor.setFont(xComboBox.getFont());
                     }
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
@@ -348,13 +344,13 @@ comboBox JComboBox<?> :
 //                    isMinimumSizeDirty = true;
 //                    isDisplaySizeDirty = true;
 //                    xComboBox.validate();
-                } else if ("graphicsConfiguration".equals(propertyName) ) {
+                } else if ("graphicsConfiguration".equals(propertyName)) {
                 	if(e.getOldValue()!=e.getNewValue()) {
                 		LOG.info(propertyName+" is set to "+e.getNewValue());
                 	}               	
-                } else if ( propertyName == JComponent.TOOL_TIP_TEXT_KEY ) {
+                } else if (propertyName == JComponent.TOOL_TIP_TEXT_KEY) {
                     synchronizeToolTipTextForChildren();
-                } else if ( propertyName == BasicXComboBoxUI.IS_TABLE_CELL_EDITOR ) {
+                } else if (propertyName == BasicXComboBoxUI.IS_TABLE_CELL_EDITOR) {
                     Boolean newValue = (Boolean)e.getNewValue();
                     isTableCellEditor = newValue.equals(Boolean.TRUE) ? true : false;
                 } else if (propertyName == "prototypeDisplayValue") {
@@ -367,8 +363,6 @@ comboBox JComboBox<?> :
                     xComboBox.revalidate();
                 } else {
                 	LOG.warning("NOT handled property "+propertyName );
-//                	xComboBox.getRowSorter();
-//                	+xComboBox.getAutoCreateRowSorter()
                 }
             }
         });
@@ -385,7 +379,7 @@ comboBox JComboBox<?> :
     }
 
     @Override
-    public void uninstallUI( JComponent c ) {
+    public void uninstallUI(JComponent c) {
         setPopupVisible(comboBox, false);
         popup.uninstallingUI();
 
@@ -397,8 +391,8 @@ comboBox JComboBox<?> :
         uninstallListeners();
         uninstallDefaults();
 
-        if ( comboBox.getRenderer() == null || comboBox.getRenderer() instanceof UIResource ) {
-            comboBox.setRenderer( null );
+        if (comboBox.getRenderer() == null || comboBox.getRenderer() instanceof UIResource) {
+            comboBox.setRenderer(null);
         }
 
         ComboBoxEditor comboBoxEditor = comboBox.getEditor();
@@ -769,7 +763,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         if (focusListener != null) {
             editor.addFocusListener(focusListener);
         }
-        editor.addFocusListener( getHandler() );
+        editor.addFocusListener(getHandler());
         
         comboBox.getEditor().addActionListener(getHandler()); // TODO 
         // wieso nicht editor.addActionListener(getHandler()); ? 
@@ -781,8 +775,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 //        	// macht: anEditor.setItem(anItem):
 //        	comboBox.configureEditor(cbe, comboBox.getSelectedItem());
         } else {
-        	LOG.info("\nxxxxxxxxxx!!!editor:"+editor // BasicComboBoxEditor$BorderlessTextField
-        			+"\nxxxxxxxxxx!!!comboBox.getEditor():"+comboBox.getEditor() // BasicComboBoxEditor
+        	LOG.info("\n!!!editor:"+editor // BasicComboBoxEditor$BorderlessTextField
+        			+"\n!!!comboBox.getEditor():"+comboBox.getEditor() // BasicComboBoxEditor
         			);
         }
 
@@ -848,7 +842,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         if (popup != null) {
         	LOG.info("popup "+(v?"show":"hide")+" for "+c);
             if (v) {
-//                popup.show(); // muss das hier sein? TODO ist doch in setPopupVisible
+                //popup.show(); // muss das hier sein? TODO ist doch in setPopupVisible
                 //popupVisible = v;
                 ((BasicXComboPopup)popup).setPopupVisible(v);
 	            if(arrowButton instanceof BasicArrowButton) {
@@ -861,7 +855,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
             } else {
-//                popup.hide(); // TODO wie oben
+                //popup.hide(); // XXX wie oben
                 //popupVisible = v;
                 ((BasicXComboPopup)popup).setPopupVisible(v);
 	            if(arrowButton instanceof BasicArrowButton) {
@@ -890,9 +884,9 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     // begin ComponentUI Implementation
 	
     @Override
-    public void paint( Graphics g, JComponent c ) {
+    public void paint(Graphics g, JComponent c) {
         hasFocus = comboBox.hasFocus();
-        if ( !comboBox.isEditable() ) {
+        if (!comboBox.isEditable()) {
             Rectangle r = rectangleForCurrentValue();
             paintCurrentValueBackground(g,r,hasFocus);
             paintCurrentValue(g,r,hasFocus);
@@ -914,13 +908,13 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
         if(comboBox.getComponentOrientation().isLeftToRight()) {
             return new Rectangle(insets.left, insets.top,
-                             width - (insets.left + insets.right + buttonSize),
-                             height - (insets.top + insets.bottom));
+                         width - (insets.left + insets.right + buttonSize),
+                         height - (insets.top + insets.bottom));
         }
         else {
             return new Rectangle(insets.left + buttonSize, insets.top,
-                             width - (insets.left + insets.right + buttonSize),
-                             height - (insets.top + insets.bottom));
+                         width - (insets.left + insets.right + buttonSize),
+                         height - (insets.top + insets.bottom));
         }
     }
 
@@ -989,8 +983,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
      * @since 1.6
      */
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior(
-            JComponent c) {
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior(JComponent c) {
         super.getBaselineResizeBehavior(c);
         // Force sameBaseline to be updated.
         getDisplaySize();
@@ -1023,7 +1016,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     // This is currently hacky...
     @Override
     public int getAccessibleChildrenCount(JComponent c) {
-        if ( comboBox.isEditable() ) {
+        if (comboBox.isEditable()) {
             return 2;
         }
         else {
@@ -1038,15 +1031,14 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         // 1 = the editor
         switch ( i ) {
         case 0:
-            if ( popup instanceof Accessible ) {
+            if (popup instanceof Accessible) {
                 AccessibleContext ac = ((Accessible) popup).getAccessibleContext();
                 ac.setAccessibleParent(comboBox);
                 return(Accessible) popup;
             }
             break;
         case 1:
-            if ( comboBox.isEditable()
-                 && (editor instanceof Accessible) ) {
+            if (comboBox.isEditable() && (editor instanceof Accessible)) {
                 AccessibleContext ac = ((Accessible) editor).getAccessibleContext();
                 ac.setAccessibleParent(comboBox);
                 return(Accessible) editor;
@@ -1071,20 +1063,19 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
      * @param bounds a bounding rectangle to render to
      * @param hasFocus is focused
      */
-    public void paintCurrentValue(Graphics g,Rectangle bounds,boolean hasFocus) {
+    public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) {
         ListCellRenderer<Object> renderer = (ListCellRenderer<Object>)comboBox.getRenderer();
         Component c;
 
-        if ( hasFocus && !isPopupVisible(comboBox) ) {
-            LOG.info("this.hasFocus && Popup NOT Visible renderer:"+renderer);
+        if (hasFocus && !isPopupVisible(comboBox)) {
+            LOG.fine("this.hasFocus && Popup NOT Visible, renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
                                                        true, // isSelected 
                                                        hasFocus ); // cellHasFocus
-        }
-        else {
-            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
+        } else {
+            LOG.fine("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
@@ -1093,11 +1084,11 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             c.setBackground(UIManager.getColor(BACKGROUND));
         }
         c.setFont(comboBox.getFont());
-        if ( hasFocus && !isPopupVisible(comboBox) ) {
+        if (hasFocus && !isPopupVisible(comboBox)) {
             c.setForeground(listBox.getSelectionForeground());
             c.setBackground(listBox.getSelectionBackground());
         } else {
-            if ( comboBox.isEnabled() ) {
+            if (comboBox.isEnabled()) {
                 c.setForeground(comboBox.getForeground());
                 c.setBackground(comboBox.getBackground());
             } else {
@@ -1107,7 +1098,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
 
         // Fix for 4238829: should lay out the JPanel.
-        LOG.info("!!!!!!!! c:"+c);
+//        LOG.info("!!!!!!!! c:"+c);
         boolean shouldValidate = false;
         if (c instanceof JPanel)  {
             shouldValidate = true;
@@ -1150,7 +1141,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
      */
     void repaintCurrentValue() {
         Rectangle r = rectangleForCurrentValue();
-        comboBox.repaint(r.x,r.y,r.width,r.height);
+        comboBox.repaint(r.x, r.y, r.width, r.height);
     }
 
     //
@@ -1170,7 +1161,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     protected Dimension cachedMinimumSize = new Dimension( 0, 0 );
     @Override
     public Dimension getMinimumSize( JComponent c ) {
-        if ( !isMinimumSizeDirty ) {
+        if (!isMinimumSizeDirty) {
             return new Dimension(cachedMinimumSize);
         }
         // The minimum size is the size of the display area plus insets plus the button.
@@ -1190,7 +1181,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     }
 
     @Override
-    public Dimension getMaximumSize( JComponent c ) {
+    public Dimension getMaximumSize(JComponent c) {
         return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
     }
     
@@ -1251,8 +1242,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             	renderer.getListCellRendererComponent(listBox, prototypeValue, -1, false, false)
             	);
         } else {
-            // Calculate the dimension by iterating over all the elements in the combo
-            // box list.
+            // Calculate the dimension by iterating over all 
+        	// the elements in the combo box list.
             ComboBoxModel<Object> model = (ComboBoxModel<Object>)comboBox.getModel();
             int modelSize = model.getSize();
             int baseline = -1;
@@ -1290,7 +1281,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         }
 
-        if ( comboBox.isEditable() ) {
+        if (comboBox.isEditable()) {
             Dimension d = editor.getPreferredSize();
             result.width = Math.max(result.width,d.width);
             result.height = Math.max(result.height,d.height);
@@ -1394,10 +1385,10 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         	LOG.info("KeyEvent "+e);
             if ( isNavigationKey(e.getKeyCode(), e.getModifiersEx()) ) {
                 lastTime = 0L;
-            } else if ( comboBox.isEnabled() && comboBox.getModel().getSize()!=0 &&
+            } else if (comboBox.isEnabled() && comboBox.getModel().getSize()!=0 &&
                         isTypeAheadKey( e ) && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
                 time = e.getWhen();
-                if ( comboBox.selectWithKeyChar(e.getKeyChar()) ) {
+                if (comboBox.selectWithKeyChar(e.getKeyChar())) {
                     e.consume();
                 }
             }
@@ -1426,7 +1417,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         // The combo box listener hides the popup when the focus is lost.
         // It also repaints when focus is gained or lost.
         public void focusGained( FocusEvent e ) {
-        	LOG.info("FocusEvent "+e);
+        	LOG.fine("FocusEvent "+e);
             ComboBoxEditor comboBoxEditor = comboBox.getEditor();
 
             if ( (comboBoxEditor != null) &&
@@ -1441,7 +1432,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         }
         public void focusLost( FocusEvent e ) {
-        	LOG.info("FocusEvent "+e);
+        	LOG.fine("FocusEvent "+e);
             ComboBoxEditor editor = comboBox.getEditor();
             if ( (editor != null) &&
                  (e.getSource() == editor.getEditorComponent()) ) {
@@ -1470,7 +1461,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 
         // This listener watches for changes in the ComboBoxModel
         public void contentsChanged( ListDataEvent e ) {
-            if ( !(e.getIndex0() == -1 && e.getIndex1() == -1) ) {
+            if (!(e.getIndex0() == -1 && e.getIndex1() == -1)) {
                 isMinimumSizeDirty = true;
                 comboBox.revalidate();
             }
@@ -1478,8 +1469,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             // set the editor with the selected item since this
             // is the event handler for a selected item change.
             if (comboBox.isEditable() && editor != null) {
-                comboBox.configureEditor( comboBox.getEditor(),
-                                          comboBox.getSelectedItem() );
+                comboBox.configureEditor(comboBox.getEditor(),
+                                         comboBox.getSelectedItem());
             }
 
             isDisplaySizeDirty = true;
