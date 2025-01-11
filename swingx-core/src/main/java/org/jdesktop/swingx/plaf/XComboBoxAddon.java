@@ -50,7 +50,7 @@ public class XComboBoxAddon extends AbstractComponentAddon {
         super.addBasicDefaults(addon, defaults);
         defaults.add(JXComboBox.uiClassID, "org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI");
         
-		LOG.info("\n get background "+UIManager.getLookAndFeelDefaults().get("ComboBox.background")
+		LOG.config("\n get background "+UIManager.getLookAndFeelDefaults().get("ComboBox.background")
 				+"\n get foreground "+UIManager.getLookAndFeelDefaults().get("ComboBox.foreground")
 				+"\n get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox.selectionBackground")
 				+"\n get selectionForeground "+UIManager.getLookAndFeelDefaults().get("ComboBox.selectionForeground")
@@ -90,7 +90,7 @@ public class XComboBoxAddon extends AbstractComponentAddon {
     protected void addMetalDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addMetalDefaults(addon, defaults);     
         defaults.add(JXComboBox.uiClassID, "org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI");
-		LOG.info("added key "+JXComboBox.uiClassID);
+		LOG.config("added key "+JXComboBox.uiClassID);
     }
 
     @Override
