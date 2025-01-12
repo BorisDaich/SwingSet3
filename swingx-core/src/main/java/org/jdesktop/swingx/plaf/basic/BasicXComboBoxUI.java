@@ -728,7 +728,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     }
 
     private void addEditor() {
-    	LOG.info("removeEditor currently "+editor);
+    	LOG.config("removeEditor currently "+editor);
         removeEditor();
         // in BasicComboBoxEditor EditorComponent is JTextField, a Component
         editor = comboBox.getEditor().getEditorComponent();
@@ -742,9 +742,9 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
     public void removeEditor() {
-        if ( editor != null ) {
+        if (editor != null) {
             unconfigureEditor();
-            comboBox.remove( editor );
+            comboBox.remove(editor);
             editor = null;
         }
     }
