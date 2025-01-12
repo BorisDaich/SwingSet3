@@ -57,14 +57,18 @@ public class LabelProvider extends ComponentProvider<JLabel> {
 //      public void installContext(JComboBox<?> component, Object value, int row, int column,
 //              boolean selected, boolean focused, boolean expanded, boolean leaf) {
 		cc.installContext(cb, value, index, -1, isSelected, cellHasFocus, false, false);
-// TODO auskommentieren:		
-		System.out.println("DefaultComboBoxRenderer getListCellRendererComponent: list:"+list
-    			+"\n value:"+value+"/"+(value==null?"null":value.getClass())
-    			+"\n index="+index+" , isSelected="+isSelected+" , cellHasFocus="+cellHasFocus
-    			+"\n ListCellRendererComponent hashCode=@"+Integer.toHexString(this.hashCode())
-    				);
-    		
         JComponent comp = componentController.getRendererComponent(cc);
+// TODO auskommentieren:
+		if(isSelected) {
+			System.out.println("DefaultComboBoxRenderer getListCellRendererComponent: list:"
+					+list // the JList we're painting
+	    			+"\n value:"+value+"/"+(value==null?"null":value.getClass())
+	    			+"\n index="+index+" , isSelected="+isSelected+" , cellHasFocus="+cellHasFocus
+	    			+"\n DefaultComboBoxRenderer this.hashCode=@"+Integer.toHexString(this.hashCode())
+	    				);
+	    		
+	        LOG.info(" ListCellRendererComponent:"+comp);
+		}
         /* in componentController.getRendererComponent(context)
         if (context != null) {
             configureVisuals(context);
@@ -88,14 +92,15 @@ public class LabelProvider extends ComponentProvider<JLabel> {
 //			} else {
 //				setText((value == null) ? "" : value.toString());
 //			}
-			
-			return comp;
+        
+// component whose paint() method will render the specified value.
+		return comp;
 	}
 
 	@Override
 	protected ComponentProvider<?> createDefaultComponentProvider() {
 		ComponentProvider<JLabel> labelProvider = new LabelProvider(createDefaultStringValue());
-		LOG.config("ComponentProvider<JLabel> labelProvider:"+labelProvider);
+		LOG.info("ComponentProvider<JLabel> labelProvider:"+labelProvider);
 		return labelProvider;
 	}
 
