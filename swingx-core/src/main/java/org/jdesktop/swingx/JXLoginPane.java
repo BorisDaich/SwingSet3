@@ -100,6 +100,8 @@ import org.jdesktop.swingx.plaf.LoginPaneUI;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.swingx.plaf.basic.CapsLockSupport;
+import org.jdesktop.swingx.renderer.DefaultListRenderer;
+import org.jdesktop.swingx.renderer.StringValue;
 import org.jdesktop.swingx.util.WindowUtils;
 
 /**
@@ -708,6 +710,11 @@ public class JXLoginPane extends JXPanel {
         if (servers.size() > 1) {
             serverCombo = new JXComboBox<Object>(servers.toArray());
             serverLabel.setLabelFor(serverCombo);
+            StringValue sv = (Object value) -> {
+        		if(value==null) return "";
+            	return value.toString();		
+            };
+            serverCombo.setRenderer(new DefaultListRenderer<Object>(sv));
         } else {
             serverCombo = null;
         }
@@ -829,13 +836,13 @@ public class JXLoginPane extends JXPanel {
         // this if is used to avoid needless creations of the image
         if(orient != super.getComponentOrientation()) {
             super.setComponentOrientation(orient);
-            imgPainter = new ImagePainter((BufferedImage) createLoginBanner()); // TODO test orient-ation
+            imgPainter = new ImagePainter((BufferedImage) createLoginBanner()); // TODO test orientation
             banner.setBackgroundPainter(imgPainter);
             progressPanel.applyComponentOrientation(orient);
         }
     }
 
-//    @SuppressWarnings("serial")
+    @SuppressWarnings("serial")
 	private final class LoginPaneLayout extends VerticalLayout implements LayoutManager {
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
