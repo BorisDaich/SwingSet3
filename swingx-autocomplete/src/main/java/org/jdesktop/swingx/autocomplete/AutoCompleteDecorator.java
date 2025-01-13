@@ -191,7 +191,8 @@ public class AutoCompleteDecorator {
         comboBox.setEditor(new AutoCompleteComboBoxEditor(comboBox.getEditor(), document.stringConverter));
         
         // Changing the l&f can change the combobox' editor which in turn
-        // would not be autocompletion-enabled. The new editor needs to be set-up.
+        // would not be autocompletion-enabled. 
+        // The new editor needs to be set-up.
         AutoComplete.PropertyChangeListener pcl = new AutoComplete.PropertyChangeListener(comboBox);
         comboBox.addPropertyChangeListener("editor", pcl);
         comboBox.addPropertyChangeListener("enabled", pcl);
@@ -200,6 +201,8 @@ public class AutoCompleteDecorator {
             ActionMap map = comboBox.getActionMap();
             
             for (String key : COMBO_BOX_ACTIONS) {
+            	System.out.println("AutoCompleteDecorator#decorate:"+key);
+            	System.out.println("ActionMap map#"+map.size());
                 Action a = map.get(key);
                 map.put(key, new AutoComplete.SelectionAction(a));
             }
