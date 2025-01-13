@@ -20,9 +20,15 @@
 package org.jdesktop.swingx.plaf.basic.core;
 
 
-import java.lang.reflect.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.ActionMapUIResource;
 
 /**
  * An ActionMap that populates its contents as necessary. The
@@ -32,6 +38,7 @@ import javax.swing.plaf.*;
  * @version 1.6, 11/17/05
  * @author Scott Violet
  */
+@SuppressWarnings("serial")
 public class LazyActionMap extends ActionMapUIResource {
     /**
      * Object to invoke <code>loadActionMap</code> on. This may be
