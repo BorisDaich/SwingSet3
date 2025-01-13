@@ -1200,7 +1200,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         // Calculates the height and width using the default text renderer
         Component comp = getDefaultListCellRenderer().getListCellRendererComponent(listBox, " ", -1, false, false);
         Dimension d = getSizeForComponent(comp);
-        LOG.info("DefaultSize is "+d+", Component to calculate size:"+comp);
+        LOG.config("DefaultSize is "+d+", Component to calculate size:"+comp);
 
         return new Dimension(d.width, d.height);
     }
