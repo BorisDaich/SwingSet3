@@ -9,9 +9,7 @@
   
   <packaging>pom</packaging> <!-- multi-module project -->
   <modules>
-<!-- removed in version 1.7.8 :
-    <module>swingx-mavensupport</module>
-    <module>swingx-plaf</module>
+<!-- 
     <module>swingx-beaninfo</module>     do not build
   -->
     <module>swingx-testsupport</module>
