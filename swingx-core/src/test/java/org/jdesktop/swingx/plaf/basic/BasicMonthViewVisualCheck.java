@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -57,15 +55,11 @@ import org.jdesktop.swingx.renderer.FormatStringValue;
 import org.jdesktop.swingx.renderer.StringValue;
 
 /**
- * TODO add type doc
- * 
  * @author Jeanette Winzenburg
  */
 public class BasicMonthViewVisualCheck extends InteractiveTestCase {
 
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger
-            .getLogger(BasicMonthViewVisualCheck.class.getName());
+    private static final Logger LOG = Logger.getLogger(BasicMonthViewVisualCheck.class.getName());
     
     public static void main(String[] args) {
         BasicMonthViewVisualCheck test = new BasicMonthViewVisualCheck();
@@ -80,7 +74,6 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
 
     public static class MyMonthViewUI extends BasicMonthViewUI {
 
-        @SuppressWarnings({"UnusedDeclaration"})
         public static ComponentUI createUI(JComponent c) {
             return new MyMonthViewUI();
         }
@@ -191,7 +184,7 @@ public class BasicMonthViewVisualCheck extends InteractiveTestCase {
      */
     private void showDebugMonthView(String frameTitle) {
         final JXMonthView monthView = new JXMonthView();
-        LOG.info("todayBack: " + monthView.getTodayBackground());
+        LOG.info("TodayBackground: " + monthView.getTodayBackground());
 //        monthView.setZoomable(true);
         monthView.setDayForeground(Calendar.SUNDAY, Color.BLUE);
         monthView.setDaysOfTheWeekForeground(Color.RED);
