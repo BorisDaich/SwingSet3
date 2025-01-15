@@ -24,18 +24,11 @@ package org.jdesktop.swingx.plaf.basic;
  * @author Jeanette Winzenburg
  */
 public enum CalendarState {
-	/** TODO doc */
     TODAY,
-	/** TODO doc */
     IN_MONTH,
-	/** TODO doc */
     LEADING,
-	/** TODO doc */
     TRAILING,
-	/** TODO doc */
     WEEK_OF_YEAR,
-	/** TODO doc */
     DAY_OF_WEEK, 
-	/** TODO doc */
     TITLE
 }
