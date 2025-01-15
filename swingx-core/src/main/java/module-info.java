@@ -2,6 +2,7 @@ module swingx.core {
 	exports org.jdesktop.swingx;
 	exports org.jdesktop.swingx.auth;
 	exports org.jdesktop.swingx.table;
+	exports org.jdesktop.swingx.icon;
 	
 	// Definiert Schnittstellen und exportiert sie
 	uses org.jdesktop.swingx.plaf.LookAndFeelAddons;
