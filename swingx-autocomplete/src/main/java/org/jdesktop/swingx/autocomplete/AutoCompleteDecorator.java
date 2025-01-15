@@ -201,8 +201,8 @@ public class AutoCompleteDecorator {
             ActionMap map = comboBox.getActionMap();
             
             for (String key : COMBO_BOX_ACTIONS) {
-            	System.out.println("AutoCompleteDecorator#decorate:"+key);
-            	System.out.println("ActionMap map#"+map.size());
+//            	System.out.println("AutoCompleteDecorator#decorate:"+key);
+//            	System.out.println("ActionMap map#"+map.size());
                 Action a = map.get(key);
                 map.put(key, new AutoComplete.SelectionAction(a));
             }
