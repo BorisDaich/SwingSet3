@@ -693,7 +693,7 @@ public class ComponentAdapterTest extends TestCase {
         }
         public JXTreeTableT(JXTreeTable.TreeTableCellRenderer renderer) {
 			super(renderer);
-			assert ((JXTreeTable.TreeTableModelAdapter) getModel()).getTree() == renderer;			
+			assert ((JXTreeTable.InternalTreeTableModelAdapter) getModel()).getTree() == renderer;			
 		}
 
         @Override

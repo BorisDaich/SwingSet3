@@ -42,7 +42,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import org.jdesktop.swingx.JXTreeTable.TreeTableModelAdapter;
+import org.jdesktop.swingx.JXTreeTable.InternalTreeTableModelAdapter;
 import org.jdesktop.swingx.JXTreeTableUnitTest.JXTreeTableA;
 import org.jdesktop.swingx.action.AbstractActionExt;
 import org.jdesktop.swingx.decorator.Highlighter;
@@ -208,7 +208,7 @@ public class JXTreeTableIssues extends InteractiveTestCase {
     public void testTreeTableAdapterBind() {
         JXTreeTableA table = new JXTreeTableA(createActionTreeModel());
 //        TreeTableModelAdapter model = table.createAdapter(new JTree()); 
-        TreeTableModelAdapter model = table.createAdapter(new JXTree()); 
+        InternalTreeTableModelAdapter model = table.createAdapter(new JXTree()); 
         model.bind(table);
     }
    

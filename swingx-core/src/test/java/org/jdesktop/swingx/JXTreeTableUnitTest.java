@@ -214,11 +214,8 @@ public class JXTreeTableUnitTest extends InteractiveTestCase {
             super(model);
         }
         
-//        public TreeTableModelAdapter createAdapter(JTree tree) {
-//            return new TreeTableModelAdapter(tree);
-//        }
-        public TreeTableModelAdapter createAdapter(JXTree tree) {
-            return new TreeTableModelAdapter(tree);
+        public InternalTreeTableModelAdapter createAdapter(JXTree tree) {
+            return new InternalTreeTableModelAdapter(tree);
         }
     }
     

@@ -188,11 +188,11 @@ public class JXTreeTable extends JXTable {
     protected JXTreeTable(TreeTableCellRenderer renderer) {
         // To avoid unnecessary object creation, such as the construction of a
         // DefaultTableModel, it is better to invoke
-        // super(TreeTableModelAdapter) directly, instead of first invoking
+        // super(InternalTreeTableModelAdapter) directly, instead of first invoking
         // super() followed by a call to setTreeTableModel(TreeTableModel).
 
         // Adapt tree model to table model before invoking super()
-        super(new TreeTableModelAdapter(renderer));
+        super(new InternalTreeTableModelAdapter(renderer));
 
         // renderer-related initialization
         init(renderer); // private method
@@ -217,7 +217,7 @@ public class JXTreeTable extends JXTable {
      */
     private void init(TreeTableCellRenderer renderer) {
         this.renderer = renderer;
-        assert ((TreeTableModelAdapter) getModel()).tree == this.renderer;
+        assert ((InternalTreeTableModelAdapter) getModel()).tree == this.renderer;
         
         // Force the JTable and JTree to share their row selection models.
         ListToTreeSelectionModelWrapper selectionWrapper = new ListToTreeSelectionModelWrapper();
@@ -1253,24 +1253,25 @@ public class JXTreeTable extends JXTable {
      * <em>can</em> be shared, use {@link #getTreeTableModel() getTreeTableModel}
      * instead</p>.
      *
-     * @param tableModel must be a TreeTableModelAdapter
+     * @param tableModel must be a InternalTreeTableModelAdapter
      * @throws IllegalArgumentException if the specified tableModel is not an
-     * instance of TreeTableModelAdapter
+     * instance of InternalTreeTableModelAdapter
      */
     @Override
     public final void setModel(TableModel tableModel) { // note final keyword
-        if (tableModel instanceof TreeTableModelAdapter) {
-            if (((TreeTableModelAdapter) tableModel).getTreeTable() == null) {
+        if (tableModel instanceof InternalTreeTableModelAdapter) {
+            if (((InternalTreeTableModelAdapter) tableModel).getTreeTable() == null) {
+        		InternalTreeTableModelAdapter adapter = (InternalTreeTableModelAdapter)tableModel;
                 // Passing the above test ensures that this method is being
                 // invoked either from JXTreeTable/JTable constructor or from
                 // setTreeTableModel(TreeTableModel)
                 super.setModel(tableModel); // invoke superclass version
 
-                ((TreeTableModelAdapter) tableModel).bind(this); // permanently bound
-                // Once a TreeTableModelAdapter is bound to any JXTreeTable instance,
+                adapter.bind(this); // permanently bound
+                // Once a InternalTreeTableModelAdapter is bound to any JXTreeTable instance,
                 // invoking JXTreeTable.setModel() with that adapter will throw an
                 // IllegalArgumentException, because we really want to make sure
-                // that a TreeTableModelAdapter is NOT shared by another JXTreeTable.
+                // that a InternalTreeTableModelAdapter is NOT shared by another JXTreeTable.
             }
             else {
                 throw new IllegalArgumentException("model already bound");
@@ -1521,8 +1522,8 @@ public class JXTreeTable extends JXTable {
     	}
     	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer is null ="+renderer);
     	TableModel tm = this.getModel();
-    	if(tm instanceof TreeTableModelAdapter) {
-    		TreeTableModelAdapter adapter = (TreeTableModelAdapter)tm;
+    	if(tm instanceof InternalTreeTableModelAdapter) {
+    		InternalTreeTableModelAdapter adapter = (InternalTreeTableModelAdapter)tm;
     		JTree t = adapter.getTree();
     		if(t instanceof JXTree) {
     			JXTree xt = (JXTree)t;
@@ -2196,8 +2197,8 @@ public class JXTreeTable extends JXTable {
     	
     	LOG.warning("!!!!!!!!!!!!!!!!!!!!! EUG renderer is null ="+renderer); // TODO check it
     	TableModel tm = this.getModel();
-    	if(tm instanceof TreeTableModelAdapter) {
-    		TreeTableModelAdapter adapter = (TreeTableModelAdapter)tm;
+    	if(tm instanceof InternalTreeTableModelAdapter) {
+    		InternalTreeTableModelAdapter adapter = (InternalTreeTableModelAdapter)tm;
     		JTree t = adapter.getTree();
     		if(t instanceof JXTree) {
     			JXTree xt = (JXTree)t;
@@ -2323,7 +2324,7 @@ public class JXTreeTable extends JXTable {
      * used in ctor JXTreeTable(TreeTableCellRenderer renderer)
      */
     @SuppressWarnings("serial")
-	public static class TreeTableModelAdapter extends AbstractTableModel implements TreeTableModelProvider {
+    protected static class InternalTreeTableModelAdapter extends AbstractTableModel implements TreeTableModelProvider {
         private TreeModelListener treeModelListener;
         
         private final JTree tree; // immutable
@@ -2344,7 +2345,7 @@ public class JXTreeTable extends JXTable {
         
         private JXTreeTable treeTable; // logically immutable
         
-        protected TreeTableModelAdapter(JXTree tree) {
+        protected InternalTreeTableModelAdapter(JXTree tree) {
         	this((JTree)tree);
         }
         /**
@@ -2356,7 +2357,7 @@ public class JXTreeTable extends JXTable {
          * the driving JXTreeTable's TreeTableModel.
          * @throws IllegalArgumentException if a null tree argument is passed
          */
-        TreeTableModelAdapter(JTree tree) {
+        InternalTreeTableModelAdapter(JTree tree) {
             Contract.asNotNull(tree, "tree must not be null");
 
             this.tree = tree; // need tree to implement getRowCount()
@@ -2401,18 +2402,18 @@ public class JXTreeTable extends JXTable {
         }
 
         /**
-         * Returns the JXTreeTable instance to which this TreeTableModelAdapter is
+         * Returns the JXTreeTable instance to which this InternalTreeTableModelAdapter is
          * permanently and exclusively bound. For use by
          * {@link org.jdesktop.swingx.JXTreeTable#setModel(javax.swing.table.TableModel)}.
          *
-         * @return JXTreeTable to which this TreeTableModelAdapter is permanently bound
+         * @return JXTreeTable to which this InternalTreeTableModelAdapter is permanently bound
          */
         protected JXTreeTable getTreeTable() {
             return treeTable;
         }
 
         /**
-         * Immutably binds this TreeTableModelAdapter to the specified JXTreeTable.
+         * Immutably binds this InternalTreeTableModelAdapter to the specified JXTreeTable.
          *
          * @param treeTable the JXTreeTable instance that this adapter is bound to.
          */
@@ -2907,7 +2908,7 @@ TableModelListener management provided by AbstractTableModel superclass:
         }
 
         /**
-         * Immutably binds this TreeTableModelAdapter to the specified JXTreeTable.
+         * Immutably binds this InternalTreeTableModelAdapter to the specified JXTreeTable.
          * For internal use by JXTreeTable only.
          *
          * @param treeTable the JXTreeTable instance that this renderer is bound to
@@ -3136,7 +3137,7 @@ TableModelListener management provided by AbstractTableModel superclass:
     //  public int column : current column in view coordinates.
     //  final JComponent target
     /*
-     * EUG: ComponentAdapter - kein Model Adaper, siehe TreeTableModelAdapter
+     * EUG: ComponentAdapter - kein Model Adaper, siehe InternalTreeTableModelAdapter
      */
     protected static class TreeTableDataAdapter extends JXTable.TableAdapter {
         private final JXTreeTable table;
@@ -3254,8 +3255,8 @@ TableModelListener management provided by AbstractTableModel superclass:
                     // hidden hierarchical column, access directly
                 }
                 TableModel dataModel = table.getModel();
-                if(dataModel instanceof JXTreeTable.TreeTableModelAdapter) {
-                	JXTreeTable.TreeTableModelAdapter ttma = (JXTreeTable.TreeTableModelAdapter)dataModel;
+                if(dataModel instanceof JXTreeTable.InternalTreeTableModelAdapter) {
+                	JXTreeTable.InternalTreeTableModelAdapter ttma = (JXTreeTable.InternalTreeTableModelAdapter)dataModel;
                 	return ttma.getValueAt(row, column);
                 }
             }

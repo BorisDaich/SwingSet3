@@ -117,8 +117,6 @@ import org.jdesktop.swingx.tree.TreeModelSupport;
  * treeTableModel.setNodeChangedMediator(NodeChangedMediator.DEFAULT);
  * </code></pre>
  */
-// in JXTreeTable gibt es inner public static class
-//     class TreeTableModelAdapter extends AbstractTableModel implements TreeTableModelProvider {
 public class TreeTableModelAdapter implements TreeTableModel {
 
     /** The adapted treeModel. */
