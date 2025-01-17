@@ -47,8 +47,8 @@ class CalendarAdapter extends ComponentAdapter {
     }
 
     /**
-     * @param calendar2
-     * @param dayState2
+     * @param calendar
+     * @param dayState
      * @return
      */
     public CalendarAdapter install(Calendar calendar, CalendarState dayState) {
