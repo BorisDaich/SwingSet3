@@ -3,6 +3,7 @@
  *
  * Created on November 19, 2006, 3:52 AM
  */
+
 package org.jxmapviewer;
 
 import java.awt.Color;
@@ -32,6 +33,7 @@ import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jxmapviewer.input.CenterMapListener;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import org.jxmapviewer.painter.AttributionPainter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -67,6 +69,7 @@ public class JXMapKit extends JPanel
     private boolean zoomButtonsVisible = true;
     private final boolean sliderReversed = false;
 
+    @SuppressWarnings("javadoc")
     public enum DefaultProviders
     {
         OpenStreetMaps, Custom
@@ -166,6 +169,19 @@ public class JXMapKit extends JPanel
         mainMap.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mainMap));
 
         //mainMap.addKeyListener(new PanKeyListener(mainMap));
+
+        // example of usage of map attribution painter,
+        // if you want to have it with other painters - use compound painter
+
+        /*AttributionPainter atp = new AttributionPainter();
+        atp.setFontColor(...);
+        atp.setBackgroundColor(...);
+        atp.setFont(...);
+        atp.setMargin(...);
+        atp.setPosition(...); */
+
+        mainMap.setOverlayPainter(new AttributionPainter()); // default painter
+
 
         mainMap.addPropertyChangeListener("zoom", propertyChangeEvent -> {
             zoomSlider.setValue(mainMap.getZoom());
