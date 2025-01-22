@@ -35,6 +35,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdesktop.swingx.action.AbstractActionExt;
+import org.jdesktop.swingx.plaf.LaFUtils;
 import org.jdesktop.swingx.search.SearchFactory;
 
 /**
@@ -517,29 +518,11 @@ public abstract class InteractiveTestCase extends junit.framework.TestCase {
      * @return true if the LAF is changed
      */
     public static boolean setLAF(String nameSnippet) {
-    	String currentClassName = UIManager.getLookAndFeel().getClass().getName();
-    	if(currentClassName.contains(nameSnippet)) {
-    		LOG.warning("current Laf is "+currentClassName);
-    	}
-    	UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
-    	for (LookAndFeelInfo info : lafInfo) {
-    		String lafClassName = info.getClassName();
-    		if(lafClassName.contains(nameSnippet)) {
-    			try {
-					UIManager.setLookAndFeel(lafClassName);
-					boolean unchanged = !lafClassName.equals(currentClassName);
-					if(!unchanged) {
-	    	    		LOG.info("switched to laf ClassName="+lafClassName + " from "+UIManager.getLookAndFeel());
-					}
-					return unchanged;
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-						| UnsupportedLookAndFeelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    	}
-    	return false;
+    	boolean changed = LaFUtils.setLAF(nameSnippet);
+		if(!changed) {
+    		LOG.warning("unchanged LaF "+UIManager.getLookAndFeel());
+		}
+		return changed;
     }
     /**
      * 

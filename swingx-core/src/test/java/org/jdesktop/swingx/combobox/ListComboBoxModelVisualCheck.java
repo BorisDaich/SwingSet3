@@ -21,6 +21,7 @@ package org.jdesktop.swingx.combobox;
 
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ComboBoxModel;
@@ -28,9 +29,14 @@ import javax.swing.ComboBoxModel;
 import org.jdesktop.swingx.InteractiveTestCase;
 import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXFrame;
+import org.jdesktop.swingx.plaf.LaFUtils;
 
 public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
     public static void main(String[] args) throws Exception {
+    	if(args.length>0) {
+    		List<String> a = Arrays.asList(args);
+    		LaFUtils.setLAFandTheme(a);
+    	}
         ListComboBoxModelVisualCheck test = new ListComboBoxModelVisualCheck();
         try {
             test.runInteractiveTests();
@@ -54,7 +60,7 @@ public class ListComboBoxModelVisualCheck extends InteractiveTestCase {
      * <p>
      * Ensure that programatically selecting an item from the list correctly updates the display.
 
-BUG: bei wechsel LaF zu nimbus!
+BUG: bei wechsel LaF zu nimbus! Oder resize!
 
      */
     public void interactiveSelectedItem() {
