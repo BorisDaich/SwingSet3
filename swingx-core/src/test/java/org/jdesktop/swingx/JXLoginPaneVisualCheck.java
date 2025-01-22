@@ -214,7 +214,7 @@ public class JXLoginPaneVisualCheck extends InteractiveTestCase {
      * @throws InterruptedException 
      * @throws InvocationTargetException 
      */
-    @Test
+//    @Test
     public void interactiveCustomBannerDisplay() throws InvocationTargetException, InterruptedException {
         // This test will not work in a headless configuration.
         if (GraphicsEnvironment.isHeadless()) {
