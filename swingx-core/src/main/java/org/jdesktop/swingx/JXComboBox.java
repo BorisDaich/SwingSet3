@@ -42,7 +42,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
@@ -56,7 +55,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.ComboPopup;
 
 import org.jdesktop.swingx.decorator.ComponentAdapter;
@@ -66,6 +64,7 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.UIDependent;
 import org.jdesktop.swingx.plaf.XComboBoxAddon;
 import org.jdesktop.swingx.plaf.XComboBoxUI;
+import org.jdesktop.swingx.plaf.basic.BasicXComboBoxEditor;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.JRendererPanel;
 import org.jdesktop.swingx.renderer.StringValue;
@@ -127,7 +126,7 @@ public class JXComboBox<E> extends JComboBox<E> {
     public class DelegatingRenderer implements ListCellRenderer<E>, RolloverRenderer, UIDependent {
         /** the delegate. */
         private ListCellRenderer<? super E> delegateRenderer;
-        private JRendererPanel wrapper;
+        private JRendererPanel wrapperPanel;
 
         /**
          * Instantiates a DelegatingRenderer with combo box's default renderer as delegate.
@@ -144,7 +143,7 @@ public class JXComboBox<E> extends JComboBox<E> {
          *   created and used.
          */
         public DelegatingRenderer(ListCellRenderer<E> delegate) {
-            wrapper = new JRendererPanel(new BorderLayout());
+            wrapperPanel = new JRendererPanel(new BorderLayout());
             setDelegateRenderer(delegate);
         }
 
@@ -176,7 +175,7 @@ public class JXComboBox<E> extends JComboBox<E> {
          */
         @Override
         public void updateUI() {
-             wrapper.updateUI();
+             wrapperPanel.updateUI();
              
              if (delegateRenderer instanceof UIDependent) {
             	 UIDependent uiDelegateRenderer = (UIDependent)delegateRenderer;
@@ -223,8 +222,8 @@ public class JXComboBox<E> extends JComboBox<E> {
                     // the painted information after asking the list to render the value. the panel
                     // wrappers receives all of the post-rendering configuration, which is dutifully
                     // ignored by the real rendering component
-                    wrapper.add(comp);
-                    comp = wrapper;
+                    wrapperPanel.add(comp);
+                    comp = wrapperPanel;
                 }
             } else {
                 comp = delegateRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -640,7 +639,7 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         }
         ComboBoxModel<E> m = getModel();
         Object si = m.getSelectedItem();
-        if(si!=null && si.getClass()==String.class) {
+        if(si!=null && (si.getClass()==String.class || si.getClass()==Integer.class)) {
         	LOG.info("set DefaultListRenderer for "+si.getClass()+" StringValue");
         	StringValue sv = (Object value) -> {
         		return value==null ? "" : value.toString();
@@ -1040,14 +1039,43 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         revalidate();
         repaint();
     }
+    // in JComboBox gibt es setEditor(ComboBoxEditor anEditor) das hier nicht überschrieben wird
+/*
+    @BeanProperty(expert = true, description
+            = "The editor that combo box uses to edit the current value")
+    public void setEditor(ComboBoxEditor anEditor) {
+        ComboBoxEditor oldEditor = editor;
+
+        if ( editor != null ) {
+            editor.removeActionListener(this);
+        }
+        editor = anEditor;
+        if ( editor != null ) {
+            editor.addActionListener(this);
+        }
+        firePropertyChange( "editor", oldEditor, editor );
+    }    
+ */
+    // in JComboBox : return editor;
+    @Override
     public ComboBoxEditor getEditor() {
     	if(editor==null) {
-    		editor = new BasicComboBoxEditor() {
-    			protected JTextField createEditorComponent() {
-    				JTextField txtEditor = new JTextField(null, "", 9);// Document doc, String text, int columns
-    				return txtEditor;
-    			}
-    		};
+    			/*
+    protected JTextField createEditorComponent() {
+    // BorderlessTextField is not visible
+        JTextField editor = new BorderlessTextField("",9);
+        editor.setBorder(null);
+        return editor;
+    }
+    			 */
+//    		editor = new BasicComboBoxEditor() {
+//    			@Override
+//    			protected JTextField createEditorComponent() {
+//    				JTextField txtEditor = new JTextField(null, "", 9);// Document doc, String text, int columns
+//    				return txtEditor;
+//    			}
+//    		};
+    		editor = new BasicXComboBoxEditor();
     	}
         return editor;
     }    
