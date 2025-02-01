@@ -797,6 +797,33 @@ public class BasicYListUI extends YListUI {
     }
 
     /**
+	 * Creates an instance of {@code ListSelectionHandler} that's added to
+	 * the {@code JLists} by selectionModel as needed.  Subclasses can override
+	 * this method to return a custom {@code ListSelectionListener}, e.g.
+	 * <pre>
+	 * class MyListUI extends BasicListUI {
+	 *    protected ListSelectionListener <b>createListSelectionListener</b>() {
+	 *        return new MySelectionListener();
+	 *    }
+	 *    public class MySelectionListener extends ListSelectionHandler {
+	 *        public void valueChanged(ListSelectionEvent e) {
+	 *            // do some extra work when the selection changes
+	 *            super.valueChange(e);
+	 *        }
+	 *    }
+	 * }
+	 * </pre>
+	 *
+	 * @return an instance of {@code ListSelectionHandler}
+	 * @see ListSelectionHandler
+	 * @see #installUI
+	 */
+	// exact copy from javax.swing.plaf.basic.BasicListUI
+	protected ListSelectionListener createListSelectionListener() {
+	    return getHandler();
+	}
+
+	/**
      * Returns the closest row that starts at the specified y-location
      * in the passed in column.
      */
@@ -952,33 +979,6 @@ public class BasicYListUI extends YListUI {
         public void valueChanged(ListSelectionEvent e) {
             getHandler().valueChanged(e);
         }
-    }
-
-    /**
-     * Creates an instance of {@code ListSelectionHandler} that's added to
-     * the {@code JLists} by selectionModel as needed.  Subclasses can override
-     * this method to return a custom {@code ListSelectionListener}, e.g.
-     * <pre>
-     * class MyListUI extends BasicListUI {
-     *    protected ListSelectionListener <b>createListSelectionListener</b>() {
-     *        return new MySelectionListener();
-     *    }
-     *    public class MySelectionListener extends ListSelectionHandler {
-     *        public void valueChanged(ListSelectionEvent e) {
-     *            // do some extra work when the selection changes
-     *            super.valueChange(e);
-     *        }
-     *    }
-     * }
-     * </pre>
-     *
-     * @return an instance of {@code ListSelectionHandler}
-     * @see ListSelectionHandler
-     * @see #installUI
-     */
-    // exact copy from javax.swing.plaf.basic.BasicListUI
-    protected ListSelectionListener createListSelectionListener() {
-        return getHandler();
     }
 
     protected void redrawList() {
