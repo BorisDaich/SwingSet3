@@ -115,7 +115,7 @@ public class DefaultXTreeCellEditor extends DefaultTreeCellEditor implements UID
                 return pSize;
             }
             pSize = super.getPreferredSize();
-        	LOG.info("LeftToRight : PreferredSize="+pSize);
+        	LOG.config("LeftToRight : PreferredSize="+pSize);
 //pSize.width=668-(offset+5+getInsets().left+getInsets().right); // TODO maximum berechnen, die 668 sind JScrollPane.getViewport().getWidth()
             return pSize;
         }

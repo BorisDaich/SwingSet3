@@ -49,6 +49,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.text.Position.Bias;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -1295,7 +1296,8 @@ public class JXTree extends JTree {
      * PENDING JW: missing updateUI anyway (got lost when pasted from JXList ;-)
      * PENDING JW: missing override of updateUI in xtree ...
      */
-    public class DelegatingRenderer extends DefaultTreeRenderer implements TreeCellRenderer, RolloverRenderer {
+    public class DelegatingRenderer extends DefaultTreeRenderer 
+    		implements UIResource, TreeCellRenderer, RolloverRenderer {
     	// NB: 
     	// public class DefaultTreeRenderer extends AbstractRenderer implements TreeCellRenderer
     	// abstract class AbstractRenderer implements RolloverRenderer, StringValue, Serializable, UIDependent

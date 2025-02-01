@@ -1,7 +1,4 @@
-/*
- * $Id$
- *
- * Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
+/* Copyright 2007 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or

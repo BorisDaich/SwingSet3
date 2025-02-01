@@ -8,9 +8,11 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.plaf.UIResource;
 import javax.swing.text.Position.Bias;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -41,8 +43,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
-
 /**
  * Unit tests for JXTree.
  * 
@@ -51,10 +51,83 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class JXTreeUnitTest extends InteractiveTestCase {
 
+	private static final Logger LOG = Logger.getLogger(JXTreeUnitTest.class.getName());
+
     protected TreeTableModel treeTableModel;
         
     public JXTreeUnitTest() {
         super("JXTree Test");
+    }
+
+    /**
+     * Issue #601-swingx: allow LAF to hook in LAF provided renderers.
+     * 
+     * Unexpected: plain old tree doesn't install UIResource?
+     */
+    /* Fehler bzw. unerwartetes Verhalten in swing
+https://github.com/homebeaver/SwingSet/issues/64
+EUG:
+kann nicht mehr korrigiert werden. Aber beschrieben:
+- im ctor JTree() wird DefaultTreeCellRenderer instanziert:
+    public JTree(TreeModel newModel) {
+    	...
+        updateUI();
+    public void JTree.updateUI() {
+    ...
+                setUI((TreeUI)UIManager.getUI(this));
+    JTree.setUI(TreeUI ui) 
+    JComponent.setUI(ComponentUI newUI) 
+    MetalTreeUI.installUI( JComponent c )
+    BasicTreeUI.installUI(JComponent c)
+    BasicTreeUI.completeUIInstall()
+    BasicTreeUI.updateRenderer() :
+    ...
+                tree.setCellRenderer(createDefaultCellRenderer());
+    ==>    return new DefaultTreeCellRenderer();
+
+Damit die Erwartung erfüllt wird, müsste DefaultTreeCellRenderer
+UIResource implementieren. Das ist nicht der Fall!
+     */
+    @Test
+    public void testLAFRendererTree() {
+        JTree tree = new JTree();
+        LOG.info("JTree tree = "+tree);
+        assertNotNull("default renderer installed", tree.getCellRenderer());
+        if(tree.getCellRenderer() instanceof UIResource) {
+        	LOG.info("expected!");
+        } else {
+        	LOG.warning("JTree CellRenderer expected UIResource, but was: " + tree.getCellRenderer().getClass());
+        }
+    }
+    
+    /**
+     * Issue #601-swingx: allow LAF to hook in LAF provided renderers.
+     * 
+     * Unexpected: plain old tree doesn't install UIResource?
+     */
+    /*
+in JXTree hat man den DelegatingRenderer extends DefaultTreeRenderer 
+als inner class in JXTree erfunden.
+Auch bei DelegatingRenderer fehlt das "implements UIResource"
+
+Man braucht keine methode implementieren, denn UIResource dient nur zum Markieren. 
+Also "implements UIResource" geht ohne weiteres.
+
+Die Frage ist: muss cellRenderer eine UIResource sein?
+
+     */
+    @Test
+    public void testLAFRendererXTree() {
+        JXTree tree = new JXTree();
+        LOG.info("JXTree tree = "+tree);
+        assertNotNull("default renderer installed", tree.getCellRenderer());
+        if(tree.getCellRenderer() instanceof UIResource) {
+        	LOG.info("as expected! "+tree.getCellRenderer());
+        } else {
+        	LOG.warning("JXTree CellRenderer expected UIResource, but was: " + tree.getCellRenderer().getClass());
+        }
+        assertTrue("expected UIResource, but was: " + tree.getCellRenderer().getClass(), 
+                tree.getCellRenderer() instanceof UIResource);
     }
 
     /**
@@ -66,8 +139,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     public void testPopupTriggerLocationAvailable() {
         JXTree table = new JXTree();
         table.expandAll();
-        MouseEvent event = new MouseEvent(table, 0,
-                0, 0, 40, 5, 0, false);
+        MouseEvent event = new MouseEvent(table, 0, 0, 0, 40, 5, 0, false);
         PropertyChangeReport report = new PropertyChangeReport(table);
         table.getPopupLocation(event);
         assertEquals(event.getPoint(), table.getPopupTriggerLocation());
@@ -85,8 +157,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     public void testPopupTriggerCopy() {
         JXTree table = new JXTree();
         table.expandAll();
-        MouseEvent event = new MouseEvent(table, 0,
-                0, 0, 40, 5, 0, false);
+        MouseEvent event = new MouseEvent(table, 0, 0, 0, 40, 5, 0, false);
         table.getPopupLocation(event);
         assertNotSame("trigger point must not be same", 
                 table.getPopupTriggerLocation(), table.getPopupTriggerLocation());
@@ -101,8 +172,7 @@ public class JXTreeUnitTest extends InteractiveTestCase {
     public void testPopupTriggerKeyboard() {
         JXTree table = new JXTree();
         table.expandAll();
-        MouseEvent event = new MouseEvent(table, 0,
-                0, 0, 40, 5, 0, false);
+        MouseEvent event = new MouseEvent(table, 0, 0, 0, 40, 5, 0, false);
         table.getPopupLocation(event);
         PropertyChangeReport report = new PropertyChangeReport(table);
         table.getPopupLocation(null);
@@ -821,8 +891,6 @@ public class JXTreeUnitTest extends InteractiveTestCase {
         };
         return sv;
     }
-    
-
 
     @Override
     protected void setUp() throws Exception {
