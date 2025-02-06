@@ -39,7 +39,7 @@ public class YListAddon extends AbstractComponentAddon {
     @Override
 	protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
 		defaults.add(JYList.uiClassID, "org.jdesktop.swingx.plaf.synth.SynthYListUI");
-		LOG.info("added key "+JYList.uiClassID);
+		LOG.config("added key "+JYList.uiClassID);
 
 		/*
 		 * key "List.background" is defined in javax.swing.plaf.nimbus.NimbusDefaults
@@ -47,7 +47,7 @@ public class YListAddon extends AbstractComponentAddon {
 		 * replace the value with "control" Color
 		 */
 		UIManager.getLookAndFeelDefaults().put("List.background", UIManager.getColor("control"));
-
+		
 		Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
         UIManager.getLookAndFeelDefaults().put("List.focusSelectedCellHighlightBorder", border);       
         UIManager.getLookAndFeelDefaults().put("List.focusCellHighlightBorder", BorderFactory.createBevelBorder(BevelBorder.RAISED));
