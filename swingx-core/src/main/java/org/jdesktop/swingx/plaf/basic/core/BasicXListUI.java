@@ -32,7 +32,6 @@ import javax.swing.CellRendererPane;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
@@ -48,7 +47,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.swingx.JXList;
-import org.jdesktop.swingx.JXList.DelegatingRenderer;
 import org.jdesktop.swingx.plaf.LookAndFeelUtils;
 import org.jdesktop.swingx.plaf.basic.BasicYListUI;
 import org.jdesktop.swingx.plaf.basic.core.DragRecognitionSupport.BeforeDrag;
@@ -464,21 +462,6 @@ public class BasicXListUI extends BasicYListUI {
         LookAndFeel.installColorsAndFont(list, "List.background", "List.foreground", "List.font");
 
         LookAndFeel.installProperty(list, "opaque", Boolean.TRUE);
-
-        if (list.getCellRenderer() == null) { 
-        	/* public ListCellRenderer<? super E> getCellRenderer()
-        	 * wird überschieben durch
-        	 * public ListCellRenderer<E> JXList.getCellRenderer()
-        	 * das wiederum ruft
-        	 * private DelegatingRenderer getDelegatingRenderer() {
-        	 * ... new DelegatingRenderer()
-        	 * in getDelegatingRenderer wird indirekt JRendererLabel instanziert
-        	 */
-        	// TODO dh list.getCellRenderer() ist nie null!!!!!!!!
-            @SuppressWarnings("unchecked")
-            ListCellRenderer<Object> tmp = (ListCellRenderer<Object>)(UIManager.get("List.cellRenderer"));
-            list.setCellRenderer(tmp);
-        }
 
         Color sbg = list.getSelectionBackground();
         if (sbg == null || sbg instanceof UIResource) {
