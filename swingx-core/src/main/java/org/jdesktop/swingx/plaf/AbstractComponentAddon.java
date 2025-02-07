@@ -269,4 +269,11 @@ public abstract class AbstractComponentAddon implements ComponentAddon {
         return UIManager.getLookAndFeel().getClass().getName().contains("ynth");
     }
 
+    /**
+     * @return true if the current look and feel is Nimbus LaF
+     */ 
+    public static boolean isNimbus() {
+        return UIManager.getLookAndFeel().getClass().getName().contains("Nimbus");
+    }
+
 }
