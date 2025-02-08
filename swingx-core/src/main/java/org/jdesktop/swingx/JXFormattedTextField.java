@@ -8,7 +8,6 @@ import java.util.List;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 
-import org.jdesktop.swingx.plaf.AbstractComponentAddon;
 import org.jdesktop.swingx.prompt.BuddySupport;
 import org.jdesktop.swingx.prompt.BuddySupport.Position;
 import org.jdesktop.swingx.prompt.PromptSupport;
@@ -61,47 +60,6 @@ public class JXFormattedTextField extends JFormattedTextField {
 		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
-	// is implemented in JTextComponent, which is super.super.super
-	// JFormattedTextField extends JTextField extends JTextComponent extends JComponent
-	/**
-	 *  {@inheritDoc} <p>
-	 *  Overrides the JTextComponent method to paint an appropriate 
-	 *  visual representation in Nimbus. 
-	 *  In Nimbus LaF not editable (aka read only) fields have background 
-	 *  same to background of editable fields.
-	 */
-	@Override
-	public void setEditable(boolean b) {
-		super.setEditable(b);
-		if(AbstractComponentAddon.isNimbus()) {
-			// RO => disable ; RW => unverändert
-			if (!b) setEnabled(b);
-		}
-	}
-    /**
-     * {@inheritDoc} <p>
-     * Overrides the JComponent method to restore "enabled" property in nimbus
-     * @see #setEditable(boolean)
-     */
-	@Override
-	public void setEnabled(boolean b) {
-		if(b) {
-			super.setEnabled(AbstractComponentAddon.isNimbus() ? isEditable() : b);
-		} else {
-			super.setEnabled(b);
-		}		
-	}
-    /**
-     * {@inheritDoc} <p>
-     * Overrides the awt.Component method to restore "enabled" property in nimbus
-     * @see #setEditable(boolean)
-     */
-	@Override
-    public boolean isEnabled() {
-    	boolean enabled = super.isEnabled();
-        return AbstractComponentAddon.isNimbus() ? super.isEditable() : enabled;
-    }
-	
 	/**
 	 * @see PromptSupport#getFocusBehavior(javax.swing.text.JTextComponent)
 	 * @return FocusBehavior
