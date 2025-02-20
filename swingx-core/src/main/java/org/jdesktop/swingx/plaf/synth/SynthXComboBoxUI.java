@@ -56,6 +56,7 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
     }
     
     private ButtonHandler buttonHandler;
+    
     @Override
     public void installUI(JComponent c) {
         buttonHandler = new ButtonHandler();
@@ -316,7 +317,10 @@ protected ComboPopup createPopup() {
         button.setModel(buttonHandler);
         return button;
     }
-    public class SynthArrowButton extends JButton implements SwingConstants, UIResource {
+
+    // copied from not public class javax.swing.plaf.synth.SynthArrowButton
+    @SuppressWarnings("serial") // Superclass is not serializable across versions
+	public class SynthArrowButton extends JButton implements SwingConstants, UIResource {
         private int direction;
 
         public SynthArrowButton(int direction) {
@@ -347,6 +351,7 @@ protected ComboPopup createPopup() {
         public void setFocusable(boolean focusable) {}
 
     }
+    
     private boolean pressedWhenPopupVisible;
     private boolean buttonWhenNotEditable;
     private boolean shouldActLikeButton() {
