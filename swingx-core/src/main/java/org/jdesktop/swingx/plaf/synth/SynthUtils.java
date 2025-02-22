@@ -48,7 +48,7 @@ public class SynthUtils {
     /**
      * Used to avoid null painter checks everywhere.
      */
-    private static SynthPainter NULL_PAINTER = new SynthPainter() {};
+	public static SynthPainter NULL_PAINTER = new SynthPainter() {};
     
     /**
      * Returns a SynthContext with the specified values. 
@@ -59,11 +59,11 @@ public class SynthUtils {
      * @param state State of the component as defined in SynthConstants.
      * @return a SynthContext with the specified values.
      * 
-     * @throws NullPointerException if component, region of style is null.
+     * @throws NullPointerException if component, region or style is null.
      * 
      */
     public static SynthContext getContext(JComponent c, Region region, SynthStyle style, int state) {
-        return new SynthContext(c, region, style, state);
+        return new SynthXContext(c, region, style, state);
     }
 
     /**
@@ -149,6 +149,7 @@ public class SynthUtils {
     
 //--------------- component related
     
+    // see comment in private int javax.swing.plaf.synth.SynthComboBoxUI#getComponentState(JComponent c)
     public static int getComponentState(JComponent c) {
 //    	LOG.info((c.isEnabled()?("ENABLED"+"FocusOwner="+c.isFocusOwner()):"DISABLED")+"JComponent "+c);
         if (c.isEnabled()) {

@@ -13,6 +13,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusStyle;
 import javax.swing.plaf.synth.Region;
 import javax.swing.plaf.synth.SynthButtonUI;
 import javax.swing.plaf.synth.SynthContext;
@@ -63,7 +65,10 @@ public class SynthArrowButton extends JButton implements SwingConstants, UIResou
             updateStyle(b); // not visible in SynthButtonUI
         }
 
-        // ab is SynthArrowButton
+        private NimbusStyle getStyle(AbstractButton ab) {
+            return NimbusLookAndFeel.getStyle(ab, getRegion(ab));
+        }
+        // AbstractButton ab is SynthArrowButton
         private Region getRegion(AbstractButton ab) {
             Region r = XRegion.getXRegion(ab, true);
             return r==null ? Region.ARROW_BUTTON : r;
@@ -72,10 +77,13 @@ public class SynthArrowButton extends JButton implements SwingConstants, UIResou
         // copied from non visible super method SynthButtonUI#updateStyle
         // and do some changes
         void updateStyle(AbstractButton b) {
+            SynthStyle oldStyle = style;
+        	if(style==null) {
+        		style = getStyle(b);
+        	}
 //          SynthContext context = getContext(b, SynthConstants.ENABLED);
         	Region r = getRegion(b);
             SynthXContext context = (SynthXContext)SynthUtils.getContext(b, r, style, ENABLED);
-            SynthStyle oldStyle = style;
 //          style = SynthLookAndFeel.updateStyle(context, this);
             style = SynthXContext.updateStyle(context, this);
             if (style != oldStyle) {
