@@ -11,7 +11,6 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemListener;
@@ -122,12 +121,13 @@ public class BasicXComboBoxUI extends XComboBoxUI {
         return null;
     }
     /**
-     * handler implements LayoutManager and Listeners needed by this class, 
-     * - PropertyChangeListener,
+     * handler implements Listeners needed by this class,
+     * - extra XComboBoxLayoutManager ==> nicht mehr in Handler
+     * - PropertyChangeListener ==> als lambda
      * - KeyListener,
      * - FocusListener,
      * - ListDataListener
-     * and ActionListener
+     * and ActionListener ==> als lambda
      */
     private Handler handler;
     private Handler getHandler() {
@@ -140,8 +140,61 @@ public class BasicXComboBoxUI extends XComboBoxUI {
      * @return handler which implements LayoutManager 
      */
     protected LayoutManager createLayoutManager() {
-        return getHandler();
-    }   
+        return new XComboBoxLayoutManager();
+    }
+    // LayoutManager
+    //
+
+    // This layout manager handles the 'standard' layout of combo boxes.
+    // It puts the arrow button to the right and the editor to the left.
+    // If there is no editor it still keeps the arrow button to the right.
+    protected class XComboBoxLayoutManager implements LayoutManager {
+        public void addLayoutComponent(String name, Component comp) {}
+
+        public void removeLayoutComponent(Component comp) {}
+
+        public Dimension preferredLayoutSize(Container parent) {
+        	LOG.info("Container parent:"+parent);
+            return parent.getPreferredSize();
+        }
+
+        public Dimension minimumLayoutSize(Container parent) {
+            return parent.getMinimumSize();
+        }
+
+        public void layoutContainer(Container parent) {
+        	LOG.info(">>>>>>>>>>>"
+        		+ "\n Container parent:"+parent
+        		+ "\n set Bounds for arrowButton:"+arrowButton
+        		+ "\n set Bounds for editor:"+editor
+        		);
+            JComboBox<?> cb = (JComboBox<?>)parent;
+            int width = cb.getWidth();
+            int height = cb.getHeight();
+
+            Insets insets = getInsets();
+            int buttonHeight = height - (insets.top + insets.bottom);
+            int buttonWidth = buttonHeight;
+            if (arrowButton != null) {
+                Insets arrowInsets = arrowButton.getInsets();
+                buttonWidth = squareButton ? buttonHeight 
+                	: arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+                // set arrowButton Bounds
+                if (cb.getComponentOrientation().isLeftToRight()) {
+                    arrowButton.setBounds(width-(insets.right+buttonWidth), insets.top, buttonWidth, buttonHeight);
+                } else {
+                    arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
+                }
+            }
+
+            Rectangle cvb;
+            if (editor != null) {
+                cvb = rectangleForCurrentValue();
+                editor.setBounds(cvb);
+            }
+        }
+    }
+
 // als lambda:
 //    protected PropertyChangeListener propertyChangeListener;
 //    protected PropertyChangeListener createPropertyChangeListener() {
@@ -361,8 +414,31 @@ comboBox JComboBox<?> :
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     xComboBox.revalidate();
+                } else if (propertyName == "UI") {
+                	if(e.getOldValue()==e.getNewValue()) {
+                		LOG.info(propertyName+" is unchanged.");
+                	} else {
+                		LOG.info(propertyName + " NewValue:"+e.getNewValue() + " "+e.getSource()
+                		+ "\n OldValue:"+e.getOldValue()
+                		);
+                		// e.getSource()==xComboBox
+                		//xComboBox.updateUI(); // das führt zur rekursion => StackOverflowError 
+// UI NewValue:org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI@7f15d583 org.jdesktop.swingx.JXComboBox[,2,125,319x154,invalid,layout=org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI$XComboBoxLayoutManager,alignmentX=0.0,alignmentY=0.0,border=javax.swing.border.EtchedBorder@7ec8ee04,flags=328,maximumSize=,minimumSize=,preferredSize=,isEditable=false,lightWeightPopupEnabled=true,maximumRowCount=8,selectedItemReminder=Volumen]
+//                		if(e.getOldValue() instanceof MetalXComboBoxUI) {
+//                			MetalXComboBoxUI ui = (MetalXComboBoxUI)e.getOldValue();
+//                			ui.uninstallButton();
+//                		} else
+                		if(e.getOldValue() instanceof BasicXComboBoxUI) {
+                			BasicXComboBoxUI ui = (BasicXComboBoxUI)e.getOldValue();
+                			ui.uninstallButton();
+//                		} else
+//                		if(e.getOldValue() instanceof SynthXComboBoxUI) {
+//                			SynthXComboBoxUI ui = (SynthXComboBoxUI)e.getOldValue();
+//                			ui.uninstallButton();
+                		}
+                	}
                 } else {
-                	LOG.warning("NOT handled property "+propertyName );
+                	LOG.warning("NOT handled property "+propertyName + " NewValue:"+e.getNewValue());
                 }
             }
         });
@@ -607,6 +683,11 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     	return new DefaultComboBoxRenderer<>();
     }
 
+    protected ComboBoxEditor createEditor() {
+    	LOG.info("call new BasicXComboBoxEditor.UIResource()");
+        return new BasicXComboBoxEditor.UIResource();
+    }
+
     //===============================
     // begin Sub-Component Management
     //
@@ -644,22 +725,22 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
      */
     protected void uninstallComponents() {
     	uninstallButton();
-        if ( editor != null ) {
+        if (editor != null) {
             unconfigureEditor();
         }
         comboBox.removeAll(); // Just to be safe.
     }
     /**
      * {@inheritDoc} <p>
-     * Removes the registered Listener.
+     * Removes the {@code arrowButton} and registered Listener.
      * This method is called as part of the UI installation process {@code uninstallUI}.
      */
     @Override
     public void uninstallButton() {
-        if ( arrowButton != null ) {
+        if (arrowButton != null) {
         	comboBox.remove(arrowButton);
-            arrowButton.removeMouseListener( popup.getMouseListener() );
-            arrowButton.removeMouseMotionListener( popup.getMouseMotionListener() );
+            arrowButton.removeMouseListener(popup.getMouseListener());
+            arrowButton.removeMouseMotionListener(popup.getMouseMotionListener());
             arrowButton = null;
         }
     }
@@ -672,23 +753,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
      *
      * @return a button which represents the popup control
      */
+    // code identical to BasicComboBox#createArrowButton
     protected JButton createArrowButton() {
-		/*
-    	LOG.info("------------"
-			+ "\n get buttonBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox.buttonBackground")
-			+ "\n get buttonShadow "+UIManager.getLookAndFeelDefaults().get("ComboBox.buttonShadow")
-			+ "\n get buttonDarkShadow "+UIManager.getLookAndFeelDefaults().get("ComboBox.buttonDarkShadow")
-			+ "\n get buttonHighlight "+UIManager.getLookAndFeelDefaults().get("ComboBox.buttonHighlight")
-			);
-			
-            "ComboBox.buttonBackground", control, // ==ColorUIResource[r=238,g=238,b=238]
-            "ComboBox.buttonShadow", controlShadow, // ==ColorUIResource[r=184,g=207,b=229]
-            "ComboBox.buttonDarkShadow", controlDkShadow, // ==ColorUIResource[r=122,g=138,b=153]
-            "ComboBox.buttonHighlight", controlLtHighlight, // == ColorUIResource[r=255,g=255,b=255]
-			
-			BasicArrowButton extends JButton
-			Pfeil zeig nach unten : BasicArrowButton.SOUTH
-		 */
     	JButton button = new BasicArrowButton(SwingConstants.SOUTH,
                 UIManager.getColor("ComboBox.buttonBackground"),
                 UIManager.getColor("ComboBox.buttonShadow"),
@@ -697,7 +763,13 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         button.setName("ComboBox.arrowButton");
         return button;
     }
-    // warum createComboButton und createArrowButton?
+    /* warum createComboButton und createArrowButton?
+     * Der Begriff "ArrowButton" stammt aus javax.swing.plaf.basic.BasicComboBoxUI,
+     * dort ist JButton arrowButton definiert.
+     * In swingx habe ich den Begriff übernommen, auch wenn es nicht immer ein "Arrow" ist.
+     * Denn das icon ist frei wählbar.
+     *  createArrowButton() entspricht createComboButton(null) 
+     */
     protected JButton createComboButton(Icon i) {
     	icon = i==null ? UIManager.getIcon("ComboBox.icon") : i;
     	// user defined button should be square
@@ -714,12 +786,13 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         return button;
     }
     
+    // code identical to public BasicComboBox#configureArrowButton
     private void configureArrowButton() {
-        if ( arrowButton != null ) {
-            arrowButton.setEnabled( comboBox.isEnabled() );
+        if (arrowButton != null) {
+            arrowButton.setEnabled(comboBox.isEnabled());
             arrowButton.setFocusable(comboBox.isFocusable());
             arrowButton.setRequestFocusEnabled(false);
-            arrowButton.addMouseListener( popup.getMouseListener() );
+            arrowButton.addMouseListener(popup.getMouseListener());
             arrowButton.addMouseMotionListener( popup.getMouseMotionListener() );
             arrowButton.resetKeyboardActions();
             arrowButton.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
@@ -727,12 +800,12 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
     }
 
+    // code identical to public BasicComboBox#addEditor
     private void addEditor() {
-    	LOG.config("removeEditor currently "+editor);
         removeEditor();
         // in BasicComboBoxEditor EditorComponent is JTextField, a Component
         editor = comboBox.getEditor().getEditorComponent();
-        if ( editor != null ) {
+        if (editor != null) {
             configureEditor();
             comboBox.add(editor);
             if(comboBox.isFocusOwner()) {
@@ -741,22 +814,19 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         }
     }
-    public void removeEditor() {
+    // code identical to public BasicComboBox#removeEditor
+    private void removeEditor() {
         if (editor != null) {
             unconfigureEditor();
             comboBox.remove(editor);
             editor = null;
         }
     }
-    /**
-     * This protected method is implementation specific and should be private. TODO
-     * do not call or override.
-     *
-     * @see #addEditor
-     */
-    protected void configureEditor() {
+    // code identical to public BasicComboBoxUI#configureEditor
+    private void configureEditor() {
         // Should be in the same state as the combobox
         editor.setEnabled(comboBox.isEnabled());
+        
         editor.setFocusable(comboBox.isFocusable());
         editor.setFont(comboBox.getFont());
 
@@ -765,9 +835,38 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
         editor.addFocusListener(getHandler());
         
-        comboBox.getEditor().addActionListener(getHandler()); // TODO 
-        // wieso nicht editor.addActionListener(getHandler()); ? 
-        // ==> Component editor ohne addActionListener, comboBox.getEditor() dagegen BasicComboBoxEditor implements ComboBoxEditor 
+        // ---
+        ComboBoxEditor cbcbe = comboBox.getEditor();
+        LOG.info(
+         "\n comboBox.editor:"+cbcbe.getClass() + (cbcbe instanceof ComboBoxEditor ? " (instanceof ComboBoxEditor)" : "")
+        +"\n     this.editor:"+editor.getClass() + (editor instanceof ComboBoxEditor ? " (instanceof ComboBoxEditor)" : "")
+        );
+        // ---
+        comboBox.getEditor().addActionListener( ae -> {
+        /* wieso nicht editor.addActionListener(getHandler()); ?
+         * this.editor ist vom Typ Component,
+         * comboBox.getEditor() liefert dagegen interface ComboBoxEditor.
+         * Im interface ist addActionListener definiert,
+         * im Component nicht!
+         */
+        	LOG.fine("lambda ActionEvent:"+ae);
+            Object item = comboBox.getEditor().getItem();
+            if (item != null) {
+                if (!comboBox.isPopupVisible() && !item.equals(comboBox.getSelectedItem())) {
+                    comboBox.setSelectedItem(comboBox.getEditor().getItem());
+                }
+                ActionMap am = comboBox.getActionMap();
+                if (am != null) {
+                    Action action = am.get("enterPressed");
+                    if (action != null) {
+                    	ActionEvent actionEvent =
+                    	new ActionEvent(comboBox, ae.getID(), ae.getActionCommand(), ae.getModifiers());
+                    	LOG.info("actionEvent:"+actionEvent);
+                        action.actionPerformed(actionEvent);
+                    }
+                }
+            }
+        });
         if(editor instanceof ComboBoxEditor) {
         	ComboBoxEditor cbe = (ComboBoxEditor)editor;
         	LOG.info("xxxxxxxxxx>>"+cbe);
@@ -787,26 +886,23 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
 
         // macht: anEditor.setItem(anItem)
-        comboBox.configureEditor(comboBox.getEditor(),comboBox.getSelectedItem());
+        comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
 
         // TODO muss lambda implementierung wieder rückgängig?
 //        editor.addPropertyChangeListener(propertyChangeListener);
     }
-    /**
-     * This protected method is implementation specific and should be private. TODO
-     * Do not call or override.
-     *
-     * @see #addEditor
-     */
-    protected void unconfigureEditor() {
+    
+    // code identical to public BasicComboBox#configureEditor
+    private void unconfigureEditor() {
         if (focusListener != null) {
             editor.removeFocusListener(focusListener);
         }
-
+// PropertyChangeListener und ActionListener als lambda ==> kein remove
 //        editor.removePropertyChangeListener(propertyChangeListener);
+//        comboBox.getEditor().removeActionListener(getHandler());
         editor.removeFocusListener(getHandler());
-        comboBox.getEditor().removeActionListener(getHandler());
     }
+    
     //
     // end Sub-Component Management
     //===============================
@@ -840,7 +936,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	@Override
 	public void setPopupVisible(JComboBox<?> c, boolean v) {
         if (popup != null) {
-        	LOG.info("popup "+(v?"show":"hide")+" for "+c);
+        	LOG.config("popup "+(v?"show":"hide")+" for "+c);
             if (v) {
                 //popup.show(); // muss das hier sein? TODO ist doch in setPopupVisible
                 //popupVisible = v;
@@ -848,8 +944,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.NORTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton) {
-	            	org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton)arrowButton;
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
+	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.NORTH);
 	            } else {
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
@@ -861,8 +957,8 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton) {
-	            	org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton)arrowButton;
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
+	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.SOUTH);
 	            } else {
 	            	arrowButton.setIcon(icon);
@@ -903,7 +999,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         int height = comboBox.getHeight();
         Insets insets = getInsets();
         int buttonSize = height - (insets.top + insets.bottom);
-        if ( arrowButton != null ) {
+        if (arrowButton != null) {
             buttonSize = arrowButton.getWidth();
         }
         if(comboBox.getComponentOrientation().isLeftToRight()) {
@@ -1169,7 +1265,11 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         Insets insets = getInsets();
         //calculate the width and height of the button
         int buttonHeight = size.height;
-        int buttonWidth = squareButton ? buttonHeight : arrowButton.getPreferredSize().width;
+        int buttonWidth = buttonHeight;
+        if(!squareButton) {
+        	LOG.info("XXXXXXXXXXXXX not squareButton! arrowButton:"+arrowButton);
+            buttonWidth = arrowButton==null ? 16 : arrowButton.getPreferredSize().width;
+        }
         //adjust the size based on the button width
         size.height += insets.top + insets.bottom;
         size.width +=  insets.left + insets.right + buttonWidth;
@@ -1365,12 +1465,12 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 
     // inner class copied from private javax.swing.plaf.basic.BasicComboBoxUI with modifications
 	protected class Handler 
-    implements LayoutManager
+    implements KeyListener
+//      , LayoutManager ==> extra subclass XComboBoxLayoutManager
 //    	, PropertyChangeListener ==> als lambda
-    	, KeyListener
     	, FocusListener
     	, ListDataListener
-    	, ActionListener
+//    	, ActionListener ==> als lambda
     {
     	
         //
@@ -1484,56 +1584,11 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         }
         
         //
-        // LayoutManager
+        // LayoutManager verschoben in XComboBoxLayoutManager
         //
-
-        // This layout manager handles the 'standard' layout of combo boxes.
-        // It puts the arrow button to the right and the editor to the left.
-        // If there is no editor it still keeps the arrow button to the right.
-        public void addLayoutComponent(String name, Component comp) {}
-
-        public void removeLayoutComponent(Component comp) {}
-
-        public Dimension preferredLayoutSize(Container parent) {
-        	LOG.info("Container parent:"+parent);
-            return parent.getPreferredSize();
-        }
-
-        public Dimension minimumLayoutSize(Container parent) {
-            return parent.getMinimumSize();
-        }
-
-        public void layoutContainer(Container parent) {
-        	LOG.fine("Container parent:"+parent);
-            JComboBox<?> cb = (JComboBox<?>)parent;
-            int width = cb.getWidth();
-            int height = cb.getHeight();
-
-            Insets insets = getInsets();
-            int buttonHeight = height - (insets.top + insets.bottom);
-            int buttonWidth = buttonHeight;
-            if (arrowButton != null) {
-                Insets arrowInsets = arrowButton.getInsets();
-                buttonWidth = squareButton ? buttonHeight 
-                	: arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-            }
-
-            if (arrowButton != null) {
-                if (cb.getComponentOrientation().isLeftToRight()) {
-                    arrowButton.setBounds(width-(insets.right+buttonWidth), insets.top, buttonWidth, buttonHeight);
-                } else {
-                    arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
-                }
-            }
-            Rectangle cvb;
-            if ( editor != null ) {
-                cvb = rectangleForCurrentValue();
-                editor.setBounds(cvb);
-            }
-        }
         
         //
-        // ActionListener
+        // ActionListener ==> als lambda
         //
         // Fix for 4515752: Forward the Enter pressed on the
         // editable combo box to the default button
@@ -1541,24 +1596,24 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         // Note: This could depend on event ordering. The first ActionEvent
         // from the editor may be handled by the JComboBox in which case, the
         // enterPressed action will always be invoked.
-        public void actionPerformed(ActionEvent evt) {
-        	LOG.info(">>>ActionEvent:"+evt);
-            Object item = comboBox.getEditor().getItem();
-            if (item != null) {
-                if (!comboBox.isPopupVisible() && !item.equals(comboBox.getSelectedItem())) {
-                    comboBox.setSelectedItem(comboBox.getEditor().getItem());
-                }
-                ActionMap am = comboBox.getActionMap();
-                if (am != null) {
-                    Action action = am.get("enterPressed");
-                    if (action != null) {
-                        action.actionPerformed(new ActionEvent(comboBox, evt.getID(),
-                                evt.getActionCommand(),
-                                evt.getModifiers()));
-                    }
-                }
-            }
-        }
+//        public void actionPerformed(ActionEvent evt) {
+//        	LOG.info(">>>ActionEvent:"+evt);
+//            Object item = comboBox.getEditor().getItem();
+//            if (item != null) {
+//                if (!comboBox.isPopupVisible() && !item.equals(comboBox.getSelectedItem())) {
+//                    comboBox.setSelectedItem(comboBox.getEditor().getItem());
+//                }
+//                ActionMap am = comboBox.getActionMap();
+//                if (am != null) {
+//                    Action action = am.get("enterPressed");
+//                    if (action != null) {
+//                        action.actionPerformed(new ActionEvent(comboBox, evt.getID(),
+//                                evt.getActionCommand(),
+//                                evt.getModifiers()));
+//                    }
+//                }
+//            }
+//        }
 
     }
 
