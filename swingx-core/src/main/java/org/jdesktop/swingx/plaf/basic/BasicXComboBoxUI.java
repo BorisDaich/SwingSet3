@@ -226,6 +226,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     private long time = 0L;
     private boolean isTableCellEditor = false;
     private static final String IS_TABLE_CELL_EDITOR = "JComboBox.isTableCellEditor";
+    static final String PROP_DONT_CANCEL_POPUP = "doNotCancelPopup"; // unpublished Property Name
     static final String HIDE_POPUP_KEY = "HidePopupKey";
 
     // this ctor is implicit, used by factory
@@ -273,11 +274,9 @@ comboBox JComboBox<?> :
  */
     	popup = createPopup(); // creates ComboPopup with listBox which is actually of type JXList
     	listBox = popup.getList();
-    	LOG.info("listBox:"+listBox);
+    	LOG.config("listBox:"+listBox);
     	if(listBox instanceof JXList<?>) {
     		JXList<?> xListBox = (JXList<?>)listBox;
-//        	xListBox.setCellRenderer(new DefaultComboBoxRenderer());
-// XXX wieso nicht so? 
         	xListBox.setCellRenderer(new DefaultListRenderer());
         	
 //        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // cellBackground, cellForeground OK
@@ -400,7 +399,7 @@ comboBox JComboBox<?> :
 //                    xComboBox.validate();
                 } else if ("graphicsConfiguration".equals(propertyName)) {
                 	if(e.getOldValue()!=e.getNewValue()) {
-                		LOG.info(propertyName+" is set to "+e.getNewValue());
+                		LOG.fine(propertyName+" is set to "+e.getNewValue());
                 	}               	
                 } else if (propertyName == JComponent.TOOL_TIP_TEXT_KEY) {
                     synchronizeToolTipTextForChildren();
@@ -430,7 +429,8 @@ comboBox JComboBox<?> :
                 		}
                 	}
                 } else {
-                	LOG.warning("NOT handled property "+propertyName + " NewValue:"+e.getNewValue());
+                	LOG.info("NOT handled property "+propertyName // expected for PROP_DONT_CANCEL_POPUP
+                		+ "\n OldValue:"+e.getOldValue() + "\n NewValue:"+e.getNewValue());
                 }
             }
         });
@@ -438,7 +438,7 @@ comboBox JComboBox<?> :
         
         comboBox.setRequestFocusEnabled( true );
         installKeyboardActions();
-        comboBox.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
+        comboBox.putClientProperty(PROP_DONT_CANCEL_POPUP, HIDE_POPUP_KEY);
        
         if (keySelectionManager == null || keySelectionManager instanceof UIResource) {
             keySelectionManager = new DefaultKeySelectionManager();
@@ -670,8 +670,6 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     }
 
     protected ListCellRenderer<Object> createRenderer() {
-    	LOG.info("statt BasicComboBoxRenderer.UIResource() new DefaultComboBoxRenderer<>()");
-//        return new BasicComboBoxRenderer.UIResource(); // XXX ausgetauscht
     	return new DefaultComboBoxRenderer<>();
     }
 
@@ -787,7 +785,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             arrowButton.addMouseListener(popup.getMouseListener());
             arrowButton.addMouseMotionListener( popup.getMouseMotionListener() );
             arrowButton.resetKeyboardActions();
-            arrowButton.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
+            arrowButton.putClientProperty(PROP_DONT_CANCEL_POPUP, HIDE_POPUP_KEY);
             arrowButton.setInheritsPopupMenu(true);
         }
     }
@@ -873,7 +871,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 
         if(editor instanceof JComponent) {
         	JComponent jc = (JComponent)editor;
-            jc.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
+            jc.putClientProperty(PROP_DONT_CANCEL_POPUP, HIDE_POPUP_KEY);
             jc.setInheritsPopupMenu(true);
         }
 
