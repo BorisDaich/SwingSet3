@@ -97,30 +97,20 @@ public class XComboBoxAddon extends AbstractComponentAddon {
 	protected void addNimbusDefaults(LookAndFeelAddons addon, DefaultsList defaults) {
         super.addNimbusDefaults(addon, defaults);
 		defaults.add(JXComboBox.uiClassID, "org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI");
-		LOG.info("added key "+JXComboBox.uiClassID);
+		LOG.config("added key "+JXComboBox.uiClassID);
 
 		/*
 		 * key "ComboBox.background" is defined in javax.swing.plaf.nimbus.NimbusDefaults
 		 * addColor(d, "ComboBox:\"ComboBox.listRenderer\".background", "nimbusLightBackground", 0.0f, 0.0f, 0.0f, 0)
 		 * replace the value with "control" Color
 		 */
-		LOG.info("get background "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\".background"));
+//		LOG.info("get background "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\".background"));
+//   INFORMATION: get background DerivedColor(color=0,0,0 parent=nimbusLightBackground offsets=0.0,0.0,0.0,0 pColor=255,255,255
 		UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".background", UIManager.getColor("control"));
-//		LOG.info("get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\".selectionBackground"));
-//		UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".selectionBackground", UIManager.getColor("nimbusSelectionBackground"));
-		LOG.info("get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\"[Selected].background"));
-//        addColor(d, "ComboBox:\"ComboBox.listRenderer\"[Selected].textForeground", "nimbusSelectedText", 0.0f, 0.0f, 0.0f, 0);
-//        addColor(d, "ComboBox:\"ComboBox.listRenderer\"[Selected].background", "nimbusSelectionBackground", 0.0f, 0.0f, 0.0f, 0);
-		//UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".[Selected].background", UIManager.getColor("nimbusSelectionBackground"));
-//		UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".[Selected].background", Color.RED);
-//		UIManager.getLookAndFeelDefaults().put("ComboBox.selectionBackground", Color.RED);
+//		LOG.info("get selectionBackground "+UIManager.getLookAndFeelDefaults().get("ComboBox:\"ComboBox.listRenderer\"[Selected].background"));
+//   INFORMATION: get selectionBackground DerivedColor(color=0,0,0 parent=nimbusSelectionBackground offsets=0.0,0.0,0.0,0 pColor=57,105,138
 		//"nimbusSelectionBackground", 57, 105, 138, 255);
-//		UIManager.getLookAndFeelDefaults().put("ComboBox.selectionForeground", UIManager.getColor("nimbusSelectedText"));
 
-//        UIManager.getLookAndFeelDefaults().put("ComboBox.border", new BorderUIResource.EtchedBorderUIResource(EtchedBorder.RAISED));
-//		defaults.add("ComboBox.border", new BorderUIResource.EtchedBorderUIResource());
-//		Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
-//        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);       
         UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createEtchedBorder());
         UIManager.getLookAndFeelDefaults().put("ComboBox.padding", null);
 	}
