@@ -12,7 +12,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.ComboPopup;
-import javax.swing.plaf.metal.MetalBorders;
 import javax.swing.plaf.metal.MetalComboBoxButton;
 import javax.swing.plaf.metal.MetalComboBoxIcon;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -104,38 +103,35 @@ public class MetalXComboBoxUI extends BasicXComboBoxUI {
     }
 
     protected ComboBoxEditor createEditor() {
-    	System.out.println("MetalXComboBoxUI createEditor >> new MetalXComboBoxEditor.UIResource() ...");
         return new MetalXComboBoxEditor.UIResource();
     }
 
     protected ComboPopup createPopup() {
-    	System.out.println("MetalXComboBoxUI createPopup ...");
         return super.createPopup();
     }
 
     /**
      * {@inheritDoc} <p>
-     * Overridden to provide {@code MetalComboBoxButton}
+     * Overridden to provide {@code MetalComboBoxButton} for Ocean theme
      */
     @Override
     protected JButton createArrowButton() {
-    	if(!usingOcean()) return super.createArrowButton();
-        boolean iconOnly = (comboBox.isEditable() || usingOcean());
-        Icon icon = new MetalComboBoxIcon();
-        @SuppressWarnings("unchecked")
-		JButton button = new MetalComboBoxButton( (JComboBox<Object>)comboBox,
-                                                  icon,
-                                                  iconOnly, // paint only icon
-                                                  currentValuePane,
-                                                  listBox );
-        button.setMargin( new Insets( 0, 1, 1, 3 ) ); // see getMinimumSize
-        if (usingOcean()) {
+    	if(usingOcean()) {
+            Icon icon = new MetalComboBoxIcon();
+            @SuppressWarnings("unchecked")
+    		JButton button = new MetalComboBoxButton( (JComboBox<Object>)comboBox,
+                                                      icon,
+                                                      true, // paint only icon
+                                                      currentValuePane,
+                                                      listBox );
+            button.setMargin(new Insets(0, 1, 1, 3)); // see getMinimumSize
             // Disabled rollover effect.
             button.putClientProperty("NoButtonRollover" //MetalBorders.NO_BUTTON_ROLLOVER,
                                      ,Boolean.TRUE);
-        }
-        updateButtonForOcean(button);
-        return button;
+            updateButtonForOcean(button);
+            return button;
+    	}
+		return super.createArrowButton();
     }
 
     private void updateButtonForOcean(JButton button) {
