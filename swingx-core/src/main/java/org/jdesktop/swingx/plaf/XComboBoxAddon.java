@@ -1,9 +1,11 @@
 package org.jdesktop.swingx.plaf;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.jdesktop.swingx.JXComboBox;
@@ -64,10 +66,10 @@ public class XComboBoxAddon extends AbstractComponentAddon {
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.selectionBackground", Color.YELLOW);
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.selectionForeground", Color.RED);
 
-//        Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
-//        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);
+        Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
+        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createEtchedBorder());
+//        UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createEtchedBorder());
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.padding", new java.awt.Insets(5,10,0,15));
         
         /*
@@ -119,9 +121,10 @@ public class XComboBoxAddon extends AbstractComponentAddon {
 
 //        UIManager.getLookAndFeelDefaults().put("ComboBox.border", new BorderUIResource.EtchedBorderUIResource(EtchedBorder.RAISED));
 //		defaults.add("ComboBox.border", new BorderUIResource.EtchedBorderUIResource());
-//		Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
-//        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);       
-        UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createEtchedBorder());
+		Border border = BorderFactory.createMatteBorder(1, 5, 1, 1, Color.red);
+        UIManager.getLookAndFeelDefaults().put("ComboBox.border", border);
+        //BUG in EtchedBorder ??? XXX
+//        UIManager.getLookAndFeelDefaults().put("ComboBox.border", BorderFactory.createEtchedBorder());
         UIManager.getLookAndFeelDefaults().put("ComboBox.padding", null);
 	}
 
