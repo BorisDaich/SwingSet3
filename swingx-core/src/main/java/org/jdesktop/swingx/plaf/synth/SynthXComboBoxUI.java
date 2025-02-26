@@ -30,6 +30,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusStyle;
+import javax.swing.plaf.synth.ColorType;
 import javax.swing.plaf.synth.Region;
 import javax.swing.plaf.synth.SynthContext;
 import javax.swing.plaf.synth.SynthLookAndFeel;
@@ -73,12 +74,13 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
     private EditorFocusHandler editorFocusHandler; // inner Class
     private boolean forceOpaque = false;
     
-    public SynthXComboBoxUI() {}
+    public SynthXComboBoxUI() {
+    	super();
+    }
 
     // this ctor is implicit, used by factory
     protected SynthXComboBoxUI(JComponent c) {
-    	super();
-//    	LOG.info("---------->ctor< fertig:");
+    	this();
     }
     
     @Override
@@ -101,7 +103,6 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
      */
     @Override
     protected void installDefaults() {
-    	LOG.info("####### comboBox:"+comboBox);
     	if (comboBox.getRenderer() == null || (comboBox.getRenderer() instanceof UIResource)) {
         	LOG.warning("####### comboBox.Renderer:"+comboBox.getRenderer()
         	+ "\n cannot instantiate inner SynthComboBoxRenderer"
@@ -143,7 +144,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI
                                                   c.getWidth(), c.getHeight());
         paint(context, g);
  */
-        LOG.warning("NOT paintRegion - NOT paint");
+        LOG.config("NOT paintRegion - NOT paint");
         style = SynthXContext.updateStyle(context, this);
         if (style != oldStyle) {
             padding = (Insets)style.get(context, "ComboBox.padding");
@@ -181,11 +182,6 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI
      */
     @Override
     public void uninstallUI(JComponent c) {
-    	// class SynthComboPopup extends BasicComboPopup is not visible!
-    	// TODO ???
-//        if (popup instanceof SynthComboPopup) {
-//            ((SynthComboPopup)popup).removePopupMenuListener(buttonHandler);
-//        }
         super.uninstallUI(c);
         buttonHandler = null;
     }
@@ -225,9 +221,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI
 
 	@Override // implements interface SynthUI
 	public void paintBorder(SynthContext context, Graphics g, int x, int y, int w, int h) {
-// in javax.swing.plaf.synth.SynthComboBoxUI#paintBorder paintComboBoxBorder
 		SynthUtils.getPainter(context).paintComboBoxBorder(context, g, x, y, w, h);
-//		SynthUtils.getPainter(context).paintListBorder(context, g, x, y, w, h);
 	}
 
     private SynthXContext getContext(JComponent c, int state) {
@@ -311,15 +305,31 @@ protected ComboPopup createPopup() {
     // begin ComponentUI Implementation
 
     @Override
-    public void update(Graphics g, JComponent c) {
-        SynthContext context = getContext(c);
+    public void update(Graphics g, JComponent comp) {
+        SynthContext context = getContext(comp);
 
 //        SynthLookAndFeel.update(context, g); // not visible
 //        SynthLookAndFeel.paintRegion(state, g, null);
-        LOG.warning("cannot paint region");
+//        LOG.warning("do paint region");
         if(context instanceof SynthXContext) {
-        	SynthXContext xcontext = (SynthXContext)context;
-        	xcontext.getPainter().paintComboBoxBackground(xcontext, g, 0, 0, c.getWidth(), c.getHeight());
+        	SynthXContext state = (SynthXContext)context;
+//        	state.getPainter().paintComboBoxBackground(state, g, 0, 0, comp.getWidth(), comp.getHeight());
+            JComponent c = state.getComponent();
+            SynthStyle style = state.getStyle();
+            int x, y, width, height;
+
+            x = 0;
+            y = 0;
+            width = c.getWidth();
+            height = c.getHeight();
+
+            // Fill in the background, if necessary.
+            boolean subregion = state.getRegion().isSubregion();
+            if ((subregion && style.isOpaque(state)) ||
+                              (!subregion && c.isOpaque())) {
+                g.setColor(style.getColor(state, ColorType.BACKGROUND));
+                g.fillRect(x, y, width, height);
+            }
         }
         paint(context, g);
     }
@@ -350,7 +360,7 @@ protected ComboPopup createPopup() {
         c = renderer.getListCellRendererComponent(
                 listBox, comboBox.getSelectedItem(), -1, false, false);
 
-        // Fix for 4238829: should lay out the JPanel.
+        // Fix for https://bugs.openjdk.org/browse/JDK-4238829: should lay out the JPanel.
         boolean shouldValidate = false;
         if (c instanceof JPanel)  {
             shouldValidate = true;
@@ -372,7 +382,9 @@ protected ComboPopup createPopup() {
             w = bounds.width - (padding.left + padding.right);
             h = bounds.height - (padding.top + padding.bottom);
         }
-
+        // BUG erledigt:
+//        LOG.info("currentValuePane.paintComponent "+comboBox
+//        		+ " \n with Border "+comboBox.getBorder());
         currentValuePane.paintComponent(g, c, comboBox, x, y, w, h, shouldValidate);
 
         if (force) {
@@ -539,7 +551,7 @@ protected ComboPopup createPopup() {
     }
 
     private NimbusStyle getStyle() {
-    	LOG.info("get style from the style factory \n for "+comboBox+" \n and Region:"+getRegion());
+//    	LOG.info("get style from the style factory \n for "+comboBox+" \n and Region:"+getRegion());
 //        return SynthLookAndFeel.getStyle(comboBox, getRegion());
         // gleichwertig:
 //        return SynthLookAndFeel.getStyleFactory().getStyle(comboBox, getRegion());

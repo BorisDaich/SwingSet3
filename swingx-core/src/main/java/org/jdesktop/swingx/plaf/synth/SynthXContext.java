@@ -54,8 +54,7 @@ public class SynthXContext extends SynthContext {
     		// unchanged
         	if(super.getStyle() instanceof NimbusStyle) {
         		NimbusStyle ns = (NimbusStyle)super.getStyle();
-        		//ns.getXXX
-            	LOG.info("unchanged SynthContext.style is "+ ns);
+            	LOG.fine("unchanged SynthContext.style is "+ ns);
         	}
     	} else {
         	LOG.warning("SynthContext.style is "+super.getStyle() + " - set to "+style);
@@ -64,7 +63,9 @@ public class SynthXContext extends SynthContext {
     }
 
     public SynthStyle getStyle() {
-    	LOG.warning("SynthContext.style is "+super.getStyle() + " - SynthXContext is "+style);
+    	if(super.getStyle()!=style) {
+        	LOG.warning("SynthContext.style is "+super.getStyle() + " - SynthXContext is "+style);
+    	}
         return style;
     }
     

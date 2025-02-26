@@ -1253,7 +1253,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         int buttonHeight = size.height;
         int buttonWidth = buttonHeight;
         if(!squareButton) {
-        	LOG.info("XXXXXXXXXXXXX not squareButton! arrowButton:"+arrowButton);
+// XXX     	LOG.info("XXXXXXXXXXXXX not squareButton! arrowButton:"+arrowButton);
             buttonWidth = arrowButton==null ? 16 : arrowButton.getPreferredSize().width;
         }
         //adjust the size based on the button width
