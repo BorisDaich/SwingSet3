@@ -12,8 +12,8 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.ComboPopup;
+import javax.swing.plaf.metal.MetalBorders;
 import javax.swing.plaf.metal.MetalComboBoxButton;
-import javax.swing.plaf.metal.MetalComboBoxEditor;
 import javax.swing.plaf.metal.MetalComboBoxIcon;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.MetalTheme;
@@ -24,7 +24,7 @@ import org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI;
 /**
  * Metal UI for JXComboBox
  */
-// copied from javax.swing.plaf.metal.MetalXComboBoxUI
+// copied from javax.swing.plaf.metal.MetalComboBoxUI
 public class MetalXComboBoxUI extends BasicXComboBoxUI {
 
     static boolean usingOcean() {
@@ -104,10 +104,12 @@ public class MetalXComboBoxUI extends BasicXComboBoxUI {
     }
 
     protected ComboBoxEditor createEditor() {
-        return new MetalComboBoxEditor.UIResource();
+    	System.out.println("MetalXComboBoxUI createEditor >> new MetalXComboBoxEditor.UIResource() ...");
+        return new MetalXComboBoxEditor.UIResource();
     }
 
     protected ComboPopup createPopup() {
+    	System.out.println("MetalXComboBoxUI createPopup ...");
         return super.createPopup();
     }
 
@@ -117,6 +119,7 @@ public class MetalXComboBoxUI extends BasicXComboBoxUI {
      */
     @Override
     protected JButton createArrowButton() {
+    	if(!usingOcean()) return super.createArrowButton();
         boolean iconOnly = (comboBox.isEditable() || usingOcean());
         Icon icon = new MetalComboBoxIcon();
         @SuppressWarnings("unchecked")
@@ -224,14 +227,6 @@ public class MetalXComboBoxUI extends BasicXComboBoxUI {
 //          editor.setBounds(cvb);
 //      }
 //  }
-
-  public void configureEditor() {
-      super.configureEditor();
-  }
-
-  public void unconfigureEditor() {
-      super.unconfigureEditor();
-  }
 
   public Dimension getMinimumSize( JComponent c ) {
       if ( !isMinimumSizeDirty ) {
