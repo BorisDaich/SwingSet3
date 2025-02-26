@@ -58,17 +58,17 @@ public class LabelProvider extends ComponentProvider<JLabel> {
 //              boolean selected, boolean focused, boolean expanded, boolean leaf) {
 		cc.installContext(cb, value, index, -1, isSelected, cellHasFocus, false, false);
         JComponent comp = componentController.getRendererComponent(cc);
-// TODO auskommentieren:
-		if(isSelected) {
-			System.out.println("DefaultComboBoxRenderer getListCellRendererComponent: list:"
-					+list // the JList we're painting
-	    			+"\n value:"+value+"/"+(value==null?"null":value.getClass())
-	    			+"\n index="+index+" , isSelected="+isSelected+" , cellHasFocus="+cellHasFocus
-	    			+"\n DefaultComboBoxRenderer this.hashCode=@"+Integer.toHexString(this.hashCode())
-	    				);
-	    		
-	        LOG.info(" ListCellRendererComponent:"+comp);
-		}
+// DONE auskommentieren:
+//		if(isSelected) {
+//			System.out.println("DefaultComboBoxRenderer getListCellRendererComponent: list:"
+//					+list // the JList we're painting
+//	    			+"\n value:"+value+"/"+(value==null?"null":value.getClass())
+//	    			+"\n index="+index+" , isSelected="+isSelected+" , cellHasFocus="+cellHasFocus
+//	    			+"\n DefaultComboBoxRenderer this.hashCode=@"+Integer.toHexString(this.hashCode())
+//	    				);
+//	    		
+//	        LOG.info(" ListCellRendererComponent:"+comp);
+//		}
         /* in componentController.getRendererComponent(context)
         if (context != null) {
             configureVisuals(context);
@@ -100,7 +100,7 @@ public class LabelProvider extends ComponentProvider<JLabel> {
 	@Override
 	protected ComponentProvider<?> createDefaultComponentProvider() {
 		ComponentProvider<JLabel> labelProvider = new LabelProvider(createDefaultStringValue());
-		LOG.info("ComponentProvider<JLabel> labelProvider:"+labelProvider);
+		LOG.config("ComponentProvider<JLabel> labelProvider:"+labelProvider);
 		return labelProvider;
 	}
 
