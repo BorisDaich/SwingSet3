@@ -26,6 +26,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.Painter;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 /**
  * A <code>JLabel</code> optimized for usage in renderers and
@@ -59,6 +61,27 @@ import javax.swing.UIManager;
 @SuppressWarnings("serial")
 public class JRendererLabel extends JLabel implements PainterAware<Object>, IconAware {
 
+	@Override
+    protected void paintBorder(Graphics g) {
+/* in JComponent:
+        Border border = getBorder();
+        if (border != null) {
+            border.paintBorder(this, g, 0, 0, getWidth(), getHeight());
+        }
+    	
+ */
+//		Border border = getBorder();
+//		System.out.println("JRendererLabel#paintBorder:"+border);
+//		if(border instanceof EtchedBorder) {
+//			EtchedBorder eb = (EtchedBorder)border;
+//			System.out.println("EtchedBorder:"+eb
+//			//eb.getEtchType() == LOWERED aka 1
+//			+ " this.getBackground()====="+this.getBackground());
+//			// getBackground() ist @Transient
+//		}
+		super.paintBorder(g);
+    }
+	
 	/* interface javax.swing.Painter<T> with
 	 *     public void paint(Graphics2D g, T object, int width, int height);
 	 */
