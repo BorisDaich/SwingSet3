@@ -108,7 +108,77 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     protected Component editor;
     protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
     protected Insets padding;
-    protected CellRendererPane currentValuePane = new CellRendererPane();
+    protected CellRendererPane currentValuePane = new CellRendererPane() {
+    	// javax.swing.CellRendererPane extends Container
+    	@Override
+    	public void paintComponent(Graphics g, Component c, Container p, int x, int y, int w, int h, boolean shouldValidate) {	
+        	LOG.info("paintComponent "+c
+        			+"\n shouldValidate the "+(c==null?"":c.getClass())+" Component="+shouldValidate
+        			+"\n get Background from p:"+p
+        			);
+//        	super.paintComponent(g, c, p, x, y, w, h, shouldValidate);
+            if (c == null) {
+                if (p != null) {
+                    Color oldColor = g.getColor();
+                    g.setColor(p.getBackground());
+                    g.fillRect(x, y, w, h);
+                    g.setColor(oldColor);
+                }
+                return;
+            }
+
+            if (c.getParent() != this) {
+                this.add(c);
+            }
+
+            c.setBounds(x, y, w, h);
+
+            if(shouldValidate) {
+                c.validate();
+            }
+
+            boolean wasDoubleBuffered = false;
+            if ((c instanceof JComponent) && ((JComponent)c).isDoubleBuffered()) {
+                wasDoubleBuffered = true;
+                ((JComponent)c).setDoubleBuffered(false);
+            }
+
+            Graphics cg = g.create(x, y, w, h);
+            boolean dopaint = true;
+            try {
+                if(dopaint) c.paint(cg);
+            }
+            finally {
+                cg.dispose();
+            }
+
+            if (wasDoubleBuffered && (c instanceof JComponent)) {
+                ((JComponent)c).setDoubleBuffered(true);
+            }
+
+            c.setBounds(-w, -h, 0, 0);
+        }
+/*
+INFORMATION: paintComponent org.jdesktop.swingx.renderer.JRendererLabel[ComboBox.cellRenderer,-162,-143,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.border.EtchedBorder@4e96e3e0,flags=25165824,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,horizontalAlignment=LEADING,horizontalTextPosition=TRAILING,iconTextGap=4,labelFor=,text=Volumen,verticalAlignment=CENTER,verticalTextPosition=CENTER]
+ shouldValidate=true
+Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot invoke "java.awt.Color.brighter()" because the return value of "java.awt.Component.getBackground()" is null
+	at java.desktop/javax.swing.border.EtchedBorder.getHighlightColor(EtchedBorder.java:248)
+	at java.desktop/javax.swing.border.EtchedBorder.paintBorder(EtchedBorder.java:191)
+	at java.desktop/javax.swing.JComponent.paintBorder(JComponent.java:1012)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1120)
+	at java.desktop/javax.swing.CellRendererPane.paintComponent(CellRendererPane.java:170)
+	at org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI$1.paintComponent(BasicXComboBoxUI.java:115)
+
+ */
+        public void paintComponent(Graphics g, Component c, Container p, Rectangle r) {
+        	LOG.info("paintComponent "+c+"\n Rectangle="+r);
+            super.paintComponent(g, c, p, r.x, r.y, r.width, r.height);
+        }
+        protected void addImpl(Component c, Object constraints, int index) {
+        	LOG.info("addImpl "+c+"\n "+index+": constraints="+constraints);
+        	super.addImpl(c, constraints, index);
+        }
+    };
     protected Icon icon;
     protected Icon isShowingPopupIcon;
     protected JButton arrowButton; // vll JXButton TODO ???
@@ -416,25 +486,16 @@ comboBox JComboBox<?> :
                     xComboBox.revalidate();
                 } else if (propertyName == "UI") {
                 	if(e.getOldValue()==e.getNewValue()) {
-                		LOG.info(propertyName+" is unchanged.");
+                		LOG.config(propertyName+" is unchanged.");
                 	} else {
-                		LOG.info(propertyName + " NewValue:"+e.getNewValue() + " "+e.getSource()
-                		+ "\n OldValue:"+e.getOldValue()
-                		);
-                		// e.getSource()==xComboBox
-                		//xComboBox.updateUI(); // das führt zur rekursion => StackOverflowError 
-// UI NewValue:org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI@7f15d583 org.jdesktop.swingx.JXComboBox[,2,125,319x154,invalid,layout=org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI$XComboBoxLayoutManager,alignmentX=0.0,alignmentY=0.0,border=javax.swing.border.EtchedBorder@7ec8ee04,flags=328,maximumSize=,minimumSize=,preferredSize=,isEditable=false,lightWeightPopupEnabled=true,maximumRowCount=8,selectedItemReminder=Volumen]
-//                		if(e.getOldValue() instanceof MetalXComboBoxUI) {
-//                			MetalXComboBoxUI ui = (MetalXComboBoxUI)e.getOldValue();
-//                			ui.uninstallButton();
-//                		} else
+//                		LOG.info(propertyName + " NewValue:"+e.getNewValue() + " "+e.getSource()
+//                		+ "\n OldValue:"+e.getOldValue()
+//                		);
                 		if(e.getOldValue() instanceof BasicXComboBoxUI) {
                 			BasicXComboBoxUI ui = (BasicXComboBoxUI)e.getOldValue();
                 			ui.uninstallButton();
-//                		} else
-//                		if(e.getOldValue() instanceof SynthXComboBoxUI) {
-//                			SynthXComboBoxUI ui = (SynthXComboBoxUI)e.getOldValue();
-//                			ui.uninstallButton();
+                    		LOG.info(" uninstalled Button in "+ui.comboBox
+                    		);
                 		}
                 	}
                 } else {
@@ -960,7 +1021,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
 	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else {
+	            } else if(arrowButton!=null) {
 	            	arrowButton.setIcon(icon);
 	            }
             }
