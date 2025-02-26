@@ -51,6 +51,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.Position;
 
+import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JYList;
@@ -108,80 +109,10 @@ public class BasicXComboBoxUI extends XComboBoxUI {
     protected Component editor;
     protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
     protected Insets padding;
-    protected CellRendererPane currentValuePane = new CellRendererPane() {
-    	// javax.swing.CellRendererPane extends Container
-    	@Override
-    	public void paintComponent(Graphics g, Component c, Container p, int x, int y, int w, int h, boolean shouldValidate) {	
-        	LOG.info("paintComponent "+c
-        			+"\n shouldValidate the "+(c==null?"":c.getClass())+" Component="+shouldValidate
-        			+"\n get Background from p:"+p
-        			);
-//        	super.paintComponent(g, c, p, x, y, w, h, shouldValidate);
-            if (c == null) {
-                if (p != null) {
-                    Color oldColor = g.getColor();
-                    g.setColor(p.getBackground());
-                    g.fillRect(x, y, w, h);
-                    g.setColor(oldColor);
-                }
-                return;
-            }
-
-            if (c.getParent() != this) {
-                this.add(c);
-            }
-
-            c.setBounds(x, y, w, h);
-
-            if(shouldValidate) {
-                c.validate();
-            }
-
-            boolean wasDoubleBuffered = false;
-            if ((c instanceof JComponent) && ((JComponent)c).isDoubleBuffered()) {
-                wasDoubleBuffered = true;
-                ((JComponent)c).setDoubleBuffered(false);
-            }
-
-            Graphics cg = g.create(x, y, w, h);
-            boolean dopaint = true;
-            try {
-                if(dopaint) c.paint(cg);
-            }
-            finally {
-                cg.dispose();
-            }
-
-            if (wasDoubleBuffered && (c instanceof JComponent)) {
-                ((JComponent)c).setDoubleBuffered(true);
-            }
-
-            c.setBounds(-w, -h, 0, 0);
-        }
-/*
-INFORMATION: paintComponent org.jdesktop.swingx.renderer.JRendererLabel[ComboBox.cellRenderer,-162,-143,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.border.EtchedBorder@4e96e3e0,flags=25165824,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,horizontalAlignment=LEADING,horizontalTextPosition=TRAILING,iconTextGap=4,labelFor=,text=Volumen,verticalAlignment=CENTER,verticalTextPosition=CENTER]
- shouldValidate=true
-Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot invoke "java.awt.Color.brighter()" because the return value of "java.awt.Component.getBackground()" is null
-	at java.desktop/javax.swing.border.EtchedBorder.getHighlightColor(EtchedBorder.java:248)
-	at java.desktop/javax.swing.border.EtchedBorder.paintBorder(EtchedBorder.java:191)
-	at java.desktop/javax.swing.JComponent.paintBorder(JComponent.java:1012)
-	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1120)
-	at java.desktop/javax.swing.CellRendererPane.paintComponent(CellRendererPane.java:170)
-	at org.jdesktop.swingx.plaf.basic.BasicXComboBoxUI$1.paintComponent(BasicXComboBoxUI.java:115)
-
- */
-        public void paintComponent(Graphics g, Component c, Container p, Rectangle r) {
-        	LOG.info("paintComponent "+c+"\n Rectangle="+r);
-            super.paintComponent(g, c, p, r.x, r.y, r.width, r.height);
-        }
-        protected void addImpl(Component c, Object constraints, int index) {
-        	LOG.info("addImpl "+c+"\n "+index+": constraints="+constraints);
-        	super.addImpl(c, constraints, index);
-        }
-    };
+    protected CellRendererPane currentValuePane = new CellRendererPane();
     protected Icon icon;
     protected Icon isShowingPopupIcon;
-    protected JButton arrowButton; // vll JXButton TODO ???
+    protected JButton arrowButton; // can be JXButton
     
     JComboBox.KeySelectionManager keySelectionManager;
 
@@ -233,11 +164,11 @@ Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot in
         }
 
         public void layoutContainer(Container parent) {
-        	LOG.info(">>>>>>>>>>>"
-        		+ "\n Container parent:"+parent
-        		+ "\n set Bounds for arrowButton:"+arrowButton
-        		+ "\n set Bounds for editor:"+editor
-        		);
+//        	LOG.info(">>>>>>>>>>>"
+//        		+ "\n Container parent:"+parent
+//        		+ "\n set Bounds for arrowButton:"+arrowButton
+//        		+ "\n set Bounds for editor:"+editor
+//        		);
             JComboBox<?> cb = (JComboBox<?>)parent;
             int width = cb.getWidth();
             int height = cb.getHeight();
@@ -840,7 +771,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     	if(icon==null) {
     		button = createArrowButton();
     	} else {
-    		button = new JButton(icon);
+    		button = new JXButton(icon);
     		button.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
     	}
         button.setName("ComboBox.arrowButton");
@@ -999,8 +930,6 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         if (popup != null) {
         	LOG.config("popup "+(v?"show":"hide")+" for "+c);
             if (v) {
-                //popup.show(); // muss das hier sein? TODO ist doch in setPopupVisible
-                //popupVisible = v;
                 ((BasicXComboPopup)popup).setPopupVisible(v);
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
@@ -1012,8 +941,6 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
             } else {
-                //popup.hide(); // XXX wie oben
-                //popupVisible = v;
                 ((BasicXComboPopup)popup).setPopupVisible(v);
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
