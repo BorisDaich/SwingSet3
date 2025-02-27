@@ -638,21 +638,21 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
             setKeySelectionManager(createDefaultKeySelectionManager());
         }
         ComboBoxModel<E> m = getModel();
+        /* z.B.
+         * StringValue sv = (Object value) -> {
+         *   return value==null ? "" : value.toString();
+         * };
+         * jxComboBox.setRenderer(new DefaultListRenderer<Object>(sv));
+         */
         Object si = m.getSelectedItem();
         if(si!=null && (si.getClass()==String.class || si.getClass()==Integer.class)) {
-        	LOG.info("set DefaultListRenderer for "+si.getClass()+" StringValue");
+        	LOG.config("set DefaultListRenderer for "+si.getClass()+" StringValue");
         	StringValue sv = (Object value) -> {
         		return value==null ? "" : value.toString();
         	};
         	setRenderer(new DefaultListRenderer<Object>(sv));
         }
     }
-    /* z.B.
-     * StringValue sv = (Object value) -> {
-     *   return value==null ? "" : value.toString();
-     * };
-     * jxComboBox.setRenderer(new DefaultListRenderer<Object>(sv));
-     */
     
     /**
      * {@inheritDoc}
