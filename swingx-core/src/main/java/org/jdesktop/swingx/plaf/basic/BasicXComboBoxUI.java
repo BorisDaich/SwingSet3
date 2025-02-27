@@ -417,19 +417,20 @@ comboBox JComboBox<?> :
                 } else if (propertyName == "UI") {
                 	if(e.getOldValue()==e.getNewValue()) {
                 		LOG.config(propertyName+" is unchanged.");
-                	} else {
-//                		LOG.info(propertyName + " NewValue:"+e.getNewValue() + " "+e.getSource()
-//                		+ "\n OldValue:"+e.getOldValue()
-//                		);
-                		if(e.getOldValue() instanceof BasicXComboBoxUI) {
-                			BasicXComboBoxUI ui = (BasicXComboBoxUI)e.getOldValue();
+                	} else if(e.getOldValue() instanceof BasicXComboBoxUI) {
+            			BasicXComboBoxUI ui = (BasicXComboBoxUI)e.getOldValue();
+            			if(ui.arrowButton!=null) {
+                    		LOG.info(" uninstall Button "+ui.arrowButton+" in "+ui.comboBox);
                 			ui.uninstallButton();
-                    		LOG.info(" uninstalled Button in "+ui.comboBox
-                    		);
-                		}
+            			}
                 	}
                 } else {
-                	LOG.info("NOT handled property "+propertyName // expected for PROP_DONT_CANCEL_POPUP
+        			/* expected for PROP_DONT_CANCEL_POPUP
+INFORMATION: NOT handled property ancestor
+INFORMATION: NOT handled property background
+INFORMATION: NOT handled property foreground
+        			 */
+                	LOG.info("NOT handled property "+propertyName 
                 		+ "\n OldValue:"+e.getOldValue() + "\n NewValue:"+e.getNewValue());
                 }
             }
