@@ -469,7 +469,7 @@ public class JXComboBox<E> extends JComboBox<E> {
             
             // interface ComboPopup with method public JList<Object> getList()
             if (a instanceof ComboPopup) {
-            	LOG.info("ComboPopup:"+a);
+//            	LOG.info("ComboPopup:"+a);
             	ComboPopup popup = (ComboPopup)a;
                 return popup.getList();
             }
