@@ -55,8 +55,6 @@ import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXComboBox;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JYList;
-import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.plaf.XComboBoxUI;
 import org.jdesktop.swingx.plaf.basic.core.LazyActionMap;
 import org.jdesktop.swingx.renderer.DefaultComboBoxRenderer;
@@ -278,14 +276,7 @@ comboBox JComboBox<?> :
     	if(listBox instanceof JXList<?>) {
     		JXList<?> xListBox = (JXList<?>)listBox;
         	xListBox.setCellRenderer(new DefaultListRenderer());
-        	
-//        	xListBox.addHighlighter(new ColorHighlighter(null, Color.RED)); // cellBackground, cellForeground OK
-        	
-        	// funktioniert nicht: TODO möglicherweise in list.addPropertyChangeListener lösen
         	xListBox.setRolloverEnabled(true);
-        	xListBox.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null, Color.RED));     	
-//        	xListBox.updateUI();
-
     	} else if(listBox instanceof JYList<?>) {
     		JYList<?> yListBox = (JYList<?>)listBox;
         	LOG.info("----+++---> UI delegate for "+c
@@ -293,7 +284,6 @@ comboBox JComboBox<?> :
         			+ "\n popup.JList<Object>:"+yListBox
         			);
         	yListBox.setCellRenderer(new DefaultListCellRenderer());
-//        	yListBox.addHighlighter(...); // gibt es nicht für JYList, nur für JXList
     	}
 
         // Is this combo box a cell editor?
@@ -418,11 +408,14 @@ comboBox JComboBox<?> :
                 	if(e.getOldValue()==e.getNewValue()) {
                 		LOG.config(propertyName+" is unchanged.");
                 	} else if(e.getOldValue() instanceof BasicXComboBoxUI) {
-            			BasicXComboBoxUI ui = (BasicXComboBoxUI)e.getOldValue();
-            			if(ui.arrowButton!=null) {
-                    		LOG.info(" uninstall Button "+ui.arrowButton+" in "+ui.comboBox);
-                			ui.uninstallButton();
+            			BasicXComboBoxUI oui = (BasicXComboBoxUI)e.getOldValue();
+            			BasicXComboBoxUI nui = (BasicXComboBoxUI)e.getNewValue();
+            			if(oui.arrowButton!=null) {
+                    		LOG.info("uninstall Button "+oui.arrowButton+" in "+oui.comboBox);
+                			oui.uninstallButton();
             			}
+            			nui.installButton(oui.icon);
+            			nui.setIsShowingPopupIcon(oui.isShowingPopupIcon);
                 	}
                 } else {
         			/* expected for PROP_DONT_CANCEL_POPUP
@@ -774,6 +767,13 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     		button.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
     	}
         button.setName("ComboBox.arrowButton");
+        button.addActionListener( ae -> {
+        	if(isPopupVisible(comboBox)) {
+        		LOG.info("TODO pupup zuklappen!!!"); // TODO
+        	}
+            setPopupVisible(comboBox, true);
+            comboBox.repaint();
+        });
         return button;
     }
     
