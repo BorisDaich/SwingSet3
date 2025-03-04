@@ -768,8 +768,53 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     	}
         button.setName("ComboBox.arrowButton");
         button.addActionListener( ae -> {
+/* so klappt die Listbox auf und sofort wieder zu:
         	if(isPopupVisible(comboBox)) {
-        		LOG.info("TODO pupup zuklappen!!!"); // TODO
+        		
+        		LOG.info("Popup is Visible TODO pupup zuklappen!!! button:"+button); // TODO
+        		if(button instanceof BasicArrowButton) {
+        			BasicArrowButton bab = (BasicArrowButton)button;
+        			if(SwingConstants.SOUTH==bab.getDirection()) {
+            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
+        			} else {
+            			LOG.info("button Direction is "+bab.getDirection());
+        			}
+        		}
+                setPopupVisible(comboBox, false);
+        	} else {
+        		LOG.info("Popup is NOT Visible TODO pupup zuklappen!!! button:"+button); // TODO
+        		if(button instanceof BasicArrowButton) {
+        			BasicArrowButton bab = (BasicArrowButton)button;
+        			if(SwingConstants.SOUTH==bab.getDirection()) {
+            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
+        			} else {
+            			LOG.info("button Direction is "+bab.getDirection());
+        			}
+        		}
+                setPopupVisible(comboBox, true);
+        	}
+            comboBox.repaint();
+ */
+        	if(isPopupVisible(comboBox)) {
+        		LOG.info("Popup is Visible TODO pupup zuklappen!!! button:"+button); // TODO
+        		if(button instanceof BasicArrowButton) {
+        			BasicArrowButton bab = (BasicArrowButton)button;
+        			if(SwingConstants.SOUTH==bab.getDirection()) {
+            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
+        			} else {
+            			LOG.info("button Direction is "+bab.getDirection());
+        			}
+        		}
+        	} else {
+        		LOG.info("Popup is NOT Visible TODO pupup zuklappen!!! button:"+button); // TODO
+        		if(button instanceof BasicArrowButton) {
+        			BasicArrowButton bab = (BasicArrowButton)button;
+        			if(SwingConstants.SOUTH==bab.getDirection()) {
+            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
+        			} else {
+            			LOG.info("button Direction is "+bab.getDirection());
+        			}
+        		}
         	}
             setPopupVisible(comboBox, true);
             comboBox.repaint();

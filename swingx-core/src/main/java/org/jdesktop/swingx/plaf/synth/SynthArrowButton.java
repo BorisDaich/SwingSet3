@@ -150,7 +150,12 @@ public class SynthArrowButton extends JButton implements SwingConstants, UIResou
                 dim = (Dimension)context.getStyle().get(context, "ScrollBar.buttonSize");
             }
             if (dim == null) {
-                int size = context.getStyle().getInt(context, "ArrowButton.size", 16);
+            	/* wg. NPE
+Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot invoke "javax.swing.plaf.synth.SynthStyle.getInt(javax.swing.plaf.synth.SynthContext, Object, int)" because the return value of "javax.swing.plaf.synth.SynthContext.getStyle()" is null
+	at org.jdesktop.swingx.plaf.synth.SynthArrowButton$SynthArrowButtonUI.getPreferredSize(SynthArrowButton.java:249)
+            	 */
+            	SynthStyle ss = c instanceof AbstractButton ? getStyle((AbstractButton)c) : context.getStyle();
+            	int size = ss == null ? 16 : ss.getInt(context, "ArrowButton.size", 16);
                 dim = new Dimension(size, size);
             }
 

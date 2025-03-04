@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -103,56 +104,65 @@ public class SynthXComboBoxUI extends BasicXComboBoxUI implements PropertyChange
      */
     @Override
     protected void installDefaults() {
-    	if (comboBox.getRenderer() == null || (comboBox.getRenderer() instanceof UIResource)) {
-        	LOG.warning("####### comboBox.Renderer:"+comboBox.getRenderer()
-        	+ "\n cannot instantiate inner SynthComboBoxRenderer"
-        	);
-    	}
-//    	super.installDefaults();
+		LOG.config("LookAndFeelDefaults "+UIManager.get(comboBox.getUIClassID())
+		+ "\n font "+UIManager.getLookAndFeelDefaults().get(FONT)
+		+ "\n background "+UIManager.getLookAndFeelDefaults().get(BACKGROUND)
+		+ "\n foreground "+UIManager.getLookAndFeelDefaults().get(FOREGROUND)
+		+ "\n border "+UIManager.getLookAndFeelDefaults().get(BORDER)
+		+ "\n property opaque "+UIManager.getLookAndFeelDefaults().get("opaque")
+		+ "\n selectionBackground "+UIManager.getLookAndFeelDefaults().get(SELECTION_BG)
+		+ "\n selectionForeground "+UIManager.getLookAndFeelDefaults().get(SELECTION_FG)
+		+ "\n disabledBackground "+UIManager.getLookAndFeelDefaults().get(DISABLED_BG)
+		+ "\n disabledForeground "+UIManager.getLookAndFeelDefaults().get(DISABLED_FG)
+		+ "\n property timeFactor "+UIManager.getLookAndFeelDefaults().get(TIME_FACTOR)
+		+ "\n property squareButton "+UIManager.getLookAndFeelDefaults().get(SQUARE_BUTTON)
+		+ "\n padding "+UIManager.getLookAndFeelDefaults().get(PADDING));
 /* results for Nimbus:
 INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI
  font javax.swing.plaf.FontUIResource[family=SansSerif,name=sansserif,style=plain,size=12]
- background javax.swing.plaf.ColorUIResource[r=238,g=238,b=238]                         --- überschrieben in updateStyle
+ background javax.swing.plaf.ColorUIResource[r=238,g=238,b=238]
  foreground DerivedColor(color=0,0,0 parent=text offsets=0.0,0.0,0.0,0 pColor=0,0,0
- border javax.swing.border.EtchedBorder@1101322d
+ border javax.swing.border.EtchedBorder@2eccf32e
  property opaque null
- selectionBackground javax.swing.plaf.ColorUIResource[r=57,g=105,b=138]
- selectionForeground javax.swing.plaf.ColorUIResource[r=255,g=255,b=255]
+ selectionBackground null
+ selectionForeground null
  disabledBackground null
  disabledForeground null
  property timeFactor null
  property squareButton false
+ padding null                 --- überschrieben in updateStyle
  padding javax.swing.plaf.InsetsUIResource[top=3,left=3,bottom=3,right=3]
  */
-//    	padding = null; keine Insets
-    	// update colors border , font , background , foreground
+		NimbusLookAndFeel.installColorsAndFont(comboBox, BACKGROUND, FOREGROUND, FONT);
+		NimbusLookAndFeel.installBorder(comboBox, BORDER);
+		NimbusLookAndFeel.installProperty(comboBox, "opaque", Boolean.TRUE);
+		
+        Long l = (Long)UIManager.get(TIME_FACTOR);
+        timeFactor = l == null ? 1000L : l.longValue();
+        
     	updateStyle(comboBox);
     }
-    
+    // modified copy from not visible javax.swing.plaf.synth.SynthComboBoxUI#updateStyle
     private void updateStyle(JComboBox<?> comboBox) {
         SynthStyle oldStyle = style;
     	if(style==null) {
     		style = getStyle();
     	}
         SynthXContext context = (SynthXContext)SynthUtils.getContext(comboBox, getRegion(), style, ENABLED);
-/*        SynthLookAndFeel.updateStyle is not visible:
-        SynthLookAndFeel.update(context, g);
-//    static void update(SynthContext state, Graphics g) {
-//        paintRegion(state, g, null);
-//    }
-        context.getPainter().paintComboBoxBackground(context, g, 0, 0,
-                                                  c.getWidth(), c.getHeight());
-        paint(context, g);
- */
-        LOG.config("NOT paintRegion - NOT paint");
         style = SynthXContext.updateStyle(context, this);
         if (style != oldStyle) {
-            padding = (Insets)style.get(context, "ComboBox.padding");
+            padding = (Insets)style.get(context, "ComboBox.padding"); // =null : keine Insets
             popupInsets = (Insets)style.get(context, "ComboBox.popupInsets");
             useListColors = style.getBoolean(context, "ComboBox.rendererUseListColors", true);
             buttonWhenNotEditable = style.getBoolean(context, "ComboBox.buttonWhenNotEditable", false);
             pressedWhenPopupVisible = style.getBoolean(context, "ComboBox.pressedWhenPopupVisible", false);
             squareButton = style.getBoolean(context, "ComboBox.squareButton", true);
+    		LOG.config("padding "+padding
+    		+ "\n popupInsets "+popupInsets
+    		+ "\n useListColors "+useListColors
+    		+ "\n buttonWhenNotEditable "+buttonWhenNotEditable
+    		+ "\n pressedWhenPopupVisible "+pressedWhenPopupVisible
+    		+ "\n squareButton "+squareButton);
 
             if (oldStyle != null) {
                 uninstallKeyboardActions();

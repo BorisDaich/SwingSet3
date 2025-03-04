@@ -26,15 +26,13 @@ public class BasicXComboPopup extends BasicComboPopup {
 	 */
     protected boolean popupVisible = false; // wg. BUG #57
     
-//    public BasicXComboPopup(JXComboBox<Object> combo) {
-//    	super(combo);
-//    }
     /**
      * Constructs a new instance of {@code BasicXComboPopup}.
      *
      * @param combo an instance of {@code JComboBox}
      */
-    public BasicXComboPopup(JComboBox<?> combo) {
+    @SuppressWarnings("unchecked")
+	public BasicXComboPopup(JComboBox<?> combo) {
     	super((JComboBox<Object>)combo);
     }
 
@@ -117,18 +115,6 @@ public class BasicXComboPopup extends BasicComboPopup {
         // setListSelection(int) from the type BasicComboPopup is not visible
         //setListSelection( comboBox.getSelectedIndex() );
         int i = comboBox.getSelectedIndex();
-//		LOG.config("SelectedIndex="+i + " SortOrder="+xComboBox.getSortOrder()+ " hasRowSorter="+xComboBox.hasRowSorter());
-		// TODO remove code DONE 
-//        if(i != -1 && (xComboBox.getSortOrder()==null || xComboBox.getSortOrder()==SortOrder.UNSORTED) ) {
-////        	list.setSelectedIndex( i ); // <=== hier wird JRendererLabel initialisiert
-////        	list.ensureIndexIsVisible( i );   	
-//        } else if(i != -1 && (xComboBox.getSortOrder()==SortOrder.ASCENDING || xComboBox.getSortOrder()==SortOrder.DESCENDING)) {
-////           	int selectedIndex = xComboBox.getRowSorter().convertRowIndexToView(i);
-////        	list.setSelectedIndex( selectedIndex );
-////        	list.ensureIndexIsVisible( selectedIndex );
-//        } else if(i == -1) {
-//        	list.clearSelection();
-//        }
         if(i == -1) {
         	list.clearSelection();
         }
@@ -164,34 +150,29 @@ public class BasicXComboPopup extends BasicComboPopup {
 //	public void setPopupVisible(JComboBox<?> c, boolean v) {
 /*
         if (popup != null) {
-        	LOG.fine("popup "+(v?"show":"hide")+" for "+c);
+        	LOG.config("popup "+(v?"show":"hide")+" for "+c);
             if (v) {
-                popup.show();
-                popupVisible = v;
+                ((BasicXComboPopup)popup).setPopupVisible(v); // popup.show(); popupVisible = v;
 	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.NORTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton) {
-	            	org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton)arrowButton;
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
+	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.NORTH);
 	            } else {
 	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
 	            }
             } else {
-                popup.hide();
-                popupVisible = v;
-	            if(arrowButton instanceof BasicArrowButton) {
 	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
     	            basicArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton) {
-	            	org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthXComboBoxUI.SynthArrowButton)arrowButton;
+	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
+	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
 	            	synthArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else {
+	            } else if(arrowButton!=null) {
 	            	arrowButton.setIcon(icon);
 	            }
             }
         }
-		
  */
 	}
 
