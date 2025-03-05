@@ -34,13 +34,10 @@ import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.action.AbstractActionExt;
 
 /**
- * TODO add type doc
- * 
  * @author Jeanette Winzenburg
  */
 public class JXDialogVisualCheck extends InteractiveTestCase {
 	
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(JXDialogVisualCheck.class.getName());
     
     public static void main(String[] args) {
@@ -67,7 +64,8 @@ public class JXDialogVisualCheck extends InteractiveTestCase {
         final JComponent content = new JPanel();
         content.add(new JLabel("A label:"));
         content.add(new JTextField("something to play with"));
-        Action myExecuteAction = new AbstractActionExt("Execute") {
+        @SuppressWarnings("serial")
+		Action myExecuteAction = new AbstractActionExt("Execute") {
 
             public void actionPerformed(ActionEvent e) {
                 LOG.info("got an execute");
@@ -75,7 +73,8 @@ public class JXDialogVisualCheck extends InteractiveTestCase {
             
         };
         content.getActionMap().put(JXDialog.EXECUTE_ACTION_COMMAND, myExecuteAction);
-        Action myCancelAction = new AbstractActionExt("Cancel") {
+        @SuppressWarnings("serial")
+		Action myCancelAction = new AbstractActionExt("Cancel") {
 
             public void actionPerformed(ActionEvent e) {
                 LOG.info("got a close");
@@ -91,7 +90,8 @@ public class JXDialogVisualCheck extends InteractiveTestCase {
         dialog.pack();
         
         JComponent comp = new JXPanel();
-        Action openDialog = new AbstractActionExt("open dialog") {
+        @SuppressWarnings("serial")
+		Action openDialog = new AbstractActionExt("open dialog") {
 
             public void actionPerformed(ActionEvent e) {
                 dialog.setVisible(true);
