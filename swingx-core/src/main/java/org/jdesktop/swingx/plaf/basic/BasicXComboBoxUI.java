@@ -417,9 +417,14 @@ comboBox JComboBox<?> :
             			nui.installButton(oui.icon);
             			nui.setIsShowingPopupIcon(oui.isShowingPopupIcon);
                 	}
+// NOT handled properties:
+                } else if (propertyName == "ancestor") {
+                	/*
+                	 * there is an AncestorListener in JComboBox
+                	 * which hides popup on AncestorEvents
+                	 */
                 } else {
         			/* expected for PROP_DONT_CANCEL_POPUP
-INFORMATION: NOT handled property ancestor
 INFORMATION: NOT handled property background
 INFORMATION: NOT handled property foreground
         			 */
