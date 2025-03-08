@@ -102,7 +102,7 @@ public class BasicXComboBoxUI extends XComboBoxUI {
 	protected JComboBox<?> comboBox;
     protected boolean hasFocus = false;
     protected ComboPopup popup; // interface ComboPopup
-//    protected boolean popupVisible = false; // wg. BUG #57
+//    protected boolean popupVisible = false; // wg. BUG #57 moved to BasicXComboPopup
     protected JList<Object> listBox; // actually of subtype JXList
     protected Component editor;
     protected boolean squareButton = true; // used to calculate buttonWidth in getMinimumSize, Handler.layoutContainer
@@ -363,7 +363,7 @@ comboBox JComboBox<?> :
                     xComboBox.repaint();
                 } else if (propertyName == "maximumRowCount") {
                     if (isPopupVisible(xComboBox)) {
-                        setPopupVisible(xComboBox, false); // XXX was soll das?
+//                        setPopupVisible(xComboBox, false); // XXX was soll das?
                         setPopupVisible(xComboBox, true);
                     }
                 } else if (propertyName == "font") {
@@ -733,7 +733,7 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
      * Creates a button which will be used as the control to show or hide
      * the popup portion of the combo box.
      * <br>
-     * In Metal this method is overridden.
+     * In Metal and Nimbus (synth) this method is overridden.
      *
      * @return a button which represents the popup control
      */
@@ -767,58 +767,25 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
     		button.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
     	}
         button.setName("ComboBox.arrowButton");
-        button.addActionListener( ae -> {
-/* so klappt die Listbox auf und sofort wieder zu:
-        	if(isPopupVisible(comboBox)) {
-        		
-        		LOG.info("Popup is Visible TODO pupup zuklappen!!! button:"+button); // TODO
-        		if(button instanceof BasicArrowButton) {
-        			BasicArrowButton bab = (BasicArrowButton)button;
-        			if(SwingConstants.SOUTH==bab.getDirection()) {
-            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
-        			} else {
-            			LOG.info("button Direction is "+bab.getDirection());
-        			}
-        		}
-                setPopupVisible(comboBox, false);
-        	} else {
-        		LOG.info("Popup is NOT Visible TODO pupup zuklappen!!! button:"+button); // TODO
-        		if(button instanceof BasicArrowButton) {
-        			BasicArrowButton bab = (BasicArrowButton)button;
-        			if(SwingConstants.SOUTH==bab.getDirection()) {
-            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
-        			} else {
-            			LOG.info("button Direction is "+bab.getDirection());
-        			}
-        		}
-                setPopupVisible(comboBox, true);
-        	}
-            comboBox.repaint();
+//        button.addActionListener( ae -> {
+//        	LOG.info("hasFocus="+hasFocus);
+//        	if (!isPopupVisible(comboBox)) {
+//            	LOG.info("is NOT PopupVisible UND hasFocus="+hasFocus);
+/* dies ist ein misslungener Versuch 
+ * den buttonicon beim Zuklappen in die andere Richtung (SOUTH) zu setzen
+ * Ausgangslage: 
+ * - die popup Box ist ausgeklappt (hasFocus==true , button direction NORTH)
+ * - es wird kein listenelement ausgewählt, sondern auf die combobox geklickt
+ * - dadurch klappt die popup Box zu
+ * - ALLERDINGS: buttonicon bleibt in direction NORTH
+ * - erst beim Klick ausserhalb der ComboBox (focusLost) springt buttonicon nach SOUTH
+ *
+        		this.getHandler().focusLost(null);
  */
-        	if(isPopupVisible(comboBox)) {
-        		LOG.info("Popup is Visible TODO pupup zuklappen!!! button:"+button); // TODO
-        		if(button instanceof BasicArrowButton) {
-        			BasicArrowButton bab = (BasicArrowButton)button;
-        			if(SwingConstants.SOUTH==bab.getDirection()) {
-            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
-        			} else {
-            			LOG.info("button Direction is "+bab.getDirection());
-        			}
-        		}
-        	} else {
-        		LOG.info("Popup is NOT Visible TODO pupup zuklappen!!! button:"+button); // TODO
-        		if(button instanceof BasicArrowButton) {
-        			BasicArrowButton bab = (BasicArrowButton)button;
-        			if(SwingConstants.SOUTH==bab.getDirection()) {
-            			LOG.info("button Direction is SOUTH ="+bab.getDirection());
-        			} else {
-            			LOG.info("button Direction is "+bab.getDirection());
-        			}
-        		}
-        	}
-            setPopupVisible(comboBox, true);
-            comboBox.repaint();
-        });
+//        		new FocusEvent(comboBox, FocusEvent.FOCUS_LOST, false, comboBox.getParent(), FocusEvent.Cause.ROLLBACK);
+//        		new FocusEvent(comboBox.getParent(), FocusEvent.FOCUS_GAINED, false, comboBox, FocusEvent.Cause.ROLLBACK);
+//        	}
+//        });
         return button;
     }
     
@@ -972,29 +939,30 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
 	@Override
 	public void setPopupVisible(JComboBox<?> c, boolean v) {
         if (popup != null) {
-        	LOG.config("popup "+(v?"show":"hide")+" for "+c);
-            if (v) {
-                ((BasicXComboPopup)popup).setPopupVisible(v);
-	            if(arrowButton instanceof BasicArrowButton) {
-	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
-    	            basicArrowButton.setDirection(SwingConstants.NORTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
-	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
-	            	synthArrowButton.setDirection(SwingConstants.NORTH);
-	            } else {
-	            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
-	            }
-            } else {
-                ((BasicXComboPopup)popup).setPopupVisible(v);
-	            if(arrowButton instanceof BasicArrowButton) {
-	            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
-    	            basicArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
-	            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
-	            	synthArrowButton.setDirection(SwingConstants.SOUTH);
-	            } else if(arrowButton!=null) {
-	            	arrowButton.setIcon(icon);
-	            }
+        	LOG.info("popup "+(v?"show":"hide")+" for "+c);
+            ((BasicXComboPopup)popup).setPopupVisible(v);
+        }
+	}
+	protected void setButtonDirection() {
+        if (hasFocus) {
+            if(arrowButton instanceof BasicArrowButton) {
+            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
+	            basicArrowButton.setDirection(SwingConstants.NORTH);
+            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
+            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
+            	synthArrowButton.setDirection(SwingConstants.NORTH);
+            } else if(arrowButton!=null) {
+            	arrowButton.setIcon(isShowingPopupIcon==null?icon:isShowingPopupIcon);
+            }
+        } else {
+            if(arrowButton instanceof BasicArrowButton) {
+            	BasicArrowButton basicArrowButton = (BasicArrowButton)arrowButton;
+	            basicArrowButton.setDirection(SwingConstants.SOUTH);
+            } else if(arrowButton instanceof org.jdesktop.swingx.plaf.synth.SynthArrowButton) {
+            	org.jdesktop.swingx.plaf.synth.SynthArrowButton synthArrowButton = (org.jdesktop.swingx.plaf.synth.SynthArrowButton)arrowButton;
+            	synthArrowButton.setDirection(SwingConstants.SOUTH);
+            } else if(arrowButton!=null) {
+            	arrowButton.setIcon(icon);
             }
         }
 	}
@@ -1196,14 +1164,14 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         Component c;
 
         if (hasFocus && !isPopupVisible(comboBox)) {
-            LOG.fine("this.hasFocus && Popup NOT Visible, renderer:"+renderer);
+            LOG.info("this.hasFocus && Popup NOT Visible, renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
                                                        true, // isSelected 
                                                        hasFocus ); // cellHasFocus
         } else {
-            LOG.fine("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
+            LOG.info("this.hasFocus="+hasFocus+" || Popup Visible renderer:"+renderer);
             c = renderer.getListCellRendererComponent( listBox,
                                                        comboBox.getSelectedItem(),
                                                        -1,
@@ -1299,7 +1267,6 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         int buttonHeight = size.height;
         int buttonWidth = buttonHeight;
         if(!squareButton) {
-// XXX     	LOG.info("XXXXXXXXXXXXX not squareButton! arrowButton:"+arrowButton);
             buttonWidth = arrowButton==null ? 16 : arrowButton.getPreferredSize().width;
         }
         //adjust the size based on the button width
@@ -1549,14 +1516,15 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
         // The combo box listener hides the popup when the focus is lost.
         // It also repaints when focus is gained or lost.
         public void focusGained( FocusEvent e ) {
-        	LOG.fine("FocusEvent "+e);
+        	LOG.info("FocusEvent "+e);
             ComboBoxEditor comboBoxEditor = comboBox.getEditor();
 
             if ( (comboBoxEditor != null) &&
-                 (e.getSource() == comboBoxEditor.getEditorComponent()) ) {
+                 (e!=null && e.getSource() == comboBoxEditor.getEditorComponent()) ) {
                 return;
             }
             hasFocus = true;
+            setButtonDirection();
             comboBox.repaint();
 
             if (comboBox.isEditable() && editor != null) {
@@ -1564,14 +1532,14 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
         }
         public void focusLost( FocusEvent e ) {
-        	LOG.fine("FocusEvent "+e);
+        	LOG.info("FocusEvent "+e);
             ComboBoxEditor editor = comboBox.getEditor();
             if ( (editor != null) &&
-                 (e.getSource() == editor.getEditorComponent()) ) {
+                 (e!=null && e.getSource() == editor.getEditorComponent()) ) {
                 Object item = editor.getItem();
 
                 Object selectedItem = comboBox.getSelectedItem();
-                if (!e.isTemporary() && item != null &&
+                if (e!=null && !e.isTemporary() && item != null &&
                     !item.equals((selectedItem == null) ? "" : selectedItem )) {
                     comboBox.actionPerformed
                         (new ActionEvent(editor, 0, "",
@@ -1580,10 +1548,13 @@ INFORMATION: LookAndFeelDefaults org.jdesktop.swingx.plaf.metal.MetalXComboBoxUI
             }
 
             hasFocus = false;
-//            if (!e.isTemporary()) {
-//                setPopupVisible(comboBox, false);
-//            }
-            setPopupVisible(comboBox, false);
+            if (e!=null && !e.isTemporary()) {
+                setButtonDirection();
+                setPopupVisible(comboBox, false);
+            } else if (e==null) {
+                setButtonDirection();
+                setPopupVisible(comboBox, false);
+            }
             comboBox.repaint();
         }
 
