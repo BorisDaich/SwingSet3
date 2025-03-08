@@ -153,9 +153,22 @@ public class SynthArrowButton extends JButton implements SwingConstants, UIResou
             	/* wg. NPE
 Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot invoke "javax.swing.plaf.synth.SynthStyle.getInt(javax.swing.plaf.synth.SynthContext, Object, int)" because the return value of "javax.swing.plaf.synth.SynthContext.getStyle()" is null
 	at org.jdesktop.swingx.plaf.synth.SynthArrowButton$SynthArrowButtonUI.getPreferredSize(SynthArrowButton.java:249)
+	                   bzw.
+Exception in thread "AWT-EventQueue-0" java.lang.ClassCastException: class javax.swing.plaf.metal.MetalLookAndFeel cannot be cast to class javax.swing.plaf.nimbus.NimbusLookAndFeel (javax.swing.plaf.metal.MetalLookAndFeel and javax.swing.plaf.nimbus.NimbusLookAndFeel are in module java.desktop of loader 'bootstrap')
+	at java.desktop/javax.swing.plaf.nimbus.NimbusStyle.validate(NimbusStyle.java:256)
+	at java.desktop/javax.swing.plaf.nimbus.NimbusStyle.getValues(NimbusStyle.java:820)
+	at java.desktop/javax.swing.plaf.nimbus.NimbusStyle.get(NimbusStyle.java:660)
+	at java.desktop/javax.swing.plaf.synth.SynthStyle.getInt(SynthStyle.java:991)
+	at org.jdesktop.swingx.plaf.synth.SynthArrowButton$SynthArrowButtonUI.getPreferredSize(SynthArrowButton.java:158)
             	 */
-            	SynthStyle ss = c instanceof AbstractButton ? getStyle((AbstractButton)c) : context.getStyle();
-            	int size = ss == null ? 16 : ss.getInt(context, "ArrowButton.size", 16);
+            	int size = 16;
+            	try {
+                	SynthStyle ss = c instanceof AbstractButton ? getStyle((AbstractButton)c) : context.getStyle();
+                	size = ss == null ? 16 : ss.getInt(context, "ArrowButton.size", 16);
+            	} catch (Exception ex) {
+            		ex.printStackTrace(); // ... und weiter geht es
+                	System.out.println("expected:"+ex.getMessage());
+            	} 
                 dim = new Dimension(size, size);
             }
 
