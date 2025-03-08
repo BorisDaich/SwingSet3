@@ -50,6 +50,8 @@ import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComboBoxUI;
@@ -1027,6 +1029,32 @@ Es geht aber um die popup liste, und die ist in BasicXComboBoxUI.popup bzw in Ba
         }
     }
     // ----------- ab hier meine Erweiterungen :
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void installAncestorListener() {
+        addAncestorListener(new AncestorListener() {
+            public void ancestorAdded(AncestorEvent event) { 
+            	LOG.info("ancestorAdded NO hidePopup");
+//            	hidePopup();
+            }
+            public void ancestorRemoved(AncestorEvent event) { 
+            	LOG.info("ancestorRemoved NO hidePopup");
+//            	hidePopup();
+            }
+            public void ancestorMoved(AncestorEvent event) {
+                if (event.getSource() != JXComboBox.this) {
+                	LOG.info("ancestorMoved NO hidePopup");
+//                	hidePopup();
+                }
+            }
+        });
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setUI(ComboBoxUI newUI) {
     	if(ui==newUI) return;
     	
