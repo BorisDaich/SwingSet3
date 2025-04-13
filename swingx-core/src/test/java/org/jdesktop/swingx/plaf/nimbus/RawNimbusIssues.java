@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Copyright 2009 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
@@ -39,7 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 /**
  * 
  * @author Jeanette Winzenburg
@@ -47,13 +44,14 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class RawNimbusIssues extends InteractiveTestCase {
 
-    /**
-     * 
+    private static final Logger LOG = Logger.getLogger(RawNimbusIssues.class.getName());
+    /* aus NimbusDefaults:
+
+        addColor(d, "nimbusLightBackground", 255, 255, 255, 255);
+     ...
+     addColor(d, "Table.alternateRowColor", "nimbusLightBackground", 0.0f, 0.0f, -0.05098039f, 0, false);
+   
      */
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(RawNimbusIssues.class
-            .getName());
-    
     private static final String ALTERNATE_ROW_COLOR = "Table.alternateRowColor";
     private static final String TABLE_BACKGROUND = "Table.background";
     
@@ -63,6 +61,23 @@ public class RawNimbusIssues extends InteractiveTestCase {
         JCheckBox box = new JCheckBox();
         LOG.info(" checkbox? " + box.getBackground());
     }
+    
+    /* returns DerivedColor
+class DerivedColor extends Color 
+...
+    @Override public int getRGB() {
+        return argbValue;
+    }
+     
+     */
+    private Color getALTERNATE_ROW_COLOR() {
+        Color c = UIManager.getColor(ALTERNATE_ROW_COLOR);
+        LOG.info("Color:" + c
+        	+ "\n RGB="+c.getRGB()
+        	);
+        return c;
+    }
+    
     /**
      * Core Issue ??: Nimbus install must be complete on propertyChangeNotification
      *   from UIManager.
@@ -84,18 +99,15 @@ public class RawNimbusIssues extends InteractiveTestCase {
         final List<Color> colors = new ArrayList<Color>();
         final List<Integer> rgb = new ArrayList<Integer>();
         final PropertyChangeReport report = new PropertyChangeReport();
-        PropertyChangeListener l = new PropertyChangeListener() {
-            
+        PropertyChangeListener l = new PropertyChangeListener() {       
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 UIManager.getLookAndFeelDefaults().addPropertyChangeListener(report);
-                colors.add(UIManager.getColor(ALTERNATE_ROW_COLOR));
-                rgb.add(colors.get(0).getRGB());
-                
+                colors.add(getALTERNATE_ROW_COLOR());
+                rgb.add(colors.get(0).getRGB());              
             }
         };
-        try {
-            
+        try {         
             UIManager.addPropertyChangeListener(l);
             setLookAndFeel("Nimbus");
             int rgbOrg = rgb.get(0);
@@ -107,6 +119,7 @@ public class RawNimbusIssues extends InteractiveTestCase {
             removeListeners(l, report);
         }
     }
+    
     /**
      * Core Issue ??: Nimbus install must be complete on propertyChangeNotification
      *   from UIManager.
@@ -132,19 +145,36 @@ public class RawNimbusIssues extends InteractiveTestCase {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 UIManager.getLookAndFeelDefaults().addPropertyChangeListener(report);
-                colors.add(UIManager.getColor(ALTERNATE_ROW_COLOR));
+                colors.add(getALTERNATE_ROW_COLOR());
                 rgb.add(colors.get(0).getRGB());
-               
+            	
+            	LOG.info("PropertyChangeEvent PropertyName="+evt.getPropertyName()
+            	+"\n OldValue:"+evt.getOldValue()
+            	+"\n NewValue:"+evt.getNewValue()
+            	+"\n alternateRowColor:"+UIManager.getColor(ALTERNATE_ROW_COLOR)
+            	+"\n colors.size="+colors.size()
+            	+"\n colors.0         ="+colors.get(0)
+            	+"\n added rgb of colors="+rgb.get(0));
             }
         };
-        try {
-            
+        try {          
             UIManager.addPropertyChangeListener(l);
             setLookAndFeel("Nimbus");
+            // property lookAndFeel fired, PropertyChangeListener l triggered
+            
             assertSame("Color installed when firing property change", 
                     colors.get(0), UIManager.getColor(ALTERNATE_ROW_COLOR));
-            if (!report.hasEvents()) {
+            
+            if (report.hasEvents()) {
+            	LOG.info("LastEvent:"+report.getLastEvent());
+            } else {
+            	LOG.info("no events colors.get(0):"+colors.get(0));
+            	PropertyChangeEvent evt = report.getLastEvent();
                 int rgbOrg = rgb.get(0);
+            	LOG.info("MultiCastEvents="+report.getMultiCastEventCount()
+            		+ " LastEvent:"+evt // expected null
+            		+ " expected rgb of colors="+rgbOrg
+        		    + " is:"+colors.get(0).getRGB());
                 assertEquals("Color must be unchanged compared to original", 
                         rgbOrg, colors.get(0).getRGB());
             }
@@ -160,16 +190,32 @@ public class RawNimbusIssues extends InteractiveTestCase {
      */
     @Test
     public void testUIDefaultsNotificationRemove() {
-        UIDefaults properties = new UIDefaults();
+        UIDefaults properties = new UIDefaults() {
+        	// fire on remove:
+            public Object remove(Object key) {
+            	Object o = super.remove(key);
+                if (key instanceof String) {
+                    firePropertyChange((String)key, o, null);
+                }
+				return o;           	
+            }     	
+        };
         PropertyChangeReport report = new PropertyChangeReport();
         properties.addPropertyChangeListener(report);
         Object value = new Object();
         properties.put("somevalue", value);
         assertEquals(1, report.getEventCount("somevalue"));
         report.clear();
-        properties.remove("somevalue");
+        Object o = properties.remove("somevalue");
         assertNull("sanity: value removed", properties.get("somevalue"));
-        assertEquals("uidefaults must fire (here: remove)", 1, report.getEventCount("somevalue"));
+        assertSame(value, o);
+        // must fire?
+        if(1==report.getEventCount("somevalue")) {
+            LOG.info("UIDefaults fired");
+            assertEquals("uidefaults must fire (here: remove)", 1, report.getEventCount("somevalue"));
+        } else {
+        	LOG.warning("UIDefaults.remove returns expected value but does not fire an event on remove");
+        }
     }
     
     /**

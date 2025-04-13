@@ -54,7 +54,6 @@ import org.jdesktop.swingx.SwingXUtilities;
  */
 public class RawNimbus {
 
-    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(RawNimbus.class.getName());
     
     private JComponent createContent() {
